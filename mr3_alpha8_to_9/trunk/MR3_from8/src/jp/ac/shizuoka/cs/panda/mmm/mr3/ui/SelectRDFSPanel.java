@@ -9,6 +9,7 @@ import java.util.*;
 import javax.swing.*;
 
 import jp.ac.shizuoka.cs.panda.mmm.mr3.jgraph.*;
+import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 
 import org.jgraph.event.*;
 
@@ -34,7 +35,7 @@ public class SelectRDFSPanel extends SelectClassPanel {
 	protected void initEachDialogAttr() {
 		regionList = new JList();
 		regionListScroll = new JScrollPane(regionList);
-		initComponent(regionListScroll, "Selected List", 450, 80);
+		initComponent(regionListScroll, Translator.getString("SelectedList"), 450, 80);
 	}
 
 	protected void setEachDialogAttrLayout() {

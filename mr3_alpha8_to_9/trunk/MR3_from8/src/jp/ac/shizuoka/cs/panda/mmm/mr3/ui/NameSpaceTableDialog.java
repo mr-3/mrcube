@@ -187,7 +187,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 	}
 
 	private void initTable() {
-		Object[] columnNames = new Object[] { "available", "prefix", "URI" };
+		Object[] columnNames = new Object[] { Translator.getString("Available"), Translator.getString("Prefix"), "URI" };
 		nsTableModel = new NSTableModel(columnNames, 0);
 		nsTableModel.addTableModelListener(this);
 		nsTable = new JTable(nsTableModel);
@@ -214,22 +214,22 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 	}
 
 	private void setInputLayout() {
-		addNSButton = new JButton("Add");
+		addNSButton = new JButton(Translator.getString("Add"));
 		addNSButton.addActionListener(this);
 
-		removeNSButton = new JButton("Remove");
+		removeNSButton = new JButton(Translator.getString("Remove"));
 		removeNSButton.addActionListener(this);
 
-		closeButton = new JButton("Close");
+		closeButton = new JButton(Translator.getString("Close"));
 		closeButton.addActionListener(this);
 
 		prefixField = new JTextField(8);
-		prefixField.setBorder(BorderFactory.createTitledBorder("Prefix"));
+		prefixField.setBorder(BorderFactory.createTitledBorder(Translator.getString("Prefix")));
 		prefixField.setPreferredSize(new Dimension(50, 40));
 		prefixField.setMinimumSize(new Dimension(50, 40));
 
 		nsField = new JTextField(30);
-		nsField.setBorder(BorderFactory.createTitledBorder("NameSpace"));
+		nsField.setBorder(BorderFactory.createTitledBorder(Translator.getString("NameSpace")));
 		nsField.setPreferredSize(new Dimension(400, 40));
 		nsField.setMinimumSize(new Dimension(400, 40));
 

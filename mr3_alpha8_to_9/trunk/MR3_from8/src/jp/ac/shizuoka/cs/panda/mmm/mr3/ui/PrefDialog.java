@@ -79,6 +79,10 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 	private JButton applyButton;
 	private JButton cancelButton;
 
+	private static final String EDIT=Translator.getString("Edit");
+	private static final String ADD=Translator.getString("Add");
+	private static final String REMOVE=Translator.getString("Remove");
+
 	public PrefDialog(GraphManager manager, Preferences prefs) {
 		super(Translator.getString("PreferenceDialog.Title"), false, false, false);
 		gmanager = manager;
@@ -155,11 +159,11 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 		JScrollPane classClassListScroll = new JScrollPane(classClassList);
 		initComponent(classClassListScroll, "Class Class List", LONG_URI_FIELD_WIDTH, 80);
 		Action classClassButtonAction = new ClassClassButtonAction();
-		classClassEditButton = new JButton("Edit");
+		classClassEditButton = new JButton(EDIT);
 		classClassEditButton.addActionListener(classClassButtonAction);
-		classClassAddButton = new JButton("Add");
+		classClassAddButton = new JButton(ADD);
 		classClassAddButton.addActionListener(classClassButtonAction);
-		classClassRemoveButton = new JButton("Remove");
+		classClassRemoveButton = new JButton(REMOVE);
 		classClassRemoveButton.addActionListener(classClassButtonAction);
 		JPanel classClassButtonPanel = new JPanel();
 		classClassButtonPanel.add(classClassEditButton);
@@ -172,11 +176,11 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 		JScrollPane propClassListScroll = new JScrollPane(propClassList);
 		initComponent(propClassListScroll, "Property Class List", LONG_URI_FIELD_WIDTH, 80);
 		Action propClassButtonAction = new PropClassButtonAction();
-		propClassEditButton = new JButton("Edit");
+		propClassEditButton = new JButton(EDIT);
 		propClassEditButton.addActionListener(propClassButtonAction);
-		propClassAddButton = new JButton("Add");
+		propClassAddButton = new JButton(ADD);
 		propClassAddButton.addActionListener(propClassButtonAction);
-		propClassRemoveButton = new JButton("Remove");
+		propClassRemoveButton = new JButton(REMOVE);
 		propClassRemoveButton.addActionListener(propClassButtonAction);
 		JPanel propClassButtonPanel = new JPanel();
 		propClassButtonPanel.add(propClassEditButton);
@@ -260,11 +264,11 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 
 		public void actionPerformed(ActionEvent e) {
 			String command = e.getActionCommand();
-			if (command.equals("Edit")) {
+			if (command.equals(EDIT)) {
 				edit();
-			} else if (command.equals("Add")) {
+			} else if (command.equals(ADD)) {
 				add();
-			} else if (command.equals("Remove")) {
+			} else if (command.equals(REMOVE)) {
 				remove();
 			}
 		}
@@ -312,11 +316,11 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 
 		public void actionPerformed(ActionEvent e) {
 			String command = e.getActionCommand();
-			if (command.equals("Edit")) {
+			if (command.equals(EDIT)) {
 				edit();
-			} else if (command.equals("Add")) {
+			} else if (command.equals(ADD)) {
 				add();
-			} else if (command.equals("Remove")) {
+			} else if (command.equals(REMOVE)) {
 				remove();
 			}
 		}
@@ -470,9 +474,9 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 
 	private void initLangField() {
 		defaultLangField = new JTextField();
-		initComponent(defaultLangField, "Lang", PREFIX_BOX_WIDTH, URI_FIELD_HEIGHT);
+		initComponent(defaultLangField, Translator.getString("Lang"), PREFIX_BOX_WIDTH, URI_FIELD_HEIGHT);
 		uiLangBox = new JComboBox(new Object[]{"en", "ja"});
-		initComponent(uiLangBox, "UI Lang", PREFIX_BOX_WIDTH, PREFIX_BOX_HEIGHT);
+		initComponent(uiLangBox, "UI "+Translator.getString("Lang"), PREFIX_BOX_WIDTH, PREFIX_BOX_HEIGHT);
 	}
 
 	private void initEncodingBox() {
@@ -497,7 +501,7 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 	private void initBaseURIField() {
 		uriPrefixBox = new JComboBox();
 		uriPrefixBox.addActionListener(new ChangePrefixAction());
-		initComponent(uriPrefixBox, "Prefix", PREFIX_BOX_WIDTH, PREFIX_BOX_HEIGHT);
+		initComponent(uriPrefixBox, Translator.getString("Prefix"), PREFIX_BOX_WIDTH, PREFIX_BOX_HEIGHT);
 		baseURILabel = new JLabel("");
 		initComponent(baseURILabel, "BaseURI", URI_FIELD_WIDTH, URI_FIELD_HEIGHT);
 		initPrefixBox();

@@ -71,6 +71,10 @@ public abstract class RDFSPanel extends JPanel {
 	private static final int PREFIX_BOX_WIDTH = 150;
 	private static final int PREFIX_BOX_HEIGHT = 50;
 
+	private static final String EDIT = Translator.getString("Edit");
+	private static final String ADD = Translator.getString("Add");
+	private static final String REMOVE = Translator.getString("Remove");
+
 	public RDFSPanel(RDFGraph g, GraphManager manager) {
 		graph = g;
 		gmanager = manager;
@@ -94,7 +98,7 @@ public abstract class RDFSPanel extends JPanel {
 
 	protected void setBaseTab() {
 		metaClassBox = new JComboBox();
-		initComponent(metaClassBox, "Type", LIST_WIDTH, PREFIX_BOX_HEIGHT);
+		initComponent(metaClassBox, Translator.getString("ResourceType"), LIST_WIDTH, PREFIX_BOX_HEIGHT);
 
 		uriPrefixBox = new JComboBox();
 		uriPrefixBox.addActionListener(new ChangePrefixAction());
@@ -114,9 +118,9 @@ public abstract class RDFSPanel extends JPanel {
 		initComponent(isDefinedBy, "isDefinedBy", LIST_WIDTH, FIELD_HEIGHT);
 
 		labelLangField = new JTextField(LANG_FIELD_LENGTH);
-		initComponent(labelLangField, "Lang", BOX_WIDTH, FIELD_HEIGHT);
+		initComponent(labelLangField, Translator.getString("Lang"), BOX_WIDTH, FIELD_HEIGHT);
 		labelField = new JTextField();
-		initComponent(labelField, "Label", 300, FIELD_HEIGHT);
+		initComponent(labelField, Translator.getString("Label"), 300, FIELD_HEIGHT);
 		JPanel labelGroup = new JPanel();
 		labelGroup.add(labelLangField);
 		labelGroup.add(labelField);
@@ -125,11 +129,11 @@ public abstract class RDFSPanel extends JPanel {
 		labelLangBox.addActionListener(new SelectLangAction());
 		labelLangBox.setPreferredSize(new Dimension(BOX_WIDTH, BOX_HEIGHT));
 		labelLangBox.setMinimumSize(new Dimension(BOX_WIDTH, BOX_HEIGHT));
-		editLabelButton = new JButton("Edit");
+		editLabelButton = new JButton(EDIT);
 		editLabelButton.addActionListener(new EditLiteralAction());
-		addLabelButton = new JButton("Add");
+		addLabelButton = new JButton(ADD);
 		addLabelButton.addActionListener(new AddLiteralAction());
-		removeLabelButton = new JButton("Remove");
+		removeLabelButton = new JButton(REMOVE);
 		removeLabelButton.addActionListener(new RemoveLiteralAction());
 		JPanel labelButtonGroup = new JPanel();
 		labelButtonGroup.add(labelLangBox);
@@ -160,15 +164,15 @@ public abstract class RDFSPanel extends JPanel {
 		gridbag.setConstraints(labelButtonGroup, c);
 		basePanel.add(labelButtonGroup);
 
-		metaTab.addTab("Base", basePanel);
+		metaTab.addTab(Translator.getString("Base"), basePanel);
 	}
 
 	protected void setCommentTab() {
 		commentLangField = new JTextField(LANG_FIELD_LENGTH);
-		initComponent(commentLangField, "Lang", BOX_WIDTH, FIELD_HEIGHT);
+		initComponent(commentLangField, Translator.getString("Lang"), BOX_WIDTH, FIELD_HEIGHT);
 		commentArea = new JTextArea(5, 20); // èc,â°        
 		commentScroll = new JScrollPane(commentArea);
-		initComponent(commentScroll, "Comment", 300, 150);
+		initComponent(commentScroll, Translator.getString("Comment"), 300, 150);
 		JPanel commentPanel = new JPanel();
 		commentPanel.add(commentLangField);
 		commentPanel.add(commentScroll);
@@ -176,11 +180,11 @@ public abstract class RDFSPanel extends JPanel {
 		commentLangBox = new JComboBox();
 		commentLangBox.addActionListener(new SelectLangAction());
 		commentLangBox.setPreferredSize(new Dimension(BOX_WIDTH, BOX_HEIGHT));
-		editCommentButton = new JButton("Edit");
+		editCommentButton = new JButton(EDIT);
 		editCommentButton.addActionListener(new EditLiteralAction());
-		addCommentButton = new JButton("Add");
+		addCommentButton = new JButton(ADD);
 		addCommentButton.addActionListener(new AddLiteralAction());
-		removeCommentButton = new JButton("Remove");
+		removeCommentButton = new JButton(REMOVE);
 		removeCommentButton.addActionListener(new RemoveLiteralAction());
 		JPanel commentButtonGroup = new JPanel();
 		commentButtonGroup.add(commentLangBox);
@@ -201,7 +205,7 @@ public abstract class RDFSPanel extends JPanel {
 		c.anchor = GridBagConstraints.WEST;
 		gridbag.setConstraints(commentButtonGroup, c);
 		inlinePanel.add(commentButtonGroup);
-		metaTab.addTab("Comment", inlinePanel);
+		metaTab.addTab(Translator.getString("Comment"), inlinePanel);
 	}
 
 	class ChangePrefixAction extends AbstractAction {
@@ -216,7 +220,7 @@ public abstract class RDFSPanel extends JPanel {
 		instanceListScroll = new JScrollPane(instanceList);
 		instanceListScroll.setPreferredSize(new Dimension(LIST_WIDTH, INSTANCE_LIST_HEIGHT));
 		instanceListScroll.setMinimumSize(new Dimension(LIST_WIDTH, INSTANCE_LIST_HEIGHT));
-		instanceListScroll.setBorder(BorderFactory.createTitledBorder("Instances"));
+		instanceListScroll.setBorder(BorderFactory.createTitledBorder(Translator.getString("Instances")));
 	}
 
 	public void setCell(GraphCell cell) {

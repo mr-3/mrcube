@@ -55,10 +55,10 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		initComponent(resTypePrefixBox, Translator.getString("Prefix"), BOX_WIDTH, 50);
 
 		resTypeField = new JTextField();
-		initComponent(resTypeField, "Resource Type ID", BOX_WIDTH, LIST_HEIGHT);
+		initComponent(resTypeField, Translator.getString("ResourceType")+" ID", BOX_WIDTH, LIST_HEIGHT);
 		resTypePrefixBox.addActionListener(new ChangePrefixAction());
 
-		isTypeCellCheckBox = new JCheckBox(" isType ");
+		isTypeCellCheckBox = new JCheckBox(Translator.getString("IsType"));
 		isTypeCellCheckBox.addActionListener(new IsTypeCellAction());
 
 		JPanel resTypePanel = new JPanel();
@@ -69,9 +69,9 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		resTypeNSLabel = new JLabel();
 		initComponent(resTypeNSLabel, Translator.getString("NameSpace"), LIST_WIDTH, LIST_HEIGHT);
 
-		selectTypeButton = new JButton("Select Type");
+		selectTypeButton = new JButton(Translator.getString("SelectType"));
 		selectTypeButton.addActionListener(this);
-		jumpRDFSClassButton = new JButton("Jump RDFS");
+		jumpRDFSClassButton = new JButton(Translator.getString("Jump")+" RDFS");
 		jumpRDFSClassButton.addActionListener(this);
 
 		JPanel typePanel = new JPanel();
@@ -85,10 +85,10 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		resPrefixBox.addActionListener(new ChangePrefixAction());
 
 		uriField = new JTextField();
-		initComponent(uriField, "RDF Resource ID", BOX_WIDTH, LIST_HEIGHT);
+		initComponent(uriField, Translator.getString("RDFResource") +" ID", BOX_WIDTH, LIST_HEIGHT);
 		uriField.addActionListener(this);
 
-		isAnonBox = new JCheckBox(" isBlank ");
+		isAnonBox = new JCheckBox(Translator.getString("IsBlank"));
 		isAnonBox.addActionListener(new IsAnonAction());
 
 		JPanel resPanel = new JPanel();

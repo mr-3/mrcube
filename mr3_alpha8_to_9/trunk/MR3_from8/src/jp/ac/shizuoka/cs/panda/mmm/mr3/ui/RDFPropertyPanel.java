@@ -51,7 +51,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		gmanager = manager;
 		setBorder(BorderFactory.createTitledBorder(Translator.getString("AttributeDialog.RDFPropertyAttribute.Text")));
 
-		isContainerBox = new JCheckBox("is Container");
+		isContainerBox = new JCheckBox(Translator.getString("IsContainer"));
 		isContainerBox.addActionListener(new ContainerBoxAction());
 		isContainerBox.setSelected(false);
 		numSpinner = new JSpinner(new SpinnerNumberModel(0, 0, 99, 1));
@@ -61,7 +61,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		containerPanel.add(isContainerBox);
 		containerPanel.add(numSpinner);
 
-		propOnlyCheck = new JCheckBox("Show property prefix only");
+		propOnlyCheck = new JCheckBox(Translator.getString("ShowPropertyPrefixOnly"));
 		propOnlyCheck.addActionListener(this);
 		propOnlyCheck.setSelected(true);
 		uriPrefixBox = new JComboBox();
@@ -72,7 +72,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		initComponent(idField, "ID", BOX_WIDTH, LIST_HEIGHT);
 		idField.addActionListener(this);
 
-		jumpRDFSProp = new JButton("Jump RDFS");
+		jumpRDFSProp = new JButton(Translator.getString("Jump")+" RDFS");
 		jumpRDFSProp.addActionListener(this);
 
 		JPanel uriPanel = new JPanel();
@@ -149,7 +149,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		localNameList = new JList();
 		localNameList.addListSelectionListener(this);
 		JScrollPane localNameListScroll = new JScrollPane(localNameList);
-		initComponent(localNameListScroll, "Property ID", 350, 120);
+		initComponent(localNameListScroll, Translator.getString("Property")+" ID", 350, 120);
 
 		JPanel panel = new JPanel();
 		GridBagLayout gridbag = new GridBagLayout();

@@ -51,7 +51,7 @@ public class PropertyPanel extends RDFSPanel {
 	private void setReferenceTab() {
 		supProperties = new JList();
 		supPropertiesScroll = new JScrollPane(supProperties);
-		initComponent(supPropertiesScroll, "Super Property", LIST_WIDTH, LIST_HEIGHT);
+		initComponent(supPropertiesScroll, Translator.getString("SuperProperties"), LIST_WIDTH, LIST_HEIGHT);
 
 		JPanel inline = new JPanel();
 		GridBagLayout gridbag = new GridBagLayout();
@@ -67,7 +67,7 @@ public class PropertyPanel extends RDFSPanel {
 		gridbag.setConstraints(instanceListScroll, c);
 		inline.add(instanceListScroll);
 
-		metaTab.addTab("Reference", inline);
+		metaTab.addTab(Translator.getString("Reference"), inline);
 	}
 
 	class InstanceAction implements ListSelectionListener {
@@ -79,24 +79,24 @@ public class PropertyPanel extends RDFSPanel {
 	private void setRegionTab() {
 		domainList = new JList();
 		domainScroll = new JScrollPane(domainList);
-		initComponent(domainScroll, "Domain", LIST_WIDTH, LIST_HEIGHT);
+		initComponent(domainScroll, Translator.getString("Domain"), LIST_WIDTH, LIST_HEIGHT);
 
 		rangeList = new JList();
 		rangeScroll = new JScrollPane(rangeList);
-		initComponent(rangeScroll, "Range", LIST_WIDTH, LIST_HEIGHT);
+		initComponent(rangeScroll, Translator.getString("Range"), LIST_WIDTH, LIST_HEIGHT);
 
 		AddDomainRange adr = new AddDomainRange(); //Ç‡Ç¡Ç∆ìKêÿÇ»ñºëOÇÇ¬ÇØÇÈ
-		addDomainButton = new JButton("Add");
+		addDomainButton = new JButton(Translator.getString("Add"));
 		addDomainButton.addActionListener(adr);
 
-		addRangeButton = new JButton("Add");
+		addRangeButton = new JButton(Translator.getString("Add"));
 		addRangeButton.addActionListener(adr);
 
 		RemoveList rlist = new RemoveList();
-		removeDomainButton = new JButton("Remove");
+		removeDomainButton = new JButton(Translator.getString("Remove"));
 		removeDomainButton.addActionListener(rlist);
 
-		removeRangeButton = new JButton("Remove");
+		removeRangeButton = new JButton(Translator.getString("Remove"));
 		removeRangeButton.addActionListener(rlist);
 
 		JPanel inline = new JPanel();
@@ -127,7 +127,7 @@ public class PropertyPanel extends RDFSPanel {
 		gridbag.setConstraints(removeRangeButton, c);
 		inline.add(removeRangeButton);
 
-		metaTab.addTab("Region", inline);
+		metaTab.addTab(Translator.getString("Region"), inline);
 	}
 
 	class RemoveList implements ActionListener {
