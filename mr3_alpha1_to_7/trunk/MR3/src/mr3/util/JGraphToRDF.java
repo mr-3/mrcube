@@ -137,16 +137,25 @@ public class JGraphToRDF {
 		return rdfModel;
 	}
 
+	private Property getRDFProperty(Edge edge) throws RDFException {
+		Object propCell = rdfsInfoMap.getEdgeInfo(edge);
+		RDFSInfo propInfo = rdfsInfoMap.getCellInfo(propCell);
+		Property property = null;
+		if (propInfo == null) {
+			property = MR3Resource.Nil;
+		} else {
+			property = new PropertyImpl(propInfo.getURI(gmanager.getBaseURI()).getURI());
+		}
+		return property;
+	}
+
 	private void createRDFModel(RDFGraph graph, Model rdfModel, Object[] edges) {
 		for (int i = 0; i < edges.length; i++) {
 			Edge edge = (Edge) edges[i];
 			RDFResourceInfo info = resInfoMap.getCellInfo(graph.getSourceVertex(edge));
 			Resource subject = info.getURI(gmanager.getBaseURI());
 			try {
-				Object propCell = rdfsInfoMap.getEdgeInfo(edge);
-				RDFSInfo propInfo = rdfsInfoMap.getCellInfo(propCell);
-				Property property = new PropertyImpl(propInfo.getURI(gmanager.getBaseURI()).getURI());
-
+				Property property = getRDFProperty(edge);
 				GraphCell targetCell = (GraphCell) graph.getTargetVertex(edge);
 
 				if (graph.isRDFResourceCell(targetCell)) {

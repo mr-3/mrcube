@@ -80,7 +80,7 @@ public class RDFLiteralPanel extends JPanel implements ActionListener {
 		value.setText("");
 	}
 
-	public void dspLiteralInfo(GraphCell c) {
+	public void showLiteralInfo(GraphCell c) {
 		cell = c;
 		clearTextField();
 		setValue(cell);
