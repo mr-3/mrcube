@@ -179,7 +179,6 @@ public class MR3 extends JFrame {
 		});
 
 		toolbar.addSeparator();
-
 		toolbar.add(new EditorSelect(this, TO_FRONT_RDF_EDITOR, Utilities.getImageIcon("rdfEditorIcon.gif")));
 		toolbar.add(new EditorSelect(this, TO_FRONT_CLASS_EDITOR, Utilities.getImageIcon("classEditorIcon.gif")));
 		toolbar.add(new EditorSelect(this, TO_FRONT_PROPERTY_EDITOR, Utilities.getImageIcon("propertyEditorIcon.gif")));
@@ -488,7 +487,7 @@ public class MR3 extends JFrame {
 		menu.add(idView);
 		menu.add(labelView);
 		menu.addSeparator();
-		menu.add(attrDialog.getShowPropWindow());
+		menu.add(attrDialog.getShowAttrDialogItem());
 		menu.add(nsTableDialog.getShowNSTable());
 		menu.add(srcFrame.getShowSrcWindowBox());
 		showTypeCellBox = new JCheckBoxMenuItem("Show Type", true);
@@ -524,9 +523,9 @@ public class MR3 extends JFrame {
 		menu.add(new ShowOverview(this, classEditorOverview, "Show Class Graph Overview"));
 		menu.add(new ShowOverview(this, propertyEditorOverview, "Show Property Graph Overview"));
 		menu.addSeparator();
-		menu.add(new EditorSelect(this, TO_FRONT_RDF_EDITOR));
-		menu.add(new EditorSelect(this, TO_FRONT_CLASS_EDITOR));
-		menu.add(new EditorSelect(this, TO_FRONT_PROPERTY_EDITOR));
+		menu.add(new EditorSelect(this, TO_FRONT_RDF_EDITOR, Utilities.getImageIcon("rdfEditorIcon.gif")));
+		menu.add(new EditorSelect(this, TO_FRONT_CLASS_EDITOR, Utilities.getImageIcon("classEditorIcon.gif")));
+		menu.add(new EditorSelect(this, TO_FRONT_PROPERTY_EDITOR, Utilities.getImageIcon("propertyEditorIcon.gif")));
 		menu.addSeparator();
 		menu.add(new DeployWindows(this));
 

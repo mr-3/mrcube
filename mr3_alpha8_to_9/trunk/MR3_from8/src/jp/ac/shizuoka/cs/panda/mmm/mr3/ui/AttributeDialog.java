@@ -13,7 +13,7 @@ import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
  */
 public class AttributeDialog extends JInternalFrame implements ActionListener {
 	private static final JPanel NULL_PANEL = new JPanel();
-	private JCheckBoxMenuItem showAttrDialog;
+	private JCheckBoxMenuItem showAttrDialogItem;
 
 	private static int DIALOG_WIDTH = 430;
 	private static int DIALOG_HEIGHT = 360; // 変更すると，コメントが削除できなくなる可能性がある 
@@ -21,8 +21,8 @@ public class AttributeDialog extends JInternalFrame implements ActionListener {
 	public AttributeDialog() {
 		super("Attribute Dialog", false, true);
 		setFrameIcon(Utilities.getImageIcon("attrDialogIcon.gif"));
-		showAttrDialog = new JCheckBoxMenuItem("Show Attribute Dialog", true);
-		showAttrDialog.addActionListener(this);
+		showAttrDialogItem = new JCheckBoxMenuItem("Show Attribute Dialog", true);
+		showAttrDialogItem.addActionListener(this);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			public void internalFrameClosing(InternalFrameEvent e) {	
 				setVisible(false);
@@ -35,7 +35,7 @@ public class AttributeDialog extends JInternalFrame implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		setVisible(showAttrDialog.getState());
+		setVisible(showAttrDialogItem.getState());
 	}
 
 	public void setNullPanel() {
@@ -47,12 +47,12 @@ public class AttributeDialog extends JInternalFrame implements ActionListener {
 		if (!b) {
 			setNullPanel();
 		}
-		if (showAttrDialog != null) {
-			showAttrDialog.setState(b);
+		if (showAttrDialogItem != null) {
+			showAttrDialogItem.setState(b);
 		}
 	}
 
-	public JCheckBoxMenuItem getShowPropWindow() {
-		return showAttrDialog;
+	public JCheckBoxMenuItem getShowAttrDialogItem() {
+		return showAttrDialogItem;
 	}
 }
