@@ -34,7 +34,6 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 
 	transient private JButton addNSButton;
 	transient private JButton removeNSButton;
-	//	transient private JButton getNSButton;
 	transient private JButton closeButton;
 	transient private JTextField prefixField;
 	transient private JTextField nsField;
@@ -44,7 +43,6 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 	transient private JPanel inlinePanel;
 
 	transient private GraphManager gmanager;
-	transient private SelectNameSpaceDialog nsDialog;
 	transient private JCheckBoxMenuItem showNSTable;
 
 	public NameSpaceTableDialog(GraphManager manager) {
@@ -52,7 +50,6 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 
 		gmanager = manager;
 		prefixNSMap = new HashMap();
-		nsDialog = new SelectNameSpaceDialog(gmanager, prefixNSMap);
 		initTable();
 		inlinePanel = new JPanel();
 		initGridLayout();
@@ -222,9 +219,6 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		removeNSButton = new JButton("Å\");
 		removeNSButton.addActionListener(this);
 
-		//		getNSButton = new JButton("GetNS");
-		//		getNSButton.addActionListener(this);
-
 		closeButton = new JButton("Close");
 		closeButton.addActionListener(this);
 
@@ -243,7 +237,6 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		inline.add(nsField);
 		inline.add(addNSButton);
 		inline.add(removeNSButton);
-		//		inline.add(getNSButton);
 		inline.add(closeButton);
 		gbLayout.setConstraints(inline, gbc);
 		inlinePanel.add(inline);
@@ -255,8 +248,6 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 			changeCellView();
 		} else if (e.getSource() == removeNSButton) {
 			removeNameSpaceTable();
-			//		} else if (e.getSource() == getNSButton) {
-			//			getNameSpace();
 		} else if (e.getSource() == closeButton) {
 			setVisible(false);
 		}
@@ -333,15 +324,6 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 	private void changeCellView() {
 		gmanager.setPrefixNSInfoSet(getPrefixNSInfoSet());
 		gmanager.changeCellView();
-	}
-
-	private void getNameSpace() {
-		nsDialog.setVisible(true);
-		String uri = (String) nsDialog.getValue();
-		if (uri != null) {
-			nsField.setText(uri);
-			nsField.setToolTipText(uri);
-		}
 	}
 
 	private boolean isCheckBoxChanged(int type, int column) {

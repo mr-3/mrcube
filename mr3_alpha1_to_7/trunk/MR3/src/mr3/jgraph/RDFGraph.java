@@ -337,11 +337,7 @@ public class RDFGraph extends JGraph {
 		String msg = "";
 		RDFResourceInfo info = resInfoMap.getCellInfo(cell);
 		msg += "<h3>Resource</h3>";
-		if (info.getURIType() == URIType.ID) {
-			msg += "<strong>URI: </strong>" + gmanager.getBaseURI() + info.getURI() + "<br>";
-		} else {
-			msg += "<strong>URI: </strong>" + info.getURI() + "<br>";
-		}
+		msg += "<strong>URI: </strong>" + info.getURI() + "<br>";
 		msg += "<strong>Type: </strong>" + info.getType() + "<br>";
 		return msg;
 	}

@@ -47,7 +47,6 @@ public class GraphManager {
 	public GraphManager(AttributeDialog attrD, Preferences prefs) {
 		attrDialog = attrD;
 		rdfGraph = new RDFGraph(this, GraphType.RDF);
-		//		realRDFGraph = new RDFGraph(this, GraphType.REAL_RDF);
 		classGraph = new RDFGraph(this, GraphType.CLASS);
 		propGraph = new RDFGraph(this, GraphType.PROPERTY);
 		registerComponent();
@@ -57,7 +56,7 @@ public class GraphManager {
 		refDialog = new ReferenceListDialog("Referenced Resource List", this);
 		abstractLevelInfo = new AbstractLevelInfo();
 		prefixNSInfoSet = new HashSet();
-		baseURI = userPrefs.get(PrefConstants.BaseURI, "http://mr3");
+		baseURI = userPrefs.get(PrefConstants.BaseURI, MR3Resource.getURI());
 	}
 
 	private JDesktopPane desktop;
@@ -226,7 +225,7 @@ public class GraphManager {
 			Map.Entry entry = (Map.Entry) i.next();
 			Object infoCell = entry.getKey();
 			RDFResourceInfo resInfo = (RDFResourceInfo) entry.getValue();
-			String tmpURI = getAddedBaseURI(resInfo);
+			String tmpURI = resInfo.getURIStr();
 
 			if (tmpURI.equals(uri) && infoCell != cell) {
 				RDFSInfo rdfsInfo = rdfsInfoMap.getCellInfo(resInfo.getTypeCell());
@@ -244,15 +243,6 @@ public class GraphManager {
 			}
 		}
 		return false;
-	}
-
-	private String getAddedBaseURI(RDFResourceInfo resInfo) {
-		String tmpURI = "";
-		if (resInfo.getURIType() == URIType.ID) {
-			tmpURI = baseURI;
-		}
-		tmpURI += resInfo.getURIStr();
-		return tmpURI;
 	}
 
 	public boolean isEmptyURI(String uri) {
@@ -313,9 +303,6 @@ public class GraphManager {
 			if (rdfGraph.isRDFResourceCell(cell)) {
 				RDFResourceInfo info = resInfoMap.getCellInfo(rdfCells[i]);
 				Resource uri = info.getURI();
-				if (info.getURIType() == URIType.ID) {
-					uri = new ResourceImpl(getBaseURI() + uri.getURI());
-				}
 				nameSpaces.add(uri.getNameSpace());
 			}
 		}
@@ -487,9 +474,6 @@ public class GraphManager {
 		if (info.getURIType() == URIType.ANONYMOUS) {
 			setCellValue(cell, "ANON");
 		} else {
-			if (info.getURIType() == URIType.ID) {
-				uri = new ResourceImpl(baseURI + uri);
-			}
 			if (cellViewType == CellViewType.URI) {
 				setNSPrefix(uri, cell);
 			} else if (cellViewType == CellViewType.ID) {
