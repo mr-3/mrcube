@@ -215,8 +215,6 @@ public class GraphManager {
 			GraphCell cell = (GraphCell) rdfCells[i];
 			if (rdfGraph.isTypeCell(cell)) {
 				typeCellList.add(cell);
-			} else if (!rdfGraph.isRDFCell(cell) && !rdfGraph.isPort(cell)) {
-				typeCellList.add(cell);
 			}
 		}
 		rdfGraph.removeCellsWithEdges(typeCellList.toArray());
@@ -1050,7 +1048,7 @@ public class GraphManager {
 		rootCell.add(rootPort);
 
 		Map attributes = new HashMap();
-		attributes.put(rootCell, cellMaker.getResourceMap(new Point(50, 50)));
+		attributes.put(rootCell, cellMaker.getResourceMap(new Point(50, 50), ChangeCellAttributes.rdfResourceColor));
 		resInfoMap.putCellInfo(rootCell, new RDFResourceInfo(URIType.ANONYMOUS, new AnonId().toString(), null));
 		rdfGraph.getModel().insert(new Object[] { rootCell }, attributes, null, null, null);
 		GraphLayoutData rootData = new GraphLayoutData(rootCell, rdfGraph);

@@ -141,14 +141,14 @@ public class RDFToJGraph {
 		resCell.add(port);
 		portMap.put(res, port);
 		resMap.put(res, resCell);
-		attr.put(resCell, cellMaker.getResourceMap(point));
+		attr.put(resCell, cellMaker.getResourceMap(point, ChangeCellAttributes.rdfResourceColor));
 
 		return resCell;
 	}
 
 	private DefaultGraphCell createTypeCell(Map attributes, Point point) {
 		DefaultGraphCell typeCell = new TypeCell("");
-		attributes.put(typeCell, cellMaker.getTypeMap(point));
+		attributes.put(typeCell, cellMaker.getResourceMap(point, ChangeCellAttributes.classColor));
 		return typeCell;
 	}
 
@@ -160,7 +160,7 @@ public class RDFToJGraph {
 		DefaultPort tp = new DefaultPort();
 		litCell.add(tp);
 		portMap.put(literal, tp);
-		attr.put(litCell, cellMaker.getLiteralMap(point));
+		attr.put(litCell, cellMaker.getResourceMap(point, ChangeCellAttributes.literalColor));
 
 		return litCell;
 	}
