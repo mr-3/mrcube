@@ -89,7 +89,7 @@ public class MR3Reader {
 		if (model != null) {
 			replaceRDFModel(model);
 			mergeRDFSModel(new ModelMem()); // RDFからRDFSへ反映されたクラス，プロパティの処理
-			gmanager.applyTreeLayout();
+//			gmanager.applyTreeLayout();
 		}
 	}
 
@@ -97,7 +97,7 @@ public class MR3Reader {
 		if (model != null) {
 			mergeRDFModel(model);
 			mergeRDFSModel(new ModelMem()); // RDFからRDFSへ反映されたクラス，プロパティの処理
-			gmanager.applyTreeLayout();
+//			gmanager.applyTreeLayout();
 		}
 	}
 
@@ -105,7 +105,7 @@ public class MR3Reader {
 		if (model != null) {
 			mergeRDFSModel(model);
 			mergeRDF(model); // RDFSにRDFが含まれていた場合の処理(mergeRDFModel()ではない)
-			gmanager.applyTreeLayout();
+//			gmanager.applyTreeLayout();
 		}
 	}
 }
