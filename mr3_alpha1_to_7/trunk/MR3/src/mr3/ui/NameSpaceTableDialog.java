@@ -50,8 +50,6 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 	transient private GraphManager gmanager;
 	transient private SelectNameSpaceDialog nsDialog;
 	transient private JCheckBoxMenuItem showNSTable;
-
-	private static final long serialVersionUID = 872014649468334268L; // ‚½‚ß‚µ
 	
 	public NameSpaceTableDialog(GraphManager manager) {
 		super("NameSpace Table", false, true, false);
@@ -287,8 +285,6 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 
 	class NSTableModel extends DefaultTableModel implements Serializable {
 		
-		private static final long serialVersionUID = 872014649468334269L; // ‚½‚ß‚µ
-						
 		public NSTableModel(Object[] columnNames, int rowCount) {
 			super(columnNames, rowCount);
 		}
