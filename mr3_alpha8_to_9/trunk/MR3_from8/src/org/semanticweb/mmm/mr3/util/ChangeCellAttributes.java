@@ -22,7 +22,7 @@ public class ChangeCellAttributes {
 	public static Color literalColor = Color.orange;
 	public static Color classColor = Color.green;
 	public static Color propertyColor = new Color(255, 158, 62);
-	public static Color selectedColor = new Color(255, 255, 50);
+	public static Color selectedColor = new Color(255, 255, 180);
 	public static Color selectedBorderColor = Color.red;
 
 	public static void changeAllCellColor(GraphManager gmanager) {
@@ -110,6 +110,8 @@ public class ChangeCellAttributes {
 			GraphCell cell = (GraphCell) lastSelectionCells[i];
 			if (graph.isRDFResourceCell(cell)) {
 				changeDefaultCellStye(graph, cell, rdfResourceColor);
+			} else if (graph.isTypeCell(cell)) {
+				changeDefaultCellStye(graph, cell, classColor);
 			} else if (graph.isRDFPropertyCell(cell)) {
 				changeDefaultCellStye(graph, cell, rdfPropertyColor);
 			} else if (graph.isRDFLiteralCell(cell)) {
@@ -124,7 +126,7 @@ public class ChangeCellAttributes {
 		cells = graph.getDescendants(cells);
 		for (int i = 0; i < cells.length; i++) {
 			GraphCell cell = (GraphCell) cells[i];
-			if (graph.isRDFsCell(cell)) {
+			if (graph.isRDFsCell(cell) || graph.isTypeCell(cell)) {
 				changeCellStyle(graph, cell, selectedColor, selectedBorderColor, 2);
 			}
 		}

@@ -18,6 +18,7 @@ public class PropertyEditor extends Editor {
 	public PropertyEditor(NameSpaceTableDialog nsD, FindResourceDialog findResD, GraphManager gm) {
 		super(Translator.getString("PropertyEditor.Title"));
 		graph = gm.getPropertyGraph();
+		graph.setEditable(true);
 		graph.setDisconnectable(false);
 		initEditor(gm.getPropertyGraph(), gm, nsD, findResD);
 		setFrameIcon(Utilities.getImageIcon(Translator.getString("PropertyEditor.Icon")));

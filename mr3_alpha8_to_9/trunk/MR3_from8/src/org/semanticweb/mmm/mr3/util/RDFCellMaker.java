@@ -96,7 +96,8 @@ public class RDFCellMaker {
 
 		RDFResourceInfo info = null;
 		if (type == URIType.ANONYMOUS) {
-			info = new RDFResourceInfo(type, new AnonId().toString(), typeCell);
+//			info = new RDFResourceInfo(type, new AnonId().toString(), typeCell);
+			info = new RDFResourceInfo(type, ResourceFactory.createResource().toString(), typeCell);
 		} else {
 			info = new RDFResourceInfo(type, uri, typeCell);
 		}
