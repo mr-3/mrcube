@@ -4,6 +4,7 @@ import java.util.*;
 
 import javax.swing.tree.*;
 
+import com.hp.hpl.mesa.rdf.jena.common.*;
 import com.hp.hpl.mesa.rdf.jena.model.*;
 import com.hp.hpl.mesa.rdf.jena.vocabulary.*;
 
@@ -55,20 +56,51 @@ public class RDFSInfoMap {
 
 	public Serializable getState() {
 		ArrayList list = new ArrayList();
-		list.add(resourceInfoMap);
+		//		list.add(resourceInfoMap);
 		list.add(cellInfoMap);
-		list.add(classCellMap);
-		list.add(propertyCellMap);
+		list.add(getRDFSCellMapState(classCellMap));
+		list.add(getRDFSCellMapState(propertyCellMap));
 		list.add(edgeInfoMap);
 		return list;
 	}
 
+	private Map getRDFSCellMapState(Map rdfsCellMap) {
+		Map map = new HashMap();
+		for (Iterator i = rdfsCellMap.keySet().iterator(); i.hasNext();) {
+			Resource uri = (Resource) i.next();
+			Object cell = rdfsCellMap.get(uri);
+			map.put(uri.toString(), cell);
+		}
+
+		return map;
+	}
+
+	private void setRDFSCellMapState(Map map, Map rdfsCellMap) {
+		for (Iterator i = map.keySet().iterator(); i.hasNext();) {
+			String uri = (String) i.next();
+			Object cell = map.get(uri);
+			rdfsCellMap.put(new ResourceImpl(uri), cell);
+		}
+	}
+
 	public void setState(List list) {
-		resourceInfoMap.putAll((Map) list.get(0));
-		cellInfoMap.putAll((Map) list.get(1));
-		classCellMap.putAll((Map) list.get(3));
-		propertyCellMap.putAll((Map) list.get(4));
-		edgeInfoMap.putAll((Map) list.get(5));
+		//		resourceInfoMap.putAll((Map) list.get(0));
+		setCellInfoMap((Map) list.get(0));
+		setRDFSCellMapState((Map) list.get(1), classCellMap);
+		setRDFSCellMapState((Map) list.get(2), propertyCellMap);
+		edgeInfoMap.putAll((Map) list.get(3));
+	}
+
+	private void setCellInfoMap(Map map) {
+		for (Iterator i = map.keySet().iterator(); i.hasNext();) {
+			Object cell = i.next();
+			RDFSInfo info = (RDFSInfo) map.get(cell);
+			if (info instanceof ClassInfo) {
+				cellInfoMap.put(cell, new ClassInfo(cell.toString()));
+			} else if (info instanceof PropertyInfo) {
+				cellInfoMap.put(cell, new PropertyInfo(cell.toString()));
+			}
+		}
 	}
 
 	public void clear() {
@@ -266,7 +298,7 @@ public class RDFSInfoMap {
 		cloneRDFSInfo(orgInfo, newInfo);
 		return newInfo;
 	}
-	
+
 	public PropertyInfo clonePropertyInfo(PropertyInfo orgInfo) {
 		PropertyInfo newInfo = new PropertyInfo("");
 		cloneRDFSInfo(orgInfo, newInfo);

@@ -1,4 +1,5 @@
 package mr3.data;
+import java.io.*;
 import java.util.*;
 
 import com.hp.hpl.mesa.rdf.jena.common.*;
@@ -6,14 +7,14 @@ import com.hp.hpl.mesa.rdf.jena.mem.*;
 import com.hp.hpl.mesa.rdf.jena.model.*;
 import com.jgraph.graph.*;
 
-public class RDFResourceInfo {
+public class RDFResourceInfo implements Serializable {
 
-	private Object typeCell;				// RDFS Class‚É‘Î‰‚·‚éCell‚ğ•Û‚·‚é
-	private GraphCell typeViewCell;    // RDF Resource‚É‚Â‚­‹éŒ`‚ÌCell‚ğ•Û‚·‚é
+	private Object typeCell; // RDFS Class‚É‘Î‰‚·‚éCell‚ğ•Û‚·‚é
+	private GraphCell typeViewCell; // RDF Resource‚É‚Â‚­‹éŒ`‚ÌCell‚ğ•Û‚·‚é
 
-	private Resource uri;
+	transient private Resource uri;
 	private URIType uriType;
-	private RDFSInfoMap rdfsMap = RDFSInfoMap.getInstance();
+	transient private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
 
 	public RDFResourceInfo(URIType ut, String uri, GraphCell typeCell) {
 		uriType = ut;
@@ -27,9 +28,9 @@ public class RDFResourceInfo {
 
 	private static Model anonModel = new ModelMem();
 	private Resource getAnonResource() {
-		try {	
-			return anonModel.createResource();		
-		}catch(RDFException e) {
+		try {
+			return anonModel.createResource();
+		} catch (RDFException e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -67,7 +68,7 @@ public class RDFResourceInfo {
 	}
 
 	public Resource getType() {
-		RDFSInfo info = rdfsMap.getCellInfo(typeCell);
+		RDFSInfo info = rdfsInfoMap.getCellInfo(typeCell);
 		if (info == null || info.getURI() == null) {
 			return new ResourceImpl("");
 		} else {
@@ -101,6 +102,10 @@ public class RDFResourceInfo {
 
 	public Resource getURI() {
 		return uri;
+	}
+
+	public String getURIStr() {
+		return uri.getURI();
 	}
 
 	public String toString() {

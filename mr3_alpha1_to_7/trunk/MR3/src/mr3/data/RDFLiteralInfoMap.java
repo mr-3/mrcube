@@ -9,7 +9,7 @@ import com.hp.hpl.mesa.rdf.jena.model.*;
  * @author takeshi morita
  *
  */
-public class RDFLiteralInfoMap {
+public class RDFLiteralInfoMap implements Serializable {
 	private Map cellInfoMap;
 	private static RDFLiteralInfoMap litInfoMap = new RDFLiteralInfoMap();
 
@@ -25,7 +25,7 @@ public class RDFLiteralInfoMap {
 		Literal newInfo = null;
 		try {
 			newInfo = new LiteralImpl(orgInfo.getString(), orgInfo.getLanguage());
-		} catch(RDFException e) {
+		} catch (RDFException e) {
 			e.printStackTrace();
 		}
 		return newInfo;
@@ -40,15 +40,27 @@ public class RDFLiteralInfoMap {
 	}
 
 	public Serializable getState() {
-		ArrayList list = new ArrayList();
-		list.add(cellInfoMap);
-		return list;
+		HashMap map = new HashMap();
+		try {
+			for (Iterator i = cellInfoMap.keySet().iterator(); i.hasNext();) {
+				Object cell = i.next();
+				Literal lit = getCellInfo(cell);
+				map.put(cell, new MR3LiteralImpl(lit.getString(), lit.getLanguage()));
+			}
+		} catch (RDFException e) {
+			e.printStackTrace();
+		}
+		return map;
 	}
-	
+
 	public void setState(Map newMap) {
-		cellInfoMap.putAll(newMap);	
+		for (Iterator i = newMap.keySet().iterator(); i.hasNext();) {
+			Object cell = i.next();
+			MR3LiteralImpl lit = (MR3LiteralImpl) newMap.get(cell);
+			putCellInfo(cell, new LiteralImpl(lit.getString(), lit.getLanguage()));
+		}
 	}
-	
+
 	public void clear() {
 		cellInfoMap.clear();
 	}

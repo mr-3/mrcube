@@ -83,6 +83,17 @@ public class GraphManager {
 		return graph == propGraph;
 	}
 
+	public RDFGraph getGraph(GraphType type) {
+		if (type == GraphType.RDF) {
+			return rdfGraph;
+		} else if (type == GraphType.CLASS) {
+			return classGraph;
+		} else if (type == GraphType.PROPERTY) {
+			return propGraph;
+		}
+		return null;
+	}
+
 	public void setCellViewType(CellViewType type) {
 		cellViewType = type;
 	}
@@ -114,7 +125,7 @@ public class GraphManager {
 		if (obj instanceof ArrayList) {
 			ArrayList list = (ArrayList) obj;
 			rdfsInfoMap.setState((List) list.get(0));
-			resInfoMap.setState((Map) list.get(1));
+			resInfoMap.setState((List) list.get(1));
 			litInfoMap.setState((Map) list.get(2));
 			rdfGraph.setRDFState(list.get(3));
 			classGraph.setRDFState(list.get(4));
@@ -170,12 +181,12 @@ public class GraphManager {
 			Map.Entry entry = (Map.Entry) i.next();
 			Object infoCell = entry.getKey();
 			Object info = entry.getValue();
+
+			// RDFResourceInfoでequalsメソッドをオーバーライドして，URIと比較可能としている
 			if (info.equals(uri) && infoCell != cell) {
 				RDFResourceInfo resInfo = (RDFResourceInfo) info;
-				//				System.out.println("resInfo" + resInfo);
 				RDFSInfo rdfsInfo = rdfsInfoMap.getCellInfo(resInfo.getTypeCell());
-				//				System.out.println("type: " + type);
-
+				System.out.println("RDF Resource Duplicated");
 				/*
 				 *  Classエディタ内の重複チェックをしていて，RDFエディタ内のクラス定義にかかった場合
 				 *   重複とみなさないようにする．
@@ -186,7 +197,6 @@ public class GraphManager {
 					|| type == GraphType.PROPERTY
 					&& rdfsInfo != null
 					&& rdfsInfo.getURI().equals(RDF.Property))) {
-					//					System.out.println("********************* CLASS Duplicated **************");
 					return true;
 				}
 			}
@@ -196,7 +206,7 @@ public class GraphManager {
 
 	public boolean isEmptyURI(String uri) {
 		if (uri.equals("")) {
-			JOptionPane.showMessageDialog(null, "uri is empty", "Warning", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "URI is empty", "Warning", JOptionPane.ERROR_MESSAGE);
 			return true;
 		} else {
 			return false;
@@ -204,16 +214,8 @@ public class GraphManager {
 	}
 
 	public boolean isDuplicatedWithDialog(String uri, Object cell, GraphType type) {
-		if (rdfsInfoMap.isDuplicated(uri, cell, type) || isRDFResourceDuplicated(uri, cell, type)) {
-			Component parent = null;
-			if (type == GraphType.RDF) {
-				parent = rdfGraph;
-			} else if (type == GraphType.CLASS) {
-				parent = classGraph;
-			} else if (type == GraphType.PROPERTY) {
-				parent = propGraph;
-			}
-			JOptionPane.showInternalMessageDialog(parent, "uri is duplicated", "Warning", JOptionPane.ERROR_MESSAGE);
+		if (isDuplicated(uri, cell, type)) {
+			JOptionPane.showInternalMessageDialog(getGraph(type), "URI is duplicated", "Warning", JOptionPane.ERROR_MESSAGE);
 			return true;
 		} else {
 			return false;
@@ -690,7 +692,7 @@ public class GraphManager {
 		jumpArea(cell, classGraph);
 	}
 
-	public void jumpPropertyArea(Object cell) {	
+	public void jumpPropertyArea(Object cell) {
 		jumpArea(cell, propGraph);
 	}
 
