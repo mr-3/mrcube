@@ -61,7 +61,7 @@ public class RDFGraph extends JGraph {
 		setHighlightColor(Color.orange); // 選択されている色 				
 		setBackground(GRAPH_BACK_COLOR);
 		setAntiAliased(true);
-		//		selectionModel.setChildrenSelectable(false);
+		selectionModel.setChildrenSelectable(false);
 		graphModel.addGraphModelListener(new ModelListener());
 	}
 
@@ -136,25 +136,22 @@ public class RDFGraph extends JGraph {
 
 	// 以下のメソッドで，グループ化したRDFリソースを選択したときに，AttributeDialogに
 	//　RDFリソースの情報を表示できると考えたが，うまくいかなかった．
-	//
-	//	public GraphCell isOneRDFCellSelected(Object[] cells) {
-	//		int count = 0;
-	//		GraphCell rdfCell = null;
-	//		for (int i = 0; i < cells.length; i++) {
-	//			if (isRDFCell(cells[i])) {
-	//				count++;
-	//				rdfCell = (GraphCell) cells[i];
-	//			}
-	//		}
-	//		
-	//		if (count == 1) {
-	//			System.out.println(rdfCell.getClass());
-	//			return rdfCell;
-	//		} else {
-	//			System.out.println(count);
-	//			return null;
-	//		}
-	//	}
+	public GraphCell isOneRDFCellSelected(Object[] cells) {
+		int count = 0;
+		GraphCell rdfCell = null;
+		for (int i = 0; i < cells.length; i++) {
+			if (isRDFCell(cells[i])) {
+				count++;
+				rdfCell = (GraphCell) cells[i];
+			}
+		}
+
+		if (count == 1) {
+			return rdfCell;
+		} else {
+			return null;
+		}
+	}
 
 	public boolean isEdge(Object object) {
 		return (object instanceof Edge);
@@ -472,24 +469,23 @@ public class RDFGraph extends JGraph {
 					ClassInfo orgInfo = (ClassInfo) copyRDFSInfoMap.get(cell);
 					ClassInfo newInfo = rdfsInfoMap.cloneClassInfo(orgInfo);
 					cloneInfoMap.put(cloneMap.get(cell), newInfo);
-					
 
 					// 元のセルとコピー位置との差を求める
-					GraphCell orgCell = (GraphCell)cell;
+					GraphCell orgCell = (GraphCell) cell;
 					Map orgMap = orgCell.getAttributes();
-					Map newMap = ((GraphCell)cloneMap.get(cell)).getAttributes(); 
+					Map newMap = ((GraphCell) cloneMap.get(cell)).getAttributes();
 					Rectangle orgRec = GraphConstants.getBounds(orgMap);
 					Rectangle newRec = new Rectangle(orgRec);
-//					System.out.println("pref Copy: "+copyPoint);
-//					System.out.println("Sa: "+orgRec);
+					//					System.out.println("pref Copy: "+copyPoint);
+					//					System.out.println("Sa: "+orgRec);
 					newRec.x = orgRec.x - copyPoint.x;
 					newRec.y = orgRec.y - copyPoint.y;
 
 					GraphConstants.setBounds(newMap, newRec);
 					Map nested = new HashMap();
 					nested.put(cloneMap.get(cell), GraphConstants.cloneMap(newMap));
-					getModel().edit(nested, null, null, null);					
-					
+					getModel().edit(nested, null, null, null);
+
 				}
 			}
 		}
@@ -560,8 +556,8 @@ public class RDFGraph extends JGraph {
 	private void setPastePosition(GraphCell cell, String value, Point pastePoint) {
 		Map map = cell.getAttributes();
 		Rectangle rec = GraphConstants.getBounds(map);
-//		System.out.println(rec);
-//		System.out.println("paste: "+pastePoint);
+		//		System.out.println(rec);
+		//		System.out.println("paste: "+pastePoint);
 		rec.x = pastePoint.x + rec.x;
 		rec.y = pastePoint.y + rec.y;
 		GraphConstants.setBounds(map, rec);
