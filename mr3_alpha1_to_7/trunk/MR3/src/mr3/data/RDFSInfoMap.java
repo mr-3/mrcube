@@ -266,6 +266,12 @@ public class RDFSInfoMap {
 		cloneRDFSInfo(orgInfo, newInfo);
 		return newInfo;
 	}
+	
+	public PropertyInfo clonePropertyInfo(PropertyInfo orgInfo) {
+		PropertyInfo newInfo = new PropertyInfo("");
+		cloneRDFSInfo(orgInfo, newInfo);
+		return newInfo;
+	}
 
 	public String toString() {
 		String msg = "";
