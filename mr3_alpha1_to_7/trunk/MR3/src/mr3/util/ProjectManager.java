@@ -210,6 +210,7 @@ public class ProjectManager {
 		}
 		graph = gmanager.getClassGraph();
 		Object cell = rdfsInfoMap.getClassCell(MR3Resource.Empty);
+		graph.clearSelection();
 		graph.setSelectionCell(cell);
 		gmanager.removeAction(graph);
 	}
