@@ -201,16 +201,13 @@ public class GraphManager {
 		for (Iterator i = entrySet.iterator(); i.hasNext();) {
 			Map.Entry entry = (Map.Entry) i.next();
 			Object infoCell = entry.getKey();
-			Object info = entry.getValue();
+			RDFResourceInfo resInfo = (RDFResourceInfo) entry.getValue();
+			String tmpURI = getAddedBaseURI(resInfo);
 
-			// RDFResourceInfoでequalsメソッドをオーバーライドして，URIと比較可能としている
-			if (info.equals(uri) && infoCell != cell) {
-				RDFResourceInfo resInfo = (RDFResourceInfo) info;
+			if (tmpURI.equals(uri) && infoCell != cell) {
 				RDFSInfo rdfsInfo = rdfsInfoMap.getCellInfo(resInfo.getTypeCell());
-				//				System.out.println("RDF Resource Duplicated");
 				/*
-				 *  Classエディタ内の重複チェックをしていて，RDFエディタ内のクラス定義にかかった場合
-				 *   重複とみなさないようにする．
+				 *  RDFエディタ内のクラス定義は，重複とみなさないようにする．
 				 */
 				if (!(type == GraphType.CLASS
 					&& rdfsInfo != null
@@ -223,6 +220,15 @@ public class GraphManager {
 			}
 		}
 		return false;
+	}
+
+	private String getAddedBaseURI(RDFResourceInfo resInfo) {
+		String tmpURI = "";
+		if (resInfo.getURIType() == URIType.ID) {
+			tmpURI = baseURI;
+		}
+		tmpURI += resInfo.getURIStr();
+		return tmpURI;
 	}
 
 	public boolean isEmptyURI(String uri) {
@@ -244,7 +250,7 @@ public class GraphManager {
 	}
 
 	public boolean isDuplicated(String uri, Object cell, GraphType type) {
-		return (rdfsInfoMap.isDuplicated(uri, cell, type) || isRDFResourceDuplicated(uri, cell, type));
+		return (rdfsInfoMap.isDuplicated(uri, cell, type, baseURI) || isRDFResourceDuplicated(uri, cell, type));
 	}
 
 	/** 名前空間のリストを返す */
@@ -336,8 +342,8 @@ public class GraphManager {
 			Set region = new HashSet();
 			Object cell = i.next();
 			addSubRegion(classGraph, getDefaultPort(cell), region);
-			if (cell.equals(getClassCell(RDFS.Resource, true))) {
-				cell = getClassCell(RDFS.Resource, true);
+			if (cell.equals(getClassCell(RDFS.Resource, URIType.URI, true))) {
+				cell = getClassCell(RDFS.Resource, URIType.URI, true);
 				resInfo.setTypeCellValue((GraphCell) cell);
 			} else if (region.contains(resInfo.getTypeCell())) {
 				resInfo.setTypeCellValue((GraphCell) cell);
@@ -453,6 +459,9 @@ public class GraphManager {
 				RDFSInfo info = rdfsInfoMap.getCellInfo(cell);
 				Resource uri = info.getURI();
 				if (cellViewType == CellViewType.URI) {
+					if (info.getURIType() == URIType.ID) {
+						uri = new ResourceImpl(baseURI + uri);
+					}
 					setNSPrefix(uri, cell);
 				} else if (cellViewType == CellViewType.ID) {
 					if (uri.getLocalName().length() != 0) {
@@ -497,7 +506,7 @@ public class GraphManager {
 	// domainとrangeのサブクラスも含めたSetを返す
 	private Set getSubRegion(RDFGraph graph, Set set) {
 		Set region = new HashSet(set);
-		Object rdfsResourceCell = getClassCell(RDFS.Resource, false);
+		Object rdfsResourceCell = getClassCell(RDFS.Resource, URIType.URI, false);
 
 		if (region.isEmpty()) {
 			region.add(rdfsResourceCell);
@@ -567,7 +576,7 @@ public class GraphManager {
 		return list;
 	}
 
-	public Object getClassCell(Resource uri, boolean isCheck) {
+	public Object getClassCell(Resource uri, URIType uriType, boolean isCheck) {
 		Object cell = rdfsInfoMap.getClassCell(uri);
 		if (cell != null) {
 			return cell;
@@ -575,7 +584,7 @@ public class GraphManager {
 			if (isCheck && isDuplicated(uri.getURI(), null, classGraph.getType())) {
 				return null;
 			} else {
-				return cellMaker.insertClass(new Point(50, 50), uri.getURI(), URIType.URI);
+				return cellMaker.insertClass(new Point(50, 50), uri.getURI(), uriType);
 			}
 		}
 	}

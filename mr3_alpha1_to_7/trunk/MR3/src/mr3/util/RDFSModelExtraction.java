@@ -147,10 +147,10 @@ public class RDFSModelExtraction {
 		}
 
 		if (predicate.equals(RDFS.domain)) { // rdfs:domain
-			Object cell = gmanager.getClassCell((Resource) object, false);
+			Object cell = gmanager.getClassCell((Resource) object, info.getURIType(), false);
 			info.addDomain(cell);
 		} else if (predicate.equals(RDFS.range)) { // rdfs:range
-			Object cell = gmanager.getClassCell((Resource) object, false);
+			Object cell = gmanager.getClassCell((Resource) object, info.getURIType(), false);
 			info.addRange(cell);
 		} else if (predicate.equals(RDFS.subPropertyOf)) { //rdfs:subPropertyOf
 			// subject < object

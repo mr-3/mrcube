@@ -192,13 +192,24 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 		String uri = ird.getURI();
 		Object resTypeCell = ird.getResourceType();
 		URIType uriType = ird.getURIType();
-		if (uri == null || gmanager.isDuplicatedWithDialog(uri, null, GraphType.RDF)) {
+
+		String tmpURI = getAddedBaseURI(uri, uriType);
+		if (uri == null || gmanager.isDuplicatedWithDialog(tmpURI, null, GraphType.RDF)) {
 			return null;
 		} else if (uri.length() == 0) {
 			return cellMaker.insertRDFResource(pt, uri, resTypeCell, URIType.ANONYMOUS);
 		} else {
 			return cellMaker.insertRDFResource(pt, uri, resTypeCell, uriType);
 		}
+	}
+
+	protected String getAddedBaseURI(String uri, URIType uriType) {
+		String tmpURI = "";
+		if (uriType == URIType.ID) {
+			tmpURI = gmanager.getBaseURI();
+		}
+		tmpURI += uri;
+		return tmpURI;
 	}
 
 	private Set getSelectedResourcePorts() {
