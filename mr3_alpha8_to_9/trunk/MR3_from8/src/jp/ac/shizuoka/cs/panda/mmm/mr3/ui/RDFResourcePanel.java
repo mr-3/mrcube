@@ -337,10 +337,13 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 					typeCell = (GraphCell) gmanager.insertSubRDFS(uri, supClasses, gmanager.getClassGraph());
 				}
 			} else {
-				SelectRDFSCheckDialog dialog = new SelectRDFSCheckDialog("Choose One Select");
+				SelectRDFSCheckDialog dialog = new SelectRDFSCheckDialog("Choose One Select", gmanager);
 				CreateRDFSType createType = (CreateRDFSType) dialog.getValue();
 				if (createType == CreateRDFSType.CREATE) {
 					Set supClasses = gmanager.getSupRDFS(gmanager.getClassGraph(), selectSupClassesTitle);
+					if (supClasses == null) {
+						return null; 
+					}
 					typeCell = (GraphCell) gmanager.insertSubRDFS(uri, supClasses, gmanager.getClassGraph());
 				} else if (createType == CreateRDFSType.RENAME) {
 					typeCell = (GraphCell) resInfo.getTypeCell();

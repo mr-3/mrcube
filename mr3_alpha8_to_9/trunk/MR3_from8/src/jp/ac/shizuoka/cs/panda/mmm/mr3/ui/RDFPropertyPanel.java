@@ -272,11 +272,16 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 			PropertyInfo info = (PropertyInfo) rdfsInfoMap.getCellInfo(propertyCell);
 			isContainerBox.setSelected(info.isContainer());
 			setContainer(info.isContainer());
-			if (info.isContainer()) {				
+			if (info.isContainer()) {
 				numSpinner.setValue(new Integer(info.getNum()));
 			} else {
-				setNSLabel(info.getNameSpace());
-				idField.setText(info.getLocalName());
+				// mr3:nilÇÃèÍçáÇ…ÇÕÅCñºëOãÛä‘ÇÕBaseURIÇ∆Ç∑ÇÈ
+				if (info.getURIStr().equals(MR3Resource.Nil.getURI())) {
+					setNSLabel(gmanager.getBaseURI());
+				} else {
+					setNSLabel(info.getNameSpace());
+					idField.setText(info.getLocalName());
+				}
 			}
 		}
 		setPrefix();
@@ -319,10 +324,13 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 			if (gmanager.isDuplicatedWithDialog(uri.getURI(), null, GraphType.PROPERTY)) {
 				return;
 			}
-			SelectRDFSCheckDialog dialog = new SelectRDFSCheckDialog("Choose One Select");
+			SelectRDFSCheckDialog dialog = new SelectRDFSCheckDialog("Choose One Select", gmanager);
 			CreateRDFSType createType = (CreateRDFSType) dialog.getValue();
 			if (createType == CreateRDFSType.CREATE) {
 				Set supProps = gmanager.getSupRDFS(gmanager.getPropertyGraph(), selectSupPropertiesTitle);
+				if (supProps == null) {
+					return;
+				}
 				propertyCell = (GraphCell) gmanager.insertSubRDFS(uri, supProps, gmanager.getPropertyGraph());
 			} else if (createType == CreateRDFSType.RENAME) {
 				propertyCell = (GraphCell) rdfsInfoMap.getEdgeInfo(edge);

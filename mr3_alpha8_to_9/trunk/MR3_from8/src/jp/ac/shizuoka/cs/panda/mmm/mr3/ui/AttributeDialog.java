@@ -16,7 +16,7 @@ public class AttributeDialog extends JInternalFrame implements ActionListener {
 	private JCheckBoxMenuItem showAttrDialog;
 
 	private static int DIALOG_WIDTH = 430;
-	private static int DIALOG_HEIGHT = 350; // 変更すると，コメントが削除できなくなる可能性がある 
+	private static int DIALOG_HEIGHT = 360; // 変更すると，コメントが削除できなくなる可能性がある 
 	
 	public AttributeDialog() {
 		super("Attribute Dialog", false, true);
