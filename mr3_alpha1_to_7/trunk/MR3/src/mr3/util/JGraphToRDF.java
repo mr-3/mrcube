@@ -45,7 +45,8 @@ public class JGraphToRDF {
 				Object cell = cells[i];
 				if (graph.isRDFSPropertyCell(cell)) {
 					PropertyInfo info = (PropertyInfo) rdfsInfoMap.getCellInfo(cell);
-					Set supProperties = graph.getTargetCells((DefaultGraphCell) cell);
+//					Set supProperties = graph.getTargetCells((DefaultGraphCell) cell);
+					Set supProperties = graph.getSourceCells((DefaultGraphCell) cell);
 					info.setSupRDFS(supProperties);
 					if (!info.getURI().equals(MR3Resource.Property)) {
 						propertyModel.add(info.getModel());
@@ -81,7 +82,8 @@ public class JGraphToRDF {
 				Object cell = cells[i];
 				if (graph.isRDFSClassCell(cell)) {
 					ClassInfo info = (ClassInfo) rdfsInfoMap.getCellInfo(cell);
-					Set supClasses = graph.getTargetCells((DefaultGraphCell) cell);
+//					Set supClasses = graph.getTargetCells((DefaultGraphCell) cell);
+					Set supClasses = graph.getSourceCells((DefaultGraphCell) cell);
 					info.setSupRDFS(supClasses);
 					classModel.add(info.getModel());
 				}

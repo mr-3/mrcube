@@ -1018,21 +1018,11 @@ public class GraphManager {
 			GraphCell sourceCell = (GraphCell) rdfGraph.getSourceVertex(edge);
 			GraphCell targetCell = (GraphCell) rdfGraph.getTargetVertex(edge);
 
-			if (isClassGraph(graph) || isPropertyGraph(graph)) {
-				if (sourceCell != cell) { // 自身がTargetの場合
-					data.addChild(map.get(sourceCell));
-				}
-				// 自身がソースになる場合(ただし，自己参照は除く）
-				if (sourceCell == cell && sourceCell != targetCell) {
-					data.setHasParent(true);
-				}
-			} else {
-				if (targetCell != cell) { // 自身がTargetの場合
-					data.addChild(map.get(targetCell));
-				}
-				if (targetCell == cell && targetCell != sourceCell) {
-					data.setHasParent(true);
-				}
+			if (targetCell != cell) { // 自身がTargetの場合
+				data.addChild(map.get(targetCell));
+			}
+			if (targetCell == cell && targetCell != sourceCell) {
+				data.setHasParent(true);
 			}
 		}
 	}
@@ -1079,9 +1069,45 @@ public class GraphManager {
 	}
 
 	public void applyTreeLayout() {
+		removeTypeCells();
 		applyTreeLayout(rdfGraph, 'r');
+		//		applyTreeLayout(rdfGraph, TreeLayoutAlgorithm.LEFT_TO_RIGHT, 200, 20);
+		addTypeCells();
 		applyTreeLayout(classGraph, 'u');
+		//		applyTreeLayout(classGraph, TreeLayoutAlgorithm.UP_TO_DOWN, 30, 50);
 		applyTreeLayout(propGraph, 'u');
+		//		applyTreeLayout(propGraph, TreeLayoutAlgorithm.UP_TO_DOWN, 30, 50);
+	}
+
+	public void applyTreeLayout(RDFGraph graph, int orientation, int distance, int border) {
+		Map cellLayoutMap = new HashMap();
+		Set dataSet = initGraphLayoutData(graph, cellLayoutMap);
+		Set rootCells = new HashSet();
+		for (Iterator i = dataSet.iterator(); i.hasNext();) {
+			GraphLayoutData data = (GraphLayoutData) i.next();
+			DefaultGraphCell cell = (DefaultGraphCell) data.getCell();
+			addChild(graph, cell, data, cellLayoutMap);
+			if (!data.hasParent()) {
+				rootCells.add(cell);
+			}
+		}
+
+		Object tmpRoot = null;
+		if (rootCells.size() != 1) {
+			tmpRoot = collectRoot(rootCells, dataSet, cellLayoutMap);
+		}
+		TreeLayoutAlgorithm treeLayout = new TreeLayoutAlgorithm(orientation, distance, border);
+		if (tmpRoot != null) {
+			treeLayout.perform(graph, new Object[] { tmpRoot });
+		} else {
+			treeLayout.perform(graph, rootCells.toArray());
+		}
+		dataSet.remove(cellLayoutMap.get(tmpRoot));
+		removeTemporaryRoot((DefaultGraphCell) tmpRoot);
+
+		centerCellsInGraph(graph);
+		changeCellView();
+		graph.clearSelection();
 	}
 
 	public void applyTreeLayout(RDFGraph graph, char arc) {
@@ -1110,13 +1136,6 @@ public class GraphManager {
 		for (Iterator i = dataSet.iterator(); i.hasNext();) {
 			GraphLayoutData data = (GraphLayoutData) i.next();
 			data.setRealResourcePosition();
-			if (isRDFGraph(graph) && arc == 'r' && graph.isRDFResourceCell(data.getCell())) {
-				RDFResourceInfo info = resInfoMap.getCellInfo(data.getCell());
-				GraphCell typeCell = (GraphCell) info.getTypeViewCell();
-				if (typeCell != null) {
-					data.setRealTypePosition(typeCell);
-				}
-			}
 		}
 		centerCellsInGraph(graph);
 		changeCellView();
@@ -1124,27 +1143,39 @@ public class GraphManager {
 	}
 
 	private void centerCellsInGraph(RDFGraph graph) {
-		int margine = 100;
-		Rectangle rec = graph.getCellBounds(graph.getRoots());
+		int margine = 50;
 		Object[] cells = graph.getAllCells();
+		if (cells.length == 0) {
+			return;
+		}
+		Rectangle rec = graph.getCellBounds(cells);
+
+		//		System.out.println("x: " + rec.x);
+		//		System.out.println("y: " + rec.y);
+
+		int reviseX = 0;
+		int reviseY = 0;
+		if (rec.x <= 0) {
+			reviseX = (-rec.x) + margine;
+		} else if (margine < rec.x) {
+			reviseX = margine - rec.x;
+		}
+		if (rec.y <= 0) {
+			reviseY = (-rec.y) + margine;
+		} else if (margine < rec.y) {
+			reviseY = margine - rec.y;
+		}
+
+		//		System.out.println("revx: " + reviseX);
+		//		System.out.println("revy: " + reviseY);
 
 		for (int i = 0; i < cells.length; i++) {
 			if (graph.isRDFsCell(cells[i]) || graph.isTypeCell(cells[i])) {
 				GraphCell cell = (GraphCell) cells[i];
 				Map map = cell.getAttributes();
 				Rectangle cellRec = GraphConstants.getBounds(map);
-				if (rec.y <= 0) {
-					cellRec.y += (-rec.y) + margine;
-				}
-				if (rec.x <= 0) {
-					cellRec.x += (-rec.x) + margine;
-				}
-				if (margine < rec.y) {
-					cellRec.y -= (rec.y - margine);
-				}
-				if (margine < rec.x) {
-					cellRec.x -= (rec.x - margine);
-				}
+				cellRec.x += reviseX;
+				cellRec.y += reviseY;
 				GraphConstants.setBounds(map, cellRec);
 				editCell(cell, map, graph);
 			}

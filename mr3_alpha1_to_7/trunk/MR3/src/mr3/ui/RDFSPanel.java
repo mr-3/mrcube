@@ -445,9 +445,12 @@ public abstract class RDFSPanel extends JPanel {
 				uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
 				setPrefix();
 				setInstanceList();
-				Set targetCells = graph.getTargetCells(cell);
-				setValue(targetCells);
-				rdfsInfo.setSupRDFS(targetCells);
+//				Set targetCells = graph.getTargetCells(cell);
+				Set sourceCells = graph.getSourceCells(cell);
+//				setValue(targetCells);
+				setValue(sourceCells);
+//				rdfsInfo.setSupRDFS(targetCells);
+				rdfsInfo.setSupRDFS(sourceCells);
 			}
 		}
 	}
