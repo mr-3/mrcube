@@ -409,14 +409,14 @@ public class GraphManager {
 		}
 	}
 
-	public void changeClassCellView() {
+	private void changeClassCellView() {
 		Object[] classCells = classGraph.getAllCells();
 		changeRDFSCellView(classCells);
 		classGraph.getGraphLayoutCache().reload();
 		classGraph.repaint();
 	}
 
-	public void changePropertyCellView() {
+	private void changePropertyCellView() {
 		Object[] propCells = propGraph.getAllCells();
 		changeRDFSCellView(propCells);
 		propGraph.getGraphLayoutCache().reload();
