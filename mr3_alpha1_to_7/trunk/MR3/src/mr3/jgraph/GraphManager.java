@@ -205,7 +205,15 @@ public class GraphManager {
 
 	public boolean isDuplicatedWithDialog(String uri, Object cell, GraphType type) {
 		if (rdfsInfoMap.isDuplicated(uri, cell, type) || isRDFResourceDuplicated(uri, cell, type)) {
-			JOptionPane.showMessageDialog(null, "uri is duplicated", "Warning", JOptionPane.ERROR_MESSAGE);
+			Component parent = null;
+			if (type == GraphType.RDF) {
+				parent = rdfGraph;	
+			} else if (type == GraphType.CLASS) {
+				parent = classGraph;	
+			} else if (type == GraphType.PROPERTY) {
+				parent = propGraph;
+			}
+			JOptionPane.showInternalMessageDialog(parent, "uri is duplicated", "Warning", JOptionPane.ERROR_MESSAGE);
 			return true;
 		} else {
 			return false;
@@ -255,7 +263,6 @@ public class GraphManager {
 		Object[] classCells = classGraph.getAllCells();
 		for (int i = 0; i < classCells.length; i++) {
 			Object cell = classCells[i];
-			//			if (classGraph.isRDFResourceCell(cell)) {
 			if (classGraph.isRDFSClassCell(cell)) {
 				RDFSInfo info = rdfsInfoMap.getCellInfo(cell);
 				Resource uri = info.getURI();
@@ -271,7 +278,6 @@ public class GraphManager {
 		Object[] propCells = propGraph.getAllCells();
 		for (int i = 0; i < propCells.length; i++) {
 			Object cell = propCells[i];
-			//			if (propGraph.isRDFResourceCell(cell)) {
 			if (propGraph.isRDFSPropertyCell(cell)) {
 				RDFSInfo info = rdfsInfoMap.getCellInfo(cell);
 				Resource uri = info.getURI();
@@ -332,7 +338,6 @@ public class GraphManager {
 		Port port = (Port) cell.getChildAt(0);
 		for (Iterator i = port.edges(); i.hasNext();) {
 			Edge edge = (Edge) i.next();
-			//			if (rdfsInfoMap.getEdgeInfo(edge) == rdfsInfoMap.getRDFSCell(RDFS.label)) {
 			if (rdfsInfoMap.getEdgeInfo(edge) == rdfsInfoMap.getPropertyCell(RDFS.label)) {
 				GraphCell gc = (GraphCell) rdfGraph.getTargetVertex(edge);
 				Map map = gc.getAttributes();
@@ -376,7 +381,7 @@ public class GraphManager {
 		Resource uri = info.getURI();
 
 		if (info.getURIType() == URIType.ANONYMOUS) {
-			setCellValue(cell, "");
+			setCellValue(cell, "ANON");
 		} else {
 			if (info.getURIType() == URIType.ID) {
 				uri = new ResourceImpl(baseURI + uri);
@@ -415,7 +420,6 @@ public class GraphManager {
 	private void changeRDFSCellView(Object[] cells) {
 		for (int i = 0; i < cells.length; i++) {
 			GraphCell cell = (GraphCell) cells[i];
-			//			if (classGraph.isRDFResourceCell(cell)) {
 			if (classGraph.isRDFSCell(cell)) {
 				RDFSInfo info = rdfsInfoMap.getCellInfo(cell);
 				Resource uri = info.getURI();
@@ -448,7 +452,6 @@ public class GraphManager {
 		Set region = new HashSet();
 		for (int i = 0; i < cells.length; i++) {
 			DefaultGraphCell cell = (DefaultGraphCell) cells[i];
-			//			if (graph.isRDFResourceCell(cells[i])) {
 			if (graph.isRDFSClassCell(cells[i])) {
 				DefaultPort port = (DefaultPort) cell.getChildAt(0);
 				if (port.getEdges().isEmpty()) {
@@ -507,7 +510,6 @@ public class GraphManager {
 		List list = new ArrayList();
 		Object[] cells = propGraph.getAllCells();
 		for (int i = 0; i < cells.length; i++) {
-			//			if (propGraph.isRDFResourceCell(cells[i])) {
 			if (propGraph.isRDFSPropertyCell(cells[i])) {
 				list.add(cells[i]);
 			}
@@ -521,7 +523,6 @@ public class GraphManager {
 
 		for (int i = 0; i < cells.length; i++) {
 			Object cell = cells[i];
-			//			if (propGraph.isRDFResourceCell(cell)) {
 			if (propGraph.isRDFSPropertyCell(cell)) {
 				PropertyInfo info = (PropertyInfo) rdfsInfoMap.getCellInfo(cell);
 
@@ -536,9 +537,7 @@ public class GraphManager {
 	}
 
 	public Object getClassCell(Resource uri, boolean isCheck) {
-		//		Object cell = rdfsInfoMap.getRDFSCell(uri);
 		Object cell = rdfsInfoMap.getClassCell(uri);
-		//		if (classGraph.isContains(cell) && cell != null) {
 		if (cell != null) {
 			return cell;
 		} else {
