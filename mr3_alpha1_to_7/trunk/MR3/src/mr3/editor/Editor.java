@@ -255,20 +255,16 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 			group.add(mh.connectButton);
 
 			// move
-			URL moveUrl = getImageIcon("move.gif");
-			ImageIcon moveIcon = new ImageIcon(moveUrl);
+			ImageIcon moveIcon = new ImageIcon(getImageIcon("move.gif"));
 			mh.moveButton.setIcon(moveIcon);
 			toolbar.add(mh.moveButton);
 
 			// Toggle Connect Mode
-			URL connectUrl = getImageIcon("arrow.gif");
-			ImageIcon connectIcon = new ImageIcon(connectUrl);
+			ImageIcon connectIcon = new ImageIcon(getImageIcon("arrow.gif"));
 			mh.connectButton.setIcon(connectIcon);
 			toolbar.add(mh.connectButton);
 
 			// Toggle Self Connect Mode
-			URL selfConnectUrl = getImageIcon("arrow.gif");
-			ImageIcon selfConnectIcon = new ImageIcon(connectUrl);
 			if (gmanager.isRDFGraph(graph)) {
 				toolbar.add(new AbstractAction("", connectIcon) {
 					public void actionPerformed(ActionEvent e) {
@@ -285,8 +281,7 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 
 		toolbar.addSeparator();
 
-		URL insertResUrl = getImageIcon("ellipse.gif");
-		ImageIcon insertIcon = new ImageIcon(insertResUrl);
+		ImageIcon insertIcon = new ImageIcon(getImageIcon("ellipse.gif"));
 		if (gmanager.isRDFGraph(graph) || gmanager.isPropertyGraph(graph)) {
 			toolbar.add(new AbstractAction("", insertIcon) {
 				public void actionPerformed(ActionEvent e) {
@@ -296,8 +291,7 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 			});
 		}
 
-		URL insertLitUrl = getImageIcon("rectangle.gif");
-		insertIcon = new ImageIcon(insertLitUrl);
+		insertIcon = new ImageIcon(getImageIcon("rectangle.gif"));
 		if (!gmanager.isPropertyGraph(graph)) {
 			toolbar.add(new AbstractAction("", insertIcon) {
 				public void actionPerformed(ActionEvent e) {
@@ -312,8 +306,7 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 		}
 
 		// toolbar.addSeparator();
-		URL undoUrl = getImageIcon("undo.gif");
-		ImageIcon undoIcon = new ImageIcon(undoUrl);
+		ImageIcon undoIcon = new ImageIcon(getImageIcon("undo.gif"));
 		undo = new AbstractAction("", undoIcon) {
 			public void actionPerformed(ActionEvent e) {
 				undo();
@@ -323,8 +316,7 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 		//				toolbar.add(undo);
 
 		// Redo
-		URL redoUrl = getImageIcon("redo.gif");
-		ImageIcon redoIcon = new ImageIcon(redoUrl);
+		ImageIcon redoIcon = new ImageIcon(getImageIcon("redo.gif"));
 		redo = new AbstractAction("", redoIcon) {
 			public void actionPerformed(ActionEvent e) {
 				redo();
@@ -338,8 +330,7 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 		URL url;
 
 		// Copy
-		URL copyUrl = getImageIcon("copy.gif");
-		ImageIcon copyIcon = new ImageIcon(copyUrl);
+		ImageIcon copyIcon = new ImageIcon(getImageIcon("copy.gif"));
 		toolbar.add(new AbstractAction("", copyIcon) {
 			public void actionPerformed(ActionEvent e) {
 				graph.copy(new Point(10, 10));
@@ -347,8 +338,7 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 		});
 
 		// Cut
-		URL cutUrl = getImageIcon("cut.gif");
-		ImageIcon cutIcon = new ImageIcon(cutUrl);
+		ImageIcon cutIcon = new ImageIcon(getImageIcon("cut.gif"));
 		toolbar.add(new AbstractAction("", cutIcon) {
 			public void actionPerformed(ActionEvent e) {
 				graph.copy(new Point(10, 10));
@@ -357,8 +347,7 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 		});
 
 		// Paste
-		URL pasteUrl = getImageIcon("paste.gif");
-		ImageIcon pasteIcon = new ImageIcon(pasteUrl);
+		ImageIcon pasteIcon = new ImageIcon(getImageIcon("paste.gif"));
 		toolbar.add(new AbstractAction("", pasteIcon) {
 			public void actionPerformed(ActionEvent e) {
 				graph.paste(new Point(30, 30));
@@ -366,8 +355,7 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 		});
 
 		// Remove
-		URL removeUrl = getImageIcon("delete.gif");
-		ImageIcon removeIcon = new ImageIcon(removeUrl);
+		ImageIcon removeIcon = new ImageIcon(getImageIcon("delete.gif"));
 		remove = new AbstractAction("", removeIcon) {
 			public void actionPerformed(ActionEvent e) {
 				gmanager.removeAction(graph);
@@ -378,8 +366,7 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 
 		// Find Resource
 		toolbar.addSeparator();
-		URL findUrl = getImageIcon("find.gif");
-		ImageIcon findIcon = new ImageIcon(findUrl);
+		ImageIcon findIcon = new ImageIcon(getImageIcon("find.gif"));
 		toolbar.add(new AbstractAction("", findIcon) {
 			public void actionPerformed(ActionEvent e) {
 				findResDialog.setSearchArea(graph.getType());
@@ -389,8 +376,7 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 
 		// Zoom Std
 		toolbar.addSeparator();
-		URL zoomUrl = getImageIcon("zoom100.gif");
-		ImageIcon zoomIcon = new ImageIcon(zoomUrl);
+		ImageIcon zoomIcon = new ImageIcon(getImageIcon("zoom100.gif"));
 		toolbar.add(new AbstractAction("", zoomIcon) {
 			public void actionPerformed(ActionEvent e) {
 				graph.setScale(1.0);
@@ -398,8 +384,7 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 		});
 
 		// Zoom In
-		URL zoomInUrl = getImageIcon("zoomin.gif");
-		ImageIcon zoomInIcon = new ImageIcon(zoomInUrl);
+		ImageIcon zoomInIcon = new ImageIcon(getImageIcon("zoomin.gif"));
 		toolbar.add(new AbstractAction("", zoomInIcon) {
 			public void actionPerformed(ActionEvent e) {
 				graph.setScale(1.5 * graph.getScale());
@@ -407,74 +392,19 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 		});
 
 		// Zoom Out
-		URL zoomOutUrl = getImageIcon("zoomout.gif");
-		ImageIcon zoomOutIcon = new ImageIcon(zoomOutUrl);
+		ImageIcon zoomOutIcon = new ImageIcon(getImageIcon("zoomout.gif"));
 		toolbar.add(new AbstractAction("", zoomOutIcon) {
 			public void actionPerformed(ActionEvent e) {
 				graph.setScale(graph.getScale() / 1.5);
 			}
 		});
 
-		URL fitWindowUrl = getImageIcon("zoom.gif");
-		ImageIcon fitWindowIcon = new ImageIcon(fitWindowUrl);
+		ImageIcon fitWindowIcon = new ImageIcon(getImageIcon("zoom.gif"));
 		toolbar.add(new AbstractAction("", fitWindowIcon) {
 			public void actionPerformed(ActionEvent e) {
 				fitWindow();
 			}
 		});
-
-		toolbar.addSeparator();
-		URL nsTableDialogUrl = getImageIcon("nameSpaceTableIcon.gif");
-		ImageIcon nsTableDialogIcon = new ImageIcon(nsTableDialogUrl);
-		toolbar.add(new AbstractAction("", nsTableDialogIcon) {
-			public void actionPerformed(ActionEvent e) {
-				nsTableDialog.setVisible(true);
-			}
-		});
-
-		URL attrDialogUrl = getImageIcon("attrDialogIcon.gif");
-		ImageIcon attrDialogIcon = new ImageIcon(attrDialogUrl);
-		toolbar.add(new AbstractAction("", attrDialogIcon) {
-			public void actionPerformed(ActionEvent e) {
-				attrDialog.setVisible(true);
-				graph.setSelectionCell(graph.getSelectionCell());
-			}
-		});
-
-		toolbar.addSeparator();
-
-		// To front RDF Editor
-		URL rdfEditorUrl = getImageIcon("rdfEditorIcon.gif");
-		if (!gmanager.isRDFGraph(graph)) {
-			ImageIcon rdfEditorIcon = new ImageIcon(rdfEditorUrl);
-			toolbar.add(new AbstractAction("", rdfEditorIcon) {
-				public void actionPerformed(ActionEvent e) {
-					toFrontInternFrame(0);
-				}
-			});
-		}
-
-		// To front Class Editor
-		URL classEditorUrl = getImageIcon("classEditorIcon.gif");
-		ImageIcon classEditorIcon = new ImageIcon(classEditorUrl);
-		if (!gmanager.isClassGraph(graph)) {
-			toolbar.add(new AbstractAction("", classEditorIcon) {
-				public void actionPerformed(ActionEvent e) {
-					toFrontInternFrame(1);
-				}
-			});
-		}
-
-		// To front Property Editor
-		URL propertyEditorUrl = getImageIcon("propertyEditorIcon.gif");
-		ImageIcon propertyEditorIcon = new ImageIcon(propertyEditorUrl);
-		if (!gmanager.isPropertyGraph(graph)) {
-			toolbar.add(new AbstractAction("", propertyEditorIcon) {
-				public void actionPerformed(ActionEvent e) {
-					toFrontInternFrame(2);
-				}
-			});
-		}
 
 		return toolbar;
 	}
