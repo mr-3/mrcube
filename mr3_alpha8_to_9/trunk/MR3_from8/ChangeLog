@@ -11,6 +11,8 @@
 * RDFSの置換ができるようになった．File->Import->Replace->RDFS/XML(File|URI)
 * getRDFGraph()，getClassGraph()，getPropertyGraph()メソッドをMR3Pluginクラスに追加．
    プラグインで，レイアウトを行えるようになった．(File->Plugins->SugiyamaLayout)
+* その他，細かい修正．
+   
 ==== Bug Fixes
 * 初めて起動するときに，各エディタが表示されていなかったのを修正．
 * デフォルトの選択時の色とRDFSプロパティの色がRDFリソースの色と同色だったのを修正．
