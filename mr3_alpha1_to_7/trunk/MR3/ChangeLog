@@ -4,6 +4,12 @@
 * RDF Editorのポップアップメニューに，Insert Connected ResourceとInsertConnected Literal
   メニューを追加した．(選択されているリソースと矢印でつながった状態で，リソース（リテラル）
   が挿入される）
+* Convertメニューに，Selected RDFとSelected RDFSメニューを追加した．選択しているリソース
+	を，XML表現または，N-Tripleに変換する．
+* 選択しているリソースを，XML表現または，N-Triple表現で保存可能になった．
+	(RDF及びRDFSで可能 )
+* Pluginのユーティリティメソッドに，	getSelectedRDFModel, getSelectedRDFSModel, 
+  getSelectedClassModel, getSelectedPropertyModelを追加した．
 
 ==== Bug Fixes
 * 同じＩＤを持つはずの無名リソースがすべて違うＩＤを持ってしまうバグを修正．

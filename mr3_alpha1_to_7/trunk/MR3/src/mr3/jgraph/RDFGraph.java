@@ -200,6 +200,10 @@ public class RDFGraph extends JGraph {
 		return getDescendants(getRoots());
 	}
 
+	public Object[] getAllSelectedCells() {
+		return getDescendants(getSelectionCells());
+	}
+
 	public void selectAllNodes() {
 		clearSelection();
 		addSelectionCells(getRoots()); // DescendantsÇ‹Ç≈Ç‚ÇÈÇ∆ÇŒÇÁÇŒÇÁÅD

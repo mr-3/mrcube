@@ -37,22 +37,28 @@ public class RDFEditor extends Editor {
 		litPanel = new RDFLiteralPanel(gmanager, pw);
 	}
 
-	public void convertNTripleSRC(JTextComponent area) {
-		try {
-			Model model = graphToRDF.getRDFModel();
-			Writer output = new StringWriter();
-			RDFWriter writer = new NTripleWriter();
-			writeModel(model, output, writer);
-			//			model.write(output, "N-TRIPLE");
-			area.setText(output.toString());
-		} catch (RDFException e) {
-			e.printStackTrace();
+	public void convertNTripleSRC(JTextComponent area, boolean isSelected) {
+		Model model = null;
+		if (isSelected) {
+			model = graphToRDF.getSelectedRDFModel();
+		} else {
+			model = graphToRDF.getRDFModel();
 		}
+		Writer output = new StringWriter();
+		RDFWriter writer = new NTripleWriter();
+		writeModel(model, output, writer);
+		//			model.write(output, "N-TRIPLE");
+		area.setText(output.toString());
 	}
 
-	public void convertRDFSRC(JTextComponent area) {
+	public void convertRDFSRC(JTextComponent area, boolean isSelected) {
 		try {
-			Model model = graphToRDF.getRDFModel();
+			Model model = null;
+			if (isSelected) {
+				model = graphToRDF.getSelectedRDFModel();
+			} else {
+				model = graphToRDF.getRDFModel();
+			}
 			Writer output = new StringWriter();
 			RDFWriter writer = new RDFWriterFImpl().getWriter("RDF/XML-ABBREV");
 			writeModel(model, output, writer);
