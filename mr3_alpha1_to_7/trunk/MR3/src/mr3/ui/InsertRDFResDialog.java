@@ -6,10 +6,10 @@ package mr3.ui;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
 
 import javax.swing.*;
 
+import mr3.jgraph.*;
 import mr3.util.*;
 
 /**
@@ -30,10 +30,10 @@ public class InsertRDFResDialog extends JDialog implements ActionListener, ItemL
 	private static final int boxWidth = 150;
 	private static final int boxHeight = 50;
 
-	public InsertRDFResDialog(String title, Object[] cells, Set pnis, String baseURI) {
-		super((Frame) null, title, true);
+	public InsertRDFResDialog(String title, Object[] cells, GraphManager gmanager) {
+		super(gmanager.getRoot(), title, true);
 		Container contentPane = getContentPane();
-		PrefixNSUtil.setPrefixNSInfoSet(pnis);
+		PrefixNSUtil.setPrefixNSInfoSet(gmanager.getPrefixNSInfoSet());
 		resourceType = null;
 
 		resTypeBox = new JComboBox(new DefaultComboBoxModel(cells));
@@ -59,7 +59,7 @@ public class InsertRDFResDialog extends JDialog implements ActionListener, ItemL
 		nsLabel = new JLabel("");
 		initComponent(nsLabel, "NameSpace", 350, 40);
 
-		uriPrefixBox.setSelectedItem(PrefixNSUtil.getBaseURIPrefix(baseURI));
+		uriPrefixBox.setSelectedItem(PrefixNSUtil.getBaseURIPrefix(gmanager.getBaseURI()));
 		PrefixNSUtil.replacePrefix((String) uriPrefixBox.getSelectedItem(), nsLabel);
 
 		confirm = new JButton("OK");

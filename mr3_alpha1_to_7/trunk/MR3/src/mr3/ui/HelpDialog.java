@@ -19,8 +19,8 @@ public class HelpDialog extends JDialog {
 	private static final String VERSION = "ƒ¿6 (2003-07-)";
 	private static final Color DESKTOP_BACK_COLOR = new Color(225, 225, 225);
 	
-	public HelpDialog(ImageIcon logo) {
-		super((Frame) null, "About MR^3", true);	
+	public HelpDialog(Frame root, ImageIcon logo) {
+		super(root, "About MR^3", true);	
 		JLabel logoLabel = new JLabel("<html>"+TOOL_NAME+"</html>",logo, SwingConstants.LEFT);
 		logoLabel.setFont(logoLabel.getFont().deriveFont(Font.PLAIN, 16));
 		JLabel brLabel = new JLabel("<html><br></html>");

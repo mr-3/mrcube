@@ -6,10 +6,10 @@ package mr3.ui;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
 
 import javax.swing.*;
 
+import mr3.jgraph.*;
 import mr3.util.*;
 
 /**
@@ -22,8 +22,6 @@ public class InsertRDFSResDialog extends JDialog implements ActionListener {
 	private JLabel nsLabel;
 	private JComboBox uriPrefixBox;
 
-	private String baseURI;
-
 	private JButton confirm;
 	private JButton cancel;
 
@@ -32,11 +30,10 @@ public class InsertRDFSResDialog extends JDialog implements ActionListener {
 	private static final int boxWidth = 120;
 	private static final int boxHeight = 50;
 
-	public InsertRDFSResDialog(String title, Set pnis, String base) {
-		super((Frame) null, title, true);
+	public InsertRDFSResDialog(String title, GraphManager gmanager) {
+		super(gmanager.getRoot(), title, true);
 		Container contentPane = getContentPane();
-		baseURI = base;
-		PrefixNSUtil.setPrefixNSInfoSet(pnis);
+		PrefixNSUtil.setPrefixNSInfoSet(gmanager.getPrefixNSInfoSet());
 
 		idField = new JTextField(15);
 		idField.setText("");
@@ -50,7 +47,7 @@ public class InsertRDFSResDialog extends JDialog implements ActionListener {
 		nsLabel = new JLabel("");
 		initComponent(nsLabel, "NameSpace", listWidth, listHeight);
 		
-		uriPrefixBox.setSelectedItem(PrefixNSUtil.getBaseURIPrefix(baseURI));
+		uriPrefixBox.setSelectedItem(PrefixNSUtil.getBaseURIPrefix(gmanager.getBaseURI()));
 		PrefixNSUtil.replacePrefix((String) uriPrefixBox.getSelectedItem(), nsLabel);
 
 		JPanel uriPanel = new JPanel();

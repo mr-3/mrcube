@@ -40,7 +40,7 @@ public abstract class SelectClassDialog extends JDialog implements ActionListene
 	protected RDFSInfoMap rdfsMap = RDFSInfoMap.getInstance();
 
 	public SelectClassDialog(String title, GraphManager manager) {
-		super((Frame) null, title, true);
+		super(manager.getRoot(), title, true);
 		gmanager = manager;
 		index = 0;
 		currentKey = null;

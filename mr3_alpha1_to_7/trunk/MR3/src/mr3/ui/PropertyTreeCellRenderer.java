@@ -12,7 +12,7 @@ import javax.swing.tree.*;
 import mr3.data.*;
 
 /**
- * @author cs9088
+ * @author takeshi morita
  */
 public class PropertyTreeCellRenderer extends JLabel implements TreeCellRenderer {
 
