@@ -61,8 +61,8 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 		} else {
 			cellMaker.insertClass(pt, uri);
 			DefaultGraphCell cell = (DefaultGraphCell) graph.getSelectionCell();
-			Port sourcePort = (Port) cell.getChildAt(0);
-			cellMaker.connectSubToSups(sourcePort, supCells, graph);
+			Port subPort = (Port) cell.getChildAt(0);
+			cellMaker.connectSubToSups(subPort, supCells, graph);
 			graph.setSelectionCell(cell);
 		}
 	}

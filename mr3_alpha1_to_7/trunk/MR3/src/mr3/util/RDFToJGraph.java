@@ -64,7 +64,8 @@ public class RDFToJGraph {
 			rdfsInfoMap.putCellInfo(pCell, info);
 
 			Edge edge = getEdge(attributes, "");
-			ConnectionSet cs = new ConnectionSet(edge, pPort, rootPort);
+//			ConnectionSet cs = new ConnectionSet(edge, pPort, rootPort);
+			ConnectionSet cs = new ConnectionSet(edge, rootPort, pPort);
 			graph.getModel().insert(new Object[] { edge }, attributes, cs, null, null);
 
 			if (info.getRDFSSubList().size() > 0) {
@@ -94,7 +95,8 @@ public class RDFToJGraph {
 			subInfo.addSupRDFS(supCell);
 
 			Edge edge = getEdge(attributes, "");
-			ConnectionSet cs = new ConnectionSet(edge, subPort, supPort);
+//			ConnectionSet cs = new ConnectionSet(edge, subPort, supPort);
+			ConnectionSet cs = new ConnectionSet(edge, supPort, subPort);
 			graphModel.insert(new Object[] { edge }, attributes, cs, null, null);
 
 			if (subInfo.getRDFSSubList().size() > 0) {

@@ -258,6 +258,21 @@ public class RDFGraph extends JGraph {
 		return supCells;
 	}
 
+	/** cell‚ÉÚ‘±‚³‚ê‚Ä‚¢‚éƒGƒbƒW‚Ìsource‚Æ‚È‚écell‚ÌSet‚ğ•Ô‚· */
+	public Set getSourceCells(DefaultGraphCell cell) {
+		Object port = cell.getChildAt(0);
+
+		Set supCells = new HashSet();
+		for (Iterator edges = graphModel.edges(port); edges.hasNext();) {
+			Edge edge = (Edge) edges.next();
+			Object target = getSourceVertex(edge);
+			if (target != cell) {
+				supCells.add(target);
+			}
+		}
+		return supCells;
+	}
+
 	public void removeAllCells() {
 		graphLayoutCache.remove(getAllCells());
 	}

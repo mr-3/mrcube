@@ -37,8 +37,12 @@ public class ReplaceRDF extends AbstractActionFile {
 			String uri = JOptionPane.showInternalInputDialog(desktop, "Open URI ( exp. http://slashdot.jp/slashdot.rdf )");
 			model = readModel(getReader(uri), gmanager.getBaseURI());
 		}
-		mr3.replaceRDFModel(model);	
-		gmanager.applyTreeLayout();	
+		if (model == null) {
+			gmanager.setIsImporting(false);
+			return;
+		}
+		mr3.replaceRDFModel(model);
+		gmanager.applyTreeLayout();
 		gmanager.setIsImporting(false);
 	}
 

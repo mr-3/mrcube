@@ -136,11 +136,11 @@ public class RDFCellMaker {
 		return new Point((left + right) / 2, bottom + 100);
 	}
 
-	public void connectSubToSups(Port sourcePort, Object[] supCells, RDFGraph graph) {
+	public void connectSubToSups(Port subPort, Object[] supCells, RDFGraph graph) {
 		for (int i = 0; i < supCells.length; i++) {
 			if (graph.isPort(supCells[i])) {
-				Port targetPort = (Port) supCells[i];
-				connect(sourcePort, targetPort, "", graph);
+				Port supPort = (Port) supCells[i];
+				connect(supPort, subPort, "", graph);
 			}
 		}
 	}
