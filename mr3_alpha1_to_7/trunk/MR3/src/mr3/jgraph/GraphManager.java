@@ -39,7 +39,7 @@ public class GraphManager {
 
 	private Preferences userPrefs;
 	private String baseURI;
-	
+
 	public GraphManager(AttributeDialog attrD, Preferences prefs) {
 		rdfGraph = new RDFGraph(this, attrD, GraphType.RDF);
 		realRDFGraph = new RDFGraph(this, attrD, GraphType.REAL_RDF);
@@ -207,9 +207,9 @@ public class GraphManager {
 		if (rdfsInfoMap.isDuplicated(uri, cell, type) || isRDFResourceDuplicated(uri, cell, type)) {
 			Component parent = null;
 			if (type == GraphType.RDF) {
-				parent = rdfGraph;	
+				parent = rdfGraph;
 			} else if (type == GraphType.CLASS) {
-				parent = classGraph;	
+				parent = classGraph;
 			} else if (type == GraphType.PROPERTY) {
 				parent = propGraph;
 			}
@@ -388,6 +388,12 @@ public class GraphManager {
 			}
 			if (cellViewType == CellViewType.URI) {
 				setNSPrefix(uri, cell);
+			} else if (cellViewType == CellViewType.ID) {
+				if (uri.getLocalName().length() != 0) {
+					setCellValue(cell, uri.getLocalName());
+				} else {
+					setNSPrefix(uri, cell);
+				}
 			} else if (cellViewType == CellViewType.LABEL) {
 				// リソースのEdge集合からrdf:labelを取り出して設定する
 				String label = getRDFLabel((DefaultGraphCell) cell);
@@ -425,6 +431,12 @@ public class GraphManager {
 				Resource uri = info.getURI();
 				if (cellViewType == CellViewType.URI) {
 					setNSPrefix(uri, cell);
+				} else if (cellViewType == CellViewType.ID) {
+					if (uri.getLocalName().length() != 0) {
+						setCellValue(cell, uri.getLocalName());
+					} else { // LocalNameがなければ，URIを表示する
+						setNSPrefix(uri, cell);
+					}
 				} else if (cellViewType == CellViewType.LABEL) {
 					if (info.getLabel() != null) {
 						try {
