@@ -54,7 +54,6 @@ public class RDFSInfoMap {
 
 	public Serializable getState() {
 		ArrayList list = new ArrayList();
-		//		list.add(resourceInfoMap);
 		list.add(cellInfoMap);
 		list.add(classCellMap);
 		list.add(propertyCellMap);
@@ -63,7 +62,6 @@ public class RDFSInfoMap {
 	}
 
 	public void setState(List list) {
-		//		resourceInfoMap.putAll((Map) list.get(0));
 		setCellInfoMap((Map) list.get(0));
 		classCellMap.putAll((Map) list.get(1));
 		propertyCellMap.putAll((Map) list.get(2));
@@ -74,7 +72,6 @@ public class RDFSInfoMap {
 		for (Iterator i = map.keySet().iterator(); i.hasNext();) {
 			Object cell = i.next();
 			RDFSInfo info = (RDFSInfo) map.get(cell);
-			info.recoverURIType();
 			if (info instanceof ClassInfo) {
 				cellInfoMap.put(cell, new ClassInfo((ClassInfo) info));
 			} else if (info instanceof PropertyInfo) {

@@ -999,6 +999,7 @@ public class GraphManager {
 	}
 
 	class AbstractLevelInfo {
+		
 		private boolean isSelectAbstractLevelMode;
 		private Set classAbstractLevelSet;
 		private Set propAbstractLevelSet;

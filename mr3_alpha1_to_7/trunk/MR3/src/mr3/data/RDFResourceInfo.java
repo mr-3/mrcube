@@ -12,11 +12,12 @@ public class RDFResourceInfo implements Serializable {
 	private Object typeCell; // RDFS ClassÇ…ëŒâûÇ∑ÇÈCellÇï€éùÇ∑ÇÈ
 	private GraphCell typeViewCell; // RDF ResourceÇ…Ç¬Ç≠ãÈå`ÇÃCellÇï€éùÇ∑ÇÈ
 
-	//	private Resource uri;
+	//	private Resource uriRes;
 	private String uri;
 	private URIType uriType;
 	private String uriTypeStr;
 	transient private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
+	private static final long serialVersionUID = -2998293866936983365L;
 
 	public RDFResourceInfo(URIType ut, String uri, GraphCell typeCell) {
 		setURIType(ut);
@@ -38,6 +39,7 @@ public class RDFResourceInfo implements Serializable {
 	}
 
 	private static Model anonModel = new ModelMem();
+
 	private Resource getAnonResource() {
 		try {
 			return anonModel.createResource();
@@ -87,6 +89,15 @@ public class RDFResourceInfo implements Serializable {
 		}
 	}
 
+	public Resource getType(String baseURI) {
+		RDFSInfo info = rdfsInfoMap.getCellInfo(typeCell);
+		if (info == null || info.getURI() == null) {
+			return new ResourceImpl("");
+		} else {
+			return info.getURI(baseURI);
+		}
+	}
+
 	public Object getTypeCell() {
 		return typeCell;
 	}
@@ -95,10 +106,6 @@ public class RDFResourceInfo implements Serializable {
 		return typeViewCell;
 	}
 
-	public void recoverURIType() {
-		uriType = URIType.getURIType(uriTypeStr);
-	}
-	
 	public void setURIType(URIType type) {
 		uriType = type;
 		uriTypeStr = type.toString();
@@ -126,13 +133,23 @@ public class RDFResourceInfo implements Serializable {
 		}
 	}
 
+	public Resource getURI(String baseURI) {
+		if (uriType == URIType.ANONYMOUS) {
+			return new ResourceImpl(new AnonId(uri)); // AnonymousÇhÇcÇèàóùÇ∑ÇÈÇΩÇﬂÅD
+		} else if (uriType == URIType.ID) {
+			return new ResourceImpl(baseURI + uri);
+		} else {
+			return new ResourceImpl(uri);
+		}
+	}
+
 	public String getURIStr() {
 		return uri;
 	}
 
 	public String getURIStr(String baseURI) {
 		if (uriType == URIType.ID) {
-			return baseURI+uri;
+			return baseURI + uri;
 		} else {
 			return uri;
 		}

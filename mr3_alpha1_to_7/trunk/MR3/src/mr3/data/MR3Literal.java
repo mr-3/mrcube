@@ -16,8 +16,10 @@ import com.hp.hpl.mesa.rdf.jena.model.*;
  * 一時的にこのクラスを使って，シリアライズすることにする．
  */
 public class MR3Literal implements Serializable {
-	String str;
-	String lang;
+	
+	private String str;
+	private String lang;
+	private static final long serialVersionUID = 75073546338792276L; 
 
 	public MR3Literal(String s, String l) {
 		str = s;

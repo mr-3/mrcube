@@ -35,7 +35,9 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 	private Map prefixNSMap;
 	private JTable nsTable;
 	private NSTableModel nsTableModel;
-
+	
+	private static final long serialVersionUID = 5974381131839067739L;		
+		
 	transient private JButton addNSButton;
 	transient private JButton removeNSButton;
 	transient private JButton getNSButton;
@@ -285,6 +287,8 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 
 	class NSTableModel extends DefaultTableModel implements Serializable {
 		
+		private static final long serialVersionUID = -5977304717491874293L;
+
 		public NSTableModel(Object[] columnNames, int rowCount) {
 			super(columnNames, rowCount);
 		}

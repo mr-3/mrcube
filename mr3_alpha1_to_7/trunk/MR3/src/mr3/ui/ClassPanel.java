@@ -15,7 +15,7 @@ public class ClassPanel extends RDFSPanel {
 	public ClassPanel(RDFGraph g, GraphManager manager) {
 		super(g, manager);
 		apply.addActionListener(new ChangeInfoAction());
-		setBorder(BorderFactory.createTitledBorder("Class Attributes"));
+		setBorder(BorderFactory.createTitledBorder("RDFS Class Attributes"));
 		setBaseTab();
 		setReferenceTab();
 		setLayout(new BorderLayout());

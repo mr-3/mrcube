@@ -28,7 +28,7 @@ public class RDFLiteralPanel extends JPanel implements ActionListener {
 
 	public RDFLiteralPanel(GraphManager manager) {
 		gmanager = manager;
-		setBorder(BorderFactory.createTitledBorder("Literal"));
+		setBorder(BorderFactory.createTitledBorder("RDF Literal Attributes"));
 
 		langField = new JTextField(10);
 		langField.setBorder(BorderFactory.createTitledBorder("Lang"));

@@ -1,4 +1,5 @@
 package mr3.data;
+
 public class GraphType {
 
     private String type;
