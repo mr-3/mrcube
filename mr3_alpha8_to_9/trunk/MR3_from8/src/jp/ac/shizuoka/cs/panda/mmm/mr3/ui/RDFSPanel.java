@@ -154,7 +154,6 @@ public abstract class RDFSPanel extends JPanel {
 		//		inline.add(isDefinedBy);
 
 		basePanel.setLayout(gridbag);
-		c.anchor = GridBagConstraints.WEST;
 		gridbag.setConstraints(labelGroup, c);
 		basePanel.add(labelGroup);
 		gridbag.setConstraints(labelButtonGroup, c);
