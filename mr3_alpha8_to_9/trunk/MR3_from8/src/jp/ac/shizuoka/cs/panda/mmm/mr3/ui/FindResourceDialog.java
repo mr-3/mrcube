@@ -48,12 +48,12 @@ public class FindResourceDialog extends JInternalFrame {
 		JComponent findAreaPanel = getFindAreaPanel();
 
 		nsLabel = new JLabel("");
-		initComponent(nsLabel, "NameSpace", LIST_WIDTH, FIELD_HEIGHT);
+		initComponent(nsLabel, Translator.getString("NameSpace"), LIST_WIDTH, FIELD_HEIGHT);
 
 		resourceList = new JList();
 		resourceList.addListSelectionListener(new JumpAction());
 		JScrollPane resourceListScroll = new JScrollPane(resourceList);
-		initComponent(resourceListScroll, "Find List", LIST_WIDTH, 150);
+		initComponent(resourceListScroll, Translator.getString("FindResult"), LIST_WIDTH, 150);
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE); // デフォルトの動作を消す
 		addInternalFrameListener(new InternalFrameAdapter() {
@@ -97,9 +97,9 @@ public class FindResourceDialog extends JInternalFrame {
 		rdfAreaButton = new JRadioButton("RDF");
 		rdfAreaButton.setSelected(true);
 		rdfAreaButton.addItemListener(findAreaCheck);
-		classAreaButton = new JRadioButton("Class");
+		classAreaButton = new JRadioButton(Translator.getString("Class"));
 		classAreaButton.addItemListener(findAreaCheck);
-		propertyAreaButton = new JRadioButton("Property");
+		propertyAreaButton = new JRadioButton(Translator.getString("Property"));
 		propertyAreaButton.addItemListener(findAreaCheck);
 
 		group = new ButtonGroup();
@@ -107,7 +107,7 @@ public class FindResourceDialog extends JInternalFrame {
 		group.add(classAreaButton);
 		group.add(propertyAreaButton);
 		JPanel buttonGroupPanel = new JPanel();
-		initComponent(buttonGroupPanel, "GraphType", 250, 60);
+		initComponent(buttonGroupPanel, Translator.getString("GraphType"), 250, 60);
 		buttonGroupPanel.add(rdfAreaButton);
 		buttonGroupPanel.add(classAreaButton);
 		buttonGroupPanel.add(propertyAreaButton);
@@ -120,12 +120,12 @@ public class FindResourceDialog extends JInternalFrame {
 		FindAction findAction = new FindAction();
 		uriPrefixBox = new JComboBox();
 		uriPrefixBox.addActionListener(new ChangePrefixAction());
-		initComponent(uriPrefixBox, "Prefix", BOX_WIDTH, BOX_HEIGHT);
+		initComponent(uriPrefixBox, Translator.getString("Prefix"), BOX_WIDTH, BOX_HEIGHT);
 
 		findField = new JTextField(15);
 		initComponent(findField, "ID", BOX_WIDTH, FIELD_HEIGHT);
 		findField.addActionListener(findAction);
-		findButton = new JButton("Find");
+		findButton = new JButton(Translator.getString("Find"));
 		findButton.addActionListener(findAction);
 		inlinePanel.add(uriPrefixBox);
 		inlinePanel.add(findField);

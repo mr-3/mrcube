@@ -11,6 +11,7 @@ import java.util.*;
 import javax.swing.*;
 
 import jp.ac.shizuoka.cs.panda.mmm.mr3.jgraph.*;
+import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 
 /**
  * @author takeshi morita
@@ -39,9 +40,9 @@ public class SelectRDFSDialog extends JDialog implements ActionListener {
 	}
 
 	private void initButton() {
-		confirmButton = new JButton("OK");
+		confirmButton = new JButton(Translator.getString("OK"));
 		confirmButton.addActionListener(this);
-		cancelButton = new JButton("Cancel");
+		cancelButton = new JButton(Translator.getString("Cancel"));
 		cancelButton.addActionListener(this);
 	}
 
@@ -64,7 +65,7 @@ public class SelectRDFSDialog extends JDialog implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		String type = (String) e.getActionCommand();
-		if (type.equals("OK")) {
+		if (type.equals(Translator.getString("OK"))) {
 			isOk = true;
 		} else {
 			isOk = false;

@@ -33,7 +33,7 @@ public class ClassPanel extends RDFSPanel {
 	private void setReferenceTab() {
 		supClasses = new JList();
 		supClassesScroll = new JScrollPane(supClasses);
-		initComponent(supClassesScroll, "Super Class", LIST_WIDTH, LIST_HEIGHT);
+		initComponent(supClassesScroll, Translator.getString("SuperClasses"), LIST_WIDTH, LIST_HEIGHT);
 
 		JPanel inline = new JPanel();
 		GridBagLayout gridbag = new GridBagLayout();
@@ -49,7 +49,7 @@ public class ClassPanel extends RDFSPanel {
 		gridbag.setConstraints(instanceListScroll, c);
 		inline.add(instanceListScroll);
 
-		metaTab.addTab("Reference", inline);
+		metaTab.addTab(Translator.getString("Reference"), inline);
 	}
 
 	public void setValue(Set supCellSet) {

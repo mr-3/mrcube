@@ -55,9 +55,9 @@ public class InsertRDFSResDialog extends JDialog implements ActionListener {
 		uriPanel.add(uriPrefixBox);
 		uriPanel.add(idField);
 
-		confirm = new JButton("OK");
+		confirm = new JButton(Translator.getString("OK"));
 		confirm.addActionListener(this);
-		cancel = new JButton("Cancel");
+		cancel = new JButton(Translator.getString("Cancel"));
 		cancel.addActionListener(this);
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.add(confirm);

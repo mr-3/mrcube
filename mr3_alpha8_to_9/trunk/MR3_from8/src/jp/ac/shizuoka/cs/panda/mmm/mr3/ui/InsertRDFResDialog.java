@@ -38,13 +38,13 @@ public class InsertRDFResDialog extends JDialog implements ActionListener, ItemL
 		resourceType = null;
 
 		resTypeBox = new JComboBox(new DefaultComboBoxModel(cells));
-		initComponent(resTypeBox, "Resource Type", 350, 50);
+		initComponent(resTypeBox, Translator.getString("ResourceType"), 350, 50);
 		resTypeBox.addItemListener(this);
 
 		idField = new JTextField();
 		initComponent(idField, "ID", ID_WIDTH, 40);
 
-		isAnonBox = new JCheckBox("isBlank");
+		isAnonBox = new JCheckBox(Translator.getString("IsBlank"));
 		isAnonBox.addActionListener(new IsAnonAction());
 
 		uriPrefixBox = new JComboBox();
@@ -63,9 +63,9 @@ public class InsertRDFResDialog extends JDialog implements ActionListener, ItemL
 		uriPrefixBox.setSelectedItem(PrefixNSUtil.getBaseURIPrefix(gmanager.getBaseURI()));
 		PrefixNSUtil.replacePrefix((String) uriPrefixBox.getSelectedItem(), nsLabel);
 
-		confirm = new JButton("OK");
+		confirm = new JButton(Translator.getString("OK"));
 		confirm.addActionListener(this);
-		cancel = new JButton("Cancel");
+		cancel = new JButton(Translator.getString("Cancel"));
 		cancel.addActionListener(this);
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.add(confirm);

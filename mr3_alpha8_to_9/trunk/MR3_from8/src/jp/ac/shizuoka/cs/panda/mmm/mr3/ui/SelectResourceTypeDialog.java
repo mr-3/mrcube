@@ -38,9 +38,9 @@ public class SelectResourceTypeDialog extends JDialog implements ActionListener 
 	}
 
 	private void initButton() {
-		confirmButton = new JButton("OK");
+		confirmButton = new JButton(Translator.getString("OK"));
 		confirmButton.addActionListener(this);
-		cancelButton = new JButton("Cancel");
+		cancelButton = new JButton(Translator.getString("Cancel"));
 		cancelButton.addActionListener(this);
 	}
 
@@ -69,7 +69,7 @@ public class SelectResourceTypeDialog extends JDialog implements ActionListener 
 
 	public void actionPerformed(ActionEvent e) {
 		String type = (String) e.getActionCommand();
-		if (type.equals("OK")) {
+		if (type.equals(Translator.getString("OK"))) {
 			isOk = true;
 		} else {
 			isOk = false;
