@@ -15,8 +15,5 @@ menu-name: RSSPlugin
 Name: org.semanticweb.mmm.mr3.layoutPlugin.SugiyamaLayoutPlugin.class
 menu-name: SugiyamaLayout
 
-Name: org.semanticweb.mmm.mr3.layoutPlugin.RadialTreeLayoutPlugin.class
-menu-name: RadialTreeLayout
-
 Name: org.semanticweb.mmm.mr3.owlPlugin.OWLImportPlugin.class
 menu-name: OWLImportPlugin
