@@ -392,7 +392,7 @@ public abstract class RDFSPanel extends JPanel {
 	}
 
 	public void displayRDFSInfo(DefaultGraphCell cell) {
-		if (graph.isResourceCell(cell)) {
+		if (graph.isRDFResourceCell(cell)) {
 			rdfsInfo = rdfsInfoMap.getCellInfo(cell);
 			if (rdfsInfo != null) {
 				setCell(cell);

@@ -147,11 +147,11 @@ public class RDFEditor extends Editor {
 	private void changeAttrPanel() {
 		GraphCell cell = (GraphCell) graph.getSelectionCell();
 		if (graph.isOneCellSelected(cell)) {
-			if (graph.isResourceCell(cell)) {
+			if (graph.isRDFResourceCell(cell)) {
 				selectResource(cell);
-			} else if (graph.isPropertyCell(cell)) {
+			} else if (graph.isRDFPropertyCell(cell)) {
 				selectProperty(cell);
-			} else if (graph.isLiteralCell(cell)) {
+			} else if (graph.isRDFLiteralCell(cell)) {
 				selectLiteral(cell);
 			}
 		} else {

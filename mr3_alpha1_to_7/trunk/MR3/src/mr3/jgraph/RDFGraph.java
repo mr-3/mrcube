@@ -27,8 +27,8 @@ public class RDFGraph extends JGraph {
 
 	public RDFGraph(GraphManager manager, AttributeDialog attrD, GraphType type) {
 		super(new RDFGraphModel());
-//		GraphLayoutCache cache = new GraphLayoutCache(getModel(), getGraphLayoutCache().getFactory(), false, true);
-//		setGraphLayoutCache(cache);
+		//		GraphLayoutCache cache = new GraphLayoutCache(getModel(), getGraphLayoutCache().getFactory(), false, true);
+		//		setGraphLayoutCache(cache);
 		initStatus();
 		gmanager = manager;
 		attrDialog = attrD;
@@ -68,12 +68,12 @@ public class RDFGraph extends JGraph {
 	}
 
 	protected VertexView createVertexView(Object v, CellMapper cm) {
-		if (v instanceof EllipseCell)
+		if (v instanceof RDFResourceCell || v instanceof RDFSPropertyCell)
 			return new EllipseView(v, this, cm);
 		return super.createVertexView(v, cm);
 	}
 
-//	protected EdgeView createEdgeView(Edge e, CellMapper cm) { // 2.1Œn‚Å‚Íduplicated
+	//	protected EdgeView createEdgeView(Edge e, CellMapper cm) { // 2.1Œn‚Å‚Íduplicated
 	protected EdgeView createEdgeView(Object e, CellMapper cm) {
 
 		return new EdgeView(e, this, cm) {
@@ -134,7 +134,7 @@ public class RDFGraph extends JGraph {
 		return (object instanceof Edge);
 	}
 
-	public boolean isPropertyCell(Object object) {
+	public boolean isRDFPropertyCell(Object object) {
 		return isEdge(object);
 	}
 
@@ -142,12 +142,24 @@ public class RDFGraph extends JGraph {
 		return (object instanceof Port);
 	}
 
-	public boolean isResourceCell(Object object) {
-		return (object instanceof EllipseCell);
+	public boolean isRDFResourceCell(Object object) {
+		return (object instanceof RDFResourceCell);
 	}
 
-	public boolean isLiteralCell(Object object) {
-		return (object instanceof LiteralCell);
+	public boolean isRDFSClassCell(Object object) {
+		return (object instanceof RDFSClassCell);
+	}
+
+	public boolean isRDFSPropertyCell(Object object) {
+		return (object instanceof RDFSPropertyCell);
+	}
+
+	public boolean isRDFSCell(Object object) {
+		return (object instanceof RDFSClassCell || object instanceof RDFSPropertyCell);
+	}
+
+	public boolean isRDFLiteralCell(Object object) {
+		return (object instanceof RDFLiteralCell);
 	}
 
 	public boolean isTypeCell(Object object) {
@@ -212,7 +224,7 @@ public class RDFGraph extends JGraph {
 				for (Iterator edges = graphModel.edges(port); edges.hasNext();) {
 					removeCells.add(edges.next());
 				}
-			} else if (isResourceCell(cells[i])) {
+			} else if (isRDFResourceCell(cells[i])) {
 				rdfsInfoMap.removeCellInfo(cells[i]);
 				resInfoMap.removeCellInfo(cells[i]);
 			}
@@ -311,27 +323,27 @@ public class RDFGraph extends JGraph {
 			if (cell != null) {
 				String msg = "";
 				if (type == GraphType.RDF) {
-					if (isLiteralCell(cell)) {
+					if (isRDFLiteralCell(cell)) {
 						msg = getRDFLiteralToolTipText(cell);
-					} else if (isResourceCell(cell)) {
+					} else if (isRDFResourceCell(cell)) {
 						msg = getRDFResourceToolTipText(cell);
-					} else if (isPropertyCell(cell)) {
+					} else if (isRDFPropertyCell(cell)) {
 						msg = getRDFPropertyToolTipText(cell);
 					} else {
 						List children = ((DefaultGraphCell) cell).getChildren();
 						for (Iterator i = children.iterator(); i.hasNext();) {
 							Object resCell = i.next();
-							if (isResourceCell(resCell)) {
+							if (isRDFResourceCell(resCell)) {
 								msg = getRDFResourceToolTipText(resCell);
 							}
 						}
 					}
 				} else if (type == GraphType.CLASS) {
-					if (isResourceCell(cell)) {
+					if (isRDFResourceCell(cell)) {
 						msg = getClassToolTipText(cell);
 					}
 				} else if (type == GraphType.PROPERTY) {
-					if (isResourceCell(cell)) {
+					if (isRDFResourceCell(cell)) {
 						msg = getPropertyToolTipText(cell);
 					}
 				}

@@ -22,13 +22,13 @@
 package mr3.jgraph;
 import com.jgraph.graph.*;
 
-public class EllipseCell extends DefaultGraphCell {
+public class RDFResourceCell extends DefaultGraphCell {
 
-    public EllipseCell() {
+    public RDFResourceCell() {
       this(null);
     }
 
-    public EllipseCell(Object userObject) {
+    public RDFResourceCell(Object userObject) {
       super(userObject);
     }
 

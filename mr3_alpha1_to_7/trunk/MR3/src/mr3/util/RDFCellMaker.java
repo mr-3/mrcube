@@ -94,7 +94,7 @@ public class RDFCellMaker {
 		point = graph.snap(new Point(point)); // Snap the Point to the Grid
 		Map map = getLiteralMap(point);
 
-		DefaultGraphCell vertex = new LiteralCell("");
+		DefaultGraphCell vertex = new RDFLiteralCell("");
 		setCell(graph, vertex, map);
 		litInfoMap.putCellInfo(vertex, new LiteralImpl("", ""));
 		
@@ -106,7 +106,7 @@ public class RDFCellMaker {
 		HashMap attributes = new HashMap();
 		point = graph.snap(new Point(point));
 
-		EllipseCell resourceCell = new EllipseCell(uri);
+		RDFResourceCell resourceCell = new RDFResourceCell(uri);
 		resourceCell.add(new DefaultPort());
 		Map resMap = getResourceMap(point);
 		attributes.put(resourceCell, resMap);
@@ -132,7 +132,7 @@ public class RDFCellMaker {
 		JGraph graph = gmanager.getClassGraph();
 		point = graph.snap(new Point(point)); // Snap the Point to the Grid
 		Map map = getClassMap(point);
-		EllipseCell vertex = new EllipseCell(uri);
+		RDFResourceCell vertex = new RDFResourceCell(uri);
 //		DefaultGraphCell vertex = new DefaultGraphCell(uri);
 
 		setCell(graph, vertex, map);
@@ -147,7 +147,7 @@ public class RDFCellMaker {
 		JGraph graph = gmanager.getPropertyGraph();
 		point = graph.snap(new Point(point)); // Snap the Point to the Grid
 		Map map = getPropertyMap(point);
-		EllipseCell vertex = new EllipseCell(uri);
+		RDFResourceCell vertex = new RDFResourceCell(uri);
 		setCell(graph, vertex, map);
 
 		RDFSInfo info = new PropertyInfo(uri);

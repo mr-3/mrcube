@@ -236,7 +236,7 @@ public class GraphManager {
 		Object[] rdfCells = rdfGraph.getAllCells();
 		for (int i = 0; i < rdfCells.length; i++) {
 			Object cell = rdfCells[i];
-			if (rdfGraph.isResourceCell(cell)) {
+			if (rdfGraph.isRDFResourceCell(cell)) {
 				RDFResourceInfo info = resInfoMap.getCellInfo(rdfCells[i]);
 				Resource uri = info.getURI();
 				nameSpaces.add(uri.getNameSpace());
@@ -251,7 +251,7 @@ public class GraphManager {
 		Object[] classCells = classGraph.getAllCells();
 		for (int i = 0; i < classCells.length; i++) {
 			Object cell = classCells[i];
-			if (classGraph.isResourceCell(cell)) {
+			if (classGraph.isRDFResourceCell(cell)) {
 				RDFSInfo info = rdfsInfoMap.getCellInfo(cell);
 				Resource uri = info.getURI();
 				nameSpaces.add(uri.getNameSpace());
@@ -266,7 +266,7 @@ public class GraphManager {
 		Object[] propCells = propGraph.getAllCells();
 		for (int i = 0; i < propCells.length; i++) {
 			Object cell = propCells[i];
-			if (propGraph.isResourceCell(cell)) {
+			if (propGraph.isRDFResourceCell(cell)) {
 				RDFSInfo info = rdfsInfoMap.getCellInfo(cell);
 				Resource uri = info.getURI();
 				nameSpaces.add(uri.getNameSpace());
@@ -341,7 +341,7 @@ public class GraphManager {
 		Object[] rdfCells = rdfGraph.getAllCells();
 		for (int i = 0; i < rdfCells.length; i++) {
 			GraphCell cell = (GraphCell) rdfCells[i];
-			if (rdfGraph.isResourceCell(cell)) {
+			if (rdfGraph.isRDFResourceCell(cell)) {
 				RDFResourceInfo info = resInfoMap.getCellInfo(cell);
 				info.setTypeCellValue();
 				Resource uri = info.getURI();
@@ -366,7 +366,7 @@ public class GraphManager {
 						changeClassAbstractLevel(info, abstractLevelInfo.getClassAbstractLevelSet());
 					}
 				}
-			} else if (rdfGraph.isPropertyCell(cell)) {
+			} else if (rdfGraph.isRDFPropertyCell(cell)) {
 				Object propCell = rdfsInfoMap.getEdgeInfo(cell);
 				if (propCell == null) {
 					setCellValue(cell, "");
@@ -400,7 +400,7 @@ public class GraphManager {
 	private void changeRDFSCellView(Object[] cells) {
 		for (int i = 0; i < cells.length; i++) {
 			GraphCell cell = (GraphCell) cells[i];
-			if (classGraph.isResourceCell(cell)) {
+			if (classGraph.isRDFResourceCell(cell)) {
 				RDFSInfo info = rdfsInfoMap.getCellInfo(cell);
 				Resource uri = info.getURI();
 				if (cellViewType == CellViewType.URI) {
@@ -432,7 +432,7 @@ public class GraphManager {
 		Set region = new HashSet();
 		for (int i = 0; i < cells.length; i++) {
 			DefaultGraphCell cell = (DefaultGraphCell) cells[i];
-			if (graph.isResourceCell(cells[i])) {
+			if (graph.isRDFResourceCell(cells[i])) {
 				DefaultPort port = (DefaultPort) cell.getChildAt(0);
 				if (port.getEdges().isEmpty()) {
 					RDFSInfo info = rdfsInfoMap.getCellInfo(cell);
@@ -490,7 +490,7 @@ public class GraphManager {
 		List list = new ArrayList();
 		Object[] cells = propGraph.getAllCells();
 		for (int i = 0; i < cells.length; i++) {
-			if (propGraph.isResourceCell(cells[i])) {
+			if (propGraph.isRDFResourceCell(cells[i])) {
 				list.add(cells[i]);
 			}
 		}
@@ -503,7 +503,7 @@ public class GraphManager {
 
 		for (int i = 0; i < cells.length; i++) {
 			Object cell = cells[i];
-			if (propGraph.isResourceCell(cell)) {
+			if (propGraph.isRDFResourceCell(cell)) {
 				PropertyInfo info = (PropertyInfo) rdfsInfoMap.getCellInfo(cell);
 
 				Set domainSet = getSubRegion(classGraph, info.getDomain());
@@ -575,7 +575,7 @@ public class GraphManager {
 		Set instanceSet = new HashSet();
 		Object[] cells = rdfGraph.getAllCells();
 		for (int i = 0; i < cells.length; i++) {
-			if (rdfGraph.isResourceCell(cells[i])) {
+			if (rdfGraph.isRDFResourceCell(cells[i])) {
 				RDFResourceInfo info = resInfoMap.getCellInfo(cells[i]);
 				if (info.getTypeCell() == type) {
 					instanceSet.add(cells[i]);
@@ -589,7 +589,7 @@ public class GraphManager {
 		Set instanceSet = new HashSet();
 		Object[] cells = rdfGraph.getAllCells();
 		for (int i = 0; i < cells.length; i++) {
-			if (rdfGraph.isPropertyCell(cells[i])) {
+			if (rdfGraph.isRDFPropertyCell(cells[i])) {
 				Object propCell = rdfsInfoMap.getEdgeInfo(cells[i]);
 				if (propCell == rdfsPropCell) {
 					Object sourceCell = rdfGraph.getSourceVertex(cells[i]);
@@ -604,12 +604,12 @@ public class GraphManager {
 		Set result = new HashSet();
 		Object[] cells = rdfGraph.getAllCells();
 		for (int i = 0; i < cells.length; i++) {
-			if (rdfGraph.isResourceCell(cells[i])) {
+			if (rdfGraph.isRDFResourceCell(cells[i])) {
 				RDFResourceInfo info = resInfoMap.getCellInfo(cells[i]);
 				if (isMatches(key, info.getURI())) {
 					result.add(cells[i]);
 				}
-			} else if (rdfGraph.isPropertyCell(cells[i])) {
+			} else if (rdfGraph.isRDFPropertyCell(cells[i])) {
 				Object propCell = rdfsInfoMap.getEdgeInfo(cells[i]);
 				RDFSInfo info = rdfsInfoMap.getCellInfo(propCell);
 				if (isMatches(key, info.getURI())) {
@@ -625,7 +625,7 @@ public class GraphManager {
 		Object[] cells = graph.getAllCells();
 
 		for (int i = 0; i < cells.length; i++) {
-			if (graph.isResourceCell(cells[i])) {
+			if (graph.isRDFResourceCell(cells[i])) {
 				RDFSInfo info = rdfsInfoMap.getCellInfo(cells[i]);
 				if (isMatches(key, info.getURI())) {
 					result.add(cells[i]);
@@ -670,12 +670,12 @@ public class GraphManager {
 			Object cell = cells[i];
 			Object[] propCells = propGraph.getAllCells();
 			Set propSet = new HashSet();
-			if (propGraph.isResourceCell(cell)) {
+			if (propGraph.isRDFResourceCell(cell)) {
 				//　cellを参照していないかどうかすべてのプロパティに対して調べる
 				// domainかrangeに含まれている可能性がある．
 				for (int j = 0; j < propCells.length; j++) {
 					Object propCell = propCells[j];
-					if (propGraph.isResourceCell(propCell)) {
+					if (propGraph.isRDFResourceCell(propCell)) {
 						PropertyInfo info = (PropertyInfo) rdfsInfoMap.getCellInfo(propCell);
 						Set domain = info.getDomain();
 						Set range = info.getRange();
@@ -707,7 +707,7 @@ public class GraphManager {
 			Set rdfSet = new HashSet();
 			for (int j = 0; j < rdfCells.length; j++) {
 				Object rdfCell = rdfCells[j];
-				if (rdfGraph.isResourceCell(rdfCell)) {
+				if (rdfGraph.isRDFResourceCell(rdfCell)) {
 					RDFResourceInfo rdfInfo = resInfoMap.getCellInfo(rdfCell);
 					if (rdfInfo.getTypeCell() == cell) {
 						rdfSet.add(rdfCell);
@@ -789,9 +789,6 @@ public class GraphManager {
 		propGraph.removeAllCells();
 		if (!isGraphEmpty()) {
 			System.out.println("error cell is not clear complete");
-			System.out.println("rdfGraph: " + rdfGraph.getAllCells().length);
-			System.out.println("classGraph: " + classGraph.getAllCells().length);
-			System.out.println("propertyGraph: " + propGraph.getAllCells().length);
 			removeAllCells();
 		}
 	}
@@ -801,7 +798,7 @@ public class GraphManager {
 		Set dataSet = new HashSet();
 		for (int i = 0; i < cells.length; i++) {
 			GraphCell cell = (GraphCell) cells[i];
-			if (!graph.isTypeCell(cell) && (graph.isResourceCell(cell) || graph.isLiteralCell(cell))) {
+			if (!graph.isTypeCell(cell) && (graph.isRDFResourceCell(cell) || graph.isRDFLiteralCell(cell))) {
 				GraphLayoutData data = new GraphLayoutData(cell, graph);
 				cellLayoutMap.put(cell, data);
 				dataSet.add(data);
@@ -838,7 +835,7 @@ public class GraphManager {
 	}
 
 	private Object collectRoot(Set rootCells, Set dataSet, Map cellLayoutMap) {
-		DefaultGraphCell rootCell = new EllipseCell("");
+		DefaultGraphCell rootCell = new RDFResourceCell("");
 		DefaultPort rootPort = new DefaultPort();
 		rootCell.add(rootPort);
 
@@ -910,7 +907,7 @@ public class GraphManager {
 		for (Iterator i = dataSet.iterator(); i.hasNext();) {
 			GraphLayoutData data = (GraphLayoutData) i.next();
 			data.setRealResourcePosition();
-			if (isRDFGraph(graph) && arc == 'r' && graph.isResourceCell(data.getCell())) {
+			if (isRDFGraph(graph) && arc == 'r' && graph.isRDFResourceCell(data.getCell())) {
 				RDFResourceInfo info = resInfoMap.getCellInfo(data.getCell());
 				GraphCell typeCell = (GraphCell) info.getTypeViewCell();
 				//		System.out.print(typeCell.getClass());
@@ -939,7 +936,7 @@ public class GraphManager {
 		private Set getSelectedCellSet(Object[] cells) {
 			Set selectedCellSet = new HashSet();
 			for (int i = 0; i < cells.length; i++) {
-				if (rdfGraph.isResourceCell(cells[i])) {
+				if (rdfGraph.isRDFResourceCell(cells[i])) {
 					selectedCellSet.add(cells[i]);
 				}
 			}

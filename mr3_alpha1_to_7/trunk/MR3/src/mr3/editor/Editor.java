@@ -290,7 +290,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 				toolbar.add(new AbstractAction("", connectIcon) {
 					public void actionPerformed(ActionEvent e) {
 						GraphCell cell = (GraphCell) graph.getSelectionCell();
-						if (graph.isOneCellSelected(cell) && graph.isResourceCell(cell)) {
+						if (graph.isOneCellSelected(cell) && graph.isRDFResourceCell(cell)) {
 							Port port = (Port) ((DefaultGraphCell) cell).getChildAt(0);
 							RDFGraphMarqueeHandler mh = (RDFGraphMarqueeHandler) graph.getMarqueeHandler();
 							mh.selfConnect(port, "");

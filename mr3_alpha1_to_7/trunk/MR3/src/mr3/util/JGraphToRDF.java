@@ -28,7 +28,7 @@ public class JGraphToRDF {
 
 		for (int i = 0; i < cells.length; i++) {
 			Object cell = cells[i];
-			if (graph.isResourceCell(cell)) {
+			if (graph.isRDFResourceCell(cell)) {
 				PropertyInfo info = (PropertyInfo) rdfsInfoMap.getCellInfo(cell);
 				Set supProperties = graph.getTargetCells((DefaultGraphCell) cell);
 				info.setSupRDFS(supProperties);
@@ -47,7 +47,7 @@ public class JGraphToRDF {
 
 		for (int i = 0; i < cells.length; i++) {
 			Object cell = cells[i];
-			if (graph.isResourceCell(cell)) {
+			if (graph.isRDFResourceCell(cell)) {
 				ClassInfo info = (ClassInfo) rdfsInfoMap.getCellInfo(cell);
 				Set supClasses = graph.getTargetCells((DefaultGraphCell) cell);
 				info.setSupRDFS(supClasses);
@@ -77,7 +77,7 @@ public class JGraphToRDF {
 				Object cell = cells[i];
 				if (graph.isEdge(cell)) {
 					result.add(cell);
-				} else if (!graph.isTypeCell(cell) && graph.isResourceCell(cell)) {
+				} else if (!graph.isTypeCell(cell) && graph.isRDFResourceCell(cell)) {
 					setResourceType(rdfModel, cell);
 				}
 			}
@@ -112,11 +112,11 @@ public class JGraphToRDF {
 				Property property = new PropertyImpl(propInfo.getURI().getURI());
 				GraphCell targetCell = (GraphCell) graph.getTargetVertex(edge);
 
-				if (graph.isResourceCell(targetCell)) {
+				if (graph.isRDFResourceCell(targetCell)) {
 					info = resInfoMap.getCellInfo(targetCell);
 					Resource object = getResource(info);
 					rdfModel.add(rdfModel.createStatement(subject, property, object));
-				} else if (graph.isLiteralCell(targetCell)) {
+				} else if (graph.isRDFLiteralCell(targetCell)) {
 					Literal object = litInfoMap.getCellInfo(targetCell);
 					rdfModel.add(rdfModel.createStatement(subject, property, object));
 				}
