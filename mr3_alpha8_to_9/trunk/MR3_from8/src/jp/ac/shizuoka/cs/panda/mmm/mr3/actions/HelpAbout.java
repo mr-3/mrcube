@@ -30,7 +30,7 @@ public class HelpAbout extends MR3AbstractAction {
 
 	private void setValues() {
 		putValue(SHORT_DESCRIPTION, TITLE);
-		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F1, KeyEvent.CTRL_MASK));
+		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
 	}
 
 	public void actionPerformed(ActionEvent e) {

@@ -13,5 +13,9 @@
     <classpathentry kind="lib" path="build/lib/concurrent.jar"/>
     <classpathentry kind="lib" path="build/lib/jakarta-oro-2.0.5.jar"/>
     <classpathentry kind="lib" path="build/lib/jgraph.jar"/>
+    <classpathentry kind="lib" path="build/lib/antlr.jar"/>
+    <classpathentry kind="lib" path="build/lib/jh.jar"/>
+    <classpathentry kind="lib" path="build/lib/junit.jar"/>
+    <classpathentry kind="lib" path="build/lib/rdf-api-2001-01-19.jar"/>
     <classpathentry kind="output" path="build/classes"/>
 </classpath>

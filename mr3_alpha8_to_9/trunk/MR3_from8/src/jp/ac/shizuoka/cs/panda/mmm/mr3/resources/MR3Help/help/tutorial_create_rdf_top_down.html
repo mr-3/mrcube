@@ -1,0 +1,316 @@
+<html>
+<head>
+ <title>RDFコンテンツの作成 （トップダウン）</title>
+ <link href="../MR3Help.css" type="text/css" rel="stylesheet">
+ <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+</head>
+
+<body>
+<h2><a name="label-4" id="label-4">RDFコンテンツの作成 （トップダウン）</a></h2><!-- RDLabel: "RDFコンテンツの作成 （トップダウン）" -->
+<h3><a name="label-5" id="label-5">手順１: RDFsコンテンツ作成に利用する接頭辞と名前空間の登録</a></h3><!-- RDLabel: "手順１: RDFsコンテンツ作成に利用する接頭辞と名前空間の登録" -->
+<p>はじめに，RDFsコンテンツ作成に必要な名前空間を名前空間テーブルに登録す
+
+る．以下の図は，接頭辞を"Contact"，対応する名前空間を
+
+"http://www.w3.org/2000/10/swap/pim/contact#"として名前空間テーブルに
+
+登録している状態を示している．PrefixテキストフィールドとNameSpaceテキ
+
+ストフィールドにそれぞれ，接頭辞，名前空間を入力し"追加"ボタンを押すと
+
+接頭辞と対応する名前空間が名前空間テーブルに登録される．同様に，
+
+http://www.w3.org/People/EM/contact#名前空間とem接頭辞mailto:em@w3.org 
+
+名前空間とmail接頭辞も登録する．名前空間テーブルに登録された接頭辞は，
+
+各要素(RDFリソース，RDFプロパティ，RDFSクラス，RDFSプロパティ）作成す
+
+る際に用いられる．</p>
+<p style="text-align: center">
+
+<a href="./tutorial/img/top_down_step1.png">
+
+ <img src="./tutorial/img/top_down_step1_s.png"></img>
+
+</a>
+
+</p> 
+
+
+<h3><a name="label-6" id="label-6">手順２: RDFSクラスの挿入</a></h3><!-- RDLabel: "手順２: RDFSクラスの挿入" -->
+<p>ここでは，RDFSクラスの挿入を行う．クラスエディタ内で右クリックをしてポッ
+
+プアップメニューを出す．ポップアップメニューの中の"クラスの挿入"メニュー
+
+を選択し，RDFSクラスの挿入を行う．サンプルRDF文書内では，
+
+contact:Personがhttp://www.w3.org/People/EM/contact#meリソースのタイプ
+
+となっている．MR<sup>3</sup>では，RDFリソースのタイプは，RDFSク
+
+ラスから選択する．RDFSクラスは，クラスエディタ内で定義する．</p>
+<p style="text-align: center">
+
+<a href="./tutorial/img/top_down_step2.png">
+
+ <img src="./tutorial/img/top_down_step2_s.png"></img>
+
+</a>
+
+</p> 
+
+
+<h3><a name="label-7" id="label-7">手順３: RDFSクラスの入力</a></h3><!-- RDLabel: "手順３: RDFSクラスの入力" -->
+<p>"クラスの挿入"メニューを選択すると，以下のダイアログが表示される．
+
+"Prefixコンボボックス"から名前空間テーブルに登録した接頭辞を選択し，
+
+"IDテキストフィールド"にIDを入力する．"了解"ボタンをクリックするとクラス
+
+エディタ内にRDFSクラス(prefix:ID)が挿入される．</p>
+<p style="text-align: center">
+
+ <img src="./tutorial/img/top_down_step3.png"></img>
+
+</p> 
+
+
+<h3><a name="label-8" id="label-8">手順４: RDFSプロパティの入力</a></h3><!-- RDLabel: "手順４: RDFSプロパティの入力" -->
+<p>RDFSクラスと同様にサンプルRDF文書内に含まれるRDFSプロパティ
+
+(contact:fullName，contact:mailbox，contact:personalTitle ) も作成する．
+
+プロパティエディタ内で右クリックするとポップアップメニューが表示される．
+
+"プロパティの挿入"メニューを選択すると以下のダイアログが表示される．"
+
+了解"ボタンをクリックするとプロパティエディタ内にRDFSプロパティが挿入
+
+される．MR<sup>3</sup>では，RDFプロパティは，RDFSプロパティから
+
+選択する．RDFSプロパティは，プロパティエディタ内で定義する．</p>
+<p style="text-align: center">
+
+ <img src="./tutorial/img/top_down_step4.png"></img>
+
+</p> 
+
+
+<h3><a name="label-9" id="label-9">手順５: 現在の状態</a></h3><!-- RDLabel: "手順５: 現在の状態" -->
+<p>contact:Personクラスとcontact:fullName，contact:mailbox，
+
+contact:personalTitle プロパティをMR<sup>3</sup>で作成すると以下の図のようになる．</p>
+<p style="text-align: center">
+
+<a href="./tutorial/img/top_down_step5.png">
+
+ <img src="./tutorial/img/top_down_step5_s.png"></img>
+
+</a>
+
+</p> 
+
+
+
+
+<h3><a name="label-10" id="label-10">手順６: RDFリソースの挿入１</a></h3><!-- RDLabel: "手順６: RDFリソースの挿入１" -->
+<p>次に，手順１から５までで，作成したRDFSクラス及びプロパティを用いてRDF
+
+コンテンツの作成を行う．ここでは，RDFリソースを入力する．RDFリソースは，
+
+RDFエディタ内で定義する．RDFエディタ内で右クリックするとポップアップメ
+
+ニューが表示される．ポップアップメニュー内の"RDFリソースの挿入"メニュー
+
+を選択し，RDFリソースの挿入を行う．</p>
+<p style="text-align: center">
+
+<a href="./tutorial/img/top_down_step6.png">
+
+ <img src="./tutorial/img/top_down_step6_s.png"></img>
+
+</a>
+
+</p> 
+
+
+<h3><a name="label-11" id="label-11">手順７: RDFリソースの挿入２</a></h3><!-- RDLabel: "手順７: RDFリソースの挿入２" -->
+<p>"RDFリソースの挿入"メニューを選択すると以下のダイアログが表示される．
+
+"リソースタイプ"コンボボックスからリソースのタイプを選択する．リソース
+
+のタイプは，クラスエディタで作成されたRDFSクラスから選択できる．ここで
+
+は，contact:Personクラスをリソースのタイプとして選択する．ここでは，
+
+http://www.w3.org/People/EM/contact#meリソースを入力するので，"接頭辞" 
+
+コンボボックスから"em"を選択し，"IDテキストフィールド"に"me"を入力する．
+
+isBlankチェックボックスにチェックをいれるとブランクノードとなる．リソー
+
+スのタイプとリソースを入力し，"了解ボタン"をクリックするとRDFリソースが
+
+RDFエディタに挿入される．</p>
+<p style="text-align: center">
+
+ <img src="./tutorial/img/top_down_step7.png"></img>
+
+</p> 
+
+
+<h3><a name="label-12" id="label-12">手順８: RDFリテラルの挿入</a></h3><!-- RDLabel: "手順８: RDFリテラルの挿入" -->
+<p>次に，"Eric Miller"と"Dr."リテラルを挿入する．ポップアップメニューから
+
+"リテラルの挿入（プロパティつき）"メニューを選択すると選択されているリ
+
+ソースと矢印で結ばれた状態でリテラルが挿入される．この際に，作成される
+
+RDFプロパティ(矢印）はmr3#nil(MR<sup>3</sup>が提供する）となる．
+
+リテラルのみを挿入したい場合は，"リテラルの挿入"メニューを選択する．</p>
+<p style="text-align: center">
+
+<a href="./tutorial/img/top_down_step8.png">
+
+ <img src="./tutorial/img/top_down_step8_s.png"></img>
+
+</a>
+
+</p> 
+
+
+<h3><a name="label-13" id="label-13">手順９: RDFプロパティの編集</a></h3><!-- RDLabel: "手順９: RDFプロパティの編集" -->
+<p>ここで，RDFプロパティとRDFリテラルを編集するために，アトリビュートダイ
+
+アログを表示する．アトリビュートダイアログを表示するためには，ツールバー
+
+の"A"が描かれたアイコンをクリックするか，ポップアップメニューから"アト
+
+リビュートダイアログを表示"メニューを選択する．編集したい要素を選択す
+
+ると内容がアトリビュートダイアログに表示される．ここでは，RDFプロパティ
+
+の編集を行う．contact:fullNameに変更するためには，"接頭辞"コンボボック
+
+スから接頭辞を選択し，"プロパティ ID"リストからIDを選択する．"適用する
+
+"ボタンをクリックすると変更が反映される．</p>
+<p style="text-align: center">
+
+<a href="./tutorial/img/top_down_step9.png">
+
+ <img src="./tutorial/img/top_down_step9_s.png"></img>
+
+</a>
+
+</p> 
+
+
+<h3><a name="label-14" id="label-14">手順１０: RDFリテラルの編集</a></h3><!-- RDLabel: "手順１０: RDFリテラルの編集" -->
+<p>ここでは，リテラルの編集を行う．以下の図は，リテラルを選択した際のアト
+
+リビュートダイアログを表している．アトリビュートダイアログの下部に位置
+
+するテキストエリアに文字列を入力する．"適用する"ボタンをクリックすると
+
+入力が反映される．手順１０，手順１１と同様にcontact:personalTitle プロ
+
+パティとDr.リテラルを作成する．</p>
+<p style="text-align: center">
+
+<a href="./tutorial/img/top_down_step10.png">
+
+ <img src="./tutorial/img/top_down_step10_s.png"></img>
+
+</a>
+
+</p> 
+
+
+<h3><a name="label-15" id="label-15">手順１１: RDFリソースの挿入</a></h3><!-- RDLabel: "手順１１: RDFリソースの挿入" -->
+<p>次に，contact:mailboxプロパティとmailto:em@w3.orgリソースを作成する．
+
+ポップアップメニューから"RDFリソースの挿入（プロパティつき）"メニュー
+
+を選択すると，選択されているリソースと矢印（RDFプロパティ）でつながっ
+
+た状態でリソースが挿入される．</p>
+<p style="text-align: center">
+
+<a href="./tutorial/img/top_down_step11.png">
+
+ <img src="./tutorial/img/top_down_step11_s.png"></img>
+
+</a>
+
+</p> 
+
+
+<h3><a name="label-16" id="label-16">手順１２: RDFリソースの挿入</a></h3><!-- RDLabel: "手順１２: RDFリソースの挿入" -->
+<p>"RDFリソースの挿入（プロパティつき）"メニューを選択すると以下のダイア
+
+ログが表示される（"RDFリソースの挿入"メニューと同様）．"接頭辞コンボボッ
+
+クス"からmailを選択する．接頭辞mailは，mailto:em@w3.orgで，名前空間テー
+
+ブルに登録してある．</p>
+<p style="text-align: center">
+
+<a href="./tutorial/img/top_down_step12.png">
+
+ <img src="./tutorial/img/top_down_step12.png"></img>
+
+</a>
+
+</p> 
+
+
+<h3><a name="label-17" id="label-17">手順１３: RDFプロパティの編集</a></h3><!-- RDLabel: "手順１３: RDFプロパティの編集" -->
+<p>手順１１と同様にRDFプロパティを編集する．</p>
+<p style="text-align: center">
+
+<a href="./tutorial/img/top_down_step13.png">
+
+ <img src="./tutorial/img/top_down_step13_s.png"></img>
+
+</a>
+
+</p> 
+
+
+<h3><a name="label-18" id="label-18">手順１４: 作成したRDFコンテンツをRDF/XML形式でソースダイアログに出力</a></h3><!-- RDLabel: "手順１４: 作成したRDFコンテンツをRDF/XML形式でソースダイアログに出力" -->
+<p>作成したRDFコンテンツが，RDF/XML形式でどのように出力されるかを確認する
+
+には，変換-&gt;RDF/XML-&gt;RDF/XMLメニューを選択する．ソースダイアログにソー
+
+スが表示される．</p>
+<p style="text-align: center">
+
+<a href="./tutorial/img/top_down_step14.png">
+
+ <img src="./tutorial/img/top_down_step14_s.png"></img>
+
+</a>
+
+</p> 
+
+
+<h3><a name="label-19" id="label-19">手順１５: 作成したRDFコンテンツをRDF/XML形式でファイルに出力</a></h3><!-- RDLabel: "手順１５: 作成したRDFコンテンツをRDF/XML形式でファイルに出力" -->
+<p>作成したRDFコンテンツをRDF/XML形式でファイルに出力したい場合には，ファ
+
+イル-&gt;エクスポート-&gt;RDF/XML-&gt;RDF/XMLメニューを選択する．</p>
+<p style="text-align: center">
+
+<a href="./tutorial/img/top_down_step15.png">
+
+ <img src="./tutorial/img/top_down_step15_s.png"></img>
+
+</a>
+
+</p> 
+
+
+</body>
+</html>

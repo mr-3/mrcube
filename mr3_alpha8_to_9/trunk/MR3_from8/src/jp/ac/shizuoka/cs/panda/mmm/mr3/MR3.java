@@ -4,8 +4,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
+import java.util.Map;
 import java.util.prefs.*;
 
+import javax.help.*;
 import javax.swing.*;
 import javax.swing.text.*;
 
@@ -531,8 +533,26 @@ public class MR3 extends JFrame {
 
 	private JMenu getHelpMenu() {
 		JMenu menu = new JMenu(Translator.getString("Component.Help.Text"));
+
+		menu.add(getShowHelpItem());
 		menu.add(new HelpAbout(this));
 		return menu;
+	}
+
+	private JMenuItem getShowHelpItem() {
+		HelpSet hs = null;
+		try {
+			hs = new HelpSet(null, Utilities.getURL("MR3Help/MR3Help.hs"));
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		HelpBroker hb = hs.createHelpBroker("MR3Help");
+		//		hb.enableHelpKey(getRootPane(), "overview", hs); // for F1 ‚¨‚¿‚é
+		ActionListener helper = new CSH.DisplayHelpFromSource(hb);
+		JMenuItem item = new JMenuItem(Translator.getString("Component.Help.ShowHelp.Text"));
+		item.addActionListener(helper);
+
+		return item;
 	}
 
 	class ShowToolTipsAction extends AbstractAction {

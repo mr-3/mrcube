@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE toc
+  PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp Index Version 1.0//EN"
+          "http://java.sun.com/products/javahelp/index_1_0.dtd">
+
+<index version="2.0">
+<indexitem text="mr3" target="intro" />
+<indexitem text="help" target="help" />
+<indexitem text="plugin" target="plugin" />
+<indexitem text="helpset" target="plugin" />
+</index>
