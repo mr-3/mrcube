@@ -45,6 +45,10 @@ public class MR3Reader {
 		nsTableDialog.setCurrentNSPrefix();
 	}
 
+	public void replaceRDFSModel(Model model) {
+				
+	}
+
 	public void mergeRDFModel(Model newModel) {
 		try {
 			Model model = mr3Generator.getRDFModel();
@@ -90,6 +94,12 @@ public class MR3Reader {
 		if (model != null) {
 			replaceRDFModel(model);
 			mergeRDFSModel(new ModelMem()); // RDFからRDFSへ反映されたクラス，プロパティの処理
+		}
+	}
+
+	public void replaceRDFS(Model model) {
+		if (model != null) {
+			mergeRDFSModel(model);
 		}
 	}
 

@@ -11,10 +11,10 @@ import com.hp.hpl.jena.vocabulary.*;
  */
 public class PropertyInfo extends RDFSInfo {
 
-	private Set domain;
-	private Set range;
+	private Set domainSet;
+	private Set rangeSet;
 	private boolean isContainer;
-	private int num; 
+	private int num;
 	private transient Set subProperties;
 	private transient Set supProperties;
 
@@ -23,8 +23,8 @@ public class PropertyInfo extends RDFSInfo {
 	public PropertyInfo(String uri) {
 		super(uri);
 		metaClass = RDF.Property.toString();
-		domain = new HashSet();
-		range = new HashSet();
+		domainSet = new HashSet();
+		rangeSet = new HashSet();
 		isContainer = false;
 		subProperties = new HashSet();
 		supProperties = new HashSet();
@@ -32,8 +32,8 @@ public class PropertyInfo extends RDFSInfo {
 
 	public PropertyInfo(PropertyInfo info) {
 		super(info);
-		domain = new HashSet(info.getDomain());
-		range = new HashSet(info.getRange());
+		domainSet = new HashSet(info.getDomain());
+		rangeSet = new HashSet(info.getRange());
 		isContainer = info.isContainer();
 		num = info.getNum();
 		subProperties = new HashSet();
@@ -56,11 +56,11 @@ public class PropertyInfo extends RDFSInfo {
 					tmpModel.add(tmpModel.createStatement(res, RDFS.subPropertyOf, propInfo.getURI()));
 				}
 			}
-			for (Iterator i = domain.iterator(); i.hasNext();) {
+			for (Iterator i = domainSet.iterator(); i.hasNext();) {
 				RDFSInfo classInfo = rdfsInfoMap.getCellInfo(i.next());
 				tmpModel.add(tmpModel.createStatement(res, RDFS.domain, classInfo.getURI()));
 			}
-			for (Iterator i = range.iterator(); i.hasNext();) {
+			for (Iterator i = rangeSet.iterator(); i.hasNext();) {
 				RDFSInfo classInfo = rdfsInfoMap.getCellInfo(i.next());
 				tmpModel.add(tmpModel.createStatement(res, RDFS.range, classInfo.getURI()));
 			}
@@ -72,57 +72,69 @@ public class PropertyInfo extends RDFSInfo {
 	}
 
 	public void addDomain(Object resource) {
-		domain.add(resource);
+		domainSet.add(resource);
 	}
 
 	public void addAllDomain(Set set) {
-		domain.addAll(set);
+		domainSet.addAll(set);
 	}
 
 	public void removeNullDomain() {
-		for (Iterator i = domain.iterator(); i.hasNext();) {
+		for (Iterator i = domainSet.iterator(); i.hasNext();) {
 			Object cell = i.next();
 			if (rdfsInfoMap.getCellInfo(cell) == null) {
-				domain.remove(cell);
+				domainSet.remove(cell);
 			}
 		}
 	}
 
 	public void removeDomain(Object obj) {
-		domain.remove(obj);
+		domainSet.remove(obj);
+	}
+
+	public void clearDomain() {
+		domainSet = new HashSet();
 	}
 
 	public Set getDomain() {
-		return Collections.unmodifiableSet(domain);
+		return Collections.unmodifiableSet(domainSet);
 	}
 
 	public void addRange(Object resource) {
-		range.add(resource);
+		rangeSet.add(resource);
 	}
 
 	public void addAllRange(Set set) {
-		range.addAll(set);
+		rangeSet.addAll(set);
 	}
 
 	public void removeNullRange() {
-		for (Iterator i = range.iterator(); i.hasNext();) {
+		for (Iterator i = rangeSet.iterator(); i.hasNext();) {
 			Object cell = i.next();
 			if (rdfsInfoMap.getCellInfo(cell) == null) {
-				range.remove(cell);
+				rangeSet.remove(cell);
 			}
 		}
 	}
 
 	public void removeRange(Object obj) {
-		range.remove(obj);
+		rangeSet.remove(obj);
+	}
+
+	public void clearRange() {
+		rangeSet = new HashSet();
 	}
 
 	public Set getRange() {
-		return Collections.unmodifiableSet(range);
+		return Collections.unmodifiableSet(rangeSet);
 	}
 
 	public void addSubProperty(Object resource) {
 		subProperties.add(resource);
+	}
+
+	public void clearSubProperty() {
+		subProperties = new HashSet();
 	}
 
 	public void addSupProperty(Object resource) {
@@ -131,6 +143,10 @@ public class PropertyInfo extends RDFSInfo {
 
 	public Set getSupProperties() {
 		return Collections.unmodifiableSet(supProperties);
+	}
+	
+	public void clearSupProperty() {
+		supProperties = new HashSet();
 	}
 
 	public boolean isContainer() {
@@ -144,19 +160,19 @@ public class PropertyInfo extends RDFSInfo {
 	public int getNum() {
 		return num;
 	}
-	
+
 	public void setNum(int n) {
-		num = n;		
+		num = n;
 	}
 
 	public String toString() {
 		String msg = super.toString();
 
-		if (domain.size() > 0) {
-			msg += "domain: " + domain.toString() + "\n";
+		if (domainSet.size() > 0) {
+			msg += "domain: " + domainSet.toString() + "\n";
 		}
-		if (range.size() > 0) {
-			msg += "range: " + range.toString() + "\n";
+		if (rangeSet.size() > 0) {
+			msg += "range: " + rangeSet.toString() + "\n";
 		}
 		if (subProperties.size() > 0) {
 			msg += "SubProperty: " + subProperties.toString() + "\n";

@@ -327,6 +327,8 @@ public class MR3 extends JFrame {
 	private static final String SelectedRDF_NTriple = "Selected RDF/N-Triple";
 	private static final String REPLACE_RDF_FILE = "RDF/XML (File)";
 	private static final String REPLACE_RDF_URI = "RDF/XML (URI)";
+	private static final String REPLACE_RDFS_FILE = "RDFS/XML (File)";
+	private static final String REPLACE_RDFS_URI = "RDFS/XML (URI)";
 	private static final String MERGE_RDFS_FILE = "RDF(S)/XML (File)";
 	private static final String MERGE_RDFS_URI = "RDF(S)/XML (URI)";
 
@@ -339,10 +341,12 @@ public class MR3 extends JFrame {
 		menu.addSeparator();
 		JMenu importRDF = new JMenu("Import");
 
-		JMenu replace = new JMenu("Replace");
-		replace.add(new ReplaceRDF(this, REPLACE_RDF_FILE));
-		replace.add(new ReplaceRDF(this, REPLACE_RDF_URI));
-		importRDF.add(replace);
+		JMenu replaceMenu = new JMenu("Replace");
+		replaceMenu.add(new ReplaceRDF(this, REPLACE_RDF_FILE));
+		replaceMenu.add(new ReplaceRDF(this, REPLACE_RDF_URI));
+		replaceMenu.add(new ReplaceRDFS(this, REPLACE_RDFS_FILE));
+		replaceMenu.add(new ReplaceRDFS(this, REPLACE_RDFS_URI));
+		importRDF.add(replaceMenu);
 
 		JMenu mergeMenu = new JMenu("Merge");
 		mergeMenu.add(new MergeRDFs(this, MERGE_RDFS_FILE));
@@ -372,9 +376,9 @@ public class MR3 extends JFrame {
 
 		JMenu imgMenu = new JMenu("Img");
 		exportMenu.add(imgMenu);
-		imgMenu.add(new FileExportImg(this, gmanager, GraphType.RDF, "png", "RDF Graph -> PNG"));
-		imgMenu.add(new FileExportImg(this, gmanager, GraphType.CLASS, "png", "Class Graph -> PNG"));
-		imgMenu.add(new FileExportImg(this, gmanager, GraphType.PROPERTY, "png", "Property Graph -> PNG"));
+		imgMenu.add(new FileExportImg(this, GraphType.RDF, "png", "RDF Graph -> PNG"));
+		imgMenu.add(new FileExportImg(this, GraphType.CLASS, "png", "Class Graph -> PNG"));
+		imgMenu.add(new FileExportImg(this, GraphType.PROPERTY, "png", "Property Graph -> PNG"));
 
 		exportMenu.add(new ExportJavaObject(this));
 
@@ -657,6 +661,14 @@ public class MR3 extends JFrame {
 
 	public void replaceRDFModel(Model model) {
 		mr3Reader.replaceRDF(model);
+	}
+
+	public void replaceRDFSModel(Model model) {
+		ReplaceRDFSDialog replaceRDFSDialog = new ReplaceRDFSDialog(gmanager, model.union(model));
+		if (replaceRDFSDialog.isApply()) {
+			mr3Reader.replaceRDFS(model);
+			gmanager.applyRDFSTreeLayout();
+		}
 	}
 
 	public void mergeRDFModel(Model model) {
