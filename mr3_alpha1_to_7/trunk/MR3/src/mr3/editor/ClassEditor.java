@@ -68,7 +68,7 @@ public class ClassEditor extends Editor {
 		if (graph.isOneCellSelected(cell)) {
 			RDFSInfo info = rdfsInfoMap.getCellInfo(cell);
 			if (info != null) {
-				classPanel.displayRDFSInfo(cell);
+				classPanel.showRDFSInfo(cell);
 				attrDialog.setContentPane(classPanel);
 			}
 		} else {

@@ -73,7 +73,7 @@ public class PropertyEditor extends Editor {
 		if (graph.isOneCellSelected(cell)) {
 			RDFSInfo info = rdfsInfoMap.getCellInfo(cell);
 			if (info != null) {
-				propPanel.displayRDFSInfo(cell);
+				propPanel.showRDFSInfo(cell);
 				attrDialog.setContentPane(propPanel);
 			}
 		} else {

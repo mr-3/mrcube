@@ -1,6 +1,7 @@
 package mr3.ui;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.*;
 
 import javax.swing.*;
 
@@ -18,10 +19,10 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 	private JButton applyButton;
 	private JButton closeButton;
 
+	private Set prefixNSInfoSet;
+
 	private JComboBox resPrefixBox;
-	private ComboBoxModel resPrefixBoxModel;
 	private JComboBox resTypePrefixBox;
-	private ComboBoxModel resTypePrefixBoxModel;
 
 	private JTextField uriField;
 	//	private RDFSClassTree classTree;
@@ -50,7 +51,8 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 	private RDFLiteralInfoMap litInfoMap = RDFLiteralInfoMap.getInstance();
 	private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
 
-	private static final int listWidth = 300;
+	private static final int boxWidth = 80;
+	private static final int listWidth = 290;
 	private static final int listHeight = 40;
 
 	public RDFResourcePanel(GraphManager manager, AttributeDialog pw) {
@@ -61,12 +63,12 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 
 		JPanel resTypeURITypeGroupPanel = initResTypeURITypeGroupPanel();
 
-		resTypePrefixBoxModel = new DefaultComboBoxModel();
-		resTypePrefixBox = new JComboBox(resTypePrefixBoxModel);
-		resTypePrefixBox.setPreferredSize(new Dimension(50, 30));
-		resTypePrefixBox.setMinimumSize(new Dimension(50, 30));
+		resTypePrefixBox = new JComboBox();
+		resTypePrefixBox.setPreferredSize(new Dimension(boxWidth, 30));
+		resTypePrefixBox.setMinimumSize(new Dimension(boxWidth, 30));
 
 		resTypeField = new JTextField();
+		resTypePrefixBox.addActionListener(new ChangePrefixAction());
 		resTypeField.setPreferredSize(new Dimension(listWidth, listHeight));
 		resTypeField.setMinimumSize(new Dimension(listWidth, listHeight));
 		resTypeField.setBorder(BorderFactory.createTitledBorder("Resource Type"));
@@ -88,10 +90,10 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 
 		JPanel rdfURITypeGroupPanel = initRDFURITypeGroupPanel();
 
-		resPrefixBoxModel = new DefaultComboBoxModel();
-		resPrefixBox = new JComboBox(resPrefixBoxModel);
-		resPrefixBox.setPreferredSize(new Dimension(50, 30));
-		resPrefixBox.setMinimumSize(new Dimension(50, 30));
+		resPrefixBox = new JComboBox();
+		resPrefixBox.addActionListener(new ChangePrefixAction());
+		resPrefixBox.setPreferredSize(new Dimension(boxWidth, 30));
+		resPrefixBox.setMinimumSize(new Dimension(boxWidth, 30));
 
 		uriField = new JTextField();
 		uriField.setPreferredSize(new Dimension(listWidth, listHeight));
@@ -151,6 +153,34 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 
 		gridbag.setConstraints(buttonGroup, c);
 		add(buttonGroup);
+	}
+
+	private String getNameSpace(String prefix) {
+		for (Iterator i = prefixNSInfoSet.iterator(); i.hasNext();) {
+			PrefixNSInfo info = (PrefixNSInfo) i.next();
+			if (info.getPrefix().equals(prefix)) {
+				return info.getNameSpace();
+			}
+		}
+		return "#";
+	}
+
+	private void replacePrefix(String prefix, JTextField field) {
+		Resource resource = new ResourceImpl(field.getText());
+		if (!resource.getNameSpace().equals("http://")) {
+			String localName = resource.getLocalName();
+			field.setText(getNameSpace(prefix) + localName);
+		}
+	}
+
+	class ChangePrefixAction extends AbstractAction {
+		public void actionPerformed(ActionEvent e) {
+			if (e.getSource() == resPrefixBox) {
+				replacePrefix((String) resPrefixBox.getSelectedItem(), uriField);
+			} else if (e.getSource() == resTypePrefixBox) {
+				replacePrefix((String) resTypePrefixBox.getSelectedItem(), resTypeField);
+			}
+		}
 	}
 
 	private JPanel initResTypeURITypeGroupPanel() {
@@ -255,7 +285,7 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 				uriField.setEditable(true);
 				if (uriField.getText().length() == 0 || uriField.getText().charAt(0) != '#') {
 					uriField.setText('#' + uriField.getText());
-				}				
+				}
 			} else if (tmpURIType == URIType.URI) {
 				resPrefixBox.setEnabled(true);
 				uriField.setEditable(true);
@@ -289,9 +319,52 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		resTypeField.setToolTipText(uri);
 	}
 
-	public void displayResInfo(GraphCell c) {
+	private Set getPrefixes() {
+		Set prefixes = new HashSet();
+		for (Iterator i = prefixNSInfoSet.iterator(); i.hasNext();) {
+			PrefixNSInfo info = (PrefixNSInfo) i.next();
+			prefixes.add(info.getPrefix());
+		}
+		return prefixes;
+	}
+
+	private void setResPrefix() {
+		resPrefixBox.setSelectedIndex(0);
+		if (resInfo.getURIType() == URIType.URI) {
+			for (Iterator i = prefixNSInfoSet.iterator(); i.hasNext();) {
+				PrefixNSInfo info = (PrefixNSInfo) i.next();
+				if (info.getNameSpace().equals(resInfo.getURI().getNameSpace())) {
+					resPrefixBox.setSelectedItem(info.getPrefix());
+					break;
+				}
+			}
+		}
+	}
+
+	private void setResTypePrefix() {
+		resTypePrefixBox.setSelectedIndex(0);
+		if (resInfo.getURIType() == URIType.URI) {
+			for (Iterator i = prefixNSInfoSet.iterator(); i.hasNext();) {
+				PrefixNSInfo info = (PrefixNSInfo) i.next();
+				RDFSInfo rdfsInfo = rdfsInfoMap.getCellInfo(resInfo.getTypeCell());
+				if (rdfsInfo != null && info.getNameSpace().equals(rdfsInfo.getURI().getNameSpace())) {
+					resTypePrefixBox.setSelectedItem(info.getPrefix());
+					break;
+				}
+			}
+		}
+	}
+
+	public void showRDFResInfo(GraphCell c) {
 		cell = c;
 		resInfo = resInfoMap.getCellInfo(cell);
+		prefixNSInfoSet = gmanager.getPrefixNSInfoSet();
+		resPrefixBox.setModel(new DefaultComboBoxModel(getPrefixes().toArray()));
+		resPrefixBox.insertItemAt("", 0);
+		resTypePrefixBox.setModel(new DefaultComboBoxModel(getPrefixes().toArray()));
+		resTypePrefixBox.insertItemAt("", 0);
+		setResPrefix();
+		setResTypePrefix();
 		setURI(resInfo.getURI());
 		selectTypeMode(isTypeURI());
 	}
