@@ -1245,7 +1245,7 @@ public class GraphManager {
 	}
 
 	private void centerCellsInGraph(RDFGraph graph) {
-		int margine = 50;
+		int MARGIN = 50;
 		Object[] cells = graph.getAllCells();
 		if (cells.length == 0) {
 			return;
@@ -1255,14 +1255,14 @@ public class GraphManager {
 		int reviseX = 0;
 		int reviseY = 0;
 		if (rec.x <= 0) {
-			reviseX = (-rec.x) + margine;
-		} else if (margine < rec.x) {
-			reviseX = margine - rec.x;
+			reviseX = (-rec.x) + MARGIN;
+		} else if (MARGIN < rec.x) {
+			reviseX = MARGIN - rec.x;
 		}
 		if (rec.y <= 0) {
-			reviseY = (-rec.y) + margine;
-		} else if (margine < rec.y) {
-			reviseY = margine - rec.y;
+			reviseY = (-rec.y) + MARGIN;
+		} else if (MARGIN < rec.y) {
+			reviseY = MARGIN - rec.y;
 		}
 
 		for (int i = 0; i < cells.length; i++) {

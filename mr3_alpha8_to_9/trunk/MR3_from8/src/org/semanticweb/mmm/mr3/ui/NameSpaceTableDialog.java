@@ -85,6 +85,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		addDefaultNS("base", gmanager.getBaseURI());
 		addDefaultNS("rdf", RDF.getURI());
 		addDefaultNS("rdfs", RDFS.getURI());
+		addDefaultNS("owl", OWL.NAMESPACE);
 		changeCellView();
 	}
 

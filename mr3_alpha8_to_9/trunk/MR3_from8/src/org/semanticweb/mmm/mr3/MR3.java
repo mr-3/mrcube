@@ -244,15 +244,6 @@ public class MR3 extends JFrame {
 		return selectMenu;
 	}
 
-	/** 　デバッグ用メソッド */
-	public void printModel(Model model) {
-		try {
-			model.write(new PrintWriter(System.out));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 	public JFrame getLogConsole() {
 		return logger;
 	}

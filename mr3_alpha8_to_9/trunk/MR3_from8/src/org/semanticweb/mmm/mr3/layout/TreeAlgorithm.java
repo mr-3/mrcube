@@ -3,7 +3,7 @@ import java.awt.geom.*;
 import java.util.*;
 
 /**
- *
+ *  
  */
 public class TreeAlgorithm {
 
@@ -18,10 +18,10 @@ public class TreeAlgorithm {
 	private double subtreeSeparation_;
 	private double siblingSeparation_;
 
-	private static final int UVspacing = 100;
-	private static final int UHspacing = 50;
-	private static final int RVspacing = 400;
-	private static final int RHspacing = 50;
+	private static final int UVspacing = 200; // クラス，プロパティの縦方向の間隔
+	private static final int UHspacing = 50; // クラス，プロパティの横方向の間隔
+	private static final int RVspacing = 400; // RDFの縦方向の間隔
+	private static final int RHspacing = 50; // RDFの縦方向の間隔
 
 	public TreeAlgorithm(char orientation) {
 		rootOrient_ = orientation;
@@ -29,7 +29,7 @@ public class TreeAlgorithm {
 
 	public void applyTreeAlgorithm(Set graphNodes, GraphLayoutData selectedNode) {
 		GraphLayoutData root = selectedNode;
-		
+
 		if (root == null) {
 			for (Iterator i = graphNodes.iterator(); i.hasNext();) {
 				GraphLayoutData data = (GraphLayoutData) i.next();
@@ -42,26 +42,27 @@ public class TreeAlgorithm {
 	}
 
 	public boolean compute(Set graphNodes, GraphLayoutData root) {
-//	public boolean compute(Set graphNodes, GraphLayoutData selectedNode) {
-//		GraphLayoutData root = selectedNode;
-//
-//		if (root == null) {
-//			int numroots = 0;
-//
-//			for (Iterator i = graphNodes.iterator(); i.hasNext();) {
-//				GraphLayoutData data = (GraphLayoutData) i.next();
-//				if (!data.hasParent()) {
-//					root = data;
-//					numroots++;
-//				}
-//			}
-//			System.out.println("rootcount: " + numroots);
-//			if (numroots != 1)
-//				root = null;
-//		}
-//
-//		if (root == null)
-//			return false;
+		//	public boolean compute(Set graphNodes, GraphLayoutData selectedNode)
+		// {
+		//		GraphLayoutData root = selectedNode;
+		//
+		//		if (root == null) {
+		//			int numroots = 0;
+		//
+		//			for (Iterator i = graphNodes.iterator(); i.hasNext();) {
+		//				GraphLayoutData data = (GraphLayoutData) i.next();
+		//				if (!data.hasParent()) {
+		//					root = data;
+		//					numroots++;
+		//				}
+		//			}
+		//			System.out.println("rootcount: " + numroots);
+		//			if (numroots != 1)
+		//				root = null;
+		//		}
+		//
+		//		if (root == null)
+		//			return false;
 
 		if (rootOrient_ == 'u') {
 			levelSeparation_ = UVspacing;
@@ -83,7 +84,8 @@ public class TreeAlgorithm {
 		depth_ = 0;
 		initializeData_(root, 0);
 
-		// Build and initialize array for connecting neighboring non-sibling nodes.
+		// Build and initialize array for connecting neighboring non-sibling
+		// nodes.
 		prevNodeAtLevel_ = new GraphLayoutData[depth_ + 1];
 
 		for (int i = 0; i < depth_ + 1; i++)
@@ -204,9 +206,9 @@ public class TreeAlgorithm {
 	}
 
 	/**
-	* Called when two subtree are moved apart.  It evens out the position
-	* of all the other subtrees between them.
-	**/
+	 * Called when two subtree are moved apart. It evens out the position of
+	 * all the other subtrees between them.
+	 */
 	private void evenOut(GraphLayoutData node) {
 		TreeAlgorithmData data = node.data;
 
