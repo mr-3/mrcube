@@ -36,8 +36,11 @@ public class MR3 extends JFrame {
 	private File currentProject;
 
 	private RDFEditor rdfEditor;
+	private OverviewDialog rdfEditorOverview;
 	private ClassEditor classEditor;
+	private OverviewDialog classEditorOverview;
 	private PropertyEditor propertyEditor;
+	private OverviewDialog propertyEditorOverview;
 
 	//	private RDFSTreePanel classTreePanel;
 	//	private RDFSTreePanel propTreePanel;
@@ -48,6 +51,7 @@ public class MR3 extends JFrame {
 	private NameSpaceTableDialog nsTableDialog;
 	private FindResourceDialog findResDialog;
 	private AttributeDialog attrDialog;
+	private MR3OverviewPanel overviewPanel;
 	private PrefDialog prefDialog;
 	private MR3LogConsole logger;
 
@@ -76,9 +80,7 @@ public class MR3 extends JFrame {
 	private Preferences userPrefs; // ユーザの設定を保存(Windowサイズなど）
 	private static ResourceBundle resources;
 
-	MR3(String title) {
-		super(title);
-
+	MR3() {
 		userPrefs = Preferences.userNodeForPackage(this.getClass());
 
 		setSize(userPrefs.getInt(PrefConstants.WindowWidth, MAIN_FRAME_WIDTH), userPrefs.getInt(PrefConstants.WindowHeight, MAIN_FRAME_HEIGHT));
@@ -94,8 +96,14 @@ public class MR3 extends JFrame {
 		gmanager.setRoot(this);
 
 		rdfEditor = new RDFEditor(nsTableDialog, findResDialog, gmanager);
+		rdfEditorOverview = new OverviewDialog("RDF Editor Overview", rdfEditor.getGraph(), rdfEditor.getJViewport());
+		desktop.add(rdfEditorOverview, JLayeredPane.MODAL_LAYER);
 		classEditor = new ClassEditor(nsTableDialog, findResDialog, gmanager);
+		classEditorOverview = new OverviewDialog("Class Editor Overview", classEditor.getGraph(), classEditor.getJViewport());
+		desktop.add(classEditorOverview, JLayeredPane.MODAL_LAYER);
 		propertyEditor = new PropertyEditor(nsTableDialog, findResDialog, gmanager);
+		propertyEditorOverview = new OverviewDialog("Property Editor Overview", propertyEditor.getGraph(), propertyEditor.getJViewport());
+		desktop.add(propertyEditorOverview, JLayeredPane.MODAL_LAYER);
 
 		mr3Reader = new MR3Reader(gmanager, nsTableDialog);
 		mr3Writer = new MR3Writer(gmanager);
@@ -111,6 +119,7 @@ public class MR3 extends JFrame {
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new CloseWindow(this));
+		setTitle("MR^3 - New Project");
 		setVisible(true);
 		initPreferences();
 	}
@@ -283,6 +292,18 @@ public class MR3 extends JFrame {
 
 	public JFrame getLogConsole() {
 		return logger;
+	}
+
+	public Editor getRDFEditor() {
+		return rdfEditor;
+	}
+
+	public Editor getClassEditor() {
+		return classEditor;
+	}
+
+	public Editor getPropertyEditor() {
+		return propertyEditor;
 	}
 
 	public JInternalFrame[] getInternalFrames() {
@@ -495,6 +516,9 @@ public class MR3 extends JFrame {
 	private JMenu getWindowMenu() {
 		JMenu menu = new JMenu("Window");
 		menu.add(new ShowLogConsole(this, "Log Console"));
+		menu.add(new ShowOverview(this, rdfEditorOverview, "Show RDF Graph Overview"));
+		menu.add(new ShowOverview(this, classEditorOverview, "Show Class Graph Overview"));
+		menu.add(new ShowOverview(this, propertyEditorOverview, "Show Property Graph Overview"));
 		menu.addSeparator();
 		menu.add(new EditorSelect(this, TO_FRONT_RDF_EDITOR));
 		menu.add(new EditorSelect(this, TO_FRONT_CLASS_EDITOR));
@@ -670,6 +694,15 @@ public class MR3 extends JFrame {
 	}
 
 	public static void main(String[] arg) {
-		new MR3("MR^3 - New Project");
+		ImageIcon icon = new ImageIcon(MR3.class.getClassLoader().getResource("mr3/resources/mr3_logo.png"));
+		JWindow splashWindow = new HelpDialog(null, icon);
+		try {
+			new MR3();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println(e.getMessage());
+		} finally {
+			splashWindow.dispose();
+		}
 	}
 }

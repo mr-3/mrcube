@@ -1,5 +1,13 @@
 == 更新履歴
 
+=== ■ α8 (2003-08-)
+* 各グラフのOverviewが表示できるようになった．(Window->Show RDF Graph Overview,
+  Show Class Graph Overview, Show Property Graph Overview)
+* 起動時にSplashWindowを表示するようになった．
+
+==== Bug Fixes
+
+
 === ■ α7 (2003-07-31)
 * 各グラフのノードの色を変更できるようになった．
 * 標準出力と標準エラー出力をウィンドウに表示できるようになった．
