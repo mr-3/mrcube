@@ -287,7 +287,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 
 	class NSTableModel extends DefaultTableModel implements Serializable {
 		
-//		private static final long serialVersionUID = 872014649468334269L; // ‚½‚ß‚µ
+		private static final long serialVersionUID = 872014649468334269L; // ‚½‚ß‚µ
 						
 		public NSTableModel(Object[] columnNames, int rowCount) {
 			super(columnNames, rowCount);
