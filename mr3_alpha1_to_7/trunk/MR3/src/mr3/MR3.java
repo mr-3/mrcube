@@ -153,15 +153,21 @@ public class MR3 extends JFrame {
 		internalFrames[0] = createInternalFrame(rdfEditor, "RDF Editor", DEMO_FRAME_LAYER);
 		internalFrames[0].setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		internalFrames[0].addInternalFrameListener(new CloseInternalFrameAction());
+		URL rdfEditorUrl = this.getClass().getClassLoader().getResource("mr3/resources/rdfEditorIcon.gif");
+		internalFrames[0].setFrameIcon(new ImageIcon(rdfEditorUrl));
 
 		//		createInternalFrame(realRDFEditor, "Real RDF Editor", DEMO_FRAME_LAYER);
 		internalFrames[1] = createInternalFrame(classEditor, "Class Editor", DEMO_FRAME_LAYER);
 		internalFrames[1].setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		internalFrames[1].addInternalFrameListener(new CloseInternalFrameAction());
+		URL classEditorUrl = this.getClass().getClassLoader().getResource("mr3/resources/classEditorIcon.gif");
+		internalFrames[1].setFrameIcon(new ImageIcon(classEditorUrl));
 
 		internalFrames[2] = createInternalFrame(propertyEditor, "Property Editor", DEMO_FRAME_LAYER);
 		internalFrames[2].setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		internalFrames[2].addInternalFrameListener(new CloseInternalFrameAction());
+		URL propertyEditorUrl = this.getClass().getClassLoader().getResource("mr3/resources/propertyEditorIcon.gif");
+		internalFrames[2].setFrameIcon(new ImageIcon(propertyEditorUrl));
 
 		srcFrame = createInternalFrame(new JScrollPane(srcArea), "Src View", DEMO_FRAME_LAYER);
 		srcFrame.setClosable(true);
@@ -169,6 +175,10 @@ public class MR3 extends JFrame {
 		srcFrame.addInternalFrameListener(new CloseInternalFrameAction());
 		srcFrame.setBounds(new Rectangle(0, 0, FRAME_WIDTH, FRAME_HEIGHT));
 		srcFrame.setVisible(false);
+
+		rdfEditor.setInternalFrames(internalFrames);
+		classEditor.setInternalFrames(internalFrames);
+		propertyEditor.setInternalFrames(internalFrames);
 	}
 
 	class CloseInternalFrameAction extends InternalFrameAdapter {
@@ -483,7 +493,7 @@ public class MR3 extends JFrame {
 
 	class OpenProjectAction extends AbstractAction {
 
-		private ObjectInputStream createInputStream(File file) throws FileNotFoundException, IOException{
+		private ObjectInputStream createInputStream(File file) throws FileNotFoundException, IOException {
 			InputStream fi = new FileInputStream(file);
 			fi = new GZIPInputStream(fi);
 			return new ObjectInputStream(fi);
@@ -808,12 +818,15 @@ public class MR3 extends JFrame {
 				String en = e.getActionCommand();
 				if (en.equals("To Front RDF Editor")) {
 					internalFrames[0].toFront();
+					internalFrames[0].setIcon(false);
 					internalFrames[0].setSelected(true);
 				} else if (en.equals("To Front Class Editor")) {
 					internalFrames[1].toFront();
+					internalFrames[1].setIcon(false);
 					internalFrames[1].setSelected(true);
 				} else if (en.equals("To Front Property Editor")) {
 					internalFrames[2].toFront();
+					internalFrames[2].setIcon(false);
 					internalFrames[2].setSelected(true);
 				}
 			} catch (PropertyVetoException pve) {
@@ -868,13 +881,13 @@ public class MR3 extends JFrame {
 		mi.addActionListener(new JGraphToNTripleAction());
 		rdfView.add(mi);
 		JMenu rdfsView = new JMenu("RDFS");
-		mi = new JMenuItem("RDFS/XML(Class/Property)");
+		mi = new JMenuItem("RDFS(Class/Property)/XML");
 		mi.addActionListener(new JGraphToRDFSAction());
 		rdfsView.add(mi);
-		mi = new JMenuItem("RDFS/XML(Class)");
+		mi = new JMenuItem("RDFS(Class)/XML");
 		mi.addActionListener(new JGraphToClassAction());
 		rdfsView.add(mi);
-		mi = new JMenuItem("RDFS/XML(Property)");
+		mi = new JMenuItem("RDFS(Property)/XML");
 		mi.addActionListener(new JGraphToPropertyAction());
 		rdfsView.add(mi);
 		menu.add(rdfsView);
