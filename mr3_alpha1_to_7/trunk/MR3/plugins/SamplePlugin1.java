@@ -12,10 +12,6 @@ import com.hp.hpl.mesa.rdf.jena.vocabulary.*;
  */
 public class SamplePlugin1 extends MR3Plugin {
 
-	public SamplePlugin1() {
-		super("Sample Plugin 1");
-	}
-
 	public void exec() {
 		ModelMem sampleModel = new ModelMem();
 		try {
