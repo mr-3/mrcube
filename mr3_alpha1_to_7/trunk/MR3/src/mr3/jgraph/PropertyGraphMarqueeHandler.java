@@ -40,12 +40,12 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 		super.mouseReleased(e);
 	}
 
-	public void insertResourceCell(Point pt) {
+	public GraphCell insertResourceCell(Point pt) {
 		String uri = JOptionPane.showInternalInputDialog(graph, "Please input URI");
 		if (uri == null || gmanager.isEmptyURI(uri) || gmanager.isDuplicatedWithDialog(uri, null, GraphType.PROPERTY)) {
-			return;
+			return null;
 		} else {
-			cellMaker.insertProperty(pt, uri);
+			return cellMaker.insertProperty(pt, uri);
 		}
 	}
 

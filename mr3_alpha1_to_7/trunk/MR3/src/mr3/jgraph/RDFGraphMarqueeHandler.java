@@ -176,7 +176,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 		}
 	}
 
-	public void insertResourceCell(Point pt) {
+	public GraphCell insertResourceCell(Point pt) {
 		Object[] cells = gmanager.getClassGraph().getAllCells();
 		List list = new ArrayList();
 		list.add(null); // リソースのタイプが空の場合
@@ -187,16 +187,58 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 		}
 		InsertResourceDialog ird = new InsertResourceDialog("Input Resource", list.toArray());
 		if (!ird.isConfirm()) {
-			return;
+			return null;
 		}
 		String uri = ird.getURI();
-		Object resTypeCell = ird.getResourceType(); 
+		Object resTypeCell = ird.getResourceType();
 		if (uri == null || gmanager.isDuplicatedWithDialog(uri, null, GraphType.RDF)) {
-			return;
+			return null;
 		} else if (uri.length() == 0) {
-			cellMaker.insertRDFResource(pt, uri, resTypeCell, URIType.ANONYMOUS);
+			return cellMaker.insertRDFResource(pt, uri, resTypeCell, URIType.ANONYMOUS);
 		} else {
-			cellMaker.insertRDFResource(pt, uri, resTypeCell, URIType.URI);
+			return cellMaker.insertRDFResource(pt, uri, resTypeCell, URIType.URI);
+		}
+	}
+
+	private Set getSelectedResourcePorts() {
+		Object[] cells = graph.getSelectionCells();
+		cells = graph.getDescendants(cells);
+		Set selectedResourcePorts = new HashSet();
+		for (int i = 0; i < cells.length; i++) {
+			if (graph.isRDFResourceCell(cells[i])) {
+				DefaultGraphCell cell = (DefaultGraphCell) cells[i];
+				selectedResourcePorts.add(cell.getChildAt(0));
+			}
+		}
+		return selectedResourcePorts;
+	}
+
+	public void insertConnectedResource(Point pt) {
+		Set selectedResourcePorts = getSelectedResourcePorts();
+		DefaultGraphCell targetCell = (DefaultGraphCell) insertResourceCell(pt);
+		if (targetCell == null) {
+			return;
+		}
+		Port targetPort = (Port) targetCell.getChildAt(0);
+		connectCells(selectedResourcePorts, targetPort);
+		graph.setSelectionCell(targetCell);
+	}
+
+	public void insertConnectedLiteralCell(Point pt) {
+		Set selectedResourcePorts = getSelectedResourcePorts();
+		DefaultGraphCell targetCell = (DefaultGraphCell) cellMaker.insertRDFLiteral(pt);
+		if (targetCell == null) {
+			return;
+		}
+		Port targetPort = (Port) targetCell.getChildAt(0);
+		connectCells(selectedResourcePorts, targetPort);
+		graph.setSelectionCell(targetCell);
+	}
+
+	private void connectCells(Set selectedResourcePorts, Port targetPort) {
+		for (Iterator i = selectedResourcePorts.iterator(); i.hasNext();) {
+			Port sourcePort = (Port) i.next();
+			connect(sourcePort, targetPort, MR3Resource.Nil.getURI());
 		}
 	}
 
@@ -216,9 +258,21 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 			}
 		});
 
+		menu.add(new AbstractAction("Insert Connected Resource") {
+			public void actionPerformed(ActionEvent ev) {
+				insertConnectedResource(pt);
+			}
+		});
+
 		menu.add(new AbstractAction("Insert Literal") {
 			public void actionPerformed(ActionEvent ev) {
 				insertLiteralCell(pt);
+			}
+		});
+
+		menu.add(new AbstractAction("Insert Connected Literal") {
+			public void actionPerformed(ActionEvent ev) {
+				insertConnectedLiteralCell(pt);
 			}
 		});
 
