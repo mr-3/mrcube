@@ -58,7 +58,7 @@ public class RDFGraph extends JGraph {
 		setEditable(false);
 		//		setHighlightColor(Color.orange); // ‘I‘ğ‚³‚ê‚Ä‚¢‚éF 				
 		setBackground(GRAPH_BACK_COLOR);
-		selectionModel.setChildrenSelectable(true);
+		selectionModel.setChildrenSelectable(false);
 	}
 
 	public void startEditingAtCell(Object cell) {

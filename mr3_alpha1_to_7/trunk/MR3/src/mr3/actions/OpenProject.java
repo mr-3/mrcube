@@ -53,7 +53,6 @@ public class OpenProject extends AbstractActionFile {
 			// 順番が重要なので、よく考えること
 			Model projectModel = pm.extractProjectModel(model);
 			mr3.mergeRDFSModel(model);
-			mr3.getNSTableDialog().setCurrentNSPrefix();
 			pm.loadProject(projectModel);
 			pm.removeEmptyClass();
 			gmanager.removeTypeCells();

@@ -6,6 +6,7 @@ package mr3.io;
 
 import mr3.data.*;
 import mr3.jgraph.*;
+import mr3.ui.*;
 import mr3.util.*;
 
 import com.hp.hpl.mesa.rdf.jena.mem.*;
@@ -19,13 +20,15 @@ public class MR3Reader {
 	private GraphManager gmanager;
 	private RDFToJGraph rdfToGraph;
 	private JGraphToRDF graphToRDF;
+	private NameSpaceTableDialog nsTableDialog;
 	private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
 
 	/*
 	 *  RDFReader -> JenaReader or N3JenaReader
 	 */
-	public MR3Reader(GraphManager manager) {
+	public MR3Reader(GraphManager manager, NameSpaceTableDialog nsD) {
 		gmanager = manager;
+		nsTableDialog = nsD;
 		rdfToGraph = new RDFToJGraph(manager);
 		graphToRDF = new JGraphToRDF(manager);
 	}
@@ -38,6 +41,7 @@ public class MR3Reader {
 		gmanager.getRDFGraph().removeAllCells();
 		RDFGraph newGraph = rdfToGraph.convertRDFToJGraph(model);
 		replaceGraph(newGraph);
+		nsTableDialog.setCurrentNSPrefix();
 	}
 
 	public void mergeRDFModel(Model newModel) {
@@ -47,6 +51,7 @@ public class MR3Reader {
 			gmanager.getRDFGraph().removeAllCells();
 			RDFGraph newGraph = rdfToGraph.convertRDFToJGraph(model);
 			replaceGraph(newGraph);
+			nsTableDialog.setCurrentNSPrefix();
 		} catch (RDFException e) {
 			e.printStackTrace();
 		}
@@ -55,6 +60,7 @@ public class MR3Reader {
 	public void mergeRDFSModel(Model model) {
 		mergePropertyModel(model);
 		mergeClassModel(model);
+		nsTableDialog.setCurrentNSPrefix();
 	}
 
 	private void mergeClassModel(Model model) {
