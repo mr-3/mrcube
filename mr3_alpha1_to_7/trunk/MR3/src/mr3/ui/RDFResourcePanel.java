@@ -346,6 +346,7 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 					RDFSInfo rdfsInfo = rdfsInfoMap.getCellInfo(typeCell);
 					rdfsInfoMap.removeURICellMap(rdfsInfo);
 					rdfsInfo.setURI(uri.getURI());
+					rdfsInfo.setURIType(tmpResTypeURIType);
 					rdfsInfoMap.putURICellMap(rdfsInfo, typeCell);
 				} else {
 					return null;

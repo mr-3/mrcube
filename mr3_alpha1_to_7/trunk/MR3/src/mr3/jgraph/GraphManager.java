@@ -589,7 +589,7 @@ public class GraphManager {
 		}
 	}
 
-	public Object getPropertyCell(Resource uri, boolean isCheck) {
+	public Object getPropertyCell(Resource uri, URIType uriType, boolean isCheck) {
 		Object cell = rdfsInfoMap.getPropertyCell(uri);
 		if (cell != null) {
 			return cell;
@@ -597,7 +597,7 @@ public class GraphManager {
 			if (isCheck && isDuplicated(uri.getURI(), null, propGraph.getType())) {
 				return null;
 			} else {
-				return cellMaker.insertProperty(new Point(50, 50), uri.getURI(), URIType.URI);
+				return cellMaker.insertProperty(new Point(50, 50), uri.getURI(), uriType);
 			}
 		}
 	}

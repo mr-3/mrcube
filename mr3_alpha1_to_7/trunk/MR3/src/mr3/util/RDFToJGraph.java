@@ -49,7 +49,7 @@ public class RDFToJGraph {
 		RDFGraph graph = gmanager.getPropertyGraph();
 		graph.removeEdges();
 
-		DefaultGraphCell rootCell = (DefaultGraphCell) gmanager.getPropertyCell(MR3Resource.Property, false);
+		DefaultGraphCell rootCell = (DefaultGraphCell) gmanager.getPropertyCell(MR3Resource.Property, URIType.URI, false);
 		Port rootPort = (Port) rootCell.getChildAt(0);
 
 		Map attributes = new HashMap();
@@ -58,7 +58,7 @@ public class RDFToJGraph {
 			Resource property = (Resource) i.next();
 
 			PropertyInfo info = (PropertyInfo) rdfsInfoMap.getResourceInfo(property);
-			DefaultGraphCell pCell = (DefaultGraphCell) gmanager.getPropertyCell(property, false);
+			DefaultGraphCell pCell = (DefaultGraphCell) gmanager.getPropertyCell(property, info.getURIType(), false);
 			Port pPort = (Port) pCell.getChildAt(0);
 
 			rdfsInfoMap.putCellInfo(pCell, info);
@@ -86,9 +86,9 @@ public class RDFToJGraph {
 
 			DefaultGraphCell subCell = null;
 			if (supInfo instanceof ClassInfo) {
-				subCell = (DefaultGraphCell) gmanager.getClassCell(subRes, URIType.URI, false);
+				subCell = (DefaultGraphCell) gmanager.getClassCell(subRes, subInfo.getURIType(), false);
 			} else if (subInfo instanceof PropertyInfo) {
-				subCell = (DefaultGraphCell) gmanager.getPropertyCell(subRes, false);
+				subCell = (DefaultGraphCell) gmanager.getPropertyCell(subRes, subInfo.getURIType(), false);
 			} else {
 				assert false : "can not reach";
 			}
@@ -255,7 +255,9 @@ public class RDFToJGraph {
 
 			Edge edge = getEdge(attributes, predicate.toString());
 			//			putPropertyInfo(stmt, edge);
-			rdfsInfoMap.putEdgeInfo(edge, gmanager.getPropertyCell(predicate, false));
+			/*********************************************************************/
+			/* Œã‚Å’¼‚·*/
+			rdfsInfoMap.putEdgeInfo(edge, gmanager.getPropertyCell(predicate, URIType.URI, false));
 
 			Port sp = (Port) portMap.get(subject);
 			Port tp = (Port) portMap.get(object);

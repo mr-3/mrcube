@@ -32,7 +32,6 @@ public class PropertyPanel extends RDFSPanel {
 
 	public PropertyPanel(GraphManager manager) {
 		super(manager.getPropertyGraph(), manager);
-
 		apply.addActionListener(new ChangeInfoAction());
 		setBorder(BorderFactory.createTitledBorder("Property Attributes"));
 		setBaseTab();
@@ -150,7 +149,7 @@ public class PropertyPanel extends RDFSPanel {
 					}
 					rdfsInfoMap.putCellInfo(cell, info);
 					domain.setListData(info.getDomain().toArray());
-				} 
+				}
 			} else if (e.getSource() == removeRangeButton) {
 				if (!range.isSelectionEmpty()) {
 					Object[] rlist = range.getSelectedValues();
@@ -193,7 +192,7 @@ public class PropertyPanel extends RDFSPanel {
 			PropertyInfo info = (PropertyInfo) rdfsInfoMap.getCellInfo(cell);
 			info.addAllDomain(set);
 			domain.setListData(info.getDomain().toArray());
-		} 
+		}
 	}
 
 	private void setRangeList(Set set) {
@@ -201,14 +200,14 @@ public class PropertyPanel extends RDFSPanel {
 			PropertyInfo info = (PropertyInfo) rdfsInfoMap.getCellInfo(cell);
 			info.addAllRange(set);
 			range.setListData(info.getRange().toArray());
-		} 
+		}
 	}
 
 	public void setValue(Set supCellSet) {
 		PropertyInfo propInfo = (PropertyInfo) rdfsInfo;
 		super.setValue();
 		//		supCellSet.remove(gmanager.getPropertyCell(RDF.Property));
-		supCellSet.remove(gmanager.getPropertyCell(MR3Resource.Property, true));
+		supCellSet.remove(gmanager.getPropertyCell(MR3Resource.Property, URIType.URI, true));
 		supProperties.setListData(getTargetInfo(supCellSet));
 		domain.setListData(propInfo.getDomain().toArray());
 		range.setListData(propInfo.getRange().toArray());
