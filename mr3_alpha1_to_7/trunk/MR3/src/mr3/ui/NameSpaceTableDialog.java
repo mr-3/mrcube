@@ -19,9 +19,6 @@ import com.hp.hpl.mesa.rdf.jena.vocabulary.*;
  *
  * 名前空間と接頭辞の対応付けをテーブルで行う
  * チェックにより，Class, Property, Resourceの名前空間を接頭辞で置き換える
- * 名前空間は，RDFResource, Class, Propertyのそれぞれで使用されているものを選択できる．
- * テーブルに追加した名前空間は選択肢から削除される
- * テーブルから対応表を削除すると，選択肢から削除されていた名前空間を選択できるようになる
  * 接頭辞の名前変更はテーブルから行うことができる
  *
  * @auther takeshi morita
@@ -80,9 +77,10 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		setVisible(false);
 	}
 
+	//	baseURIがrdf, rdfs, mr3の場合があるため
 	private void addDefaultNS(String prefix, String addNS) {
 		if (!isValidPrefix(prefix)) {
-			prefix = getMR3Prefix();
+			prefix = getMR3Prefix(addNS);
 		}
 		if (isValidNS(addNS)) {
 			addNameSpaceTable(new Boolean(true), prefix, addNS);
@@ -97,12 +95,24 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		changeCellView();
 	}
 
-	private String getMR3Prefix() {
-		String nextPrefix = "prefix";
+	private String getKnownPrefix(String ns) {
+		if (ns.equals("http://purl.org/dc/elements/1.1/")) {
+			return "dc";
+		} else if (ns.equals("http://purl.org/rss/1.0/")) {
+			return "rss";
+		} else if (ns.equals("http://xmlns.com/foaf/0.1/")) {
+			return "foaf";
+		} else {
+			return "prefix";
+		}
+	}
+
+	private String getMR3Prefix(String ns) {
+		String nextPrefix = getKnownPrefix(ns);
 		for (int i = 0; true; i++) {
 			String cnt = Integer.toString(i);
-			if (isValidPrefix(nextPrefix + cnt)) {
-				nextPrefix = nextPrefix + cnt;
+			if (isValidPrefix(nextPrefix + "_" + cnt)) {
+				nextPrefix = nextPrefix +  "_" + cnt;
 				break;
 			}
 		}
@@ -114,7 +124,11 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		for (Iterator i = allNSSet.iterator(); i.hasNext();) {
 			String ns = (String) i.next();
 			if (isValidNS(ns)) {
-				addNameSpaceTable(new Boolean(true), getMR3Prefix(), ns);
+				if (isValidPrefix(getKnownPrefix(ns))) {
+					addNameSpaceTable(new Boolean(true), getKnownPrefix(ns), ns);
+				} else {
+					addNameSpaceTable(new Boolean(true), getMR3Prefix(ns), ns);
+				}
 			}
 		}
 		changeCellView();
