@@ -6,6 +6,7 @@ import javax.swing.text.*;
 import mr3.data.*;
 import mr3.jgraph.*;
 import mr3.ui.*;
+import mr3.util.*;
 
 import com.hp.hpl.mesa.rdf.jena.common.*;
 import com.hp.hpl.mesa.rdf.jena.model.*;
@@ -41,7 +42,7 @@ public class ClassEditor extends Editor {
 	}
 
 	public void valueChanged(GraphSelectionEvent e) {
-		changeSelectionCellColor();
+		lastSelectionCells = ChangeCellAttributes.changeSelectionCellColor(graph, lastSelectionCells);
 		if (gmanager.isSelectAbstractLevelMode()) {
 			Object[] cells = graph.getSelectionCells();
 			gmanager.setClassAbstractLevelSet(cells);
