@@ -1,5 +1,6 @@
 package mr3.editor;
 import java.awt.*;
+import java.awt.Container;
 import java.awt.event.*;
 import java.beans.*;
 import java.io.*;
@@ -18,7 +19,7 @@ import com.hp.hpl.mesa.rdf.jena.model.*;
 import com.jgraph.event.*;
 import com.jgraph.graph.*;
 
-public abstract class Editor extends JPanel implements GraphSelectionListener {
+public abstract class Editor extends JInternalFrame implements GraphSelectionListener {
 
 	protected RDFGraph graph;
 	protected GraphManager gmanager;
@@ -44,6 +45,18 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 
 	public void setInternalFrames(JInternalFrame[] ifs) {
 		internalFrames = ifs;
+	}
+
+	Editor(String title) {
+		super(title, true, false, true);
+		setIconifiable(true);		
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		try {
+			setSelected(true);
+		} catch (java.beans.PropertyVetoException e) {
+			e.printStackTrace();
+		}
+		setVisible(true);
 	}
 
 	protected void initEditor(RDFGraph g, GraphManager gm, NameSpaceTableDialog nsD, FindResourceDialog findResD) {
@@ -72,10 +85,11 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 	}
 
 	protected void initLayout() {
-		setLayout(new BorderLayout());
-		add(createToolBar(), BorderLayout.NORTH);
+		Container container = getContentPane();
+		container.setLayout(new BorderLayout());
+		container.add(createToolBar(), BorderLayout.NORTH);
 		graphScrollPane = new JScrollPane(graph);
-		add(graphScrollPane, BorderLayout.CENTER);
+		container.add(graphScrollPane, BorderLayout.CENTER);
 	}
 
 	class RDFGraphUndoManager extends GraphUndoManager {
@@ -125,7 +139,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 	protected void replaceGraph(RDFGraph newGraph) { // Objectを読み書きするのと、同様
 		graph.setRDFState(newGraph.getRDFState());
 	}
-	
+
 	/** 　デバッグ用メソッド */
 	public void printModel(Model model) {
 		try {
@@ -218,7 +232,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 				scale = (double) s.getHeight() / (p.y + p.getHeight());
 			scale = Math.max(Math.min(scale, 16), .01);
 			graph.setScale(scale);
-		}		
+		}
 	}
 
 	private URL getImageIcon(String image) {
@@ -428,7 +442,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 		});
 
 		toolbar.addSeparator();
-		
+
 		// To front RDF Editor
 		URL rdfEditorUrl = getImageIcon("rdfEditorIcon.gif");
 		if (!gmanager.isRDFGraph(graph)) {
