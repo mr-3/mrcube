@@ -47,7 +47,6 @@ public class RDFEditor extends Editor {
 		Writer output = new StringWriter();
 		RDFWriter writer = new NTripleWriter();
 		writeModel(model, output, writer);
-		//			model.write(output, "N-TRIPLE");
 		area.setText(output.toString());
 	}
 

@@ -1,5 +1,11 @@
 == 更新履歴
 
+=== ■ α6 (2003-07-)
+
+==== Bug Fixes
+Linuxで，insertClass, insertPropertyでＩＤを選択できなくなっていたバグを修正．
+N-Tripleに変換できなくなっていたバグを修正．
+
 === ■ α5 (2003-06-27)
 * Convertメニューに，Selected RDFとSelected RDFSメニューを追加した．選択しているリソース
 	を，XML表現または，N-Tripleに変換する．
