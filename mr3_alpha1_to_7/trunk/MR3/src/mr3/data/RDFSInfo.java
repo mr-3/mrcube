@@ -9,15 +9,15 @@ import com.hp.hpl.mesa.rdf.jena.vocabulary.*;
 
 public abstract class RDFSInfo implements Serializable {
 
-	protected Resource uri;
-	private Literal label;        // 現在，選択されているラベル
-	private List labelList;
-	private Literal comment; // 現在，選択されているコメント
-	private List commentList;
-	private Resource isDefinedBy;
-	protected Model model;
-	protected Set supRDFS;
-	protected transient RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
+	transient protected Resource uri;
+	transient private Literal label;        // 現在，選択されているラベル
+	transient private List labelList;
+	transient private Literal comment; // 現在，選択されているコメント
+	transient private List commentList;
+	transient private Resource isDefinedBy;
+	transient protected Model model;
+	transient protected Set supRDFS;
+	transient protected RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
 
 	RDFSInfo(String uri) {
 		try {

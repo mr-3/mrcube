@@ -1,4 +1,5 @@
 package mr3;
+
 import java.awt.*;
 import java.awt.Container;
 import java.awt.event.*;
@@ -279,15 +280,13 @@ public class MR3 extends JFrame {
 	private JMenu getFileMenu() {
 		JMenu menu = new JMenu("File");
 		JMenuItem mi = new JMenuItem("New Project");
-		mi.addActionListener(new NewAction());
+		mi.addActionListener(new NewProjectAction());
 		menu.add(mi);
 		mi = new JMenuItem("Open Project");
 		mi.addActionListener(new OpenProjectAction());
-		mi.setEnabled(false);
 		menu.add(mi);
 		mi = new JMenuItem("Save Project");
 		mi.addActionListener(new SaveProjectAction());
-		mi.setEnabled(false);
 		menu.add(mi);
 		menu.addSeparator();
 		JMenu importRDF = new JMenu("Import");
@@ -462,17 +461,20 @@ public class MR3 extends JFrame {
 		}
 	}
 
-	class NewAction extends AbstractAction {
+	private void newProject() {
+		int messageType = JOptionPane.showInternalConfirmDialog(desktop, "Are you sure you want to continue?", "Warning", JOptionPane.YES_NO_OPTION);
+		if (messageType == JOptionPane.YES_OPTION) {
+			attrDialog.setNullPanel();
+			resInfoMap.clear();
+			litInfoMap.clear();
+			rdfsInfoMap.clear();
+			gmanager.removeAllCells();
+		}
+	}
+
+	class NewProjectAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
-			int messageType =
-				JOptionPane.showInternalConfirmDialog(desktop, "Are you sure you want to continue?", "Warning", JOptionPane.YES_NO_OPTION);
-			if (messageType == JOptionPane.YES_OPTION) {
-				attrDialog.setNullPanel();
-				resInfoMap.clear();
-				litInfoMap.clear();
-				rdfsInfoMap.clear();
-				gmanager.removeAllCells();
-			}
+			newProject();
 		}
 	}
 
@@ -494,7 +496,11 @@ public class MR3 extends JFrame {
 		}
 
 		public void actionPerformed(ActionEvent e) {
+			newProject();
 			File file = getFile(true, "mr3");
+			if (file == null) {
+				return;
+			}
 			loadProject(file);
 		}
 	}
@@ -516,7 +522,10 @@ public class MR3 extends JFrame {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			File file = getFile(true, "mr3");
+			File file = getFile(false, "mr3");
+			if (file == null) {
+				return;
+			}
 			saveProject(file);
 		}
 	}

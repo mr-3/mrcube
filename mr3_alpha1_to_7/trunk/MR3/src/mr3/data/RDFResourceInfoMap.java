@@ -41,12 +41,32 @@ public class RDFResourceInfoMap {
 
 	public Serializable getState() {
 		ArrayList list = new ArrayList();
-		list.add(cellInfoMap);
+		list.add(getCellURIState());
+		list.add((Serializable) cellInfoMap);
 		return list;
 	}
 
-	public void setState(Map newMap) {
-		cellInfoMap.putAll(newMap);
+	public Serializable getCellURIState() {
+		HashMap map = new HashMap();
+		for (Iterator i = cellInfoMap.keySet().iterator(); i.hasNext();) {
+			Object cell = i.next();
+			RDFResourceInfo info = (RDFResourceInfo)cellInfoMap.get(cell);
+			map.put(cell, info.getURIStr());
+		}
+		return map;
+	}
+
+	public void setState(List list) {
+		Map cellURIMap = (Map)list.get(0);
+		Map newMap = (Map)list.get(1);
+		for (Iterator i = newMap.keySet().iterator(); i.hasNext();) {
+			Object cell = i.next();
+			RDFResourceInfo info = (RDFResourceInfo)newMap.get(cell);
+			String uri = (String)cellURIMap.get(cell);
+			RDFResourceInfo newInfo =new RDFResourceInfo(info.getURIType(), uri, (GraphCell)info.getTypeViewCell());
+			newInfo.setTypeCell(info.getTypeCell()); 
+			putCellInfo(cell, newInfo);
+		}
 	}
 
 	public void clear() {
