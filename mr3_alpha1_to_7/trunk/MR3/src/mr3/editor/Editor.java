@@ -283,7 +283,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 						if (graph.isOneCellSelected(cell) && graph.isRDFResourceCell(cell)) {
 							Port port = (Port) ((DefaultGraphCell) cell).getChildAt(0);
 							RDFGraphMarqueeHandler mh = (RDFGraphMarqueeHandler) graph.getMarqueeHandler();
-							mh.selfConnect(port, "");
+							cellMaker.selfConnect(port, "", graph);
 						}
 					}
 				});

@@ -69,11 +69,12 @@ public class GraphLayoutData {
 		return hasParent;
 	}
 
-	private static final int cellHeight = 30;
+	private static final int cellHeight = 25;
+	
 	public void setRealTypePosition(GraphCell typeCell) {
 		rec.x = (int) point.x;
 		rec.y = (int) (point.y+cellHeight);
-		rec.height = 25;
+		rec.height = cellHeight;
 		setRealPosition(typeCell);
 	}
 

@@ -19,7 +19,7 @@ public class RDFCellMaker {
 	private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
 
 	private static final int cellWidth = 100;
-	private static final int cellHeight = 30;
+	private static final int cellHeight = 25;
 
 	public RDFCellMaker(GraphManager manager) {
 		gmanager = manager;
@@ -47,7 +47,7 @@ public class RDFCellMaker {
 	}
 
 	public Map getTypeMap(Point point) {
-		Dimension size = new Dimension(cellWidth, 25);
+		Dimension size = new Dimension(cellWidth, cellHeight);
 		Map map = GraphConstants.createMap();
 		GraphConstants.setBounds(map, new Rectangle(point, size));
 		GraphConstants.setBorderColor(map, Color.black);
@@ -131,8 +131,65 @@ public class RDFCellMaker {
 		resInfoMap.putCellInfo(resourceCell, info);
 		gmanager.changeCellView();
 		gmanager.jumpRDFArea(resourceCell);
-		
+
 		return resourceCell;
+	}
+
+	public Point calcInsertPoint(Set supCells) {
+		boolean isFirst = true;
+		int left = 50;
+		int right = 50;
+		int bottom = 0;
+		for (Iterator i = supCells.iterator(); i.hasNext();) {
+			GraphCell cell = (GraphCell) i.next();
+			Map map = cell.getAttributes();
+			Rectangle rec = GraphConstants.getBounds(map);
+			if (isFirst) {
+				right = rec.x;
+				left = rec.x;
+				bottom = rec.y;
+				isFirst = false;
+			} else {
+				if (right < rec.x) {
+					right = rec.x;
+				}
+				if (left > rec.x) {
+					left = rec.x;
+				}
+				if (bottom < rec.y) {
+					bottom = rec.y;
+				}
+			}
+		}
+		return new Point((left + right)/ 2, bottom + 100);
+	}
+
+	public void connectSubToSups(Port sourcePort, Object[] supCells, RDFGraph graph) {
+		for (int i = 0; i < supCells.length; i++) {
+			if (graph.isPort(supCells[i])) {
+				Port targetPort = (Port) supCells[i];
+				connect(sourcePort, targetPort, "", graph);
+			}
+		}
+	}
+
+	public void connect(Port source, Port target, String edgeName, RDFGraph graph) {
+		DefaultEdge edge = new DefaultEdge(edgeName);
+		ConnectionSet cs = new ConnectionSet(edge, source, target);
+		HashMap attributes = new HashMap();
+		Map map = getEdgeMap(edgeName);
+		attributes.put(edge, map);
+		graph.getModel().insert(new Object[] { edge }, attributes, cs, null, null);
+	}
+
+	public void selfConnect(Port port, String edgeName, RDFGraph graph) {
+		DefaultEdge edge = new DefaultEdge(edgeName);
+		ConnectionSet cs = new ConnectionSet(edge, port, port);
+		HashMap attributes = new HashMap();
+		Map map = getEdgeMap(edgeName);
+		GraphConstants.setRouting(map, GraphConstants.ROUTING_SIMPLE);
+		attributes.put(edge, map);
+		graph.getModel().insert(new Object[] { edge }, attributes, cs, null, null);
 	}
 
 	public GraphCell insertClass(Point point, String uri, URIType uriType) {
@@ -160,7 +217,7 @@ public class RDFCellMaker {
 		RDFSInfo info = new PropertyInfo(uri, uriType);
 		rdfsInfoMap.putCellInfo(vertex, info);
 		gmanager.changeCellView();
-		gmanager.jumpPropertyArea(vertex);		
+		gmanager.jumpPropertyArea(vertex);
 		return vertex;
 	}
 

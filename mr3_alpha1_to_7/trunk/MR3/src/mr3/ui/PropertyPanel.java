@@ -170,7 +170,7 @@ public class PropertyPanel extends RDFSPanel {
 				return;
 			}
 
-			SelectRegionDialog regionDialog = new SelectRegionDialog(gmanager);
+			SelectRDFSDialog regionDialog = new SelectRDFSDialog("Select Region", gmanager);
 			if (e.getSource() == addDomainButton) {
 				initRegionDialog(regionDialog);
 				regionDialog.setRegionSet(info.getDomain());
@@ -181,7 +181,7 @@ public class PropertyPanel extends RDFSPanel {
 				setRangeList((Set) regionDialog.getValue());
 			}
 		}
-		private void initRegionDialog(SelectRegionDialog regionDialog) {
+		private void initRegionDialog(SelectRDFSDialog regionDialog) {
 			regionDialog.replaceGraph(gmanager.getClassGraph());
 			regionDialog.setVisible(true);
 		}

@@ -12,15 +12,15 @@ import com.jgraph.event.*;
  *
  * @auther takeshi morita
  */
-public class SelectRegionDialog extends SelectClassDialog {
+public class SelectRDFSDialog extends SelectClassDialog {
 
 	private Set orgRegionSet;
 	private Set newRegionSet;
 	private JList regionList;
 	private JScrollPane regionListScroll;
 
-	public SelectRegionDialog(GraphManager manager) {
-		super("Select Region", manager);
+	public SelectRDFSDialog(String title, GraphManager manager) {
+		super(title, manager);
 		newRegionSet = new HashSet();
 	}
 
@@ -32,7 +32,7 @@ public class SelectRegionDialog extends SelectClassDialog {
 	protected void initEachDialogAttr() {
 		regionList = new JList();
 		regionListScroll = new JScrollPane(regionList);
-		regionListScroll.setBorder(BorderFactory.createTitledBorder("Domain List"));
+		regionListScroll.setBorder(BorderFactory.createTitledBorder("Selected List"));
 		regionListScroll.setPreferredSize(new Dimension(450, 80));
 		regionListScroll.setMinimumSize(new Dimension(450, 80));
 	}
@@ -46,7 +46,7 @@ public class SelectRegionDialog extends SelectClassDialog {
 		newRegionSet.removeAll(newRegionSet);
 		Object[] cells = graph.getSelectionCells();
 		for (int i = 0; i < cells.length; i++) {
-			if (graph.isRDFSClassCell(cells[i])) {
+			if (graph.isRDFSCell(cells[i])) {
 				newRegionSet.add(cells[i]);
 			}
 		}

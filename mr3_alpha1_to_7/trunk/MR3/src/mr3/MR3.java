@@ -76,7 +76,7 @@ public class MR3 extends JFrame {
 	private JCheckBoxMenuItem propertyEditorView;
 	private JCheckBoxMenuItem showSrcView;
 	//	private JCheckBoxMenuItem lightView;
-
+	
 	private JRadioButton uriView;
 	private JRadioButton idView;
 	private JRadioButton labelView;

@@ -209,6 +209,7 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		if (t) {
 			RDFSInfo info = rdfsInfoMap.getCellInfo(resInfo.getTypeCell());
 			if (info != null) {
+				tmpResTypeURIType = info.getURIType();
 				if (info.getURIType() == URIType.URI) {
 					resTypeURIButton.setSelected(true);
 					resTypePrefixBox.setEnabled(true);
@@ -218,8 +219,10 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 				}
 			} else {
 				if (resTypeURIButton.isSelected()) {
+					tmpResTypeURIType = URIType.URI;
 					resTypePrefixBox.setEnabled(true);
 				} else {
+					tmpResTypeURIType = URIType.ID;
 					resTypePrefixBox.setEnabled(false);
 				}
 			}
@@ -409,6 +412,8 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		return tmpURI;
 	}
 
+	private static final String selectSupClassesTitle = "Select Super Classes";
+
 	private GraphCell getResourceType() {
 		GraphCell typeCell = null;
 		Resource uri = new ResourceImpl(resTypeField.getText());
@@ -424,13 +429,15 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 			if (resInfo.getTypeCell() == null) {
 				int ans = JOptionPane.showConfirmDialog(null, "Not Defined.Create Class ?", "Warning", JOptionPane.YES_NO_OPTION);
 				if (ans == JOptionPane.YES_OPTION) {
-					typeCell = (GraphCell) gmanager.getClassCell(uri, tmpResTypeURIType, false);
+					Set supClasses = gmanager.getSupRDFS(gmanager.getClassGraph(), selectSupClassesTitle);
+					typeCell = (GraphCell) gmanager.insertSubRDFS(uri, tmpResTypeURIType, supClasses, gmanager.getClassGraph());
 				}
 			} else {
 				SelectRDFSCheckDialog dialog = new SelectRDFSCheckDialog("Choose One Select");
 				CreateRDFSType createType = (CreateRDFSType) dialog.getValue();
 				if (createType == CreateRDFSType.CREATE) {
-					typeCell = (GraphCell) gmanager.getClassCell(uri, tmpResTypeURIType, false);
+					Set supClasses = gmanager.getSupRDFS(gmanager.getClassGraph(), selectSupClassesTitle);
+					typeCell = (GraphCell) gmanager.insertSubRDFS(uri, tmpResTypeURIType, supClasses, gmanager.getClassGraph());
 				} else if (createType == CreateRDFSType.RENAME) {
 					typeCell = (GraphCell) resInfo.getTypeCell();
 					RDFSInfo rdfsInfo = rdfsInfoMap.getCellInfo(typeCell);

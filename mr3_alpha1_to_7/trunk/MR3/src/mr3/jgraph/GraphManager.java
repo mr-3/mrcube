@@ -44,7 +44,7 @@ public class GraphManager {
 	public GraphManager(AttributeDialog attrD, Preferences prefs) {
 		attrDialog = attrD;
 		rdfGraph = new RDFGraph(this, GraphType.RDF);
-//		realRDFGraph = new RDFGraph(this, GraphType.REAL_RDF);
+		//		realRDFGraph = new RDFGraph(this, GraphType.REAL_RDF);
 		classGraph = new RDFGraph(this, GraphType.CLASS);
 		propGraph = new RDFGraph(this, GraphType.PROPERTY);
 		registerComponent();
@@ -594,6 +594,28 @@ public class GraphManager {
 		}
 	}
 
+	public Set getSupRDFS(RDFGraph graph, String title) {
+		SelectRDFSDialog selectSupRDFSDialog = new SelectRDFSDialog(title, this);
+		selectSupRDFSDialog.replaceGraph(graph);
+		selectSupRDFSDialog.setVisible(true);
+		selectSupRDFSDialog.setRegionSet(new HashSet());
+		return (Set) selectSupRDFSDialog.getValue();
+	}
+
+	public Object insertSubRDFS(Resource uri, URIType uriType, Set supRDFS, RDFGraph graph) {
+		Point point = cellMaker.calcInsertPoint(supRDFS);
+		DefaultGraphCell cell = null;
+		if (isClassGraph(graph)) {
+			cell = (DefaultGraphCell) cellMaker.insertClass(point, uri.getURI(), uriType);
+		} else if (isPropertyGraph(graph)) {
+			cell = (DefaultGraphCell) cellMaker.insertProperty(point, uri.getURI(), uriType);
+		}
+		Port sourcePort = (Port) cell.getChildAt(0);
+		Object[] supCells = graph.getDescendants(supRDFS.toArray());
+		cellMaker.connectSubToSups(sourcePort, supCells, graph);
+		return cell;
+	}
+
 	public Object getPropertyCell(Resource uri, URIType uriType, boolean isCheck) {
 		Object cell = rdfsInfoMap.getPropertyCell(uri);
 		if (cell != null) {
@@ -853,7 +875,7 @@ public class GraphManager {
 	public AttributeDialog getAttrDialog() {
 		return attrDialog;
 	}
-	
+
 	public void setVisibleAttrDialog(boolean t) {
 		attrDialog.setVisible(t);
 	}
@@ -999,7 +1021,7 @@ public class GraphManager {
 	}
 
 	class AbstractLevelInfo {
-		
+
 		private boolean isSelectAbstractLevelMode;
 		private Set classAbstractLevelSet;
 		private Set propAbstractLevelSet;

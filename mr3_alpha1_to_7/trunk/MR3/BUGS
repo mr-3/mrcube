@@ -1,5 +1,4 @@
-== Known Bugs in MR^3 α5
-
+== Known Bugs in MR^3 α6
 * RDFSプロパティを初めて挿入したときには，挿入したプロパティではなく，
   http://mr3#Propertyの表示内容がAttribute Dialogに表示されてしまう．
 * コピーしたすぐ後に，選択されているノードを移動すると，表示が消えてしまう．
@@ -15,4 +14,3 @@
 * クラス選択ダイアログで、矩形サイズを変更すると、Class Editorのノードの矩形サイズも変わってしまう。
 * RDF Editorのリソースのグループ化が解除される場合がある．
 * N-Triple形式でExportまたはConvertすると日本語が文字化けする。
-* IsaVizで作成したRDFファイルが開けないことがある。

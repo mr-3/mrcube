@@ -15,17 +15,13 @@ import mr3.jgraph.*;
 import com.hp.hpl.mesa.rdf.jena.vocabulary.*;
 
 /**
- *  2002/12/29 NameSpaceTableDialog
  *
  * 名前空間と接頭辞の対応付けをテーブルで行う
- * チェックにより，Class, Property, Resourceの名前空間を接頭辞
- * で置き換える
- * 名前空間は，RDFResource, Class, Propertyのそれぞれで使用
- * されているものを選択できる．
+ * チェックにより，Class, Property, Resourceの名前空間を接頭辞で置き換える
+ * 名前空間は，RDFResource, Class, Propertyのそれぞれで使用されているものを選択できる．
  * テーブルに追加した名前空間は選択肢から削除される
- * テーブルから対応表を削除すると，選択肢から削除されていた名前空間
- * を選択できるようになる
- * 接頭辞の名前変更はテーブルから行う
+ * テーブルから対応表を削除すると，選択肢から削除されていた名前空間を選択できるようになる
+ * 接頭辞の名前変更はテーブルから行うことができる
  *
  * @auther takeshi morita
  */
@@ -43,7 +39,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 	transient private JButton getNSButton;
 	transient private JButton closeButton;
 	transient private JTextField prefixField;
-	transient private JLabel nsLabel;
+	transient private JTextField nsField;
 
 	transient private GridBagLayout gbLayout;
 	transient private GridBagConstraints gbc;
@@ -69,7 +65,6 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		getContentPane().add(inlinePanel);
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-		//閉じるときに，setVisible(false）にする
 		addInternalFrameListener(new InternalFrameAdapter() {
 			public void internalFrameClosing(InternalFrameEvent e) {
 				setVisible(false);
@@ -77,7 +72,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		});
 
 		setDefaultNSPrefix();
-		setSize(new Dimension(780, 170));
+		setSize(new Dimension(750, 200));
 		setLocation(10, 350);
 		setVisible(false);
 	}
@@ -141,7 +136,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		TableColumnModel tcModel = nsTable.getColumnModel();
 		tcModel.getColumn(0).setPreferredWidth(50);
 		tcModel.getColumn(1).setPreferredWidth(100);
-		tcModel.getColumn(2).setPreferredWidth(500);
+		tcModel.getColumn(2).setPreferredWidth(450);
 	}
 
 	private void initGridLayout() {
@@ -153,8 +148,8 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 
 	private void setTableLayout() {
 		JScrollPane nsTableScroll = new JScrollPane(nsTable);
-		nsTableScroll.setPreferredSize(new Dimension(750, 80));
-		nsTableScroll.setMinimumSize(new Dimension(750, 80));
+		nsTableScroll.setPreferredSize(new Dimension(700, 100));
+		nsTableScroll.setMinimumSize(new Dimension(700, 100));
 		gbLayout.setConstraints(nsTableScroll, gbc);
 		inlinePanel.add(nsTableScroll);
 	}
@@ -177,14 +172,14 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		prefixField.setPreferredSize(new Dimension(50, 40));
 		prefixField.setMinimumSize(new Dimension(50, 40));
 
-		nsLabel = new JLabel();
-		nsLabel.setBorder(BorderFactory.createTitledBorder("NameSpace"));
-		nsLabel.setPreferredSize(new Dimension(400, 40));
-		nsLabel.setMinimumSize(new Dimension(400, 40));
+		nsField = new JTextField(30);
+		nsField.setBorder(BorderFactory.createTitledBorder("NameSpace"));
+		nsField.setPreferredSize(new Dimension(400, 40));
+		nsField.setMinimumSize(new Dimension(400, 40));
 
 		JPanel inline = new JPanel();
 		inline.add(prefixField);
-		inline.add(nsLabel);
+		inline.add(nsField);
 		inline.add(addNSButton);
 		inline.add(removeNSButton);
 		inline.add(getNSButton);
@@ -195,7 +190,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == addNSButton) {
-			addNameSpaceTable(new Boolean(true), prefixField.getText(), nsLabel.getText());
+			addNameSpaceTable(new Boolean(true), prefixField.getText(), nsField.getText());
 			changeCellView();
 		} else if (e.getSource() == removeNSButton) {
 			removeNameSpaceTable();
@@ -206,15 +201,26 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		}
 	}
 
-	/** prefix が空でなくかつ，すでに登録されているものではない場合true */
+	/** prefix が空でなくかつ，すでに登録されていない場合true */
 	private boolean isValidPrefix(String prefix) {
 		Set keySet = prefixNSMap.keySet();
-		return (!keySet.contains(prefix) && !prefix.equals(""));
+		if  (!keySet.contains(prefix) && !prefix.equals("")) {
+			return true;
+		} else {
+			JOptionPane.showMessageDialog(null, "Prefix is not valid.", "Warning", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
 	}
 
-	/** nsが空でもnullでもない場合 */
+	/** nsが空でもnullでもなく，すでに登録されてない場合 true */
 	private boolean isValidNS(String ns) {
-		return (ns != null && !ns.equals(""));
+		Collection values = prefixNSMap.values();
+		if (ns != null && !ns.equals("") && !values.contains(ns)) {
+			return true;			
+		} else {
+			JOptionPane.showMessageDialog(null, "NameSpace is not valid.", "Warning", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
 	}
 
 	private void addNameSpaceTable(Boolean isAvailable, String prefix, String ns) {
@@ -223,7 +229,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 			Object[] list = new Object[] { isAvailable, prefix, ns };
 			nsTableModel.insertRow(nsTableModel.getRowCount(), list);
 			prefixField.setText("");
-			nsLabel.setText("");
+			nsField.setText("");
 		}
 	}
 
@@ -250,8 +256,8 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		nsDialog.setVisible(true);
 		String uri = (String) nsDialog.getValue();
 		if (uri != null) {
-			nsLabel.setText(uri);
-			nsLabel.setToolTipText(uri);
+			nsField.setText(uri);
+			nsField.setToolTipText(uri);
 		}
 	}
 
@@ -320,4 +326,5 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 			changeCellView();
 		}
 	}
+	
 }

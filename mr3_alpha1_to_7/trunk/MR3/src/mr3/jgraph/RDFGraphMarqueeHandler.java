@@ -105,7 +105,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 		if (e != null && !e.isConsumed() && port != null && firstPort != null && firstPort != port && isEllipseView(firstPort.getParentView())) {
 			Port source = (Port) firstPort.getCell();
 			Port target = (Port) port.getCell();
-			connect(source, target, MR3Resource.Nil.getURI());
+			cellMaker.connect(source, target, MR3Resource.Nil.getURI(), graph);
 			e.consume(); // Consume Event
 		} else {
 			graph.repaint();
@@ -189,7 +189,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 
 		if (!ird.isConfirm()) {
 			return null;
-		}		
+		}
 		String uri = ird.getURI();
 		Object resTypeCell = ird.getResourceType();
 		URIType uriType = ird.getURIType();
@@ -251,7 +251,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 	private void connectCells(Set selectedResourcePorts, Port targetPort) {
 		for (Iterator i = selectedResourcePorts.iterator(); i.hasNext();) {
 			Port sourcePort = (Port) i.next();
-			connect(sourcePort, targetPort, MR3Resource.Nil.getURI());
+			cellMaker.connect(sourcePort, targetPort, MR3Resource.Nil.getURI(), graph);
 		}
 	}
 
@@ -271,11 +271,13 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 			}
 		});
 
-		menu.add(new AbstractAction("Insert Connected Resource") {
-			public void actionPerformed(ActionEvent ev) {
-				insertConnectedResource(pt);
-			}
-		});
+		if (cell != null || !graph.isSelectionEmpty()) {
+			menu.add(new AbstractAction("Insert Connected Resource") {
+				public void actionPerformed(ActionEvent ev) {
+					insertConnectedResource(pt);
+				}
+			});
+		}
 
 		menu.add(new AbstractAction("Insert Literal") {
 			public void actionPerformed(ActionEvent ev) {
@@ -283,11 +285,13 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 			}
 		});
 
-		menu.add(new AbstractAction("Insert Connected Literal") {
-			public void actionPerformed(ActionEvent ev) {
-				insertConnectedLiteralCell(pt);
-			}
-		});
+		if (cell != null || !graph.isSelectionEmpty()) {
+			menu.add(new AbstractAction("Insert Connected Literal") {
+				public void actionPerformed(ActionEvent ev) {
+					insertConnectedLiteralCell(pt);
+				}
+			});
+		}
 
 		menu.addSeparator();
 
@@ -301,7 +305,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 			menu.add(new AbstractAction("Self Connect") {
 				public void actionPerformed(ActionEvent e) {
 					Port port = (Port) ((DefaultGraphCell) cell).getChildAt(0);
-					selfConnect(port, "");
+					cellMaker.selfConnect(port, "", graph);
 				}
 			});
 		}
@@ -347,31 +351,4 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 		return menu;
 	}
 
-	public void selfConnect(Port port, String edgeName) {
-		DefaultEdge edge = new DefaultEdge(edgeName);
-		ConnectionSet cs = new ConnectionSet(edge, port, port);
-		HashMap attributes = new HashMap();
-		Map map = cellMaker.getEdgeMap(edgeName);
-		GraphConstants.setRouting(map, GraphConstants.ROUTING_SIMPLE);
-		attributes.put(edge, map);
-		graph.getModel().insert(new Object[] { edge }, attributes, cs, null, null);
-	}
-
-	public void connectSubToSups(Port sourcePort, Object[] supCells) {
-		for (int i = 0; i < supCells.length; i++) {
-			if (graph.isPort(supCells[i])) {
-				Port targetPort = (Port) supCells[i];
-				connect(sourcePort, targetPort, "");
-			}
-		}
-	}
-
-	public void connect(Port source, Port target, String edgeName) {
-		DefaultEdge edge = new DefaultEdge(edgeName);
-		ConnectionSet cs = new ConnectionSet(edge, source, target);
-		HashMap attributes = new HashMap();
-		Map map = cellMaker.getEdgeMap(edgeName);
-		attributes.put(edge, map);
-		graph.getModel().insert(new Object[] { edge }, attributes, cs, null, null);
-	}
 }
