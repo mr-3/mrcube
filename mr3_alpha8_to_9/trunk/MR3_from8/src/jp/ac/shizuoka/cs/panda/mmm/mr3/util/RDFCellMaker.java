@@ -6,6 +6,7 @@ import jp.ac.shizuoka.cs.panda.mmm.mr3.data.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.jgraph.*;
 
 import com.hp.hpl.jena.rdf.model.*;
+import com.hp.hpl.jena.vocabulary.*;
 import com.jgraph.*;
 import com.jgraph.graph.*;
 
@@ -186,11 +187,14 @@ public class RDFCellMaker {
 		Map map = getResourceMap(point, ChangeCellAttributes.propertyColor);
 
 		RDFSPropertyCell vertex = new RDFSPropertyCell(uri);
-		//		if (!uri.matches(RDF.getURI() + "_\\d*")) {
-		setCell(graph, vertex, map);
-		//		}
+		PropertyInfo info = new PropertyInfo(uri);
+		if (uri.matches(RDF.getURI() + "_\\d*")) {
+			info.setContainer(true);
+			info.setNum(Integer.parseInt(uri.split("_")[1]));
+		} else {
+			setCell(graph, vertex, map);
+		}
 
-		RDFSInfo info = new PropertyInfo(uri);
 		rdfsInfoMap.putCellInfo(vertex, info);
 		gmanager.changeCellView();
 		gmanager.jumpPropertyArea(vertex);

@@ -198,6 +198,10 @@ public class RDFSInfoMap {
 		}
 	}
 
+	public Set getCellSet() {
+		return Collections.unmodifiableSet(cellInfoMap.keySet()); 
+	}
+
 	/** cell -> info */
 	public RDFSInfo getCellInfo(Object cell) {
 		return (RDFSInfo) cellInfoMap.get(cell);

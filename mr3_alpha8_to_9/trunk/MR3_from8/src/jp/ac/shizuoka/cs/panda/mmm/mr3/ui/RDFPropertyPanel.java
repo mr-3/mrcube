@@ -13,9 +13,13 @@ import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 
 import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.rdf.model.impl.*;
+import com.hp.hpl.jena.vocabulary.*;
 import com.jgraph.graph.*;
 
 public class RDFPropertyPanel extends JPanel implements ActionListener, ListSelectionListener {
+
+	private JCheckBox isContainerBox;
+	private JSpinner numSpinner;
 
 	private JCheckBox propOnlyCheck;
 	private JComboBox uriPrefixBox;
@@ -46,7 +50,17 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		gmanager = manager;
 		setBorder(BorderFactory.createTitledBorder("RDF Property Attributes"));
 
-		propOnlyCheck = new JCheckBox("show property prefix only");
+		isContainerBox = new JCheckBox("is Container");
+		isContainerBox.addActionListener(new ContainerBoxAction());
+		isContainerBox.setSelected(false);
+		numSpinner = new JSpinner(new SpinnerNumberModel(0, 0, 99, 1));
+		//		numSpinner.setEditor(new JSpinner.NumberEditor(numSpinner, "00"));
+		numSpinner.setEnabled(false);
+		JPanel containerPanel = new JPanel();
+		containerPanel.add(isContainerBox);
+		containerPanel.add(numSpinner);
+
+		propOnlyCheck = new JCheckBox("Show property prefix only");
 		propOnlyCheck.addActionListener(this);
 		propOnlyCheck.setSelected(true);
 		uriPrefixBox = new JComboBox();
@@ -82,6 +96,8 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		c.weighty = 3;
 		c.gridwidth = GridBagConstraints.REMAINDER;
 		c.anchor = GridBagConstraints.WEST;
+		gridbag.setConstraints(containerPanel, c);
+		add(containerPanel);
 		gridbag.setConstraints(propOnlyCheck, c);
 		add(propOnlyCheck);
 		c.anchor = GridBagConstraints.CENTER;
@@ -100,6 +116,26 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		component.setPreferredSize(new Dimension(width, height));
 		component.setMinimumSize(new Dimension(width, height));
 		component.setBorder(BorderFactory.createTitledBorder(title));
+	}
+
+	private void setContainer(boolean t) {
+		numSpinner.setEnabled(t);
+		propOnlyCheck.setEnabled(!t);
+		uriPrefixBox.setEnabled(!t);
+		idField.setEnabled(!t);
+		nsLabel.setEnabled(!t);
+		jumpRDFSProp.setEnabled(!t);
+		localNameList.setEnabled(!t);
+	}
+
+	private boolean isContainer() {
+		return isContainerBox.isSelected();
+	}
+
+	class ContainerBoxAction extends AbstractAction {
+		public void actionPerformed(ActionEvent e) {
+			setContainer(isContainer());
+		}
 	}
 
 	class ChangePrefixAction extends AbstractAction {
@@ -232,9 +268,15 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 			idField.setText(MR3Resource.Nil.getLocalName());
 			changeProperty();
 		} else {
-			RDFSInfo info = rdfsInfoMap.getCellInfo(propertyCell);
-			setNSLabel(info.getNameSpace());
-			idField.setText(info.getLocalName());
+			PropertyInfo info = (PropertyInfo) rdfsInfoMap.getCellInfo(propertyCell);
+			isContainerBox.setSelected(info.isContainer());
+			setContainer(info.isContainer());
+			if (info.isContainer()) {				
+				numSpinner.setValue(new Integer(info.getNum()));
+			} else {
+				setNSLabel(info.getNameSpace());
+				idField.setText(info.getLocalName());
+			}
 		}
 		setPrefix();
 	}
@@ -268,40 +310,35 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 
 	private void changeProperty() {
 		GraphCell propertyCell = null;
-		Resource uri = new ResourceImpl(getURI());
+		Resource uri = ResourceFactory.createResource(getURI());
 
-		if (gmanager.isEmptyURI(uri.getURI())) {
-			return;
-		}
-		if (rdfsInfoMap.isPropertyCell(uri)) {
+		if (rdfsInfoMap.isPropertyCell(uri) || uri.equals(MR3Resource.Nil)) {
 			propertyCell = (GraphCell) gmanager.getPropertyCell(uri, false);
 		} else {
 			if (gmanager.isDuplicatedWithDialog(uri.getURI(), null, GraphType.PROPERTY)) {
 				return;
 			}
-			if (uri.equals(MR3Resource.Nil)) {
-				propertyCell = (GraphCell) gmanager.getPropertyCell(uri, false);
+			SelectRDFSCheckDialog dialog = new SelectRDFSCheckDialog("Choose One Select");
+			CreateRDFSType createType = (CreateRDFSType) dialog.getValue();
+			if (createType == CreateRDFSType.CREATE) {
+				Set supProps = gmanager.getSupRDFS(gmanager.getPropertyGraph(), selectSupPropertiesTitle);
+				propertyCell = (GraphCell) gmanager.insertSubRDFS(uri, supProps, gmanager.getPropertyGraph());
+			} else if (createType == CreateRDFSType.RENAME) {
+				propertyCell = (GraphCell) rdfsInfoMap.getEdgeInfo(edge);
+				RDFSInfo rdfsInfo = rdfsInfoMap.getCellInfo(propertyCell);
+				rdfsInfoMap.removeURICellMap(rdfsInfo);
+				rdfsInfo.setURI(uri.getURI());
+				rdfsInfoMap.putURICellMap(rdfsInfo, propertyCell);
 			} else {
-				SelectRDFSCheckDialog dialog = new SelectRDFSCheckDialog("Choose One Select");
-				CreateRDFSType createType = (CreateRDFSType) dialog.getValue();
-				if (createType == CreateRDFSType.CREATE) {
-					Set supProps = gmanager.getSupRDFS(gmanager.getPropertyGraph(), selectSupPropertiesTitle);
-					propertyCell = (GraphCell) gmanager.insertSubRDFS(uri, supProps, gmanager.getPropertyGraph());
-				} else if (createType == CreateRDFSType.RENAME) {
-					propertyCell = (GraphCell) rdfsInfoMap.getEdgeInfo(edge);
-					RDFSInfo rdfsInfo = rdfsInfoMap.getCellInfo(propertyCell);
-					rdfsInfoMap.removeURICellMap(rdfsInfo);
-					rdfsInfo.setURI(uri.getURI());
-					rdfsInfoMap.putURICellMap(rdfsInfo, propertyCell);
-				} else {
-					return;
-				}
+				return;
 			}
 		}
-
 		gmanager.jumpPropertyArea(propertyCell); // 対応するRDFSプロパティを選択する
-
 		rdfsInfoMap.putEdgeInfo(edge, propertyCell);
+		changePropView(propertyCell);
+	}
+
+	private void changePropView(Object propertyCell) {
 		String propValue = gmanager.getPropertyGraph().convertValueToString(propertyCell);
 		gmanager.setCellValue(edge, propValue);
 		gmanager.changeCellView();
@@ -321,8 +358,17 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		if (edge == null) {
+			return;
+		}
 		if (e.getSource() == apply || e.getSource() == idField) {
-			if (edge != null) {
+			if (isContainer()) {
+				Integer num = (Integer) numSpinner.getValue();
+				Resource resource = ResourceFactory.createResource(RDF.getURI() + "_" + num.intValue());
+				GraphCell propertyCell = (GraphCell) gmanager.getPropertyCell(resource, false);
+				rdfsInfoMap.putEdgeInfo(edge, propertyCell);
+				changePropView(propertyCell);
+			} else {
 				changeProperty();
 				gmanager.jumpRDFArea(edge);
 			}

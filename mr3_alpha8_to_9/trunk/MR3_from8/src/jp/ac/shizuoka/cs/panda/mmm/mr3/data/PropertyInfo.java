@@ -13,6 +13,8 @@ public class PropertyInfo extends RDFSInfo {
 
 	private Set domain;
 	private Set range;
+	private boolean isContainer;
+	private int num; 
 	private transient Set subProperties;
 	private transient Set supProperties;
 
@@ -23,6 +25,7 @@ public class PropertyInfo extends RDFSInfo {
 		metaClass = RDF.Property.toString();
 		domain = new HashSet();
 		range = new HashSet();
+		isContainer = false;
 		subProperties = new HashSet();
 		supProperties = new HashSet();
 	}
@@ -31,6 +34,8 @@ public class PropertyInfo extends RDFSInfo {
 		super(info);
 		domain = new HashSet(info.getDomain());
 		range = new HashSet(info.getRange());
+		isContainer = info.isContainer();
+		num = info.getNum();
 		subProperties = new HashSet();
 		supProperties = new HashSet();
 	}
@@ -126,6 +131,22 @@ public class PropertyInfo extends RDFSInfo {
 
 	public Set getSupProperties() {
 		return Collections.unmodifiableSet(supProperties);
+	}
+
+	public boolean isContainer() {
+		return isContainer;
+	}
+
+	public void setContainer(boolean t) {
+		isContainer = t;
+	}
+
+	public int getNum() {
+		return num;
+	}
+	
+	public void setNum(int n) {
+		num = n;		
 	}
 
 	public String toString() {
