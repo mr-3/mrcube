@@ -22,7 +22,7 @@ public class ChangeCellAttributes {
 	public static Color literalColor = Color.orange;
 	public static Color classColor = Color.green;
 	public static Color propertyColor = new Color(255, 158, 62);
-	public static Color selectedColor = new Color(255, 255, 180);
+	public static Color selectedColor = new Color(153, 255, 255);
 	public static Color selectedBorderColor = Color.red;
 
 	public static void changeAllCellColor(GraphManager gmanager) {
