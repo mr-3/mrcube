@@ -629,9 +629,9 @@ public class RDFGraph extends JGraph {
 	}
 
 	private String getCopyRDFSURI(RDFSInfo info, GraphType graphType) {
-		if (gmanager.isDuplicated(info.getURIStr(gmanager.getBaseURI()), null, graphType)) {
+		if (gmanager.isDuplicated(info.getURIStr(), null, graphType)) {
 			for (int j = 1; true; j++) {
-				String compURI = info.getURIStr(gmanager.getBaseURI()) + "-copy" + j;
+				String compURI = info.getURIStr() + "-copy" + j;
 				if (!gmanager.isDuplicated(compURI, null, graphType)) {
 					return info.getURIStr() + "-copy" + j;
 				}
@@ -680,9 +680,9 @@ public class RDFGraph extends JGraph {
 	}
 
 	private String getCopyRDFURI(RDFResourceInfo info) {
-		if (info.getURIType() != URIType.ANONYMOUS && gmanager.isDuplicated(info.getURIStr(gmanager.getBaseURI()), null, GraphType.RDF)) {
+		if (info.getURIType() != URIType.ANONYMOUS && gmanager.isDuplicated(info.getURIStr(), null, GraphType.RDF)) {
 			for (int j = 1; true; j++) {
-				String compURI = info.getURIStr(gmanager.getBaseURI()) + "-copy" + j;
+				String compURI = info.getURIStr() + "-copy" + j;
 				if (!gmanager.isDuplicated(compURI, null, GraphType.RDF)) {
 					return info.getURIStr() + "-copy" + j;
 				}

@@ -12,7 +12,6 @@ public class RDFResourceInfo implements Serializable {
 	private Object typeCell; // RDFS Classに対応するCellを保持する
 	private GraphCell typeViewCell; // RDF Resourceにつく矩形のCellを保持する
 
-	//	private Resource uriRes;
 	private String uri;
 	private URIType uriType;
 	private String uriTypeStr;
@@ -22,10 +21,8 @@ public class RDFResourceInfo implements Serializable {
 	public RDFResourceInfo(URIType ut, String uri, GraphCell typeCell) {
 		setURIType(ut);
 		if (uriType == URIType.ANONYMOUS) {
-			//			this.uri = getAnonResource();
 			this.uri = getAnonResource().toString(); // getURI()は，nullを返してしまうため．
 		} else {
-			//			this.uri = new ResourceImpl(uri);
 			this.uri = uri;
 		}
 		this.typeViewCell = typeCell;
@@ -108,10 +105,8 @@ public class RDFResourceInfo implements Serializable {
 
 	public void setURI(String str) {
 		if (uriType == URIType.ANONYMOUS) {
-			//			uri = getAnonResource();
 			uri = getAnonResource().toString(); // getURI()は，nullを返してしまうため，toString
 		} else {
-			//			uri = new ResourceImpl(str);
 			uri = str;
 		}
 	}
@@ -124,26 +119,8 @@ public class RDFResourceInfo implements Serializable {
 		}
 	}
 
-	public Resource getURI(String baseURI) {
-		if (uriType == URIType.ANONYMOUS) {
-			return new ResourceImpl(new AnonId(uri)); // AnonymousＩＤを処理するため．
-		} else if (uriType == URIType.ID) {
-			return new ResourceImpl(baseURI + uri);
-		} else {
-			return new ResourceImpl(uri);
-		}
-	}
-
 	public String getURIStr() {
 		return uri;
-	}
-
-	public String getURIStr(String baseURI) {
-		if (uriType == URIType.ID) {
-			return baseURI + uri;
-		} else {
-			return uri;
-		}
 	}
 
 	public String toString() {

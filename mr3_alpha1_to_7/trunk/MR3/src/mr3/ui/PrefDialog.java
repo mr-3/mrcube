@@ -3,6 +3,7 @@ package mr3.ui;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.*;
 import java.util.prefs.*;
 
 import javax.swing.*;
@@ -169,6 +170,18 @@ public class PrefDialog extends JInternalFrame {
 		initComponent(baseURILabel, "BaseURI", 300, 40);
 		PrefixNSUtil.setPrefixNSInfoSet(gmanager.getPrefixNSInfoSet());
 		uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
+		setPrefix();
+	}
+
+	private void setPrefix() {
+		for (Iterator i = gmanager.getPrefixNSInfoSet().iterator(); i.hasNext();) {
+			PrefixNSInfo prefNSInfo = (PrefixNSInfo) i.next();
+			if (prefNSInfo.getNameSpace().equals(gmanager.getBaseURI())) {
+				uriPrefixBox.setSelectedItem(prefNSInfo.getPrefix());
+				baseURILabel.setText(prefNSInfo.getNameSpace());
+				break;
+			}
+		}
 	}
 
 	class ChangePrefixAction extends AbstractAction {
