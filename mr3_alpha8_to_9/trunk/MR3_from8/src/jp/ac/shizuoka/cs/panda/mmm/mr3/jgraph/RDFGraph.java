@@ -633,7 +633,8 @@ public class RDFGraph extends JGraph {
 
 	public void cut() {
 		copy();
-		gmanager.removeAction(this);
+		gmanager.initRemoveAction(this);
+		gmanager.removeAction();
 	}
 
 	private void setPastePosition(GraphCell cell, String value, Point pastePoint) {

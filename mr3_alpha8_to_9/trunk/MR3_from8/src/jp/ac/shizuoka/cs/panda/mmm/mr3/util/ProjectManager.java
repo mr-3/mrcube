@@ -245,7 +245,8 @@ public class ProjectManager {
 		Object cell = rdfsInfoMap.getClassCell(MR3Resource.Empty);
 		graph.clearSelection();
 		graph.setSelectionCell(cell);
-		gmanager.removeAction(graph);
+		gmanager.initRemoveAction(graph);
+		gmanager.removeAction();
 	}
 
 	public void loadProject(Model model) {
