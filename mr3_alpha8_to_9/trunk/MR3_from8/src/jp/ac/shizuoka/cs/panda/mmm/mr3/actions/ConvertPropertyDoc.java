@@ -19,6 +19,9 @@ import com.hp.hpl.jena.rdf.model.impl.*;
  */
 public class ConvertPropertyDoc extends AbstractActionFile {
 
+	public static final String PROPERTY = Translator.getString("Component.Convert.RDFS/XML.RDFS(Property).Text");
+	public static final String SELECTED_PROPERTY = Translator.getString("Component.Convert.RDFS/XML.SelectedRDFS(Property).Text");
+	
 	public ConvertPropertyDoc(MR3 mr3, String name) {
 		super(mr3, name);
 	}
@@ -42,7 +45,7 @@ public class ConvertPropertyDoc extends AbstractActionFile {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals(Translator.getString("Component.Convert.RDFS/XML.RDFS(Property).Text"))) {
+		if (e.getActionCommand().equals(PROPERTY)) {
 			convertPropertySRC(false);
 		} else {
 			convertPropertySRC(true);

@@ -10,6 +10,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 import jp.ac.shizuoka.cs.panda.mmm.mr3.jgraph.*;
+import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 
 import org.jgraph.*;
 
@@ -18,7 +19,15 @@ import org.jgraph.*;
  */
 public class OverviewDialog extends JInternalFrame {
 
-	private static final int LENGH = 150;
+	private static final int LENGH = 200;
+
+	public static final String RDF_EDITOR_OVERVIEW = Translator.getString("RDFEditorOverview.Title");
+	public static final String CLASS_EDITOR_OVERVIEW = Translator.getString("ClassEditorOverview.Title");
+	public static final String PROPERTY_EDITOR_OVERVIEW = Translator.getString("PropertyEditorOverview.Title");
+
+	public static final ImageIcon RDF_EDITOR_ICON = Utilities.getImageIcon(Translator.getString("RDFEditor.Icon"));
+	public static final ImageIcon CLASS_EDITOR_ICON = Utilities.getImageIcon(Translator.getString("ClassEditor.Icon"));
+	public static final ImageIcon PROPERTY_EDITOR_ICON = Utilities.getImageIcon(Translator.getString("PropertyEditor.Icon"));
 
 	public OverviewDialog(String title, JGraph graph, JViewport viewport) {
 		super(title, true, true);

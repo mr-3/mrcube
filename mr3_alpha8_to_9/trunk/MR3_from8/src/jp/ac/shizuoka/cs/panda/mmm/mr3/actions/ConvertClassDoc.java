@@ -19,6 +19,9 @@ import com.hp.hpl.jena.rdf.model.impl.*;
  */
 public class ConvertClassDoc extends AbstractActionFile {
 
+	public static final String CLASS = Translator.getString("Component.Convert.RDFS/XML.RDFS(Class).Text");
+	public static final String SELECTED_CLASS = Translator.getString("Component.Convert.RDFS/XML.SelectedRDFS(Class).Text");
+
 	public ConvertClassDoc(MR3 mr3, String name) {
 		super(mr3, name);
 	}
@@ -41,7 +44,7 @@ public class ConvertClassDoc extends AbstractActionFile {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals(Translator.getString("Component.Convert.RDFS/XML.RDFS(Class).Text"))) {
+		if (e.getActionCommand().equals(CLASS)) {
 			convertClassSRC(false);
 		} else {
 			convertClassSRC(true);
