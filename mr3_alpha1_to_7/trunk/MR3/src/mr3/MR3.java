@@ -335,8 +335,8 @@ public class MR3 extends JFrame {
 		menu.add(exportMenu);
 
 		menu.addSeparator();
-		//		menu.add(getPluginMenus());  // JavaWebStartでは，pluginは使用できないと思われる．
-		//		menu.addSeparator();
+		menu.add(getPluginMenus()); // JavaWebStartでは，pluginは使用できないと思われる．
+		menu.addSeparator();
 
 		mi = new JMenuItem("Exit");
 		mi.addActionListener(new ExitAction());
@@ -671,7 +671,7 @@ public class MR3 extends JFrame {
 		JMenu menu = new JMenu("View");
 		ChangeCellViewAction changeCellViewAction = new ChangeCellViewAction();
 		uriView = new JRadioButton("URI View");
-		uriView.addItemListener(changeCellViewAction);		
+		uriView.addItemListener(changeCellViewAction);
 		idView = new JRadioButton("ID View");
 		idView.addItemListener(changeCellViewAction);
 		idView.setSelected(true);
