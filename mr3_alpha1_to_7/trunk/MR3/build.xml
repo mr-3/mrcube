@@ -1,8 +1,8 @@
 <project name="MR3" default="compile" basedir=".">
   <property name="app.name"  value="mr3"/>
-  <property name="src.dir" value="src/mr3"/>
+  <property name="src.dir" value="src/jp/ac/shizuoka/cs/panda/mmm/mr3"/>
   <property name="build.dir" value="build/classes"/>
-  <property name="resource.dir" value="${build.dir}/mr3/resources"/>
+  <property name="resource.dir" value="${build.dir}/jp/ac/shizuoka/cs/panda/mmm/mr3/resources"/>
   <property name="lib.dir"   value="build/lib"/>
   <property name="jarfile"   value="${name}.jar"/>
 
@@ -39,14 +39,14 @@
   </target>
 
   <target name="jrun">
-    <java classname="mr3.MR3" fork="yes">
+    <java classname="jp.ac.shizuoka.cs.panda.mmm.mr3.MR3" fork="yes">
       <classpath refid="classpath"/>
     </java>
     <echo message="Ant appears to be successfully installed" />
   </target>
 
   <target name="run" depends="jar">
-    <java classname="mr3.MR3" fork="yes">
+    <java classname="jp.ac.shizuoka.cs.panda.mmm.mr3.MR3" fork="yes">
       <classpath refid="classpath"/>
     </java>
     <echo message="Ant appears to be successfully installed" />

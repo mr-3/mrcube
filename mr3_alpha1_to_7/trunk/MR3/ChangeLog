@@ -4,6 +4,7 @@
 * 各グラフのOverviewが表示できるようになった．(Window->Show RDF Graph Overview,
   Show Class Graph Overview, Show Property Graph Overview)
 * 起動時にSplashWindowを表示するようになった．
+* その他，細かい修正．
 
 ==== Bug Fixes
 

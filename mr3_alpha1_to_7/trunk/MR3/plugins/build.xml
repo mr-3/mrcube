@@ -1,5 +1,5 @@
-<project name="SamplePlugin" default="compile" basedir=".">
-  <property name="app.name"  value="SamplePlugin"/>
+<project name="samplePlugin" default="compile" basedir=".">
+  <property name="app.name"  value="samplePlugin"/>
   <property name="src.dir" value="."/>
   <property name="build.dir" value="."/>
   <property name="lib.dir1"   value="../build/"/>
