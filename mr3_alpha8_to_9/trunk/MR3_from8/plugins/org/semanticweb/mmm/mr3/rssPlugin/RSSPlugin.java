@@ -101,7 +101,7 @@ public class RSSPlugin extends MR3Plugin {
 
 	public void exec() {
 		try {
-			String uri = JOptionPane.showInternalInputDialog(getDesktopPane(), "Input URI (exp: http://panda.cs.inf.shizuoka.ac.jp/mmm/mr3/");
+			String uri = JOptionPane.showInternalInputDialog(getDesktopPane(), "Input URI (exp: http://mmm.semanticweb.org/mr3/");
 			if (uri == null || uri.length() == 0) {
 				return;
 			}
@@ -197,7 +197,7 @@ public class RSSPlugin extends MR3Plugin {
 	public static void main(String[] argv) {
 		try {
 			RSSPlugin plugin = new RSSPlugin();
-			String uri = JOptionPane.showInputDialog("Input URI (exp: http://panda.cs.inf.shizuoka.ac.jp/mmm/mr3/");
+			String uri = JOptionPane.showInputDialog("Input URI (exp: http://mmm.semanticweb.org/mr3/");
 			plugin.parse(uri);
 			plugin.showRSSPluginUI();
 		} catch (IOException ex1) {
