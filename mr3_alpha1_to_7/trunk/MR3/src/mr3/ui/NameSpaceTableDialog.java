@@ -284,7 +284,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 	}
 
 	class NSTableModel extends DefaultTableModel implements Serializable {
-
+		
 		public NSTableModel(Object[] columnNames, int rowCount) {
 			super(columnNames, rowCount);
 		}
