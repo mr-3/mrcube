@@ -528,17 +528,17 @@ public class MR3 extends JFrame {
 
 		JMenu rdfView = new JMenu("RDF/XML");
 		menu.add(rdfView);
-		rdfView.add(new ConvertRDF(this, "RDF/XML"));
-		rdfView.add(new ConvertRDF(this, "Selected RDF/XML"));
+		rdfView.add(new ConvertRDFDoc(this, "RDF/XML"));
+		rdfView.add(new ConvertRDFDoc(this, "Selected RDF/XML"));
 
 		JMenu rdfsView = new JMenu("RDFS/XML");
 		menu.add(rdfsView);
-		rdfsView.add(new ConvertRDFS(this, "RDFS(Class/Property)/XML"));
-		rdfsView.add(new ConvertClass(this, "RDFS(Class)/XML"));
-		rdfsView.add(new ConvertProperty(this, "RDFS(Property)/XML"));
-		rdfsView.add(new ConvertRDFS(this, "Selected RDFS(Class/Property)/XML"));
-		rdfsView.add(new ConvertClass(this, "Selected RDFS(Class)/XML"));
-		rdfsView.add(new ConvertProperty(this, "Selected RDFS(Property)/XML"));
+		rdfsView.add(new ConvertRDFSDoc(this, "RDFS(Class/Property)/XML"));
+		rdfsView.add(new ConvertClassDoc(this, "RDFS(Class)/XML"));
+		rdfsView.add(new ConvertPropertyDoc(this, "RDFS(Property)/XML"));
+		rdfsView.add(new ConvertRDFSDoc(this, "Selected RDFS(Class/Property)/XML"));
+		rdfsView.add(new ConvertClassDoc(this, "Selected RDFS(Class)/XML"));
+		rdfsView.add(new ConvertPropertyDoc(this, "Selected RDFS(Property)/XML"));
 
 		JMenu nTripleView = new JMenu("RDF/N-Triple");
 		menu.add(nTripleView);

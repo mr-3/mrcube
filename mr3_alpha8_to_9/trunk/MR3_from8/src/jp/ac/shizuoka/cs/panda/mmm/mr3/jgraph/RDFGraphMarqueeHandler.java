@@ -15,7 +15,6 @@ import org.jgraph.graph.*;
 
 //
 // Custom MarqueeHandler
-
 // MarqueeHandler that Connects Vertices and Displays PopupMenus
 public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 
@@ -171,9 +170,9 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 	}
 
 	protected class ConnectAction extends AbstractAction {
-			
+
 		protected ConnectAction(String title) {
-			super(title);		
+			super(title);
 		}
 
 		public void actionPerformed(ActionEvent e) {
@@ -265,9 +264,33 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 		cellMaker.insertRDFLiteral(pt);
 	}
 
-	//	
-	// PopupMenu
-	//
+	protected boolean isCellSelected(Object cell) {
+		// cell != nullの判定がないと，一つだけセルを選択したときに，メニューが表示されない．
+		return (cell != null || !graph.isSelectionEmpty());
+	}
+
+	private void addTransformMenu(JPopupMenu menu, Object cell) {
+		if (isCellSelected(cell)) {
+			menu.addSeparator();
+			menu.add(new TransformRDFToRDFSAction(graph, gmanager, GraphType.CLASS));
+			menu.add(new TransformRDFToRDFSAction(graph, gmanager, GraphType.PROPERTY));
+		}
+	}
+
+	protected void addEditMenu(JPopupMenu menu, Object cell) {
+		menu.addSeparator();
+		menu.add(new CopyAction(graph, "Copy"));
+		menu.add(new CutAction(graph, "Cut"));
+		menu.add(new PasteAction(graph, "Paste"));
+
+		if (isCellSelected(cell)) {
+			menu.addSeparator();
+			menu.add(new RemoveAction(graph, gmanager, "Remove"));
+		}
+		menu.addSeparator();
+	}
+
+	/** create PopupMenu */
 	public JPopupMenu createPopupMenu(final Point pt, final Object cell) {
 		JPopupMenu menu = new JPopupMenu();
 
@@ -277,7 +300,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 			}
 		});
 
-		if (cell != null || !graph.isSelectionEmpty()) {
+		if (isCellSelected(cell)) {
 			menu.add(new AbstractAction("Insert Connected Resource") {
 				public void actionPerformed(ActionEvent ev) {
 					insertConnectedResource(pt);
@@ -291,7 +314,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 			}
 		});
 
-		if (cell != null || !graph.isSelectionEmpty()) {
+		if (isCellSelected(cell)) {
 			menu.add(new AbstractAction("Insert Connected Literal") {
 				public void actionPerformed(ActionEvent ev) {
 					insertConnectedLiteralCell(pt);
@@ -300,7 +323,6 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 		}
 
 		menu.addSeparator();
-
 		menu.add(new ConnectAction("Connect Mode"));
 
 		if (graph.isOneCellSelected(cell) && graph.isRDFResourceCell(cell)) {
@@ -311,18 +333,8 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 				}
 			});
 		}
-
-		menu.addSeparator();
-		menu.add(new CopyAction(graph, "Copy"));
-		menu.add(new CutAction(graph, "Cut"));
-		menu.add(new PasteAction(graph, "Paste"));
-
-		if (cell != null || !graph.isSelectionEmpty()) {
-			menu.addSeparator();
-			menu.add(new RemoveAction(graph, gmanager, "Remove"));
-		}
-
-		menu.addSeparator();
+		addTransformMenu(menu, cell);
+		addEditMenu(menu, cell);
 		menu.add(new ShowAttrDialog(graph, gmanager, "Attribute Dialog"));
 
 		return menu;
