@@ -46,8 +46,6 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 			return null;
 		}
 		String uri = ird.getURI();
-//		URIType uriType = ird.getURIType();
-//		String tmpURI = getAddedBaseURI(uri, uriType);
 		if (uri == null || gmanager.isEmptyURI(uri) || gmanager.isDuplicatedWithDialog(uri, null, GraphType.PROPERTY)) {
 			return null;
 		} else {
@@ -61,8 +59,6 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 			return;
 		}
 		String uri = ird.getURI();
-//		URIType uriType = ird.getURIType();
-//		String tmpURI = getAddedBaseURI(uri, uriType);
 		if (uri == null || gmanager.isEmptyURI(uri) || gmanager.isDuplicatedWithDialog(uri, null, GraphType.CLASS)) {
 			return;
 		} else {

@@ -45,22 +45,20 @@ public class RDFGraph extends JGraph {
 		return type;
 	}
 
-	private static final Color GRAPH_BACK_COLOR = new Color(245, 245, 245);
+	private static final Color GRAPH_BACK_COLOR = new Color(235, 235, 235);
 
 	private void initStatus() {
-		setSelectNewCells(true); // Tell the Graph to Select new Cells upon Insertion
-		setGridEnabled(true); // Use the Grid (but don't make it Visible)
 		setGridSize(6);
+		setSelectNewCells(true);
+		setGridEnabled(true);
 		setTolerance(10);
-		setHandleColor(Color.gray); // セルの点の周りの色 
-		setLockedHandleColor(Color.gray); // セルの周りの点々の色
-		setHighlightColor(Color.orange); // 選択されている色 				
-		setBackground(GRAPH_BACK_COLOR);
 		setCloneable(false);
 		setDisconnectable(false);
 		setAntiAliased(true);
+		setEditable(false);
+		//		setHighlightColor(Color.orange); // 選択されている色 				
+		setBackground(GRAPH_BACK_COLOR);
 		selectionModel.setChildrenSelectable(true);
-//		selectionModel.setChildrenSelectable(false);
 	}
 
 	public void startEditingAtCell(Object cell) {
@@ -70,7 +68,7 @@ public class RDFGraph extends JGraph {
 				RDFResourceCell resCell = (RDFResourceCell) cell;
 				setSelectionCell(resCell);
 			} else {
-				setSelectionCell(cell); // セルを表示する
+				setSelectionCell(cell);
 			}
 		}
 	}

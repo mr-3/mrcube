@@ -163,7 +163,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 		if (cells != null && cells.length > 0) {
 			int count = getCellCount(graph);
 			DefaultGraphCell group = new DefaultGraphCell(new Integer(count - 1));
-			ParentMap map = new ParentMap(graph.getModel());
+			ParentMap map = new ParentMap();
 			for (int i = 0; i < cells.length; i++) {
 				map.addEntry(cells[i], group);
 			}

@@ -39,6 +39,7 @@ public class ChangeCellAttributes {
 	}
 
 	private static final Color PROPERTY_COLOR = new Color(255, 158, 62);
+	private static final Color SELECTED_COLOR = new Color(255, 255, 50);
 	public static boolean isChangedSelectedColor = true;
 
 	public static Object[] changeSelectionCellColor(RDFGraph graph, Object[] lastSelectionCells) {
@@ -64,7 +65,7 @@ public class ChangeCellAttributes {
 		for (int i = 0; i < cells.length; i++) {
 			GraphCell cell = (GraphCell) cells[i];
 			if (graph.isRDFsCell(cell)) {
-				changeCellColor(graph, cell, Color.yellow);
+				changeCellColor(graph, cell, SELECTED_COLOR);
 			}
 		}
 		return cells;
