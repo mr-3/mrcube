@@ -28,6 +28,8 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 	protected Point start, current; // Holds the Start and the Current Point
 	protected PortView port, firstPort; // Holds the First and the Current Port
 
+	private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
+	
 	public RDFGraphMarqueeHandler(GraphManager manager, RDFGraph graph) {
 		gmanager = manager;
 		this.graph = graph;
@@ -231,7 +233,12 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 		}
 		Port targetPort = (Port) targetCell.getChildAt(0);
 		connectCells(selectedResourcePorts, targetPort);
-		graph.setSelectionCell(targetCell.getParent());
+		if (targetCell.getParent() != null) {
+			graph.setSelectionCell(targetCell.getParent());
+		} else {
+			graph.setSelectionCell(targetCell);
+		}
+		gmanager.changeCellView();		
 	}
 
 	public void insertConnectedLiteralCell(Point pt) {
@@ -243,12 +250,15 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 		Port targetPort = (Port) targetCell.getChildAt(0);
 		connectCells(selectedResourcePorts, targetPort);
 		graph.setSelectionCell(targetCell);
+		gmanager.changeCellView();		
 	}
 
 	private void connectCells(Set selectedResourcePorts, Port targetPort) {
 		for (Iterator i = selectedResourcePorts.iterator(); i.hasNext();) {
 			Port sourcePort = (Port) i.next();
-			cellMaker.connect(sourcePort, targetPort, MR3Resource.Nil.getURI(), graph);
+			Edge edge = cellMaker.connect(sourcePort, targetPort, MR3Resource.Nil.getURI(), graph);
+			Object rdfsCell = gmanager.getPropertyCell(MR3Resource.Nil, false);
+			rdfsInfoMap.putEdgeInfo(edge, rdfsCell);
 		}
 	}
 

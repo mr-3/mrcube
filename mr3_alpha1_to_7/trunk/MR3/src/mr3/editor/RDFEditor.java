@@ -79,14 +79,12 @@ public class RDFEditor extends Editor {
 		GraphCell propCell = (GraphCell) rdfsInfoMap.getEdgeInfo(cell);
 		gmanager.jumpPropertyArea(propCell);
 
-		if (attrDialog.isVisible()) {
-			propPanel.showPropertyInfo(cell);
-			Edge edge = (Edge) cell;
-			Object domainType = getDomainType(edge);
-			Object rangeType = getRangeType(edge);
-			propPanel.setPropertyList(gmanager.getPropertyList(), gmanager.getValidPropertyList(domainType, rangeType));
-			attrDialog.setContentPane(propPanel);
-		}
+		propPanel.showPropertyInfo(cell);
+		Edge edge = (Edge) cell;
+		Object domainType = getDomainType(edge);
+		Object rangeType = getRangeType(edge);
+		propPanel.setPropertyList(gmanager.getPropertyList(), gmanager.getValidPropertyList(domainType, rangeType));
+		attrDialog.setContentPane(propPanel);
 	}
 
 	private void selectLiteral(GraphCell cell) {
