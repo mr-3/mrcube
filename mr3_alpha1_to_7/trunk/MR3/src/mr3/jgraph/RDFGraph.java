@@ -31,8 +31,6 @@ public class RDFGraph extends JGraph {
 
 	public RDFGraph(GraphManager manager, AttributeDialog attrD, GraphType type) {
 		super(new RDFGraphModel());
-		//		GraphLayoutCache cache = new GraphLayoutCache(getModel(), getGraphLayoutCache().getFactory(), false, true);
-		//		setGraphLayoutCache(cache);
 		initStatus();
 		gmanager = manager;
 		attrDialog = attrD;
@@ -423,14 +421,14 @@ public class RDFGraph extends JGraph {
 		private Map cloneMap;
 		private Map cloneInfoMap;
 
-		private Map copyRDFSInfoMap;
+		private Map copyInfoMap;
 
 		GraphCopyBuffer(Point pt, Object[] list, GraphTransferable gt, Map map) {
 			copyPoint = pt;
 			copyList = list;
 			orgCs = gt.getConnectionSet();
 			orgAttributesMap = gt.getAttributeMap();
-			copyRDFSInfoMap = map;
+			copyInfoMap = map;
 		}
 
 		public ConnectionSet getCloneConnectionSet() {
@@ -472,18 +470,28 @@ public class RDFGraph extends JGraph {
 			getModel().edit(nested, null, null, null);
 		}
 
-		private void createClassCellClones(Object cell) {
-			ClassInfo orgInfo = (ClassInfo) copyRDFSInfoMap.get(cell);
+		private Object createRDFSClassCellClones(Object cell) {
+			ClassInfo orgInfo = (ClassInfo) copyInfoMap.get(cell);
 			ClassInfo newInfo = rdfsInfoMap.cloneClassInfo(orgInfo);
-			cloneInfoMap.put(cloneMap.get(cell), newInfo);
-			setCellPosition(cell);
+			return newInfo;
 		}
 
-		private void createPropertyCellClones(Object cell) {
-			PropertyInfo orgInfo = (PropertyInfo) copyRDFSInfoMap.get(cell);
+		private Object createRDFSPropertyCellClones(Object cell) {
+			PropertyInfo orgInfo = (PropertyInfo) copyInfoMap.get(cell);
 			PropertyInfo newInfo = rdfsInfoMap.clonePropertyInfo(orgInfo);
-			cloneInfoMap.put(cloneMap.get(cell), newInfo);
-			setCellPosition(cell);
+			return newInfo;
+		}
+
+		private Object createRDFResourceCellClones(Object cell) {
+			RDFResourceInfo orgInfo = (RDFResourceInfo) copyInfoMap.get(cell);
+			RDFResourceInfo newInfo = resInfoMap.cloneRDFResourceInfo(orgInfo, null);
+			return newInfo;
+		}
+
+		private Object createRDFLiteralCellClones(Object cell) {
+			Literal orgInfo = (Literal) copyInfoMap.get(cell);
+			Literal newInfo = litInfoMap.cloneRDFLiteralInfo(orgInfo);
+			return newInfo;
 		}
 
 		public void createClones() {
@@ -493,13 +501,23 @@ public class RDFGraph extends JGraph {
 			csClone = orgCs.clone(cloneMap);
 			cloneInfoMap = new HashMap();
 			for (Iterator i = cloneMap.keySet().iterator(); i.hasNext();) {
+				Object newInfo = null;
 				Object cell = i.next();
 				if (isRDFSClassCell(cell)) {
-					createClassCellClones(cell);
+					newInfo = createRDFSClassCellClones(cell);
 				} else if (isRDFSPropertyCell(cell)) {
-					createPropertyCellClones(cell);
+					newInfo = createRDFSPropertyCellClones(cell);
+				} else if (isRDFResourceCell(cell)) {
+					newInfo = createRDFResourceCellClones(cell);
+				} else if (isRDFPropertyCell(cell)) {
+
+				} else if (isRDFLiteralCell(cell)) {
+					newInfo = createRDFLiteralCellClones(cell);
 				}
+				cloneInfoMap.put(cloneMap.get(cell), newInfo);
+				setCellPosition(cell);
 			}
+
 		}
 	}
 
@@ -526,24 +544,32 @@ public class RDFGraph extends JGraph {
 		return bufferGraph;
 	}
 
-	private Map getCopyRDFSInfoMap(Map clones) {
-		Map copyRDFSInfoMap = new HashMap();
+	private Map getCopyInfoMap(Map clones) {
+		Map copyInfoMap = new HashMap();
 		for (Iterator i = clones.keySet().iterator(); i.hasNext();) {
 			Object cell = i.next();
 			if (isRDFSClassCell(cell)) {
 				ClassInfo orgInfo = (ClassInfo) rdfsInfoMap.getCellInfo(cell);
 				ClassInfo newInfo = rdfsInfoMap.cloneClassInfo(orgInfo);
-				copyRDFSInfoMap.put(clones.get(cell), newInfo);
+				copyInfoMap.put(clones.get(cell), newInfo);
 			} else if (isRDFSPropertyCell(cell)) {
 				PropertyInfo orgInfo = (PropertyInfo) rdfsInfoMap.getCellInfo(cell);
 				PropertyInfo newInfo = rdfsInfoMap.clonePropertyInfo(orgInfo);
-				copyRDFSInfoMap.put(clones.get(cell), newInfo);
+				copyInfoMap.put(clones.get(cell), newInfo);
+			} else if (isRDFResourceCell(cell)) {
+				RDFResourceInfo orgInfo = resInfoMap.getCellInfo(cell);
+				RDFResourceInfo newInfo = resInfoMap.cloneRDFResourceInfo(orgInfo, null);
+				copyInfoMap.put(clones.get(cell), newInfo);
+			} else if (isRDFLiteralCell(cell)) {
+				Literal orgInfo = litInfoMap.getCellInfo(cell);
+				Literal newInfo = litInfoMap.cloneRDFLiteralInfo(orgInfo);
+				copyInfoMap.put(clones.get(cell), newInfo);
 			}
 		}
-		return copyRDFSInfoMap;
+		return copyInfoMap;
 	}
 
-	private void copyRDFSCells(Point copyPoint) {
+	public void copy(Point pt) {
 		GraphTransferable gt = getGraphTransferable(this);
 		if (gt == null) {
 			return;
@@ -554,20 +580,7 @@ public class RDFGraph extends JGraph {
 		if (gt == null) {
 			return;
 		}
-		Object[] copyList = getValidCopyList(bufferGraph);
-		Map copyRDFSInfoMap = getCopyRDFSInfoMap(clones);
-		copyBuffer = new GraphCopyBuffer(copyPoint, copyList, gt, copyRDFSInfoMap);
-	}
-
-	private void copyRDFCell(Point pt) {
-	}
-
-	public void copy(Point pt) {
-		if (type == GraphType.CLASS || type == GraphType.PROPERTY) {
-			copyRDFSCells(pt);
-		} else if (type == GraphType.RDF) {
-			copyRDFCell(pt);
-		}
+		copyBuffer = new GraphCopyBuffer(pt, getValidCopyList(bufferGraph), gt, getCopyInfoMap(clones));
 	}
 
 	private void setPastePosition(GraphCell cell, String value, Point pastePoint) {
@@ -584,40 +597,26 @@ public class RDFGraph extends JGraph {
 		getGraphLayoutCache().edit(nested, null, null, null);
 	}
 
-	private void pasteRDFSCell(Point pastePoint) {
+	public void paste(Point pastePoint) {
 		if (copyBuffer == null) {
 			return;
 		}
 		copyBuffer.createClones();
-		// URIÇÃèdï°ÇñhÇÆ
+
 		for (Iterator i = copyBuffer.keySet().iterator(); i.hasNext();) {
 			GraphCell cell = (GraphCell) i.next();
 			if (isRDFSClassCell(cell)) {
-				ClassInfo info = (ClassInfo) copyBuffer.get(cell);
-				if (gmanager.isDuplicated(info.getURIStr(), null, GraphType.CLASS)) {
-					for (int j = 1; true; j++) {
-						String copyURI = info.getURIStr() + "-copy" + j;
-						if (!gmanager.isDuplicated(copyURI, null, GraphType.CLASS)) {
-							info.setURI(copyURI);
-							break;
-						}
-					}
-				}
-				rdfsInfoMap.putCellInfo(cell, info);
-				setPastePosition(cell, info.getURIStr(), pastePoint);
+				pasteRDFSClassCell(pastePoint, cell);
 			} else if (isRDFSPropertyCell(cell)) {
-				PropertyInfo info = (PropertyInfo) copyBuffer.get(cell);
-				if (gmanager.isDuplicated(info.getURIStr(), null, GraphType.PROPERTY)) {
-					for (int j = 1; true; j++) {
-						String copyURI = info.getURIStr() + "-copy" + j;
-						if (!gmanager.isDuplicated(copyURI, null, GraphType.PROPERTY)) {
-							info.setURI(copyURI);
-							break;
-						}
-					}
-				}
-				rdfsInfoMap.putCellInfo(cell, info);
-				setPastePosition(cell, info.getURIStr(), pastePoint);
+				pasteRDFSPropertyCell(pastePoint, cell);
+			} else if (isRDFResourceCell(cell)) {
+				pasteRDFResourceCell(pastePoint, cell);
+			} else if (isRDFPropertyCell(cell)) {
+
+			} else if (isRDFLiteralCell(cell)) {
+				pasteRDFLiteralCell(pastePoint, cell);
+			} else {
+				setPastePosition(cell, "", pastePoint);
 			}
 		}
 
@@ -630,15 +629,58 @@ public class RDFGraph extends JGraph {
 		gmanager.changeCellView();
 	}
 
-	private void pasteRDFCell(Point pt) {
-
+	private void pasteRDFSPropertyCell(Point pastePoint, GraphCell cell) {
+		PropertyInfo info = (PropertyInfo) copyBuffer.get(cell);
+		if (gmanager.isDuplicated(info.getURIStr(), null, GraphType.PROPERTY)) {
+			for (int j = 1; true; j++) {
+				String copyURI = info.getURIStr() + "-copy" + j;
+				if (!gmanager.isDuplicated(copyURI, null, GraphType.PROPERTY)) {
+					info.setURI(copyURI);
+					break;
+				}
+			}
+		}
+		rdfsInfoMap.putCellInfo(cell, info);
+		setPastePosition(cell, info.getURIStr(), pastePoint);
 	}
 
-	public void paste(Point pt) {
-		if (type == GraphType.CLASS || type == GraphType.PROPERTY) {
-			pasteRDFSCell(pt);
-		} else if (type == GraphType.RDF) {
-			pasteRDFCell(pt);
+	private void pasteRDFSClassCell(Point pastePoint, GraphCell cell) {
+		ClassInfo info = (ClassInfo) copyBuffer.get(cell);
+		if (gmanager.isDuplicated(info.getURIStr(), null, GraphType.CLASS)) {
+			for (int j = 1; true; j++) {
+				String copyURI = info.getURIStr() + "-copy" + j;
+				if (!gmanager.isDuplicated(copyURI, null, GraphType.CLASS)) {
+					info.setURI(copyURI);
+					break;
+				}
+			}
 		}
+		rdfsInfoMap.putCellInfo(cell, info);
+		setPastePosition(cell, info.getURIStr(), pastePoint);
+	}
+
+	private void pasteRDFLiteralCell(Point pastePoint, GraphCell cell) {
+		try {
+			Literal info = (Literal) copyBuffer.get(cell);
+			litInfoMap.putCellInfo(cell, info);
+			setPastePosition(cell, info.getString(), pastePoint);
+		} catch (RDFException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void pasteRDFResourceCell(Point pastePoint, GraphCell cell) {
+		RDFResourceInfo info = (RDFResourceInfo) copyBuffer.get(cell);
+		if (gmanager.isDuplicated(info.getURI().getURI(), null, GraphType.RDF)) {
+			for (int j = 1; true; j++) {
+				String copyURI = info.getURI() + "-copy" + j;
+				if (!gmanager.isDuplicated(copyURI, null, GraphType.RDF)) {
+					info.setURI(copyURI);
+					break;
+				}
+			}
+		}
+		resInfoMap.putCellInfo(cell, info);
+		setPastePosition(cell, info.getURI().getURI(), pastePoint);
 	}
 }
