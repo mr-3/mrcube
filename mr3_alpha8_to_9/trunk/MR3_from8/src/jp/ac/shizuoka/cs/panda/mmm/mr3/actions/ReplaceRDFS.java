@@ -22,6 +22,8 @@ public class ReplaceRDFS extends AbstractActionFile {
 
 	private static final String REPLACE_RDFS_FILE = Translator.getString("Component.File.Import.Replace.RDFS/XML(File).Text");
 	private static final String REPLACE_RDFS_URI = Translator.getString("Component.File.Import.Replace.RDFS/XML(URI).Text");
+	private static final String REPLACE_N_TRIPLE_FILE = Translator.getString("Component.File.Import.Replace.RDFS/N-Triple(File).Text");
+	private static final String REPLACE_N_TRIPLE_URI = Translator.getString("Component.File.Import.Replace.RDFS/N-Triple(URI).Text");
 
 	public ReplaceRDFS(MR3 mr3, String title) {
 		super(mr3, title);
@@ -34,9 +36,14 @@ public class ReplaceRDFS extends AbstractActionFile {
 		gmanager.setIsImporting(true);
 		if (e.getActionCommand().equals(REPLACE_RDFS_FILE)) {
 			model = readModel(getReader("rdfs", null), gmanager.getBaseURI(), "RDF/XML");
+		} else if (e.getActionCommand().equals(REPLACE_N_TRIPLE_FILE)) {
+			model = readModel(getReader("rdfs", null), gmanager.getBaseURI(), "N-Triple");
 		} else if (e.getActionCommand().equals(REPLACE_RDFS_URI)) {
 			String uri = JOptionPane.showInternalInputDialog(desktop, "Open URI ( exp. http://slashdot.jp/slashdot.rdf )");
 			model = readModel(getReader(uri), gmanager.getBaseURI(), "RDF/XML");
+		} else if (e.getActionCommand().equals(REPLACE_N_TRIPLE_URI)) {
+			String uri = JOptionPane.showInternalInputDialog(desktop, "Open URI ( exp. http://slashdot.jp/slashdot.rdf )");
+			model = readModel(getReader(uri), gmanager.getBaseURI(), "N-Triple");
 		}
 		if (model == null) {
 			gmanager.setIsImporting(false);

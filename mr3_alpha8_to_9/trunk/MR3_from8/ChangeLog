@@ -1,6 +1,6 @@
 == 更新履歴
 
-=== ■ α9 (2003-09-2x)
+=== ■ α9 (2003-10-1)
 * RDFリソースからRDFSクラス，RDFSプロパティへの変換，RDFSクラスからRDFリソース，RDFSプロパティ
    への変換，RDFSプロパティからRDFリソース，RDFSクラスへの変換が可能になった．
    (ポップアップメニューの「Transform from X to X」)
@@ -9,6 +9,7 @@
 * RDFグラフ，クラスグラフ，プロパティグラフをPNG形式でエクスポートできるようになった．
    File->Export->IMG->*
 * RDFSの置換ができるようになった．File->Import->Replace->RDFS/XML(File|URI)
+* N-Tripleのインポートができるようになった．
 * getRDFGraph()，getClassGraph()，getPropertyGraph()メソッドをMR3Pluginクラスに追加．
    プラグインで，レイアウトを行えるようになった．(File->Plugins->SugiyamaLayout)
 * Look & Feelを変更できるようになった．(View->Look & Feel->Metal, Windows, Motif)   
