@@ -194,7 +194,7 @@ public class ProjectManager {
 	}
 
 	public Model extractProjectModel(Model model) {
-		Model extractModel = new ModelMem();
+		Model extractModel = ModelFactory.createDefaultModel();
 		try {
 			for (StmtIterator i = model.listStatements(); i.hasNext();) {
 				Statement stmt = i.nextStatement();
@@ -205,8 +205,7 @@ public class ProjectManager {
 			model.remove(extractModel);
 		} catch (RDFException e) {
 			e.printStackTrace();
-		}
-
+		}		
 		return extractModel;
 	}
 
@@ -256,12 +255,10 @@ public class ProjectManager {
 	}
 
 	public void loadProject(Model model) {
-		/* リソースのＵＲＩとMR3Literalのマップ*/
-		Map uriNodeInfoMap = new HashMap();
-		/* URIとプレフィックスのマップ*/
-		Map uriPrefixMap = new HashMap();
-		/* URIとisAvailable(boolean)のマップ */
-		Map uriIsAvailableMap = new HashMap();
+		Map uriNodeInfoMap = new HashMap(); // リソースのＵＲＩとMR3Literalのマップ
+		Map uriPrefixMap = new HashMap(); // URIとプレフィックスのマップ
+		Map uriIsAvailableMap = new HashMap(); // URIとisAvailable(boolean)のマップ 
+
 		try {
 			for (StmtIterator i = model.listStatements(); i.hasNext();) {
 				Statement stmt = i.nextStatement();
