@@ -555,9 +555,7 @@ public class GraphManager {
 	}
 
 	public Object getPropertyCell(Resource uri, boolean isCheck) {
-		//		Object cell = rdfsInfoMap.getRDFSCell(uri);
 		Object cell = rdfsInfoMap.getPropertyCell(uri);
-		//		if (propGraph.isContains(cell) && cell != null) {
 		if (cell != null) {
 			return cell;
 		} else {

@@ -243,7 +243,6 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 			return;
 		}
 		if (rdfsInfoMap.isPropertyCell(uri)) {
-			//			propertyCell = (GraphCell) rdfsInfoMap.getPropertyCell(uri);
 			propertyCell = (GraphCell) gmanager.getPropertyCell(uri, false);
 		} else {
 			if (gmanager.isDuplicatedWithDialog(uri.getURI(), null, GraphType.PROPERTY)) {
@@ -251,7 +250,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 			}
 			if (uri.equals(MR3Resource.Nil)) {
 				propertyCell = (GraphCell) gmanager.getPropertyCell(uri, false);
-				JOptionPane.showMessageDialog(null, "Create Default Property.", "Warning", JOptionPane.ERROR_MESSAGE);
+//			JOptionPane.showMessageDialog(null, "Create Default Property.", "Warning", JOptionPane.ERROR_MESSAGE);
 			} else {
 				SelectRDFSCheckDialog dialog = new SelectRDFSCheckDialog("Choose One Select");
 				CreateRDFSType createType = (CreateRDFSType) dialog.getValue();
