@@ -324,13 +324,14 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 			if (gmanager.isDuplicatedWithDialog(uri.getURI(), null, GraphType.PROPERTY)) {
 				return;
 			}
-			SelectRDFSCheckDialog dialog = new SelectRDFSCheckDialog("Choose One Select", gmanager);
-			CreateRDFSType createType = (CreateRDFSType) dialog.getValue();
+			RDFSManagementDialog dialog = new RDFSManagementDialog("Choose One Select", gmanager);
+			dialog.replaceGraph(gmanager.getPropertyGraph());
+			dialog.setRegionSet(new HashSet());
+			dialog.setVisible(true);
+
+			CreateRDFSType createType = dialog.getType();
 			if (createType == CreateRDFSType.CREATE) {
-				Set supProps = gmanager.getSupRDFS(gmanager.getPropertyGraph(), selectSupPropertiesTitle);
-				if (supProps == null) {
-					return;
-				}
+				Set supProps = dialog.getSupRDFSSet();
 				propertyCell = (GraphCell) gmanager.insertSubRDFS(uri, supProps, gmanager.getPropertyGraph());
 			} else if (createType == CreateRDFSType.RENAME) {
 				propertyCell = (GraphCell) rdfsInfoMap.getEdgeInfo(edge);
@@ -338,7 +339,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 				rdfsInfoMap.removeURICellMap(rdfsInfo);
 				rdfsInfo.setURI(uri.getURI());
 				rdfsInfoMap.putURICellMap(rdfsInfo, propertyCell);
-			} else {
+			} else if (createType == null) {
 				return;
 			}
 		}

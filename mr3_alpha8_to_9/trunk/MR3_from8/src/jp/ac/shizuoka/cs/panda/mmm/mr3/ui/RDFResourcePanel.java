@@ -334,16 +334,19 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 					JOptionPane.showInternalConfirmDialog(gmanager.getDesktop(), "Not Defined.Create Class ?", "Warning", JOptionPane.YES_NO_OPTION);
 				if (ans == JOptionPane.YES_OPTION) {
 					Set supClasses = gmanager.getSupRDFS(gmanager.getClassGraph(), selectSupClassesTitle);
+					if (supClasses == null) {
+						return null;
+					}
 					typeCell = (GraphCell) gmanager.insertSubRDFS(uri, supClasses, gmanager.getClassGraph());
 				}
 			} else {
-				SelectRDFSCheckDialog dialog = new SelectRDFSCheckDialog("Choose One Select", gmanager);
-				CreateRDFSType createType = (CreateRDFSType) dialog.getValue();
+				RDFSManagementDialog dialog = new RDFSManagementDialog("Choose One Select", gmanager);
+				dialog.replaceGraph(gmanager.getClassGraph());
+				dialog.setRegionSet(new HashSet());
+				dialog.setVisible(true);
+				CreateRDFSType createType = dialog.getType();
 				if (createType == CreateRDFSType.CREATE) {
-					Set supClasses = gmanager.getSupRDFS(gmanager.getClassGraph(), selectSupClassesTitle);
-					if (supClasses == null) {
-						return null; 
-					}
+					Set supClasses = dialog.getSupRDFSSet();
 					typeCell = (GraphCell) gmanager.insertSubRDFS(uri, supClasses, gmanager.getClassGraph());
 				} else if (createType == CreateRDFSType.RENAME) {
 					typeCell = (GraphCell) resInfo.getTypeCell();
@@ -351,7 +354,7 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 					rdfsInfoMap.removeURICellMap(rdfsInfo);
 					rdfsInfo.setURI(uri.getURI());
 					rdfsInfoMap.putURICellMap(rdfsInfo, typeCell);
-				} else {
+				} else if (createType == null) {
 					return null;
 				}
 			}
@@ -397,7 +400,8 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 	}
 
 	private void selectResourceType() {
-		SelectResourceTypeDialog classDialog = new SelectResourceTypeDialog(gmanager);
+		//		SelectResourceTypeDialog classDialog = new SelectResourceTypeDialog(gmanager);
+		SelectResourceTypeDialog classDialog = new SelectResourceTypeDialog("Select Resource Type Dialog", gmanager);
 		classDialog.replaceGraph(gmanager.getClassGraph());
 		classDialog.setInitCell(resInfo.getTypeCell());
 		classDialog.setVisible(true);

@@ -62,8 +62,9 @@ public class RDFLiteralPanel extends JPanel implements ActionListener {
 
 		labelValueArea = new JTextArea();
 		JScrollPane valueScroll = new JScrollPane(labelValueArea);
-		valueScroll.setPreferredSize(new Dimension(LABEL_WIDTH, LABEL_HEIGHT));
-		valueScroll.setMinimumSize(new Dimension(LABEL_WIDTH, LABEL_HEIGHT));
+		initComponent(valueScroll, "Literal", LABEL_WIDTH, LABEL_HEIGHT);
+//		valueScroll.setPreferredSize(new Dimension(LABEL_WIDTH, LABEL_HEIGHT));
+//		valueScroll.setMinimumSize(new Dimension(LABEL_WIDTH, LABEL_HEIGHT));
 
 		applyButton = new JButton("Apply");
 		applyButton.addActionListener(this);

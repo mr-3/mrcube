@@ -1,4 +1,9 @@
+/*
+ * Created on 2003/09/25
+ *
+ */
 package jp.ac.shizuoka.cs.panda.mmm.mr3.ui;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
@@ -14,15 +19,9 @@ import org.jgraph.event.*;
 import org.jgraph.graph.*;
 
 /**
- *
  * @author takeshi morita
  */
-public abstract class SelectClassDialog extends JDialog implements ActionListener, GraphSelectionListener {
-
-	protected boolean isOk;
-	protected JButton confirm;
-	protected JButton cancel;
-
+public abstract class SelectClassPanel extends JPanel implements GraphSelectionListener {
 	private int index; // 検索のインデックス 
 	private String currentKey; //現在のキー
 	private List findList; // 検索リスト
@@ -32,38 +31,33 @@ public abstract class SelectClassDialog extends JDialog implements ActionListene
 	protected JButton findButton;
 
 	protected RDFGraph graph;
-	protected JPanel inlinePanel = new JPanel();
 	protected GridBagLayout gridbag;
 	protected GridBagConstraints c;
 
 	protected GraphManager gmanager;
 	protected RDFSInfoMap rdfsMap = RDFSInfoMap.getInstance();
 
-	public SelectClassDialog(String title, GraphManager manager) {
-		super(manager.getRoot(), title, true);
-		gmanager = manager;
+	public SelectClassPanel(GraphManager gm) {
 		index = 0;
+		gmanager = gm;
 		currentKey = null;
-		setResizable(false);
-
+		
 		initFindGroup();
 		initGraph();
 		initEachDialogAttr();
-		initButton();
 
 		initGridLayout();
 		setFindGroupLayout();
 		setGraphLayout();
 		setEachDialogAttrLayout();
-		setCommonLayout();
 	}
 
 	protected abstract void initEachDialogAttr();
 
-	private static final int prefixBoxWidth = 120;
-	private static final int prefixBoxHeight = 50;
-	protected static final int listWidth = 450;
-	protected static final int listHeight = 40;
+	private static final int PREFIX_BOX_WIDTH = 120;
+	private static final int PREFIX_BOX_HEIGHT = 50;
+	protected static final int LIST_WIDTH = 450;
+	protected static final int LIST_HEIGHT = 40;
 
 	protected void initComponent(JComponent component, String title, int width, int height) {
 		component.setPreferredSize(new Dimension(width, height));
@@ -77,14 +71,14 @@ public abstract class SelectClassDialog extends JDialog implements ActionListene
 		uriPrefixBox.addActionListener(new ChangePrefixAction());
 		PrefixNSUtil.setPrefixNSInfoSet(gmanager.getPrefixNSInfoSet());
 		uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
-		initComponent(uriPrefixBox, "Prefix", prefixBoxWidth, prefixBoxHeight);
+		initComponent(uriPrefixBox, "Prefix", PREFIX_BOX_WIDTH, PREFIX_BOX_HEIGHT);
 		findField = new JTextField(15);
-		initComponent(findField, "ID", prefixBoxWidth, listHeight);
+		initComponent(findField, "ID", PREFIX_BOX_WIDTH, LIST_HEIGHT);
 		findField.addActionListener(findAction);
 		findButton = new JButton("Find");
 		findButton.addActionListener(findAction);
 		nsLabel = new JLabel("");
-		initComponent(nsLabel, "NameSpace", listWidth, listHeight);
+		initComponent(nsLabel, "NameSpace", LIST_WIDTH, LIST_HEIGHT);
 	}
 
 	class ChangePrefixAction extends AbstractAction {
@@ -106,7 +100,7 @@ public abstract class SelectClassDialog extends JDialog implements ActionListene
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			String key = nsLabel.getText()+findField.getText() + ".*";
+			String key = nsLabel.getText() + findField.getText() + ".*";
 			if (currentKey == null || (!currentKey.equals(key))) {
 				index = 0; // indexを元に戻す
 				currentKey = key;
@@ -118,17 +112,10 @@ public abstract class SelectClassDialog extends JDialog implements ActionListene
 		}
 	}
 
-	protected void initButton() {
-		confirm = new JButton("OK");
-		confirm.addActionListener(this);
-		cancel = new JButton("Cancel");
-		cancel.addActionListener(this);
-	}
-
 	protected void initGridLayout() {
 		gridbag = new GridBagLayout();
 		c = new GridBagConstraints();
-		inlinePanel.setLayout(gridbag);
+		setLayout(gridbag);
 		c.anchor = GridBagConstraints.PAGE_START;
 		c.gridwidth = GridBagConstraints.REMAINDER;
 		c.weightx = 1;
@@ -141,9 +128,9 @@ public abstract class SelectClassDialog extends JDialog implements ActionListene
 		findPanel.add(findField);
 		findPanel.add(findButton);
 		gridbag.setConstraints(findPanel, c);
-		inlinePanel.add(findPanel);
+		add(findPanel);
 		gridbag.setConstraints(nsLabel, c);
-		inlinePanel.add(nsLabel);
+		add(nsLabel);
 	}
 
 	protected void setGraphLayout() {
@@ -151,25 +138,10 @@ public abstract class SelectClassDialog extends JDialog implements ActionListene
 		graphScroll.setPreferredSize(new Dimension(450, 250));
 		graphScroll.setMinimumSize(new Dimension(450, 250));
 		gridbag.setConstraints(graphScroll, c);
-		inlinePanel.add(graphScroll);
+		add(graphScroll);
 	}
 
 	protected abstract void setEachDialogAttrLayout();
-
-	protected void setCommonLayout() {
-		c.gridwidth = GridBagConstraints.RELATIVE;
-		gridbag.setConstraints(confirm, c);
-		inlinePanel.add(confirm);
-		c.gridwidth = GridBagConstraints.REMAINDER;
-		gridbag.setConstraints(cancel, c);
-		inlinePanel.add(cancel);
-
-		Container contentPane = getContentPane();
-		contentPane.add(inlinePanel);
-		setLocation(100, 100);
-		setSize(new Dimension(550, 550));
-		setVisible(false);
-	}
 
 	private void initGraph() {
 		graph = new RDFGraph();
@@ -185,27 +157,25 @@ public abstract class SelectClassDialog extends JDialog implements ActionListene
 	}
 
 	public void replaceGraph(RDFGraph newGraph) {
-		graph.setRDFState(newGraph.getRDFState());
-		changeAllCellColor(Color.green);
+		graph.setRDFState(newGraph.getRDFState());		
+		if (gmanager.isClassGraph(newGraph)) {
+			changeAllCellColor(ChangeCellAttributes.classColor);
+		} else if (gmanager.isPropertyGraph(newGraph)) {
+			changeAllCellColor(ChangeCellAttributes.propertyColor);
+		}
 	}
 
 	public abstract void valueChanged(GraphSelectionEvent e);
 
-	public void actionPerformed(ActionEvent e) {
-		String type = (String) e.getActionCommand();
-		if (type.equals("OK")) {
-			isOk = true;
-		} else {
-			isOk = false;
-		}
-		setVisible(false);
+	public RDFGraph getGraph() {
+		return graph;
 	}
 
 	protected void changeAllCellColor(Color color) {
 		Object[] cells = graph.getAllCells();
 		for (int i = 0; i < cells.length; i++) {
 			GraphCell cell = (GraphCell) cells[i];
-			if (graph.isRDFSClassCell(cell)) {
+			if (graph.isRDFSCell(cell)) {
 				ChangeCellAttributes.changeCellColor(graph, cell, color);
 			}
 		}
