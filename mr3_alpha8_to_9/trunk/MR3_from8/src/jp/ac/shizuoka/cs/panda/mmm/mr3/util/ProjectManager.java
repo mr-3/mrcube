@@ -132,9 +132,13 @@ public class ProjectManager {
 			Boolean isAvailable = (Boolean) nsTableModel.getValueAt(i, IS_AVAILABLE_COLUMN);
 			String prefix = (String) nsTableModel.getValueAt(i, PREFIX_COLUMN);
 			String nameSpace = (String) nsTableModel.getValueAt(i, NS_COLUMN);
-			projectModel.add(new ResourceImpl(nameSpace), MR3Resource.Is_prefix_available, isAvailable.toString());
+			projectModel.add(new ResourceImpl(nameSpace), MR3Resource.IsPrefixAvailable, isAvailable.toString());
 			projectModel.add(new ResourceImpl(nameSpace), MR3Resource.Prefix, prefix);
 		}
+	}
+
+	private void addDefaultLangModel(Model projectModel) throws RDFException {
+		projectModel.add(MR3Resource.DefaultURI, MR3Resource.DefaultLang, gmanager.getDefaultLang());
 	}
 
 	/*
@@ -144,6 +148,7 @@ public class ProjectManager {
 	public Model getProjectModel() {
 		Model projectModel = new ModelMem();
 		try {
+			addDefaultLangModel(projectModel);
 			addRDFProjectModel(projectModel);
 			addRDFSProjectModel(projectModel, gmanager.getClassGraph());
 			addRDFSProjectModel(projectModel, gmanager.getPropertyGraph());
@@ -174,7 +179,8 @@ public class ProjectManager {
 
 	private boolean hasProjectPredicate(Statement stmt) {
 		return (
-			stmt.getPredicate().equals(MR3Resource.PointX)
+			stmt.getPredicate().equals(MR3Resource.DefaultLang)
+				|| stmt.getPredicate().equals(MR3Resource.PointX)
 				|| stmt.getPredicate().equals(MR3Resource.PointY)
 				|| stmt.getPredicate().equals(MR3Resource.NodeWidth)
 				|| stmt.getPredicate().equals(MR3Resource.NodeHeight)
@@ -184,7 +190,7 @@ public class ProjectManager {
 				|| stmt.getPredicate().equals(MR3Resource.LiteralDatatype)
 				|| stmt.getPredicate().equals(MR3Resource.LiteralString)
 				|| stmt.getPredicate().equals(MR3Resource.Prefix)
-				|| stmt.getPredicate().equals(MR3Resource.Is_prefix_available));
+				|| stmt.getPredicate().equals(MR3Resource.IsPrefixAvailable));
 	}
 
 	public Model extractProjectModel(Model model) {
@@ -264,7 +270,9 @@ public class ProjectManager {
 					rec = new MR3Literal();
 					uriNodeInfoMap.put(stmt.getSubject(), rec);
 				}
-				if (stmt.getPredicate().equals(MR3Resource.PointX)) {
+				if (stmt.getPredicate().equals(MR3Resource.DefaultLang)) {
+					gmanager.setDefaultLang(stmt.getObject().toString());
+				} else if (stmt.getPredicate().equals(MR3Resource.PointX)) {
 					setPositionX(uriNodeInfoMap, stmt, rec);
 				} else if (stmt.getPredicate().equals(MR3Resource.PointY)) {
 					setPositionY(uriNodeInfoMap, stmt, rec);
@@ -289,7 +297,7 @@ public class ProjectManager {
 				} else if (stmt.getPredicate().equals(MR3Resource.LiteralProperty)) {
 					rec.setProperty(stmt.getObject().toString());
 					uriNodeInfoMap.put(stmt.getSubject(), rec);
-				} else if (stmt.getPredicate().equals(MR3Resource.Is_prefix_available)) {
+				} else if (stmt.getPredicate().equals(MR3Resource.IsPrefixAvailable)) {
 					if (stmt.getObject().toString().equals("true")) {
 						uriIsAvailableMap.put(stmt.getSubject().getURI(), new Boolean(true));
 					} else {

@@ -573,7 +573,7 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 		defaultLangField.setText(userPrefs.get(PrefConstants.DefaultLang, "ja"));
 		inputEncodingBox.setSelectedItem(userPrefs.get(PrefConstants.InputEncoding, "SJIS"));
 		outputEncodingBox.setSelectedItem(userPrefs.get(PrefConstants.OutputEncoding, "SJIS"));
-		baseURILabel.setText(userPrefs.get(PrefConstants.BaseURI, MR3Resource.Default_URI.getURI()));
+		baseURILabel.setText(userPrefs.get(PrefConstants.BaseURI, MR3Resource.DefaultURI.getURI()));
 		workDirectoryField.setText(userPrefs.get(PrefConstants.DefaultWorkDirectory, ""));
 		isProxy.setSelected(userPrefs.getBoolean(PrefConstants.Proxy, false));
 		proxyHost.setText(userPrefs.get(PrefConstants.ProxyHost, "http://localhost"));

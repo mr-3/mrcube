@@ -1,7 +1,6 @@
 package jp.ac.shizuoka.cs.panda.mmm.mr3.data;
 
 import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.rdf.model.impl.*;
 
 /**
  * @author takeshi morita
@@ -11,6 +10,7 @@ import com.hp.hpl.jena.rdf.model.impl.*;
 public class MR3Resource {
 
 	private static final String DEFAULT_URI = "http://panda.cs.inf.shizuoka.ac.jp/mmm/mr3#";
+	private static final String DEFAULT_LANG = "DefaultLang";
 	private static final String PROPERTY = "Property";
 	private static final String NIL = "nil";
 	private static final String EMPTY = "Empty";
@@ -27,7 +27,8 @@ public class MR3Resource {
 	private static final String PREFIX = "prefix";
 	private static final String IS_PREFIX_AVAILABLE = "isPrefixAvailable";
 
-	public static Resource Default_URI;
+	public static Resource DefaultURI;
+	public static Property DefaultLang;
 	public static Property Property;
 	public static Property Nil;
 	public static Resource Empty;
@@ -42,26 +43,27 @@ public class MR3Resource {
 	public static Property NodeWidth;
 	public static Property NodeHeight;
 	public static Property Prefix;
-	public static Property Is_prefix_available;
+	public static Property IsPrefixAvailable;
 
 	static {
 		try {
-			Default_URI = new ResourceImpl(DEFAULT_URI);
-			Property = new PropertyImpl(DEFAULT_URI + PROPERTY);
-			Nil = new PropertyImpl(DEFAULT_URI + NIL);
-			Empty = new ResourceImpl(DEFAULT_URI + EMPTY);
-			Literal = new ResourceImpl(DEFAULT_URI + LITERAL);
-			LiteralProperty = new PropertyImpl(DEFAULT_URI + LITERAL_PROPERTY);
-			HasLiteralResource = new PropertyImpl(DEFAULT_URI + HAS_LITERAL_RESOURCE);
-			LiteralLang = new PropertyImpl(DEFAULT_URI + LITERAL_LANG);
-			LiteralDatatype = new PropertyImpl(DEFAULT_URI+LITERAL_DATATYPE);
-			LiteralString = new PropertyImpl(DEFAULT_URI + LITERAL_STRING);
-			PointX = new PropertyImpl(DEFAULT_URI + POINT_X);
-			PointY = new PropertyImpl(DEFAULT_URI + POINT_Y);
-			NodeWidth = new PropertyImpl(DEFAULT_URI + NODE_WIDTH);
-			NodeHeight = new PropertyImpl(DEFAULT_URI + NODE_HEIGHT);
-			Prefix = new PropertyImpl(DEFAULT_URI + PREFIX);
-			Is_prefix_available = new PropertyImpl(DEFAULT_URI + IS_PREFIX_AVAILABLE);
+			DefaultURI = ResourceFactory.createResource(DEFAULT_URI); 
+			DefaultLang = ResourceFactory.createProperty(DEFAULT_URI+DEFAULT_LANG); 
+			Property = ResourceFactory.createProperty(DEFAULT_URI + PROPERTY);
+			Nil = ResourceFactory.createProperty(DEFAULT_URI + NIL);
+			Empty = ResourceFactory.createResource(DEFAULT_URI + EMPTY);
+			Literal = ResourceFactory.createResource(DEFAULT_URI + LITERAL);
+			LiteralProperty = ResourceFactory.createProperty(DEFAULT_URI + LITERAL_PROPERTY);
+			HasLiteralResource = ResourceFactory.createProperty(DEFAULT_URI + HAS_LITERAL_RESOURCE);
+			LiteralLang = ResourceFactory.createProperty(DEFAULT_URI + LITERAL_LANG);
+			LiteralDatatype = ResourceFactory.createProperty(DEFAULT_URI+LITERAL_DATATYPE);
+			LiteralString = ResourceFactory.createProperty(DEFAULT_URI + LITERAL_STRING);
+			PointX = ResourceFactory.createProperty(DEFAULT_URI + POINT_X);
+			PointY = ResourceFactory.createProperty(DEFAULT_URI + POINT_Y);
+			NodeWidth = ResourceFactory.createProperty(DEFAULT_URI + NODE_WIDTH);
+			NodeHeight = ResourceFactory.createProperty(DEFAULT_URI + NODE_HEIGHT);
+			Prefix = ResourceFactory.createProperty(DEFAULT_URI + PREFIX);
+			IsPrefixAvailable = ResourceFactory.createProperty(DEFAULT_URI + IS_PREFIX_AVAILABLE);
 		} catch (RDFException e) {
 			e.printStackTrace();
 		}

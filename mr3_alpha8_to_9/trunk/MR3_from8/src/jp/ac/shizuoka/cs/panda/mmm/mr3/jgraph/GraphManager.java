@@ -194,6 +194,10 @@ public class GraphManager {
 		return userPrefs.get(PrefConstants.DefaultLang, "ja");
 	}
 
+	public void setDefaultLang(String lang) {
+		userPrefs.put(PrefConstants.DefaultLang, lang);
+	}
+
 	public Set getClassClassList() {
 		return getMetaClassList(userPrefs.get(PrefConstants.ClassClassList, RDFS.Class.toString()).split(" "));
 	}
