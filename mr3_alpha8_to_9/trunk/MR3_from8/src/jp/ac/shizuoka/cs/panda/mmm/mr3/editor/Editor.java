@@ -323,21 +323,21 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 		// Copy
 		toolbar.add(new AbstractAction("", Utilities.getImageIcon("copy.gif")) {
 			public void actionPerformed(ActionEvent e) {
-				graph.copy(new Point(10, 10));
+				graph.copy();
 			}
 		});
 
 		// Cut
 		toolbar.add(new AbstractAction("", Utilities.getImageIcon("cut.gif")) {
 			public void actionPerformed(ActionEvent e) {
-				graph.cut(new Point(10, 10));
+				graph.cut();
 			}
 		});
 
 		// Paste
 		toolbar.add(new AbstractAction("", Utilities.getImageIcon("paste.gif")) {
 			public void actionPerformed(ActionEvent e) {
-				graph.paste(new Point(30, 30));
+				graph.paste();
 			}
 		});
 

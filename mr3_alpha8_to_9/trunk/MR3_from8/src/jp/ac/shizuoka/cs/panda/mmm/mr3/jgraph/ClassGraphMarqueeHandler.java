@@ -95,20 +95,20 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 
 		menu.add(new AbstractAction("Copy") {
 			public void actionPerformed(ActionEvent e) {
-				graph.copy(pt);
+				graph.copy();
 			}
 		});
 
 		menu.add(new AbstractAction("Cut") {
 			public void actionPerformed(ActionEvent e) {
-				graph.copy(pt);
+				graph.copy();
 				gmanager.removeAction(graph);
 			}
 		});
 
 		menu.add(new AbstractAction("Paste") {
 			public void actionPerformed(ActionEvent e) {
-				graph.paste(pt);
+				graph.paste();
 			}
 		});
 

@@ -4,7 +4,6 @@
  */
 package jp.ac.shizuoka.cs.panda.mmm.mr3.actions;
 
-import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
@@ -23,6 +22,6 @@ public class CopyAction extends AbstractAction {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		graph.copy(new Point(100, 100));
+		graph.copy();
 	}
 }
