@@ -825,7 +825,6 @@ public class GraphManager {
 		Set dataSet = new HashSet();
 		for (int i = 0; i < cells.length; i++) {
 			GraphCell cell = (GraphCell) cells[i];
-			//			if (!graph.isTypeCell(cell) && (graph.isRDFResourceCell(cell) || graph.isRDFLiteralCell(cell))) {
 			if (!graph.isTypeCell(cell) && (graph.isRDFSCell(cell) || graph.isRDFResourceCell(cell) || graph.isRDFLiteralCell(cell))) {
 				GraphLayoutData data = new GraphLayoutData(cell, graph);
 				cellLayoutMap.put(cell, data);
