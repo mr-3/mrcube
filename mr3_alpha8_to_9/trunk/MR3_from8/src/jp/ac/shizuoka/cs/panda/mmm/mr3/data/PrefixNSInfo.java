@@ -2,8 +2,7 @@ package jp.ac.shizuoka.cs.panda.mmm.mr3.data;
 /**
  * PrefixNSSet
  *
- * クラス名がわかりにくいので，もっとわかりやすい名前に変更したい．
- * 名前空間を接頭辞で置き換えるかどうかを決める時に使う 
+  * 名前空間を接頭辞で置き換えるかどうかを決める時に使う 
  * isAvailableがtrueなら置き換える．
  *
  */
