@@ -123,21 +123,29 @@ public class GraphManager {
 	}
 
 	public void selectAllRDFNodes() {
+		ChangeCellAttributes.isChangedSelectedColor = false;
 		rdfGraph.selectAllNodes();
+		ChangeCellAttributes.isChangedSelectedColor = true;
 	}
 
 	public void selectAllClassNodes() {
+		ChangeCellAttributes.isChangedSelectedColor = false;
 		classGraph.selectAllNodes();
+		ChangeCellAttributes.isChangedSelectedColor = true;
 	}
 
 	public void selectAllPropertyNodes() {
+		ChangeCellAttributes.isChangedSelectedColor = false;
 		propGraph.selectAllNodes();
+		ChangeCellAttributes.isChangedSelectedColor = true;
 	}
 
 	public void selectAllNodes() {
+		ChangeCellAttributes.isChangedSelectedColor = false;
 		rdfGraph.selectAllNodes();
 		classGraph.selectAllNodes();
 		propGraph.selectAllNodes();
+		ChangeCellAttributes.isChangedSelectedColor = true;
 	}
 
 	public boolean isAntialias() {

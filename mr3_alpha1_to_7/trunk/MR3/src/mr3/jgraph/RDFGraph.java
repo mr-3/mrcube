@@ -130,6 +130,28 @@ public class RDFGraph extends JGraph {
 		return (getSelectionCount() == 1 && graphModel.getChildCount(cell) <= 1);
 	}
 
+// 以下のメソッドで，グループ化したRDFリソースを選択したときに，AttributeDialogに
+//　RDFリソースの情報を表示できると考えたが，うまくいかなかった．
+//
+//	public GraphCell isOneRDFCellSelected(Object[] cells) {
+//		int count = 0;
+//		GraphCell rdfCell = null;
+//		for (int i = 0; i < cells.length; i++) {
+//			if (isRDFCell(cells[i])) {
+//				count++;
+//				rdfCell = (GraphCell) cells[i];
+//			}
+//		}
+//		
+//		if (count == 1) {
+//			System.out.println(rdfCell.getClass());
+//			return rdfCell;
+//		} else {
+//			System.out.println(count);
+//			return null;
+//		}
+//	}
+
 	public boolean isEdge(Object object) {
 		return (object instanceof Edge);
 	}

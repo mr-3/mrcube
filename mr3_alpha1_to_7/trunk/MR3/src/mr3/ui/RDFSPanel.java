@@ -53,7 +53,7 @@ public abstract class RDFSPanel extends JPanel {
 	protected JList instanceList;
 	protected JScrollPane instanceListScroll;
 	private static final int instanceListHeight = 200;
-	private static final int LangFieldLength = 3;
+	private static final int LangFieldLength = 4;
 
 	public RDFSPanel(RDFGraph g, GraphManager manager) {
 		graph = g;

@@ -7,6 +7,7 @@ import javax.swing.text.*;
 import mr3.data.*;
 import mr3.jgraph.*;
 import mr3.ui.*;
+import mr3.util.*;
 
 import com.hp.hpl.mesa.rdf.jena.common.*;
 import com.hp.hpl.mesa.rdf.jena.model.*;
@@ -112,8 +113,8 @@ public class RDFEditor extends Editor {
 	private void selectResource(GraphCell cell) {
 		// 対応するRDFSクラスを選択
 		RDFResourceInfo info = resInfoMap.getCellInfo(cell);
-		gmanager.jumpClassArea(info.getTypeCell());
-
+		gmanager.jumpClassArea(info.getTypeCell());		
+		
 		resPanel.displayResInfo(cell);
 		attrDialog.setContentPane(resPanel);
 	}
@@ -140,20 +141,24 @@ public class RDFEditor extends Editor {
 	// From GraphSelectionListener Interface
 	public void valueChanged(GraphSelectionEvent e) {
 		setToolStatus();
-		changeSelectionCellColor();
+		lastSelectionCells = ChangeCellAttributes.changeSelectionCellColor(graph, lastSelectionCells);
 		changeAttrPanel();
 		attrDialog.validate(); // validateメソッドを呼ばないと再描画がうまくいかない
 	}
 
 	private void changeAttrPanel() {
-		GraphCell cell = (GraphCell) graph.getSelectionCell();
-		if (graph.isOneCellSelected(cell)) {
-			if (graph.isRDFResourceCell(cell)) {
-				selectResource(cell);
-			} else if (graph.isRDFPropertyCell(cell)) {
-				selectProperty(cell);
-			} else if (graph.isRDFLiteralCell(cell)) {
-				selectLiteral(cell);
+//		Object[] cells = graph.getDescendants(graph.getSelectionCells());
+		GraphCell rdfCell = (GraphCell) graph.getSelectionCell();
+//		GraphCell rdfCell = graph.isOneRDFCellSelected(cells);
+
+		if (graph.isOneCellSelected(rdfCell)) {
+//		if (rdfCell != null) {
+			if (graph.isRDFResourceCell(rdfCell)) {
+				selectResource(rdfCell);
+			} else if (graph.isRDFPropertyCell(rdfCell)) {
+				selectProperty(rdfCell);
+			} else if (graph.isRDFLiteralCell(rdfCell)) {
+				selectLiteral(rdfCell);
 			}
 		} else {
 			attrDialog.setNullPanel();
