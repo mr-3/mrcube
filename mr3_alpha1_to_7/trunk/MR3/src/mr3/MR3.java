@@ -1116,7 +1116,7 @@ public class MR3 extends JFrame {
 	}
 
 	public JDesktopPane getDesktopPane() {
-		return desktop;
+		return gmanager.getDesktop();
 	}
 
 	public Model getRDFModel() {
