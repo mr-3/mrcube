@@ -2,7 +2,6 @@ package jp.ac.shizuoka.cs.panda.mmm.mr3.editor;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;
-import java.net.*;
 import java.util.*;
 
 import javax.swing.*;
@@ -314,26 +313,16 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 		//		toolbar.add(redo);
 
 		toolbar.addSeparator();
-		Action action;
-		URL url;
-		
 		toolbar.add(new CopyAction(graph, "Copy")); 
 		toolbar.add(new CutAction(graph, "Cut")); 
 		toolbar.add(new PasteAction(graph, "Paste")); 
 		toolbar.addSeparator();
-		
 		remove = new RemoveAction(graph, gmanager, "Remove");	
 		remove.setEnabled(false);
 		toolbar.add(remove);
 		
-		toolbar.addSeparator();
-		toolbar.add(new AbstractAction("", Utilities.getImageIcon("find.gif")) { // Find Resource
-			public void actionPerformed(ActionEvent e) {
-				findResDialog.setSearchArea(graph.getType());
-				findResDialog.setVisible(true);
-			}
-		});
-
+		toolbar.addSeparator();		
+		toolbar.add(new FindResAction(graph, findResDialog, "Find Resource"));
 		toolbar.addSeparator();
 		toolbar.add(new AbstractAction("", Utilities.getImageIcon("zoom100.gif")) { // Zoom Std
 			public void actionPerformed(ActionEvent e) {

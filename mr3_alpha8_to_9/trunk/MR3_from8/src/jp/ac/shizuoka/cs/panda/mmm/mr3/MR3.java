@@ -140,8 +140,8 @@ public class MR3 extends JFrame {
 		JToolBar toolbar = new JToolBar();
 		toolbar.setFloatable(false);
 
-		toolbar.add(new NewProject(this, Utilities.getImageIcon("new.gif")));
-		toolbar.add(new OpenProject(this, Utilities.getImageIcon("open.gif")));
+		toolbar.add(new NewProject(this));
+		toolbar.add(new OpenProject(this));
 		toolbar.add(new SaveProject(this, "Save Project", Utilities.getImageIcon("save.gif")));
 		toolbar.add(new SaveProject(this, "Save Project As", Utilities.getImageIcon("saveas.gif")));
 
@@ -249,7 +249,7 @@ public class MR3 extends JFrame {
 
 	private JMenu getEditMenu() {
 		JMenu menu = new JMenu("Edit");
-		menu.add(new FindAction());
+		menu.add(new FindResAction(gmanager.getRDFGraph(), findResDialog, "Find Resource"));
 		menu.addSeparator();
 		//		selectAbstractLevelMode = new JCheckBoxMenuItem("Change Abstract Level", false);
 		//		selectAbstractLevelMode.addActionListener(new SelectAbstractLevelAction());
@@ -334,8 +334,8 @@ public class MR3 extends JFrame {
 		JMenu menu = new JMenu("File");
 		menu.add(new NewProject(this));
 		menu.add(new OpenProject(this));
-		menu.add(new SaveProject(this, "Save Project"));
-		menu.add(new SaveProject(this, "Save Project As"));
+		menu.add(new SaveProject(this, "Save Project", Utilities.getImageIcon("save.gif")));
+		menu.add(new SaveProject(this, "Save Project As", Utilities.getImageIcon("saveas.gif")));
 		menu.addSeparator();
 		JMenu importRDF = new JMenu("Import");
 
@@ -570,17 +570,6 @@ public class MR3 extends JFrame {
 				gmanager.setCellViewType(CellViewType.LABEL);
 			}
 			gmanager.changeCellView();
-		}
-	}
-
-	class FindAction extends AbstractAction {
-
-		FindAction() {
-			super("Find Resource");
-		}
-
-		public void actionPerformed(ActionEvent e) {
-			findResDialog.setVisible(true);
 		}
 	}
 
