@@ -53,6 +53,7 @@ public abstract class RDFSPanel extends JPanel {
 	protected JList instanceList;
 	protected JScrollPane instanceListScroll;
 	private static final int instanceListHeight = 200;
+	private static final int LangFieldLength = 3;
 
 	public RDFSPanel(RDFGraph g, GraphManager manager) {
 		graph = g;
@@ -81,7 +82,7 @@ public abstract class RDFSPanel extends JPanel {
 		isDefinedBy = new JTextField();
 		initComponent(isDefinedBy, "isDefinedBy", listWidth, fieldHeight);
 
-		labelLangField = new JTextField(5);
+		labelLangField = new JTextField(LangFieldLength);
 		initComponent(labelLangField, "Lang", 50, fieldHeight);
 		labelField = new JTextField();
 		initComponent(labelField, "Label", 300, fieldHeight);
@@ -92,6 +93,7 @@ public abstract class RDFSPanel extends JPanel {
 		labelLangBox = new JComboBox();
 		labelLangBox.addActionListener(new SelectLangAction());
 		labelLangBox.setPreferredSize(new Dimension(70, 25));
+		labelLangBox.setMinimumSize(new Dimension(70,25));
 		editLabelButton = new JButton("edit");
 		editLabelButton.addActionListener(new EditLiteralAction());
 		addLabelButton = new JButton("add");
@@ -104,7 +106,7 @@ public abstract class RDFSPanel extends JPanel {
 		labelButtonGroup.add(addLabelButton);
 		labelButtonGroup.add(removeLabelButton);
 
-		commentLangField = new JTextField(5);
+		commentLangField = new JTextField(LangFieldLength);
 		initComponent(commentLangField, "Lang", 50, fieldHeight);
 		comment = new JTextArea(5, 15); // èc,â°        
 		commentScroll = new JScrollPane(comment);
