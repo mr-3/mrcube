@@ -1,12 +1,15 @@
 == 更新履歴
 
-=== ■ α8 (2003-08-)
+=== ■ α8 (2003-09-05)
+* RDFS Class，RDFS Propertyを判断するためのメタクラスを
+  Edit->PreferenceのMeta Class Listで指定できるようになった．
 * 各グラフのOverviewが表示できるようになった．(Window->Show RDF Graph Overview,
   Show Class Graph Overview, Show Property Graph Overview)
 * 起動時にSplashWindowを表示するようになった．
+* RDFリテラルにデータ型を指定できるようになった．
 * JenaのバージョンをJena2 Betaにした．
 * JGraphのバージョンをJGraph3にした．
-* RDFリテラルにデータ型を指定できるようになった．
+* パッケージ名を変更(jp.ac.shizuoka.cs.panda.mmm.mr3.*)
 * rdf_1..._(数)のプロパティは，表示しないようになった．
 * その他，細かい修正．
 

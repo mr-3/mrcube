@@ -704,7 +704,7 @@ public class GraphManager {
 				 * Resourceクラスのインスタンスをequalsで比べるとisAnon()
 				 * によって，true,falseを決められる．文字列を保存しているuri
 				 * は，isAnonは必ずfalseとなるため，文字列比較をするために
-				 * toStringを用いている．toStringを消すな．
+				 * toStringを用いている．
 				 */
 				if (info.getURI().toString().equals(uri.toString())) {
 					return cells[i];

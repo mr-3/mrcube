@@ -79,7 +79,7 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 			}
 		});
 
-		// cell != nullにしないと，一つだけセルを選択したときに，メニューが表示されない．なぜ？
+		// cell != nullにしないと，一つだけセルを選択したときに，メニューが表示されない．
 		if (cell != null || !graph.isSelectionEmpty()) { // Insert Sub Class
 			menu.add(new AbstractAction("Insert Sub Class") {
 				public void actionPerformed(ActionEvent e) {

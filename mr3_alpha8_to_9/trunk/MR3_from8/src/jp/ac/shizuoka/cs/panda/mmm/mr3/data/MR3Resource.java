@@ -6,7 +6,7 @@ import com.hp.hpl.jena.rdf.model.impl.*;
 /**
  * @author takeshi morita
  * 
- * MRCUBE‚ÅŽg‚¤Property‚ÆResource
+ * MR^3‚Å—p‚¢‚éProperty‚ÆResource
  */
 public class MR3Resource {
 

@@ -449,7 +449,7 @@ public class MR3 extends JFrame {
 	private static RDFsFileFilter rdfsFileFilter = new RDFsFileFilter();
 	private static NTripleFileFilter n3FileFilter = new NTripleFileFilter();
 
-	// encodingの指定ができないので，却下．
+	// encodingの指定ができない．
 	//	private Model loadModel(String ext, String lang) {
 	//		File file = getFile(true, ext);
 	//		if (file == null) {
