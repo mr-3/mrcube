@@ -14,6 +14,9 @@ public class AttributeDialog extends JInternalFrame implements ActionListener {
 	private static final JPanel NULL_PANEL = new JPanel();
 	private JCheckBoxMenuItem showAttrDialog;
 
+	private static int dialogWidth = 400;
+	private static int dialogHeight = 450; // 変更すると，コメントが削除できなくなる可能性がある 
+	
 	public AttributeDialog() {
 		super("Attribute Dialog", false, true);
 		URL attrDialogUrl = this.getClass().getClassLoader().getResource("mr3/resources/attrDialogIcon.gif");
@@ -26,7 +29,7 @@ public class AttributeDialog extends JInternalFrame implements ActionListener {
 			}
 		});
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-		setSize(new Dimension(400, 430));
+		setSize(new Dimension(dialogWidth, dialogHeight));
 		setLocation(50, 50);
 		setVisible(false);
 	}
