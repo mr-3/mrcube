@@ -1,10 +1,10 @@
 package mr3.ui;
 import java.awt.*;
-import java.util.*;
 
 import javax.swing.*;
 
 import mr3.data.*;
+import mr3.util.*;
 
 import com.hp.hpl.mesa.rdf.jena.model.*;
 import com.jgraph.event.*;
@@ -14,14 +14,14 @@ import com.jgraph.graph.*;
  *
  * @auther takeshi morita 
  */
-public class SelectTypeDialog extends SelectClassDialog {
+public class SelectResourceTypeDialog extends SelectClassDialog {
 
 	private JLabel dspURI;
 	private Resource uri;
 	private GraphCell cell;
 	private GraphCell prevCell;
 
-	public SelectTypeDialog() {
+	public SelectResourceTypeDialog() {
 		super("Select Resource Type");
 	}
 
@@ -39,19 +39,19 @@ public class SelectTypeDialog extends SelectClassDialog {
 	public void setInitCell(Object typeCell) {
 		if (typeCell == null) {
 			if (prevCell != null) {
-				setCellColor(prevCell, Color.green);
+				ChangeCellAttributes.changeCellColor(graph, prevCell, Color.green);
 			}
 			prevCell = null;
-			dspURI.setText("");	
+			dspURI.setText("");
 			return;
 		} else {
 			Object[] cells = graph.getAllCells();
 			for (int i = 0; i < cells.length; i++) {
 				GraphCell cell = (GraphCell) cells[i];
-//				if (graph.isRDFResourceCell(cell)) {
+				//				if (graph.isRDFResourceCell(cell)) {
 				if (graph.isRDFSClassCell(cell)) {
 					if (cell == typeCell) {
-						setCellColor(cell, Color.yellow);
+						ChangeCellAttributes.changeCellColor(graph, cell, Color.yellow);
 						prevCell = cell;
 						graph.setSelectionCell(cell);
 						break;
@@ -61,31 +61,13 @@ public class SelectTypeDialog extends SelectClassDialog {
 		}
 	}
 
-	private void setCellColor(GraphCell cell, Color color) {
-		if (cell != null) {
-			Map map = cell.getAttributes();
-			GraphConstants.setBackground(map, color);
-			setSelectionAttributes(map, cell);
-		}
-	}
-
-	private void setSelectionAttributes(Map map, GraphCell cell) {
-		map = GraphConstants.cloneMap(map);
-		map.remove(GraphConstants.BOUNDS);
-		map.remove(GraphConstants.POINTS);
-
-		Map nested = new HashMap();
-		nested.put(cell, GraphConstants.cloneMap(map));
-		graph.getGraphLayoutCache().edit(nested, null, null, null);
-	}
-
 	public void valueChanged(GraphSelectionEvent e) {
 		cell = (GraphCell) graph.getSelectionCell();
 		if (graph.getSelectionCount() == 1 && graph.getModel().getChildCount(cell) <= 1) {
-//			if (graph.isRDFResourceCell(cell)) {	
-			if (graph.isRDFSClassCell(cell)) {	
-				setCellColor(prevCell, Color.green);
-				setCellColor(cell, Color.yellow);
+			//			if (graph.isRDFResourceCell(cell)) {	
+			if (graph.isRDFSClassCell(cell)) {
+				ChangeCellAttributes.changeCellColor(graph, prevCell, Color.green);
+				ChangeCellAttributes.changeCellColor(graph, cell, Color.yellow);
 				RDFSInfo info = rdfsMap.getCellInfo(cell);
 				dspURI.setText(info.getURIStr());
 				dspURI.setToolTipText(info.getURIStr());
@@ -99,10 +81,10 @@ public class SelectTypeDialog extends SelectClassDialog {
 		if (prevCell != null) {
 			if (isOk) {
 				isOk = false;
-				setCellColor(prevCell, Color.green);
+				ChangeCellAttributes.changeCellColor(graph, prevCell, Color.green);
 				return uri;
 			} else {
-				setCellColor(prevCell, Color.green);
+				ChangeCellAttributes.changeCellColor(graph, prevCell, Color.green);
 				return null;
 			}
 		} else {

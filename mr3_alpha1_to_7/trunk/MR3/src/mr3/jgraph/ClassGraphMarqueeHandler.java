@@ -21,7 +21,7 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 
 	// connectÇ∑ÇÈÇ©Ç«Ç§Ç©ÇÇ±Ç±Ç≈êßå‰
 	public void mouseReleased(MouseEvent e) {
-		if (e != null && !e.isConsumed() && port != null && firstPort != null && firstPort != port && isEllipseView(firstPort.getParentView())) {
+		if (e != null && !e.isConsumed() && port != null && firstPort != null && firstPort != port) {
 			Port source = (Port) firstPort.getCell();
 			DefaultPort target = (DefaultPort) port.getCell();
 			connect(source, target, "");
@@ -90,7 +90,7 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 				}
 			});
 
-			//			Remove	
+			//Remove	
 			menu.add(new AbstractAction("Remove") {
 				public void actionPerformed(ActionEvent e) {
 					if (!graph.isSelectionEmpty()) {

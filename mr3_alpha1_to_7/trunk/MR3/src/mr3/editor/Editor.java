@@ -25,6 +25,8 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 	protected JScrollPane graphScrollPane;
 	protected GraphUndoManager undoManager;
 
+	protected Object[] lastSelectionCells;
+
 	protected RDFCellMaker cellMaker;
 	protected JGraphToRDF graphToRDF;
 	protected RDFToJGraph rdfToGraph;
@@ -38,6 +40,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 
 	protected void initEditor(RDFGraph g, GraphManager manager, AttributeDialog attrD) {
 		graph = g;
+		lastSelectionCells = new Object[0];
 		initField(attrD, manager);
 		initListener();
 		initLayout();
@@ -162,7 +165,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 		if (cells != null && cells.length > 0) {
 			int count = getCellCount(graph);
 			DefaultGraphCell group = new DefaultGraphCell(new Integer(count - 1));
-//			ParentMap map = new ParentMap();
+			//			ParentMap map = new ParentMap();
 			ParentMap map = new ParentMap(graph.getModel());
 			for (int i = 0; i < cells.length; i++) {
 				map.addEntry(cells[i], group);
@@ -232,7 +235,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 		//toback.setEnabled(enabled);
 	}
 
-//	public void fitWindow(RDFGraph graph) {
+	//	public void fitWindow(RDFGraph graph) {
 	public void fitWindow() {
 		Rectangle p = graph.getCellBounds(graph.getRoots());
 		if (p != null) {
@@ -252,7 +255,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 	}
 
 	private URL getImageIcon(String image) {
-		return this.getClass().getClassLoader().getResource("mr3/resources/"+image);
+		return this.getClass().getClassLoader().getResource("mr3/resources/" + image);
 	}
 
 	//
@@ -281,7 +284,6 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 			ImageIcon connectIcon = new ImageIcon(connectUrl);
 			mh.connectButton.setIcon(connectIcon);
 			toolbar.add(mh.connectButton);
-
 
 			// Toggle Self Connect Mode
 			URL selfConnectUrl = getImageIcon("arrow.gif");
@@ -323,8 +325,8 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 				}
 			});
 		}
-//
-//		toolbar.addSeparator();
+		//
+		//		toolbar.addSeparator();
 
 		URL undoUrl = getImageIcon("undo.gif");
 		ImageIcon undoIcon = new ImageIcon(undoUrl);
@@ -334,9 +336,9 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 			}
 		};
 		undo.setEnabled(false);
-//		toolbar.add(undo);
-//
-//		// Redo
+		//		toolbar.add(undo);
+		//
+		//		// Redo
 		URL redoUrl = getImageIcon("redo.gif");
 		ImageIcon redoIcon = new ImageIcon(redoUrl);
 		redo = new AbstractAction("", redoIcon) {
@@ -345,7 +347,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 			}
 		};
 		redo.setEnabled(false);
-//		toolbar.add(redo);
+		//		toolbar.add(redo);
 
 		//
 		// Edit Block
@@ -417,7 +419,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 		ImageIcon fitWindowIcon = new ImageIcon(fitWindowUrl);
 		toolbar.add(new AbstractAction("", fitWindowIcon) {
 			public void actionPerformed(ActionEvent e) {
-//				fitWindow(graph);
+				//				fitWindow(graph);
 				fitWindow();
 			}
 		});
@@ -471,6 +473,34 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 		//		toolbar.add(toback);
 
 		return toolbar;
+	}
+
+	private static final Color PROPERTY_COLOR = new Color(255, 158, 62);
+
+	protected void changeSelectionCellColor() {
+		for (int i = 0; i < lastSelectionCells.length; i++) {
+			GraphCell cell = (GraphCell) lastSelectionCells[i];
+			if (graph.isRDFResourceCell(cell)) {
+				ChangeCellAttributes.changeCellColor(graph, cell, Color.pink);
+			} else if (graph.isRDFPropertyCell(cell)) {
+				ChangeCellAttributes.changeCellColor(graph, cell, Color.black);
+			} else if (graph.isRDFLiteralCell(cell)) {
+				ChangeCellAttributes.changeCellColor(graph, cell, Color.orange);
+			} else if (graph.isRDFSClassCell(cell)) {
+				ChangeCellAttributes.changeCellColor(graph, cell, Color.green);
+			} else if (graph.isRDFSPropertyCell(cell)) {
+				ChangeCellAttributes.changeCellColor(graph, cell, PROPERTY_COLOR);
+			}
+		}
+		Object[] cells = graph.getSelectionCells();
+		cells = graph.getDescendants(cells);
+		for (int i = 0; i < cells.length; i++) {
+			GraphCell cell = (GraphCell) cells[i];
+			if (graph.isRDFsCell(cell)) {
+				ChangeCellAttributes.changeCellColor(graph, cell, Color.yellow);
+			}
+		}
+		lastSelectionCells = cells;
 	}
 
 	// This will change the source of the actionevent to graph.

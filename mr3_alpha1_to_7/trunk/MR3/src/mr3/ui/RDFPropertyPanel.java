@@ -162,6 +162,9 @@ public class RDFPropertyPanel extends JPanel implements ActionListener {
 				}
 			}
 		}
+
+		gmanager.jumpPropertyArea(propertyCell); // 対応するRDFSプロパティを選択する
+
 		rdfsInfoMap.putEdgeInfo(edge, propertyCell);
 		String propValue = gmanager.getPropertyGraph().convertValueToString(propertyCell);
 		gmanager.setCellValue(edge, propValue);
@@ -185,6 +188,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener {
 		if (e.getSource() == apply || e.getSource() == uriField) {
 			if (edge != null) {
 				changeProperty();
+				gmanager.jumpRDFArea(edge); // AttributeDialogの表示をRDFプロパティに戻す
 			}
 		} else if (e.getSource() == jumpRDFSProp) {
 			jumpRDFSProperty();

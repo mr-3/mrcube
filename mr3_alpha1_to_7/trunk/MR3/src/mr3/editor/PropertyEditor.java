@@ -46,6 +46,7 @@ public class PropertyEditor extends Editor {
 	}
 
 	public void valueChanged(GraphSelectionEvent e) {
+		changeSelectionCellColor();
 		if (gmanager.isSelectAbstractLevelMode()) {
 			Object[] cells = graph.getSelectionCells();
 			gmanager.setPropertyAbstractLevelSet(cells);

@@ -134,16 +134,32 @@ public class RDFGraph extends JGraph {
 		return (object instanceof Edge);
 	}
 
-	public boolean isRDFPropertyCell(Object object) {
-		return isEdge(object);
-	}
-
 	public boolean isPort(Object object) {
 		return (object instanceof Port);
 	}
 
+	public boolean isRDFsCell(Object object) {
+		return (isRDFCell(object) || isRDFSCell(object));
+	}
+
+	public boolean isRDFCell(Object object) {
+		return (isRDFResourceCell(object) || isRDFPropertyCell(object) || isRDFLiteralCell(object));
+	}
+
+	public boolean isRDFSCell(Object object) {
+		return (object instanceof RDFSClassCell || object instanceof RDFSPropertyCell);
+	}
+
 	public boolean isRDFResourceCell(Object object) {
 		return (object instanceof RDFResourceCell);
+	}
+
+	public boolean isRDFPropertyCell(Object object) {
+		return isEdge(object);
+	}
+
+	public boolean isRDFLiteralCell(Object object) {
+		return (object instanceof RDFLiteralCell);
 	}
 
 	public boolean isRDFSClassCell(Object object) {
@@ -152,14 +168,6 @@ public class RDFGraph extends JGraph {
 
 	public boolean isRDFSPropertyCell(Object object) {
 		return (object instanceof RDFSPropertyCell);
-	}
-
-	public boolean isRDFSCell(Object object) {
-		return (object instanceof RDFSClassCell || object instanceof RDFSPropertyCell);
-	}
-
-	public boolean isRDFLiteralCell(Object object) {
-		return (object instanceof RDFLiteralCell);
 	}
 
 	public boolean isTypeCell(Object object) {
@@ -224,7 +232,7 @@ public class RDFGraph extends JGraph {
 				for (Iterator edges = graphModel.edges(port); edges.hasNext();) {
 					removeCells.add(edges.next());
 				}
-//			} else if (isRDFResourceCell(cells[i])) {
+				//			} else if (isRDFResourceCell(cells[i])) {
 			} else if (isRDFResourceCell(cells[i]) || isRDFSCell(cells[i])) {
 				rdfsInfoMap.removeCellInfo(cells[i]);
 				resInfoMap.removeCellInfo(cells[i]);
