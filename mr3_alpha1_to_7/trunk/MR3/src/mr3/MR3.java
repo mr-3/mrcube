@@ -93,7 +93,7 @@ public class MR3 extends JFrame {
 
 		setSize(userPrefs.getInt(PrefConstants.WindowWidth, MAIN_FRAME_WIDTH), userPrefs.getInt(PrefConstants.WindowHeight, MAIN_FRAME_HEIGHT));
 		setLocation(userPrefs.getInt(PrefConstants.WindowPositionX, 50), userPrefs.getInt(PrefConstants.WindowPositionY, 50));
-		//setLookAndFeel();
+		//		setLookAndFeel();
 
 		attrDialog = new AttributeDialog();
 		gmanager = new GraphManager(attrDialog, userPrefs);
@@ -133,6 +133,7 @@ public class MR3 extends JFrame {
 				exitProgram();
 			}
 		});
+
 		setVisible(true);
 		loadWindows();
 	}
