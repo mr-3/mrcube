@@ -42,6 +42,7 @@ public class GraphManager {
 	private String baseURI;
 
 	public GraphManager(AttributeDialog attrD, Preferences prefs) {
+		attrDialog = attrD;
 		rdfGraph = new RDFGraph(this, GraphType.RDF);
 //		realRDFGraph = new RDFGraph(this, GraphType.REAL_RDF);
 		classGraph = new RDFGraph(this, GraphType.CLASS);
@@ -50,7 +51,6 @@ public class GraphManager {
 		cellMaker = new RDFCellMaker(this);
 
 		userPrefs = prefs;
-		attrDialog = attrD;
 		refDialog = new ReferenceListDialog("Referenced Resource List", this);
 		abstractLevelInfo = new AbstractLevelInfo();
 		prefixNSInfoSet = new HashSet();

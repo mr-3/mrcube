@@ -207,7 +207,7 @@ public class MR3 extends JFrame {
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 			SwingUtilities.updateComponentTreeUI(this);
 		} catch (Exception ex) {
-			System.out.println("Error L&F Setting");
+			ex.printStackTrace();
 		}
 	}
 
@@ -330,7 +330,7 @@ public class MR3 extends JFrame {
 		menu.addSeparator();
 		JMenu importRDF = new JMenu("Import");
 		JMenu replace = new JMenu("Replace");
-		
+
 		mi = new JMenuItem("RDF/XML (File)");
 		mi.addActionListener(new ReplaceRDFFileAction());
 		replace.add(mi);
@@ -698,6 +698,16 @@ public class MR3 extends JFrame {
 		return rdfURI;
 	}
 
+// encodingÇÃéwíËÇ™Ç≈Ç´Ç»Ç¢ÇÃÇ≈ÅCãpâ∫ÅD
+//	private Model loadModel(String ext, String lang) {
+//		File file = getFile(true, ext);
+//		if (file == null) {
+//			return null;
+//		}
+//		Model model = ModelLoader.loadModel(file.getAbsolutePath(), lang);	
+//		return model;
+//	}
+
 	private Reader getReader(String uri, String ext) {
 		if (uri == null) {
 			return null;
@@ -705,7 +715,8 @@ public class MR3 extends JFrame {
 		URL rdfURI = null;
 		try {
 			rdfURI = getURI(uri);
-			Reader reader = new InputStreamReader(rdfURI.openStream());
+			String encoding = userPrefs.get(PrefConstants.InputEncoding, "SJIS");
+			Reader reader = new InputStreamReader(rdfURI.openStream(), encoding);
 			return reader;
 		} catch (UnknownHostException uhe) {
 			JOptionPane.showInternalMessageDialog(desktop, "Unknown Host(Proxy)", "Warning", JOptionPane.ERROR_MESSAGE);
@@ -957,7 +968,7 @@ public class MR3 extends JFrame {
 				toFrontInternalFrame(2);
 			}
 		}
-		
+
 	}
 
 	private void deployWindows() {
