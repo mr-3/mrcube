@@ -344,45 +344,54 @@ public class GraphManager {
 		for (int i = 0; i < rdfCells.length; i++) {
 			GraphCell cell = (GraphCell) rdfCells[i];
 			if (rdfGraph.isRDFResourceCell(cell)) {
-				RDFResourceInfo info = resInfoMap.getCellInfo(cell);
-				info.setTypeCellValue();
-				Resource uri = info.getURI();
-				if (info.getURIType() == URIType.ID) {
-					uri = new ResourceImpl(baseURI + uri);
-				}
-				if (info.getURIType() == URIType.ANONYMOUS) {
-					setCellValue(cell, "");
-				} else {
-					if (cellViewType == CellViewType.URI) {
-						setNSPrefix(uri, cell);
-					} else if (cellViewType == CellViewType.LABEL) {
-						// リソースのEdge集合からrdf:labelを取り出して設定する
-						String label = getRDFLabel((DefaultGraphCell) cell);
-						if (label.length() != 0) {
-							setCellValue(cell, label);
-						} else {
-							setNSPrefix(uri, cell);
-						}
-					}
-					if (abstractLevelInfo.isSelectAbstractLevelMode()) {
-						changeClassAbstractLevel(info, abstractLevelInfo.getClassAbstractLevelSet());
-					}
-				}
+				changeRDFResourceCellView(cell);
 			} else if (rdfGraph.isRDFPropertyCell(cell)) {
-				Object propCell = rdfsInfoMap.getEdgeInfo(cell);
-				if (propCell == null) {
-					setCellValue(cell, "");
-				} else {
-					setCellValue(cell, propGraph.convertValueToString(propCell));
-					Map map = cell.getAttributes();
-				}
-				if (abstractLevelInfo.isSelectAbstractLevelMode()) {
-					changePropertyAbstractLevel(cell, propCell, abstractLevelInfo.getPropertyAbstractLevelSet());
-				}
+				changeRDFPropertyCellView(cell);
 			}
 		}
 		rdfGraph.getGraphLayoutCache().reload();
 		rdfGraph.repaint();
+	}
+
+	private void changeRDFPropertyCellView(GraphCell cell) {
+		Object propCell = rdfsInfoMap.getEdgeInfo(cell);
+		if (propCell == null) {
+			setCellValue(cell, "");
+		} else {
+			setCellValue(cell, propGraph.convertValueToString(propCell));
+			Map map = cell.getAttributes();
+		}
+		if (abstractLevelInfo.isSelectAbstractLevelMode()) {
+			changePropertyAbstractLevel(cell, propCell, abstractLevelInfo.getPropertyAbstractLevelSet());
+		}
+	}
+
+	private void changeRDFResourceCellView(GraphCell cell) {
+		RDFResourceInfo info = resInfoMap.getCellInfo(cell);
+		info.setTypeCellValue(); // Layoutのために必要
+		Resource uri = info.getURI();
+
+		if (info.getURIType() == URIType.ANONYMOUS) {
+			setCellValue(cell, "");
+		} else {
+			if (info.getURIType() == URIType.ID) {
+				uri = new ResourceImpl(baseURI + uri);
+			}
+			if (cellViewType == CellViewType.URI) {
+				setNSPrefix(uri, cell);
+			} else if (cellViewType == CellViewType.LABEL) {
+				// リソースのEdge集合からrdf:labelを取り出して設定する
+				String label = getRDFLabel((DefaultGraphCell) cell);
+				if (label.length() != 0) {
+					setCellValue(cell, label);
+				} else {
+					setNSPrefix(uri, cell);
+				}
+			}
+			if (abstractLevelInfo.isSelectAbstractLevelMode()) {
+				changeClassAbstractLevel(info, abstractLevelInfo.getClassAbstractLevelSet());
+			}
+		}
 	}
 
 	public void changeClassCellView() {
