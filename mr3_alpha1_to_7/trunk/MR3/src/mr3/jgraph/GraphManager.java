@@ -55,6 +55,15 @@ public class GraphManager {
 		baseURI = userPrefs.get(PrefConstants.BaseURI, "http://mr3");
 	}
 
+	private JDesktopPane desktop;
+	public void setDesktop(JDesktopPane jdp) {
+		desktop = jdp;
+	}
+	
+	public JDesktopPane getDesktop() {
+		return desktop;
+	}
+
 	public RDFGraph getRDFGraph() {
 		return rdfGraph;
 	}
@@ -798,7 +807,7 @@ public class GraphManager {
 
 		Map rdfMap = checkNotRmableRDFCells(cells, notRmableCells, notRmableResCells);
 		Map propMap = checkNotRmablePropCells(cells, notRmableCells, notRmableResCells, graph);
-		
+
 		if (notRmableCells.isEmpty()) {
 			graph.removeCellsWithEdges(cells);
 		} else {

@@ -5,6 +5,8 @@
  */
 package mr3.plugin;
 
+import javax.swing.*;
+
 import mr3.*;
 
 import com.hp.hpl.mesa.rdf.jena.model.*;
@@ -14,8 +16,8 @@ import com.hp.hpl.mesa.rdf.jena.model.*;
  */
 public abstract class MR3Plugin {
 
-	private String menuName;
 	private MR3 mr3;
+	private String menuName;
 
 	protected MR3Plugin(String mn) {
 		menuName = mn;
@@ -82,4 +84,9 @@ public abstract class MR3Plugin {
 	protected Model getSelectedPropertyModel() {
 		return mr3.getSelectedPropertyModel();
 	}
+
+	protected JDesktopPane getDesktopPane() {
+		return mr3.getDesktopPane();
+	}
+	
 }

@@ -22,7 +22,7 @@ public class InsertResourceDialog extends JDialog implements ActionListener, Ite
 	private Object resourceType;
 
 	public InsertResourceDialog(String title, Object[] cells) {
-		super((Frame) null, title, true);
+		super((Frame)null, title, true);
 		Container contentPane = getContentPane();
 
 		resourceType = null;
