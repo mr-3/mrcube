@@ -49,7 +49,3 @@ BugList
 　　　：dental(UTF-8).rdf
 　　○ShiftJIS形式(IsaVizでExportしたRDFを文字コードコンバートしたもの)
 　　　：dental(Shift_JIS).rdf
-
-- スクロールしても表示できなくなることがある。
-　⇒どんな場合に起こるかはまだよくわかりません。
-
