@@ -13,8 +13,8 @@ public class ClassInfo extends RDFSInfo {
 	transient private Set subClasses;
 	transient private Set supClasses;
 
-	public ClassInfo(String uri) {
-		super(uri);
+	public ClassInfo(String uri, URIType type) {
+		super(uri, type);
 		subClasses = new HashSet();
 		supClasses = new HashSet();
 	}
@@ -29,14 +29,24 @@ public class ClassInfo extends RDFSInfo {
 		return Collections.unmodifiableSet(subClasses);
 	}
 
-	public Model getModel() {
+	public Model getModel(String baseURI) {
 		try {
 			Model tmpModel = super.getModel();
-			Resource res = new ResourceImpl(uri);
+			Resource res = null;
+			if (uriType == URIType.URI) {
+				res = new ResourceImpl(uri);
+			} else {
+				res = new ResourceImpl(baseURI + uri);
+			}
+
 			tmpModel.add(tmpModel.createStatement(res, RDF.type, RDFS.Class));
 			for (Iterator i = supRDFS.iterator(); i.hasNext();) {
 				RDFSInfo classInfo = rdfsInfoMap.getCellInfo(i.next());
-				tmpModel.add(tmpModel.createStatement(res, RDFS.subClassOf, classInfo.getURI()));
+				if (classInfo.getURIType() == URIType.URI) {
+					tmpModel.add(tmpModel.createStatement(res, RDFS.subClassOf, classInfo.getURI()));
+				} else {
+					tmpModel.add(tmpModel.createStatement(res, RDFS.subClassOf, new ResourceImpl(baseURI + classInfo.getURIStr())));
+				}
 			}
 			return tmpModel;
 		} catch (RDFException rdfex) {

@@ -130,8 +130,7 @@ public class MR3 extends JFrame {
 
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				saveWindows();
-				System.exit(0);
+				exitProgram();
 			}
 		});
 		setVisible(true);
@@ -228,7 +227,7 @@ public class MR3 extends JFrame {
 	}
 
 	private void setIcon() {
-		URL jgraphUrl = this.getClass().getClassLoader().getResource("mr3/resources/mr3_icon.gif");
+		URL jgraphUrl = this.getClass().getClassLoader().getResource("mr3/resources/mr3_logo.png");
 		if (jgraphUrl != null) { // If Valid URL
 			ImageIcon jgraphIcon = new ImageIcon(jgraphUrl); // Load Icon
 			setIconImage(jgraphIcon.getImage()); // Use in Window
@@ -242,6 +241,7 @@ public class MR3 extends JFrame {
 		mb.add(getViewMenu());
 		mb.add(getWindowMenu());
 		mb.add(getConvertMenu());
+		mb.add(getHelpMenu());
 		return mb;
 	}
 
@@ -453,10 +453,32 @@ public class MR3 extends JFrame {
 		savePropertyEditorBounds();
 	}
 
+	private int confirmExitProject(String title) {
+		int messageType =
+			JOptionPane.showInternalConfirmDialog(
+				desktop,
+				"Save changes ?",
+				"MR^3 - " + title,
+				JOptionPane.YES_NO_CANCEL_OPTION,
+				JOptionPane.INFORMATION_MESSAGE);
+		if (messageType == JOptionPane.YES_OPTION) {
+			saveProject();
+		}
+		return messageType;
+	}
+
+	private void exitProgram() {
+		int messageType = confirmExitProject("Exit Program"); // もっと適切なメソッド名にすべき
+		if (messageType == JOptionPane.CANCEL_OPTION) {
+			return;
+		}
+		saveWindows();
+		System.exit(0);
+	}
+
 	class ExitAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
-			saveWindows();
-			System.exit(0);
+			exitProgram();
 		}
 	}
 
@@ -509,23 +531,23 @@ public class MR3 extends JFrame {
 		}
 	}
 
-	private boolean newProject() {
-		int messageType = JOptionPane.showInternalConfirmDialog(desktop, "Are you sure you want to continue?", "Warning", JOptionPane.YES_NO_OPTION);
-		if (messageType == JOptionPane.YES_OPTION) {
-			nsTableDialog.resetNSTable();
-			attrDialog.setNullPanel();
-			resInfoMap.clear();
-			litInfoMap.clear();
-			rdfsInfoMap.clear();
-			gmanager.removeAllCells();
-			return true;
-		}
-		return false;
+	private void newProject() {
+		nsTableDialog.resetNSTable();
+		attrDialog.setNullPanel();
+		resInfoMap.clear();
+		litInfoMap.clear();
+		rdfsInfoMap.clear();
+		gmanager.removeAllCells();
+		nsTableDialog.setDefaultNSPrefix();
+		setTitle("MR^3 - New Project");
 	}
 
 	class NewProjectAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
-			newProject();
+			int messageType = confirmExitProject("New Project");
+			if (messageType != JOptionPane.CANCEL_OPTION) {
+				newProject();
+			}
 		}
 	}
 
@@ -537,9 +559,10 @@ public class MR3 extends JFrame {
 			return new ObjectInputStream(fi);
 		}
 
-		public void loadProject(File file) {
+		public void openProject(File file) {
 			try {
 				if (file != null) {
+					newProject();
 					ObjectInputStream oi = createInputStream(file);
 					Object obj = oi.readObject();
 					if (obj instanceof ArrayList) {
@@ -548,6 +571,7 @@ public class MR3 extends JFrame {
 						nsTableDialog.loadState((List) list.get(index));
 					}
 					oi.close();
+					setTitle("MR^3 - " + file.getAbsolutePath());
 				}
 			} catch (IOException ex) {
 				ex.printStackTrace();
@@ -557,45 +581,43 @@ public class MR3 extends JFrame {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			if (newProject()) {
-				File file = getFile(true, "mr3");
-				if (file == null) {
-					return;
-				}
-				loadProject(file);
+			File file = getFile(true, "mr3");
+			if (file == null) {
+				return;
 			}
+			openProject(file);
+		}
+	}
+
+	private ObjectOutputStream createOutputStream(File file) throws FileNotFoundException, IOException {
+		OutputStream fo = new FileOutputStream(file);
+		fo = new GZIPOutputStream(fo);
+		return new ObjectOutputStream(fo);
+	}
+
+	private void saveProject() {
+		File file = getFile(false, "mr3");
+		if (file == null) {
+			return;
+		}
+		try {
+			ObjectOutputStream oo = createOutputStream(file);
+			ArrayList list = gmanager.storeState();
+			list.add(nsTableDialog.getState());
+			oo.writeObject(list);
+			oo.flush();
+			oo.close();
+			setTitle("MR^3 - " + file.getAbsolutePath());
+		} catch (FileNotFoundException fne) {
+			fne.printStackTrace();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
 		}
 	}
 
 	class SaveProjectAction extends AbstractAction {
-
-		private ObjectOutputStream createOutputStream(File file) throws FileNotFoundException, IOException {
-			OutputStream fo = new FileOutputStream(file);
-			fo = new GZIPOutputStream(fo);
-			return new ObjectOutputStream(fo);
-		}
-
-		private void saveProject(File file) {
-			try {
-				ObjectOutputStream oo = createOutputStream(file);
-				ArrayList list = gmanager.storeState();
-				list.add(nsTableDialog.getState());
-				oo.writeObject(list);
-				oo.flush();
-				oo.close();
-			} catch (FileNotFoundException fne) {
-				fne.printStackTrace();
-			} catch (IOException ioe) {
-				ioe.printStackTrace();
-			}
-		}
-
 		public void actionPerformed(ActionEvent e) {
-			File file = getFile(false, "mr3");
-			if (file == null) {
-				return;
-			}
-			saveProject(file);
+			saveProject();
 		}
 	}
 
@@ -714,17 +736,21 @@ public class MR3 extends JFrame {
 	class ReplaceRDFFileAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
 			Model model = readModel(getReader("rdf"), gmanager.getBaseURI());
+			gmanager.setIsImporting(true);
 			mr3Reader.replaceRDF(model);
 			rdfEditor.fitWindow();
+			gmanager.setIsImporting(false);
 		}
 	}
 
 	class ReplaceRDFURIAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
+			gmanager.setIsImporting(true);
 			String uri = JOptionPane.showInternalInputDialog(desktop, "Open URI");
 			Model model = readModel(getReader(uri, "rdf"), gmanager.getBaseURI());
 			mr3Reader.replaceRDF(model);
 			rdfEditor.fitWindow();
+			gmanager.setIsImporting(false);
 		}
 	}
 
@@ -738,16 +764,20 @@ public class MR3 extends JFrame {
 
 	class MergeRDFSFileAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
+			gmanager.setIsImporting(true);
 			Model model = readModel(getReader("rdfs"), gmanager.getBaseURI());
 			mr3Reader.mergeRDFS(model);
+			gmanager.setIsImporting(false);
 		}
 	}
 
 	class MergeRDFSURIAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
+			gmanager.setIsImporting(true);
 			String uri = JOptionPane.showInternalInputDialog(desktop, "Open URI");
 			Model model = readModel(getReader(uri, "rdfs"), gmanager.getBaseURI());
 			mr3Reader.mergeRDFS(model);
+			gmanager.setIsImporting(false);
 		}
 	}
 
@@ -959,15 +989,6 @@ public class MR3 extends JFrame {
 		mi.addActionListener(new JGraphToNTripleAction());
 		rdfView.add(mi);
 
-		JMenu selectedRDFView = new JMenu("Selected RDF");
-		menu.add(selectedRDFView);
-		mi = new JMenuItem("Selected RDF/XML");
-		mi.addActionListener(new JGraphToSelectedRDFAction());
-		selectedRDFView.add(mi);
-		mi = new JMenuItem("Selected RDF/N-Triple");
-		mi.addActionListener(new JGraphToSelectedNTripleAction());
-		selectedRDFView.add(mi);
-
 		JMenu rdfsView = new JMenu("RDFS");
 		menu.add(rdfsView);
 		mi = new JMenuItem("RDFS(Class/Property)/XML");
@@ -979,6 +1000,15 @@ public class MR3 extends JFrame {
 		mi = new JMenuItem("RDFS(Property)/XML");
 		mi.addActionListener(new JGraphToPropertyAction());
 		rdfsView.add(mi);
+
+		JMenu selectedRDFView = new JMenu("Selected RDF");
+		menu.add(selectedRDFView);
+		mi = new JMenuItem("Selected RDF/XML");
+		mi.addActionListener(new JGraphToSelectedRDFAction());
+		selectedRDFView.add(mi);
+		mi = new JMenuItem("Selected RDF/N-Triple");
+		mi.addActionListener(new JGraphToSelectedNTripleAction());
+		selectedRDFView.add(mi);
 
 		JMenu selectedRDFSView = new JMenu("Selected RDFS");
 		menu.add(selectedRDFSView);
@@ -993,6 +1023,21 @@ public class MR3 extends JFrame {
 		selectedRDFSView.add(mi);
 
 		return menu;
+	}
+
+	private JMenu getHelpMenu() {
+		JMenu menu = new JMenu("Help");
+		JMenuItem mi = new JMenuItem("About MR^3");
+		mi.addActionListener(new HelpAboutAction());
+		menu.add(mi);
+		return menu;
+	}
+
+	class HelpAboutAction extends AbstractAction {
+		public void actionPerformed(ActionEvent e) {
+			URL logoUrl = this.getClass().getClassLoader().getResource("mr3/resources/mr3_logo.png");
+			new HelpDialog(new ImageIcon(logoUrl));
+		}
 	}
 
 	class ShowToolTipsAction extends AbstractAction {
@@ -1052,10 +1097,12 @@ public class MR3 extends JFrame {
 
 	private void showSrcView() {
 		try {
+			srcFrame.toFront();
 			srcFrame.setVisible(true);
 			srcFrame.setIcon(false);
 			showSrcView.setState(true);
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -1174,6 +1221,6 @@ public class MR3 extends JFrame {
 	}
 
 	public static void main(String[] arg) {
-		new MR3("MR^3");
+		new MR3("MR^3 - New Project");
 	}
 }

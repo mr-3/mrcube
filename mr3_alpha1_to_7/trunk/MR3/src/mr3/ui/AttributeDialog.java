@@ -12,16 +12,16 @@ import javax.swing.event.*;
  */
 public class AttributeDialog extends JInternalFrame implements ActionListener {
 	private static final JPanel NULL_PANEL = new JPanel();
-	private JCheckBoxMenuItem showPropDialog;
+	private JCheckBoxMenuItem showAttrDialog;
 
 	public AttributeDialog() {
 		super("Attribute Dialog", false, true);
 		URL attrDialogUrl = this.getClass().getClassLoader().getResource("mr3/resources/attrDialogIcon.gif");
 		setFrameIcon(new ImageIcon(attrDialogUrl));
-		showPropDialog = new JCheckBoxMenuItem("Show Attribute Dialog", true);
-		showPropDialog.addActionListener(this);
+		showAttrDialog = new JCheckBoxMenuItem("Show Attribute Dialog", true);
+		showAttrDialog.addActionListener(this);
 		addInternalFrameListener(new InternalFrameAdapter() {
-			public void internalFrameClosing(InternalFrameEvent e) {
+			public void internalFrameClosing(InternalFrameEvent e) {	
 				setVisible(false);
 			}
 		});
@@ -32,7 +32,7 @@ public class AttributeDialog extends JInternalFrame implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		setVisible(showPropDialog.getState());
+		setVisible(showAttrDialog.getState());
 	}
 
 	public void setNullPanel() {
@@ -41,12 +41,15 @@ public class AttributeDialog extends JInternalFrame implements ActionListener {
 
 	public void setVisible(boolean b) {
 		super.setVisible(b);
-		if (showPropDialog != null) {
-			showPropDialog.setState(b);
+		if (!b) {
+			setNullPanel();
+		}
+		if (showAttrDialog != null) {
+			showAttrDialog.setState(b);
 		}
 	}
 
 	public JCheckBoxMenuItem getShowPropWindow() {
-		return showPropDialog;
+		return showAttrDialog;
 	}
 }

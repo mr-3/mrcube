@@ -32,4 +32,5 @@ public class SamplePlugin1 extends MR3Plugin {
 		}
 		replaceRDFModel(sampleModel);
 	}
+	
 }

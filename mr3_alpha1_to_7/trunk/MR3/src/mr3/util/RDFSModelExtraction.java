@@ -93,7 +93,13 @@ public class RDFSModelExtraction {
 			orgModel.remove(stmt);
 		}
 
-		info.setURI(metaResource.toString());
+		if (metaResource.getNameSpace().equals(gmanager.getBaseURI()+'#')) {
+			info.setURI('#'+metaResource.getLocalName());
+			info.setURIType(URIType.ID);			
+		} else {
+			info.setURI(metaResource.toString());
+			info.setURIType(URIType.URI);						
+		}
 		rdfsInfoMap.putResourceInfo(metaResource, info);
 	}
 
@@ -196,14 +202,14 @@ public class RDFSModelExtraction {
 	private ClassInfo getClassResInfo(Resource resource) {
 		ClassInfo info = (ClassInfo) rdfsInfoMap.getResourceInfo(resource);
 		if (info == null)
-			info = new ClassInfo("");
+			info = new ClassInfo("", URIType.URI);
 		return info;
 	}
 
 	private PropertyInfo getPropertyResInfo(Resource resource) {
 		PropertyInfo info = (PropertyInfo) rdfsInfoMap.getResourceInfo(resource);
 		if (info == null)
-			info = new PropertyInfo("");
+			info = new PropertyInfo("", URIType.URI);
 		return info;
 	}
 }

@@ -20,7 +20,7 @@ import com.jgraph.graph.*;
 public class PropertyEditor extends Editor {
 
 	private PropertyPanel propPanel;
-	
+
 	public PropertyEditor(AttributeDialog pw, FindResourceDialog findResD, GraphManager manager) {
 		graph = manager.getPropertyGraph();
 		graph.setDisconnectable(false);
@@ -32,7 +32,7 @@ public class PropertyEditor extends Editor {
 		propPanel = new PropertyPanel(gmanager);
 		graph.setMarqueeHandler(new PropertyGraphMarqueeHandler(manager, propPanel));
 	}
-	
+
 	public void convertSRC(JTextComponent area, boolean isSelected) {
 		Writer output = new StringWriter();
 		try {
@@ -52,15 +52,19 @@ public class PropertyEditor extends Editor {
 	}
 
 	public void valueChanged(GraphSelectionEvent e) {
-		lastSelectionCells = ChangeCellAttributes.changeSelectionCellColor(graph, lastSelectionCells);
-		if (gmanager.isSelectAbstractLevelMode()) {
-			Object[] cells = graph.getSelectionCells();
-			gmanager.setPropertyAbstractLevelSet(cells);
-			gmanager.changeCellView();
-		} else {
-			setToolStatus();
-			changeAttrPanel();
-			attrDialog.validate();
+		if (!gmanager.isImporting()) {
+			lastSelectionCells = ChangeCellAttributes.changeSelectionCellColor(graph, lastSelectionCells);
+			if (gmanager.isSelectAbstractLevelMode()) {
+				Object[] cells = graph.getSelectionCells();
+				gmanager.setPropertyAbstractLevelSet(cells);
+				gmanager.changeCellView();
+			} else {
+				setToolStatus();
+				if (attrDialog.isVisible()) {
+					changeAttrPanel();
+					attrDialog.validate();
+				}
+			}
 		}
 	}
 

@@ -45,7 +45,7 @@ public class RDFToJGraph {
 	}
 
 	public void createPropertyGraph(Model model) throws RDFException {
-		extractRDFS.extractPropertyModel(model);		
+		extractRDFS.extractPropertyModel(model);
 		RDFGraph graph = gmanager.getPropertyGraph();
 		graph.removeEdges();
 
@@ -79,6 +79,10 @@ public class RDFToJGraph {
 		for (Iterator rdfsSubList = supInfo.getRDFSSubList().iterator(); rdfsSubList.hasNext();) {
 			Resource subRes = (Resource) rdfsSubList.next();
 			RDFSInfo subInfo = rdfsInfoMap.getResourceInfo(subRes);
+
+			if (subRes.getURI().charAt(0) == '#') {
+				subInfo.setURIType(URIType.ID);
+			} 
 
 			DefaultGraphCell subCell = null;
 			if (supInfo instanceof ClassInfo) {
@@ -172,7 +176,7 @@ public class RDFToJGraph {
 	}
 
 	private void insertGroup(GraphModel model, Object cell, Object typeCell, Map attr) {
-//		ParentMap parentMap = new ParentMap(); // 2.0Œn
+		//		ParentMap parentMap = new ParentMap(); // 2.0Œn
 		ParentMap parentMap = new ParentMap(model);
 		DefaultGraphCell group = new DefaultGraphCell();
 

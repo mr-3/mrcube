@@ -252,7 +252,6 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 			return null;
 		}
 		if (rdfsInfoMap.isClassCell(uri)) {
-			//			typeCell = (GraphCell) rdfsInfoMap.getClassCell(uri);
 			typeCell = (GraphCell) gmanager.getClassCell(uri, false);
 		} else {
 			if (gmanager.isDuplicatedWithDialog(uri.getURI(), null, GraphType.CLASS))

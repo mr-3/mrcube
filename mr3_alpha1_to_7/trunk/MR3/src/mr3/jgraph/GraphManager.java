@@ -24,6 +24,8 @@ public class GraphManager {
 	private RDFGraph classGraph;
 	private RDFGraph propGraph;
 
+	private boolean isImporting;
+	
 	private RDFCellMaker cellMaker;
 
 	private RDFResourceInfoMap resInfoMap = RDFResourceInfoMap.getInstance();
@@ -62,6 +64,14 @@ public class GraphManager {
 	
 	public JDesktopPane getDesktop() {
 		return desktop;
+	}
+
+	public boolean isImporting() {
+		return isImporting;
+	}
+	
+	public void setIsImporting(boolean t) {
+		isImporting = t;
 	}
 
 	public RDFGraph getRDFGraph() {
@@ -561,7 +571,7 @@ public class GraphManager {
 			if (isCheck && isDuplicated(uri.getURI(), null, classGraph.getType())) {
 				return null;
 			} else {
-				return cellMaker.insertClass(new Point(50, 50), uri.getURI());
+				return cellMaker.insertClass(new Point(50, 50), uri.getURI(), URIType.URI);
 			}
 		}
 	}
@@ -574,7 +584,7 @@ public class GraphManager {
 			if (isCheck && isDuplicated(uri.getURI(), null, propGraph.getType())) {
 				return null;
 			} else {
-				return cellMaker.insertProperty(new Point(50, 50), uri.getURI());
+				return cellMaker.insertProperty(new Point(50, 50), uri.getURI(), URIType.URI);
 			}
 		}
 	}

@@ -21,7 +21,13 @@ public abstract class RDFSPanel extends JPanel {
 
 	protected JButton apply;
 	protected JButton close;
-	protected JTextField uri;
+
+	protected JRadioButton uriButton;
+	protected JRadioButton idButton;
+
+	protected URIType uriType;
+
+	protected JTextField uriField;
 	protected JTextField labelField;
 	protected JTextField isDefinedBy;
 	protected JTextArea comment;
@@ -74,9 +80,39 @@ public abstract class RDFSPanel extends JPanel {
 		component.setBorder(BorderFactory.createTitledBorder(title));
 	}
 
+	class RadioAction implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			String type = (String) e.getActionCommand();
+			uriType = URIType.getURIType(type);
+
+			if (uriType == URIType.ID) {
+				uriField.setEditable(true);
+				if (uriField.getText().length() == 0 || uriField.getText().charAt(0) != '#') {
+					uriField.setText('#' + uriField.getText());
+				}
+			} else if (uriType == URIType.URI) {
+				uriField.setEditable(true);
+			}
+		}
+	}
+
 	protected void setBaseTab() {
-		uri = new JTextField();
-		initComponent(uri, "URI", listWidth, fieldHeight);
+		uriButton = new JRadioButton("URI");
+		idButton = new JRadioButton("ID");
+		RadioAction ra = new RadioAction();
+		uriButton.addActionListener(ra);
+		idButton.addActionListener(ra);
+		ButtonGroup group = new ButtonGroup();
+		group.add(uriButton);
+		group.add(idButton);
+		JPanel uriTypeGroupPanel = new JPanel();
+		uriTypeGroupPanel.setBorder(BorderFactory.createTitledBorder("URI Type"));
+		uriTypeGroupPanel.setPreferredSize(new Dimension(100, 55));
+		uriTypeGroupPanel.add(uriButton);
+		uriTypeGroupPanel.add(idButton);
+
+		uriField = new JTextField();
+		initComponent(uriField, "URI", listWidth, fieldHeight);
 
 		isDefinedBy = new JTextField();
 		initComponent(isDefinedBy, "isDefinedBy", listWidth, fieldHeight);
@@ -133,14 +169,19 @@ public abstract class RDFSPanel extends JPanel {
 		GridBagLayout gridbag = new GridBagLayout();
 		GridBagConstraints c = new GridBagConstraints();
 		inline.setLayout(gridbag);
-		c.anchor = GridBagConstraints.PAGE_START;
+		c.anchor = GridBagConstraints.WEST;
 		c.gridwidth = GridBagConstraints.REMAINDER;
 		c.weighty = 10;
 
-		gridbag.setConstraints(uri, c);
-		inline.add(uri);
-		gridbag.setConstraints(isDefinedBy, c);
-		inline.add(isDefinedBy);
+		gridbag.setConstraints(uriTypeGroupPanel, c);
+		inline.add(uriTypeGroupPanel);
+
+		c.anchor = GridBagConstraints.PAGE_START;
+
+		gridbag.setConstraints(uriField, c);
+		inline.add(uriField);
+		//		gridbag.setConstraints(isDefinedBy, c);
+		//		inline.add(isDefinedBy);
 
 		gridbag.setConstraints(labelGroup, c);
 		inline.add(labelGroup);
@@ -179,7 +220,14 @@ public abstract class RDFSPanel extends JPanel {
 	}
 
 	public void setValue() {
-		uri.setText(rdfsInfo.getURIStr());
+		uriField.setText(rdfsInfo.getURIStr());
+		uriType = rdfsInfo.getURIType();
+		if (uriType == URIType.URI) {
+			uriButton.setSelected(true);
+		} else {
+			idButton.setSelected(true);
+		}
+
 		isDefinedBy.setText(rdfsInfo.getIsDefinedBy().getURI());
 		clearField();
 
@@ -347,11 +395,18 @@ public abstract class RDFSPanel extends JPanel {
 	abstract public void setValue(Set supCellSet);
 
 	public void changeInfo() {
-		if (gmanager.isEmptyURI(uri.getText()) || gmanager.isDuplicatedWithDialog(uri.getText(), cell, graph.getType())) {
+		String uri = uriField.getText();
+		String tmpURI = "";
+		if (uriType == URIType.ID) {
+			tmpURI = gmanager.getBaseURI(); // チェックする時は，フルパスで．
+		}
+		tmpURI = tmpURI + uri;
+		if (gmanager.isEmptyURI(tmpURI) || gmanager.isDuplicatedWithDialog(tmpURI, cell, graph.getType())) {
 			return;
 		} else {
 			rdfsInfoMap.removeURICellMap(rdfsInfo); // ここで，URIとセルのマッピングを削除する
-			rdfsInfo.setURI(uri.getText());
+			rdfsInfo.setURI(uriField.getText());
+			rdfsInfo.setURIType(uriType);
 			rdfsInfo.setIsDefinedby(isDefinedBy.getText());
 			rdfsInfoMap.putURICellMap(rdfsInfo, cell);
 			gmanager.setCellValue(cell, rdfsInfo.getURIStr());
@@ -389,7 +444,6 @@ public abstract class RDFSPanel extends JPanel {
 	}
 
 	public void displayRDFSInfo(DefaultGraphCell cell) {
-		//		if (graph.isRDFResourceCell(cell)) {
 		if (graph.isRDFSCell(cell)) {
 			rdfsInfo = rdfsInfoMap.getCellInfo(cell);
 			if (rdfsInfo != null) {

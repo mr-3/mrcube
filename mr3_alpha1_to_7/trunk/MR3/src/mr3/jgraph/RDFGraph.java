@@ -14,7 +14,6 @@ import mr3.util.*;
 
 import com.hp.hpl.mesa.rdf.jena.model.*;
 import com.jgraph.*;
-import com.jgraph.event.*;
 import com.jgraph.graph.*;
 import com.jgraph.plaf.basic.*;
 
@@ -53,20 +52,20 @@ public class RDFGraph extends JGraph {
 		setGridEnabled(true); // Use the Grid (but don't make it Visible)
 		setGridSize(6);
 		setTolerance(10);
-		//		setMarqueeColor(Color.gray);
 		setHandleColor(Color.gray); // セルの点の周りの色 
 		setLockedHandleColor(Color.gray); // セルの周りの点々の色
 		setHighlightColor(Color.orange); // 選択されている色 				
 		setBackground(GRAPH_BACK_COLOR);
 		setCloneable(false);
+		setDisconnectable(false);
 		setAntiAliased(true);
 		selectionModel.setChildrenSelectable(false);
-		graphModel.addGraphModelListener(new ModelListener());
 	}
 
 	public void startEditingAtCell(Object cell) {
 		if (attrDialog != null) {
 			attrDialog.setVisible(true);
+			setSelectionCell(cell); // セルを表示する
 		}
 	}
 
@@ -76,7 +75,6 @@ public class RDFGraph extends JGraph {
 		return super.createVertexView(v, cm);
 	}
 
-	//	protected EdgeView createEdgeView(Edge e, CellMapper cm) { // 2.1系ではduplicated
 	protected EdgeView createEdgeView(Object e, CellMapper cm) {
 
 		return new EdgeView(e, this, cm) {
@@ -89,13 +87,6 @@ public class RDFGraph extends JGraph {
 				return event.isShiftDown(); // Points are Removed using Shift-Click
 			}
 		};
-	}
-
-	// modelが変更された時に呼ばれる
-	class ModelListener implements GraphModelListener {
-		public void graphChanged(GraphModelEvent e) {
-			//System.out.println("Changed: "+e.getChange());
-		}
 	}
 
 	// 状態を保存
@@ -258,7 +249,6 @@ public class RDFGraph extends JGraph {
 				for (Iterator edges = graphModel.edges(port); edges.hasNext();) {
 					removeCells.add(edges.next());
 				}
-				//			} else if (isRDFResourceCell(cells[i])) {
 			} else if (isRDFResourceCell(cells[i]) || isRDFSCell(cells[i])) {
 				rdfsInfoMap.removeCellInfo(cells[i]);
 				resInfoMap.removeCellInfo(cells[i]);

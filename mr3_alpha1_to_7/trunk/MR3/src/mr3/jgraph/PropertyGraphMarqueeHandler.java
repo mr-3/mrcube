@@ -41,24 +41,37 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 	}
 
 	public GraphCell insertResourceCell(Point pt) {
-		String uri = JOptionPane.showInternalInputDialog(graph, "Please input URI");
+		//		String uri = JOptionPane.showInternalInputDialog(graph, "Please input URI");
+		InsertRDFSResDialog ird = new InsertRDFSResDialog("Input Resource");
+		if (!ird.isConfirm()) {
+			return null;
+		}
+		String uri = ird.getURI();
+		URIType uriType = ird.getURIType();
 		if (uri == null || gmanager.isEmptyURI(uri) || gmanager.isDuplicatedWithDialog(uri, null, GraphType.PROPERTY)) {
 			return null;
 		} else {
-			return cellMaker.insertProperty(pt, uri);
+			return cellMaker.insertProperty(pt, uri, uriType);
 		}
 	}
 
 	public void insertSubProperty(Point pt, Object[] supCells) {
-		String uri = JOptionPane.showInternalInputDialog(graph, "Please input URI");
+//		String uri = JOptionPane.showInternalInputDialog(graph, "Please input URI");
+		InsertRDFSResDialog ird = new InsertRDFSResDialog("Input Resource");
+		if (!ird.isConfirm()) {
+			return;
+		}
+		String uri = ird.getURI();
+		URIType uriType = ird.getURIType();
 		if (uri == null || gmanager.isEmptyURI(uri) || gmanager.isDuplicatedWithDialog(uri, null, GraphType.CLASS)) {
 			return;
 		} else {
 			pt.y += 100;
-			cellMaker.insertProperty(pt, uri);
+			cellMaker.insertProperty(pt, uri, uriType);
 			DefaultGraphCell cell = (DefaultGraphCell) graph.getSelectionCell();
 			Port sourcePort = (Port) cell.getChildAt(0);
 			connectSubToSups(sourcePort, supCells);
+			graph.setSelectionCell(cell);
 		}
 	}
 
@@ -74,7 +87,7 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 			}
 		});
 
-		if (!graph.isSelectionEmpty()) {
+		if (cell != null || !graph.isSelectionEmpty()) {
 			// Insert Sub Property
 			menu.add(new AbstractAction("Insert Sub Property") {
 				public void actionPerformed(ActionEvent e) {
@@ -108,7 +121,7 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 			}
 		});
 
-		if (!graph.isSelectionEmpty()) {
+		if (cell != null || !graph.isSelectionEmpty()) {
 			menu.add(new AbstractAction("Remove") {
 				public void actionPerformed(ActionEvent e) {
 					gmanager.removeAction(graph);

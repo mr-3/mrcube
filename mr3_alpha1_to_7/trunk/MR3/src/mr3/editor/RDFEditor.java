@@ -96,8 +96,10 @@ public class RDFEditor extends Editor {
 		RDFResourceInfo info = resInfoMap.getCellInfo(cell);
 		if (info != null) {
 			gmanager.jumpClassArea(info.getTypeCell());
-			resPanel.displayResInfo(cell);
-			attrDialog.setContentPane(resPanel);
+			if (attrDialog.isVisible()) {
+				resPanel.displayResInfo(cell);
+				attrDialog.setContentPane(resPanel);
+			}
 		}
 	}
 
@@ -106,25 +108,31 @@ public class RDFEditor extends Editor {
 		GraphCell propCell = (GraphCell) rdfsInfoMap.getEdgeInfo(cell);
 		gmanager.jumpPropertyArea(propCell);
 
-		propPanel.dspPropertyInfo(cell);
-		Edge edge = (Edge) cell;
-		Object domainType = getDomainType(edge);
-		Object rangeType = getRangeType(edge);
-		propPanel.setPropertyList(gmanager.getPropertyList(), gmanager.getValidPropertyList(domainType, rangeType));
-		attrDialog.setContentPane(propPanel);
+		if (attrDialog.isVisible()) {
+			propPanel.dspPropertyInfo(cell);
+			Edge edge = (Edge) cell;
+			Object domainType = getDomainType(edge);
+			Object rangeType = getRangeType(edge);
+			propPanel.setPropertyList(gmanager.getPropertyList(), gmanager.getValidPropertyList(domainType, rangeType));
+			attrDialog.setContentPane(propPanel);
+		}
 	}
 
 	private void selectLiteral(GraphCell cell) {
-		litPanel.dspLiteralInfo(cell);
-		attrDialog.setContentPane(litPanel);
+		if (attrDialog.isVisible()) {
+			litPanel.dspLiteralInfo(cell);
+			attrDialog.setContentPane(litPanel);
+		}
 	}
 
 	// From GraphSelectionListener Interface
 	public void valueChanged(GraphSelectionEvent e) {
-		setToolStatus();
-		lastSelectionCells = ChangeCellAttributes.changeSelectionCellColor(graph, lastSelectionCells);
-		changeAttrPanel();
-		attrDialog.validate(); // validateメソッドを呼ばないと再描画がうまくいかない
+		if (!gmanager.isImporting()) {
+			setToolStatus();
+			lastSelectionCells = ChangeCellAttributes.changeSelectionCellColor(graph, lastSelectionCells);
+			changeAttrPanel();
+			attrDialog.validate(); // validateメソッドを呼ばないと再描画がうまくいかない
+		}
 	}
 
 	private void changeAttrPanel() {

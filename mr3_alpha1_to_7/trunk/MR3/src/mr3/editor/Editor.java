@@ -137,7 +137,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 	public Writer writeModel(Model model, Writer output, RDFWriter writer) {
 		try {
 			setNsPrefix(writer);
-			writer.write(model, output, null);
+			writer.write(model, output, gmanager.getBaseURI());
 		} catch (RDFException e) {
 			e.printStackTrace();
 		}
@@ -150,6 +150,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 		try {
 			model.write(new PrintWriter(System.out));
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -160,7 +161,6 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 		if (cells != null && cells.length > 0) {
 			int count = getCellCount(graph);
 			DefaultGraphCell group = new DefaultGraphCell(new Integer(count - 1));
-			//			ParentMap map = new ParentMap();
 			ParentMap map = new ParentMap(graph.getModel());
 			for (int i = 0; i < cells.length; i++) {
 				map.addEntry(cells[i], group);
@@ -295,24 +295,28 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 
 		toolbar.addSeparator();
 
-		// insert Resource
 		URL insertResUrl = getImageIcon("ellipse.gif");
 		ImageIcon insertIcon = new ImageIcon(insertResUrl);
-		toolbar.add(new AbstractAction("", insertIcon) {
-			public void actionPerformed(ActionEvent e) {
-				RDFGraphMarqueeHandler mh = (RDFGraphMarqueeHandler) graph.getMarqueeHandler();
-				mh.insertResourceCell(new Point(10, 10));
-			}
-		});
-
-		// insert Literal
-		URL insertLitUrl = getImageIcon("rectangle.gif");
-		insertIcon = new ImageIcon(insertLitUrl);
-		if (gmanager.isRDFGraph(graph)) {
+		if (gmanager.isRDFGraph(graph) || gmanager.isPropertyGraph(graph)) {
 			toolbar.add(new AbstractAction("", insertIcon) {
 				public void actionPerformed(ActionEvent e) {
 					RDFGraphMarqueeHandler mh = (RDFGraphMarqueeHandler) graph.getMarqueeHandler();
-					mh.insertLiteralCell(new Point(10, 10));
+					mh.insertResourceCell(new Point(10, 10));
+				}
+			});
+		}
+
+		URL insertLitUrl = getImageIcon("rectangle.gif");
+		insertIcon = new ImageIcon(insertLitUrl);
+		if (!gmanager.isPropertyGraph(graph)) {
+			toolbar.add(new AbstractAction("", insertIcon) {
+				public void actionPerformed(ActionEvent e) {
+					RDFGraphMarqueeHandler mh = (RDFGraphMarqueeHandler) graph.getMarqueeHandler();
+					if (gmanager.isRDFGraph(graph)) {
+						mh.insertLiteralCell(new Point(10, 10));
+					} else if (gmanager.isClassGraph(graph)) {
+						mh.insertResourceCell(new Point(10, 10));
+					}
 				}
 			});
 		}
@@ -445,30 +449,36 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 
 		// To front RDF Editor
 		URL rdfEditorUrl = getImageIcon("rdfEditorIcon.gif");
-		ImageIcon rdfEditorIcon = new ImageIcon(rdfEditorUrl);
-		toolbar.add(new AbstractAction("", rdfEditorIcon) {
-			public void actionPerformed(ActionEvent e) {
-				toFrontInternFrame(0);
-			}
-		});
+		if (!gmanager.isRDFGraph(graph)) {
+			ImageIcon rdfEditorIcon = new ImageIcon(rdfEditorUrl);
+			toolbar.add(new AbstractAction("", rdfEditorIcon) {
+				public void actionPerformed(ActionEvent e) {
+					toFrontInternFrame(0);
+				}
+			});
+		}
 
 		// To front Class Editor
 		URL classEditorUrl = getImageIcon("classEditorIcon.gif");
 		ImageIcon classEditorIcon = new ImageIcon(classEditorUrl);
-		toolbar.add(new AbstractAction("", classEditorIcon) {
-			public void actionPerformed(ActionEvent e) {
-				toFrontInternFrame(1);
-			}
-		});
+		if (!gmanager.isClassGraph(graph)) {
+			toolbar.add(new AbstractAction("", classEditorIcon) {
+				public void actionPerformed(ActionEvent e) {
+					toFrontInternFrame(1);
+				}
+			});
+		}
 
 		// To front Property Editor
 		URL propertyEditorUrl = getImageIcon("propertyEditorIcon.gif");
 		ImageIcon propertyEditorIcon = new ImageIcon(propertyEditorUrl);
-		toolbar.add(new AbstractAction("", propertyEditorIcon) {
-			public void actionPerformed(ActionEvent e) {
-				toFrontInternFrame(2);
-			}
-		});
+		if (!gmanager.isPropertyGraph(graph)) {
+			toolbar.add(new AbstractAction("", propertyEditorIcon) {
+				public void actionPerformed(ActionEvent e) {
+					toFrontInternFrame(2);
+				}
+			});
+		}
 
 		// Group
 		//		toolbar.addSeparator();

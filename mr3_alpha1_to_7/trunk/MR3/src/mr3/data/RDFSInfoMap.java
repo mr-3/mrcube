@@ -256,6 +256,7 @@ public class RDFSInfoMap {
 
 	private void cloneRDFSInfo(RDFSInfo orgInfo, RDFSInfo newInfo) {
 		newInfo.setURI(orgInfo.getURIStr());
+		newInfo.setURIType(orgInfo.getURIType());
 		// LabelÇÉRÉsÅ[Ç∑ÇÈ
 		for (Iterator i = orgInfo.getLabelList().iterator(); i.hasNext();) {
 			MR3Literal lit = (MR3Literal) i.next();
@@ -273,13 +274,13 @@ public class RDFSInfoMap {
 	}
 
 	public ClassInfo cloneClassInfo(ClassInfo orgInfo) {
-		ClassInfo newInfo = new ClassInfo("");
+		ClassInfo newInfo = new ClassInfo("", URIType.URI);
 		cloneRDFSInfo(orgInfo, newInfo);
 		return newInfo;
 	}
 
 	public PropertyInfo clonePropertyInfo(PropertyInfo orgInfo) {
-		PropertyInfo newInfo = new PropertyInfo("");
+		PropertyInfo newInfo = new PropertyInfo("", URIType.URI);
 		cloneRDFSInfo(orgInfo, newInfo);
 		newInfo.addAllDomain(orgInfo.getDomain());
 		newInfo.addAllRange(orgInfo.getRange());
