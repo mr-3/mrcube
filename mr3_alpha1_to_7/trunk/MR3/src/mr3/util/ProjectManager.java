@@ -208,6 +208,10 @@ public class ProjectManager {
 				}
 			}
 		}
+		graph = gmanager.getClassGraph();
+		Object cell = rdfsInfoMap.getClassCell(MR3Resource.Empty);
+		graph.setSelectionCell(cell);
+		gmanager.removeAction(graph);
 	}
 
 	public void loadProject(Model model) throws RDFException {

@@ -282,7 +282,6 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 			if (gmanager.isDuplicatedWithDialog(uri.getURI(), null, GraphType.PROPERTY)) {
 				return;
 			}
-
 			if (uri.equals(MR3Resource.Nil)) {
 				propertyCell = (GraphCell) gmanager.getPropertyCell(uri, false);
 			} else {
