@@ -312,7 +312,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 	}
 
 	private void jumpRDFSProperty() {
-		Resource uri = new ResourceImpl(idField.getText());
+		Resource uri = new ResourceImpl(nsLabel.getText()+idField.getText());
 		if (gmanager.isEmptyURI(uri.getURI())) {
 			return;
 		}

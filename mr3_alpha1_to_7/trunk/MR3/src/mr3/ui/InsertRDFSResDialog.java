@@ -39,7 +39,7 @@ public class InsertRDFSResDialog extends JDialog implements ActionListener {
 
 		idField = new JTextField(15);
 		idField.setText("");
-		initComponent(idField, "Local Name", 150, 40);
+		initComponent(idField, "ID", 150, 40);
 
 		uriPrefixBox = new JComboBox();
 		initComponent(uriPrefixBox, "Prefix", boxWidth, boxHeight);

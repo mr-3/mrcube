@@ -2,6 +2,7 @@ package mr3.ui;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.net.*;
 import java.util.*;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 
 	transient private JButton addNSButton;
 	transient private JButton removeNSButton;
-//	transient private JButton getNSButton;
+	//	transient private JButton getNSButton;
 	transient private JButton closeButton;
 	transient private JTextField prefixField;
 	transient private JTextField nsField;
@@ -64,6 +65,8 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		showNSTable.addActionListener(new CloseNSTableAction());
 		getContentPane().add(inlinePanel);
 
+		URL nsDialogUrl = this.getClass().getClassLoader().getResource("mr3/resources/nameSpaceTableIcon.gif");
+		setFrameIcon(new ImageIcon(nsDialogUrl));
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			public void internalFrameClosing(InternalFrameEvent e) {
@@ -72,7 +75,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		});
 
 		setDefaultNSPrefix();
-		setSize(new Dimension(750, 400));
+		setSize(new Dimension(750, 210));
 		setLocation(10, 100);
 		setVisible(false);
 	}
@@ -95,7 +98,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 	}
 
 	private String getMR3Prefix() {
-		String nextPrefix = "mr3_prfix";
+		String nextPrefix = "prefix";
 		for (int i = 0; true; i++) {
 			String cnt = Integer.toString(i);
 			if (isValidPrefix(nextPrefix + cnt)) {
@@ -118,7 +121,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 	}
 
 	public NSTableModel getNSTableModel() {
-		return nsTableModel;	
+		return nsTableModel;
 	}
 
 	public Serializable getState() {
@@ -133,7 +136,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		NSTableModel model = (NSTableModel) list.get(1);
 		for (int i = 0; i < model.getRowCount(); i++) {
 			Boolean isAvailable = (Boolean) model.getValueAt(i, 0);
-			String prefix =(String) model.getValueAt(i, 1);
+			String prefix = (String) model.getValueAt(i, 1);
 			String ns = (String) model.getValueAt(i, 2);
 			if (isValidPrefix(prefix) && isValidNS(ns)) {
 				addNameSpaceTable(isAvailable, prefix, ns);
@@ -191,8 +194,8 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 
 	private void setTableLayout() {
 		JScrollPane nsTableScroll = new JScrollPane(nsTable);
-		nsTableScroll.setPreferredSize(new Dimension(700, 300));
-		nsTableScroll.setMinimumSize(new Dimension(700, 300));
+		nsTableScroll.setPreferredSize(new Dimension(700, 115));
+		nsTableScroll.setMinimumSize(new Dimension(700, 115));
 		gbLayout.setConstraints(nsTableScroll, gbc);
 		inlinePanel.add(nsTableScroll);
 	}
@@ -204,8 +207,8 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		removeNSButton = new JButton("\");
 		removeNSButton.addActionListener(this);
 
-//		getNSButton = new JButton("GetNS");
-//		getNSButton.addActionListener(this);
+		//		getNSButton = new JButton("GetNS");
+		//		getNSButton.addActionListener(this);
 
 		closeButton = new JButton("Close");
 		closeButton.addActionListener(this);
@@ -225,7 +228,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		inline.add(nsField);
 		inline.add(addNSButton);
 		inline.add(removeNSButton);
-//		inline.add(getNSButton);
+		//		inline.add(getNSButton);
 		inline.add(closeButton);
 		gbLayout.setConstraints(inline, gbc);
 		inlinePanel.add(inline);
@@ -237,8 +240,8 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 			changeCellView();
 		} else if (e.getSource() == removeNSButton) {
 			removeNameSpaceTable();
-//		} else if (e.getSource() == getNSButton) {
-//			getNameSpace();
+			//		} else if (e.getSource() == getNSButton) {
+			//			getNameSpace();
 		} else if (e.getSource() == closeButton) {
 			setVisible(false);
 		}

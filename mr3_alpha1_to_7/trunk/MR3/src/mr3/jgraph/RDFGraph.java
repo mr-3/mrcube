@@ -59,7 +59,8 @@ public class RDFGraph extends JGraph {
 		setCloneable(false);
 		setDisconnectable(false);
 		setAntiAliased(true);
-		selectionModel.setChildrenSelectable(false);
+		selectionModel.setChildrenSelectable(true);
+//		selectionModel.setChildrenSelectable(false);
 	}
 
 	public void startEditingAtCell(Object cell) {
@@ -129,8 +130,6 @@ public class RDFGraph extends JGraph {
 		return (getSelectionCount() == 1 && graphModel.getChildCount(cell) <= 1);
 	}
 
-	// 以下のメソッドで，グループ化したRDFリソースを選択したときに，AttributeDialogに
-	//　RDFリソースの情報を表示できると考えたが，うまくいかなかった．
 	public GraphCell isOneRDFCellSelected(Object[] cells) {
 		int count = 0;
 		GraphCell rdfCell = null;
@@ -140,7 +139,6 @@ public class RDFGraph extends JGraph {
 				rdfCell = (GraphCell) cells[i];
 			}
 		}
-
 		if (count == 1) {
 			return rdfCell;
 		} else {
