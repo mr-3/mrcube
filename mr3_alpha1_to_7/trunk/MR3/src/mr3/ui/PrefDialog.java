@@ -112,7 +112,7 @@ public class PrefDialog extends JInternalFrame {
 		isProxy.setSelected(userPrefs.getBoolean(Proxy, false));
 		proxyHost.setText(userPrefs.get(ProxyHost, "http://localhost"));
 		proxyHost.setEditable(isProxy.isSelected());
-		proxyPort.setText(Integer.toString(userPrefs.getInt(ProxyPort, 8080)));
+		proxyPort.setText(Integer.toString(userPrefs.getInt(ProxyPort, 3128)));
 		proxyPort.setEditable(isProxy.isSelected());
 	}
 
