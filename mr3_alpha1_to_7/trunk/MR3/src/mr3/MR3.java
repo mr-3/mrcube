@@ -1,27 +1,22 @@
 package mr3;
 
 import java.awt.*;
-import java.awt.Container;
 import java.awt.event.*;
-import java.beans.*;
 import java.io.*;
-import java.lang.reflect.*;
 import java.net.*;
 import java.util.*;
 import java.util.prefs.*;
 
 import javax.swing.*;
-import javax.swing.event.*;
 import javax.swing.text.*;
 
+import mr3.actions.*;
 import mr3.data.*;
 import mr3.editor.*;
-import mr3.editor.PropertyEditor;
 import mr3.io.*;
 import mr3.jgraph.*;
 import mr3.ui.*;
 import mr3.util.*;
-import actions.*;
 
 import com.hp.hpl.mesa.rdf.jena.model.*;
 
@@ -41,13 +36,11 @@ public class MR3 extends JFrame {
 	private File currentProject;
 
 	private RDFEditor rdfEditor;
-	private RealRDFEditor realRDFEditor;
 	private ClassEditor classEditor;
 	private PropertyEditor propertyEditor;
-	private JTextArea srcArea;
 
-	private RDFSTreePanel classTreePanel;
-	private RDFSTreePanel propTreePanel;
+	//	private RDFSTreePanel classTreePanel;
+	//	private RDFSTreePanel propTreePanel;
 
 	private MR3Reader mr3Reader;
 	private MR3Writer mr3Writer;
@@ -66,11 +59,10 @@ public class MR3 extends JFrame {
 	private JCheckBoxMenuItem selectAbstractLevelMode;
 	private JCheckBoxMenuItem showToolTips;
 	private JInternalFrame[] internalFrames = new JInternalFrame[3];
-	private JInternalFrame srcFrame;
+	private SourceFrame srcFrame;
 	private JCheckBoxMenuItem rdfEditorView;
 	private JCheckBoxMenuItem classEditorView;
 	private JCheckBoxMenuItem propertyEditorView;
-	private JCheckBoxMenuItem showSrcWindowBox;
 
 	private JRadioButton uriView;
 	private JRadioButton idView;
@@ -80,8 +72,6 @@ public class MR3 extends JFrame {
 
 	private Preferences userPrefs; // ユーザの設定を保存(Windowサイズなど）
 	private static ResourceBundle resources;
-
-	private MR3 obj_for_plugin;
 
 	MR3(String title) {
 		super(title);
@@ -94,15 +84,13 @@ public class MR3 extends JFrame {
 
 		attrDialog = new AttributeDialog();
 		gmanager = new GraphManager(attrDialog, userPrefs);
+		getContentPane().add(createToolBar(), BorderLayout.NORTH);
 		createDesktop();
 		gmanager.setDesktop(desktop);
 
 		rdfEditor = new RDFEditor(nsTableDialog, findResDialog, gmanager);
-		//		realRDFEditor = new RealRDFEditor(nsTableDialog, findResDialog, gmanager);
 		classEditor = new ClassEditor(nsTableDialog, findResDialog, gmanager);
 		propertyEditor = new PropertyEditor(nsTableDialog, findResDialog, gmanager);
-		srcArea = new JTextArea();
-		srcArea.setEditable(false);
 
 		mr3Reader = new MR3Reader(gmanager);
 		mr3Writer = new MR3Writer(gmanager);
@@ -120,8 +108,6 @@ public class MR3 extends JFrame {
 		//		getContentPane().add(splitPane);
 		getContentPane().add(desktop);
 
-		obj_for_plugin = this; //一時しのぎ
-
 		setJMenuBar(createMenuBar());
 		setIcon();
 
@@ -129,6 +115,26 @@ public class MR3 extends JFrame {
 		addWindowListener(new CloseWindow(this));
 		setVisible(true);
 		loadWindows();
+	}
+
+	private URL getImageIcon(String image) {
+		return this.getClass().getClassLoader().getResource("mr3/resources/" + image);
+	}
+
+	public JToolBar createToolBar() {
+		JToolBar toolbar = new JToolBar();
+		toolbar.setFloatable(false);
+
+		ImageIcon newProjectIcon = new ImageIcon(getImageIcon("new.gif"));
+		toolbar.add(new NewProject(this, newProjectIcon));
+		ImageIcon openProjectIcon = new ImageIcon(getImageIcon("open.gif"));
+		toolbar.add(new OpenProject(this, openProjectIcon));
+		ImageIcon saveProjectIcon = new ImageIcon(getImageIcon("save.gif"));
+		toolbar.add(new SaveProject(this, "Save Project", saveProjectIcon));
+		ImageIcon saveAsProjectIcon = new ImageIcon(getImageIcon("saveas.gif"));
+		toolbar.add(new SaveProject(this, "Save Project As", saveAsProjectIcon));
+
+		return toolbar;
 	}
 
 	private void createDesktop() {
@@ -148,39 +154,16 @@ public class MR3 extends JFrame {
 		internalFrames[0] = rdfEditor;
 		internalFrames[1] = classEditor;
 		internalFrames[2] = propertyEditor;
+		srcFrame = new SourceFrame("Source Window");
 
 		desktop.add(internalFrames[0], DEFAULT_CURSOR);
 		desktop.add(internalFrames[1], DEFAULT_CURSOR);
 		desktop.add(internalFrames[2], DEFAULT_CURSOR);
-
-		srcFrame = createInternalFrame(new JScrollPane(srcArea), "Source Window", DEMO_FRAME_LAYER);
-		URL srcAreaUrl = this.getClass().getClassLoader().getResource("mr3/resources/source_window.gif");
-		srcFrame.setFrameIcon(new ImageIcon(srcAreaUrl));
-		srcFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-		srcFrame.addInternalFrameListener(new CloseInternalFrameAction());
-		srcFrame.setBounds(new Rectangle(0, 0, FRAME_WIDTH, FRAME_HEIGHT));
-		srcFrame.setVisible(false);
+		desktop.add(srcFrame, DEFAULT_CURSOR);
 
 		rdfEditor.setInternalFrames(internalFrames);
 		classEditor.setInternalFrames(internalFrames);
 		propertyEditor.setInternalFrames(internalFrames);
-	}
-
-	class CloseInternalFrameAction extends InternalFrameAdapter {
-		public void internalFrameClosing(InternalFrameEvent e) {
-			JInternalFrame tmp = e.getInternalFrame();
-
-			if (tmp == internalFrames[0]) {
-				rdfEditorView.setSelected(false);
-			} else if (tmp == internalFrames[1]) {
-				classEditorView.setSelected(false);
-			} else if (tmp == internalFrames[2]) {
-				propertyEditorView.setSelected(false);
-			} else if (tmp == srcFrame) {
-				showSrcWindowBox.setSelected(false);
-			}
-			tmp.setVisible(false);
-		}
 	}
 
 	private void setLookAndFeel() {
@@ -193,23 +176,8 @@ public class MR3 extends JFrame {
 		}
 	}
 
-	public JInternalFrame createInternalFrame(Container container, String title, Integer layer) {
-		JInternalFrame jif = new JInternalFrame(title, true, true, true);
-		jif.setIconifiable(true);
-		jif.setContentPane(container);
-		desktop.add(jif, layer);
-		try {
-			jif.setSelected(true);
-		} catch (java.beans.PropertyVetoException e) {
-			e.printStackTrace();
-		}
-		jif.setVisible(true);
-
-		return jif;
-	}
-
 	private void setIcon() {
-		URL jgraphUrl = this.getClass().getClassLoader().getResource("mr3/resources/mr3_logo.png");
+		URL jgraphUrl = getImageIcon("mr3_logo.png");
 		if (jgraphUrl != null) {
 			ImageIcon jgraphIcon = new ImageIcon(jgraphUrl);
 			setIconImage(jgraphIcon.getImage());
@@ -239,11 +207,6 @@ public class MR3 extends JFrame {
 		//		selectAbstractLevelMode = new JCheckBoxMenuItem("Change Abstract Level", false);
 		//		selectAbstractLevelMode.addActionListener(new SelectAbstractLevelAction());
 		//		menu.add(selectAbstractLevelMode);
-		//JMenu layout = new JMenu("Layout");
-		//mi = new JMenuItem("TreeAlgorithm");
-		//mi.addActionListener(new GraphLayoutAction());
-		//		layout.add(mi);
-		//		menu.add(layout);
 		JMenu selectMenu = new JMenu("Select");
 		selectMenu.add(new SelectNodes(this, SELECT_ALL_NODES));
 		selectMenu.add(new SelectNodes(this, SELECT_ALL_RDF_NODES));
@@ -312,7 +275,6 @@ public class MR3 extends JFrame {
 		mergeMenu.add(new MergeRDFs(this, MERGE_RDFS_URI));
 		importRDF.add(mergeMenu);
 
-		//		importRDF.add(new ImportRealRDFAction());
 		menu.add(importRDF);
 
 		JMenu exportMenu = new JMenu("Export");
@@ -367,39 +329,9 @@ public class MR3 extends JFrame {
 		Set keys = pluginMenuMap.keySet();
 		for (Iterator i = keys.iterator(); i.hasNext();) {
 			String menuName = (String) i.next();
-			menu.add(new PluginAction(menuName));
+			menu.add(new ImportPlugin(this, menuName));
 		}
 		return menu;
-	}
-
-	private static final String PLUGIN_METHOD_NAME = "exec";
-
-	class PluginAction extends AbstractAction {
-
-		PluginAction(String title) {
-			super(title);
-		}
-
-		public void actionPerformed(ActionEvent e) {
-			String menuName = e.getActionCommand();
-			Map pluginMenuMap = PluginLoader.getPluginMenuMap();
-			try {
-				Class classObj = (Class) pluginMenuMap.get(menuName);
-				Object instance = classObj.newInstance();
-				Method initMethod = classObj.getMethod("setMRCube", new Class[] { MR3.class });
-				initMethod.invoke(instance, new Object[] { obj_for_plugin });
-				Method m = classObj.getMethod(PLUGIN_METHOD_NAME, null);
-				m.invoke(instance, null);
-			} catch (NoSuchMethodException nsme) {
-				nsme.printStackTrace();
-			} catch (InstantiationException ine) {
-				ine.printStackTrace();
-			} catch (IllegalAccessException ille) {
-				ille.printStackTrace();
-			} catch (InvocationTargetException inve) {
-				inve.printStackTrace();
-			}
-		}
 	}
 
 	public AttributeDialog getAttrDialog() {
@@ -457,12 +389,9 @@ public class MR3 extends JFrame {
 		menu.add(idView);
 		menu.add(labelView);
 		menu.addSeparator();
-		//		menu.add(getEditorViewMenu());
-		showSrcWindowBox = new JCheckBoxMenuItem("Show Source Window", false);
-		showSrcWindowBox.addActionListener(new ShowViewAction());
 		menu.add(attrDialog.getShowPropWindow());
 		menu.add(nsTableDialog.getShowNSTable());
-		menu.add(showSrcWindowBox);
+		menu.add(srcFrame.getShowSrcWindowBox());
 		showTypeCellBox = new JCheckBoxMenuItem("Show Type", true);
 		gmanager.setIsShowTypeCell(true);
 		showTypeCellBox.addActionListener(new ShowTypeCellAction());
@@ -475,81 +404,19 @@ public class MR3 extends JFrame {
 		return menu;
 	}
 
-	// エディタは常に表示しておくべきという指摘があったので，消すことはできないようにする．
-	private JMenu getEditorViewMenu() {
-		JMenu editorViewMenu = new JMenu("Editor");
-		rdfEditorView = new JCheckBoxMenuItem("Show RDF Editor", true);
-		rdfEditorView.addActionListener(new ShowViewAction());
-		editorViewMenu.add(rdfEditorView);
-		classEditorView = new JCheckBoxMenuItem("Show Class Editor", true);
-		classEditorView.addActionListener(new ShowViewAction());
-		editorViewMenu.add(classEditorView);
-		propertyEditorView = new JCheckBoxMenuItem("Show Property Editor", true);
-		propertyEditorView.addActionListener(new ShowViewAction());
-		editorViewMenu.add(propertyEditorView);
-		return editorViewMenu;
-	}
-
 	private static final String TO_FRONT_RDF_EDITOR = "To Front RDF Editor";
 	private static final String TO_FRONT_CLASS_EDITOR = "To Front Class Editor";
 	private static final String TO_FRONT_PROPERTY_EDITOR = "To Front Property Editor";
 
 	private JMenu getWindowMenu() {
 		JMenu menu = new JMenu("Window");
-		menu.add(new EditorSelectAction(TO_FRONT_RDF_EDITOR));
-		menu.add(new EditorSelectAction(TO_FRONT_CLASS_EDITOR));
-		menu.add(new EditorSelectAction(TO_FRONT_PROPERTY_EDITOR));
+		menu.add(new EditorSelect(this, TO_FRONT_RDF_EDITOR));
+		menu.add(new EditorSelect(this, TO_FRONT_CLASS_EDITOR));
+		menu.add(new EditorSelect(this, TO_FRONT_PROPERTY_EDITOR));
 		menu.addSeparator();
 		menu.add(new DeployWindows(this));
 
 		return menu;
-	}
-
-	class EditorSelectAction extends AbstractAction {
-
-		EditorSelectAction(String title) {
-			super(title);
-		}
-
-		private void toFrontInternalFrame(int i) {
-			try {
-				internalFrames[i].toFront();
-				internalFrames[i].setIcon(false);
-				internalFrames[i].setSelected(true);
-			} catch (PropertyVetoException pve) {
-				pve.printStackTrace();
-			}
-		}
-
-		public void actionPerformed(ActionEvent e) {
-			String en = e.getActionCommand();
-			if (en.equals(TO_FRONT_RDF_EDITOR)) {
-				toFrontInternalFrame(0);
-			} else if (en.equals(TO_FRONT_CLASS_EDITOR)) {
-				toFrontInternalFrame(1);
-			} else if (en.equals(TO_FRONT_PROPERTY_EDITOR)) {
-				toFrontInternalFrame(2);
-			}
-		}
-
-	}
-
-	class ShowViewAction extends AbstractAction {
-		public void actionPerformed(ActionEvent e) {
-			JCheckBoxMenuItem tmp = (JCheckBoxMenuItem) e.getSource();
-			if (tmp == rdfEditorView) {
-				internalFrames[0].setVisible(rdfEditorView.getState());
-				internalFrames[0].toFront();
-			} else if (tmp == classEditorView) {
-				internalFrames[1].setVisible(classEditorView.getState());
-				internalFrames[1].toFront();
-			} else if (tmp == propertyEditorView) {
-				internalFrames[2].setVisible(propertyEditorView.getState());
-				internalFrames[2].toFront();
-			} else if (tmp == showSrcWindowBox) {
-				srcFrame.setVisible(showSrcWindowBox.getState());
-			}
-		}
 	}
 
 	private JMenu getConvertMenu() {
@@ -589,12 +456,6 @@ public class MR3 extends JFrame {
 	class ShowToolTipsAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
 			ToolTipManager.sharedInstance().setEnabled(showToolTips.getState());
-		}
-	}
-
-	class GraphLayoutAction extends AbstractAction {
-		public void actionPerformed(ActionEvent e) {
-			gmanager.applyTreeLayout();
 		}
 	}
 
@@ -640,15 +501,12 @@ public class MR3 extends JFrame {
 		}
 	}
 
-	public void showSrcView() {
-		try {
-			srcFrame.toFront();
-			srcFrame.setVisible(true);
-			srcFrame.setIcon(false);
-			showSrcWindowBox.setState(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public JCheckBoxMenuItem getShowSrcWindowBox() {
+		return srcFrame.getShowSrcWindowBox();
+	}
+
+	public JInternalFrame getSourceFrame() {
+		return srcFrame;
 	}
 
 	public JDesktopPane getDesktopPane() {
@@ -700,7 +558,7 @@ public class MR3 extends JFrame {
 	}
 
 	public JTextComponent getSourceArea() {
-		return srcArea;
+		return srcFrame.getSourceArea();
 	}
 
 	public static void main(String[] arg) {
