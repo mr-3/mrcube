@@ -35,7 +35,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 	protected RDFLiteralInfoMap litInfoMap = RDFLiteralInfoMap.getInstance();
 	protected RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
 
-	protected Action undo, redo, remove, group, ungroup, tofront, toback, cut, copy, paste;
+	protected Action undo, redo, remove, group, ungroup;
 
 	protected void initEditor(RDFGraph g, GraphManager manager, AttributeDialog attrD) {
 		graph = g;
@@ -209,11 +209,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 		// Update Button States based on Current Selection
 		boolean enabled = !graph.isSelectionEmpty();
 		remove.setEnabled(enabled);
-		//copy.setEnabled(enabled);
-		//cut.setEnabled(enabled);
 		//ungroup.setEnabled(enabled);
-		//tofront.setEnabled(enabled);
-		//toback.setEnabled(enabled);
 	}
 
 	//	public void fitWindow(RDFGraph graph) {
@@ -434,31 +430,6 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 		//		};
 		//		ungroup.setEnabled(false);
 		//		toolbar.add(ungroup);
-
-		// To Front
-		//		toolbar.addSeparator();
-		//		URL toFrontUrl = getClass().getClassLoader().getResource("img/tofront.gif");
-		//		ImageIcon toFrontIcon = new ImageIcon(toFrontUrl);
-		//		tofront = new AbstractAction("", toFrontIcon) {
-		//			public void actionPerformed(ActionEvent e) {
-		//				if (!graph.isSelectionEmpty())
-		//					toFront(graph.getSelectionCells());
-		//			}
-		//		};
-		//		tofront.setEnabled(false);
-		//		toolbar.add(tofront);
-		//
-		//		// To Back
-		//		URL toBackUrl = getClass().getClassLoader().getResource("img/toback.gif");
-		//		ImageIcon toBackIcon = new ImageIcon(toBackUrl);
-		//		toback = new AbstractAction("", toBackIcon) {
-		//			public void actionPerformed(ActionEvent e) {
-		//				if (!graph.isSelectionEmpty())
-		//					toBack(graph.getSelectionCells());
-		//			}
-		//		};
-		//		toback.setEnabled(false);
-		//		toolbar.add(toback);
 
 		return toolbar;
 	}

@@ -210,7 +210,7 @@ public class ReferenceListPanel extends JPanel {
 				Object rdfCell = tableModel.getValueAt(i, 1);
 				RDFResourceInfo info = resInfoMap.getCellInfo(rdfCell);
 				if (info != null) { // TypeÇnullÇ…ïœçX
-					info.setType(null);
+					info.setTypeCell(null);
 					gmanager.changeCellView();
 				} else {
 					rdfsInfoMap.putEdgeInfo(rdfCell, null);

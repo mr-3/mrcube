@@ -278,7 +278,7 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 	}
 
 	private void setResourceType(GraphCell typeCell) {
-		resInfo.setType(typeCell);
+		resInfo.setTypeCell(typeCell);
 		String typeValue = resInfo.getType().getURI();
 		setResourceTypeField(typeValue);
 	}

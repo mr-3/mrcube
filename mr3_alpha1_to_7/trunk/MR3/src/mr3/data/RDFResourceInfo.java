@@ -8,8 +8,9 @@ import com.jgraph.graph.*;
 
 public class RDFResourceInfo {
 
-	private Object typeCell;
-	private GraphCell typeViewCell;
+	private Object typeCell;				// RDFS Class‚É‘Î‰‚·‚éCell‚ğ•Û‚·‚é
+	private GraphCell typeViewCell;    // RDF Resource‚É‚Â‚­‹éŒ`‚ÌCell‚ğ•Û‚·‚é
+
 	private Resource uri;
 	private URIType uriType;
 	private RDFSInfoMap rdfsMap = RDFSInfoMap.getInstance();
@@ -46,7 +47,7 @@ public class RDFResourceInfo {
 
 		Map typeMap = typeViewCell.getAttributes();
 		GraphConstants.setValue(typeMap, value);
-		typeViewCell.setAttributes(typeMap);
+		typeViewCell.changeAttributes(typeMap);
 	}
 
 	public boolean equals(Object o) {
@@ -60,7 +61,7 @@ public class RDFResourceInfo {
 		}
 	}
 
-	public void setType(Object type) {
+	public void setTypeCell(Object type) {
 		this.typeCell = type;
 		setTypeCellValue();
 	}
