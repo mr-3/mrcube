@@ -79,7 +79,7 @@ public class MR3 extends JFrame {
 
 	MR3() {
 		userPrefs = Preferences.userNodeForPackage(this.getClass());
-		Translator.loadResourceBundle(userPrefs.get(PrefConstants.UILang, getDefaultLocaleStr()));
+		Translator.loadResourceBundle(userPrefs);
 		MR3Constants.initConstants();
 
 		setSize(userPrefs.getInt(PrefConstants.WindowWidth, MAIN_FRAME_WIDTH), userPrefs.getInt(PrefConstants.WindowHeight, MAIN_FRAME_HEIGHT));
@@ -124,14 +124,6 @@ public class MR3 extends JFrame {
 		setJMenuBar(createMenuBar());
 		initPreferences();
 		setVisible(true);
-	}
-
-	private String getDefaultLocaleStr() {
-		if (Locale.getDefault().equals(Locale.JAPAN)) {
-			return "ja";
-		} else {
-			return "en";
-		}
 	}
 
 	//	private void setTreeLayout() {
