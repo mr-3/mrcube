@@ -173,7 +173,7 @@ public class MR3 extends JFrame {
 		URL propertyEditorUrl = this.getClass().getClassLoader().getResource("mr3/resources/propertyEditorIcon.gif");
 		internalFrames[2].setFrameIcon(new ImageIcon(propertyEditorUrl));
 
-		srcFrame = createInternalFrame(new JScrollPane(srcArea), "Src View", DEMO_FRAME_LAYER);
+		srcFrame = createInternalFrame(new JScrollPane(srcArea), "Source Window", DEMO_FRAME_LAYER);
 		srcFrame.setClosable(true);
 		srcFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		srcFrame.addInternalFrameListener(new CloseInternalFrameAction());
@@ -231,9 +231,9 @@ public class MR3 extends JFrame {
 
 	private void setIcon() {
 		URL jgraphUrl = this.getClass().getClassLoader().getResource("mr3/resources/mr3_logo.png");
-		if (jgraphUrl != null) { // If Valid URL
-			ImageIcon jgraphIcon = new ImageIcon(jgraphUrl); // Load Icon
-			setIconImage(jgraphIcon.getImage()); // Use in Window
+		if (jgraphUrl != null) {
+			ImageIcon jgraphIcon = new ImageIcon(jgraphUrl);
+			setIconImage(jgraphIcon.getImage());
 		}
 	}
 
@@ -330,10 +330,7 @@ public class MR3 extends JFrame {
 		menu.addSeparator();
 		JMenu importRDF = new JMenu("Import");
 		JMenu replace = new JMenu("Replace");
-		// RDFSÇæÇØReplaceÇÕÇ∆ÇËÇ†Ç¶Ç∏ÅCã÷é~ÅD
-		//mi = new JMenuItem("RDFS(File)");
-		//mi.addActionListener(new ReplaceRDFSFileAction());
-		//replace.add(mi);
+		
 		mi = new JMenuItem("RDF/XML (File)");
 		mi.addActionListener(new ReplaceRDFFileAction());
 		replace.add(mi);
@@ -727,7 +724,8 @@ public class MR3 extends JFrame {
 			return null;
 		}
 		try {
-			Reader reader = new FileReader(file);
+			String encoding = userPrefs.get(PrefConstants.InputEncoding, "SJIS");
+			Reader reader = new InputStreamReader(new FileInputStream(file), encoding);
 			return reader;
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -883,7 +881,7 @@ public class MR3 extends JFrame {
 		menu.add(labelView);
 		menu.addSeparator();
 		//		menu.add(getEditorViewMenu());
-		showSrcView = new JCheckBoxMenuItem("Show Source", false);
+		showSrcView = new JCheckBoxMenuItem("Show Source Window", false);
 		showSrcView.addActionListener(new ShowViewAction());
 		menu.add(showSrcView);
 		menu.add(attrDialog.getShowPropWindow());
@@ -950,7 +948,6 @@ public class MR3 extends JFrame {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-
 			String en = e.getActionCommand();
 			if (en.equals("To Front RDF Editor")) {
 				toFrontInternalFrame(0);
@@ -959,8 +956,8 @@ public class MR3 extends JFrame {
 			} else if (en.equals("To Front Property Editor")) {
 				toFrontInternalFrame(2);
 			}
-
 		}
+		
 	}
 
 	private void deployWindows() {
