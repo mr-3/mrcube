@@ -119,7 +119,8 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 		// Shift Jumps to "Default" Port (child index 0)
 		if (port == null && jump) {
 			Object cell = graph.getFirstCellForLocation(x, y);
-			if (graph.isRDFResourceCell(cell) || graph.isRDFLiteralCell(cell)) {
+			//			if (graph.isRDFResourceCell(cell) || graph.isRDFLiteralCell(cell)) {
+			if (graph.isRDFSCell(cell) || graph.isRDFResourceCell(cell) || graph.isRDFLiteralCell(cell)) {
 				Object firstChild = graph.getModel().getChild(cell, 0);
 				CellView firstChildView = graph.getGraphLayoutCache().getMapping(firstChild, false);
 				if (firstChildView instanceof PortView)
@@ -187,14 +188,14 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 		if (uri == null || gmanager.isDuplicatedWithDialog(uri, null, GraphType.RDF)) {
 			return;
 		} else if (uri.length() == 0) {
-			cellMaker.insertResource(pt, uri, URIType.ANONYMOUS);
+			cellMaker.insertRDFResource(pt, uri, URIType.ANONYMOUS);
 		} else {
-			cellMaker.insertResource(pt, uri, URIType.URI);
+			cellMaker.insertRDFResource(pt, uri, URIType.URI);
 		}
 	}
 
 	public void insertLiteralCell(Point pt) {
-		cellMaker.insertLiteral(pt);
+		cellMaker.insertRDFLiteral(pt);
 	}
 
 	//	

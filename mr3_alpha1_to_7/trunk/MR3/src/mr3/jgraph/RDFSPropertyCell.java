@@ -6,9 +6,17 @@
  */
 package mr3.jgraph;
 
-/**
- * @author cs9088
- */
-public class RDFSPropertyCell {
+import com.jgraph.graph.*;
 
+/**
+ * @author takeshi morita
+ */
+public class RDFSPropertyCell extends DefaultGraphCell{
+	public RDFSPropertyCell() {
+		this(null);
+	}
+
+	public RDFSPropertyCell(Object userObject) {
+		super(userObject);
+	}
 }
