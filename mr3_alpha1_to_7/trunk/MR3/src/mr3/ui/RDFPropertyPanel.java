@@ -168,7 +168,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		if (nameSpaceList.getModel().getSize() == 0) {
 			return;
 		}
-		String nameSpace = (String) nameSpaceList.getSelectedValue();		
+		String nameSpace = (String) nameSpaceList.getSelectedValue();
 		if (uriButton.isSelected()) {
 			tmpPropMap = uriPropMap;
 		} else {
@@ -317,7 +317,8 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 			setURIField(s);
 		}
 	}
-
+	private static final String selectSupPropertiesTitle = "Select Super Properties";
+	
 	private void changeProperty() {
 		GraphCell propertyCell = null;
 		Resource uri = new ResourceImpl(uriField.getText());
@@ -337,7 +338,9 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 				SelectRDFSCheckDialog dialog = new SelectRDFSCheckDialog("Choose One Select");
 				CreateRDFSType createType = (CreateRDFSType) dialog.getValue();
 				if (createType == CreateRDFSType.CREATE) {
-					propertyCell = (GraphCell) gmanager.getPropertyCell(uri, uriType, false);
+					//					propertyCell = (GraphCell) gmanager.getPropertyCell(uri, uriType, false);
+					Set supProps = gmanager.getSupRDFS(gmanager.getPropertyGraph(), selectSupPropertiesTitle);
+					propertyCell = (GraphCell) gmanager.insertSubRDFS(uri, uriType, supProps, gmanager.getPropertyGraph());
 				} else if (createType == CreateRDFSType.RENAME) {
 					propertyCell = (GraphCell) rdfsInfoMap.getEdgeInfo(edge);
 					RDFSInfo rdfsInfo = rdfsInfoMap.getCellInfo(propertyCell);

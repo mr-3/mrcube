@@ -24,7 +24,7 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 		if (e != null && !e.isConsumed() && port != null && firstPort != null && firstPort != port) {
 			Port source = (Port) firstPort.getCell();
 			DefaultPort target = (DefaultPort) port.getCell();
-			connect(source, target, "");
+			cellMaker.connect(source, target, "", graph);
 			classPanel.showRDFSInfo((DefaultGraphCell) graph.getModel().getParent(source));
 			e.consume();
 		} else {
@@ -66,11 +66,10 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 		if (uri == null || gmanager.isEmptyURI(tmpURI) || gmanager.isDuplicatedWithDialog(tmpURI, null, GraphType.CLASS)) {
 			return;
 		} else {
-			pt.y += 100;
 			cellMaker.insertClass(pt, uri, uriType);
 			DefaultGraphCell cell = (DefaultGraphCell) graph.getSelectionCell();
 			Port sourcePort = (Port) cell.getChildAt(0);
-			connectSubToSups(sourcePort, supCells);
+			cellMaker.connectSubToSups(sourcePort, supCells, graph);
 			graph.setSelectionCell(cell);
 		}
 	}

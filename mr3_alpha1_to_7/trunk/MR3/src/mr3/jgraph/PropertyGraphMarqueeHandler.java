@@ -28,7 +28,7 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 		if (e != null && !e.isConsumed() && port != null && firstPort != null && firstPort != port && isEllipseView(firstPort.getParentView())) {
 			Port source = (Port) firstPort.getCell();
 			DefaultPort target = (DefaultPort) port.getCell();
-			connect(source, target, "");
+			cellMaker.connect(source, target, "", graph);
 			propertyPanel.showRDFSInfo((DefaultGraphCell) graph.getModel().getParent(source));
 			e.consume();
 		} else {
@@ -66,11 +66,10 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 		if (tmpURI == null || gmanager.isEmptyURI(tmpURI) || gmanager.isDuplicatedWithDialog(tmpURI, null, GraphType.CLASS)) {
 			return;
 		} else {
-			pt.y += 100;
 			cellMaker.insertProperty(pt, uri, uriType);
 			DefaultGraphCell cell = (DefaultGraphCell) graph.getSelectionCell();
 			Port sourcePort = (Port) cell.getChildAt(0);
-			connectSubToSups(sourcePort, supCells);
+			cellMaker.connectSubToSups(sourcePort, supCells, graph);
 			graph.setSelectionCell(cell);
 		}
 	}
