@@ -61,7 +61,7 @@ public class RDFCellMaker {
 	public DefaultGraphCell addTypeCell(Object resourceCell, Map attributes, Rectangle rec) {
 		RDFGraph graph = gmanager.getRDFGraph();
 		DefaultGraphCell typeCell = null;
-		
+
 		if (gmanager.isShowTypeCell()) {
 			typeCell = new TypeCell("");
 			Point typePoint = new Point(rec.x, rec.y + rec.height);
@@ -184,13 +184,17 @@ public class RDFCellMaker {
 		JGraph graph = gmanager.getPropertyGraph();
 		point = graph.snap(new Point(point)); // Snap the Point to the Grid
 		Map map = getResourceMap(point, ChangeCellAttributes.propertyColor);
+
 		RDFSPropertyCell vertex = new RDFSPropertyCell(uri);
+		//		if (!uri.matches(RDF.getURI() + "_\\d*")) {
 		setCell(graph, vertex, map);
+		//		}
 
 		RDFSInfo info = new PropertyInfo(uri);
 		rdfsInfoMap.putCellInfo(vertex, info);
 		gmanager.changeCellView();
 		gmanager.jumpPropertyArea(vertex);
+
 		return vertex;
 	}
 

@@ -29,7 +29,7 @@ public class InsertRDFResDialog extends JDialog implements ActionListener, ItemL
 
 	private static final int BOX_WIDTH = 150;
 	private static final int BOX_HEIGHT = 50;
-	private static final int ID_WIDTH = 180;
+	private static final int ID_WIDTH = 120;
 
 	public InsertRDFResDialog(String title, Object[] cells, GraphManager gmanager) {
 		super(gmanager.getRoot(), title, true);
@@ -44,7 +44,7 @@ public class InsertRDFResDialog extends JDialog implements ActionListener, ItemL
 		idField = new JTextField();
 		initComponent(idField, "ID", ID_WIDTH, 40);
 
-		isAnonBox = new JCheckBox("isAnon");
+		isAnonBox = new JCheckBox("isBlank");
 		isAnonBox.addActionListener(new IsAnonAction());
 
 		uriPrefixBox = new JComboBox();

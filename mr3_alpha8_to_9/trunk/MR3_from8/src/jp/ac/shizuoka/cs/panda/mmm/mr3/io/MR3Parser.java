@@ -64,6 +64,11 @@ public class MR3Parser {
 
 			rdfsInfoMap.putCellInfo(pCell, info);
 
+			// _1.._num‚ÍCƒOƒ‰ƒt‚É•`‰æ‚µ‚È‚¢
+//			if (property.getURI().matches(RDF.getURI() + "_\\d*")) {
+//				continue;
+//			}
+
 			Edge edge = getEdge(attributes, "");
 			ConnectionSet cs = new ConnectionSet(edge, rootPort, pPort);
 			graph.getModel().insert(new Object[] { edge }, attributes, cs, null, null);
