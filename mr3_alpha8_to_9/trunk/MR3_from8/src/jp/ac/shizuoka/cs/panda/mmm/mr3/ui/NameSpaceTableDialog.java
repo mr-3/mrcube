@@ -214,13 +214,13 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 	}
 
 	private void setInputLayout() {
-		addNSButton = new JButton(Utilities.getImageIcon("add.gif"));
+		addNSButton = new JButton("Add");
 		addNSButton.addActionListener(this);
 
-		removeNSButton = new JButton(Utilities.getImageIcon("remove.gif"));
+		removeNSButton = new JButton("Remove");
 		removeNSButton.addActionListener(this);
 
-		closeButton = new JButton(Utilities.getImageIcon("close.gif"));
+		closeButton = new JButton("Close");
 		closeButton.addActionListener(this);
 
 		prefixField = new JTextField(8);
