@@ -98,6 +98,7 @@ public class MR3 extends JFrame {
 		attrDialog = new AttributeDialog();
 		gmanager = new GraphManager(attrDialog, userPrefs);
 		createDesktop();
+		gmanager.setDesktop(desktop);
 
 		rdfEditor = new RDFEditor(attrDialog, findResDialog, gmanager);
 		//		realRDFEditor = new RealRDFEditor(propDialog, findResDialog,gmanager);
@@ -1112,6 +1113,10 @@ public class MR3 extends JFrame {
 			propertyEditor.convertSRC(srcArea, true);
 			showSrcView();
 		}
+	}
+
+	public JDesktopPane getDesktopPane() {
+		return desktop;
 	}
 
 	public Model getRDFModel() {
