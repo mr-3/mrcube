@@ -6,6 +6,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import jp.ac.shizuoka.cs.panda.mmm.mr3.data.*;
+import jp.ac.shizuoka.cs.panda.mmm.mr3.jgraph.*;
 
 /**
  * @author takeshi morita
@@ -20,8 +21,8 @@ public class SelectRDFSCheckDialog extends JDialog implements ActionListener {
 	private JButton cancelButton;
 	private CreateRDFSType type;
 
-	SelectRDFSCheckDialog(String title) {
-		super((Frame) null, title, true);
+	SelectRDFSCheckDialog(String title, GraphManager gm) {
+		super(gm.getRoot(), title, true);
 		label = new JLabel("Not defined. Choose one select.");
 		ButtonGroup group = new ButtonGroup();
 		renameButton = new JRadioButton("Rename");
@@ -35,7 +36,7 @@ public class SelectRDFSCheckDialog extends JDialog implements ActionListener {
 		cancelButton.addActionListener(this);
 		createPane();
 		setLocation(300, 300);
-		setSize(new Dimension(200, 100));
+		setSize(new Dimension(200, 120));
 		setVisible(true);
 	}
 
@@ -46,7 +47,10 @@ public class SelectRDFSCheckDialog extends JDialog implements ActionListener {
 		inline.add(renameButton);
 		inline.add(createButton);
 		contentPane.add(inline, BorderLayout.CENTER);
-		contentPane.add(okButton, BorderLayout.SOUTH);
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.add(okButton);
+		buttonPanel.add(cancelButton);
+		contentPane.add(buttonPanel, BorderLayout.SOUTH);
 	}
 
 	public void actionPerformed(ActionEvent e) {
