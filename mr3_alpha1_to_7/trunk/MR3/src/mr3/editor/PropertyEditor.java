@@ -1,15 +1,9 @@
 package mr3.editor;
-import java.io.*;
-
-import javax.swing.text.*;
-
 import mr3.data.*;
 import mr3.jgraph.*;
 import mr3.ui.*;
 import mr3.util.*;
 
-import com.hp.hpl.mesa.rdf.jena.common.*;
-import com.hp.hpl.mesa.rdf.jena.model.*;
 import com.jgraph.event.*;
 import com.jgraph.graph.*;
 
@@ -32,25 +26,7 @@ public class PropertyEditor extends Editor {
 		propPanel = new PropertyPanel(gmanager);
 		graph.setMarqueeHandler(new PropertyGraphMarqueeHandler(manager, propPanel));
 	}
-
-	public void convertSRC(JTextComponent area, boolean isSelected) {
-		Writer output = new StringWriter();
-		try {
-			Model model = null;
-			if (isSelected) {
-				model = graphToRDF.getSelectedPropertyModel();
-			} else {
-				model = graphToRDF.getPropertyModel();
-			}
-			RDFWriter writer = new RDFWriterFImpl().getWriter("RDF/XML-ABBREV");
-			writeModel(model, output, writer);
-		} catch (RDFException e) {
-			e.printStackTrace();
-		}
-
-		area.setText(output.toString());
-	}
-
+	
 	public void valueChanged(GraphSelectionEvent e) {
 		if (!gmanager.isImporting()) {
 			lastSelectionCells = ChangeCellAttributes.changeSelectionCellColor(graph, lastSelectionCells);

@@ -125,28 +125,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 	protected void replaceGraph(RDFGraph newGraph) { // Objectを読み書きするのと、同様
 		graph.setRDFState(newGraph.getRDFState());
 	}
-
-	protected void setNsPrefix(RDFWriter writer) {
-		Set prefixNsInfoSet = gmanager.getPrefixNSInfoSet();
-		for (Iterator i = prefixNsInfoSet.iterator(); i.hasNext();) {
-			PrefixNSInfo info = (PrefixNSInfo) i.next();
-			if (info.isAvailable()) {
-				writer.setNsPrefix(info.getPrefix(), info.getNameSpace());
-			}
-		}
-	}
-
-	public Writer writeModel(Model model, Writer output, RDFWriter writer) {
-		try {
-			setNsPrefix(writer);
-			String baseURI = gmanager.getBaseURI().replaceAll("#", "");
-			writer.write(model, output, baseURI);
-		} catch (RDFException e) {
-			e.printStackTrace();
-		}
-		return output;
-	}
-
+	
 	/** 　デバッグ用メソッド */
 	public void printModel(Model model) {
 		try {
