@@ -4,6 +4,8 @@
  */
 package jp.ac.shizuoka.cs.panda.mmm.mr3.data;
 
+import javax.swing.*;
+
 import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 
 /**
@@ -11,11 +13,22 @@ import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
  */
 public class MR3Constants {
 
-	public static final String APPLY = Translator.getString("Apply");
-	public static final String CLOSE = Translator.getString("Close");
-	public static final String OK = Translator.getString("OK");
-	public static final String CANCEL = Translator.getString("Cancel");
-	public static final String PREFIX = Translator.getString("Prefix");
-	public static final String NAME_SPACE = Translator.getString("NameSpace");
+	public static String APPLY;
+	public static String CLOSE;
+	public static String OK;
+	public static String CANCEL;
+	public static String PREFIX;
+	public static String NAME_SPACE;
+	public static ImageIcon LOGO;
+
+	public static void initConstants() {
+		APPLY = Translator.getString("Apply");
+		CLOSE = Translator.getString("Close");
+		OK = Translator.getString("OK");
+		CANCEL = Translator.getString("Cancel");
+		PREFIX = Translator.getString("Prefix");
+		NAME_SPACE = Translator.getString("NameSpace");
+		LOGO = Utilities.getImageIcon(Translator.getString("Logo"));
+	}
 
 }

@@ -18,9 +18,13 @@ import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
  */
 public class EditorSelect extends MR3AbstractAction {
 
-	private static final String RDF_EDITOR = Translator.getString("Component.Window.RDFEditor.Text");
-	private static final String CLASS_EDITOR =Translator.getString("Component.Window.ClassEditor.Text");
-	private static final String PROPERTY_EDITOR =Translator.getString("Component.Window.PropertyEditor.Text");
+	public static final String RDF_EDITOR = Translator.getString("Component.Window.RDFEditor.Text");
+	public static final String CLASS_EDITOR =Translator.getString("Component.Window.ClassEditor.Text");
+	public static final String PROPERTY_EDITOR =Translator.getString("Component.Window.PropertyEditor.Text");
+
+	public static final ImageIcon RDF_EDITOR_ICON = Utilities.getImageIcon(Translator.getString("RDFEditor.Icon"));
+	public static final ImageIcon CLASS_EDITOR_ICON = Utilities.getImageIcon(Translator.getString("ClassEditor.Icon"));
+	public static final ImageIcon PROPERTY_EDITOR_ICON = Utilities.getImageIcon(Translator.getString("PropertyEditor.Icon"));
 
 	public EditorSelect(MR3 mr3, String name, ImageIcon icon) {
 		super(mr3, name, icon);

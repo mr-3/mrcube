@@ -207,32 +207,14 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 		remove.setEnabled(enabled);
 	}
 
-	public JViewport getJViewport(){
+	public JViewport getJViewport() {
 		return graphScrollPane.getViewport();
 	}
-	
+
 	public JGraph getGraph() {
 		return graph;
 	}
-	
-	public void fitWindow() {
-		Rectangle p = graph.getCellBounds(graph.getRoots());
-		if (p != null) {
-			Dimension s = graphScrollPane.getViewport().getExtentSize();
-			double scale = 1;
-			if (s.width == 0 && s.height == 0) {
-				graph.setScale(scale);
-				return;
-			}
-			if (Math.abs(s.getWidth() - (p.x + p.getWidth())) > Math.abs(s.getHeight() - (p.x + p.getHeight())))
-				scale = (double) s.getWidth() / (p.x + p.getWidth());
-			else
-				scale = (double) s.getHeight() / (p.y + p.getHeight());
-			scale = Math.max(Math.min(scale, 16), .01);
-			graph.setScale(scale);
-		}
-	}
-	
+
 	/** _Create ToolBar */
 	public JToolBar createToolBar() {
 		JToolBar toolbar = new JToolBar();
@@ -301,8 +283,8 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 		};
 		undo.setEnabled(false);
 		//				toolbar.add(undo);
-		
-		redo = new AbstractAction("", Utilities.getImageIcon("redo.gif")) { // Redo
+
+		redo = new AbstractAction("", Utilities.getImageIcon("redo.gif")) {
 			public void actionPerformed(ActionEvent e) {
 				redo();
 			}
@@ -311,42 +293,28 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 		//		toolbar.add(redo);
 
 		toolbar.addSeparator();
-		toolbar.add(new CopyAction(graph)); 
-		toolbar.add(new CutAction(graph)); 
-		toolbar.add(new PasteAction(graph)); 
+		toolbar.add(new CopyAction(graph));
+		toolbar.add(new CutAction(graph));
+		toolbar.add(new PasteAction(graph));
 		toolbar.addSeparator();
-		remove = new RemoveAction(graph, gmanager);	
+		remove = new RemoveAction(graph, gmanager);
 		remove.setEnabled(false);
 		toolbar.add(remove);
-		
-		toolbar.addSeparator();		
+
+		toolbar.addSeparator();
 		toolbar.add(new FindResAction(graph, findResDialog));
 		toolbar.addSeparator();
-		toolbar.add(new AbstractAction("", Utilities.getImageIcon("zoom100.gif")) { // Zoom Std
-			public void actionPerformed(ActionEvent e) {
-				graph.setScale(1.0);
-			}
-		});
 
-		toolbar.add(new AbstractAction("", Utilities.getImageIcon("zoomin.gif")) { // Zoom In
-			public void actionPerformed(ActionEvent e) {
-				graph.setScale(1.5 * graph.getScale());
-			}
-		});
-		
-		toolbar.add(new AbstractAction("", Utilities.getImageIcon("zoomout.gif")) { // Zoom Out
-			public void actionPerformed(ActionEvent e) {
-				graph.setScale(graph.getScale() / 1.5);
-			}
-		});
-
-		toolbar.add(new AbstractAction("", Utilities.getImageIcon("zoom.gif")) {
-			public void actionPerformed(ActionEvent e) {
-				fitWindow();
-			}
-		});
+		toolbar.add(new ZoomAction(graph, this, ZoomAction.ZOOM_STD, ZoomAction.ZOOM_STD_ICON));
+		toolbar.add(new ZoomAction(graph, this, ZoomAction.ZOOM_IN, ZoomAction.ZOOM_IN_ICON));
+		toolbar.add(new ZoomAction(graph, this, ZoomAction.ZOOM_OUT, ZoomAction.ZOOM_OUT_ICON));
+		toolbar.add(new ZoomAction(graph, this, ZoomAction.ZOOM_SUITABLE, ZoomAction.ZOOM_SUITABLE_ICON));
 
 		return toolbar;
+	}
+
+	public JScrollPane getJScrollPane() {
+		return graphScrollPane;
 	}
 
 	private void toFrontInternFrame(int i) {

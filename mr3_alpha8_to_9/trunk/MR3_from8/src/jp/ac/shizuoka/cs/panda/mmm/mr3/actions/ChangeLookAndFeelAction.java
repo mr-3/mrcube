@@ -16,9 +16,9 @@ import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
  */
 public class ChangeLookAndFeelAction extends MR3AbstractAction {
 
-	private static final String METAL = Translator.getString("Component.View.LookAndFeel.Metal.Text");
-	private static final String WINDOWS = Translator.getString("Component.View.LookAndFeel.Windows.Text");
-	private static final String MOTIF = Translator.getString("Component.View.LookAndFeel.Motif.Text");
+	public static final String METAL = Translator.getString("Component.View.LookAndFeel.Metal.Text");
+	public static final String WINDOWS = Translator.getString("Component.View.LookAndFeel.Windows.Text");
+	public static final String MOTIF = Translator.getString("Component.View.LookAndFeel.Motif.Text");
 
 	public ChangeLookAndFeelAction(MR3 mr3, String title) {
 		super(mr3, title);

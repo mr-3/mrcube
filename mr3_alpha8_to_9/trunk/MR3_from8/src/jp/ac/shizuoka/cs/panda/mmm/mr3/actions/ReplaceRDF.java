@@ -21,13 +21,14 @@ import com.hp.hpl.jena.rdf.model.*;
  */
 public class ReplaceRDF extends AbstractActionFile {
 
+	public static final String REPLACE_RDF_FILE = Translator.getString("Component.File.Import.Replace.RDF/XML(File).Text");
+	public static final String REPLACE_N_TRIPLE_FILE = Translator.getString("Component.File.Import.Replace.RDF/N-Triple(File).Text");
+	public static final String REPLACE_RDF_URI = Translator.getString("Component.File.Import.Replace.RDF/XML(URI).Text");
+	public static final String REPLACE_N_TRIPLE_URI = Translator.getString("Component.File.Import.Replace.RDF/N-Triple(URI).Text");
+
 	public ReplaceRDF(MR3 mr3, String title) {
 		super(mr3, title);
 	}
-	private static final String REPLACE_RDF_FILE = Translator.getString("Component.File.Import.Replace.RDF/XML(File).Text");
-	private static final String REPLACE_N_TRIPLE_FILE = Translator.getString("Component.File.Import.Replace.RDF/N-Triple(File).Text");
-	private static final String REPLACE_RDF_URI = Translator.getString("Component.File.Import.Replace.RDF/XML(URI).Text");
-	private static final String REPLACE_N_TRIPLE_URI = Translator.getString("Component.File.Import.Replace.RDF/N-Triple(URI).Text");
 
 	public void actionPerformed(ActionEvent e) {
 		Model model = null;

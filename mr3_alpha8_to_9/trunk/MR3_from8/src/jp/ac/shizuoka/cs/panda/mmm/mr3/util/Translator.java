@@ -18,7 +18,7 @@ public class Translator {
 	}
 
 	public static void loadResourceBundle(String lang) {
-		try {
+		try {			
 			InputStream ins = Utilities.class.getClassLoader().getResourceAsStream(RESOURCE_DIR + "MR3_"+lang+".properties");
 			resourceBundle = new PropertyResourceBundle(ins);
 		} catch (IOException ioe) {
