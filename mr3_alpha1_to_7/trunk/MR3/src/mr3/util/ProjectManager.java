@@ -36,6 +36,10 @@ public class ProjectManager {
 		nsTableModel = nsTableD.getNSTableModel();
 	}
 
+	/*
+	 * RDFモデルのプロジェクトの保存に関する値を保存
+	 * 
+	 */
 	private void addRDFProjectModel(Model projectModel) throws RDFException {
 		int literal_cnt = 0;
 		RDFGraph graph = gmanager.getRDFGraph();
@@ -50,6 +54,10 @@ public class ProjectManager {
 		}
 	}
 
+	/*
+	 * x,y,width,heightを保存．
+	 * typeがない場合には，Emptyとする．
+	 */
 	private void addRDFResourceProjectModel(Model projectModel, GraphCell cell) throws RDFException {
 		Rectangle rec = GraphConstants.getBounds(cell.getAttributes());
 		RDFResourceInfo info = resInfoMap.getCellInfo(cell);
@@ -62,6 +70,10 @@ public class ProjectManager {
 		}
 	}
 
+	/*
+	 * リテラルの情報の保存．
+	 * 
+	 */
 	private int addRDFLiteralProjectModel(Model projectModel, int literal_cnt, GraphCell cell) throws RDFException {
 		Edge edge = (Edge) cell;
 		RDFGraph graph = gmanager.getRDFGraph();
@@ -123,6 +135,10 @@ public class ProjectManager {
 		}
 	}
 
+	/*
+	 * RDF，クラス，プロパティのそれぞれのプロジェクト保存に必要な値をＲＤＦモデル
+	 * として保存する．（Ｘ，Ｙ座標など）
+	 */
 	public Model getProjectModel() {
 		Model projectModel = new ModelMem();
 		try {
@@ -136,6 +152,9 @@ public class ProjectManager {
 		return projectModel;
 	}
 
+	/*
+	 * RDFのモデルから，リテラルをもつステートメント集合のモデルを得る
+	 */
 	public Model getLiteralModel(Model model) {
 		Model literalModel = new ModelMem();
 		try {
@@ -227,8 +246,11 @@ public class ProjectManager {
 	}
 
 	public void loadProject(Model model) {
+		/* リソースのＵＲＩとMR3Literalのマップ*/
 		Map uriNodeInfoMap = new HashMap();
+		/* URIとプレフィックスのマップ*/
 		Map uriPrefixMap = new HashMap();
+		/* URIとisAvailable(boolean)のマップ */
 		Map uriIsAvailableMap = new HashMap();
 		try {
 			for (StmtIterator i = model.listStatements(); i.hasNext();) {

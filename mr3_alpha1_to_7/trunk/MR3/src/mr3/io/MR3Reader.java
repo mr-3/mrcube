@@ -114,7 +114,7 @@ public class MR3Reader {
 				// 順番が重要
 				ProjectManager projectManager = new ProjectManager(mr3.getGraphManager(), mr3.getNSTableDialog());
 				Model projectModel = projectManager.extractProjectModel(model);
-				mergeRDFS(model); // mergeRDFModelではない．まぎらわしいなー．				
+				mergeRDFS(model); // mergeRDFModelではない．まぎらわしいなー．
 				projectManager.loadProject(projectModel);
 				projectManager.removeEmptyClass();
 				gmanager.removeTypeCells();

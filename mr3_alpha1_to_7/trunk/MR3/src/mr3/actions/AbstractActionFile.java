@@ -16,7 +16,6 @@ import mr3.*;
 import mr3.data.*;
 import mr3.util.*;
 
-import com.hp.hpl.jena.rdf.arp.*;
 import com.hp.hpl.mesa.rdf.jena.common.*;
 import com.hp.hpl.mesa.rdf.jena.mem.*;
 import com.hp.hpl.mesa.rdf.jena.model.*;
@@ -74,8 +73,11 @@ public abstract class AbstractActionFile extends MR3AbstractAction {
 			return null;
 		}
 		Model model = new ModelMem();
-		RDFReader reader = new JenaReader();
+		//		RDFReader reader = new JenaReader();
 		try {
+			//			RDFReader reader = new RDFReaderFImpl().getReader("RDF/XML-ABBREV");
+			// 以下のABBREVと同様
+			RDFReader reader = new RDFReaderFImpl().getReader("RDF/XML");
 			reader.read(model, r, xmlbase);
 		} catch (RDFException e) {
 			e.printStackTrace();
@@ -197,7 +199,9 @@ public abstract class AbstractActionFile extends MR3AbstractAction {
 		try {
 			Model exportModel = mr3.getProjectModel();
 			Writer output = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
-			RDFWriter writer = new RDFWriterFImpl().getWriter("RDF/XML-ABBREV");
+			//			RDFWriter writer = new RDFWriterFImpl().getWriter("RDF/XML-ABBREV");
+			// ABBREVにするとRDFAnonが出て，import時にAnonymousがうまく扱えない．
+			RDFWriter writer = new RDFWriterFImpl().getWriter("RDF/XML");
 			writeModel(exportModel, output, writer);
 			mr3.setTitle("MR^3 - " + file.getAbsolutePath());
 			mr3.setCurrentProject(file);
