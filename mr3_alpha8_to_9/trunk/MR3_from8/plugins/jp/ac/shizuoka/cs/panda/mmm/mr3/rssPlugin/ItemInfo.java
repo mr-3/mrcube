@@ -4,12 +4,10 @@ import java.net.*;
 /*
  * Created on 2003/08/11
  *
- */
-
-/**
  * @author takeshi morita
  */
 public class ItemInfo {
+	
 	private URI uri;
 	private String title;
 	private String link;
