@@ -38,8 +38,7 @@ public class MergeRDFs extends AbstractActionFile {
 			String uri = JOptionPane.showInternalInputDialog(desktop, "Open URI");
 			model = readModel(getReader(uri), gmanager.getBaseURI());
 		}
-		mr3.mergeRDFSModel(model);
-		mr3.getNSTableDialog().setCurrentNSPrefix();
+		mr3.mergeRDFSModel(model);		
 		gmanager.setIsImporting(false);
 	}
 

@@ -36,8 +36,7 @@ public class ReplaceRDF extends AbstractActionFile {
 			String uri = JOptionPane.showInternalInputDialog(desktop, "Open URI");
 			model = readModel(getReader(uri), gmanager.getBaseURI());
 		}
-		mr3.replaceRDFModel(model);
-		mr3.getNSTableDialog().setCurrentNSPrefix();
+		mr3.replaceRDFModel(model);		
 		gmanager.setIsImporting(false);
 	}
 

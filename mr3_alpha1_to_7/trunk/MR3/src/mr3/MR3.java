@@ -58,6 +58,8 @@ public class MR3 extends JFrame {
 	private JCheckBoxMenuItem showTypeCellBox;
 	private JCheckBoxMenuItem selectAbstractLevelMode;
 	private JCheckBoxMenuItem showToolTips;
+	private JCheckBoxMenuItem isGroup;
+
 	private JInternalFrame[] iFrames = new JInternalFrame[3];
 	private SourceFrame srcFrame;
 	private JCheckBoxMenuItem rdfEditorView;
@@ -92,7 +94,7 @@ public class MR3 extends JFrame {
 		classEditor = new ClassEditor(nsTableDialog, findResDialog, gmanager);
 		propertyEditor = new PropertyEditor(nsTableDialog, findResDialog, gmanager);
 
-		mr3Reader = new MR3Reader(gmanager);
+		mr3Reader = new MR3Reader(gmanager, nsTableDialog);
 		mr3Writer = new MR3Writer(gmanager);
 
 		createInternalFrames();
@@ -447,8 +449,17 @@ public class MR3 extends JFrame {
 		showToolTips.addActionListener(new ShowToolTipsAction());
 		ToolTipManager.sharedInstance().setEnabled(true);
 		menu.add(showToolTips);
+		isGroup = new JCheckBoxMenuItem("is Group", true);
+		isGroup.addActionListener(new IsGroupAction());
+		menu.add(isGroup);
 
 		return menu;
+	}
+
+	class IsGroupAction extends AbstractAction {
+		public void actionPerformed(ActionEvent e) {
+			gmanager.getRDFGraph().getSelectionModel().setChildrenSelectable(!isGroup.isSelected());
+		}
 	}
 
 	private static final String TO_FRONT_RDF_EDITOR = "To Front RDF Editor";
