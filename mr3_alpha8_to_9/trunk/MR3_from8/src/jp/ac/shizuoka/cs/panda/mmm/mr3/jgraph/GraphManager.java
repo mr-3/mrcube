@@ -782,8 +782,8 @@ public class GraphManager {
 		}
 		SelectRDFSDialog selectSupRDFSDialog = new SelectRDFSDialog(title, this);
 		selectSupRDFSDialog.replaceGraph(graph);
-		selectSupRDFSDialog.setVisible(true);
 		selectSupRDFSDialog.setRegionSet(new HashSet());
+		selectSupRDFSDialog.setVisible(true);
 		return (Set) selectSupRDFSDialog.getValue();
 	}
 

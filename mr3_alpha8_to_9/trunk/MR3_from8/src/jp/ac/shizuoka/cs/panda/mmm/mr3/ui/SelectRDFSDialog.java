@@ -1,67 +1,75 @@
+/*
+ * Created on 2003/09/25
+ *
+ */
 package jp.ac.shizuoka.cs.panda.mmm.mr3.ui;
+
 import java.awt.*;
+import java.awt.event.*;
 import java.util.*;
 
 import javax.swing.*;
 
 import jp.ac.shizuoka.cs.panda.mmm.mr3.jgraph.*;
 
-import org.jgraph.event.*;
-
 /**
- *
  * @author takeshi morita
  */
-public class SelectRDFSDialog extends SelectClassDialog {
+public class SelectRDFSDialog extends JDialog implements ActionListener {
 
-	private Set orgRegionSet;
-	private Set newRegionSet;
-	private JList regionList;
-	private JScrollPane regionListScroll;
+	private boolean isOk;
+	private JButton confirmButton;
+	private JButton cancelButton;
+	private SelectRDFSPanel panel;
 
-	public SelectRDFSDialog(String title, GraphManager manager) {
-		super(title, manager);
-		newRegionSet = new HashSet();
+	public SelectRDFSDialog(String title, GraphManager gm) {
+		super(gm.getRoot(), title, true);
+		panel = new SelectRDFSPanel(gm);
+		getContentPane().add(panel, BorderLayout.CENTER);
+		JPanel inlinePanel = new JPanel();
+		initButton();
+		inlinePanel.add(confirmButton);
+		inlinePanel.add(cancelButton);
+		getContentPane().add(inlinePanel, BorderLayout.SOUTH);
+		
+		setLocation(100, 100);
+		setSize(new Dimension(500, 500));
+		setResizable(false);
+		setVisible(false);
 	}
 
-	public void setRegionSet(Set set) {
-		orgRegionSet = set;
-		regionList.setListData(orgRegionSet.toArray());
+	private void initButton() {
+		confirmButton = new JButton("OK");
+		confirmButton.addActionListener(this);
+		cancelButton = new JButton("Cancel");
+		cancelButton.addActionListener(this);
 	}
 
-	protected void initEachDialogAttr() {
-		regionList = new JList();
-		regionListScroll = new JScrollPane(regionList);
-		regionListScroll.setBorder(BorderFactory.createTitledBorder("Selected List"));
-		regionListScroll.setPreferredSize(new Dimension(450, 80));
-		regionListScroll.setMinimumSize(new Dimension(450, 80));
+	public void replaceGraph(RDFGraph graph) {
+		panel.replaceGraph(graph);
 	}
 
-	protected void setEachDialogAttrLayout() {
-		gridbag.setConstraints(regionListScroll, c);
-		inlinePanel.add(regionListScroll);
-	}
-
-	public void valueChanged(GraphSelectionEvent e) {
-		newRegionSet.removeAll(newRegionSet);
-		Object[] cells = graph.getSelectionCells();
-		for (int i = 0; i < cells.length; i++) {
-			if (graph.isRDFSCell(cells[i])) {
-				newRegionSet.add(cells[i]);
-			}
-		}
-		if (orgRegionSet != null) {
-			newRegionSet.addAll(orgRegionSet);
-		}
-		regionList.setListData(newRegionSet.toArray());
+	public void setRegionSet(Set regionSet) {
+		panel.setRegionSet(regionSet);
 	}
 
 	public Object getValue() {
 		if (isOk) {
 			isOk = false;
-			return newRegionSet;
+			return panel.getRegionSet();
 		} else {
 			return null;
 		}
 	}
+
+	public void actionPerformed(ActionEvent e) {
+		String type = (String) e.getActionCommand();
+		if (type.equals("OK")) {
+			isOk = true;
+		} else {
+			isOk = false;
+		}
+		setVisible(false);
+	}
+
 }
