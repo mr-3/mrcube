@@ -13,6 +13,7 @@ import com.jgraph.event.*;
 public class RealRDFEditor extends Editor {
 
 	public RealRDFEditor(GraphManager gm, NameSpaceTableDialog nsD, FindResourceDialog findResD) {
+		super("Real RDF Editor");
 		initEditor(gm.getRealRDFGraph(), gm, nsD, findResD);
 	}
 

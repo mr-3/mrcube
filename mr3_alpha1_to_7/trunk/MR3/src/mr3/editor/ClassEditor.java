@@ -1,4 +1,8 @@
 package mr3.editor;
+import java.net.*;
+
+import javax.swing.*;
+
 import mr3.data.*;
 import mr3.jgraph.*;
 import mr3.ui.*;
@@ -12,9 +16,12 @@ public class ClassEditor extends Editor {
 	private ClassPanel classPanel;
 
 	public ClassEditor(NameSpaceTableDialog nsD, FindResourceDialog findResD, GraphManager gm) {
+		super("Class Editor");
 		graph = gm.getClassGraph();
 		graph.setDisconnectable(false);
 		initEditor(gm.getClassGraph(), gm, nsD, findResD);
+		URL classEditorUrl = this.getClass().getClassLoader().getResource("mr3/resources/classEditorIcon.gif");
+		setFrameIcon(new ImageIcon(classEditorUrl));
 	}
 
 	protected void initField(NameSpaceTableDialog nsD, GraphManager manager) {
@@ -22,7 +29,7 @@ public class ClassEditor extends Editor {
 		classPanel = new ClassPanel(graph, manager);
 		graph.setMarqueeHandler(new ClassGraphMarqueeHandler(manager, classPanel));
 	}
-	
+
 	public void valueChanged(GraphSelectionEvent e) {
 		if (!gmanager.isImporting()) {
 			lastSelectionCells = ChangeCellAttributes.changeSelectionCellColor(graph, lastSelectionCells);

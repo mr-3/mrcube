@@ -1,4 +1,8 @@
 package mr3.editor;
+import java.net.*;
+
+import javax.swing.*;
+
 import mr3.data.*;
 import mr3.jgraph.*;
 import mr3.ui.*;
@@ -20,9 +24,12 @@ public class RDFEditor extends Editor {
 	private RDFLiteralPanel litPanel;
 
 	public RDFEditor(NameSpaceTableDialog nsD, FindResourceDialog findResD, GraphManager gm) {
+		super("RDF Editor");
 		graph = gm.getRDFGraph();
 		graph.setMarqueeHandler(new RDFGraphMarqueeHandler(gm, graph));
 		initEditor(gm.getRDFGraph(), gm, nsD, findResD);
+		URL rdfEditorUrl = this.getClass().getClassLoader().getResource("mr3/resources/rdfEditorIcon.gif");
+		setFrameIcon(new ImageIcon(rdfEditorUrl));
 	}
 
 	protected void initField(NameSpaceTableDialog nsD, GraphManager manager) {
