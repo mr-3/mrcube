@@ -16,13 +16,13 @@ public class SamplePlugin1 extends MR3Plugin {
 		ModelMem sampleModel = new ModelMem();
 		try {
 			String sampleURI = "http://panda.cs.inf.shizuoka.ac.jp/mmm/mr3#";
-			Resource sampleResource = new ResourceImpl(sampleURI+"sample_resource");
-			Resource sampleResourceType = new ResourceImpl(sampleURI+"sample_resourceType");
+			Resource sampleSubject = new ResourceImpl(sampleURI+"sample_subject");		
 			Property sampleProperty = new PropertyImpl(sampleURI+"sample_property");
-            Literal sampleLiteral = new LiteralImpl("Sample");
-			Statement stmt = sampleModel.createStatement(sampleResource, sampleProperty, sampleLiteral);
+            Literal sampleLiteral = new LiteralImpl("sample_literal");
+			Statement stmt = sampleModel.createStatement(sampleSubject, sampleProperty, sampleLiteral);
 			sampleModel.add(stmt);
-			stmt = sampleModel.createStatement(sampleResource, RDF.type, sampleResourceType);
+			Resource sampleSubjectType = new ResourceImpl(sampleURI+"sample_subjectType");
+			stmt = sampleModel.createStatement(sampleSubject, RDF.type, sampleSubjectType);
 			sampleModel.add(stmt);
 		} catch (RDFException e) {
 			e.printStackTrace();
