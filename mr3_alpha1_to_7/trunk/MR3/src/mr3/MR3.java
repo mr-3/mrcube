@@ -10,6 +10,7 @@ import java.net.*;
 import java.util.*;
 import java.util.List;
 import java.util.prefs.*;
+import java.util.zip.*;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -481,14 +482,19 @@ public class MR3 extends JFrame {
 	}
 
 	class OpenProjectAction extends AbstractAction {
+
+		private ObjectInputStream createInputStream(File file) throws FileNotFoundException, IOException{
+			InputStream fi = new FileInputStream(file);
+			fi = new GZIPInputStream(fi);
+			return new ObjectInputStream(fi);
+		}
+
 		public void loadProject(File file) {
 			try {
 				if (file != null) {
-					FileInputStream fi = new FileInputStream(file);
-					//GZIPInputStream gzin = new GZIPInputStream(fi);
-					ObjectInputStream oi = new ObjectInputStream(fi);
+					ObjectInputStream oi = createInputStream(file);
 					gmanager.loadState(oi.readObject());
-					fi.close();
+					oi.close();
 				}
 			} catch (IOException ex) {
 				ex.printStackTrace();
@@ -509,14 +515,19 @@ public class MR3 extends JFrame {
 	}
 
 	class SaveProjectAction extends AbstractAction {
+
+		private ObjectOutputStream createOutputStream(File file) throws FileNotFoundException, IOException {
+			OutputStream fo = new FileOutputStream(file);
+			fo = new GZIPOutputStream(fo);
+			return new ObjectOutputStream(fo);
+		}
+
 		private void saveProject(File file) {
 			try {
-				FileOutputStream fo = new FileOutputStream(file);
-				//GZIPOutputStream gzout = new GZIPOutputStream(fo);
-				ObjectOutputStream oo = new ObjectOutputStream(fo);
+				ObjectOutputStream oo = createOutputStream(file);
 				oo.writeObject(gmanager.storeState());
 				oo.flush();
-				fo.close();
+				oo.close();
 			} catch (FileNotFoundException fne) {
 				fne.printStackTrace();
 			} catch (IOException ioe) {
