@@ -47,8 +47,8 @@ public class RDFResourceInfoMap {
 		for (Iterator i = newMap.keySet().iterator(); i.hasNext();) {
 			Object cell = i.next();
 			RDFResourceInfo info = (RDFResourceInfo)newMap.get(cell);
-			RDFResourceInfo newInfo =new RDFResourceInfo(info);
-			putCellInfo(cell, newInfo);
+			info.recoverURIType();
+			putCellInfo(cell, new RDFResourceInfo(info));
 		}
 	}
 

@@ -74,6 +74,7 @@ public class RDFSInfoMap {
 		for (Iterator i = map.keySet().iterator(); i.hasNext();) {
 			Object cell = i.next();
 			RDFSInfo info = (RDFSInfo) map.get(cell);
+			info.recoverURIType();
 			if (info instanceof ClassInfo) {
 				cellInfoMap.put(cell, new ClassInfo((ClassInfo) info));
 			} else if (info instanceof PropertyInfo) {

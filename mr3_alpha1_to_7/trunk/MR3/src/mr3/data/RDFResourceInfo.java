@@ -15,10 +15,11 @@ public class RDFResourceInfo implements Serializable {
 	//	private Resource uri;
 	private String uri;
 	private URIType uriType;
+	private String uriTypeStr;
 	transient private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
 
 	public RDFResourceInfo(URIType ut, String uri, GraphCell typeCell) {
-		uriType = ut;
+		setURIType(ut);
 		if (uriType == URIType.ANONYMOUS) {
 			//			this.uri = getAnonResource();
 			this.uri = getAnonResource().toString(); // getURI()は，nullを返してしまうため．
@@ -31,8 +32,7 @@ public class RDFResourceInfo implements Serializable {
 
 	public RDFResourceInfo(RDFResourceInfo info) {
 		uri = info.getURIStr();
-		// プロジェクトを保存したときの各URITypeのHashCodeは，読み出した際に変化するため．
-		uriType = URIType.getURIType(info.getURIType().toString());
+		setURIType(info.getURIType());
 		typeViewCell = (GraphCell) info.getTypeViewCell();
 		typeCell = info.getTypeCell();
 	}
@@ -95,8 +95,13 @@ public class RDFResourceInfo implements Serializable {
 		return typeViewCell;
 	}
 
+	public void recoverURIType() {
+		uriType = URIType.getURIType(uriTypeStr);
+	}
+	
 	public void setURIType(URIType type) {
 		uriType = type;
+		uriTypeStr = type.toString();
 	}
 
 	public URIType getURIType() {
