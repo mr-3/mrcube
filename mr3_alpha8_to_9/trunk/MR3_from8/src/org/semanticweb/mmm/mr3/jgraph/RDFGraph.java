@@ -80,9 +80,9 @@ public class RDFGraph extends JGraph {
 	}
 
 	/**
-	 * Returns true if <code>object</code> is a vertex, that is, if it
-	 * is not an instance of Port or Edge, and all of its children are
-	 * ports, or it has no children.
+	 * Returns true if <code>object</code> is a vertex, that is, if it is not
+	 * an instance of Port or Edge, and all of its children are ports, or it
+	 * has no children.
 	 */
 	public boolean isGroup(Object cell) {
 		// Map the Cell to its View
@@ -93,9 +93,9 @@ public class RDFGraph extends JGraph {
 	}
 
 	/**
-	 * Returns true if <code>object</code> is a vertex, that is, if it
-	 * is not an instance of Port or Edge, and all of its children are
-	 * ports, or it has no children.
+	 * Returns true if <code>object</code> is a vertex, that is, if it is not
+	 * an instance of Port or Edge, and all of its children are ports, or it
+	 * has no children.
 	 */
 	public boolean isVertex(Object object) {
 		if (!(object instanceof Port) && !(object instanceof Edge))
@@ -127,11 +127,13 @@ public class RDFGraph extends JGraph {
 		return new EdgeView(e, this, cm) {
 
 			public boolean isAddPointEvent(MouseEvent event) {
-				return event.isShiftDown(); // Points are Added using Shift-Click
+				return event.isShiftDown(); // Points are Added using
+													// Shift-Click
 			}
 
 			public boolean isRemovePointEvent(MouseEvent event) {
-				return event.isShiftDown(); // Points are Removed using Shift-Click
+				return event.isShiftDown(); // Points are Removed using
+													// Shift-Click
 			}
 		};
 	}
