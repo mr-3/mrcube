@@ -27,6 +27,8 @@ public class MergeRDFs extends AbstractActionFile {
 
 	private static final String MERGE_RDFS_FILE = Translator.getString("Component.File.Import.Merge.RDF(S)/XML(File).Text");
 	private static final String MERGE_RDFS_URI = Translator.getString("Component.File.Import.Merge.RDF(S)/XML(URI).Text");
+	private static final String MERGE_N_TRIPLE_FILE = Translator.getString("Component.File.Import.Merge.RDF(S)/N-Triple(File).Text");
+	private static final String MERGE_N_TRIPLE_URI = Translator.getString("Component.File.Import.Merge.RDF(S)/N-Triple(URI).Text");
 
 	public void actionPerformed(ActionEvent e) {
 		Component desktop = mr3.getDesktopPane();
@@ -35,16 +37,21 @@ public class MergeRDFs extends AbstractActionFile {
 		Model model = null;
 		if (e.getActionCommand().equals(MERGE_RDFS_FILE)) {
 			model = readModel(getReader("rdfs", null), gmanager.getBaseURI(), "RDF/XML");
+		} else if (e.getActionCommand().equals(MERGE_N_TRIPLE_FILE)) {
+			model = readModel(getReader("n3", null), gmanager.getBaseURI(), "N-TRIPLE");
 		} else if (e.getActionCommand().equals(MERGE_RDFS_URI)) {
 			String uri = JOptionPane.showInternalInputDialog(desktop, "Open URI ( exp. http://www.w3.org/TR/rdf-schema/rdfs-namespace.xml )");
 			model = readModel(getReader(uri), gmanager.getBaseURI(), "RDF/XML");
+		} else if (e.getActionCommand().equals(MERGE_N_TRIPLE_URI)) {
+			String uri = JOptionPane.showInternalInputDialog(desktop, "Open URI ( exp. http://www.w3.org/TR/rdf-schema/rdfs-namespace.xml )");
+			model = readModel(getReader(uri), gmanager.getBaseURI(), "N-TRIPLE");
 		}
 		if (model == null) {
 			gmanager.setIsImporting(false);
 			return;
 		}
-		mr3.mergeRDFSModel(model);	
-		gmanager.applyTreeLayout();	
+		mr3.mergeRDFSModel(model);
+		gmanager.applyTreeLayout();
 		gmanager.setIsImporting(false);
 	}
 

@@ -80,9 +80,9 @@ public class MR3 extends JFrame {
 	private static ResourceBundle resources;
 
 	MR3() {
-		userPrefs = Preferences.userNodeForPackage(this.getClass());	
+		userPrefs = Preferences.userNodeForPackage(this.getClass());
 		Translator.loadResourceBundle(userPrefs.get(PrefConstants.UILang, "en"));
-		
+
 		setSize(userPrefs.getInt(PrefConstants.WindowWidth, MAIN_FRAME_WIDTH), userPrefs.getInt(PrefConstants.WindowHeight, MAIN_FRAME_HEIGHT));
 		setLocation(userPrefs.getInt(PrefConstants.WindowPositionX, 50), userPrefs.getInt(PrefConstants.WindowPositionY, 50));
 
@@ -100,11 +100,13 @@ public class MR3 extends JFrame {
 		rdfEditorOverview.setFrameIcon(Utilities.getImageIcon(Translator.getString("RDFEditor.Icon")));
 		desktop.add(rdfEditorOverview, JLayeredPane.MODAL_LAYER);
 		classEditor = new ClassEditor(nsTableDialog, findResDialog, gmanager);
-		classEditorOverview = new OverviewDialog(Translator.getString("ClassEditorOverview.Title"), classEditor.getGraph(), classEditor.getJViewport());
+		classEditorOverview =
+			new OverviewDialog(Translator.getString("ClassEditorOverview.Title"), classEditor.getGraph(), classEditor.getJViewport());
 		classEditorOverview.setFrameIcon(Utilities.getImageIcon(Translator.getString("ClassEditor.Icon")));
 		desktop.add(classEditorOverview, JLayeredPane.MODAL_LAYER);
 		propertyEditor = new PropertyEditor(nsTableDialog, findResDialog, gmanager);
-		propertyEditorOverview = new OverviewDialog(Translator.getString("PropertyEditorOverview.Title"), propertyEditor.getGraph(), propertyEditor.getJViewport());
+		propertyEditorOverview =
+			new OverviewDialog(Translator.getString("PropertyEditorOverview.Title"), propertyEditor.getGraph(), propertyEditor.getJViewport());
 		propertyEditorOverview.setFrameIcon(Utilities.getImageIcon(Translator.getString("PropertyEditor.Icon")));
 		desktop.add(propertyEditorOverview, JLayeredPane.MODAL_LAYER);
 
@@ -120,7 +122,7 @@ public class MR3 extends JFrame {
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new CloseWindow(this));
 		setIconImage(Utilities.getImageIcon("mr3_logo.png").getImage());
-		setTitle("MR^3 - "+Translator.getString("Component.File.NewProject.Text"));
+		setTitle("MR^3 - " + Translator.getString("Component.File.NewProject.Text"));
 		setJMenuBar(createMenuBar());
 		initPreferences();
 		setVisible(true);
@@ -151,14 +153,34 @@ public class MR3 extends JFrame {
 	private void initAction() {
 		newProjectAction = new NewProject(this);
 		openProjectAction = new OpenProject(this);
-		saveProjectAction = new SaveProject(this, Translator.getString("Component.File.SaveProject.Text"), Utilities.getImageIcon(Translator.getString("Component.File.SaveProject.Icon")));
-		saveProjectAsAction = new SaveProject(this, Translator.getString("Component.File.SaveAsProject.Text"), Utilities.getImageIcon(Translator.getString("Component.File.SaveAsProject.Icon")));
-		toFrontRDFEditorAction = new EditorSelect(this, Translator.getString("Component.Window.RDFEditor.Text"), Utilities.getImageIcon(Translator.getString("RDFEditor.Icon")));
-		toFrontClassEditorAction = new EditorSelect(this, Translator.getString("Component.Window.ClassEditor.Text"), Utilities.getImageIcon(Translator.getString("ClassEditor.Icon")));
-		toFrontPropertyEditorAction = new EditorSelect(this, Translator.getString("Component.Window.PropertyEditor.Text"), Utilities.getImageIcon(Translator.getString("PropertyEditor.Icon")));
+		saveProjectAction =
+			new SaveProject(
+				this,
+				Translator.getString("Component.File.SaveProject.Text"),
+				Utilities.getImageIcon(Translator.getString("Component.File.SaveProject.Icon")));
+		saveProjectAsAction =
+			new SaveProject(
+				this,
+				Translator.getString("Component.File.SaveAsProject.Text"),
+				Utilities.getImageIcon(Translator.getString("Component.File.SaveAsProject.Icon")));
+		toFrontRDFEditorAction =
+			new EditorSelect(
+				this,
+				Translator.getString("Component.Window.RDFEditor.Text"),
+				Utilities.getImageIcon(Translator.getString("RDFEditor.Icon")));
+		toFrontClassEditorAction =
+			new EditorSelect(
+				this,
+				Translator.getString("Component.Window.ClassEditor.Text"),
+				Utilities.getImageIcon(Translator.getString("ClassEditor.Icon")));
+		toFrontPropertyEditorAction =
+			new EditorSelect(
+				this,
+				Translator.getString("Component.Window.PropertyEditor.Text"),
+				Utilities.getImageIcon(Translator.getString("PropertyEditor.Icon")));
 		showAttrDialogAction = new ShowAttrDialog(this);
 		showNSTableDialogAction = new ShowNSTableDialog(this);
-		showSrcDialogAction = new ShowSrcDialog(this); 
+		showSrcDialogAction = new ShowSrcDialog(this);
 	}
 
 	private JToolBar createToolBar() {
@@ -307,15 +329,28 @@ public class MR3 extends JFrame {
 		menu.add(importMenu);
 
 		JMenu replaceMenu = new JMenu(Translator.getString("Component.File.Import.Replace.Text"));
-		replaceMenu.add(new ReplaceRDF(this, Translator.getString("Component.File.Import.Replace.RDF/XML(File).Text")));
-		replaceMenu.add(new ReplaceRDF(this, Translator.getString("Component.File.Import.Replace.RDF/XML(URI).Text")));
-		replaceMenu.add(new ReplaceRDFS(this, Translator.getString("Component.File.Import.Replace.RDFS/XML(File).Text")));
-		replaceMenu.add(new ReplaceRDFS(this, Translator.getString("Component.File.Import.Replace.RDFS/XML(URI).Text")));
 		importMenu.add(replaceMenu);
+		JMenu replaceRDFMenu = new JMenu(Translator.getString("Component.File.Import.Replace.RDF.Text"));
+		replaceMenu.add(replaceRDFMenu);
+		replaceRDFMenu.add(new ReplaceRDF(this, Translator.getString("Component.File.Import.Replace.RDF/XML(File).Text")));
+		replaceRDFMenu.add(new ReplaceRDF(this, Translator.getString("Component.File.Import.Replace.RDF/XML(URI).Text")));
+		replaceRDFMenu.addSeparator();
+		replaceRDFMenu.add(new ReplaceRDF(this, Translator.getString("Component.File.Import.Replace.RDF/N-Triple(File).Text")));
+		replaceRDFMenu.add(new ReplaceRDF(this, Translator.getString("Component.File.Import.Replace.RDF/N-Triple(URI).Text")));
+		JMenu replaceRDFSMenu = new JMenu(Translator.getString("Component.File.Import.Replace.RDFS.Text"));
+		replaceMenu.add(replaceRDFSMenu);
+		replaceRDFSMenu.add(new ReplaceRDFS(this, Translator.getString("Component.File.Import.Replace.RDFS/XML(File).Text")));
+		replaceRDFSMenu.add(new ReplaceRDFS(this, Translator.getString("Component.File.Import.Replace.RDFS/XML(URI).Text")));
+		replaceRDFSMenu.addSeparator();
+		replaceRDFSMenu.add(new ReplaceRDFS(this, Translator.getString("Component.File.Import.Replace.RDFS/N-Triple(File).Text")));
+		replaceRDFSMenu.add(new ReplaceRDFS(this, Translator.getString("Component.File.Import.Replace.RDFS/N-Triple(URI).Text")));
 
 		JMenu mergeMenu = new JMenu(Translator.getString("Component.File.Import.Merge.Text"));
 		mergeMenu.add(new MergeRDFs(this, Translator.getString("Component.File.Import.Merge.RDF(S)/XML(File).Text")));
 		mergeMenu.add(new MergeRDFs(this, Translator.getString("Component.File.Import.Merge.RDF(S)/XML(URI).Text")));
+		mergeMenu.addSeparator();		
+		mergeMenu.add(new MergeRDFs(this, Translator.getString("Component.File.Import.Merge.RDF(S)/N-Triple(File).Text")));
+		mergeMenu.add(new MergeRDFs(this, Translator.getString("Component.File.Import.Merge.RDF(S)/N-Triple(URI).Text")));
 		importMenu.add(mergeMenu);
 
 		importMenu.add(new ImportJavaObject(this));
@@ -468,7 +503,7 @@ public class MR3 extends JFrame {
 		lookAndFeel.add(new ChangeLookAndFeelAction(this, Translator.getString("Component.View.LookAndFeel.Metal.Text")));
 		lookAndFeel.add(new ChangeLookAndFeelAction(this, Translator.getString("Component.View.LookAndFeel.Windows.Text")));
 		lookAndFeel.add(new ChangeLookAndFeelAction(this, Translator.getString("Component.View.LookAndFeel.Motif.Text")));
-		
+
 		return menu;
 	}
 
@@ -572,7 +607,7 @@ public class MR3 extends JFrame {
 		clearMap();
 		gmanager.removeAllCells();
 		nsTableDialog.setDefaultNSPrefix();
-		setTitle("MR^3 - "+Translator.getString("Component.File.NewProject.Text"));
+		setTitle("MR^3 - " + Translator.getString("Component.File.NewProject.Text"));
 		setCurrentProject(null);
 	}
 
