@@ -203,15 +203,6 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 		}
 	}
 
-	protected String getAddedBaseURI(String uri, URIType uriType) {
-		String tmpURI = "";
-		if (uriType == URIType.ID) {
-			tmpURI = gmanager.getBaseURI();
-		}
-		tmpURI += uri;
-		return tmpURI;
-	}
-
 	private Set getSelectedResourcePorts() {
 		Object[] cells = graph.getSelectionCells();
 		cells = graph.getDescendants(cells);

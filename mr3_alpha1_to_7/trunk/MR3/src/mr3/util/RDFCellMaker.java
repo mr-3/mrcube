@@ -17,8 +17,8 @@ public class RDFCellMaker {
 	private RDFLiteralInfoMap litInfoMap = RDFLiteralInfoMap.getInstance();
 	private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
 
-	private static final int cellWidth = 100;
-	private static final int cellHeight = 25;
+	private static final int CELL_WIDTH = 100;
+	private static final int CELL_HEIGHT = 25;
 
 	public RDFCellMaker(GraphManager manager) {
 		gmanager = manager;
@@ -28,80 +28,21 @@ public class RDFCellMaker {
 		Map map = GraphConstants.createMap();
 		GraphConstants.setLineEnd(map, GraphConstants.ARROW_TECHNICAL);
 		GraphConstants.setValue(map, value);
-		
+
 		return map;
 	}
 
-	public Map getResourceMap(Point point) {
+	public Map getResourceMap(Point point, Color cellColor) {
 		Map map = GraphConstants.createMap();
 
 		if (ChangeCellAttributes.isColor) {
-			GraphConstants.setBackground(map, ChangeCellAttributes.rdfResourceColor);
+			GraphConstants.setBackground(map, cellColor);
 			GraphConstants.setOpaque(map, true);
 		} else {
 			GraphConstants.setOpaque(map, false);
 		}
 		GraphConstants.setBorderColor(map, Color.black);
-		GraphConstants.setBounds(map, new Rectangle(point, new Dimension(cellWidth, cellHeight)));
-
-		return map;
-	}
-
-	public Map getTypeMap(Point p) {
-		return getTypeMap(new Rectangle(p, new Dimension(cellWidth, cellHeight)));
-	}
-
-	public Map getTypeMap(Rectangle rec) {
-		Map map = GraphConstants.createMap();
-		GraphConstants.setBounds(map, rec);
-		if (ChangeCellAttributes.isColor) {
-			GraphConstants.setBackground(map, ChangeCellAttributes.classColor);
-			GraphConstants.setOpaque(map, true);
-		} else {
-			GraphConstants.setOpaque(map, false);
-		}
-		GraphConstants.setBorderColor(map, Color.black);
-		GraphConstants.setConnectable(map, false);
-
-		return map;
-	}
-
-	public Map getClassMap(Point point) {
-		Map map = getResourceMap(point);
-		if (ChangeCellAttributes.isColor) {
-			GraphConstants.setBackground(map, ChangeCellAttributes.classColor);
-			GraphConstants.setOpaque(map, true);
-		} else {
-			GraphConstants.setOpaque(map, false);
-		}
-		GraphConstants.setBorderColor(map, Color.black);
-
-		return map;
-	}
-
-	public Map getPropertyMap(Point point) {
-		Map map = getResourceMap(point);
-		if (ChangeCellAttributes.isColor) {
-			GraphConstants.setBackground(map, ChangeCellAttributes.propertyColor);
-			GraphConstants.setOpaque(map, true);
-		} else {
-			GraphConstants.setOpaque(map, false);
-		}
-		GraphConstants.setBorderColor(map, Color.black);
-
-		return map;
-	}
-
-	public Map getLiteralMap(Point point) {
-		Map map = GraphConstants.createMap();
-		if (ChangeCellAttributes.isColor) {
-			GraphConstants.setBackground(map, ChangeCellAttributes.literalColor);
-			GraphConstants.setOpaque(map, true);
-		} else {
-			GraphConstants.setOpaque(map, false);
-		}
-		GraphConstants.setBorderColor(map, Color.black);
-		GraphConstants.setBounds(map, new Rectangle(point, new Dimension(cellWidth, cellHeight)));
+		GraphConstants.setBounds(map, new Rectangle(point, new Dimension(CELL_WIDTH, CELL_HEIGHT)));
 
 		return map;
 	}
@@ -109,7 +50,7 @@ public class RDFCellMaker {
 	public GraphCell insertRDFLiteral(Point point) {
 		JGraph graph = gmanager.getRDFGraph();
 		point = graph.snap(new Point(point)); // Snap the Point to the Grid
-		Map map = getLiteralMap(point);
+		Map map = getResourceMap(point, ChangeCellAttributes.literalColor);
 
 		DefaultGraphCell vertex = new RDFLiteralCell("");
 		setCell(graph, vertex, map);
@@ -118,23 +59,21 @@ public class RDFCellMaker {
 		return vertex;
 	}
 
-	public DefaultGraphCell addTypeCell(Object resourceCell, Map attributes, Point p) {
-		return addTypeCell(resourceCell, attributes, new Rectangle(p, new Dimension(cellWidth, cellHeight)));
-	}
-
 	public DefaultGraphCell addTypeCell(Object resourceCell, Map attributes, Rectangle rec) {
 		RDFGraph graph = gmanager.getRDFGraph();
-
-		DefaultGraphCell typeCell = new TypeCell("");
-		Point typePoint = new Point(rec.x, rec.y + rec.height);
-		Map typeMap = getTypeMap(new Rectangle(typePoint, new Dimension(rec.width, cellHeight)));
-		attributes.put(typeCell, typeMap);
-
-		ParentMap parentMap = new ParentMap();
-		DefaultGraphCell group = new DefaultGraphCell();
-		parentMap.addEntry(resourceCell, group);
-		parentMap.addEntry(typeCell, group);
+		DefaultGraphCell typeCell = null;
+		
 		if (gmanager.isShowTypeCell()) {
+			typeCell = new TypeCell("");
+			Point typePoint = new Point(rec.x, rec.y + rec.height);
+			Map typeMap = getResourceMap(typePoint, ChangeCellAttributes.classColor);
+			attributes.put(typeCell, typeMap);
+
+			ParentMap parentMap = new ParentMap();
+			DefaultGraphCell group = new DefaultGraphCell();
+			parentMap.addEntry(resourceCell, group);
+			parentMap.addEntry(typeCell, group);
+
 			graph.getModel().insert(new Object[] { resourceCell, typeCell, group }, attributes, null, parentMap, null);
 		} else {
 			graph.getModel().insert(new Object[] { resourceCell }, attributes, null, null, null);
@@ -149,10 +88,10 @@ public class RDFCellMaker {
 
 		RDFResourceCell resourceCell = new RDFResourceCell(uri);
 		resourceCell.add(new DefaultPort());
-		Map resMap = getResourceMap(point);
+		Map resMap = getResourceMap(point, ChangeCellAttributes.rdfResourceColor);
 		attributes.put(resourceCell, resMap);
 
-		DefaultGraphCell typeCell = addTypeCell(resourceCell, attributes, new Rectangle(point, new Dimension(cellWidth, cellHeight)));
+		DefaultGraphCell typeCell = addTypeCell(resourceCell, attributes, new Rectangle(point, new Dimension(CELL_WIDTH, CELL_HEIGHT)));
 
 		RDFResourceInfo info = null;
 		if (type == URIType.ANONYMOUS) {
@@ -230,7 +169,7 @@ public class RDFCellMaker {
 	public GraphCell insertClass(Point point, String uri) {
 		JGraph graph = gmanager.getClassGraph();
 		point = graph.snap(new Point(point)); // Snap the Point to the Grid
-		Map map = getClassMap(point);
+		Map map = getResourceMap(point, ChangeCellAttributes.classColor);
 		RDFSClassCell vertex = new RDFSClassCell(uri);
 
 		setCell(graph, vertex, map);
@@ -245,7 +184,7 @@ public class RDFCellMaker {
 	public GraphCell insertProperty(Point point, String uri) {
 		JGraph graph = gmanager.getPropertyGraph();
 		point = graph.snap(new Point(point)); // Snap the Point to the Grid
-		Map map = getPropertyMap(point);
+		Map map = getResourceMap(point, ChangeCellAttributes.propertyColor);
 		RDFSPropertyCell vertex = new RDFSPropertyCell(uri);
 		setCell(graph, vertex, map);
 
