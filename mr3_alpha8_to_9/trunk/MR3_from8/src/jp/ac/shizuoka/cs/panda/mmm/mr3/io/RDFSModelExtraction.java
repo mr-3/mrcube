@@ -190,7 +190,7 @@ public class RDFSModelExtraction {
 			//			rdfsInfoMap.addRootProperties((Resource)object); //ˆêŽž‚µ‚Ì‚¬
 			supResInfo.addSubProperty(subject);
 			rdfsInfoMap.putResourceInfo((Resource) object, supResInfo);
-			info.addSupProperty((Resource) object);
+			info.addSupProperty(object);
 		} else {
 			return false;
 		}

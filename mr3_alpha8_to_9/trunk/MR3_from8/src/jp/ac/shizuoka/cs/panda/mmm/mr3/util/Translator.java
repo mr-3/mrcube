@@ -29,8 +29,8 @@ public class Translator {
 	}
 
 	public static void loadResourceBundle(Preferences userPrefs) {
-		String lang = (String) userPrefs.get(PrefConstants.UILang, getDefaultLocaleStr());
-		userPrefs.put(PrefConstants.UILang, (String) lang);
+		String lang = userPrefs.get(PrefConstants.UILang, getDefaultLocaleStr());
+		userPrefs.put(PrefConstants.UILang, lang);
 		loadResourceBundle(lang);
 	}
 

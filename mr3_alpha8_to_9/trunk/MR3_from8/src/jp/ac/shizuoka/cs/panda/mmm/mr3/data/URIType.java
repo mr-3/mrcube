@@ -28,7 +28,7 @@ public class URIType implements Serializable {
 		return null;
 	}
 
-	private Object readResolve() throws ObjectStreamException {
+	private Object readResolve()  {
 		return PRIVATE_VALUES[ordinal];
 	}
 

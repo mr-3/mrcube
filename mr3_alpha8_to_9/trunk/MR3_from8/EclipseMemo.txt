@@ -1,3 +1,9 @@
-F1: Javadoc表示
 rt.jar, jgraph.jar, jena.jarのpropertiesで，Javadocパスを設定する必要あり．
 Java->Appearance->commpress package名の省略
+
+F1: Javadoc表示
+Ctrl-J 宣言場所へジャンプ
+Ctrl-Lで戻る
+C-X G 行指定ジャンプ
+F5 実行
+

@@ -182,7 +182,7 @@ public abstract class AbstractActionFile extends MR3AbstractAction {
 		return tmp;
 	}
 
-	protected URL getURI(String uri) throws MalformedURLException, UnknownHostException {
+	protected URL getURI(String uri) throws MalformedURLException{
 		Preferences userPrefs = mr3.getUserPrefs();
 		URL rdfURI = null;
 		boolean isProxy = userPrefs.getBoolean("Proxy", false);

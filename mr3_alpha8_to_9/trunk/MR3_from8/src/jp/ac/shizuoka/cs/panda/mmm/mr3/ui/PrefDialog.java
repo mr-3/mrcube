@@ -623,7 +623,7 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 			if (e.getSource() == applyButton) {
 				try {
 					userPrefs.put(PrefConstants.UILang, (String) uiLangBox.getSelectedItem());
-					userPrefs.put(PrefConstants.DefaultLang, (String) defaultLangField.getText());
+					userPrefs.put(PrefConstants.DefaultLang, defaultLangField.getText());
 					userPrefs.put(PrefConstants.InputEncoding, (String) inputEncodingBox.getSelectedItem());
 					userPrefs.put(PrefConstants.OutputEncoding, (String) outputEncodingBox.getSelectedItem());
 					userPrefs.put(PrefConstants.BaseURI, baseURILabel.getText());
