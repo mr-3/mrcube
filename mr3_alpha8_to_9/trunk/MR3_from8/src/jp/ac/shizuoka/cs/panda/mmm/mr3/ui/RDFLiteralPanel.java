@@ -64,9 +64,9 @@ public class RDFLiteralPanel extends JPanel implements ActionListener {
 		JScrollPane valueScroll = new JScrollPane(labelValueArea);
 		Utilities.initComponent(valueScroll, Translator.getString("Literal"), LABEL_WIDTH, LABEL_HEIGHT);
 
-		applyButton = new JButton(Translator.getString("Apply"));
+		applyButton = new JButton(MR3Constants.APPLY);
 		applyButton.addActionListener(this);
-		closeButton = new JButton(Translator.getString("Close"));
+		closeButton = new JButton(MR3Constants.CLOSE);
 		closeButton.addActionListener(this);
 		JPanel buttonGroup = new JPanel();
 		buttonGroup.add(applyButton);

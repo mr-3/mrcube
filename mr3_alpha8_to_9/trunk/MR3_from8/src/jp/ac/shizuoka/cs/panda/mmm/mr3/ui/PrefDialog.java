@@ -106,9 +106,9 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 	private static final int URI_FIELD_HEIGHT = 40;
 
 	private JPanel getButtonGroupPanel() {
-		applyButton = new JButton(Translator.getString("Apply"));
+		applyButton = new JButton(MR3Constants.APPLY);
 		applyButton.addActionListener(new DesideAction());
-		cancelButton = new JButton(Translator.getString("Cancel"));
+		cancelButton = new JButton(MR3Constants.CANCEL);
 		cancelButton.addActionListener(new DesideAction());
 		JPanel buttonGroup = new JPanel();
 		buttonGroup.add(applyButton);

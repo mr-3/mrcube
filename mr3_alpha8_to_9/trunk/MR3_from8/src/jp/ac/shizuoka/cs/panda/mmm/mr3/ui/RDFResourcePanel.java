@@ -54,7 +54,7 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		setBorder(BorderFactory.createTitledBorder(Translator.getString("AttributeDialog.RDFResourceAttribute.Text")));
 
 		resTypePrefixBox = new JComboBox();
-		Utilities.initComponent(resTypePrefixBox, Translator.getString("Prefix"), BOX_WIDTH, 50);
+		Utilities.initComponent(resTypePrefixBox, MR3Constants.PREFIX, BOX_WIDTH, 50);
 
 		resTypeField = new JTextField();
 		Utilities.initComponent(resTypeField, Translator.getString("ResourceType") + " ID", BOX_WIDTH, LIST_HEIGHT);
@@ -69,7 +69,7 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		resTypePanel.add(isTypeCellCheckBox);
 
 		resTypeNSLabel = new JLabel();
-		Utilities.initComponent(resTypeNSLabel, Translator.getString("NameSpace"), LIST_WIDTH, LIST_HEIGHT);
+		Utilities.initComponent(resTypeNSLabel, MR3Constants.NAME_SPACE, LIST_WIDTH, LIST_HEIGHT);
 
 		selectTypeButton = new JButton(Translator.getString("SelectType"));
 		selectTypeButton.addActionListener(this);
@@ -83,7 +83,7 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		selectTypeMode(false);
 
 		resPrefixBox = new JComboBox();
-		Utilities.initComponent(resPrefixBox, Translator.getString("Prefix"), BOX_WIDTH, 50);
+		Utilities.initComponent(resPrefixBox, MR3Constants.PREFIX, BOX_WIDTH, 50);
 		resPrefixBox.addActionListener(new ChangePrefixAction());
 
 		uriField = new JTextField();
@@ -99,12 +99,12 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		resPanel.add(isAnonBox);
 
 		resNSLabel = new JLabel();
-		Utilities.initComponent(resNSLabel, Translator.getString("NameSpace"), LIST_WIDTH, LIST_HEIGHT);
+		Utilities.initComponent(resNSLabel, MR3Constants.NAME_SPACE, LIST_WIDTH, LIST_HEIGHT);
 
-		applyButton = new JButton(Translator.getString("Apply"));
+		applyButton = new JButton(MR3Constants.APPLY);
 		applyButton.addActionListener(this);
 
-		closeButton = new JButton(Translator.getString("Close"));
+		closeButton = new JButton(MR3Constants.CLOSE);
 		closeButton.addActionListener(this);
 		JPanel buttonGroup = new JPanel();
 		buttonGroup.add(applyButton);

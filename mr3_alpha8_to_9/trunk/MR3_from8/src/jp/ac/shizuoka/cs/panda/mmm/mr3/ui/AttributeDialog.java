@@ -16,10 +16,12 @@ public class AttributeDialog extends JInternalFrame {
 
 	private static int DIALOG_WIDTH = 430;
 	private static int DIALOG_HEIGHT = 360; // 変更すると，コメントが削除できなくなる可能性がある 
+
+	private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("AttributeDialog.Icon")); 
 	
 	public AttributeDialog() {
 		super(Translator.getString("AttributeDialog.Title"), false, true);
-		setFrameIcon(Utilities.getImageIcon("attrDialogIcon.gif"));
+		setFrameIcon(ICON);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			public void internalFrameClosing(InternalFrameEvent e) {	
 				setVisible(false);

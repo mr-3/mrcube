@@ -96,7 +96,7 @@ public abstract class RDFSPanel extends JPanel {
 
 		uriPrefixBox = new JComboBox();
 		uriPrefixBox.addActionListener(new ChangePrefixAction());
-		Utilities.initComponent(uriPrefixBox, Translator.getString("Prefix"), PREFIX_BOX_WIDTH, PREFIX_BOX_HEIGHT);
+		Utilities.initComponent(uriPrefixBox, MR3Constants.PREFIX, PREFIX_BOX_WIDTH, PREFIX_BOX_HEIGHT);
 
 		idField = new JTextField();
 		Utilities.initComponent(idField, "ID", ID_BOX_WIDTH, FIELD_HEIGHT);
@@ -106,7 +106,7 @@ public abstract class RDFSPanel extends JPanel {
 		uriPanel.add(idField);
 
 		nsLabel = new JLabel("");
-		Utilities.initComponent(nsLabel, Translator.getString("NameSpace"), LIST_WIDTH, FIELD_HEIGHT);
+		Utilities.initComponent(nsLabel, MR3Constants.NAME_SPACE, LIST_WIDTH, FIELD_HEIGHT);
 
 		isDefinedBy = new JTextField();
 		Utilities.initComponent(isDefinedBy, "isDefinedBy", LIST_WIDTH, FIELD_HEIGHT);

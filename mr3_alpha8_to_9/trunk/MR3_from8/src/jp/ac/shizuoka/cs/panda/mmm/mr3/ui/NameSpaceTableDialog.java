@@ -42,6 +42,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 	transient private GraphManager gmanager;
 
 	private static final String WARNING=Translator.getString("Warning");
+	private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("NameSpaceTable.Icon"));
 
 	public NameSpaceTableDialog(GraphManager manager) {
 		super(Translator.getString("NameSpaceTable.Title"), true, true, false);
@@ -55,7 +56,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		setInputLayout();
 		getContentPane().add(inlinePanel);
 
-		setFrameIcon(Utilities.getImageIcon(Translator.getString("NameSpaceTable.Icon")));
+		setFrameIcon(ICON);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			public void internalFrameClosing(InternalFrameEvent e) {
@@ -195,12 +196,12 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		closeButton.addActionListener(this);
 
 		prefixField = new JTextField(8);
-		prefixField.setBorder(BorderFactory.createTitledBorder(Translator.getString("Prefix")));
+		prefixField.setBorder(BorderFactory.createTitledBorder(MR3Constants.PREFIX));
 		prefixField.setPreferredSize(new Dimension(50, 40));
 		prefixField.setMinimumSize(new Dimension(50, 40));
 
 		nsField = new JTextField(30);
-		nsField.setBorder(BorderFactory.createTitledBorder(Translator.getString("NameSpace")));
+		nsField.setBorder(BorderFactory.createTitledBorder(MR3Constants.NAME_SPACE));
 		nsField.setPreferredSize(new Dimension(400, 40));
 		nsField.setMinimumSize(new Dimension(400, 40));
 

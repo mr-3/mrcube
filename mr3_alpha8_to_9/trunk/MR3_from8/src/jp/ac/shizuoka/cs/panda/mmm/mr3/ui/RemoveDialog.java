@@ -6,6 +6,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
+import jp.ac.shizuoka.cs.panda.mmm.mr3.data.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.jgraph.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 
@@ -39,9 +40,9 @@ public class RemoveDialog extends JInternalFrame implements ListSelectionListene
 		refListPanel = new ReferenceListPanel(gmanager);
 
 		JPanel buttonPanel = new JPanel();
-		apply = new JButton(Translator.getString("Apply"));
+		apply = new JButton(MR3Constants.APPLY);
 		apply.addActionListener(this);
-		cancel = new JButton(Translator.getString("Cancel"));
+		cancel = new JButton(MR3Constants.CANCEL);
 		cancel.addActionListener(this);
 		buttonPanel.add(apply);
 		buttonPanel.add(cancel);

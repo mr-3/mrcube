@@ -9,6 +9,7 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
+import jp.ac.shizuoka.cs.panda.mmm.mr3.data.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.jgraph.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 
@@ -37,9 +38,9 @@ public class SelectResourceTypeDialog extends JDialog implements ActionListener 
 	}
 
 	private void initButton() {
-		confirmButton = new JButton(Translator.getString("OK"));
+		confirmButton = new JButton(MR3Constants.OK);
 		confirmButton.addActionListener(this);
-		cancelButton = new JButton(Translator.getString("Cancel"));
+		cancelButton = new JButton(MR3Constants.CANCEL);
 		cancelButton.addActionListener(this);
 	}
 
@@ -67,8 +68,7 @@ public class SelectResourceTypeDialog extends JDialog implements ActionListener 
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		String type = (String) e.getActionCommand();
-		if (type.equals(Translator.getString("OK"))) {
+		if (e.getSource() == confirmButton) {
 			isOk = true;
 		} else {
 			isOk = false;

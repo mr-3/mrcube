@@ -48,7 +48,7 @@ public class FindResourceDialog extends JInternalFrame {
 		JComponent findAreaPanel = getFindAreaPanel();
 
 		nsLabel = new JLabel("");
-		Utilities.initComponent(nsLabel, Translator.getString("NameSpace"), LIST_WIDTH, FIELD_HEIGHT);
+		Utilities.initComponent(nsLabel, MR3Constants.NAME_SPACE, LIST_WIDTH, FIELD_HEIGHT);
 
 		resourceList = new JList();
 		resourceList.addListSelectionListener(new JumpAction());

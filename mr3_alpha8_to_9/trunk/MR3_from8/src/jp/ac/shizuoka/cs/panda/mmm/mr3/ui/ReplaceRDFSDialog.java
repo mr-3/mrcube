@@ -142,9 +142,9 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
 		replacePropertyButtonPanel.add(replacePropertyUpButton);
 		replacePropertyButtonPanel.add(replacePropertyDownButton);
 
-		applyButton = new JButton(Translator.getString("Apply"));
+		applyButton = new JButton(MR3Constants.APPLY);
 		applyButton.addActionListener(this);
-		cancelButton = new JButton(Translator.getString("Cancel"));
+		cancelButton = new JButton(MR3Constants.CANCEL);
 		cancelButton.addActionListener(this);
 
 		JPanel prevClassPanel = new JPanel();

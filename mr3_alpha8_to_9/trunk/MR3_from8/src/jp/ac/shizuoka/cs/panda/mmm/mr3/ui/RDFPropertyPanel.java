@@ -66,7 +66,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		propOnlyCheck.setSelected(true);
 		uriPrefixBox = new JComboBox();
 		uriPrefixBox.addActionListener(new ChangePrefixAction());
-		Utilities.initComponent(uriPrefixBox, Translator.getString("Prefix"), BOX_WIDTH, BOX_HEIGHT);
+		Utilities.initComponent(uriPrefixBox, MR3Constants.PREFIX, BOX_WIDTH, BOX_HEIGHT);
 
 		idField = new JTextField();
 		Utilities.initComponent(idField, "ID", BOX_WIDTH, LIST_HEIGHT);
@@ -81,11 +81,11 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		uriPanel.add(jumpRDFSProp);
 
 		nsLabel = new JLabel();
-		Utilities.initComponent(nsLabel, Translator.getString("NameSpace"), LIST_WIDTH, LIST_HEIGHT);
+		Utilities.initComponent(nsLabel, MR3Constants.NAME_SPACE, LIST_WIDTH, LIST_HEIGHT);
 
-		apply = new JButton(Translator.getString("Apply"));
+		apply = new JButton(MR3Constants.APPLY);
 		apply.addActionListener(this);
-		close = new JButton(Translator.getString("Close"));
+		close = new JButton(MR3Constants.CLOSE);
 		close.addActionListener(this);
 		JPanel buttonGroup = new JPanel();
 		buttonGroup.add(apply);
