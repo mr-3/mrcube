@@ -17,10 +17,10 @@ public class ClassEditor extends Editor {
 
 	private ClassPanel classPanel;
 
-	public ClassEditor(NameSpaceTableDialog nsD, FindResourceDialog findResD, GraphManager manager) {
-		graph = manager.getClassGraph();
+	public ClassEditor(NameSpaceTableDialog nsD, FindResourceDialog findResD, GraphManager gm) {
+		graph = gm.getClassGraph();
 		graph.setDisconnectable(false);
-		initEditor(manager.getClassGraph(), manager, nsD, findResD);
+		initEditor(gm.getClassGraph(), gm, nsD, findResD);
 	}
 
 	protected void initField(NameSpaceTableDialog nsD, GraphManager manager) {

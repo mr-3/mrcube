@@ -76,7 +76,7 @@ public class MR3 extends JFrame {
 	private JCheckBoxMenuItem propertyEditorView;
 	private JCheckBoxMenuItem showSrcView;
 	//	private JCheckBoxMenuItem lightView;
-	
+
 	private JRadioButton uriView;
 	private JRadioButton idView;
 	private JRadioButton labelView;
@@ -129,7 +129,7 @@ public class MR3 extends JFrame {
 
 		setJMenuBar(createMenuBar());
 		setIcon();
-		
+
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -306,6 +306,7 @@ public class MR3 extends JFrame {
 		return menu;
 	}
 
+	private static final String PROJECT = "Project (RDF/XML)";
 	private static final String RDFS_XML = "RDFS/XML";
 	private static final String RDFS_NTriple = "RDFS/N-Triple";
 	private static final String RDF_XML = "RDF/XML";
@@ -357,6 +358,9 @@ public class MR3 extends JFrame {
 
 		JMenu exportMenu = new JMenu("Export");
 		menu.add(exportMenu);
+		mi = new JMenuItem(PROJECT);
+		mi.addActionListener(new ExportProjectAction());
+		exportMenu.add(mi);
 		mi = new JMenuItem(RDFS_XML);
 		mi.addActionListener(new ExportRDFSAction());
 		exportMenu.add(mi);
@@ -543,7 +547,7 @@ public class MR3 extends JFrame {
 		litInfoMap.clear();
 		rdfsInfoMap.clear();
 		gmanager.removeAllCells();
-		nsTableDialog.setDefaultNSPrefix();		
+		nsTableDialog.setDefaultNSPrefix();
 		setTitle("MR^3 - New Project");
 		currentProject = null;
 	}
@@ -700,15 +704,15 @@ public class MR3 extends JFrame {
 		return rdfURI;
 	}
 
-// encodingの指定ができないので，却下．
-//	private Model loadModel(String ext, String lang) {
-//		File file = getFile(true, ext);
-//		if (file == null) {
-//			return null;
-//		}
-//		Model model = ModelLoader.loadModel(file.getAbsolutePath(), lang);	
-//		return model;
-//	}
+	// encodingの指定ができないので，却下．
+	//	private Model loadModel(String ext, String lang) {
+	//		File file = getFile(true, ext);
+	//		if (file == null) {
+	//			return null;
+	//		}
+	//		Model model = ModelLoader.loadModel(file.getAbsolutePath(), lang);	
+	//		return model;
+	//	}
 
 	private Reader getReader(String uri, String ext) {
 		if (uri == null) {
@@ -811,6 +815,45 @@ public class MR3 extends JFrame {
 			Model model = readModel(getReader(uri, "rdfs"), gmanager.getBaseURI());
 			mr3Reader.mergeRDFS(model);
 			gmanager.setIsImporting(false);
+		}
+	}
+
+	class ImportProjectAction extends AbstractAction {
+		public void actionPerformed(ActionEvent e) {
+			File file = getFile(true, "mr3");
+			if (file == null) {
+				return;
+			}
+			// ここで，インポートについて書く．
+			gmanager.setIsImporting(true);
+			Model model = readModel(getReader("mr3"), gmanager.getBaseURI());
+			mr3Reader.mergeRDFS(model);
+			nsTableDialog.setCurrentNSPrefix();
+			gmanager.setIsImporting(false);
+		}
+	}
+
+	class ExportProjectAction extends AbstractAction {
+		public void actionPerformed(ActionEvent e) {
+			try {
+				File file = getFile(false, "mr3");
+				if (file == null) {
+					return;
+				}
+				ProjectManager pm = new ProjectManager(gmanager, nsTableDialog);
+				Model exportModel = getRDFModel();
+				exportModel.add(getRDFSModel());
+				exportModel.add(pm.getProjectModel());
+				Writer output = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
+				RDFWriter writer = new RDFWriterFImpl().getWriter("RDF/XML-ABBREV");
+				rdfEditor.writeModel(exportModel, output, writer);
+			} catch (RDFException e1) {
+				e1.printStackTrace();
+			} catch (FileNotFoundException e2) {
+				e2.printStackTrace();
+			} catch (UnsupportedEncodingException e3) {
+				e3.printStackTrace();
+			}
 		}
 	}
 

@@ -324,6 +324,36 @@ public class GraphManager {
 		return nameSpaces;
 	}
 
+	private GraphCell getCell(Resource res, GraphType type) {
+		GraphCell cell = null;
+		if (type == GraphType.RDF) {
+			cell = (GraphCell) getRDFResourceCell(res);
+		} else if (type == GraphType.CLASS) {
+			cell = (GraphCell) getClassCell(res, false);
+		} else if (type == GraphType.PROPERTY) {
+			cell = (GraphCell) getPropertyCell(res, false);
+		}
+		return cell;
+	}
+
+	public void setPosition_X(Resource subject, RDFNode object, GraphType type) {
+		GraphCell cell = getCell(subject, type);
+		Map map = cell.getAttributes();
+		Rectangle rec = GraphConstants.getBounds(map);
+		rec.x = Integer.parseInt(object.toString());
+		GraphConstants.setBounds(map, rec);
+		cell.changeAttributes(map);
+	}
+
+	public void setPosition_Y(Resource subject, RDFNode object, GraphType type) {
+		GraphCell cell = getCell(subject, type);
+		Map map = cell.getAttributes();
+		Rectangle rec = GraphConstants.getBounds(map);
+		rec.y = Integer.parseInt(object.toString());
+		GraphConstants.setBounds(map, rec);
+		cell.changeAttributes(map);
+	}
+
 	public void setCellValue(GraphCell cell, String value) {
 		Map map = cell.getAttributes();
 		GraphConstants.setValue(map, value);
@@ -579,6 +609,19 @@ public class GraphManager {
 			}
 		}
 		return list;
+	}
+
+	public Object getRDFResourceCell(Resource uri) {
+		Object[] cells = rdfGraph.getAllCells();
+		for (int i = 0; i < cells.length; i++) {
+			if (rdfGraph.isRDFResourceCell(cells[i])) {
+				RDFResourceInfo info = resInfoMap.getCellInfo(cells[i]);
+				if (info.getURI().equals(uri)) {
+					return cells[i];
+				}
+			}
+		}
+		return null;
 	}
 
 	public Object getClassCell(Resource uri, boolean isCheck) {
