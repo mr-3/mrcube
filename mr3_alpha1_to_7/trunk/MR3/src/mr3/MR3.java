@@ -88,8 +88,8 @@ public class MR3 extends JFrame {
 
 		userPrefs = Preferences.userNodeForPackage(this.getClass());
 
-		setSize(userPrefs.getInt(WindowWidth, MAIN_FRAME_WIDTH), userPrefs.getInt(WindowHeight, MAIN_FRAME_HEIGHT));
-		setLocation(userPrefs.getInt(WindowPositionX, 50), userPrefs.getInt(WindowPositionY, 50));
+		setSize(userPrefs.getInt(PrefConstants.WindowWidth, MAIN_FRAME_WIDTH), userPrefs.getInt(PrefConstants.WindowHeight, MAIN_FRAME_HEIGHT));
+		setLocation(userPrefs.getInt(PrefConstants.WindowPositionX, 50), userPrefs.getInt(PrefConstants.WindowPositionY, 50));
 		//setLookAndFeel();
 
 		attrDialog = new AttributeDialog();
@@ -344,78 +344,58 @@ public class MR3 extends JFrame {
 		return menu;
 	}
 
-	private static final String WindowHeight = "Window Height";
-	private static final String WindowWidth = "Window Width";
-	private static final String WindowPositionX = "Window Position X";
-	private static final String WindowPositionY = "Window Position Y";
-
-	private static final String RDFEditorHeight = "RDF Editor Height";
-	private static final String RDFEditorWidth = "RDF Editor Width";
-	private static final String RDFEditorPositionX = "RDF Editor Position X";
-	private static final String RDFEditorPositionY = "RDF Editor Position Y";
-
-	private static final String ClassEditorHeight = "Class Editor Height";
-	private static final String ClassEditorWidth = "Class Editor Width";
-	private static final String ClassEditorPositionX = "Class Editor Position X";
-	private static final String ClassEditorPositionY = "Class Editor Position Y";
-
-	private static final String PropertyEditorHeight = "Property Editor Height";
-	private static final String PropertyEditorWidth = "Property Editor Width";
-	private static final String PropertyEditorPositionX = "Property Editor Position X";
-	private static final String PropertyEditorPositionY = "Property Editor Position Y";
-
 	private void saveWindowBounds() {
 		Rectangle windowRect = getBounds();
-		userPrefs.putInt(WindowHeight, (int) windowRect.getHeight());
-		userPrefs.putInt(WindowWidth, (int) windowRect.getWidth());
-		userPrefs.putInt(WindowPositionX, (int) windowRect.getX());
-		userPrefs.putInt(WindowPositionY, (int) windowRect.getY());
+		userPrefs.putInt(PrefConstants.WindowHeight, (int) windowRect.getHeight());
+		userPrefs.putInt(PrefConstants.WindowWidth, (int) windowRect.getWidth());
+		userPrefs.putInt(PrefConstants.WindowPositionX, (int) windowRect.getX());
+		userPrefs.putInt(PrefConstants.WindowPositionY, (int) windowRect.getY());
 	}
 
 	private void saveRDFEditorBounds() {
 		Rectangle rdfEditorRect = internalFrames[0].getBounds();
-		userPrefs.putInt(RDFEditorHeight, (int) rdfEditorRect.getHeight());
-		userPrefs.putInt(RDFEditorWidth, (int) rdfEditorRect.getWidth());
-		userPrefs.putInt(RDFEditorPositionX, (int) rdfEditorRect.getX());
-		userPrefs.putInt(RDFEditorPositionY, (int) rdfEditorRect.getY());
+		userPrefs.putInt(PrefConstants.RDFEditorHeight, (int) rdfEditorRect.getHeight());
+		userPrefs.putInt(PrefConstants.RDFEditorWidth, (int) rdfEditorRect.getWidth());
+		userPrefs.putInt(PrefConstants.RDFEditorPositionX, (int) rdfEditorRect.getX());
+		userPrefs.putInt(PrefConstants.RDFEditorPositionY, (int) rdfEditorRect.getY());
 	}
 
 	private void saveClassEditorBounds() {
 		Rectangle classEditorRect = internalFrames[1].getBounds();
-		userPrefs.putInt(ClassEditorHeight, (int) classEditorRect.getHeight());
-		userPrefs.putInt(ClassEditorWidth, (int) classEditorRect.getWidth());
-		userPrefs.putInt(ClassEditorPositionX, (int) classEditorRect.getX());
-		userPrefs.putInt(ClassEditorPositionY, (int) classEditorRect.getY());
+		userPrefs.putInt(PrefConstants.ClassEditorHeight, (int) classEditorRect.getHeight());
+		userPrefs.putInt(PrefConstants.ClassEditorWidth, (int) classEditorRect.getWidth());
+		userPrefs.putInt(PrefConstants.ClassEditorPositionX, (int) classEditorRect.getX());
+		userPrefs.putInt(PrefConstants.ClassEditorPositionY, (int) classEditorRect.getY());
 	}
 
 	private void savePropertyEditorBounds() {
 		Rectangle propertyEditorRect = internalFrames[2].getBounds();
-		userPrefs.putInt(PropertyEditorHeight, (int) propertyEditorRect.getHeight());
-		userPrefs.putInt(PropertyEditorWidth, (int) propertyEditorRect.getWidth());
-		userPrefs.putInt(PropertyEditorPositionX, (int) propertyEditorRect.getX());
-		userPrefs.putInt(PropertyEditorPositionY, (int) propertyEditorRect.getY());
+		userPrefs.putInt(PrefConstants.PropertyEditorHeight, (int) propertyEditorRect.getHeight());
+		userPrefs.putInt(PrefConstants.PropertyEditorWidth, (int) propertyEditorRect.getWidth());
+		userPrefs.putInt(PrefConstants.PropertyEditorPositionX, (int) propertyEditorRect.getX());
+		userPrefs.putInt(PrefConstants.PropertyEditorPositionY, (int) propertyEditorRect.getY());
 	}
 
 	private void loadWindows() {
 		int width = desktop.getWidth();
 		int height = desktop.getHeight();
 
-		int editorPositionX = userPrefs.getInt(RDFEditorPositionX, 0);
-		int editorPositionY = userPrefs.getInt(RDFEditorPositionY, height / 2);
-		int editorWidth = userPrefs.getInt(RDFEditorWidth, width);
-		int editorHeight = userPrefs.getInt(RDFEditorHeight, height / 2);
+		int editorPositionX = userPrefs.getInt(PrefConstants.RDFEditorPositionX, 0);
+		int editorPositionY = userPrefs.getInt(PrefConstants.RDFEditorPositionY, height / 2);
+		int editorWidth = userPrefs.getInt(PrefConstants.RDFEditorWidth, width);
+		int editorHeight = userPrefs.getInt(PrefConstants.RDFEditorHeight, height / 2);
 		internalFrames[0].setBounds(new Rectangle(editorPositionX, editorPositionY, editorWidth, editorHeight)); // RDF
 
-		editorPositionX = userPrefs.getInt(ClassEditorPositionX, 0);
-		editorPositionY = userPrefs.getInt(ClassEditorPositionY, 0);
-		editorWidth = userPrefs.getInt(ClassEditorWidth, width / 2);
-		editorHeight = userPrefs.getInt(ClassEditorHeight, height / 2);
+		editorPositionX = userPrefs.getInt(PrefConstants.ClassEditorPositionX, 0);
+		editorPositionY = userPrefs.getInt(PrefConstants.ClassEditorPositionY, 0);
+		editorWidth = userPrefs.getInt(PrefConstants.ClassEditorWidth, width / 2);
+		editorHeight = userPrefs.getInt(PrefConstants.ClassEditorHeight, height / 2);
 		internalFrames[1].setBounds(new Rectangle(editorPositionX, editorPositionY, editorWidth, editorHeight)); // RDF
 
-		editorPositionX = userPrefs.getInt(PropertyEditorPositionX, width / 2);
-		editorPositionY = userPrefs.getInt(PropertyEditorPositionY, 0);
-		editorWidth = userPrefs.getInt(PropertyEditorWidth, width / 2);
-		editorHeight = userPrefs.getInt(PropertyEditorHeight, height / 2);
+		editorPositionX = userPrefs.getInt(PrefConstants.PropertyEditorPositionX, width / 2);
+		editorPositionY = userPrefs.getInt(PrefConstants.PropertyEditorPositionY, 0);
+		editorWidth = userPrefs.getInt(PrefConstants.PropertyEditorWidth, width / 2);
+		editorHeight = userPrefs.getInt(PrefConstants.PropertyEditorHeight, height / 2);
 		internalFrames[2].setBounds(new Rectangle(editorPositionX, editorPositionY, editorWidth, editorHeight)); // RDF
 	}
 
