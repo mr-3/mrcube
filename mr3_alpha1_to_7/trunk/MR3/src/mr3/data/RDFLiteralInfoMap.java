@@ -2,6 +2,7 @@ package mr3.data;
 import java.io.*;
 import java.util.*;
 
+import com.hp.hpl.mesa.rdf.jena.common.*;
 import com.hp.hpl.mesa.rdf.jena.model.*;
 
 /**
@@ -18,6 +19,16 @@ public class RDFLiteralInfoMap {
 
 	public static RDFLiteralInfoMap getInstance() {
 		return litInfoMap;
+	}
+
+	public Literal cloneRDFLiteralInfo(Literal orgInfo) {
+		Literal newInfo = null;
+		try {
+			newInfo = new LiteralImpl(orgInfo.getString(), orgInfo.getLanguage());
+		} catch(RDFException e) {
+			e.printStackTrace();
+		}
+		return newInfo;
 	}
 
 	public void putCellInfo(Object cell, Literal info) {

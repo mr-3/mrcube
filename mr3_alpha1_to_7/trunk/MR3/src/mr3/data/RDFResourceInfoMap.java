@@ -2,6 +2,8 @@ package mr3.data;
 import java.io.*;
 import java.util.*;
 
+import com.jgraph.graph.*;
+
 /**
  * @author takeshi morita
  *
@@ -17,6 +19,11 @@ public class RDFResourceInfoMap {
 
 	public static RDFResourceInfoMap getInstance() {
 		return resInfoMap;
+	}
+
+	public RDFResourceInfo cloneRDFResourceInfo(RDFResourceInfo orgInfo, GraphCell typeCell) {
+		RDFResourceInfo newInfo = new RDFResourceInfo(orgInfo.getURIType(), orgInfo.getURI().getURI(), typeCell);
+		return newInfo;
 	}
 
 	public void putCellInfo(Object cell, RDFResourceInfo info) {
