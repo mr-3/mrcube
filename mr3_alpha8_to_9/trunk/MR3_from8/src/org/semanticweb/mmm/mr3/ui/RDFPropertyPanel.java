@@ -7,14 +7,12 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
 
+import org.jgraph.graph.*;
 import org.semanticweb.mmm.mr3.data.*;
 import org.semanticweb.mmm.mr3.jgraph.*;
 import org.semanticweb.mmm.mr3.util.*;
 
-import org.jgraph.graph.*;
-
 import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.rdf.model.impl.*;
 import com.hp.hpl.jena.vocabulary.*;
 
 public class RDFPropertyPanel extends JPanel implements ActionListener, ListSelectionListener {
@@ -235,7 +233,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		List list = new ArrayList();
 		for (Iterator i = localNames.iterator(); i.hasNext();) {
 			String uri = nameSpace + i.next();
-			Resource res = new ResourceImpl(uri);
+			Resource res = ResourceFactory.createResource(uri);
 			if (validPropList.contains(res)) {
 				list.add(TRUE);
 			} else {
@@ -347,7 +345,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 	}
 
 	private void jumpRDFSProperty() {
-		Resource uri = new ResourceImpl(nsLabel.getText() + idField.getText());
+		Resource uri = ResourceFactory.createResource(nsLabel.getText() + idField.getText());
 		if (gmanager.isEmptyURI(uri.getURI())) {
 			return;
 		}

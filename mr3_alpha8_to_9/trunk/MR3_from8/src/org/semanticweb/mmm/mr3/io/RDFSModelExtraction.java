@@ -4,9 +4,7 @@ import java.util.*;
 import org.semanticweb.mmm.mr3.data.*;
 import org.semanticweb.mmm.mr3.jgraph.*;
 
-import com.hp.hpl.jena.mem.*;
 import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.rdf.model.impl.*;
 import com.hp.hpl.jena.vocabulary.*;
 
 public class RDFSModelExtraction {
@@ -19,16 +17,16 @@ public class RDFSModelExtraction {
 	}
 
 	public Model extractClassModel(Model orgModel) throws RDFException {
-		Model classModel = new ModelMem();
+		Model classModel = ModelFactory.createDefaultModel();
 		addInnerClassModel(orgModel);
 		Set classClassList = gmanager.getClassClassList();
 		Set findClassClassList = new HashSet();
 		for (Iterator i = classClassList.iterator(); i.hasNext();) {
 			Resource propClass = (Resource) i.next();
 			gmanager.findMetaClass(orgModel, propClass, findClassClassList);
-		}		
+		}
 		classClassList.addAll(findClassClassList);
-//		System.out.println(classClassList);
+		//		System.out.println(classClassList);
 		gmanager.setClassClassList(classClassList);
 		Model removeModel = ModelFactory.createDefaultModel();
 		for (Iterator classItor = classClassList.iterator(); classItor.hasNext();) {
@@ -38,12 +36,11 @@ public class RDFSModelExtraction {
 				ClassInfo info = getClassResInfo(classResource);
 				setDefaultSubClassOf(classResource, info);
 				removeModel.add(extractRDFSModel(orgModel, classModel, classResource, info));
-//				info.setMetaClass(classClass.toString()); 必要なくなった． -> setBaseInfo			
 			}
 		}
-		
+
 		orgModel.remove(removeModel);
-	
+
 		return classModel;
 	}
 
@@ -56,13 +53,13 @@ public class RDFSModelExtraction {
 
 	// subClassOfで指定されているクラスをオリジナルに追加．（定義されていないかもしれないので）
 	private void addInnerClassModel(Model orgModel) throws RDFException {
-		Model tmpModel = new ModelMem();
+		Model tmpModel = ModelFactory.createDefaultModel();
 		for (ResIterator i = orgModel.listSubjectsWithProperty(RDF.type, RDFS.Class); i.hasNext();) {
 			Resource classRes = i.nextResource();
 			for (StmtIterator j = classRes.listProperties(); j.hasNext();) {
 				Statement stmt = j.nextStatement();
 				if (stmt.getPredicate().equals(RDFS.subClassOf)) {
-					tmpModel.add(new StatementImpl((Resource) stmt.getObject(), RDF.type, RDFS.Class));
+					tmpModel.add(ResourceFactory.createStatement((Resource) stmt.getObject(), RDF.type, RDFS.Class));
 				}
 			}
 		}
@@ -72,15 +69,15 @@ public class RDFSModelExtraction {
 	// subPropertyOfで指定されているプロパティとdomain, rangeで指定されているクラスをオリジナルに追加
 	// 先にプロパティを読み込むことで，domain, rangeに指定されたクラスを処理できる
 	private void addInnerPropertyModel(Model orgModel) throws RDFException {
-		Model tmpModel = new ModelMem();
+		Model tmpModel = ModelFactory.createDefaultModel();
 		for (ResIterator i = orgModel.listSubjectsWithProperty(RDF.type, RDF.Property); i.hasNext();) {
 			Resource propRes = i.nextResource();
 			for (StmtIterator j = propRes.listProperties(); j.hasNext();) {
 				Statement stmt = j.nextStatement();
 				if (stmt.getPredicate().equals(RDFS.domain) || stmt.getPredicate().equals(RDFS.range)) {
-					tmpModel.add(new StatementImpl((Resource) stmt.getObject(), RDF.type, RDFS.Class));
+					tmpModel.add(ResourceFactory.createStatement((Resource) stmt.getObject(), RDF.type, RDFS.Class));
 				} else if (stmt.getPredicate().equals(RDFS.subPropertyOf)) {
-					tmpModel.add(new StatementImpl((Resource) stmt.getObject(), RDF.type, RDF.Property));
+					tmpModel.add(ResourceFactory.createStatement((Resource) stmt.getObject(), RDF.type, RDF.Property));
 				}
 			}
 		}
@@ -88,14 +85,14 @@ public class RDFSModelExtraction {
 	}
 
 	public Model extractPropertyModel(Model orgModel) throws RDFException {
-		Model propertyModel = new ModelMem();
+		Model propertyModel = ModelFactory.createDefaultModel();
 		addInnerPropertyModel(orgModel);
 		Set propClassList = gmanager.getPropertyClassList();
 		Set findPropClassList = new HashSet();
 		for (Iterator i = propClassList.iterator(); i.hasNext();) {
 			Resource propClass = (Resource) i.next();
 			gmanager.findMetaClass(orgModel, propClass, findPropClassList);
-		}		
+		}
 		propClassList.addAll(findPropClassList);
 		//System.out.println(propClassList);
 		gmanager.setPropertyClassList(propClassList);
@@ -111,7 +108,7 @@ public class RDFSModelExtraction {
 			}
 		}
 		orgModel.remove(removeModel);
-		
+
 		return propertyModel;
 	}
 
@@ -122,14 +119,14 @@ public class RDFSModelExtraction {
 			if (setRDFSInfo(stmt, info)) {
 				rdfsModel.add(stmt);
 			} else {
-				info.addStatement(stmt); // RDFS以外のプロパティを持つ文を保存				
+				info.addStatement(stmt); // RDFS以外のプロパティを持つ文を保存
 			}
-				removeModel.add(stmt);
+			removeModel.add(stmt);
 		}
 
 		info.setURI(metaResource.toString());
 		rdfsInfoMap.putResourceInfo(metaResource, info);
-		
+
 		return removeModel;
 	}
 
@@ -145,9 +142,9 @@ public class RDFSModelExtraction {
 	}
 
 	private boolean setClassInfo(Statement stmt, ClassInfo info) {
-		Resource subject = stmt.getSubject(); // get the subject
-		Property predicate = stmt.getPredicate(); // get the predicate
-		RDFNode object = stmt.getObject(); // get the object
+		Resource subject = stmt.getSubject();
+		Property predicate = stmt.getPredicate();
+		RDFNode object = stmt.getObject();
 
 		if (setBaseInfo(stmt, info)) {
 			return true;
@@ -168,9 +165,9 @@ public class RDFSModelExtraction {
 	}
 
 	private boolean setPropertyInfo(Statement stmt, PropertyInfo info) {
-		Resource subject = stmt.getSubject(); // get the subject
-		Property predicate = stmt.getPredicate(); // get the predicate
-		RDFNode object = stmt.getObject(); // get the object
+		Resource subject = stmt.getSubject();
+		Property predicate = stmt.getPredicate();
+		RDFNode object = stmt.getObject();
 
 		if (setBaseInfo(stmt, info)) {
 			return true;
@@ -198,8 +195,8 @@ public class RDFSModelExtraction {
 	}
 
 	private boolean setBaseInfo(Statement stmt, RDFSInfo info) {
-		Property predicate = stmt.getPredicate(); // get the predicate
-		RDFNode object = stmt.getObject(); // get the object
+		Property predicate = stmt.getPredicate();
+		RDFNode object = stmt.getObject();
 
 		if (predicate.equals(RDFS.label)) { //rdfs:label
 			MR3Literal literal = new MR3Literal((Literal) object);
@@ -212,7 +209,10 @@ public class RDFSModelExtraction {
 		} else if (predicate.equals(RDFS.isDefinedBy)) { //rdfs:isDefinedBy
 			info.setIsDefinedby(object.toString());
 		} else if (predicate.equals(RDF.type)) {
-			info.setMetaClass(object.toString());				
+			info.setMetaClass(object.toString());
+		} else if (predicate.getURI().matches(MR3Resource.conceptLabel.getURI() + ".*")) {
+			// subClassOfやsubPropertyOfと同時に使った場合にのみ有効
+			rdfsInfoMap.addPropertyLabelModel(stmt);
 		} else {
 			return false;
 		}

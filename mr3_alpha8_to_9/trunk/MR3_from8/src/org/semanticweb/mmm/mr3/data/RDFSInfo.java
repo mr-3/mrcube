@@ -2,9 +2,7 @@ package org.semanticweb.mmm.mr3.data;
 import java.io.*;
 import java.util.*;
 
-import com.hp.hpl.jena.mem.*;
 import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.rdf.model.impl.*;
 import com.hp.hpl.jena.vocabulary.*;
 
 public abstract class RDFSInfo implements Serializable {
@@ -28,7 +26,7 @@ public abstract class RDFSInfo implements Serializable {
 		labelList = new ArrayList();
 		commentList = new ArrayList();
 		isDefinedBy = "";
-		model = new ModelMem();
+		model = ModelFactory.createDefaultModel();
 		supRDFS = new HashSet();
 	}
 
@@ -40,7 +38,7 @@ public abstract class RDFSInfo implements Serializable {
 		lastSelectedComment = info.getLastComment();
 		commentList = new ArrayList(info.getCommentList());
 		isDefinedBy = info.getIsDefinedBy().getURI();
-		model = new ModelMem();
+		model = ModelFactory.createDefaultModel();
 		supRDFS = new HashSet();
 	}
 
@@ -72,12 +70,12 @@ public abstract class RDFSInfo implements Serializable {
 	}
 
 	public Model getModel() throws RDFException {
-		Model tmpModel = new ModelMem();
+		Model tmpModel = ModelFactory.createDefaultModel();
 
 		tmpModel.add(model);
-		Resource res = new ResourceImpl(uri);
+		Resource res = ResourceFactory.createResource(uri);
 		if (isDefinedBy.length() != 0) {
-			tmpModel.add(tmpModel.createStatement(res, RDFS.isDefinedBy, new ResourceImpl(isDefinedBy)));
+			tmpModel.add(tmpModel.createStatement(res, RDFS.isDefinedBy, ResourceFactory.createResource(isDefinedBy)));
 		}
 
 		for (Iterator i = labelList.iterator(); i.hasNext();) {
@@ -119,7 +117,7 @@ public abstract class RDFSInfo implements Serializable {
 	}
 
 	public Resource getURI() {
-		return new ResourceImpl(uri);
+		return ResourceFactory.createResource(uri);
 	}
 
 	public String getURIStr() {
@@ -127,13 +125,11 @@ public abstract class RDFSInfo implements Serializable {
 	}
 
 	public String getNameSpace() {
-		Resource tmp = new ResourceImpl(uri);
-		return tmp.getNameSpace();
+		return ResourceFactory.createResource(uri).getNameSpace();
 	}
 
 	public String getLocalName() {
-		Resource tmp = new ResourceImpl(uri);
-		return tmp.getLocalName();
+		return ResourceFactory.createResource(uri).getLocalName();
 	}
 
 	public void setLastLabel(MR3Literal label) {
@@ -201,7 +197,7 @@ public abstract class RDFSInfo implements Serializable {
 	}
 
 	public Resource getIsDefinedBy() {
-		return new ResourceImpl(isDefinedBy);
+		return ResourceFactory.createResource(isDefinedBy);
 	}
 
 	public String getModelString() {

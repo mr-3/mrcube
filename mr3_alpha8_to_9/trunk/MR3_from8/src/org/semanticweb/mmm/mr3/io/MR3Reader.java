@@ -1,16 +1,16 @@
 /*
  * Created on 2003/03/24
- *
+ *  
  */
 package org.semanticweb.mmm.mr3.io;
 
+import org.jgraph.graph.*;
 import org.semanticweb.mmm.mr3.*;
 import org.semanticweb.mmm.mr3.data.*;
 import org.semanticweb.mmm.mr3.jgraph.*;
 import org.semanticweb.mmm.mr3.ui.*;
 import org.semanticweb.mmm.mr3.util.*;
 
-import com.hp.hpl.jena.mem.*;
 import com.hp.hpl.jena.rdf.model.*;
 
 /**
@@ -25,7 +25,7 @@ public class MR3Reader {
 	private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
 
 	/*
-	 *  RDFReader -> JenaReader or N3JenaReader
+	 * RDFReader -> JenaReader or N3JenaReader
 	 */
 	public MR3Reader(GraphManager gm, NameSpaceTableDialog nsTableD) {
 		gmanager = gm;
@@ -45,10 +45,6 @@ public class MR3Reader {
 		nsTableDialog.setCurrentNSPrefix();
 	}
 
-	public void replaceRDFSModel(Model model) {
-				
-	}
-
 	public void mergeRDFModel(Model newModel) {
 		try {
 			Model model = mr3Generator.getRDFModel();
@@ -66,14 +62,44 @@ public class MR3Reader {
 		mergePropertyModel(model);
 		mergeClassModel(model);
 		nsTableDialog.setCurrentNSPrefix();
+		setPropertyLabels();
+	}
+
+	private void setPropertyLabel(RDFGraph graph, Object edge) {
+		RDFSInfo sourceInfo = rdfsInfoMap.getCellInfo(graph.getSourceVertex(edge));
+		Resource sourceRes = sourceInfo.getURI();
+		RDFSInfo targetInfo = rdfsInfoMap.getCellInfo(graph.getTargetVertex(edge));
+		Resource targetRes = targetInfo.getURI();
+		Model model = rdfsInfoMap.getPropertyLabelModel();
+		for (StmtIterator i = model.listStatements(); i.hasNext();) {
+			Statement stmt = i.nextStatement();
+			Resource subject = stmt.getSubject();
+			Property predicate = stmt.getPredicate();
+			RDFNode object = stmt.getObject();
+			if (sourceRes.equals(subject) && targetRes.equals(object)) {
+				String uri = predicate.toString();
+				gmanager.setCellValue((GraphCell) edge, uri.substring(uri.indexOf('_')+1));
+			}
+		}
+	}
+
+	private void setPropertyLabels() {
+		RDFGraph classGraph = gmanager.getClassGraph();
+		Object[] cells = classGraph.getAllCells();
+		for (int i = 0; i < cells.length; i++) {
+			if (classGraph.isEdge(cells[i])) {
+				setPropertyLabel(classGraph, cells[i]);
+			}
+		}
+		gmanager.changeCellView();
 	}
 
 	private void mergeClassModel(Model model) {
 		try {
 			model.add(mr3Generator.getClassModel());
 			mr3Parser.createClassGraph(model);
-			rdfsInfoMap.setClassTreeModel();
-			rdfsInfoMap.clearTemporaryMap();
+			rdfsInfoMap.setClassTreeModel();			
+			rdfsInfoMap.clearTemporaryObject();
 		} catch (RDFException e) {
 			e.printStackTrace();
 		}
@@ -84,7 +110,7 @@ public class MR3Reader {
 			model.add(mr3Generator.getPropertyModel());
 			mr3Parser.createPropertyGraph(model);
 			rdfsInfoMap.setPropTreeModel();
-			rdfsInfoMap.clearTemporaryMap();
+			rdfsInfoMap.clearTemporaryObject();
 		} catch (RDFException e) {
 			e.printStackTrace();
 		}
@@ -93,7 +119,7 @@ public class MR3Reader {
 	public void replaceRDF(Model model) {
 		if (model != null) {
 			replaceRDFModel(model);
-			mergeRDFSModel(new ModelMem()); // RDFからRDFSへ反映されたクラス，プロパティの処理
+			mergeRDFSModel(ModelFactory.createDefaultModel()); // RDFからRDFSへ反映されたクラス，プロパティの処理
 		}
 	}
 
@@ -106,7 +132,7 @@ public class MR3Reader {
 	public void mergeRDF(Model model) {
 		if (model != null) {
 			mergeRDFModel(model);
-			mergeRDFSModel(new ModelMem()); // RDFからRDFSへ反映されたクラス，プロパティの処理
+			mergeRDFSModel(ModelFactory.createDefaultModel()); // RDFからRDFSへ反映されたクラス，プロパティの処理
 		}
 	}
 

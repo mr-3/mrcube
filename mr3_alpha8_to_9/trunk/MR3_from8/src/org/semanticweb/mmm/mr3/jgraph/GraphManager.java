@@ -13,7 +13,6 @@ import org.semanticweb.mmm.mr3.ui.*;
 import org.semanticweb.mmm.mr3.util.*;
 
 import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.rdf.model.impl.*;
 import com.hp.hpl.jena.vocabulary.*;
 
 public class GraphManager {
@@ -185,7 +184,7 @@ public class GraphManager {
 	private Set getMetaClassList(String[] list) {
 		Set metaClassList = new HashSet();
 		for (int i = 0; i < list.length; i++) {
-			metaClassList.add(new ResourceImpl(list[i]));
+			metaClassList.add(ResourceFactory.createResource(list[i]));
 		}
 		return metaClassList;
 	}
@@ -322,7 +321,7 @@ public class GraphManager {
 			if (tmpURI.equals(uri) && infoCell != cell) {
 				RDFSInfo rdfsInfo = rdfsInfoMap.getCellInfo(resInfo.getTypeCell());
 				/*
-				 *  RDFエディタ内のクラス定義は，重複とみなさないようにする．
+				 * RDFエディタ内のクラス定義は，重複とみなさないようにする．
 				 */
 				if (!(type == GraphType.CLASS
 					&& rdfsInfo != null
@@ -339,7 +338,7 @@ public class GraphManager {
 
 	public boolean isEmptyURI(String uri) {
 		if (uri.equals("")) {
-			JOptionPane.showInternalMessageDialog(getDesktop(), Translator.getString("Warning.Message4"),  WARNING, JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showInternalMessageDialog(getDesktop(), Translator.getString("Warning.Message4"), WARNING, JOptionPane.ERROR_MESSAGE);
 			return true;
 		} else {
 			return false;
@@ -466,7 +465,7 @@ public class GraphManager {
 	public void setCellValue(GraphCell cell, String value) {
 		Map map = cell.getAttributes();
 		GraphConstants.setValue(map, value);
-		//			cell.setAttributes(map);
+		//		cell.setAttributes(map);
 		//		set->changeにしないと，cellのValueが変更されず，Cellを削除した時に表示が変化しない
 		cell.changeAttributes(map);
 	}
@@ -630,7 +629,8 @@ public class GraphManager {
 		}
 		changeClassCellView();
 		changePropertyCellView();
-		changeRDFCellView(); // ClassとPropertyを変換したあとで，RDFのType, Propertyを変換
+		changeRDFCellView(); // ClassとPropertyを変換したあとで，RDFのType,
+									  // Propertyを変換
 	}
 
 	private Set getSolitudeCells(RDFGraph graph) {
@@ -731,8 +731,7 @@ public class GraphManager {
 				/*
 				 * Resourceクラスのインスタンスをequalsで比べるとisAnon()
 				 * によって，true,falseを決められる．文字列を保存しているuri
-				 * は，isAnonは必ずfalseとなるため，文字列比較をするために
-				 * toStringを用いている．
+				 * は，isAnonは必ずfalseとなるため，文字列比較をするために toStringを用いている．
 				 */
 				if (info.getURI().toString().equals(uri.toString())) {
 					return cells[i];
@@ -944,7 +943,7 @@ public class GraphManager {
 			Object[] propCells = propGraph.getAllCells();
 			Set propSet = new HashSet();
 
-			if (propGraph.isRDFSClassCell(cell)) { // 削除したクラスのセル				
+			if (propGraph.isRDFSClassCell(cell)) { // 削除したクラスのセル
 				//　cellを参照していないかどうかすべてのプロパティに対して調べる
 				// domainかrangeに含まれている可能性がある．
 				for (int j = 0; j < propCells.length; j++) {

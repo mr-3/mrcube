@@ -397,7 +397,7 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
 	public void setVisible(boolean flag) {
 		super.setVisible(flag);
 		if (!flag) {
-			rdfsInfoMap.clearTemporaryMap();
+			rdfsInfoMap.clearTemporaryObject();
 		}
 	}
 

@@ -2,7 +2,6 @@ package org.semanticweb.mmm.mr3.data;
 import java.util.*;
 
 import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.rdf.model.impl.*;
 import com.hp.hpl.jena.vocabulary.*;
 
 /**
@@ -38,7 +37,7 @@ public class ClassInfo extends RDFSInfo {
 			Model tmpModel = super.getModel();
 			Resource res = getURI();
 
-			tmpModel.add(tmpModel.createStatement(res, RDF.type, new ResourceImpl(metaClass)));
+			tmpModel.add(tmpModel.createStatement(res, RDF.type, ResourceFactory.createResource(metaClass)));
 			for (Iterator i = supRDFS.iterator(); i.hasNext();) {
 				RDFSInfo classInfo = rdfsInfoMap.getCellInfo(i.next());
 				tmpModel.add(tmpModel.createStatement(res, RDFS.subClassOf, classInfo.getURI()));

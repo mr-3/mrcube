@@ -1,14 +1,11 @@
 package org.semanticweb.mmm.mr3.io;
 import java.util.*;
 
+import org.jgraph.graph.*;
 import org.semanticweb.mmm.mr3.data.*;
 import org.semanticweb.mmm.mr3.jgraph.*;
 
-import org.jgraph.graph.*;
-
-import com.hp.hpl.jena.mem.*;
 import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.rdf.model.impl.*;
 import com.hp.hpl.jena.vocabulary.*;
 
 public class MR3Generator {
@@ -25,7 +22,7 @@ public class MR3Generator {
 	public Model getSelectedPropertyModel() {
 		RDFGraph graph = gmanager.getPropertyGraph();
 		Object[] cells = graph.getAllSelectedCells();
-		Model propertyModel = new ModelMem();
+		Model propertyModel = ModelFactory.createDefaultModel();
 		createPropertyModel(graph, cells, propertyModel);
 
 		return propertyModel;
@@ -34,7 +31,7 @@ public class MR3Generator {
 	public Model getPropertyModel() {
 		RDFGraph graph = gmanager.getPropertyGraph();
 		Object[] cells = graph.getAllCells();
-		Model propertyModel = new ModelMem();
+		Model propertyModel = ModelFactory.createDefaultModel();
 		createPropertyModel(graph, cells, propertyModel);
 
 		return propertyModel;
@@ -61,7 +58,7 @@ public class MR3Generator {
 	public Model getSelectedClassModel() {
 		RDFGraph graph = gmanager.getClassGraph();
 		Object[] cells = graph.getAllSelectedCells();
-		Model classModel = new ModelMem();
+		Model classModel = ModelFactory.createDefaultModel();
 		createClassModel(graph, cells, classModel);
 
 		return classModel;
@@ -70,7 +67,7 @@ public class MR3Generator {
 	public Model getClassModel() {
 		RDFGraph graph = gmanager.getClassGraph();
 		Object[] cells = graph.getAllCells();
-		Model classModel = new ModelMem();
+		Model classModel = ModelFactory.createDefaultModel();
 		createClassModel(graph, cells, classModel);
 
 		return classModel;
@@ -122,7 +119,7 @@ public class MR3Generator {
 
 	public Model getSelectedRDFModel() {
 		RDFGraph graph = gmanager.getRDFGraph();
-		Model rdfModel = new ModelMem();
+		Model rdfModel = ModelFactory.createDefaultModel();
 		Object[] edges = getEdges(rdfModel, graph, graph.getAllSelectedCells());
 		createRDFModel(graph, rdfModel, edges);
 
@@ -131,7 +128,7 @@ public class MR3Generator {
 
 	public Model getRDFModel() {
 		RDFGraph graph = gmanager.getRDFGraph();
-		Model rdfModel = new ModelMem();
+		Model rdfModel = ModelFactory.createDefaultModel();
 		Object[] edges = getEdges(rdfModel, graph, graph.getAllCells());
 		createRDFModel(graph, rdfModel, edges);
 
@@ -145,7 +142,7 @@ public class MR3Generator {
 		if (propInfo == null) {
 			property = MR3Resource.Nil;
 		} else {
-			property = new PropertyImpl(propInfo.getURI().getURI());
+			property = ResourceFactory.createProperty(propInfo.getURI().getURI());
 		}
 		return property;
 	}

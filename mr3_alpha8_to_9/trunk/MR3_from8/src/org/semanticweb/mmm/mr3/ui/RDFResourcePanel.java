@@ -5,14 +5,12 @@ import java.util.*;
 
 import javax.swing.*;
 
+import org.jgraph.graph.*;
 import org.semanticweb.mmm.mr3.data.*;
 import org.semanticweb.mmm.mr3.jgraph.*;
 import org.semanticweb.mmm.mr3.util.*;
 
-import org.jgraph.graph.*;
-
 import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.rdf.model.impl.*;
 
 public class RDFResourcePanel extends JPanel implements ActionListener {
 
@@ -110,11 +108,12 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		buttonGroup.add(applyButton);
 		buttonGroup.add(closeButton);
 
-		//classTree = new RDFSClassTree(metaResMap);     
+		//classTree = new RDFSClassTree(metaResMap);
 		//classTree.addTreeSelectionListener(new SelectNode());
 		//JScrollPane classTreeScroll = new JScrollPane(classTree);
-		//classTreeScroll.setBorder(BorderFactory.createTitledBorder("Class Tree"));
-		//classTreeScroll.setPreferredSize(new Dimension(200, 300)); 
+		//classTreeScroll.setBorder(BorderFactory.createTitledBorder("Class
+		// Tree"));
+		//classTreeScroll.setPreferredSize(new Dimension(200, 300));
 
 		//add(classTreeScroll);
 
@@ -180,9 +179,11 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 	//	class SelectNode implements TreeSelectionListener {
 	//		public void valueChanged(TreeSelectionEvent e) {
 	//			JTree tree = (JTree) e.getSource();
-	//			DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+	//			DefaultMutableTreeNode node = (DefaultMutableTreeNode)
+	// tree.getLastSelectedPathComponent();
 	//
-	//			if (node != null && tree.getSelectionCount() == 1 && resInfo.getURIType() != URIType.ANONYMOUS) {
+	//			if (node != null && tree.getSelectionCount() == 1 &&
+	// resInfo.getURIType() != URIType.ANONYMOUS) {
 	//				classType.setText(node.toString());
 	//				classType.setToolTipText(node.toString());
 	//			}
@@ -313,7 +314,7 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 
 	private GraphCell getResourceType() {
 		GraphCell typeCell = null;
-		Resource uri = new ResourceImpl(getResourceTypeURI());
+		Resource uri = ResourceFactory.createResource(getResourceTypeURI());
 
 		if (gmanager.isEmptyURI(uri.getURI())) {
 			return null;
@@ -325,7 +326,11 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 				return null;
 			if (resInfo.getTypeCell() == null) {
 				int ans =
-					JOptionPane.showInternalConfirmDialog(gmanager.getDesktop(), Translator.getString("Warning.Message2"), WARNING, JOptionPane.YES_NO_OPTION);
+					JOptionPane.showInternalConfirmDialog(
+						gmanager.getDesktop(),
+						Translator.getString("Warning.Message2"),
+						WARNING,
+						JOptionPane.YES_NO_OPTION);
 				if (ans == JOptionPane.YES_OPTION) {
 					Set supClasses = gmanager.getSupRDFS(gmanager.getClassGraph(), Translator.getString("SelectSupClassesDialog.Title"));
 					if (supClasses == null) {
@@ -363,7 +368,7 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 	}
 
 	private void jumpRDFSClass() {
-		Resource uri = new ResourceImpl(getResourceTypeURI());
+		Resource uri = ResourceFactory.createResource(getResourceTypeURI());
 		if (gmanager.isEmptyURI(uri.getURI())) {
 			return;
 		}
@@ -371,7 +376,11 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 			Object classCell = (GraphCell) rdfsInfoMap.getClassCell(uri);
 			gmanager.jumpClassArea(classCell);
 		} else {
-			JOptionPane.showInternalMessageDialog(gmanager.getDesktop(), Translator.getString("Warning.Message3"), WARNING, JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showInternalMessageDialog(
+				gmanager.getDesktop(),
+				Translator.getString("Warning.Message3"),
+				WARNING,
+				JOptionPane.ERROR_MESSAGE);
 		}
 	}
 

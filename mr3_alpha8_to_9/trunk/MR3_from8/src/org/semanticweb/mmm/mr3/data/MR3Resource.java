@@ -26,6 +26,7 @@ public class MR3Resource {
 	private static final String NODE_HEIGHT = "nodeHeight";
 	private static final String PREFIX = "prefix";
 	private static final String IS_PREFIX_AVAILABLE = "isPrefixAvailable";
+	private static final String CONCEPT_LABEL = "conceptLabel";
 
 	public static Resource DefaultURI;
 	public static Property DefaultLang;
@@ -44,11 +45,12 @@ public class MR3Resource {
 	public static Property NodeHeight;
 	public static Property Prefix;
 	public static Property IsPrefixAvailable;
+	public static Property conceptLabel;
 
 	static {
 		try {
-			DefaultURI = ResourceFactory.createResource(DEFAULT_URI); 
-			DefaultLang = ResourceFactory.createProperty(DEFAULT_URI+DEFAULT_LANG); 
+			DefaultURI = ResourceFactory.createResource(DEFAULT_URI);
+			DefaultLang = ResourceFactory.createProperty(DEFAULT_URI + DEFAULT_LANG);
 			Property = ResourceFactory.createProperty(DEFAULT_URI + PROPERTY);
 			Nil = ResourceFactory.createProperty(DEFAULT_URI + NIL);
 			Empty = ResourceFactory.createResource(DEFAULT_URI + EMPTY);
@@ -56,7 +58,7 @@ public class MR3Resource {
 			LiteralProperty = ResourceFactory.createProperty(DEFAULT_URI + LITERAL_PROPERTY);
 			HasLiteralResource = ResourceFactory.createProperty(DEFAULT_URI + HAS_LITERAL_RESOURCE);
 			LiteralLang = ResourceFactory.createProperty(DEFAULT_URI + LITERAL_LANG);
-			LiteralDatatype = ResourceFactory.createProperty(DEFAULT_URI+LITERAL_DATATYPE);
+			LiteralDatatype = ResourceFactory.createProperty(DEFAULT_URI + LITERAL_DATATYPE);
 			LiteralString = ResourceFactory.createProperty(DEFAULT_URI + LITERAL_STRING);
 			PointX = ResourceFactory.createProperty(DEFAULT_URI + POINT_X);
 			PointY = ResourceFactory.createProperty(DEFAULT_URI + POINT_Y);
@@ -64,6 +66,7 @@ public class MR3Resource {
 			NodeHeight = ResourceFactory.createProperty(DEFAULT_URI + NODE_HEIGHT);
 			Prefix = ResourceFactory.createProperty(DEFAULT_URI + PREFIX);
 			IsPrefixAvailable = ResourceFactory.createProperty(DEFAULT_URI + IS_PREFIX_AVAILABLE);
+			conceptLabel = ResourceFactory.createProperty(DEFAULT_URI + CONCEPT_LABEL);
 		} catch (RDFException e) {
 			e.printStackTrace();
 		}

@@ -3,13 +3,11 @@ import java.awt.*;
 import java.io.*;
 import java.util.*;
 
+import org.jgraph.graph.*;
 import org.semanticweb.mmm.mr3.data.*;
 import org.semanticweb.mmm.mr3.jgraph.*;
 import org.semanticweb.mmm.mr3.util.*;
 
-import org.jgraph.graph.*;
-
-import com.hp.hpl.jena.mem.*;
 import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.vocabulary.*;
 
@@ -128,9 +126,8 @@ public class MR3Parser {
 
 	// TypeCellÇ™çÏÇÁÇÍÇΩå„Ç…åƒÇ—èoÇ∑
 	private boolean isTypeProperty(Statement stmt, Object subjectCell) {
-		Property predicate = stmt.getPredicate(); // get the
-		// predicate
-		RDFNode object = stmt.getObject(); // get the object
+		Property predicate = stmt.getPredicate(); 
+		RDFNode object = stmt.getObject(); 
 
 		if (predicate.equals(RDF.type)) {
 			Object cell = gmanager.getClassCell((Resource) object, false);
@@ -191,10 +188,10 @@ public class MR3Parser {
 		Point initPoint = new Point(0, 0);
 
 		for (StmtIterator iter = model.listStatements(); iter.hasNext();) {
-			Statement stmt = iter.nextStatement(); 
-			Resource subject = stmt.getSubject(); 
-			Property predicate = stmt.getPredicate(); 
-			RDFNode object = stmt.getObject(); 
+			Statement stmt = iter.nextStatement();
+			Resource subject = stmt.getSubject();
+			Property predicate = stmt.getPredicate();
+			RDFNode object = stmt.getObject();
 
 			// Resource
 			DefaultGraphCell source = (DefaultGraphCell) resourceMap.get(subject);
@@ -269,7 +266,7 @@ public class MR3Parser {
 
 	public RDFGraph mergeRDFToJGraph(Reader reader, Model currentModel) {
 		RDFGraph graph = null;
-		Model model = new ModelMem(); //create RDFModel
+		Model model = ModelFactory.createDefaultModel(); //create RDFModel
 
 		try {
 			model.read(reader, gmanager.getBaseURI());
@@ -284,7 +281,7 @@ public class MR3Parser {
 
 	public RDFGraph convertRealRDFToJGraph(Reader reader) {
 		RDFGraph graph = null;
-		Model model = new ModelMem(); //create RDFModel
+		Model model = ModelFactory.createDefaultModel(); //create RDFModel
 
 		try {
 			model.read(reader, "");

@@ -1,6 +1,6 @@
 /*
  * Created on 2003/07/12
- *
+ *  
  */
 package org.semanticweb.mmm.mr3.util;
 
@@ -13,9 +13,7 @@ import org.semanticweb.mmm.mr3.jgraph.*;
 import org.semanticweb.mmm.mr3.ui.*;
 import org.semanticweb.mmm.mr3.ui.NameSpaceTableDialog.*;
 
-import com.hp.hpl.jena.mem.*;
 import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.rdf.model.impl.*;
 import com.hp.hpl.jena.vocabulary.*;
 
 /**
@@ -38,7 +36,7 @@ public class ProjectManager {
 
 	/*
 	 * RDFモデルのプロジェクトの保存に関する値を保存
-	 * 
+	 *  
 	 */
 	private void addRDFProjectModel(Model projectModel) throws RDFException {
 		int literal_cnt = 0;
@@ -55,8 +53,7 @@ public class ProjectManager {
 	}
 
 	/*
-	 * x,y,width,heightを保存．
-	 * typeがない場合には，Emptyとする．
+	 * x,y,width,heightを保存． typeがない場合には，Emptyとする．
 	 */
 	private void addRDFResourceProjectModel(Model projectModel, GraphCell cell) throws RDFException {
 		Rectangle rec = GraphConstants.getBounds(cell.getAttributes());
@@ -72,7 +69,7 @@ public class ProjectManager {
 
 	/*
 	 * リテラルの情報の保存．
-	 * 
+	 *  
 	 */
 	private int addRDFLiteralProjectModel(Model projectModel, int literal_cnt, GraphCell cell) throws RDFException {
 		Edge edge = (Edge) cell;
@@ -84,8 +81,7 @@ public class ProjectManager {
 
 			Object propCell = rdfsInfoMap.getEdgeInfo(edge);
 			RDFSInfo propInfo = rdfsInfoMap.getCellInfo(propCell);
-
-			Resource litRes = new ResourceImpl(MR3Resource.Literal + Integer.toString(literal_cnt++));
+			Resource litRes = ResourceFactory.createResource(MR3Resource.Literal + Integer.toString(literal_cnt++));
 			projectModel.add(litRes, MR3Resource.HasLiteralResource, info.getURI());
 			if (propInfo == null) {
 				projectModel.add(litRes, MR3Resource.LiteralProperty, MR3Resource.Nil);
@@ -131,8 +127,8 @@ public class ProjectManager {
 			Boolean isAvailable = (Boolean) nsTableModel.getValueAt(i, IS_AVAILABLE_COLUMN);
 			String prefix = (String) nsTableModel.getValueAt(i, PREFIX_COLUMN);
 			String nameSpace = (String) nsTableModel.getValueAt(i, NS_COLUMN);
-			projectModel.add(new ResourceImpl(nameSpace), MR3Resource.IsPrefixAvailable, isAvailable.toString());
-			projectModel.add(new ResourceImpl(nameSpace), MR3Resource.Prefix, prefix);
+			projectModel.add(ResourceFactory.createResource(nameSpace), MR3Resource.IsPrefixAvailable, isAvailable.toString());
+			projectModel.add(ResourceFactory.createResource(nameSpace), MR3Resource.Prefix, prefix);
 		}
 	}
 
@@ -141,11 +137,10 @@ public class ProjectManager {
 	}
 
 	/*
-	 * RDF，クラス，プロパティのそれぞれのプロジェクト保存に必要な値をＲＤＦモデル
-	 * として保存する．（Ｘ，Ｙ座標など）
+	 * RDF，クラス，プロパティのそれぞれのプロジェクト保存に必要な値をＲＤＦモデル として保存する．（Ｘ，Ｙ座標など）
 	 */
 	public Model getProjectModel() {
-		Model projectModel = new ModelMem();
+		Model projectModel = ModelFactory.createDefaultModel();
 		try {
 			addDefaultLangModel(projectModel);
 			addRDFProjectModel(projectModel);
@@ -162,7 +157,7 @@ public class ProjectManager {
 	 * RDFのモデルから，リテラルをもつステートメント集合のモデルを得る
 	 */
 	public Model getLiteralModel(Model model) {
-		Model literalModel = new ModelMem();
+		Model literalModel = ModelFactory.createDefaultModel();		
 		try {
 			for (StmtIterator i = model.listStatements(); i.hasNext();) {
 				Statement stmt = i.nextStatement();
@@ -204,7 +199,7 @@ public class ProjectManager {
 			model.remove(extractModel);
 		} catch (RDFException e) {
 			e.printStackTrace();
-		}		
+		}
 		return extractModel;
 	}
 
@@ -256,7 +251,7 @@ public class ProjectManager {
 	public void loadProject(Model model) {
 		Map uriNodeInfoMap = new HashMap(); // リソースのＵＲＩとMR3Literalのマップ
 		Map uriPrefixMap = new HashMap(); // URIとプレフィックスのマップ
-		Map uriIsAvailableMap = new HashMap(); // URIとisAvailable(boolean)のマップ 
+		Map uriIsAvailableMap = new HashMap(); // URIとisAvailable(boolean)のマップ
 
 		try {
 			for (StmtIterator i = model.listStatements(); i.hasNext();) {

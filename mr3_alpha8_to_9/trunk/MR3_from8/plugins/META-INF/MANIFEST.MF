@@ -9,6 +9,9 @@ menu-name: SamplePlugin2
 Name: org.semanticweb.mmm.mr3.sample.SamplePlugin3.class
 menu-name: ReplaceProjectPlugin
 
+Name: org.semanticweb.mmm.mr3.sample.SamplePlugin4.class
+menu-name: SelectionSample
+
 Name: org.semanticweb.mmm.mr3.rssPlugin.RSSPlugin.class
 menu-name: RSSPlugin
 

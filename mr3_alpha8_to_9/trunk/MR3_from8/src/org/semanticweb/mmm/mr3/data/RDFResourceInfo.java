@@ -4,7 +4,6 @@ import java.util.*;
 
 import org.jgraph.graph.*;
 
-import com.hp.hpl.jena.mem.*;
 import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.rdf.model.impl.*;
 
@@ -33,7 +32,7 @@ public class RDFResourceInfo implements Serializable {
 		typeCell = info.getTypeCell();
 	}
 
-	private static Model anonModel = new ModelMem();
+	private static Model anonModel = ModelFactory.createDefaultModel();
 
 	/** RDF‚ÌType‚ÌŒ©‚¹•û‚ð•Ï‚¦‚é */
 	public void setTypeCellValue(GraphCell cell) {
@@ -69,7 +68,7 @@ public class RDFResourceInfo implements Serializable {
 	public Resource getType() {
 		RDFSInfo info = rdfsInfoMap.getCellInfo(typeCell);
 		if (info == null || info.getURI() == null) {
-			return new ResourceImpl("");
+			return ResourceFactory.createResource("");
 		} else {
 			return info.getURI();
 		}
@@ -103,9 +102,9 @@ public class RDFResourceInfo implements Serializable {
 
 	public Resource getURI() {
 		if (uriType == URIType.ANONYMOUS) {
-			return new ResourceImpl(new AnonId(uri));
+			return new ResourceImpl(new AnonId(uri)); 
 		} else {
-			return new ResourceImpl(uri);
+			return ResourceFactory.createResource(uri); 
 		}
 	}
 

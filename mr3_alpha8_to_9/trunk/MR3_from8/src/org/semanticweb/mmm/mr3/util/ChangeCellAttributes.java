@@ -65,7 +65,8 @@ public class ChangeCellAttributes {
 	 * 
 	 * @param graph
 	 * @param cell
-	 * @param color
+	 * @param backgroundcolor
+	 * @param bordercolor
 	 * @param lineWidth
 	 *  
 	 */

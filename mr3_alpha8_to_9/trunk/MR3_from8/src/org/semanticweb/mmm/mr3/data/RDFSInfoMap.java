@@ -17,7 +17,7 @@ public class RDFSInfoMap {
 	private Set rootProperties; // subPropertyOf Property‚ÌƒZƒbƒg
 	private DefaultTreeModel classTreeModel;
 	private DefaultTreeModel propTreeModel;
-
+	private Model propertyLabelModel;
 	private static RDFResourceInfoMap resInfoMap = RDFResourceInfoMap.getInstance();
 	private static RDFSInfoMap rdfsInfoMap = new RDFSInfoMap();
 
@@ -30,6 +30,7 @@ public class RDFSInfoMap {
 		rootProperties = new HashSet();
 		classTreeModel = new DefaultTreeModel(null);
 		propTreeModel = new DefaultTreeModel(null);
+		propertyLabelModel = ModelFactory.createDefaultModel();
 	}
 
 	public static RDFSInfoMap getInstance() {
@@ -90,9 +91,18 @@ public class RDFSInfoMap {
 		classTreeModel.setRoot(null);
 	}
 
-	public void clearTemporaryMap() {
+	public void addPropertyLabelModel(Statement stmt) {
+		propertyLabelModel.add(stmt);
+	}
+
+	public Model getPropertyLabelModel() {
+		return propertyLabelModel;
+	}
+	
+	public void clearTemporaryObject() {
 		resourceInfoMap.clear();
 		rootProperties.clear();
+//		propertyLabelModel = ModelFactory.createDefaultModel();
 	}
 
 	public void addRootProperties(Resource resource) {
