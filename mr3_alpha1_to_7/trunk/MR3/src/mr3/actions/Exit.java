@@ -14,9 +14,9 @@ import mr3.*;
  * @author takeshi morita
  *
  */
-public class ExitAction extends AbstractActionFile {
+public class Exit extends AbstractActionFile {
 
-	public ExitAction(MR3 mr3) {
+	public Exit(MR3 mr3) {
 		super(mr3, "Exit");
 		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Q, KeyEvent.CTRL_MASK));
 	}

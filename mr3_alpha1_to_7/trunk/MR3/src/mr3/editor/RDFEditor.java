@@ -79,11 +79,12 @@ public class RDFEditor extends Editor {
 		GraphCell propCell = (GraphCell) rdfsInfoMap.getEdgeInfo(cell);
 		gmanager.jumpPropertyArea(propCell);
 
-		propPanel.showPropertyInfo(cell);
 		Edge edge = (Edge) cell;
 		Object domainType = getDomainType(edge);
 		Object rangeType = getRangeType(edge);
+		PrefixNSUtil.setPrefixNSInfoSet(gmanager.getPrefixNSInfoSet());
 		propPanel.setPropertyList(gmanager.getPropertyList(), gmanager.getValidPropertyList(domainType, rangeType));
+		propPanel.showPropertyInfo(edge);
 		attrDialog.setContentPane(propPanel);
 	}
 
