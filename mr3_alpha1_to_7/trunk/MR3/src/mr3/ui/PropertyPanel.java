@@ -142,7 +142,6 @@ public class PropertyPanel extends RDFSPanel {
 	class RemoveList implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			PropertyInfo info = (PropertyInfo) rdfsInfoMap.getCellInfo(cell);
-
 			if (e.getSource() == removeDomainButton) {
 				if (!domain.isSelectionEmpty()) {
 					Object[] rlist = domain.getSelectedValues();
@@ -151,9 +150,7 @@ public class PropertyPanel extends RDFSPanel {
 					}
 					rdfsInfoMap.putCellInfo(cell, info);
 					domain.setListData(info.getDomain().toArray());
-				} else {
-					System.out.println("not selected");
-				}
+				} 
 			} else if (e.getSource() == removeRangeButton) {
 				if (!range.isSelectionEmpty()) {
 					Object[] rlist = range.getSelectedValues();
@@ -162,8 +159,6 @@ public class PropertyPanel extends RDFSPanel {
 					}
 					rdfsInfoMap.putCellInfo(cell, info);
 					range.setListData(info.getRange().toArray());
-				} else {
-					System.out.println("not selected");
 				}
 			}
 		}
@@ -173,23 +168,23 @@ public class PropertyPanel extends RDFSPanel {
 		public void actionPerformed(ActionEvent e) {
 			PropertyInfo info = (PropertyInfo) rdfsInfoMap.getCellInfo(cell);
 			if (info == null) {
-				System.out.println("cell is null");
 				return;
 			}
 
-			RDFGraph classGraph = gmanager.getClassGraph();
 			SelectRegionDialog regionDialog = new SelectRegionDialog();
 			if (e.getSource() == addDomainButton) {
-				regionDialog.replaceGraph(classGraph);
+				initRegionDialog(regionDialog);
 				regionDialog.setRegionSet(info.getDomain());
-				regionDialog.setVisible(true);
 				setDomainList((Set) regionDialog.getValue());
 			} else if (e.getSource() == addRangeButton) {
-				regionDialog.replaceGraph(classGraph);
+				initRegionDialog(regionDialog);
 				regionDialog.setRegionSet(info.getRange());
-				regionDialog.setVisible(true);
 				setRangeList((Set) regionDialog.getValue());
 			}
+		}
+		private void initRegionDialog(SelectRegionDialog regionDialog) {
+			regionDialog.replaceGraph(gmanager.getClassGraph());
+			regionDialog.setVisible(true);
 		}
 	}
 
@@ -198,9 +193,7 @@ public class PropertyPanel extends RDFSPanel {
 			PropertyInfo info = (PropertyInfo) rdfsInfoMap.getCellInfo(cell);
 			info.addAllDomain(set);
 			domain.setListData(info.getDomain().toArray());
-		} else {
-			System.out.println("cancel");
-		}
+		} 
 	}
 
 	private void setRangeList(Set set) {
@@ -208,9 +201,7 @@ public class PropertyPanel extends RDFSPanel {
 			PropertyInfo info = (PropertyInfo) rdfsInfoMap.getCellInfo(cell);
 			info.addAllRange(set);
 			range.setListData(info.getRange().toArray());
-		} else {
-			System.out.println("cancel");
-		}
+		} 
 	}
 
 	public void setValue(Set supCellSet) {

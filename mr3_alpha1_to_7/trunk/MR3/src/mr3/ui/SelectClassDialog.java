@@ -6,6 +6,7 @@ import javax.swing.*;
 
 import mr3.data.*;
 import mr3.jgraph.*;
+import mr3.util.*;
 
 import com.jgraph.event.*;
 import com.jgraph.graph.*;
@@ -100,6 +101,7 @@ public abstract class SelectClassDialog extends JDialog
 
     public void replaceGraph(RDFGraph newGraph) {
        	graph.setRDFState(newGraph.getRDFState());
+       	changeAllCellColor(Color.green);
     }
 
     public abstract void valueChanged(GraphSelectionEvent e);
@@ -113,4 +115,14 @@ public abstract class SelectClassDialog extends JDialog
         }
         setVisible(false);
     }
+
+	protected void changeAllCellColor(Color color) {
+		Object[] cells = graph.getAllCells();
+		for (int i = 0; i < cells.length; i++) {
+			GraphCell cell = (GraphCell) cells[i];
+			if (graph.isRDFSClassCell(cell)) {
+				ChangeCellAttributes.changeCellColor(graph, cell, color);
+			}
+		}
+	}
 }

@@ -58,6 +58,7 @@ public class RDFGraph extends JGraph {
 		setLockedHandleColor(Color.gray); // セルの周りの点々の色
 		setHighlightColor(Color.orange); // 選択されている色 				
 		setBackground(GRAPH_BACK_COLOR);
+		setCloneable(false);
 		setAntiAliased(true);
 		selectionModel.setChildrenSelectable(false);
 		graphModel.addGraphModelListener(new ModelListener());
