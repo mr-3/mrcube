@@ -27,7 +27,7 @@ public class HelpAbout extends MR3AbstractAction {
 
 	public void actionPerformed(ActionEvent e) {
 		URL logoUrl = this.getClass().getClassLoader().getResource("mr3/resources/mr3_logo.png");
-		new HelpDialog(supFrame, new ImageIcon(logoUrl));
+		new HelpWindow(supFrame, new ImageIcon(logoUrl));
 	}
 
 }
