@@ -1,9 +1,7 @@
 package mr3.editor;
 import java.awt.*;
-import java.awt.Container;
 import java.awt.event.*;
 import java.beans.*;
-import java.io.*;
 import java.net.*;
 import java.util.*;
 
@@ -15,7 +13,6 @@ import mr3.jgraph.*;
 import mr3.ui.*;
 import mr3.util.*;
 
-import com.hp.hpl.mesa.rdf.jena.model.*;
 import com.jgraph.event.*;
 import com.jgraph.graph.*;
 
@@ -138,15 +135,6 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 
 	protected void replaceGraph(RDFGraph newGraph) { // Objectを読み書きするのと、同様
 		graph.setRDFState(newGraph.getRDFState());
-	}
-
-	/** 　デバッグ用メソッド */
-	public void printModel(Model model) {
-		try {
-			model.write(new PrintWriter(System.out));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	// Create a Group that Contains the Cells

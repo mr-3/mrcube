@@ -207,10 +207,12 @@ public abstract class AbstractActionFile extends MR3AbstractAction {
 		try {
 			// 順番に注意．リテラルのモデルを抽出して，プロジェクトモデルを抽出してから
 			// リテラルモデルを削除する
+			// クラスとプロパティのリテラルモデルを抽出してはいけないので，
+			// RDFモデルのリテラルモデルを抽出してから，ＲＤＦＳモデルを抽出する
 			ProjectManager pm = new ProjectManager(mr3.getGraphManager(), mr3.getNSTableDialog());
 			Model exportModel = mr3.getRDFModel();
-			exportModel.add(mr3.getRDFSModel());
 			Model literalModel = pm.getLiteralModel(exportModel);
+			exportModel.add(mr3.getRDFSModel());
 			exportModel.add(pm.getProjectModel());
 			exportModel.remove(literalModel);
 			Writer output = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");

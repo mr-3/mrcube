@@ -78,20 +78,16 @@ public class RDFGraph extends JGraph {
 		return type;
 	}
 
-	private static final Color GRAPH_BACK_COLOR = new Color(235, 235, 235);
-
 	private void initStatus() {
 		setGridSize(6);
 		setSelectNewCells(true);
 		setGridEnabled(true);
 		setTolerance(10);
 		setCloneable(false);
-		setDisconnectable(false);
+		setDisconnectable(true);
 		setAntiAliased(true);
 		setEditable(false);
-		//		setHighlightColor(Color.orange); // ëIëÇ≥ÇÍÇƒÇ¢ÇÈêF 				
 		setUI(new RDFGraphUI());
-		setBackground(GRAPH_BACK_COLOR);
 		selectionModel.setChildrenSelectable(false);
 	}
 

@@ -37,9 +37,7 @@ public class PrefixNSUtil {
 		for (Iterator i = propList.iterator(); i.hasNext();) {
 			Object cell = i.next();
 			RDFSInfo info = rdfsInfoMap.getCellInfo(cell);
-			if (info != null) { // ここらへんは，バグがありそう．
-				propNSSet.add(info.getNameSpace());
-			}
+			propNSSet.add(info.getNameSpace());
 		}
 		return propNSSet;
 	}

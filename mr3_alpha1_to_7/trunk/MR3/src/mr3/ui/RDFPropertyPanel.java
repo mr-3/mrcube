@@ -133,13 +133,16 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 
 	private static final String NULL_LOCAL_NAME = "(Null)";
 
-	private void setPrefix() {
-		PrefixNSUtil.setPrefixNSInfoSet(gmanager.getPrefixNSInfoSet());
+	private void setURIPrefixBoxModel() {
 		if (propList != null && propOnlyCheck.isSelected()) {
 			uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPropPrefixes(propList).toArray()));
 		} else {
 			uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
 		}
+	}
+
+	private void setPrefix() {
+		setURIPrefixBoxModel();
 		for (Iterator i = gmanager.getPrefixNSInfoSet().iterator(); i.hasNext();) {
 			PrefixNSInfo prefNSInfo = (PrefixNSInfo) i.next();
 			if (prefNSInfo.getNameSpace().equals(nsLabel.getText())) {
@@ -151,7 +154,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 
 	private void selectNameSpaceList() {
 		PrefixNSUtil.replacePrefix((String) uriPrefixBox.getSelectedItem(), nsLabel);
-		
+
 		if (propMap == null) {
 			return;
 		}
@@ -177,6 +180,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		}
 		setRenderer(nameSpace, modifyLocalNames);
 		localNameList.setListData(modifyLocalNames.toArray());
+		localNameList.setSelectedValue(idField.getText(), true);
 	}
 
 	private void setNSLabel(String str) {
@@ -236,10 +240,6 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		setPrefix();
 	}
 
-	public void setValidPropertyList(List list) {
-		validPropList = list;
-	}
-
 	public void setPropertyList(List plist, List vlist) {
 		propList = plist;
 		validPropList = vlist;
@@ -258,8 +258,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 			localNames.add(uri.getLocalName());
 		}
 
-		//		localNameList.setListData(NULL);
-		localNameList.setSelectedValue(idField.getText(), true);
+		selectNameSpaceList();
 	}
 
 	private static final String selectSupPropertiesTitle = "Select Super Properties";
@@ -326,14 +325,10 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		if (e.getSource() == apply || e.getSource() == idField) {
 			if (edge != null) {
 				changeProperty();
-				gmanager.getRDFGraph().setSelectionCell(edge); // jumpÇæÇ∆Ç§Ç‹Ç≠Ç¢Ç©Ç»Ç©Ç¡ÇΩÅD
+				gmanager.jumpRDFArea(edge);
 			}
 		} else if (e.getSource() == propOnlyCheck) {
-			if (propOnlyCheck.isSelected()) {
-				uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPropPrefixes(propList).toArray()));				
-			} else {
-				uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
-			}			
+			setURIPrefixBoxModel();
 			selectNameSpaceList();
 		} else if (e.getSource() == jumpRDFSProp) {
 			jumpRDFSProperty();

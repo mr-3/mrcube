@@ -49,6 +49,7 @@ public class MR3 extends JFrame {
 	private FindResourceDialog findResDialog;
 	private AttributeDialog attrDialog;
 	private PrefDialog prefDialog;
+	private MR3LogConsole logger;
 
 	private GraphManager gmanager;
 	private RDFResourceInfoMap resInfoMap = RDFResourceInfoMap.getInstance();
@@ -70,7 +71,7 @@ public class MR3 extends JFrame {
 	private JRadioButton idView;
 	private JRadioButton labelView;
 
-	private static final Color DESKTOP_BACK_COLOR = new Color(225, 225, 225);
+	private static final Color DESKTOP_BACK_COLOR = new Color(235, 235, 235);
 
 	private Preferences userPrefs; // ユーザの設定を保存(Windowサイズなど）
 	private static ResourceBundle resources;
@@ -84,6 +85,7 @@ public class MR3 extends JFrame {
 		setLocation(userPrefs.getInt(PrefConstants.WindowPositionX, 50), userPrefs.getInt(PrefConstants.WindowPositionY, 50));
 		//		setLookAndFeel();
 
+		logger = new MR3LogConsole("Log Console", null);
 		attrDialog = new AttributeDialog();
 		gmanager = new GraphManager(attrDialog, userPrefs);
 		getContentPane().add(createToolBar(), BorderLayout.NORTH);
@@ -102,7 +104,6 @@ public class MR3 extends JFrame {
 
 		//		setTreeLayout();
 		desktop.setBackground(DESKTOP_BACK_COLOR);
-
 		getContentPane().add(desktop);
 
 		setJMenuBar(createMenuBar());
@@ -271,6 +272,19 @@ public class MR3 extends JFrame {
 		return selectMenu;
 	}
 
+	/** 　デバッグ用メソッド */
+	public void printModel(Model model) {
+		try {
+			model.write(new PrintWriter(System.out));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public JFrame getLogConsole() {
+		return logger;
+	}
+
 	public JInternalFrame[] getInternalFrames() {
 		return iFrames;
 	}
@@ -347,7 +361,7 @@ public class MR3 extends JFrame {
 		menu.addSeparator();
 		menu.add(getPluginMenus()); // JavaWebStartでは，pluginは使用できないと思われる．
 		menu.addSeparator();
-		menu.add(new ExitAction(this));
+		menu.add(new Exit(this));
 
 		return menu;
 	}
@@ -480,6 +494,8 @@ public class MR3 extends JFrame {
 
 	private JMenu getWindowMenu() {
 		JMenu menu = new JMenu("Window");
+		menu.add(new ShowLogConsole(this, "Log Console"));
+		menu.addSeparator();
 		menu.add(new EditorSelect(this, TO_FRONT_RDF_EDITOR));
 		menu.add(new EditorSelect(this, TO_FRONT_CLASS_EDITOR));
 		menu.add(new EditorSelect(this, TO_FRONT_PROPERTY_EDITOR));
