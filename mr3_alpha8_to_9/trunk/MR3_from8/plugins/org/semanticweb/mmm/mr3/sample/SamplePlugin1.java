@@ -16,7 +16,7 @@ public class SamplePlugin1 extends MR3Plugin {
 	public void exec() {
 		ModelMem sampleModel = new ModelMem();
 		try {
-			String sampleURI = "http://panda.cs.inf.shizuoka.ac.jp/mmm/mr3#";
+			String sampleURI = "http://mmm.semanticweb.org/mr3#";
 			Resource sampleSubject = new ResourceImpl(sampleURI+"sample_subject");		
 			Property sampleProperty = new PropertyImpl(sampleURI+"sample_property");
             Literal sampleLiteral = sampleModel.createLiteral("sample_literal");

@@ -9,7 +9,7 @@ import com.hp.hpl.jena.rdf.model.*;
  */
 public class MR3Resource {
 
-	private static final String DEFAULT_URI = "http://panda.cs.inf.shizuoka.ac.jp/mmm/mr3#";
+	private static final String DEFAULT_URI = "http://mmm.semanticweb.org/mr3#";
 	private static final String DEFAULT_LANG = "DefaultLang";
 	private static final String PROPERTY = "Property";
 	private static final String NIL = "nil";
