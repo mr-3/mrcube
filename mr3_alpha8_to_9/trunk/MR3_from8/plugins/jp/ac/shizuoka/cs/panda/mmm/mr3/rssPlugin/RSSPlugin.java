@@ -35,7 +35,7 @@ public class RSSPlugin extends MR3Plugin {
 		DOMParser parser = new DOMParser();
 		parser.parse(uri);
 		channelInfo = new ItemInfo(new URI(uri));
-		//		System.out.println(parser.getDocument().getDocumentElement());
+		//		System.out.println("root: "+parser.getDocument().getDocumentElement());
 		Element rootElement = parser.getDocument().getDocumentElement();
 		storeChannelInfo(rootElement);
 	}
@@ -73,28 +73,27 @@ public class RSSPlugin extends MR3Plugin {
 					Boolean bool = (Boolean) tblModel.getValueAt(i, 0);
 					if (bool.booleanValue()) {
 						URI uri = (URI) tblModel.getValueAt(i, 1);
-						ItemInfo info = (ItemInfo) itemInfoMap.get(uri);						
-						parser.parse(uri.toString());
+						try {
+							parser.parse(uri.toString());
+						} catch (SAXException saxEx) {
+							saxEx.printStackTrace();
+						} catch (IOException ioEx) {
+							ioEx.printStackTrace();
+						}
+						ItemInfo info = (ItemInfo) itemInfoMap.get(uri);
 						storeItemInfo(parser.getDocument().getDocumentElement(), info);
-						
+
 						Resource item = new ResourceImpl(info.getURI().toString());
 						rssModel.add(new StatementImpl(anon, RDF.li(itemCnt++), item));
 						rssModel.add(new StatementImpl(item, RDF.type, RSS.item));
 						rssModel.add(new StatementImpl(item, RSS.link, rssModel.createLiteral(info.getLink())));
 						rssModel.add(new StatementImpl(item, RSS.description, rssModel.createLiteral(info.getDescription())));
 						rssModel.add(new StatementImpl(item, RSS.title, rssModel.createLiteral(info.getTitle())));
-
-						//						System.out.println("uri: " + info.getURI());
-						//						System.out.println("title: " + info.getTitle());
-						//						System.out.println("link: " + info.getLink());
-						//						System.out.println("description: " + info.getDescription() + "\n");
 					}
 				}
 				replaceRDFModel(rssModel);
 			} catch (RDFException rdfex) {
 				rdfex.printStackTrace();
-			} catch (SAXException rdfex) {
-			} catch (IOException rdfex) {
 			}
 			frame.setVisible(false);
 		}
@@ -103,6 +102,9 @@ public class RSSPlugin extends MR3Plugin {
 	public void exec() {
 		try {
 			String uri = JOptionPane.showInternalInputDialog(getDesktopPane(), "Input URI (exp: http://panda.cs.inf.shizuoka.ac.jp/mmm/mr3/");
+			if (uri == null || uri.length() == 0) {
+				return;
+			}
 			parse(uri);
 			showRSSPluginUI();
 		} catch (IOException ex1) {
@@ -150,13 +152,12 @@ public class RSSPlugin extends MR3Plugin {
 
 	private boolean isFile(URI uri) {
 		System.out.println(uri.getPath());
-		//uri.getFragment() == null;
+		// uri.getFragment() == null;
 		return (uri.getPath().matches(".*/") || uri.getPath().matches(".*.html") || uri.getPath().matches(".*.htm"));
 	}
 
 	private boolean isValidURI(URI uri) {
-		return true;
-		//		return (uri != null && isValidScheme(uri.getScheme()) && isValidHost(uri.getHost()) && isFile(uri));
+		return (uri != null && isValidScheme(uri.getScheme()) && isValidHost(uri.getHost()) && isFile(uri));
 	}
 
 	public void storeChannelInfo(Element rootElement) throws MalformedURLException, IOException, SAXException, URISyntaxException {

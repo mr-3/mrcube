@@ -4,6 +4,7 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
+import jp.ac.shizuoka.cs.panda.mmm.mr3.actions.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.data.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.ui.*;
 
@@ -96,49 +97,17 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 		}
 
 		menu.addSeparator();
-
-		menu.add(new AbstractAction("Copy") {
-			public void actionPerformed(ActionEvent e) {
-				graph.copy();
-			}
-		});
-
-		menu.add(new AbstractAction("Cut") {
-			public void actionPerformed(ActionEvent e) {
-				graph.copy();
-				gmanager.removeAction(graph);
-			}
-		});
-
-		menu.add(new AbstractAction("Paste") {
-			public void actionPerformed(ActionEvent e) {
-				graph.paste();
-			}
-		});
+		menu.add(new ConnectAction("Connect Mode"));
+		menu.addSeparator();
+		menu.add(new CopyAction(graph, "Copy"));
+		menu.add(new CutAction(graph, "Cut"));
+		menu.add(new PasteAction(graph, "Paste"));
 
 		if (cell != null || !graph.isSelectionEmpty()) {
-			menu.add(new AbstractAction("Remove") {
-				public void actionPerformed(ActionEvent e) {
-					gmanager.removeAction(graph);
-				}
-			});
+			menu.add(new RemoveAction(graph, gmanager, "Remove"));
 		}
-
 		menu.addSeparator();
-
-		menu.add(new AbstractAction("Connect mode") {
-			public void actionPerformed(ActionEvent e) {
-				connectAction();
-			}
-		});
-
-		menu.addSeparator();
-		menu.add(new AbstractAction("Attribute Dialog") {
-			public void actionPerformed(ActionEvent e) {
-				gmanager.setVisibleAttrDialog(true);
-				graph.setSelectionCell(graph.getSelectionCell());
-			}
-		});
+		menu.add(new ShowAttrDialog(graph, gmanager, "Attribute Dialog"));
 
 		return menu;
 	}

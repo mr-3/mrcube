@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.swing.*;
 
+import jp.ac.shizuoka.cs.panda.mmm.mr3.actions.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.data.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.ui.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
@@ -29,7 +30,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 	protected PortView port, firstPort; // Holds the First and the Current Port
 
 	private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
-	
+
 	public RDFGraphMarqueeHandler(GraphManager manager, RDFGraph graph) {
 		gmanager = manager;
 		this.graph = graph;
@@ -169,11 +170,18 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 		}
 	}
 
-	protected void connectAction() {
-		if (connectButton.isSelected()) {
-			moveButton.setSelected(true);
-		} else {
-			connectButton.setSelected(true);
+	protected class ConnectAction extends AbstractAction {
+			
+		protected ConnectAction(String title) {
+			super(title);		
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			if (connectButton.isSelected()) {
+				moveButton.setSelected(true);
+			} else {
+				connectButton.setSelected(true);
+			}
 		}
 	}
 
@@ -229,7 +237,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 		} else {
 			graph.setSelectionCell(targetCell);
 		}
-		gmanager.changeCellView();		
+		gmanager.changeCellView();
 	}
 
 	public void insertConnectedLiteralCell(Point pt) {
@@ -241,7 +249,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 		Port targetPort = (Port) targetCell.getChildAt(0);
 		connectCells(selectedResourcePorts, targetPort);
 		graph.setSelectionCell(targetCell);
-		gmanager.changeCellView();		
+		gmanager.changeCellView();
 	}
 
 	private void connectCells(Set selectedResourcePorts, Port targetPort) {
@@ -293,11 +301,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 
 		menu.addSeparator();
 
-		menu.add(new AbstractAction("Connect mode") {
-			public void actionPerformed(ActionEvent e) {
-				connectAction();
-			}
-		});
+		menu.add(new ConnectAction("Connect Mode"));
 
 		if (graph.isOneCellSelected(cell) && graph.isRDFResourceCell(cell)) {
 			menu.add(new AbstractAction("Self Connect") {
@@ -309,40 +313,16 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 		}
 
 		menu.addSeparator();
-
-		menu.add(new AbstractAction("Copy") {
-			public void actionPerformed(ActionEvent e) {
-				graph.copy();
-			}
-		});
-
-		menu.add(new AbstractAction("Cut") {
-			public void actionPerformed(ActionEvent e) {
-				graph.cut();
-			}
-		});
-
-		menu.add(new AbstractAction("Paste") {
-			public void actionPerformed(ActionEvent e) {
-				graph.paste();
-			}
-		});
+		menu.add(new CopyAction(graph, "Copy"));
+		menu.add(new CutAction(graph, "Cut"));
+		menu.add(new PasteAction(graph, "Paste"));
 
 		if (cell != null || !graph.isSelectionEmpty()) {
-			menu.add(new AbstractAction("Remove") {
-				public void actionPerformed(ActionEvent e) {
-					gmanager.removeAction(graph);
-				}
-			});
+			menu.add(new RemoveAction(graph, gmanager, "Remove"));
 		}
 
 		menu.addSeparator();
-		menu.add(new AbstractAction("Attribute Dialog") {
-			public void actionPerformed(ActionEvent e) {
-				gmanager.setVisibleAttrDialog(true);
-				graph.setSelectionCell(graph.getSelectionCell());
-			}
-		});
+		menu.add(new ShowAttrDialog(graph, gmanager, "Attribute Dialog"));
 
 		return menu;
 	}
