@@ -13,6 +13,7 @@ import mr3.jgraph.*;
 import mr3.ui.*;
 import mr3.util.*;
 
+import com.jgraph.*;
 import com.jgraph.event.*;
 import com.jgraph.graph.*;
 
@@ -205,6 +206,14 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 		remove.setEnabled(enabled);
 	}
 
+	public JViewport getJViewport(){
+		return graphScrollPane.getViewport();
+	}
+	
+	public JGraph getGraph() {
+		return graph;
+	}
+	
 	public void fitWindow() {
 		Rectangle p = graph.getCellBounds(graph.getRoots());
 		if (p != null) {

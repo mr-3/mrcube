@@ -4,7 +4,7 @@
     <classpathentry kind="src" output="plugins" path="plugins"/>
     <classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
     <classpathentry kind="lib" path="build/lib/icu4j.jar"/>
-    <classpathentry kind="lib" path="build/lib/jgraph.jar"/>
+    <classpathentry kind="lib" path="build/lib/jgraph.jar" sourcepath="E:/usr/jgraph-2.2-java1.4-src/docs"/>
     <classpathentry kind="lib" path="build/lib/xerces.jar"/>
     <classpathentry kind="lib" path="build/lib/jena.jar" sourcepath="E:/usr/Jena-1.6.1/src"/>
     <classpathentry kind="output" path="build/classes"/>
