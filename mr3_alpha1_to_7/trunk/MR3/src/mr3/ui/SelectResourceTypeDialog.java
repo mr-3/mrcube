@@ -36,35 +36,35 @@ public class SelectResourceTypeDialog extends SelectClassDialog {
 		inlinePanel.add(dspURI);
 	}
 
-	public void setInitCell(Object typeCell) {
-		if (typeCell == null) {
-			if (prevCell != null) {
-				ChangeCellAttributes.changeCellColor(graph, prevCell, Color.green);
+	private void changeTypeCellColor(Object typeCell) {
+		Object[] cells = graph.getAllCells();
+		for (int i = 0; i < cells.length; i++) {
+			GraphCell cell = (GraphCell) cells[i];
+			if (graph.isRDFSClassCell(cell)) {
+				if (cell == typeCell) {
+					ChangeCellAttributes.changeCellColor(graph, cell, Color.yellow);
+					prevCell = cell;
+					graph.setSelectionCell(cell);
+					break;
+				}
 			}
+		}
+	}
+
+	public void setInitCell(Object typeCell) {
+		changeAllCellColor(Color.green);
+		if (typeCell == null) {
 			prevCell = null;
 			dspURI.setText("");
 			return;
 		} else {
-			Object[] cells = graph.getAllCells();
-			for (int i = 0; i < cells.length; i++) {
-				GraphCell cell = (GraphCell) cells[i];
-				//				if (graph.isRDFResourceCell(cell)) {
-				if (graph.isRDFSClassCell(cell)) {
-					if (cell == typeCell) {
-						ChangeCellAttributes.changeCellColor(graph, cell, Color.yellow);
-						prevCell = cell;
-						graph.setSelectionCell(cell);
-						break;
-					}
-				}
-			}
+			changeTypeCellColor(typeCell);
 		}
 	}
 
 	public void valueChanged(GraphSelectionEvent e) {
 		cell = (GraphCell) graph.getSelectionCell();
 		if (graph.getSelectionCount() == 1 && graph.getModel().getChildCount(cell) <= 1) {
-			//			if (graph.isRDFResourceCell(cell)) {	
 			if (graph.isRDFSClassCell(cell)) {
 				ChangeCellAttributes.changeCellColor(graph, prevCell, Color.green);
 				ChangeCellAttributes.changeCellColor(graph, cell, Color.yellow);
