@@ -15,6 +15,7 @@
 * Look & Feelを変更できるようになった．(View->Look & Feel->Metal, Windows, Motif)   
 * インタフェースの表示を日本語と英語の２種類から選択できるようになった．
 * JenaのバージョンがJena2になった．
+* JavaHelpを作成した．（ヘルプ->ヘルプ）
 * その他，細かい修正．
    
 ==== Bug Fixes
