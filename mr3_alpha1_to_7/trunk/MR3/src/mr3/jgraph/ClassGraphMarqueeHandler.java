@@ -37,12 +37,12 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 		super.mouseReleased(e);
 	}
 
-	public void insertResourceCell(Point pt) {
+	public GraphCell insertResourceCell(Point pt) {
 		String uri = JOptionPane.showInternalInputDialog(graph, "Please input URI");
 		if (uri == null || gmanager.isEmptyURI(uri) || gmanager.isDuplicatedWithDialog(uri, null, GraphType.CLASS)) {
-			return;
+			return null;
 		} else {
-			cellMaker.insertClass(pt, uri);
+			return cellMaker.insertClass(pt, uri);
 		}
 	}
 

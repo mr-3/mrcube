@@ -21,7 +21,7 @@ public class RDFResourceInfo implements Serializable {
 		uriType = ut;
 		if (uriType == URIType.ANONYMOUS) {
 //			this.uri = getAnonResource();
-			this.uri = getAnonResource().getURI();
+			this.uri = getAnonResource().toString(); // getURI()は，nullを返してしまうため．
 		} else {
 //			this.uri = new ResourceImpl(uri);
 			this.uri = uri;
@@ -106,7 +106,7 @@ public class RDFResourceInfo implements Serializable {
 	public void setURI(String str) {
 		if (uriType == URIType.ANONYMOUS) {
 //			uri = getAnonResource();
-			uri = getAnonResource().getURI();
+			uri = getAnonResource().toString(); // getURI()は，nullを返してしまうため，toString
 		} else {
 //			uri = new ResourceImpl(str);
 			uri = str;
@@ -114,7 +114,11 @@ public class RDFResourceInfo implements Serializable {
 	}
 
 	public Resource getURI() {
-		return new ResourceImpl(uri);
+		if (uriType == URIType.ANONYMOUS) {
+			return new ResourceImpl(new AnonId(uri)); // AnonymousＩＤを処理するため．
+		} else {
+			return new ResourceImpl(uri);
+		}
 	}
 
 	public String getURIStr() {
