@@ -397,9 +397,9 @@ public class RDFGraph extends JGraph {
 		return false;
 	}
 
-	private Object[] getValidCopyList() {
+	private Object[] getValidCopyList(JGraph graph) {
 		List copyList = new ArrayList();
-		Object[] cells = getSelectionCells();
+		Object[] cells = graph.getSelectionCells();
 		for (int i = 0; i < cells.length; i++) {
 			if (isEdge(cells[i])) {
 				Edge edge = (Edge) cells[i];
@@ -414,17 +414,26 @@ public class RDFGraph extends JGraph {
 	}
 
 	class GraphCopyBuffer {
-		private Object[] copyList;
-		private GraphTransferable graphTransferable;
 		private Point copyPoint; // コピーを行った位置
+		private Object[] copyList;
+
+		private ConnectionSet orgCs;
 		private ConnectionSet csClone; // cloneのConnectionSet
+
+		private Map orgAttributesMap;
 		private Map cloneAttributes; // cloneのAttributes
+
+		private Map cloneMap;
 		private Map cloneInfoMap;
 
-		GraphCopyBuffer(Point pt, Object[] list, GraphTransferable gt) {
+		private Map copyRDFSInfoMap;
+
+		GraphCopyBuffer(Point pt, Object[] list, GraphTransferable gt, Map map) {
 			copyPoint = pt;
 			copyList = list;
-			graphTransferable = gt;
+			orgCs = gt.getConnectionSet();
+			orgAttributesMap = gt.getAttributeMap();
+			copyRDFSInfoMap = map;
 		}
 
 		public ConnectionSet getCloneConnectionSet() {
@@ -447,30 +456,47 @@ public class RDFGraph extends JGraph {
 			return cloneInfoMap.keySet();
 		}
 
-		public void createClones() {
-			Map cloneMap = cloneCells(copyList);
-			Map nested = graphTransferable.getAttributeMap();
-			nested = GraphConstants.replaceKeys(cloneMap, nested);
-			cloneAttributes = nested;
-			ConnectionSet cs = graphTransferable.getConnectionSet();
-			csClone = cs.clone(cloneMap);
+		public Map getCloneMap() {
+			return cloneMap;
+		}
 
+		public void createClones() {
+			cloneMap = cloneCells(copyList);
+			cloneAttributes = GraphConstants.cloneMap(orgAttributesMap);
+
+			csClone = orgCs.clone(cloneMap);
 			cloneInfoMap = new HashMap();
 			for (Iterator i = cloneMap.keySet().iterator(); i.hasNext();) {
 				Object cell = i.next();
 				if (isRDFSClassCell(cell)) {
-					ClassInfo orgInfo = (ClassInfo) rdfsInfoMap.getCellInfo(cell);
+					ClassInfo orgInfo = (ClassInfo) copyRDFSInfoMap.get(cell);
 					ClassInfo newInfo = rdfsInfoMap.cloneClassInfo(orgInfo);
 					cloneInfoMap.put(cloneMap.get(cell), newInfo);
+					
+
+					// 元のセルとコピー位置との差を求める
+					GraphCell orgCell = (GraphCell)cell;
+					Map orgMap = orgCell.getAttributes();
+					Map newMap = ((GraphCell)cloneMap.get(cell)).getAttributes(); 
+					Rectangle orgRec = GraphConstants.getBounds(orgMap);
+					Rectangle newRec = new Rectangle(orgRec);
+//					System.out.println("pref Copy: "+copyPoint);
+//					System.out.println("Sa: "+orgRec);
+					newRec.x = orgRec.x - copyPoint.x;
+					newRec.y = orgRec.y - copyPoint.y;
+
+					GraphConstants.setBounds(newMap, newRec);
+					Map nested = new HashMap();
+					nested.put(cloneMap.get(cell), GraphConstants.cloneMap(newMap));
+					getModel().edit(nested, null, null, null);					
+					
 				}
 			}
 		}
 	}
 
-	private void copyClass(Point copyPoint) {
-		Object[] copyList = getValidCopyList();
-		
-		TransferHandler th = getTransferHandler();		
+	private GraphTransferable getGraphTransferable(JGraph graph) {
+		TransferHandler th = graph.getTransferHandler();
 		GraphTransferable gt = null;
 		if (th instanceof BasicGraphUI.GraphTransferHandler) {
 			BasicGraphUI.GraphTransferHandler gth = (BasicGraphUI.GraphTransferHandler) th;
@@ -479,10 +505,40 @@ public class RDFGraph extends JGraph {
 				gt = (GraphTransferable) t;
 			}
 		}
+		return gt;
+	}
+
+	private void copyClass(Point copyPoint) {
+		GraphTransferable gt = getGraphTransferable(this);
 		if (gt == null) {
 			return;
 		}
-		copyBuffer = new GraphCopyBuffer(copyPoint, copyList, gt);
+
+		Map clones = cloneCells(gt.getCells());
+		ConnectionSet cs = gt.getConnectionSet().clone(clones);
+		Map attributes = gt.getAttributeMap();
+		attributes = GraphConstants.replaceKeys(clones, attributes);
+		Object[] cells = clones.values().toArray();
+		RDFGraph bufferGraph = new RDFGraph();
+		bufferGraph.getModel().insert(cells, attributes, cs, null, null);
+		gt = getGraphTransferable(bufferGraph);
+
+		if (gt == null) {
+			return;
+		}
+		Object[] copyList = getValidCopyList(bufferGraph);
+
+		Map copyRDFSInfoMap = new HashMap();
+		for (Iterator i = clones.keySet().iterator(); i.hasNext();) {
+			Object cell = i.next();
+			if (isRDFSClassCell(cell)) {
+				ClassInfo orgInfo = (ClassInfo) rdfsInfoMap.getCellInfo(cell);
+				ClassInfo newInfo = rdfsInfoMap.cloneClassInfo(orgInfo);
+				copyRDFSInfoMap.put(clones.get(cell), newInfo);
+			}
+		}
+
+		copyBuffer = new GraphCopyBuffer(copyPoint, copyList, gt, copyRDFSInfoMap);
 	}
 
 	private void copyProperty(Point pt) {
@@ -501,13 +557,13 @@ public class RDFGraph extends JGraph {
 		}
 	}
 
-	private void setPastePosition(GraphCell cell, String value, Point pastePoint, Point copyPoint) {
+	private void setPastePosition(GraphCell cell, String value, Point pastePoint) {
 		Map map = cell.getAttributes();
 		Rectangle rec = GraphConstants.getBounds(map);
-		int x = Math.abs(copyPoint.x - rec.x);
-		int y = Math.abs(copyPoint.y - rec.y);
-		rec.x = 10;
-		rec.y = 10;
+//		System.out.println(rec);
+//		System.out.println("paste: "+pastePoint);
+		rec.x = pastePoint.x + rec.x;
+		rec.y = pastePoint.y + rec.y;
 		GraphConstants.setBounds(map, rec);
 		GraphConstants.setValue(map, value);
 		Map nested = new HashMap();
@@ -535,10 +591,17 @@ public class RDFGraph extends JGraph {
 					}
 				}
 				rdfsInfoMap.putCellInfo(cell, info);
-				setPastePosition(cell, info.getURIStr(), pastePoint, copyBuffer.getCopyPoint());
+				setPastePosition(cell, info.getURIStr(), pastePoint);
 			}
 		}
-		getGraphLayoutCache().insert(copyBuffer.keySet().toArray(), copyBuffer.getCloneAttributes(), copyBuffer.getCloneConnectionSet(), null, null);
+
+		getGraphLayoutCache().insert(
+			copyBuffer.getCloneMap().values().toArray(),
+			copyBuffer.getCloneAttributes(),
+			copyBuffer.getCloneConnectionSet(),
+			null,
+			null);
+		gmanager.changeCellView();
 		gmanager.changeCellView();
 	}
 
