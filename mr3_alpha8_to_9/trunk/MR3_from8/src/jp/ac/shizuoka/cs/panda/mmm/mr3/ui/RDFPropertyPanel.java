@@ -49,7 +49,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 
 	public RDFPropertyPanel(GraphManager manager) {
 		gmanager = manager;
-		setBorder(BorderFactory.createTitledBorder("RDF Property Attributes"));
+		setBorder(BorderFactory.createTitledBorder(Translator.getString("AttributeDialog.RDFPropertyAttribute.Text")));
 
 		isContainerBox = new JCheckBox("is Container");
 		isContainerBox.addActionListener(new ContainerBoxAction());
@@ -83,9 +83,9 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		nsLabel = new JLabel();
 		initComponent(nsLabel, "NameSpace", LIST_WIDTH, LIST_HEIGHT);
 
-		apply = new JButton("Apply");
+		apply = new JButton(Translator.getString("Apply"));
 		apply.addActionListener(this);
-		close = new JButton("Close");
+		close = new JButton(Translator.getString("Close"));
 		close.addActionListener(this);
 		JPanel buttonGroup = new JPanel();
 		buttonGroup.add(apply);

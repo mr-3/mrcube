@@ -68,16 +68,14 @@ public abstract class AbstractActionFile extends MR3AbstractAction {
 		return output;
 	}
 
-	protected Model readModel(Reader r, String xmlbase) {
+	protected Model readModel(Reader r, String xmlbase, String type) {
 		if (r == null) {
 			return null;
 		}
 		Model model = new ModelMem();
-		//		RDFReader reader = new JenaReader();
 		try {
-			//			RDFReader reader = new RDFReaderFImpl().getReader("RDF/XML-ABBREV");
 			// ˆÈ‰º‚ÌABBREV‚Æ“¯—l
-			RDFReader reader = new RDFReaderFImpl().getReader("RDF/XML");
+			RDFReader reader = new RDFReaderFImpl().getReader(type);
 			reader.read(model, r, xmlbase);
 		} catch (RDFException e) {
 			e.printStackTrace();

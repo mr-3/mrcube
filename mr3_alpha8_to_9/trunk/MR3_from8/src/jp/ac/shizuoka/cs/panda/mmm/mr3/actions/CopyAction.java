@@ -17,7 +17,7 @@ import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 public class CopyAction extends AbstractAction {
 	
 	private RDFGraph graph;
-	private static final String TITLE = Translator.getString("Action.Copy.Title");
+	private static final String TITLE = Translator.getString("Action.Copy.Text");
 	private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("Action.Copy.Icon")); 
 
 	public CopyAction(RDFGraph g) {

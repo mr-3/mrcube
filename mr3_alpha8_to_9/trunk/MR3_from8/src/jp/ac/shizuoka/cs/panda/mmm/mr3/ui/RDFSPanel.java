@@ -75,9 +75,9 @@ public abstract class RDFSPanel extends JPanel {
 		graph = g;
 		gmanager = manager;
 		initInstancesList();
-		apply = new JButton("Apply");
+		apply = new JButton(Translator.getString("Apply"));
 		apply.addActionListener(new ChangeInfoAction());
-		close = new JButton("Close");
+		close = new JButton(Translator.getString("Close"));
 		close.addActionListener(new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
 				gmanager.setVisibleAttrDialog(false);

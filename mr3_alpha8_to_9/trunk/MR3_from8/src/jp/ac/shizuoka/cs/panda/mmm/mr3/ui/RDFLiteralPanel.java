@@ -35,7 +35,7 @@ public class RDFLiteralPanel extends JPanel implements ActionListener {
 	public RDFLiteralPanel(GraphManager manager) {
 		gmanager = manager;
 		typeMapper = TypeMapper.getInstance();
-		setBorder(BorderFactory.createTitledBorder("RDF Literal Attributes"));
+		setBorder(BorderFactory.createTitledBorder(Translator.getString("AttributeDialog.RDFLiteralAttribute.Text")));
 
 		langField = new JTextField(10);
 		langField.setBorder(BorderFactory.createTitledBorder("Lang"));
@@ -66,9 +66,9 @@ public class RDFLiteralPanel extends JPanel implements ActionListener {
 //		valueScroll.setPreferredSize(new Dimension(LABEL_WIDTH, LABEL_HEIGHT));
 //		valueScroll.setMinimumSize(new Dimension(LABEL_WIDTH, LABEL_HEIGHT));
 
-		applyButton = new JButton("Apply");
+		applyButton = new JButton(Translator.getString("Apply"));
 		applyButton.addActionListener(this);
-		closeButton = new JButton("Close");
+		closeButton = new JButton(Translator.getString("Close"));
 		closeButton.addActionListener(this);
 		JPanel buttonGroup = new JPanel();
 		buttonGroup.add(applyButton);

@@ -8,6 +8,7 @@ import javax.swing.event.*;
 
 import jp.ac.shizuoka.cs.panda.mmm.mr3.data.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.jgraph.*;
+import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 
 /**
  *
@@ -30,7 +31,7 @@ public class PropertyPanel extends RDFSPanel {
 
 	public PropertyPanel(GraphManager manager) {
 		super(manager.getPropertyGraph(), manager);
-		setBorder(BorderFactory.createTitledBorder("RDFS Property Attributes"));
+		setBorder(BorderFactory.createTitledBorder(Translator.getString("AttributeDialog.RDFSPropertyAttribute.Text")));
 		setBaseTab();
 		setCommentTab();
 		setRegionTab();

@@ -11,6 +11,8 @@
 * RDFSの置換ができるようになった．File->Import->Replace->RDFS/XML(File|URI)
 * getRDFGraph()，getClassGraph()，getPropertyGraph()メソッドをMR3Pluginクラスに追加．
    プラグインで，レイアウトを行えるようになった．(File->Plugins->SugiyamaLayout)
+* Look & Feelを変更できるようになった．(View->Look & Feel->Metal, Windows, Motif)   
+* UIの表示を日本語と英語の２種類から選択できるようになった．
 * その他，細かい修正．
    
 ==== Bug Fixes

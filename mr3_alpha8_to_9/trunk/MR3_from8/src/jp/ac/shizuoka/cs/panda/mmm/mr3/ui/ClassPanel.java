@@ -5,6 +5,7 @@ import java.util.*;
 import javax.swing.*;
 
 import jp.ac.shizuoka.cs.panda.mmm.mr3.jgraph.*;
+import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 
 public class ClassPanel extends RDFSPanel {
 
@@ -13,7 +14,7 @@ public class ClassPanel extends RDFSPanel {
 
 	public ClassPanel(RDFGraph g, GraphManager manager) {
 		super(g, manager);
-		setBorder(BorderFactory.createTitledBorder("RDFS Class Attributes"));
+		setBorder(BorderFactory.createTitledBorder(Translator.getString("AttributeDialog.RDFSClassAttribute.Text")));
 		setBaseTab();
 		setCommentTab();
 		setReferenceTab();

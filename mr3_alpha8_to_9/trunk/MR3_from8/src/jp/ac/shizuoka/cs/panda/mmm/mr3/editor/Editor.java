@@ -249,7 +249,7 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 			mh.moveButton.setIcon(Utilities.getImageIcon("move.gif")); // move
 			toolbar.add(mh.moveButton);
 
-			ImageIcon connectIcon = Utilities.getImageIcon("arrow.gif"); // Toggle Connect Mode
+			ImageIcon connectIcon = Utilities.getImageIcon(Translator.getString("Action.Connect.Icon")); // Toggle Connect Mode
 			mh.connectButton.setIcon(connectIcon);
 			toolbar.add(mh.connectButton);
 

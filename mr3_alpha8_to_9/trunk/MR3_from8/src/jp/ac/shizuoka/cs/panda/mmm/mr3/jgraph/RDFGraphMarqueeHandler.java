@@ -171,9 +171,9 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 
 	protected class ConnectAction extends AbstractAction {
 
-		protected ConnectAction(String title) {
-			super(title);
-			setValues(title);
+		protected ConnectAction() {
+			super(Translator.getString("Action.Connect.Text"));
+			setValues(Translator.getString("Action.Connect.Text"));
 		}
 
 		private void setValues(String title) {
@@ -308,21 +308,21 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 		});
 
 		if (isCellSelected(cell)) {
-			menu.add(new AbstractAction("Insert Connected Resource") {
+			menu.add(new AbstractAction(Translator.getString("InsertConnectedResource.Title")) {
 				public void actionPerformed(ActionEvent ev) {
 					insertConnectedResource(pt);
 				}
 			});
 		}
 
-		menu.add(new AbstractAction("Insert Literal") {
+		menu.add(new AbstractAction(Translator.getString("InsertLiteralDialog.Title")) {
 			public void actionPerformed(ActionEvent ev) {
 				insertLiteralCell(pt);
 			}
 		});
 
 		if (isCellSelected(cell)) {
-			menu.add(new AbstractAction("Insert Connected Literal") {
+			menu.add(new AbstractAction(Translator.getString("InsertConnectedLiteral.Title")) {
 				public void actionPerformed(ActionEvent ev) {
 					insertConnectedLiteralCell(pt);
 				}
@@ -330,7 +330,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 		}
 
 		menu.addSeparator();
-		menu.add(new ConnectAction("Connect Mode"));
+		menu.add(new ConnectAction());
 
 		if (graph.isOneCellSelected(cell) && graph.isRDFResourceCell(cell)) {
 			menu.add(new AbstractAction("Self Connect") {

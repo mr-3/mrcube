@@ -49,7 +49,7 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 	public RDFResourcePanel(GraphManager manager) {
 		gmanager = manager;
 
-		setBorder(BorderFactory.createTitledBorder("RDF Resource Attributes"));
+		setBorder(BorderFactory.createTitledBorder(Translator.getString("AttributeDialog.RDFResourceAttribute.Text")));
 
 		resTypePrefixBox = new JComboBox();
 		initComponent(resTypePrefixBox, "Prefix", BOX_WIDTH, 50);
@@ -99,10 +99,10 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		resNSLabel = new JLabel();
 		initComponent(resNSLabel, "NameSpace", LIST_WIDTH, LIST_HEIGHT);
 
-		applyButton = new JButton("Apply");
+		applyButton = new JButton(Translator.getString("Apply"));
 		applyButton.addActionListener(this);
 
-		closeButton = new JButton("Close");
+		closeButton = new JButton(Translator.getString("Close"));
 		closeButton.addActionListener(this);
 		JPanel buttonGroup = new JPanel();
 		buttonGroup.add(applyButton);
