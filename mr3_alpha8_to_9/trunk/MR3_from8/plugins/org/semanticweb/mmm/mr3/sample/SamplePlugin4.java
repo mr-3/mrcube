@@ -26,7 +26,7 @@ import java.util.*;
 import org.semanticweb.mmm.mr3.plugin.*;
 
 /**
- * mr3:a, mr3:b, mr3:cという概念を選択するプラグイン
+ * mr3:a, mr3:b, mr3:cという概念を選択,グループ化するプラグイン
  * 
  * @author takeshi morita
  * 
@@ -40,8 +40,11 @@ public class SamplePlugin4 extends MR3Plugin {
 		selectionCells.add(ns+"b");
 		selectionCells.add(ns+"c");
 		selectRDFNodes(selectionCells);
+		groupRDFNodes(selectionCells);
 		selectClassNodes(selectionCells);
+		groupClassNodes(selectionCells);
 		selectPropertyNodes(selectionCells);
+		groupPropertyNodes(selectionCells);
 	}
 
 }

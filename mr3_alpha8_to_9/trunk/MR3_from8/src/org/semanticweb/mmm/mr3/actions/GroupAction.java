@@ -48,14 +48,12 @@ public class GroupAction extends AbstractAction {
 	}
 
 	// Returns the total number of cells in a graph
-	private int getCellCount(RDFGraph graph) {
+	private static int getCellCount(RDFGraph graph) {
 		Object[] cells = graph.getAllCells();
 		return cells.length;
 	}
 
-	// Create a Group that Contains the Cells
-	public void actionPerformed(ActionEvent e) {
-		Object[] cells = graph.getSelectionCells();
+	public static void group(RDFGraph graph, Object[] cells) {
 		cells = graph.getGraphLayoutCache().order(cells);
 
 		if (cells != null && cells.length > 0) {
@@ -67,5 +65,11 @@ public class GroupAction extends AbstractAction {
 			}
 			graph.getModel().insert(new Object[] { group }, null, null, map, null);
 		}
+	}
+
+	// Create a Group that Contains the Cells
+	public void actionPerformed(ActionEvent e) {
+		Object[] cells = graph.getSelectionCells();
+		group(graph, cells);
 	}
 }

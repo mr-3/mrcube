@@ -100,9 +100,9 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 	private JButton applyButton;
 	private JButton cancelButton;
 
-	private static final String EDIT=Translator.getString("Edit");
-	private static final String ADD=Translator.getString("Add");
-	private static final String REMOVE=Translator.getString("Remove");
+	private static final String EDIT = Translator.getString("Edit");
+	private static final String ADD = Translator.getString("Add");
+	private static final String REMOVE = Translator.getString("Remove");
 
 	public PrefDialog(GraphManager manager, Preferences prefs) {
 		super(Translator.getString("PreferenceDialog.Title"), false, false, false);
@@ -248,7 +248,7 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 		private boolean isEditable() {
 			return !classClassList.isSelectionEmpty()
 				&& classClassList.getSelectedIndices().length == 1
-				&& !classClassList.getSelectedValue().equals(RDFS.Class.toString())
+				&& !isDefaultClass(classClassList.getSelectedValue())
 				&& isAddable();
 		}
 		private boolean isAddable() {
@@ -258,15 +258,17 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 		private void edit() {
 			if (isEditable()) {
 				classClassListModel.setElementAt(metaClassField.getText(), classClassList.getSelectedIndex());
-				System.out.println("class Edit");
 			}
 		}
 
 		private void add() {
 			if (isAddable()) {
 				classClassListModel.addElement(metaClassField.getText());
-				System.out.println("class Add");
 			}
+		}
+
+		private boolean isDefaultClass(Object item) {
+			return item.equals(RDFS.Class.toString()) || item.equals(OWL.Class.toString());
 		}
 
 		private void remove() {
@@ -276,11 +278,10 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 			List removeList = Arrays.asList(classClassList.getSelectedValues());
 			for (Iterator i = removeList.iterator(); i.hasNext();) {
 				Object item = i.next();
-				if (!item.equals(RDFS.Class.toString())) {
+				if (!isDefaultClass(item)) {
 					classClassListModel.removeElement(item);
 				}
 			}
-			System.out.println("class Removed");
 		}
 
 		public void actionPerformed(ActionEvent e) {
@@ -300,7 +301,7 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 		private boolean isEditable() {
 			return !propClassList.isSelectionEmpty()
 				&& propClassList.getSelectedIndices().length == 1
-				&& !propClassList.getSelectedValue().equals(RDF.Property.toString())
+				&& !isDefaultProperty(propClassList.getSelectedValue())
 				&& isAddable();
 		}
 		private boolean isAddable() {
@@ -310,15 +311,17 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 		private void edit() {
 			if (isEditable()) {
 				propClassListModel.setElementAt(metaClassField.getText(), propClassList.getSelectedIndex());
-				System.out.println("prop Edit");
 			}
 		}
 
 		private void add() {
 			if (isAddable()) {
 				propClassListModel.addElement(metaClassField.getText());
-				System.out.println("prop Add");
 			}
+		}
+
+		private boolean isDefaultProperty(Object item) {
+			return item.equals(RDF.Property.toString()) || item.equals(OWL.ObjectProperty.toString()) || item.equals(OWL.DatatypeProperty.toString());
 		}
 
 		private void remove() {
@@ -328,11 +331,10 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 			List removeList = Arrays.asList(propClassList.getSelectedValues());
 			for (Iterator i = removeList.iterator(); i.hasNext();) {
 				Object item = i.next();
-				if (!item.equals(RDF.Property.toString())) {
+				if (!isDefaultProperty(item)) {
 					propClassListModel.removeElement(item);
 				}
 			}
-			System.out.println("prop Removed");
 		}
 
 		public void actionPerformed(ActionEvent e) {
@@ -490,8 +492,8 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 	private void initLangField() {
 		defaultLangField = new JTextField();
 		Utilities.initComponent(defaultLangField, Translator.getString("Lang"), PREFIX_BOX_WIDTH, URI_FIELD_HEIGHT);
-		uiLangBox = new JComboBox(new Object[]{"en", "ja"});
-		Utilities.initComponent(uiLangBox, "UI "+Translator.getString("Lang"), PREFIX_BOX_WIDTH, PREFIX_BOX_HEIGHT);
+		uiLangBox = new JComboBox(new Object[] { "en", "ja" });
+		Utilities.initComponent(uiLangBox, "UI " + Translator.getString("Lang"), PREFIX_BOX_WIDTH, PREFIX_BOX_HEIGHT);
 	}
 
 	private void initEncodingBox() {
@@ -607,26 +609,27 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 		proxyPort.setText(Integer.toString(userPrefs.getInt(PrefConstants.ProxyPort, 3128)));
 		proxyPort.setEditable(isProxy.isSelected());
 
-		String classClassListStr = userPrefs.get(PrefConstants.ClassClassList, RDFS.Class.toString());
+		String classClassListStr = userPrefs.get(PrefConstants.ClassClassList, GraphManager.CLASS_CLASS_LIST);
 		String[] list = classClassListStr.split(" ");
 		classClassListModel.clear();
 		for (int i = 0; i < list.length; i++) {
 			classClassListModel.addElement(list[i]);
 		}
-		String propClassListStr = userPrefs.get(PrefConstants.PropClassList, RDF.Property.toString());
+		String propClassListStr =
+			userPrefs.get(PrefConstants.PropClassList, GraphManager.PROPERTY_CLASS_LIST);
 		list = propClassListStr.split(" ");
 		propClassListModel.clear();
 		for (int i = 0; i < list.length; i++) {
 			propClassListModel.addElement(list[i]);
 		}
 
-		rdfResourceColor = new Color(userPrefs.getInt(PrefConstants.RDFResourceColor, Color.pink.getRGB()));
-		literalColor = new Color(userPrefs.getInt(PrefConstants.LiteralColor, Color.orange.getRGB()));
-		classColor = new Color(userPrefs.getInt(PrefConstants.ClassColor, Color.green.getRGB()));
-		propertyColor = new Color(userPrefs.getInt(PrefConstants.PropertyColor, new Color(255, 158, 62).getRGB()));
-		selectedColor = new Color(userPrefs.getInt(PrefConstants.SelectedColor, new Color(255, 255, 50).getRGB()));
-		backgroundColor = new Color(userPrefs.getInt(PrefConstants.BackgroundColor, Color.white.getRGB()));
-
+		rdfResourceColor = ChangeCellAttrUtil.rdfResourceColor;
+		literalColor = ChangeCellAttrUtil.literalColor;
+		classColor = ChangeCellAttrUtil.classColor;
+		propertyColor = ChangeCellAttrUtil.propertyColor;
+		selectedColor = ChangeCellAttrUtil.selectedColor;
+		backgroundColor = Color.white;
+									
 		isColorBox.setSelected(userPrefs.getBoolean(PrefConstants.Color, true));
 		isAntialiasBox.setSelected(userPrefs.getBoolean(PrefConstants.Antialias, true));
 	}

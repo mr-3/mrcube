@@ -49,7 +49,7 @@ public class UnGroupAction extends AbstractAction {
 	}
 
 	// Determines if a Cell is a Group
-	private boolean isGroup(Object cell) {
+	private static boolean isGroup(RDFGraph graph, Object cell) {
 		// Map the Cell to its View
 		CellView view = graph.getGraphLayoutCache().getMapping(cell, false);
 		if (view != null)
@@ -57,15 +57,12 @@ public class UnGroupAction extends AbstractAction {
 		return false;
 	}
 
-	//	Ungroup the Groups in Cells and Select the Children
-	public void actionPerformed(ActionEvent e) {
-		Object[] cells = graph.getSelectionCells();
-
+	public static void ungroup(RDFGraph graph, Object[] cells) {
 		if (cells != null && cells.length > 0) {
 			List groups = new ArrayList();
 			List children = new ArrayList();
 			for (int i = 0; i < cells.length; i++) {
-				if (isGroup(cells[i])) {
+				if (isGroup(graph, cells[i])) {
 					groups.add(cells[i]);
 					for (int j = 0; j < graph.getModel().getChildCount(cells[i]); j++) {
 						Object child = graph.getModel().getChild(cells[i], j);
@@ -78,6 +75,12 @@ public class UnGroupAction extends AbstractAction {
 			graph.getModel().remove(groups.toArray());
 			graph.setSelectionCells(children.toArray());
 		}
+	}
+
+	//	Ungroup the Groups in Cells and Select the Children
+	public void actionPerformed(ActionEvent e) {
+		Object[] cells = graph.getSelectionCells();
+		ungroup(graph, cells);
 	}
 
 }

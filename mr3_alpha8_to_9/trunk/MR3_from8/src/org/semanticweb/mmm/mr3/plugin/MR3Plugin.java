@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
- 
+
 package org.semanticweb.mmm.mr3.plugin;
 
 import java.util.*;
@@ -27,8 +27,11 @@ import javax.swing.*;
 
 import org.jgraph.*;
 import org.semanticweb.mmm.mr3.*;
+import org.semanticweb.mmm.mr3.actions.*;
 import org.semanticweb.mmm.mr3.data.*;
 import org.semanticweb.mmm.mr3.jgraph.*;
+import org.semanticweb.mmm.mr3.layout.*;
+import org.semanticweb.mmm.mr3.util.*;
 
 import com.hp.hpl.jena.rdf.model.*;
 
@@ -236,7 +239,7 @@ public abstract class MR3Plugin {
 		graph.setSelectionCells(selectionCells.toArray());
 	}
 
-	private void addRDFNode(RDFGraph graph, String uri, Set selectionCells) {	
+	private void addRDFNode(RDFGraph graph, String uri, Set selectionCells) {
 		Object[] cells = graph.getAllCells();
 		for (int i = 0; i < cells.length; i++) {
 			if (graph.isRDFResourceCell(cells[i])) {
@@ -290,4 +293,77 @@ public abstract class MR3Plugin {
 		graph.setSelectionCells(selectionCells.toArray());
 	}
 
+	/**
+	 * 
+		 * URI文字列のセットを受け取って，RDFエディタ内の指定されたノードをグループ化する
+	 *  
+	 */
+	protected void groupRDFNodes(Set nodes) {
+		selectRDFNodes(nodes);
+		RDFGraph graph = mr3.getRDFGraph();
+		GroupAction.group(graph, graph.getSelectionCells());
+	}
+
+	/**
+	 * 
+	 * URI文字列のセットを受け取って，RDFエディタ内の指定されたノードを非グループ化する
+	 *  
+	 */
+	protected void unGroupRDFNodes(Set nodes) {
+		selectRDFNodes(nodes);
+		RDFGraph graph = mr3.getRDFGraph();
+		UnGroupAction.ungroup(graph, graph.getSelectionCells());
+	}
+
+	/**
+	 * 
+	 * URI文字列のセットを受け取って，クラスエディタ内の指定されたノードをグループ化する
+	 *  
+	 */
+	protected void groupClassNodes(Set nodes) {
+		selectClassNodes(nodes);
+		RDFGraph graph = mr3.getClassGraph();
+		GroupAction.group(graph, graph.getSelectionCells());
+	}
+
+	/**
+	 * 
+	 * URI文字列のセットを受け取って，クラスエディタ内の指定されたノードを非グループ化する
+	 *  
+	 */
+	protected void unGroupClassNodes(Set nodes) {
+		selectClassNodes(nodes);
+		RDFGraph graph = mr3.getClassGraph();
+		UnGroupAction.ungroup(graph, graph.getSelectionCells());
+	}
+
+	/**
+	 * 
+	 * URI文字列のセットを受け取って，プロパティエディタ内の指定されたノードをグループ化する
+	 *  
+	 */
+	protected void groupPropertyNodes(Set nodes) {
+		selectPropertyNodes(nodes);
+		RDFGraph graph = mr3.getPropertyGraph();
+		GroupAction.group(graph, graph.getSelectionCells());
+	}
+
+	/**
+	 * 
+	 * URI文字列のセットを受け取って，プロパティエディタ内の指定されたノードを非グループ化する
+	 *  
+	 */
+	protected void unGroupPropertyNodes(Set nodes) {
+		selectPropertyNodes(nodes);
+		RDFGraph graph = mr3.getPropertyGraph();
+		UnGroupAction.ungroup(graph, graph.getSelectionCells());
+	}
+
+	protected void reverseClassArc() {
+		GraphLayoutUtilities.reverseArc(new RDFCellMaker(mr3.getGraphManager()), mr3.getClassGraph());
+	}
+
+	protected void reversePropertyArc() {
+		GraphLayoutUtilities.reverseArc(new RDFCellMaker(mr3.getGraphManager()), mr3.getPropertyGraph());
+	}
 }
