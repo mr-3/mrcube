@@ -48,10 +48,10 @@ public class SelectResourceTypeDialog extends JDialog implements ActionListener 
 		if (panel.getPrevCell() != null) {
 			if (isOk) {
 				isOk = false;
-				ChangeCellAttributes.changeCellColor(panel.getGraph(), panel.getPrevCell(), Color.green);
+				ChangeCellAttributes.changeDefaultCellStye(panel.getGraph(), panel.getPrevCell(), ChangeCellAttributes.classColor);
 				return panel.getURI();
 			} else {
-				ChangeCellAttributes.changeCellColor(panel.getGraph(), panel.getPrevCell(), Color.green);
+				ChangeCellAttributes.changeDefaultCellStye(panel.getGraph(), panel.getPrevCell(), ChangeCellAttributes.classColor);
 				return null;
 			}
 		} else {

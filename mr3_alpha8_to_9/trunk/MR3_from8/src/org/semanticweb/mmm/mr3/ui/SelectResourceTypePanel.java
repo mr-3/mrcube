@@ -47,7 +47,7 @@ public class SelectResourceTypePanel extends SelectClassPanel {
 			GraphCell cell = (GraphCell) cells[i];
 			if (graph.isRDFSClassCell(cell)) {
 				if (cell == typeCell) {
-					ChangeCellAttributes.changeCellColor(graph, cell, ChangeCellAttributes.selectedColor);
+					ChangeCellAttributes.changeDefaultCellStye(graph, cell, ChangeCellAttributes.selectedColor);
 					prevCell = cell;
 					graph.setSelectionCell(cell);
 					break;
@@ -71,8 +71,8 @@ public class SelectResourceTypePanel extends SelectClassPanel {
 		cell = (GraphCell) graph.getSelectionCell();
 		if (graph.getSelectionCount() == 1 && graph.getModel().getChildCount(cell) <= 1) {
 			if (graph.isRDFSClassCell(cell)) {
-				ChangeCellAttributes.changeCellColor(graph, prevCell, ChangeCellAttributes.classColor);
-				ChangeCellAttributes.changeCellColor(graph, cell, ChangeCellAttributes.selectedColor);
+				ChangeCellAttributes.changeDefaultCellStye(graph, prevCell, ChangeCellAttributes.classColor);
+				ChangeCellAttributes.changeDefaultCellStye(graph, cell, ChangeCellAttributes.selectedColor);
 				RDFSInfo info = rdfsMap.getCellInfo(cell);
 				dspURI.setText(info.getURIStr());
 				dspURI.setToolTipText(info.getURIStr());

@@ -95,7 +95,7 @@ public class RDFEditor extends Editor {
 	public void valueChanged(GraphSelectionEvent e) {
 		if (!gmanager.isImporting()) {
 			setToolStatus();
-			lastSelectionCells = ChangeCellAttributes.changeSelectionCellColor(graph, lastSelectionCells);
+			lastSelectionCells = ChangeCellAttributes.changeSelectionCellStyle(graph, lastSelectionCells);
 			changeAttrPanel();
 			attrDialog.validate(); // validateƒƒ\ƒbƒh‚ğŒÄ‚Î‚È‚¢‚ÆÄ•`‰æ‚ª‚¤‚Ü‚­‚¢‚©‚È‚¢
 		}
