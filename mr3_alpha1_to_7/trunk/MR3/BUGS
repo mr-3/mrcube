@@ -1,6 +1,4 @@
 == Known Bugs in MR^3 α6
-* RDFSプロパティを初めて挿入したときには，挿入したプロパティではなく，
-  http://mr3#Propertyの表示内容がAttribute Dialogに表示されてしまう．
 * RDFプロパティに対応するRDFSプロパティを削除した時，RDFプロパティの
   URI(Label)の表示が消える．選択しなおすと，直る．
 * RDFResourceのタイプまたは，domain, rangeを選択するダイアログを表示した後，

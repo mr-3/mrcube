@@ -205,8 +205,9 @@ public class PropertyPanel extends RDFSPanel {
 	public void setValue(Set supCellSet) {
 		PropertyInfo propInfo = (PropertyInfo) rdfsInfo;
 		super.setValue();
-		//		supCellSet.remove(gmanager.getPropertyCell(RDF.Property));
-		supCellSet.remove(gmanager.getPropertyCell(MR3Resource.Property, true));
+		if (rdfsInfoMap.isPropertyCell(MR3Resource.Property)) {
+			supCellSet.remove(gmanager.getPropertyCell(MR3Resource.Property, false));
+		}
 		supProperties.setListData(getTargetInfo(supCellSet));
 		domain.setListData(propInfo.getDomain().toArray());
 		range.setListData(propInfo.getRange().toArray());

@@ -36,8 +36,6 @@ public class RDFGraph extends JGraph {
 		gmanager = manager;
 		attrDialog = gmanager.getAttrDialog();
 		this.type = type;
-
-		//		addKeyListener(new KeyHandler());
 		SwingUtilities.replaceUIActionMap(this, createActionMap());
 	}
 
@@ -575,6 +573,8 @@ public class RDFGraph extends JGraph {
 	}
 
 	public void copy(Point pt) {
+//		margin_x = ADDED_MARGIN;
+//		margin_y = ADDED_MARGIN;
 		GraphTransferable gt = getGraphTransferable(this);
 		if (gt == null) {
 			return;
@@ -593,6 +593,10 @@ public class RDFGraph extends JGraph {
 		gmanager.removeAction(this);
 	}
 
+	private static final int ADDED_MARGIN = 10;
+	private int margin_x = ADDED_MARGIN;
+	private int margin_y = ADDED_MARGIN;
+	
 	private void setPastePosition(GraphCell cell, String value, Point pastePoint) {
 		Map map = cell.getAttributes();
 		Rectangle rec = GraphConstants.getBounds(map);
@@ -600,6 +604,8 @@ public class RDFGraph extends JGraph {
 		//		System.out.println("paste: "+pastePoint);
 		rec.x = pastePoint.x + rec.x;
 		rec.y = pastePoint.y + rec.y;
+//		margin_x += ADDED_MARGIN;
+//		margin_y += ADDED_MARGIN;
 		GraphConstants.setBounds(map, rec);
 		GraphConstants.setValue(map, value);
 		Map nested = new HashMap();
