@@ -1,7 +1,6 @@
 package mr3.editor;
 import java.io.*;
 
-import javax.swing.*;
 import javax.swing.text.*;
 
 import mr3.data.*;
@@ -48,30 +47,6 @@ public class RDFEditor extends Editor {
 			area.setText(output.toString());
 		} catch (RDFException e) {
 			e.printStackTrace();
-		}
-	}
-
-	public void exportRDFFile(String type) {
-		Model model = graphToRDF.getRDFModel();
-		JFileChooser fc = new JFileChooser();
-		FileWriter output = null;
-		int fd = fc.showSaveDialog(null);
-		try {
-			if (fd == JFileChooser.APPROVE_OPTION) {
-				File file = fc.getSelectedFile();
-				output = new FileWriter(file);
-				if (type.equals("RDF")) {
-					RDFWriter writer = new RDFWriterFImpl().getWriter("RDF/XML-ABBREV");
-					writeModel(model, output, writer);
-				} else if (type.equals("N-Triple")) {
-					RDFWriter writer = new RDFWriterFImpl().getWriter("N-TRIPLE");
-					writeModel(model, output, writer);
-				}
-				output.close();
-			} else {
-				System.out.println("Can not open File");
-			}
-		} catch (Exception ex) {
 		}
 	}
 

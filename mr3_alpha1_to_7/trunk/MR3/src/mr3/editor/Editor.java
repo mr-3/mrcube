@@ -13,7 +13,6 @@ import mr3.jgraph.*;
 import mr3.ui.*;
 import mr3.util.*;
 
-import com.hp.hpl.mesa.rdf.jena.common.*;
 import com.hp.hpl.mesa.rdf.jena.model.*;
 import com.jgraph.event.*;
 import com.jgraph.graph.*;
@@ -137,24 +136,6 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 		try {
 			model.write(new PrintWriter(System.out));
 		} catch (Exception e) {
-		}
-	}
-
-	public void exportRDFSFile(Model model) {
-		try {
-			JFileChooser fc = new JFileChooser();
-			FileWriter output = null;
-			int fd = fc.showSaveDialog(Editor.this);
-			if (fd == JFileChooser.APPROVE_OPTION) {
-				File file = fc.getSelectedFile();
-				output = new FileWriter(file);
-				RDFWriter writer = new RDFWriterFImpl().getWriter("RDF/XML-ABBREV");
-				writeModel(model, output, writer);
-			}
-		} catch (RDFException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 
