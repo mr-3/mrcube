@@ -267,21 +267,17 @@ public class RDFGraph extends JGraph {
 
 	private String getRDFSToolTipText(RDFSInfo info) {
 		String msg = "<dl><dt>URI: </dt><dd>" + info.getURI() + "</dd>";
-		try {
-			Literal literal = info.getLabel();
-			if (literal != null) {
-				msg += "<dt>Label</dt><dd>Lang: " + literal.getLanguage() + "<br>" + literal.getString() + "</dd>";
-				msg += "<dt>Comment</dt>";
-			}
-			literal = info.getComment();
-			if (literal != null) {
-				String comment = literal.getString();
-				comment = RDFLiteralUtil.insertLineFeed(comment, COMMENT_WIDTH);
-				comment = comment.replaceAll("(\n|\r)+", "<br>");
-				msg += "<dd>" + "Lang: " + literal.getLanguage() + "<br>" + comment + "</dd></dt>";
-			}
-		} catch (RDFException e) {
-			e.printStackTrace();
+		MR3Literal literal = info.getLabel();
+		if (literal != null) {
+			msg += "<dt>Label</dt><dd>Lang: " + literal.getLanguage() + "<br>" + literal.getString() + "</dd>";
+			msg += "<dt>Comment</dt>";
+		}
+		literal = info.getComment();
+		if (literal != null) {
+			String comment = literal.getString();
+			comment = RDFLiteralUtil.insertLineFeed(comment, COMMENT_WIDTH);
+			comment = comment.replaceAll("(\n|\r)+", "<br>");
+			msg += "<dd>" + "Lang: " + literal.getLanguage() + "<br>" + comment + "</dd></dt>";
 		}
 		return msg;
 	}

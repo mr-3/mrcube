@@ -217,9 +217,9 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 
 	private void setCellValue() {
 		String uri = uriField.getText();
-		if ((tmpURIType != URIType.ANONYMOUS) && isErrorResource(uri)) {
-			return;
-		}
+		//		if ((tmpURIType != URIType.ANONYMOUS) && isErrorResource(uri)) {
+		//			return;
+		//		}
 		// setURI()をする前にURIタイプを変更する必要あり．
 		// このバグを見つけるのに，１時間以上費やしてしまった．
 		resInfo.setURIType(tmpURIType);
@@ -228,7 +228,11 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 	}
 
 	// URIの重複と，空のチェックをする．URITypeがIDの場合は，baseURIを含めた形でチェックする．
-	private boolean isErrorResource(String uri) {
+	private boolean isErrorResource() {
+		String uri = uriField.getText();
+		if (tmpURIType == URIType.ANONYMOUS) {
+			return false;
+		}
 		String tmpURI = "";
 		if (tmpURIType == URIType.ID) {
 			tmpURI = gmanager.getBaseURI(); // チェックする時は，フルパスで．
@@ -297,17 +301,21 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 	}
 
 	private void apply() {
+		if (isErrorResource()) {
+			return;
+		}
 		if (isTypeCellCheck.isSelected()) {
 			GraphCell resTypeCell = getResourceType();
 			if (resTypeCell != null) {
 				setResourceType(resTypeCell);
 				gmanager.jumpClassArea(resTypeCell); // 対応するクラスを選択する
-				gmanager.jumpRDFArea(cell);				// AttributeDialogの表示をRDFリソースに戻す
 			}
 		} else {
 			setResourceType(null);
 		}
 		setCellValue();
+		// このタイミングでジャンプしないと，URIを反映できない．
+		gmanager.jumpRDFArea(cell); // AttributeDialogの表示をRDFリソースに戻す
 	}
 
 	private void selectResourceType() {

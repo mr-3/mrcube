@@ -45,7 +45,7 @@ public class RDFLiteralInfoMap implements Serializable {
 			for (Iterator i = cellInfoMap.keySet().iterator(); i.hasNext();) {
 				Object cell = i.next();
 				Literal lit = getCellInfo(cell);
-				map.put(cell, new MR3LiteralImpl(lit.getString(), lit.getLanguage()));
+				map.put(cell, new MR3Literal(lit.getString(), lit.getLanguage()));
 			}
 		} catch (RDFException e) {
 			e.printStackTrace();
@@ -56,7 +56,7 @@ public class RDFLiteralInfoMap implements Serializable {
 	public void setState(Map newMap) {
 		for (Iterator i = newMap.keySet().iterator(); i.hasNext();) {
 			Object cell = i.next();
-			MR3LiteralImpl lit = (MR3LiteralImpl) newMap.get(cell);
+			MR3Literal lit = (MR3Literal) newMap.get(cell);
 			putCellInfo(cell, new LiteralImpl(lit.getString(), lit.getLanguage()));
 		}
 	}

@@ -1,6 +1,7 @@
 package mr3.data;
 import java.util.*;
 
+import com.hp.hpl.mesa.rdf.jena.common.*;
 import com.hp.hpl.mesa.rdf.jena.model.*;
 import com.hp.hpl.mesa.rdf.jena.vocabulary.*;
 
@@ -12,13 +13,21 @@ public class PropertyInfo extends RDFSInfo {
 
 	private Set domain;
 	private Set range;
-	private Set subProperties;
-	private Set supProperties;
+	transient private Set subProperties;
+	transient private Set supProperties;
 
 	public PropertyInfo(String uri) {
 		super(uri);
 		domain = new HashSet();
 		range = new HashSet();
+		subProperties = new HashSet();
+		supProperties = new HashSet();
+	}
+
+	public PropertyInfo(PropertyInfo info) {
+		super(info);
+		domain = new HashSet(info.getDomain());
+		range = new HashSet(info.getRange());
 		subProperties = new HashSet();
 		supProperties = new HashSet();
 	}
@@ -30,20 +39,21 @@ public class PropertyInfo extends RDFSInfo {
 	public Model getModel() {
 		try {
 			Model tmpModel = super.getModel();
+			Resource res = new ResourceImpl(uri);
 
-			tmpModel.add(tmpModel.createStatement(uri, RDF.type, RDF.Property));
+			tmpModel.add(tmpModel.createStatement(res, RDF.type, RDF.Property));
 			for (Iterator i = supRDFS.iterator(); i.hasNext();) {
 				RDFSInfo propInfo = rdfsInfoMap.getCellInfo(i.next());
 				if (!propInfo.getURI().equals(MR3Resource.Property)) // MRCUBE.Propertyは，ルートになっているだけなので．
-					tmpModel.add(tmpModel.createStatement(uri, RDFS.subPropertyOf, propInfo.getURI()));
+					tmpModel.add(tmpModel.createStatement(res, RDFS.subPropertyOf, propInfo.getURI()));
 			}
 			for (Iterator i = domain.iterator(); i.hasNext();) {
 				RDFSInfo classInfo = rdfsInfoMap.getCellInfo(i.next());
-				tmpModel.add(tmpModel.createStatement(uri, RDFS.domain, classInfo.getURI()));
+				tmpModel.add(tmpModel.createStatement(res, RDFS.domain, classInfo.getURI()));
 			}
 			for (Iterator i = range.iterator(); i.hasNext();) {
 				RDFSInfo classInfo = rdfsInfoMap.getCellInfo(i.next());
-				tmpModel.add(tmpModel.createStatement(uri, RDFS.range, classInfo.getURI()));
+				tmpModel.add(tmpModel.createStatement(res, RDFS.range, classInfo.getURI()));
 			}
 			return tmpModel;
 		} catch (RDFException e) {

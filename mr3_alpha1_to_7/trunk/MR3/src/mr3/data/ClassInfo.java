@@ -1,6 +1,7 @@
 package mr3.data;
 import java.util.*;
 
+import com.hp.hpl.mesa.rdf.jena.common.*;
 import com.hp.hpl.mesa.rdf.jena.model.*;
 import com.hp.hpl.mesa.rdf.jena.vocabulary.*;
 
@@ -9,11 +10,17 @@ import com.hp.hpl.mesa.rdf.jena.vocabulary.*;
  *
  */
 public class ClassInfo extends RDFSInfo {
-	private Set subClasses;
-	private Set supClasses;
+	transient private Set subClasses;
+	transient private Set supClasses;
 
 	public ClassInfo(String uri) {
 		super(uri);
+		subClasses = new HashSet();
+		supClasses = new HashSet();
+	}
+
+	public ClassInfo(ClassInfo info) {
+		super(info);
 		subClasses = new HashSet();
 		supClasses = new HashSet();
 	}
@@ -25,11 +32,11 @@ public class ClassInfo extends RDFSInfo {
 	public Model getModel() {
 		try {
 			Model tmpModel = super.getModel();
-
-			tmpModel.add(tmpModel.createStatement(uri, RDF.type, RDFS.Class));
+			Resource res = new ResourceImpl(uri);
+			tmpModel.add(tmpModel.createStatement(res, RDF.type, RDFS.Class));
 			for (Iterator i = supRDFS.iterator(); i.hasNext();) {
 				RDFSInfo classInfo = rdfsInfoMap.getCellInfo(i.next());
-				tmpModel.add(tmpModel.createStatement(uri, RDFS.subClassOf, classInfo.getURI()));
+				tmpModel.add(tmpModel.createStatement(res, RDFS.subClassOf, classInfo.getURI()));
 			}
 			return tmpModel;
 		} catch (RDFException rdfex) {

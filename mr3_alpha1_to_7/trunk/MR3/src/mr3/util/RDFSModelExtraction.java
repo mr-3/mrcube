@@ -166,11 +166,13 @@ public class RDFSModelExtraction {
 		RDFNode object = stmt.getObject(); // get the object
 
 		if (predicate.equals(RDFS.label)) { //rdfs:label
-			Literal literal = (Literal) object;
+//			Literal literal = (Literal) object;
+			MR3Literal literal = new MR3Literal((Literal)object);
 			info.setLabel(literal);
 			info.addLabel(literal);
 		} else if (predicate.equals(RDFS.comment)) { //rdfs:comment
-			Literal literal = (Literal) object;
+//			Literal literal = (Literal) object;
+			MR3Literal literal = new MR3Literal((Literal)object);
 			info.setComment(literal);
 			info.addComment(literal);
 		} else if (predicate.equals(RDFS.isDefinedBy)) { //rdfs:isDefinedBy
