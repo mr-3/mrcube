@@ -9,6 +9,7 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
+import mr3.*;
 import mr3.jgraph.*;
 
 import com.hp.hpl.mesa.rdf.jena.model.*;
@@ -19,8 +20,8 @@ import com.hp.hpl.mesa.rdf.jena.model.*;
  */
 public class ReplaceRDF extends AbstractActionFile {
 
-	public ReplaceRDF(String title) {
-		super(title);
+	public ReplaceRDF(MR3 mr3, String title) {
+		super(mr3, title);
 	}
 	private static final String REPLACE_RDF_FILE = "RDF/XML (File)";
 	private static final String REPLACE_RDF_URI = "RDF/XML (URI)";

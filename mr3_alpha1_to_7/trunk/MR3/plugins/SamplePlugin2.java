@@ -18,7 +18,6 @@ public class SamplePlugin2 extends MR3Plugin {
 	private JInternalFrame srcFrame;
 
 	public SamplePlugin2() {
-		super("Sample Plugin 2");
 		textArea = new JTextArea();
 		initSRCFrame();
 		srcFrame.getContentPane().add(textArea);				

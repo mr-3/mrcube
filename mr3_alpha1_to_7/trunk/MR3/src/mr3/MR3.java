@@ -315,8 +315,8 @@ public class MR3 extends JFrame {
 		JMenu importRDF = new JMenu("Import");
 		importRDF.add(new ImportJavaObject(this));
 		JMenu replace = new JMenu("Replace");
-		replace.add(new ReplaceRDF(REPLACE_RDF_FILE));
-		replace.add(new ReplaceRDF(REPLACE_RDF_URI));
+		replace.add(new ReplaceRDF(this, REPLACE_RDF_FILE));
+		replace.add(new ReplaceRDF(this, REPLACE_RDF_URI));
 		importRDF.add(replace);
 
 		JMenu mergeMenu = new JMenu("Merge");
