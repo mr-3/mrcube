@@ -225,12 +225,16 @@ public class GraphManager {
 		userPrefs.put(PrefConstants.DefaultLang, lang);
 	}
 
+	public static final String CLASS_CLASS_LIST = RDFS.Class.toString()+" "+OWL.Class.toString();
+
 	public Set getClassClassList() {
-		return getMetaClassList(userPrefs.get(PrefConstants.ClassClassList, RDFS.Class.toString()).split(" "));
+		return getMetaClassList(userPrefs.get(PrefConstants.ClassClassList, CLASS_CLASS_LIST).split(" "));
 	}
 
+	public static final String PROPERTY_CLASS_LIST = RDF.Property.toString()+" "+OWL.ObjectProperty.toString()+" "+OWL.DatatypeProperty.toString();
+	
 	public Set getPropertyClassList() {
-		return getMetaClassList(userPrefs.get(PrefConstants.PropClassList, RDF.Property.toString()).split(" "));
+		return getMetaClassList(userPrefs.get(PrefConstants.PropClassList, PROPERTY_CLASS_LIST).split(" "));
 	}
 
 	public Set getMetaClassList() {
@@ -786,6 +790,8 @@ public class GraphManager {
 		return null;
 	}
 
+	private static Point INSERT_POINT = new Point(50, 50);
+	
 	public Object getClassCell(Resource uri, boolean isCheck) {
 		Object cell = rdfsInfoMap.getClassCell(uri);
 		if (cell != null) {
@@ -793,7 +799,7 @@ public class GraphManager {
 		} else if (isCheck && isDuplicated(uri.getURI(), null, classGraph.getType())) {
 			return null;
 		} else {
-			return cellMaker.insertClass(new Point(50, 50), uri.getURI());
+			return cellMaker.insertClass(INSERT_POINT, uri.getURI());
 		}
 	}
 
@@ -829,7 +835,7 @@ public class GraphManager {
 		} else if (isCheck && isDuplicated(uri.getURI(), null, propGraph.getType())) {
 			return null;
 		} else {
-			return cellMaker.insertProperty(new Point(50, 50), uri.getURI());
+			return cellMaker.insertProperty(INSERT_POINT, uri.getURI());
 		}
 	}
 

@@ -436,11 +436,11 @@ public class MR3 extends JFrame {
 		editorHeight = userPrefs.getInt(PrefConstants.PropertyEditorHeight, height / 2);
 		iFrames[2].setBounds(new Rectangle(editorPositionX, editorPositionY, editorWidth, editorHeight)); // Property
 
-		ChangeCellAttrUtil.rdfResourceColor = new Color(userPrefs.getInt(PrefConstants.RDFResourceColor, Color.pink.getRGB()));
-		ChangeCellAttrUtil.literalColor = new Color(userPrefs.getInt(PrefConstants.LiteralColor, Color.orange.getRGB()));
-		ChangeCellAttrUtil.classColor = new Color(userPrefs.getInt(PrefConstants.ClassColor, Color.green.getRGB()));
-		ChangeCellAttrUtil.propertyColor = new Color(userPrefs.getInt(PrefConstants.PropertyColor, new Color(255, 158, 62).getRGB()));
-		ChangeCellAttrUtil.selectedColor = new Color(userPrefs.getInt(PrefConstants.SelectedColor, new Color(255, 255, 50).getRGB()));
+		ChangeCellAttrUtil.rdfResourceColor = new Color(userPrefs.getInt(PrefConstants.RDFResourceColor, ChangeCellAttrUtil.rdfResourceColor.getRGB()));
+		ChangeCellAttrUtil.literalColor = new Color(userPrefs.getInt(PrefConstants.LiteralColor, ChangeCellAttrUtil.literalColor.getRGB()));
+		ChangeCellAttrUtil.classColor = new Color(userPrefs.getInt(PrefConstants.ClassColor, ChangeCellAttrUtil.classColor.getRGB()));
+		ChangeCellAttrUtil.propertyColor = new Color(userPrefs.getInt(PrefConstants.PropertyColor, ChangeCellAttrUtil.propertyColor.getRGB()));
+		ChangeCellAttrUtil.selectedColor = new Color(userPrefs.getInt(PrefConstants.SelectedColor, ChangeCellAttrUtil.selectedColor.getRGB()));
 
 		ChangeCellAttrUtil.isColor = userPrefs.getBoolean(PrefConstants.Color, true);
 		gmanager.setGraphBackground(new Color(userPrefs.getInt(PrefConstants.BackgroundColor, DESKTOP_BACK_COLOR.getRGB())));

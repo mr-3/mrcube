@@ -16,13 +16,19 @@ import org.jgraph.*;
 public class SugiyamaLayoutPlugin extends MR3Plugin {
 
 	public void applySugiyamaLayout(JGraph graph, Point space) {
-		SugiyamaLayoutAlgorithm sugiyamaLayout = new SugiyamaLayoutAlgorithm();
+		SugiyamaLayoutAlgorithm sugiyamaLayout = new SugiyamaLayoutAlgorithm();		
 		sugiyamaLayout.perform(graph, true, space);
 	}
 
 	public void exec() {
 		applySugiyamaLayout(getRDFGraph(), new Point(200, 200));
+		
+		reverseClassArc();
 		applySugiyamaLayout(getClassGraph(), new Point(200, 200));
+		reverseClassArc();
+		
+		reversePropertyArc();
 		applySugiyamaLayout(getPropertyGraph(), new Point(200, 200));
+		reversePropertyArc();
 	}
 }
