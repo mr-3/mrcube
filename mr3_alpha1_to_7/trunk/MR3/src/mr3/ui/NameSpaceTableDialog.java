@@ -124,8 +124,9 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		for (Iterator i = allNSSet.iterator(); i.hasNext();) {
 			String ns = (String) i.next();
 			if (isValidNS(ns)) {
-				if (isValidPrefix(getKnownPrefix(ns))) {
-					addNameSpaceTable(new Boolean(true), getKnownPrefix(ns), ns);
+				String knownPrefix = getKnownPrefix(ns);
+				if (isValidPrefix(knownPrefix) && (!knownPrefix.equals("prefix"))) {
+					addNameSpaceTable(new Boolean(true), knownPrefix, ns);
 				} else {
 					addNameSpaceTable(new Boolean(true), getMR3Prefix(ns), ns);
 				}
@@ -276,7 +277,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		if (isValidPrefix(prefix)) {
 			return true;
 		} else {
-			JOptionPane.showMessageDialog(null, "Prefix is not valid.", "Warning", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showInternalMessageDialog(gmanager.getDesktop(), "Prefix is not valid.", "Warning", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 	}
@@ -286,7 +287,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		if (isValidNS(ns)) {
 			return true;
 		} else {
-			JOptionPane.showMessageDialog(null, "NameSpace is not valid.", "Warning", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showInternalMessageDialog(gmanager.getDesktop(), "NameSpace is not valid.", "Warning", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 	}
@@ -313,11 +314,11 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		String rmPrefix = (String) nsTableModel.getValueAt(row, 1);
 		String rmNS = (String) nsTableModel.getValueAt(row, 2);
 		if (rmNS.equals(gmanager.getBaseURI())) {
-			JOptionPane.showMessageDialog(null, "This NameSpace is baseURI.", "Warning", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showInternalMessageDialog(gmanager.getDesktop(), "This NameSpace is baseURI.", "Warning", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		if (rmNS.equals(MR3Resource.Default_URI.getNameSpace())) {
-			JOptionPane.showMessageDialog(null, "This NameSpace is System URI.", "Warning", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showInternalMessageDialog(gmanager.getDesktop(), "This NameSpace is System URI.", "Warning", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		if (!gmanager.getAllNameSpaceSet().contains(rmNS)) {
@@ -325,7 +326,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 			nsTableModel.removeRow(row);
 			changeCellView();
 		} else {
-			JOptionPane.showMessageDialog(null, "This NameSpace is used.", "Warning", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showInternalMessageDialog(gmanager.getDesktop(), "This NameSpace is used.", "Warning", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 

@@ -344,7 +344,7 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 			if (gmanager.isDuplicatedWithDialog(uri.getURI(), null, GraphType.CLASS))
 				return null;
 			if (resInfo.getTypeCell() == null) {
-				int ans = JOptionPane.showConfirmDialog(null, "Not Defined.Create Class ?", "Warning", JOptionPane.YES_NO_OPTION);
+				int ans = JOptionPane.showInternalConfirmDialog(gmanager.getDesktop(), "Not Defined.Create Class ?", "Warning", JOptionPane.YES_NO_OPTION);
 				if (ans == JOptionPane.YES_OPTION) {
 					Set supClasses = gmanager.getSupRDFS(gmanager.getClassGraph(), selectSupClassesTitle);
 					typeCell = (GraphCell) gmanager.insertSubRDFS(uri, supClasses, gmanager.getClassGraph());
@@ -385,7 +385,7 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 			Object classCell = (GraphCell) rdfsInfoMap.getClassCell(uri);
 			gmanager.jumpClassArea(classCell);
 		} else {
-			JOptionPane.showMessageDialog(null, "Not Defined", "Warning", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showInternalMessageDialog(gmanager.getDesktop(), "Not Defined", "Warning", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 

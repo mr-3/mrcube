@@ -307,7 +307,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 			Object propertyCell = (GraphCell) rdfsInfoMap.getPropertyCell(uri);
 			gmanager.jumpPropertyArea(propertyCell);
 		} else {
-			JOptionPane.showMessageDialog(null, "Not Defined", "Warning", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showInternalMessageDialog(gmanager.getDesktop(), "Not Defined", "Warning", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 

@@ -253,7 +253,7 @@ public class GraphManager {
 
 	public boolean isEmptyURI(String uri) {
 		if (uri.equals("")) {
-			JOptionPane.showMessageDialog(null, "URI is empty", "Warning", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showInternalMessageDialog(getDesktop(), "URI is empty", "Warning", JOptionPane.ERROR_MESSAGE);
 			return true;
 		} else {
 			return false;

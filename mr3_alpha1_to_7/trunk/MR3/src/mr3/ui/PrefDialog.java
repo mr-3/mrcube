@@ -273,7 +273,7 @@ public class PrefDialog extends JInternalFrame {
 					userPrefs.put(PrefConstants.ProxyHost, proxyHost.getText());
 					userPrefs.putInt(PrefConstants.ProxyPort, Integer.parseInt(proxyPort.getText()));
 				} catch (NumberFormatException nfe) {
-					JOptionPane.showMessageDialog(null, "Number Format Exception", "Warning", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showInternalMessageDialog(gmanager.getDesktop(), "Number Format Exception", "Warning", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 			}
