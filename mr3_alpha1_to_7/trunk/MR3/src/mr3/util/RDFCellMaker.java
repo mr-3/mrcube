@@ -8,6 +8,7 @@ import mr3.data.*;
 import mr3.jgraph.*;
 
 import com.hp.hpl.mesa.rdf.jena.common.*;
+import com.hp.hpl.mesa.rdf.jena.model.*;
 import com.jgraph.*;
 import com.jgraph.graph.*;
 
@@ -142,7 +143,12 @@ public class RDFCellMaker {
 
 		DefaultGraphCell typeCell = addTypeCell(resourceCell, attributes, new Rectangle(point, new Dimension(cellWidth, cellHeight)));
 
-		RDFResourceInfo info = new RDFResourceInfo(type, uri, typeCell);
+		RDFResourceInfo info = null;
+		if (type == URIType.ANONYMOUS) {
+			info = new RDFResourceInfo(type, new AnonId().toString(), typeCell);
+		} else {
+			info = new RDFResourceInfo(type, uri, typeCell);
+		}
 		info.setTypeCell(resTypeCell);
 		resInfoMap.putCellInfo(resourceCell, info);
 		gmanager.changeCellView();

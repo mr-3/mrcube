@@ -40,7 +40,7 @@ public class ProjectManager {
 		RDFGraph graph = gmanager.getRDFGraph();
 		Object[] cells = graph.getAllCells();
 		for (int i = 0; i < cells.length; i++) {
-			if (graph.isRDFResourceCell(cells[i])) {
+			if (graph.isRDFResourceCell(cells[i])) {				
 				GraphCell cell = (GraphCell) cells[i];
 				Rectangle rec = GraphConstants.getBounds(cell.getAttributes());
 				RDFResourceInfo info = resInfoMap.getCellInfo(cell);
