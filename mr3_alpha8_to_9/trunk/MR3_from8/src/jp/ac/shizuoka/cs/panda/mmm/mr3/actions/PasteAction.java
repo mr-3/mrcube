@@ -25,6 +25,7 @@ public class PasteAction extends AbstractAction {
 		super(TITLE, ICON);
 		graph = g;
 		putValue(SHORT_DESCRIPTION, TITLE);
+		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_MASK));
 	}
 
 	public void actionPerformed(ActionEvent e) {

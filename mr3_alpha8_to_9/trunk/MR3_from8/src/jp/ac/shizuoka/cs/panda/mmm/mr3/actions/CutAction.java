@@ -23,6 +23,7 @@ public class CutAction extends AbstractAction {
 		super(TITLE, ICON);
 		graph = g;
 		putValue(SHORT_DESCRIPTION, TITLE);
+		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_MASK));
 	}
 
 	public void actionPerformed(ActionEvent e) {
