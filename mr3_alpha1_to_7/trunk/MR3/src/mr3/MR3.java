@@ -454,7 +454,7 @@ public class MR3 extends JFrame {
 
 	class ImportRealRDFAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
-			File file = getImportFile(OPEN_FILE);
+			File file = getFile(true, "rdf");
 			if (file == null) {
 				return;
 			}
@@ -494,7 +494,7 @@ public class MR3 extends JFrame {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			File file = getImportFile(OPEN_FILE);
+			File file = getFile(true, "mr3");
 			loadProject(file);
 		}
 	}
@@ -516,30 +516,35 @@ public class MR3 extends JFrame {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			File file = getImportFile(OPEN_FILE);
+			File file = getFile(true, "mr3");
 			saveProject(file);
 		}
 	}
 
 	private static RDFsFileFilter rdfsFileFilter = new RDFsFileFilter();
-	private static final int SAVE_FILE = 0;
-	private static final int OPEN_FILE = 1;
 
-	private File getImportFile(int type) {
-		File file = null;
+	private File getFile(boolean isOpenFile, String extension) {
 		JFileChooser jfc = new JFileChooser(userPrefs.get(PrefConstants.DefaultWorkDirectory, ""));
 		jfc.setFileFilter(rdfsFileFilter);
 
-		int fd = -1;
-		if (type == OPEN_FILE) { 
-			fd = jfc.showOpenDialog(desktop);		
-		} else if (type == SAVE_FILE) {
-			fd = jfc.showSaveDialog(desktop);		
+		if (isOpenFile) {
+			jfc.showOpenDialog(desktop);
+		} else {
+			jfc.showSaveDialog(desktop);
+			if (jfc.getSelectedFile() != null) {
+				String tmp = jfc.getSelectedFile().getAbsolutePath();
+				String ext = (extension != null) ? "." + extension.toLowerCase() : "";
+				if (extension != null
+					&& !tmp.toLowerCase().endsWith(".rdf")
+					&& !tmp.toLowerCase().endsWith(".rdfs")
+					&& !tmp.toLowerCase().endsWith(".n3")) {
+					tmp += ext;
+				}
+				return new File(tmp);
+			}
 		}
-		if (fd == JFileChooser.APPROVE_OPTION) {
-			file = jfc.getSelectedFile();
-		}
-		return file;
+
+		return jfc.getSelectedFile();
 	}
 
 	private URL getURI(String uri) throws MalformedURLException, UnknownHostException {
@@ -555,7 +560,7 @@ public class MR3 extends JFrame {
 		return rdfURI;
 	}
 
-	private Reader getReader(String uri) {
+	private Reader getReader(String uri, String ext) {
 		if (uri == null) {
 			return null;
 		}
@@ -575,8 +580,8 @@ public class MR3 extends JFrame {
 		return null;
 	}
 
-	private Reader getReader() {
-		File file = getImportFile(OPEN_FILE);
+	private Reader getReader(String ext) {
+		File file = getFile(true, ext);
 		if (file == null) {
 			return null;
 		}
@@ -610,7 +615,7 @@ public class MR3 extends JFrame {
 
 	class ReplaceRDFFileAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
-			Model model = readModel(getReader(), gmanager.getBaseURI());
+			Model model = readModel(getReader("rdf"), gmanager.getBaseURI());
 			mr3Reader.replaceRDF(model);
 			rdfEditor.fitWindow();
 		}
@@ -619,7 +624,7 @@ public class MR3 extends JFrame {
 	class ReplaceRDFURIAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
 			String uri = JOptionPane.showInternalInputDialog(desktop, "Open URI");
-			Model model = readModel(getReader(uri), gmanager.getBaseURI());
+			Model model = readModel(getReader(uri, "rdf"), gmanager.getBaseURI());
 			mr3Reader.replaceRDF(model);
 			rdfEditor.fitWindow();
 		}
@@ -635,7 +640,7 @@ public class MR3 extends JFrame {
 
 	class MergeRDFSFileAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
-			Model model = readModel(getReader(), gmanager.getBaseURI());
+			Model model = readModel(getReader("rdfs"), gmanager.getBaseURI());
 			mr3Reader.mergeRDFS(model);
 		}
 	}
@@ -643,7 +648,7 @@ public class MR3 extends JFrame {
 	class MergeRDFSURIAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
 			String uri = JOptionPane.showInternalInputDialog(desktop, "Open URI");
-			Model model = readModel(getReader(uri), gmanager.getBaseURI());
+			Model model = readModel(getReader(uri, "rdfs"), gmanager.getBaseURI());
 			mr3Reader.mergeRDFS(model);
 		}
 	}
@@ -651,7 +656,11 @@ public class MR3 extends JFrame {
 	class ExportRDFSAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			String type = e.getActionCommand();
-			File file = getImportFile(SAVE_FILE);
+			String ext = "rdfs";
+			if (type.equals("RDFS/N-Triple")) {
+				ext = "n3";
+			}
+			File file = getFile(false, ext);
 			if (file == null) {
 				return;
 			}
@@ -674,7 +683,11 @@ public class MR3 extends JFrame {
 	class ExportRDFAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			String type = e.getActionCommand();
-			File file = getImportFile(SAVE_FILE);
+			String ext = "rdf";
+			if (type.equals("RDF/N-Triple")) {
+				ext = "n3";
+			}
+			File file = getFile(false, ext);
 			if (file == null) {
 				return;
 			}
@@ -825,20 +838,20 @@ public class MR3 extends JFrame {
 		JMenu menu = new JMenu("Convert");
 		JMenu rdfView = new JMenu("RDF");
 		menu.add(rdfView);
-		JMenuItem mi = new JMenuItem("RDF");
+		JMenuItem mi = new JMenuItem("RDF/XML");
 		mi.addActionListener(new JGraphToRDFAction());
 		rdfView.add(mi);
-		mi = new JMenuItem("N-Triple");
+		mi = new JMenuItem("RDF/N-Triple");
 		mi.addActionListener(new JGraphToNTripleAction());
 		rdfView.add(mi);
 		JMenu rdfsView = new JMenu("RDFS");
-		mi = new JMenuItem("RDFS(Class/Property)");
+		mi = new JMenuItem("RDFS/XML(Class/Property)");
 		mi.addActionListener(new JGraphToRDFSAction());
 		rdfsView.add(mi);
-		mi = new JMenuItem("RDFS(Class)");
+		mi = new JMenuItem("RDFS/XML(Class)");
 		mi.addActionListener(new JGraphToClassAction());
 		rdfsView.add(mi);
-		mi = new JMenuItem("RDFS(Property)");
+		mi = new JMenuItem("RDFS/XML(Property)");
 		mi.addActionListener(new JGraphToPropertyAction());
 		rdfsView.add(mi);
 		menu.add(rdfsView);
