@@ -224,7 +224,6 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 		remove.setEnabled(enabled);
 	}
 
-	//	public void fitWindow(RDFGraph graph) {
 	public void fitWindow() {
 		Rectangle p = graph.getCellBounds(graph.getRoots());
 		if (p != null) {
@@ -240,7 +239,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 				scale = (double) s.getHeight() / (p.y + p.getHeight());
 			scale = Math.max(Math.min(scale, 16), .01);
 			graph.setScale(scale);
-		}
+		}		
 	}
 
 	private URL getImageIcon(String image) {

@@ -46,10 +46,13 @@ public class RDFCellMaker {
 		return map;
 	}
 
-	public Map getTypeMap(Point point) {
-		Dimension size = new Dimension(cellWidth, cellHeight);
+	public Map getTypeMap(Point p) {
+		return getTypeMap(new Rectangle(p, new Dimension(cellWidth, cellHeight)));
+	}
+
+	public Map getTypeMap(Rectangle rec) {
 		Map map = GraphConstants.createMap();
-		GraphConstants.setBounds(map, new Rectangle(point, size));
+		GraphConstants.setBounds(map, rec);
 		GraphConstants.setBorderColor(map, Color.black);
 		GraphConstants.setBackground(map, Color.green);
 		GraphConstants.setForeground(map, Color.black);
@@ -103,6 +106,30 @@ public class RDFCellMaker {
 		return vertex;
 	}
 
+	public DefaultGraphCell addTypeCell(Object resourceCell, Map attributes, Point p) {
+		return addTypeCell(resourceCell, attributes, new Rectangle(p, new Dimension(cellWidth, cellHeight)));
+	}
+
+	public DefaultGraphCell addTypeCell(Object resourceCell, Map attributes, Rectangle rec) {
+		RDFGraph graph = gmanager.getRDFGraph();
+
+		DefaultGraphCell typeCell = new TypeCell("");
+		Point typePoint = new Point(rec.x, rec.y + rec.height);
+		Map typeMap = getTypeMap(new Rectangle(typePoint, new Dimension(rec.width, cellHeight)));
+		attributes.put(typeCell, typeMap);
+
+		ParentMap parentMap = new ParentMap(graph.getModel());
+		DefaultGraphCell group = new DefaultGraphCell();
+		parentMap.addEntry(resourceCell, group);
+		parentMap.addEntry(typeCell, group);
+		if (gmanager.isShowTypeCell()) {
+			graph.getModel().insert(new Object[] { resourceCell, typeCell, group }, attributes, null, parentMap, null);
+		} else {
+			graph.getModel().insert(new Object[] { resourceCell }, attributes, null, null, null);
+		}
+		return typeCell;
+	}
+
 	public GraphCell insertRDFResource(Point point, String uri, Object resTypeCell, URIType type) {
 		JGraph graph = gmanager.getRDFGraph();
 		HashMap attributes = new HashMap();
@@ -113,18 +140,7 @@ public class RDFCellMaker {
 		Map resMap = getResourceMap(point);
 		attributes.put(resourceCell, resMap);
 
-		DefaultGraphCell typeCell = new TypeCell("");
-		Point typePoint = new Point(point.x, point.y + cellHeight);
-		Map typeMap = getTypeMap(typePoint);
-		attributes.put(typeCell, typeMap);
-
-		//		ParentMap parentMap = new ParentMap(); // 2.0Œn‚Í‚±‚¤‚¾‚Á‚½
-		ParentMap parentMap = new ParentMap(graph.getModel());
-		DefaultGraphCell group = new DefaultGraphCell();
-		parentMap.addEntry(resourceCell, group);
-		parentMap.addEntry(typeCell, group);
-		Object[] cells = new Object[] { resourceCell, typeCell, group };
-		graph.getModel().insert(cells, attributes, null, parentMap, null);
+		DefaultGraphCell typeCell = addTypeCell(resourceCell, attributes, new Rectangle(point, new Dimension(cellWidth, cellHeight)));
 
 		RDFResourceInfo info = new RDFResourceInfo(type, uri, typeCell);
 		info.setTypeCell(resTypeCell);
@@ -161,7 +177,7 @@ public class RDFCellMaker {
 				}
 			}
 		}
-		return new Point((left + right)/ 2, bottom + 100);
+		return new Point((left + right) / 2, bottom + 100);
 	}
 
 	public void connectSubToSups(Port sourcePort, Object[] supCells, RDFGraph graph) {

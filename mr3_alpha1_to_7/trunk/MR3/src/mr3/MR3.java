@@ -66,7 +66,7 @@ public class MR3 extends JFrame {
 	private RDFLiteralInfoMap litInfoMap = RDFLiteralInfoMap.getInstance();
 	private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
 
-	private JCheckBoxMenuItem showTypeCell;
+	private JCheckBoxMenuItem showTypeCellBox;
 	private JCheckBoxMenuItem selectAbstractLevelMode;
 	private JCheckBoxMenuItem showToolTips;
 	private JInternalFrame[] internalFrames = new JInternalFrame[3];
@@ -75,7 +75,6 @@ public class MR3 extends JFrame {
 	private JCheckBoxMenuItem classEditorView;
 	private JCheckBoxMenuItem propertyEditorView;
 	private JCheckBoxMenuItem showSrcView;
-	//	private JCheckBoxMenuItem lightView;
 
 	private JRadioButton uriView;
 	private JRadioButton idView;
@@ -958,16 +957,14 @@ public class MR3 extends JFrame {
 		menu.add(attrDialog.getShowPropWindow());
 		menu.add(nsTableDialog.getShowNSTable());
 		menu.add(showSrcView);
-		//		showTypeCell = new JCheckBoxMenuItem("Show Type", true);
-		//		showTypeCell.addActionListener(new ShowTypeCellAction());
-		//		menu.add(showTypeCell);
+		showTypeCellBox = new JCheckBoxMenuItem("Show Type", true);
+		gmanager.setIsShowTypeCell(true);
+		showTypeCellBox.addActionListener(new ShowTypeCellAction());
+		menu.add(showTypeCellBox);
 		showToolTips = new JCheckBoxMenuItem("Show ToolTips", true);
 		showToolTips.addActionListener(new ShowToolTipsAction());
 		ToolTipManager.sharedInstance().setEnabled(true);
 		menu.add(showToolTips);
-		//		lightView = new JCheckBoxMenuItem("Color Mode", false);
-		//		lightView.addActionListener(new LightViewAction());
-		//		menu.add(lightView);
 
 		return menu;
 	}
@@ -1060,12 +1057,6 @@ public class MR3 extends JFrame {
 			}
 		}
 	}
-
-	//	cass LightViewAction extends AbstractAction {
-	//	public void actionPerformed(ActionEvent e) {	
-	//		
-	//		}
-	//	}
 
 	private JMenu getConvertMenu() {
 		JMenu menu = new JMenu("Convert");
@@ -1171,17 +1162,28 @@ public class MR3 extends JFrame {
 	class ShowTypeCellAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			RDFGraph rdfGraph = gmanager.getRDFGraph();
-			GraphLayoutCache graphLayoutCache = rdfGraph.getGraphLayoutCache();
 			Object[] rdfCells = rdfGraph.getAllCells();
-			List typeList = new ArrayList();
+			gmanager.setIsShowTypeCell(showTypeCellBox.isSelected());
+			if (showTypeCellBox.isSelected()) {
+				addTypeCells(rdfGraph, rdfCells);
+			} else {
+				gmanager.removeTypeCells(rdfGraph, rdfCells);
+			}			
+		}
+
+		private void addTypeCells(RDFGraph rdfGraph, Object[] rdfCells) {
+			RDFCellMaker cellMaker = new RDFCellMaker(gmanager);
 			for (int i = 0; i < rdfCells.length; i++) {
-				GraphCell cell = (GraphCell) rdfCells[i];
-				if (rdfGraph.isTypeCell(cell)) {
-					typeList.add(cell);
-					//					rdfGraph.getGraphLayoutCache().setVisible(cell, showTypeCell.getState());
+				if (rdfGraph.isRDFResourceCell(rdfCells[i])) {
+					DefaultGraphCell cell = (DefaultGraphCell) rdfCells[i];
+					RDFResourceInfo info = resInfoMap.getCellInfo(cell);
+					Map map = cell.getAttributes();
+					Rectangle rec = GraphConstants.getBounds(map);
+					GraphCell typeCell = cellMaker.addTypeCell(cell, new HashMap(), rec);
+					info.setTypeViewCell(typeCell);
 				}
 			}
-			graphLayoutCache.setVisible(typeList.toArray(), showTypeCell.getState());
+			gmanager.changeCellView();
 		}
 	}
 

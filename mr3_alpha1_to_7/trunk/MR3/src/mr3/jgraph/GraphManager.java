@@ -25,6 +25,7 @@ public class GraphManager {
 	private RDFGraph propGraph;
 
 	private boolean isImporting;
+	private boolean isShowTypeCell;
 
 	private RDFCellMaker cellMaker;
 
@@ -72,6 +73,14 @@ public class GraphManager {
 
 	public void setIsImporting(boolean t) {
 		isImporting = t;
+	}
+
+	public boolean isShowTypeCell() {
+		return isShowTypeCell;
+	}
+
+	public void setIsShowTypeCell(boolean t) {
+		isShowTypeCell = t;
 	}
 
 	public RDFGraph getRDFGraph() {
@@ -190,6 +199,19 @@ public class GraphManager {
 	public void setBaseURI(String base) {
 		baseURI = base;
 		changeCellView();
+	}
+
+	public void removeTypeCells(RDFGraph rdfGraph, Object[] rdfCells) {
+		List typeCellList = new ArrayList();
+		for (int i = 0; i < rdfCells.length; i++) {
+			GraphCell cell = (GraphCell) rdfCells[i];
+			if (rdfGraph.isTypeCell(cell)) {
+				typeCellList.add(cell);
+			} else if (!rdfGraph.isRDFCell(cell) && !rdfGraph.isPort(cell)) {
+				typeCellList.add(cell);
+			}
+		}
+		rdfGraph.removeCellsWithEdges(typeCellList.toArray());
 	}
 
 	private boolean isRDFResourceDuplicated(String uri, Object cell, GraphType type) {
@@ -550,6 +572,9 @@ public class GraphManager {
 	}
 
 	public void changeCellView() {
+		if (!isShowTypeCell) {
+			removeTypeCells(getRDFGraph(), getRDFGraph().getAllCells());
+		}
 		changeClassCellView();
 		changePropertyCellView();
 		changeRDFCellView(); // Class‚ÆProperty‚ð•ÏŠ·‚µ‚½‚ ‚Æ‚ÅCRDF‚ÌType, Property‚ð•ÏŠ·
@@ -810,7 +835,11 @@ public class GraphManager {
 		graph.scrollCellToVisible(cell);
 		if (graph == rdfGraph) {
 			Object parent = graph.getModel().getParent(cell);
-			graph.setSelectionCell(parent);
+			if (parent == null) {
+				graph.setSelectionCell(cell);
+			} else {
+				graph.setSelectionCell(parent);
+			}
 		} else {
 			graph.setSelectionCell(cell);
 		}

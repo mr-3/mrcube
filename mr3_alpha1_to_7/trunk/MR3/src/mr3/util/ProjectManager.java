@@ -26,6 +26,7 @@ public class ProjectManager {
 	private NameSpaceTableDialog nsTableDialog;
 	private RDFResourceInfoMap resInfoMap = RDFResourceInfoMap.getInstance();
 	private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
+	private RDFLiteralInfoMap litInfoMap = RDFLiteralInfoMap.getInstance();
 
 	public ProjectManager(GraphManager gm, NameSpaceTableDialog nsTableD) {
 		gmanager = gm;
@@ -34,6 +35,7 @@ public class ProjectManager {
 	}
 
 	private void addRDFProjectModel(Model projectModel) throws RDFException {
+		int literal_cnt = 0;
 		RDFGraph graph = gmanager.getRDFGraph();
 		Object[] cells = graph.getAllCells();
 		for (int i = 0; i < cells.length; i++) {
@@ -43,6 +45,19 @@ public class ProjectManager {
 				RDFResourceInfo info = resInfoMap.getCellInfo(cell);
 				projectModel.add(info.getURI(), MR3Resource.Point_x, rec.getX());
 				projectModel.add(info.getURI(), MR3Resource.Point_y, rec.getY());
+			} else if (graph.isRDFPropertyCell(cells[i])) {
+				Edge edge = (Edge) cells[i];
+				GraphCell sourceCell = (GraphCell) graph.getSourceVertex(edge);
+				GraphCell targetCell = (GraphCell) graph.getTargetVertex(edge);
+				if (graph.isRDFLiteralCell(targetCell)) {
+					RDFResourceInfo info = resInfoMap.getCellInfo(sourceCell);
+					Rectangle rec = GraphConstants.getBounds(targetCell.getAttributes());
+					Literal litInfo = litInfoMap.getCellInfo(targetCell);
+					Resource litRes = new ResourceImpl(MR3Resource.Literal + Integer.toString(literal_cnt++));
+					projectModel.add(litRes, MR3Resource.HasLiteralResource, info.getURI());
+					projectModel.add(litRes, MR3Resource.Point_x, rec.getX());
+					projectModel.add(litRes, MR3Resource.Point_y, rec.getY());
+				}
 			}
 		}
 	}
@@ -114,12 +129,12 @@ public class ProjectManager {
 				nsTableModel.setValueAt(object.toString(), i, column);
 				break;
 			} else if (column == IS_AVAILABLE_COLUMN && nameSpace.equals(res.getNameSpace())) {
-				if (object.toString().equals("true")){
-					nsTableModel.setValueAt(new Boolean(true), i, column);					
+				if (object.toString().equals("true")) {
+					nsTableModel.setValueAt(new Boolean(true), i, column);
 				} else {
 					nsTableModel.setValueAt(new Boolean(false), i, column);
-				}	
-				break;			
+				}
+				break;
 			}
 		}
 	}
@@ -132,9 +147,9 @@ public class ProjectManager {
 			} else if (stmt.getPredicate().equals(MR3Resource.Point_y)) {
 				gmanager.setPositionY(stmt.getSubject(), stmt.getObject(), graph);
 			} else if (stmt.getPredicate().equals(MR3Resource.Prefix)) {
-//				changeNSModel(stmt.getSubject(), stmt.getObject(), PREFIX_COLUMN);
+				//				changeNSModel(stmt.getSubject(), stmt.getObject(), PREFIX_COLUMN);
 			} else if (stmt.getPredicate().equals(MR3Resource.Is_prefix_available)) {
-//				changeNSModel(stmt.getSubject(), stmt.getObject(), IS_AVAILABLE_COLUMN);
+				//				changeNSModel(stmt.getSubject(), stmt.getObject(), IS_AVAILABLE_COLUMN);
 			}
 		}
 	}
