@@ -9,6 +9,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import jp.ac.shizuoka.cs.panda.mmm.mr3.*;
+import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 
 /**
  * @author takeshi morita
@@ -19,12 +20,7 @@ public class NewProject extends AbstractActionFile {
 	private static final String NEW_PROJECT = "New Project";
 
 	public NewProject(MR3 mr3) {
-		super(mr3, NEW_PROJECT);
-		setValues();
-	}
-
-	public NewProject(MR3 mr3, ImageIcon icon) {
-		super(mr3, NEW_PROJECT, icon);
+		super(mr3, NEW_PROJECT, Utilities.getImageIcon("new.gif"));
 		setValues();
 	}
 

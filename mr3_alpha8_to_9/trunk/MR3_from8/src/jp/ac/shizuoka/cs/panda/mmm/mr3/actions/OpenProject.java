@@ -11,6 +11,7 @@ import javax.swing.*;
 
 import jp.ac.shizuoka.cs.panda.mmm.mr3.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.jgraph.*;
+import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 
 import com.hp.hpl.jena.rdf.model.*;
 
@@ -23,12 +24,7 @@ public class OpenProject extends AbstractActionFile {
 	private static final String OPEN_PROJECT = "Open Project";
 
 	public OpenProject(MR3 mr3) {
-		super(mr3, OPEN_PROJECT);
-		setValues();
-	}
-
-	public OpenProject(MR3 mr3, ImageIcon icon) {
-		super(mr3, OPEN_PROJECT, icon);
+		super(mr3, OPEN_PROJECT, Utilities.getImageIcon("open.gif"));
 		setValues();
 	}
 
