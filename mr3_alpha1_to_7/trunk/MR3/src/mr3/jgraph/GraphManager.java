@@ -42,10 +42,10 @@ public class GraphManager {
 	private String baseURI;
 
 	public GraphManager(AttributeDialog attrD, Preferences prefs) {
-		rdfGraph = new RDFGraph(this, attrD, GraphType.RDF);
-		realRDFGraph = new RDFGraph(this, attrD, GraphType.REAL_RDF);
-		classGraph = new RDFGraph(this, attrD, GraphType.CLASS);
-		propGraph = new RDFGraph(this, attrD, GraphType.PROPERTY);
+		rdfGraph = new RDFGraph(this, GraphType.RDF);
+//		realRDFGraph = new RDFGraph(this, GraphType.REAL_RDF);
+		classGraph = new RDFGraph(this, GraphType.CLASS);
+		propGraph = new RDFGraph(this, GraphType.PROPERTY);
 		registerComponent();
 		cellMaker = new RDFCellMaker(this);
 

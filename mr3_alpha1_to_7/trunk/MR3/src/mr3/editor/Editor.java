@@ -448,6 +448,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 		toolbar.add(new AbstractAction("", attrDialogIcon) {
 			public void actionPerformed(ActionEvent e) {
 				attrDialog.setVisible(true);
+				graph.setSelectionCell(graph.getSelectionCell());
 			}
 		});
 
