@@ -6,7 +6,6 @@ import java.util.*;
 import mr3.data.*;
 import mr3.jgraph.*;
 
-import com.hp.hpl.mesa.rdf.jena.common.*;
 import com.hp.hpl.mesa.rdf.jena.mem.*;
 import com.hp.hpl.mesa.rdf.jena.model.*;
 import com.hp.hpl.mesa.rdf.jena.vocabulary.*;
@@ -81,11 +80,6 @@ public class RDFToJGraph {
 			Resource subRes = (Resource) rdfsSubList.next();
 			RDFSInfo subInfo = rdfsInfoMap.getResourceInfo(subRes);
 
-			if (subRes.getURI().charAt(0) == '#') {
-				subRes = new ResourceImpl(gmanager.getBaseURI()+subRes.getURI());
-//				subInfo.setURIType(URIType.ID);
-			}
-
 			DefaultGraphCell subCell = null;
 			if (supInfo instanceof ClassInfo) {
 				subCell = (DefaultGraphCell) gmanager.getClassCell(subRes, false);
@@ -121,8 +115,6 @@ public class RDFToJGraph {
 //		System.out.println(uri);
 		if (uri.isAnon() || uri.getURI().length() == 0) {
 			resInfo = new RDFResourceInfo(URIType.ANONYMOUS, "", typeCell);
-		} else if (uri.getNameSpace().equals(gmanager.getBaseURI()+"#")) { // Žè”²‚«
-			resInfo = new RDFResourceInfo(URIType.ID, '#'+uri.getLocalName(), typeCell);
 		} else {
 			resInfo = new RDFResourceInfo(URIType.URI, uri.getURI(), typeCell);
 		}
@@ -145,13 +137,11 @@ public class RDFToJGraph {
 	}
 
 	private DefaultGraphCell createResourceCell(Object res, Map resMap, Map portMap, Map attr, Point point) {
-
 		DefaultGraphCell resCell = new RDFResourceCell(res.toString());
 		DefaultPort port = new DefaultPort();
 		resCell.add(port);
 		portMap.put(res, port);
 		resMap.put(res, resCell);
-
 		attr.put(resCell, cellMaker.getResourceMap(point));
 
 		return resCell;
@@ -294,7 +284,6 @@ public class RDFToJGraph {
 		Model model = new ModelMem(); //create RDFModel
 
 		try {
-			//			model.read(reader, "");
 			model.read(reader, gmanager.getBaseURI());
 			model.add(currentModel);
 			gmanager.getRDFGraph().removeAllCells();

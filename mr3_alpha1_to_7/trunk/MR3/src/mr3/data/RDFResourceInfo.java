@@ -89,15 +89,6 @@ public class RDFResourceInfo implements Serializable {
 		}
 	}
 
-	public Resource getType(String baseURI) {
-		RDFSInfo info = rdfsInfoMap.getCellInfo(typeCell);
-		if (info == null || info.getURI() == null) {
-			return new ResourceImpl("");
-		} else {
-			return info.getURI(baseURI);
-		}
-	}
-
 	public Object getTypeCell() {
 		return typeCell;
 	}

@@ -31,15 +31,15 @@ public class ClassInfo extends RDFSInfo {
 		return Collections.unmodifiableSet(subClasses);
 	}
 
-	public Model getModel(String baseURI) {
+	public Model getModel() {
 		try {
 			Model tmpModel = super.getModel();
-			Resource res = getURI(baseURI);
+			Resource res = getURI();
 
 			tmpModel.add(tmpModel.createStatement(res, RDF.type, RDFS.Class));
 			for (Iterator i = supRDFS.iterator(); i.hasNext();) {
 				RDFSInfo classInfo = rdfsInfoMap.getCellInfo(i.next());
-				tmpModel.add(tmpModel.createStatement(res, RDFS.subClassOf, classInfo.getURI(baseURI)));
+				tmpModel.add(tmpModel.createStatement(res, RDFS.subClassOf, classInfo.getURI()));
 			}
 			return tmpModel;
 		} catch (RDFException rdfex) {

@@ -98,7 +98,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 		try {
 			undoManager.undo(graph.getGraphLayoutCache());
 		} catch (Exception ex) {
-			System.err.println(ex);
+			ex.printStackTrace();
 		} finally {
 			updateHistoryButtons();
 		}
@@ -109,7 +109,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 		try {
 			undoManager.redo(graph.getGraphLayoutCache());
 		} catch (Exception ex) {
-			System.err.println(ex);
+			ex.printStackTrace();
 		} finally {
 			updateHistoryButtons();
 		}
@@ -139,7 +139,8 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 	public Writer writeModel(Model model, Writer output, RDFWriter writer) {
 		try {
 			setNsPrefix(writer);
-			writer.write(model, output, gmanager.getBaseURI());
+			String baseURI = gmanager.getBaseURI().replaceAll("#", "");
+			writer.write(model, output, baseURI);
 		} catch (RDFException e) {
 			e.printStackTrace();
 		}

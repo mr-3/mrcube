@@ -37,25 +37,25 @@ public class PropertyInfo extends RDFSInfo {
 		return Collections.unmodifiableSet(subProperties);
 	}
 
-	public Model getModel(String baseURI) {
+	public Model getModel() {
 		try {
 			Model tmpModel = super.getModel();
-			Resource res = getURI(baseURI);
+			Resource res = getURI();
 
 			tmpModel.add(tmpModel.createStatement(res, RDF.type, RDF.Property));
 			for (Iterator i = supRDFS.iterator(); i.hasNext();) {
 				RDFSInfo propInfo = rdfsInfoMap.getCellInfo(i.next());
 				if (!propInfo.getURI().equals(MR3Resource.Property)) { // MRCUBE.Propertyは，ルートになっているだけなので．
-					tmpModel.add(tmpModel.createStatement(res, RDFS.subPropertyOf, propInfo.getURI(baseURI)));
+					tmpModel.add(tmpModel.createStatement(res, RDFS.subPropertyOf, propInfo.getURI()));
 				}
 			}
 			for (Iterator i = domain.iterator(); i.hasNext();) {
 				RDFSInfo classInfo = rdfsInfoMap.getCellInfo(i.next());
-				tmpModel.add(tmpModel.createStatement(res, RDFS.domain, classInfo.getURI(baseURI)));
+				tmpModel.add(tmpModel.createStatement(res, RDFS.domain, classInfo.getURI()));
 			}
 			for (Iterator i = range.iterator(); i.hasNext();) {
 				RDFSInfo classInfo = rdfsInfoMap.getCellInfo(i.next());
-				tmpModel.add(tmpModel.createStatement(res, RDFS.range, classInfo.getURI(baseURI)));
+				tmpModel.add(tmpModel.createStatement(res, RDFS.range, classInfo.getURI()));
 			}
 			return tmpModel;
 		} catch (RDFException e) {
