@@ -25,6 +25,7 @@
     <copy todir="${resource.dir}" >
       <fileset dir="${src.dir}/resources" >
         <include name="*.gif" />
+        <include name="*.png" />
       </fileset>
     </copy>
   </target>
