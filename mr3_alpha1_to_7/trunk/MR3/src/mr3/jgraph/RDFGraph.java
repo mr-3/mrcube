@@ -20,18 +20,18 @@ public class RDFGraph extends JGraph {
 
 	private GraphType type;
 	private GraphManager gmanager;
-	private AttributeDialog propWindow;
+	private AttributeDialog attrDialog;
 	private RDFResourceInfoMap resInfoMap = RDFResourceInfoMap.getInstance();
 	private RDFLiteralInfoMap litInfoMap = RDFLiteralInfoMap.getInstance();
 	private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
 
-	public RDFGraph(GraphManager manager, AttributeDialog pw, GraphType type) {
+	public RDFGraph(GraphManager manager, AttributeDialog attrD, GraphType type) {
 		super(new RDFGraphModel());
 //		GraphLayoutCache cache = new GraphLayoutCache(getModel(), getGraphLayoutCache().getFactory(), false, true);
 //		setGraphLayoutCache(cache);
 		initStatus();
 		gmanager = manager;
-		propWindow = pw;
+		attrDialog = attrD;
 		this.type = type;
 	}
 
@@ -62,8 +62,8 @@ public class RDFGraph extends JGraph {
 	}
 
 	public void startEditingAtCell(Object cell) {
-		if (propWindow != null) {
-			propWindow.setVisible(true);
+		if (attrDialog != null) {
+			attrDialog.setVisible(true);
 		}
 	}
 

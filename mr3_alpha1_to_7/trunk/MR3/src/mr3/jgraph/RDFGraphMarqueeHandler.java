@@ -50,8 +50,9 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 		} else if (port != null && !e.isConsumed() && connectButton.isSelected()) {
 			start = graph.snap(e.getPoint());
 			firstPort = port;
-			if (firstPort != null)
+			if (firstPort != null) {
 				start = graph.toScreen(firstPort.getLocation(null));
+			}
 			e.consume();
 		} else {
 			super.mousePressed(e);
@@ -240,6 +241,13 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 			});
 		}
 
+		menu.addSeparator();
+		menu.add(new AbstractAction("Attribute Dialog") {
+			public void actionPerformed(ActionEvent e) {
+				gmanager.setVisibleAttrDialog(true);
+			}
+		});
+
 		return menu;
 	}
 
@@ -251,6 +259,15 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 		GraphConstants.setRouting(map, GraphConstants.ROUTING_SIMPLE);
 		attributes.put(edge, map);
 		graph.getModel().insert(new Object[] { edge }, attributes, cs, null, null);
+	}
+
+	public void connectSubToSups(Port sourcePort, Object[] supCells) {
+		for (int i = 0; i < supCells.length; i++) {
+			if (graph.isPort(supCells[i])) {
+				Port targetPort = (Port) supCells[i];
+				connect(sourcePort, targetPort, "");
+			}
+		}
 	}
 
 	public void connect(Port source, Port target, String edgeName) {

@@ -133,6 +133,8 @@ public class RDFCellMaker {
 		point = graph.snap(new Point(point)); // Snap the Point to the Grid
 		Map map = getClassMap(point);
 		EllipseCell vertex = new EllipseCell(uri);
+//		DefaultGraphCell vertex = new DefaultGraphCell(uri);
+
 		setCell(graph, vertex, map);
 
 		RDFSInfo info = new ClassInfo(uri);

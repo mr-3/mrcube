@@ -132,7 +132,7 @@ public class ReferenceListPanel extends JPanel {
 		}
 		Object cell = rdfRefTable.getValueAt(row, 1);
 		gmanager.jumpRDFArea(cell);
-		gmanager.setVisiblePropWindow(true);
+		gmanager.setVisibleAttrDialog(true);
 	}
 
 	private void propJump() {
@@ -142,7 +142,7 @@ public class ReferenceListPanel extends JPanel {
 		}
 		Object cell = propRefTable.getValueAt(row, 1);
 		gmanager.jumpPropertyArea(cell);
-		gmanager.setVisiblePropWindow(true);
+		gmanager.setVisibleAttrDialog(true);
 	}
 
 	class ButtonAction extends AbstractAction {

@@ -53,7 +53,7 @@ public class PropertyEditor extends Editor {
 		} else {
 			setToolStatus();
 			changeAttrPanel();
-			propWindow.validate();
+			attrDialog.validate();
 		}
 	}
 
@@ -63,10 +63,10 @@ public class PropertyEditor extends Editor {
 			RDFSInfo info = rdfsInfoMap.getCellInfo(cell);
 			if (info != null) {
 				propPanel.displayRDFSInfo(cell);
-				propWindow.setContentPane(propPanel);
+				attrDialog.setContentPane(propPanel);
 			}
 		} else {
-			propWindow.setNullPanel();
+			attrDialog.setNullPanel();
 		}
 	}
 }
