@@ -22,7 +22,7 @@
       <data>MR3HelpTOC.xml</data>
       <GUI isMaximize="true" indexAll="500" index="200" />
    </view>
-
+<!--
    <view>
       <name>Index</name>
       <label>Index</label>
@@ -30,7 +30,7 @@
       <data>MR3HelpIndex.xml</data>
       <GUI isMaximize="true" indexAll="500" index="200" />
    </view>
-
+-->
    <view>
       <name>Search</name>
       <label>Search</label>
