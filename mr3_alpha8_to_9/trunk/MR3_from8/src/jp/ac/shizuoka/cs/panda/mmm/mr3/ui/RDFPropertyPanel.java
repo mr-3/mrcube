@@ -404,7 +404,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 			if (isValid.booleanValue()) {
 				setIcon(Utilities.getImageIcon("valid.gif"));
 			} else {
-				setIcon(null);
+				setIcon(Utilities.getImageIcon("not_valid.gif"));
 			}
 
 			if (isSelected) {
