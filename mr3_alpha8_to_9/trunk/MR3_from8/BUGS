@@ -7,4 +7,4 @@
 * N-Triple形式でExportまたはConvertすると日本語が文字化けする。
 * プロジェクトの保存でRDFリソースのタイプの矩形の大きさが復元できていない．
 * RDFリテラルのデータタイプとLangを設定して，RDF/XMLでexportすると，
-   xml:langが出力されない．
+   xml:langが出力されない．(RDFの仕様？）

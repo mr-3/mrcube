@@ -309,7 +309,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 			JOptionPane.showInternalMessageDialog(gmanager.getDesktop(), "This NameSpace is baseURI.", "Warning", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		if (rmNS.equals(MR3Resource.Default_URI.getNameSpace())) {
+		if (rmNS.equals(MR3Resource.DefaultURI.getNameSpace())) {
 			JOptionPane.showInternalMessageDialog(gmanager.getDesktop(), "This NameSpace is System URI.", "Warning", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
