@@ -25,7 +25,7 @@ public class RDFSModelExtraction {
 			ClassInfo info = getClassResInfo(classResource);
 			setDefaultSubClassOf(classResource, info);
 			extractRDFSModel(orgModel, classModel, classResource, info);
-		}		
+		}
 		return classModel;
 	}
 
@@ -93,11 +93,7 @@ public class RDFSModelExtraction {
 			orgModel.remove(stmt);
 		}
 
-		if (metaResource.getNameSpace().equals(gmanager.getBaseURI()+'#')) {
-			info.setURI('#'+metaResource.getLocalName());
-		} else {
-			info.setURI(metaResource.toString());
-		}
+		info.setURI(metaResource.toString());
 		rdfsInfoMap.putResourceInfo(metaResource, info);
 	}
 
@@ -170,13 +166,13 @@ public class RDFSModelExtraction {
 		RDFNode object = stmt.getObject(); // get the object
 
 		if (predicate.equals(RDFS.label)) { //rdfs:label
-//			Literal literal = (Literal) object;
-			MR3Literal literal = new MR3Literal((Literal)object);
+			//			Literal literal = (Literal) object;
+			MR3Literal literal = new MR3Literal((Literal) object);
 			info.setLabel(literal);
 			info.addLabel(literal);
 		} else if (predicate.equals(RDFS.comment)) { //rdfs:comment
-//			Literal literal = (Literal) object;
-			MR3Literal literal = new MR3Literal((Literal)object);
+			//			Literal literal = (Literal) object;
+			MR3Literal literal = new MR3Literal((Literal) object);
 			info.setComment(literal);
 			info.addComment(literal);
 		} else if (predicate.equals(RDFS.isDefinedBy)) { //rdfs:isDefinedBy

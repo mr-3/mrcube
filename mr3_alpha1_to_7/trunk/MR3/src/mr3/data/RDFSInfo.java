@@ -117,10 +117,6 @@ public abstract class RDFSInfo implements Serializable {
 		return new ResourceImpl(uri);
 	}
 
-	public Resource getURI(String baseURI) {
-		return new ResourceImpl(uri);
-	}
-
 	public String getURIStr() {
 		return uri;
 	}

@@ -48,7 +48,7 @@ public class JGraphToRDF {
 					Set supProperties = graph.getTargetCells((DefaultGraphCell) cell);
 					info.setSupRDFS(supProperties);
 					if (!info.getURI().equals(MR3Resource.Property)) {
-						propertyModel.add(info.getModel(gmanager.getBaseURI()));
+						propertyModel.add(info.getModel());
 					}
 				}
 			}
@@ -83,7 +83,7 @@ public class JGraphToRDF {
 					ClassInfo info = (ClassInfo) rdfsInfoMap.getCellInfo(cell);
 					Set supClasses = graph.getTargetCells((DefaultGraphCell) cell);
 					info.setSupRDFS(supClasses);
-					classModel.add(info.getModel(gmanager.getBaseURI()));
+					classModel.add(info.getModel());
 				}
 			}
 		} catch (RDFException e) {
@@ -95,7 +95,7 @@ public class JGraphToRDF {
 		try {
 			RDFResourceInfo resInfo = resInfoMap.getCellInfo(cell);
 			if (resInfo.getType().getURI().length() != 0) {
-				rdfModel.add(rdfModel.createStatement(resInfo.getURI(gmanager.getBaseURI()), RDF.type, resInfo.getType(gmanager.getBaseURI())));
+				rdfModel.add(rdfModel.createStatement(resInfo.getURI(gmanager.getBaseURI()), RDF.type, resInfo.getType()));
 			}
 		} catch (RDFException rex) {
 			rex.printStackTrace();
@@ -144,7 +144,7 @@ public class JGraphToRDF {
 		if (propInfo == null) {
 			property = MR3Resource.Nil;
 		} else {
-			property = new PropertyImpl(propInfo.getURI(gmanager.getBaseURI()).getURI());
+			property = new PropertyImpl(propInfo.getURI().getURI());
 		}
 		return property;
 	}
