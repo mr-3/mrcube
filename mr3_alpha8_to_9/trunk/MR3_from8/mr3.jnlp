@@ -2,7 +2,7 @@
  <!-- JNLP File for mr^3 Application -->
  <jnlp
    spec="1.0+"
-   codebase="http://panda.cs.inf.shizuoka.ac.jp/mmm/mr3/"
+   codebase="http://mmm.semanticweb.org/mr3/"
    href="mr3.jnlp">
    <information>
      <title>MR^3</title>

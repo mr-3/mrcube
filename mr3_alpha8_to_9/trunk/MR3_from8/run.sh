@@ -16,4 +16,4 @@ $MR3_HOME/lib/junit.jar:\
 $MR3_HOME/lib/log4j-1.2.7.jar:\
 $MR3_HOME/lib/rdf-api-2001-01-19.jar:\
 $MR3_HOME/lib/xercesImpl.jar:\
-$MR3_HOME/lib/xmlParserAPIs.jar:" jp.ac.shizuoka.cs.panda.mmm.mr3.MR3
+$MR3_HOME/lib/xmlParserAPIs.jar:" org.semanticweb.mmm.mr3.MR3
