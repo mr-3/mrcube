@@ -22,8 +22,8 @@ public class SelectResourceTypeDialog extends JDialog implements ActionListener 
 	private JButton cancelButton;
 	private SelectResourceTypePanel panel;
 
-	SelectResourceTypeDialog(String title, GraphManager gm) {
-		super(gm.getRoot(), title, true);
+	SelectResourceTypeDialog(GraphManager gm) {
+		super(gm.getRoot(), Translator.getString("SelectResourceTypeDialog.Title"), true);
 		panel = new SelectResourceTypePanel(gm);
 		getContentPane().add(panel, BorderLayout.CENTER);
 		JPanel inlinePanel = new JPanel();
@@ -31,7 +31,6 @@ public class SelectResourceTypeDialog extends JDialog implements ActionListener 
 		inlinePanel.add(confirmButton);
 		inlinePanel.add(cancelButton);
 		getContentPane().add(inlinePanel, BorderLayout.SOUTH);
-		setResizable(false);
 		setLocation(100, 100);
 		setSize(new Dimension(500, 450));
 		setVisible(false);

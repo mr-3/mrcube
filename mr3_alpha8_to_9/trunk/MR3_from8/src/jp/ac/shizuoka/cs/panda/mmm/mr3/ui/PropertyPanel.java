@@ -162,7 +162,7 @@ public class PropertyPanel extends RDFSPanel {
 				return;
 			}
 
-			SelectRDFSDialog regionDialog = new SelectRDFSDialog("Select Region", gmanager);
+			SelectRDFSDialog regionDialog = new SelectRDFSDialog(Translator.getString("SelectRegionDialog.Title"), gmanager);
 			if (e.getSource() == addDomainButton) {
 				initRegionDialog(regionDialog);
 				regionDialog.setRegionSet(info.getDomain());

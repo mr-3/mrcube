@@ -38,11 +38,11 @@ public class RDFLiteralPanel extends JPanel implements ActionListener {
 		setBorder(BorderFactory.createTitledBorder(Translator.getString("AttributeDialog.RDFLiteralAttribute.Text")));
 
 		langField = new JTextField(10);
-		langField.setBorder(BorderFactory.createTitledBorder("Lang"));
+		langField.setBorder(BorderFactory.createTitledBorder(Translator.getString("Lang")));
 		lineLength = new JTextField(6);
-		lineLength.setBorder(BorderFactory.createTitledBorder("Length"));
+		lineLength.setBorder(BorderFactory.createTitledBorder(Translator.getString("Length")));
 		lineLength.addActionListener(this);
-		fillTextButton = new JButton("Fill Text");
+		fillTextButton = new JButton(Translator.getString("FillText"));
 		fillTextButton.addActionListener(this);
 		JPanel inlinePanel = new JPanel();
 		inlinePanel.add(langField);
@@ -50,21 +50,19 @@ public class RDFLiteralPanel extends JPanel implements ActionListener {
 		inlinePanel.add(lineLength);
 		inlinePanel.add(fillTextButton);
 
-		isTypedLiteralBox = new JCheckBox("is Type");
+		isTypedLiteralBox = new JCheckBox(Translator.getString("IsType"));
 		isTypedLiteralBox.addActionListener(this);
 		isTypedLiteralBox.setSelected(false);
 		typeBox = new JComboBox();
 		typeBox.setEnabled(false);
-		initComponent(typeBox, "Type", 300, 50);
+		initComponent(typeBox, Translator.getString("Type"), 300, 50);
 		JPanel typedLitPanel = new JPanel();
 		typedLitPanel.add(isTypedLiteralBox);
 		typedLitPanel.add(typeBox);
 
 		labelValueArea = new JTextArea();
 		JScrollPane valueScroll = new JScrollPane(labelValueArea);
-		initComponent(valueScroll, "Literal", LABEL_WIDTH, LABEL_HEIGHT);
-//		valueScroll.setPreferredSize(new Dimension(LABEL_WIDTH, LABEL_HEIGHT));
-//		valueScroll.setMinimumSize(new Dimension(LABEL_WIDTH, LABEL_HEIGHT));
+		initComponent(valueScroll, Translator.getString("Literal"), LABEL_WIDTH, LABEL_HEIGHT);
 
 		applyButton = new JButton(Translator.getString("Apply"));
 		applyButton.addActionListener(this);

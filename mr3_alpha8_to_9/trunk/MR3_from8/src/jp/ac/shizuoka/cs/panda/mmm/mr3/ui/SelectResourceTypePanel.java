@@ -4,6 +4,8 @@
  */
 package jp.ac.shizuoka.cs.panda.mmm.mr3.ui;
 
+import java.awt.*;
+
 import javax.swing.*;
 
 import jp.ac.shizuoka.cs.panda.mmm.mr3.data.*;
@@ -36,8 +38,7 @@ public class SelectResourceTypePanel extends SelectClassPanel {
 	}
 
 	protected void setEachDialogAttrLayout() {
-		gridbag.setConstraints(dspURI, c);
-		add(dspURI);
+		add(dspURI, BorderLayout.SOUTH);
 	}
 
 	private void changeTypeCellColor(Object typeCell) {

@@ -17,13 +17,13 @@ import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
  */
 public class InsertRDFSResDialog extends JDialog implements ActionListener {
 
-	private boolean isConfirm;
+	private JButton confirm;
+	private JButton cancel;
 	private JTextField idField;
 	private JLabel nsLabel;
 	private JComboBox uriPrefixBox;
 
-	private JButton confirm;
-	private JButton cancel;
+	private boolean isConfirm;
 
 	private static final int LIST_WIDTH = 300;
 	private static final int LIST_HEIGHT = 40;
@@ -38,16 +38,16 @@ public class InsertRDFSResDialog extends JDialog implements ActionListener {
 
 		idField = new JTextField();
 		idField.setText("");
-		initComponent(idField, "ID", ID_WIDTH, LIST_HEIGHT);
+		Utilities.initComponent(idField, "ID", ID_WIDTH, LIST_HEIGHT);
 
 		uriPrefixBox = new JComboBox();
-		initComponent(uriPrefixBox, Translator.getString("Prefix"), BOX_WIDTH, BOX_HEIGHT);
+		Utilities.initComponent(uriPrefixBox, Translator.getString("Prefix"), BOX_WIDTH, BOX_HEIGHT);
 		uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
 		uriPrefixBox.addActionListener(new ChangePrefixAction());
 
 		nsLabel = new JLabel("");
-		initComponent(nsLabel, Translator.getString("NameSpace"), LIST_WIDTH, LIST_HEIGHT);
-		
+		Utilities.initComponent(nsLabel, Translator.getString("NameSpace"), LIST_WIDTH, LIST_HEIGHT);
+
 		uriPrefixBox.setSelectedItem(PrefixNSUtil.getBaseURIPrefix(gmanager.getBaseURI()));
 		PrefixNSUtil.replacePrefix((String) uriPrefixBox.getSelectedItem(), nsLabel);
 
@@ -64,31 +64,16 @@ public class InsertRDFSResDialog extends JDialog implements ActionListener {
 		buttonPanel.add(cancel);
 
 		JPanel panel = new JPanel();
-		GridBagLayout gridbag = new GridBagLayout();
-		GridBagConstraints c = new GridBagConstraints();
-		panel.setLayout(gridbag);
-		c.weightx = 2;
-		c.weighty = 5;
-		c.anchor = GridBagConstraints.CENTER;
-		c.gridwidth = GridBagConstraints.REMAINDER;
-		gridbag.setConstraints(uriPanel, c);
-		panel.add(uriPanel);
-		gridbag.setConstraints(nsLabel, c);
-		panel.add(nsLabel);
-		gridbag.setConstraints(buttonPanel, c);
-		panel.add(buttonPanel);
+		panel.setLayout(new BorderLayout());
+		panel.add(uriPanel, BorderLayout.NORTH);
+		panel.add(nsLabel, BorderLayout.CENTER);
+		panel.add(buttonPanel, BorderLayout.SOUTH);
 		contentPane.add(panel);
 
 		setLocation(300, 300);
-		setSize(new Dimension(350, 180));
+		setSize(new Dimension(400, 170));
 		setResizable(false);
 		setVisible(true);
-	}
-
-	private void initComponent(JComponent component, String title, int width, int height) {
-		component.setPreferredSize(new Dimension(width, height));
-		component.setMinimumSize(new Dimension(width, height));
-		component.setBorder(BorderFactory.createTitledBorder(title));
 	}
 
 	class ChangePrefixAction extends AbstractAction {

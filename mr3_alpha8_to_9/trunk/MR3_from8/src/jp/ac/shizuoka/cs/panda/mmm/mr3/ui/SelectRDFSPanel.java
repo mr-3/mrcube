@@ -4,6 +4,7 @@
  */
 package jp.ac.shizuoka.cs.panda.mmm.mr3.ui;
 
+import java.awt.*;
 import java.util.*;
 
 import javax.swing.*;
@@ -35,12 +36,11 @@ public class SelectRDFSPanel extends SelectClassPanel {
 	protected void initEachDialogAttr() {
 		regionList = new JList();
 		regionListScroll = new JScrollPane(regionList);
-		initComponent(regionListScroll, Translator.getString("SelectedList"), 450, 80);
+		initComponent(regionListScroll, Translator.getString("SelectedList"), 450, 100);
 	}
 
 	protected void setEachDialogAttrLayout() {
-		gridbag.setConstraints(regionListScroll, c);
-		add(regionListScroll);
+		add(regionListScroll, BorderLayout.SOUTH);
 	}
 
 	public void valueChanged(GraphSelectionEvent e) {

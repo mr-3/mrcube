@@ -8,6 +8,7 @@ import javax.swing.table.*;
 
 import jp.ac.shizuoka.cs.panda.mmm.mr3.data.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.jgraph.*;
+import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 
 /**
  * @author takeshi morita
@@ -28,9 +29,6 @@ public class ReferenceListPanel extends JPanel {
 	private JButton reverseButton;
 	private JButton jumpButton;
 
-	private GridBagLayout gbLayout;
-	private GridBagConstraints gbc;
-
 	private Map rdfTableModelMap;
 	private Map propTableModelMap;
 
@@ -43,22 +41,14 @@ public class ReferenceListPanel extends JPanel {
 		propTableModelMap = new HashMap();
 
 		initTable();
-		initGridLayout();
+		setLayout(new BorderLayout());
+
 		tab = new JTabbedPane();
 		setTableLayout(rdfRefTable, "RDF");
-		setTableLayout(propRefTable, "Property");
-		gbLayout.setConstraints(tab, gbc);
-		add(tab);
+		setTableLayout(propRefTable, Translator.getString("Property"));
+		add(tab, BorderLayout.CENTER);
 		setButtonLayout();
-		setBorder(BorderFactory.createTitledBorder("Reference List"));
-		setSize(new Dimension(400, 300));
-	}
-
-	private void initGridLayout() {
-		gbLayout = new GridBagLayout();
-		gbc = new GridBagConstraints();
-		setLayout(gbLayout);
-		gbc.gridwidth = GridBagConstraints.REMAINDER;
+		setBorder(BorderFactory.createTitledBorder(Translator.getString("ReferenceList.Title")));
 	}
 
 	private void initTable() {
@@ -79,21 +69,20 @@ public class ReferenceListPanel extends JPanel {
 
 	private void setButtonLayout() {
 		ButtonAction buttonAction = new ButtonAction();
-		selectAllButton = new JButton("Select All");
+		selectAllButton = new JButton(Translator.getString("ReferenceList.SelectAll"));
 		selectAllButton.addActionListener(buttonAction);
-		clearAllButton = new JButton("Clear All");
+		clearAllButton = new JButton(Translator.getString("ReferenceList.ClearAll"));
 		clearAllButton.addActionListener(buttonAction);
-		reverseButton = new JButton("Reverse");
+		reverseButton = new JButton(Translator.getString("ReferenceList.Reverse"));
 		reverseButton.addActionListener(buttonAction);
-		jumpButton = new JButton("Jump");
+		jumpButton = new JButton(Translator.getString("ReferenceList.Jump"));
 		jumpButton.addActionListener(buttonAction);
 		JPanel inlinePanel = new JPanel();
 		inlinePanel.add(selectAllButton);
 		inlinePanel.add(clearAllButton);
 		inlinePanel.add(reverseButton);
 		inlinePanel.add(jumpButton);
-		gbLayout.setConstraints(inlinePanel, gbc);
-		add(inlinePanel);
+		add(inlinePanel, BorderLayout.SOUTH);
 	}
 
 	private void setCheck(TableModel tableModel, boolean t) {
@@ -174,7 +163,7 @@ public class ReferenceListPanel extends JPanel {
 	}
 
 	private ReferenceTableModel getTableModel() {
-		Object[] columnNames = new Object[] { "check", "List" };
+		Object[] columnNames = new Object[] { Translator.getString("ReferenceList.DeleteCheck"), Translator.getString("ReferenceList.List") };
 		ReferenceTableModel tModel = new ReferenceTableModel(columnNames, 0);
 		return tModel;
 	}

@@ -42,8 +42,10 @@ public class GraphManager {
 	private CellViewType cellViewType;
 	private AbstractLevelInfo abstractLevelInfo;
 
-	private Preferences userPrefs;
 	private String baseURI;
+	private Preferences userPrefs;
+
+	private static final String WARNING = Translator.getString("Warning");
 
 	public GraphManager(AttributeDialog attrD, Preferences prefs) {
 		attrDialog = attrD;
@@ -54,7 +56,7 @@ public class GraphManager {
 		cellMaker = new RDFCellMaker(this);
 
 		userPrefs = prefs;
-		rmDialog = new RemoveDialog("Remove Dialog", this);
+		rmDialog = new RemoveDialog(this);
 		abstractLevelInfo = new AbstractLevelInfo();
 		prefixNSInfoSet = new HashSet();
 		baseURI = userPrefs.get(PrefConstants.BaseURI, MR3Resource.getURI());
@@ -339,7 +341,7 @@ public class GraphManager {
 
 	public boolean isEmptyURI(String uri) {
 		if (uri.equals("")) {
-			JOptionPane.showInternalMessageDialog(getDesktop(), "URI is empty", "Warning", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showInternalMessageDialog(getDesktop(), Translator.getString("Warning.Message4"),  WARNING, JOptionPane.ERROR_MESSAGE);
 			return true;
 		} else {
 			return false;
@@ -348,7 +350,7 @@ public class GraphManager {
 
 	public boolean isDuplicatedWithDialog(String uri, Object cell, GraphType type) {
 		if (isDuplicated(uri, cell, type)) {
-			JOptionPane.showInternalMessageDialog(getGraph(type), "URI is duplicated", "Warning", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showInternalMessageDialog(getGraph(type), Translator.getString("Warning.Message1"), WARNING, JOptionPane.ERROR_MESSAGE);
 			return true;
 		} else {
 			return false;

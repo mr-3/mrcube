@@ -35,7 +35,6 @@ public class SelectRDFSDialog extends JDialog implements ActionListener {
 		
 		setLocation(100, 100);
 		setSize(new Dimension(500, 500));
-		setResizable(false);
 		setVisible(false);
 	}
 

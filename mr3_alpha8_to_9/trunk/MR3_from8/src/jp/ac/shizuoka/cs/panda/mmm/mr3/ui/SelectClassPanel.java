@@ -31,8 +31,6 @@ public abstract class SelectClassPanel extends JPanel implements GraphSelectionL
 	protected JButton findButton;
 
 	protected RDFGraph graph;
-	protected GridBagLayout gridbag;
-	protected GridBagConstraints c;
 
 	protected GraphManager gmanager;
 	protected RDFSInfoMap rdfsMap = RDFSInfoMap.getInstance();
@@ -46,7 +44,7 @@ public abstract class SelectClassPanel extends JPanel implements GraphSelectionL
 		initGraph();
 		initEachDialogAttr();
 
-		initGridLayout();
+		setLayout(new BorderLayout());
 		setFindGroupLayout();
 		setGraphLayout();
 		setEachDialogAttrLayout();
@@ -112,33 +110,22 @@ public abstract class SelectClassPanel extends JPanel implements GraphSelectionL
 		}
 	}
 
-	protected void initGridLayout() {
-		gridbag = new GridBagLayout();
-		c = new GridBagConstraints();
-		setLayout(gridbag);
-		c.anchor = GridBagConstraints.PAGE_START;
-		c.gridwidth = GridBagConstraints.REMAINDER;
-		c.weightx = 1;
-		c.weighty = 3;
-	}
-
 	protected void setFindGroupLayout() {
 		JPanel findPanel = new JPanel();
 		findPanel.add(uriPrefixBox);
 		findPanel.add(findField);
 		findPanel.add(findButton);
-		gridbag.setConstraints(findPanel, c);
-		add(findPanel);
-		gridbag.setConstraints(nsLabel, c);
-		add(nsLabel);
+		JPanel panel = new JPanel();
+		panel.setLayout(new BorderLayout());
+		panel.add(findPanel, BorderLayout.CENTER);
+		panel.add(nsLabel, BorderLayout.SOUTH);
+		add(panel, BorderLayout.NORTH);
 	}
 
 	protected void setGraphLayout() {
 		JScrollPane graphScroll = new JScrollPane(graph);
-		graphScroll.setPreferredSize(new Dimension(450, 250));
-		graphScroll.setMinimumSize(new Dimension(450, 250));
-		gridbag.setConstraints(graphScroll, c);
-		add(graphScroll);
+		initComponent(graphScroll, "", 450, 250);
+		add(graphScroll, BorderLayout.CENTER);
 	}
 
 	protected abstract void setEachDialogAttrLayout();
