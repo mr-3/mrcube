@@ -166,7 +166,7 @@ public class RDFToJGraph {
 	}
 
 	private void insertGroup(GraphModel model, Object cell, Object typeCell, Map attr) {
-		ParentMap parentMap = new ParentMap(model);
+		ParentMap parentMap = new ParentMap();
 		DefaultGraphCell group = new DefaultGraphCell();
 
 		parentMap.addEntry(cell, group);

@@ -118,7 +118,7 @@ public class RDFCellMaker {
 		Map typeMap = getTypeMap(new Rectangle(typePoint, new Dimension(rec.width, cellHeight)));
 		attributes.put(typeCell, typeMap);
 
-		ParentMap parentMap = new ParentMap(graph.getModel());
+		ParentMap parentMap = new ParentMap();
 		DefaultGraphCell group = new DefaultGraphCell();
 		parentMap.addEntry(resourceCell, group);
 		parentMap.addEntry(typeCell, group);

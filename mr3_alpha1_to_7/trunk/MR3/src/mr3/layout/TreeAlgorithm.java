@@ -3,7 +3,6 @@ import java.awt.geom.*;
 import java.util.*;
 
 /**
- * @author take
  *
  */
 public class TreeAlgorithm {
