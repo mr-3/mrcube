@@ -12,12 +12,21 @@ import com.hp.hpl.mesa.rdf.jena.model.*;
  */
 public class MR3Resource {
 
-	private static final String uri = "http://panda.cs.inf.shizuoka.ac.jp/mmm/mr3#";
-	private static final String nProperty = "Property";
-	private static final String nNil = "nil";
-	public static Resource URI;
+	private static final String DEFAULT_URI = "http://panda.cs.inf.shizuoka.ac.jp/mmm/mr3#";
+	private static final String PROPERTY = "Property";
+	private static final String NIL = "nil";
+	private static final String POINT_X = "point_x";
+	private static final String POINT_Y = "point_y";
+	private static final String PREFIX = "prefix";
+	private static final String IS_PREFIX_AVAILABLE = "is_prefix_available";
+	
+	public static Resource Default_URI;
 	public static Property Property;
 	public static Property Nil;
+	public static Property Point_x;
+	public static Property Point_y;
+	public static Property Prefix;
+	public static Property Is_prefix_available;
 	public static final String IMAGE_PATH = "mr3/resources/";
 
 	// JavaWebStartÇ≈ÇÕÅCégÇ¶Ç»Ç¢ÇÃÇ≈ÅC
@@ -28,15 +37,19 @@ public class MR3Resource {
 
 	static {
 		try {
-			URI = new ResourceImpl(uri);
-			Property = new PropertyImpl(uri + nProperty);
-			Nil = new PropertyImpl(uri + nNil);
+			Default_URI = new ResourceImpl(DEFAULT_URI);
+			Property = new PropertyImpl(DEFAULT_URI + PROPERTY);
+			Nil = new PropertyImpl(DEFAULT_URI + NIL);
+			Point_x = new PropertyImpl(DEFAULT_URI+POINT_X);
+			Point_y = new PropertyImpl(DEFAULT_URI+POINT_Y);
+			Prefix = new PropertyImpl(DEFAULT_URI+PREFIX);
+			Is_prefix_available = new PropertyImpl(DEFAULT_URI+IS_PREFIX_AVAILABLE);
 		} catch (RDFException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public static String getURI() {
-		return uri;
+		return DEFAULT_URI;
 	}
 }

@@ -297,6 +297,7 @@ public class MR3 extends JFrame {
 		mi = new JMenuItem("Preference");
 		mi.addActionListener(new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
+				prefDialog.initPrefixBox();
 				prefDialog.setVisible(true);
 			}
 		});
