@@ -46,10 +46,6 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 			return;
 		} else {
 			cellMaker.insertProperty(pt, uri);
-			DefaultGraphCell cell = (DefaultGraphCell) graph.getSelectionCell();
-			if (graph.isOneCellSelected(cell)) {
-				propertyPanel.displayRDFSInfo(cell);
-			}
 		}
 	}
 
@@ -63,9 +59,6 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 			DefaultGraphCell cell = (DefaultGraphCell) graph.getSelectionCell();
 			Port sourcePort = (Port) cell.getChildAt(0);
 			connectSubToSups(sourcePort, supCells);
-			if (graph.isOneCellSelected(cell)) {
-				propertyPanel.displayRDFSInfo(cell);
-			}
 		}
 	}
 

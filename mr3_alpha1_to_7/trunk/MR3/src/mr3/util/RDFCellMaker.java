@@ -99,7 +99,7 @@ public class RDFCellMaker {
 		DefaultGraphCell vertex = new RDFLiteralCell("");
 		setCell(graph, vertex, map);
 		litInfoMap.putCellInfo(vertex, new LiteralImpl("", ""));
-
+		gmanager.jumpRDFArea(vertex);
 		return vertex;
 	}
 
@@ -129,6 +129,7 @@ public class RDFCellMaker {
 		RDFResourceInfo info = new RDFResourceInfo(type, uri, typeCell);
 		resInfoMap.putCellInfo(resourceCell, info);
 		gmanager.changeCellView();
+		gmanager.jumpRDFArea(resourceCell);
 	}
 
 	public GraphCell insertClass(Point point, String uri) {
@@ -143,6 +144,7 @@ public class RDFCellMaker {
 		RDFSInfo info = new ClassInfo(uri);
 		rdfsInfoMap.putCellInfo(vertex, info);
 		gmanager.changeCellView();
+		gmanager.jumpClassArea(vertex);
 		return vertex;
 	}
 
@@ -155,7 +157,8 @@ public class RDFCellMaker {
 
 		RDFSInfo info = new PropertyInfo(uri);
 		rdfsInfoMap.putCellInfo(vertex, info);
-		gmanager.changeCellView();		
+		gmanager.changeCellView();
+		gmanager.jumpPropertyArea(vertex);		
 		return vertex;
 	}
 
