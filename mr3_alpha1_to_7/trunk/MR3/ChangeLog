@@ -1,3 +1,59 @@
-MR^3 alpha ver1 -> ver2
+MR^3 α3
+----------------
+- Windowメニューから，各Editorを選択することによって，
+  選択したEditorを手前に表示可能になった．
+- デフォルトの作業ディレクトリが設定できるようになった．
+- ファイル出力するときファイル名に拡張子を自動でつけるようになった．
+  (RDF/XML -> rdf, RDFS/XML -> rdfs, N-Triple -> n3)
+- RDFリソースのタイプ，RDFリソースのプロパティのコピー，カットが可能となった．
+- ViewメニューにID表示を追加した．(URIの#以下を表示する)
+	
+Bug Fix
+============
+- RDF Editorでコピーしたリソースのタイプが設定できなくなっていたのを修正．
+- RDFリソースのURITypeがANONYMOUSの時，コピー，カットができなかったのを修正．
+- Attribute DialogでRDF Editorのプロパティを選んでいるとき、NameSpaceを
+  選んでいなくてもNameSpaceのリストの一番上のLocalNameのリストが表示され
+  ていたのを，最初はLocalNameを表示しないように修正．
+- RDF EditorのRDFリソースをAttribute Dialogを使って編集して
+  Applyボタンを押したときに，RDFリソースのグループ化が解除されていたのを修正．
+  (その他にも，RDF Editorのリソースのグループ化が解除される可能性あり）
+- すべてのEditorでノードを追加したとき、Attribute Dialogに表示が
+  反映されていなかったのを修正．
 
-PopUp : add Attribute Dialog
+Bug List
+============	
+- RDFSプロパティを初めて挿入するときには，http://mr3#Property
+  についてAttribute Dialogに表示されてしまう不具合がある．
+- コピーしたすぐ後に，選択されているノードを移動すると，
+  表示が消えてしまう場合がある．一回，選択を解除すると直る．
+- RDFプロパティに対応するRDFSプロパティを削除した時，RDFプロパティの
+  URI(Label)の表示が消える．選択しなおすと，直る．
+	
+	
+MR^3 α2
+----------------
+- RDF Editorのリソースを選んだ時、Class EditorやProperty Editorの
+  対応するリソースが選択されるようになった．
+- 選択されているリソースの色が変更されるようになった．
+- 右クリックをすると出てくるPopupメニューにAttributeDialog
+  を表示するメニューが追加された．
+- クラスエディタのノードの形が矩形になった．(RDFリソースのタイプの形に合わせた)
+- Class EditorとProperty Editorのリソースを右クリックしたメニューに
+  サブクラスまたはサブプロパティを挿入する項目が追加された．
+- SelectPropertyDialogをRDFプロパティにおけるAttribute Dialogに組み込んだ．
+- 前回終了時のウィンドウサイズが保存されるようになった．
+- Class Editor, Property Editor, RDF Editorのそれぞれに
+　コピー，カット，ペースト機能を追加した．現在のところ，
+  RDFSプロパティのdomainとrangeのコピー，カットを行うことはできない．
+  また，RDFリソースのタイプ，RDFプロパティのコピー，カットも
+  行うことはできない．
+- Proxyの設定が可能となった．
+       
+Bug Fix
+============	
+- JDK1.4.2 BetaでAttributeDialogの表示がくずれていたバグを修正した．
+- RDF Editorでリソースを編集しているとき、Attribute Dialogを使って
+  URI TypeをURI,ID,ANONYMOUSとあるラジオボックスを順にクリックすると
+  それがRDF Editorに反映されてしまうバグを修正．Applyボタンを押すことで
+  反映されるようになった．	

@@ -131,7 +131,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 			}
 			setRenderer(nameSpace, modifyLocalNames);
 			localNameList.setListData(modifyLocalNames.toArray());
-			
+
 			uriField.setText(nameSpace);
 			uriField.setToolTipText(nameSpace);
 		}
@@ -147,11 +147,11 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 			uriField.setText(ns + ln);
 			uriField.setToolTipText(ns + ln);
 
-//		jumpした際に，リストを再構築してしまい，もともと選んでいたのがわからなくなってしまう．			
-//			Resource uri = new ResourceImpl(uriField.getText());
-//			Object propCell = (GraphCell) gmanager.getPropertyCell(uri, false);
-//			gmanager.jumpPropertyArea(propCell); // 対応するRDFSプロパティを選択する
-//			gmanager.jumpRDFArea(edge); // AttributeDialogの表示をRDFプロパティに戻す
+			//		jumpした際に，リストを再構築してしまい，もともと選んでいたのがわからなくなってしまう．			
+			//			Resource uri = new ResourceImpl(uriField.getText());
+			//			Object propCell = (GraphCell) gmanager.getPropertyCell(uri, false);
+			//			gmanager.jumpPropertyArea(propCell); // 対応するRDFSプロパティを選択する
+			//			gmanager.jumpRDFArea(edge); // AttributeDialogの表示をRDFプロパティに戻す
 		}
 	}
 
@@ -251,7 +251,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 			}
 			if (uri.equals(MR3Resource.Nil)) {
 				propertyCell = (GraphCell) gmanager.getPropertyCell(uri, false);
-//			JOptionPane.showMessageDialog(null, "Create Default Property.", "Warning", JOptionPane.ERROR_MESSAGE);
+				//			JOptionPane.showMessageDialog(null, "Create Default Property.", "Warning", JOptionPane.ERROR_MESSAGE);
 			} else {
 				SelectRDFSCheckDialog dialog = new SelectRDFSCheckDialog("Choose One Select");
 				CreateRDFSType createType = (CreateRDFSType) dialog.getValue();
@@ -270,7 +270,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		}
 
 		gmanager.jumpPropertyArea(propertyCell); // 対応するRDFSプロパティを選択する
-				
+
 		rdfsInfoMap.putEdgeInfo(edge, propertyCell);
 		String propValue = gmanager.getPropertyGraph().convertValueToString(propertyCell);
 		gmanager.setCellValue(edge, propValue);
