@@ -193,28 +193,9 @@ public abstract class AbstractActionFile extends MR3AbstractAction {
 		return rdfURI;
 	}
 
-	protected void newProject() {
-		mr3.getNSTableDialog().resetNSTable();
-		mr3.getAttrDialog().setNullPanel();
-		mr3.clearMap();
-		mr3.getGraphManager().removeAllCells();
-		mr3.getNSTableDialog().setDefaultNSPrefix();
-		mr3.setTitle("MR^3 - New Project");
-		mr3.setCurrentProject(null);
-	}
-
 	protected void saveProject(File file) {
 		try {
-			// 順番に注意．リテラルのモデルを抽出して，プロジェクトモデルを抽出してから
-			// リテラルモデルを削除する
-			// クラスとプロパティのリテラルモデルを抽出してはいけないので，
-			// RDFモデルのリテラルモデルを抽出してから，ＲＤＦＳモデルを抽出する
-			ProjectManager pm = new ProjectManager(mr3.getGraphManager(), mr3.getNSTableDialog());
-			Model exportModel = mr3.getRDFModel();
-			Model literalModel = pm.getLiteralModel(exportModel);
-			exportModel.add(mr3.getRDFSModel());
-			exportModel.add(pm.getProjectModel());
-			exportModel.remove(literalModel);
+			Model exportModel = mr3.getProjectModel();
 			Writer output = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
 			RDFWriter writer = new RDFWriterFImpl().getWriter("RDF/XML-ABBREV");
 			writeModel(exportModel, output, writer);

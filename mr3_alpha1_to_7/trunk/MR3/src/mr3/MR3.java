@@ -587,6 +587,16 @@ public class MR3 extends JFrame {
 		}
 	}
 
+	public void newProject() {
+		nsTableDialog.resetNSTable();
+		attrDialog.setNullPanel();
+		clearMap();
+		gmanager.removeAllCells();
+		nsTableDialog.setDefaultNSPrefix();
+		setTitle("MR^3 - New Project");
+		setCurrentProject(null);
+	}
+
 	public JCheckBoxMenuItem getShowSrcWindowBox() {
 		return srcFrame.getShowSrcWindowBox();
 	}
@@ -631,6 +641,10 @@ public class MR3 extends JFrame {
 		return mr3Writer.getSelectedRDFSModel();
 	}
 
+	public Model getProjectModel() {
+		return mr3Writer.getProjectModel(this);
+	}
+
 	public void replaceRDFModel(Model model) {
 		mr3Reader.replaceRDF(model);
 	}
@@ -641,6 +655,14 @@ public class MR3 extends JFrame {
 
 	public void mergeRDFSModel(Model model) {
 		mr3Reader.mergeRDFS(model);
+	}
+
+	public void replaceProjectModel(Model model) {
+		mr3Reader.replaceProjectModel(model, this);
+	}
+
+	public String getBaseURI() {
+		return gmanager.getBaseURI();
 	}
 
 	public JTextComponent getSourceArea() {

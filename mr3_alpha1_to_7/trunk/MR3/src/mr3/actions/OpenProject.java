@@ -11,7 +11,6 @@ import javax.swing.*;
 
 import mr3.*;
 import mr3.jgraph.*;
-import mr3.util.*;
 
 import com.hp.hpl.mesa.rdf.jena.model.*;
 
@@ -35,33 +34,22 @@ public class OpenProject extends AbstractActionFile {
 
 	private void setValues() {
 		putValue(SHORT_DESCRIPTION, "Open Project");
-		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_MASK));			
+		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_MASK));
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		GraphManager gmanager = mr3.getGraphManager();
-		try {
-			ProjectManager pm = new ProjectManager(gmanager, mr3.getNSTableDialog());
-			gmanager.setIsImporting(true);
-			Model model = readModel(getReader("mr3", "UTF8"), gmanager.getBaseURI());
-			if (model == null) {
-				return;
-			}
-			File tmp = mr3.getCurrentProject();
-			newProject();
+		gmanager.setIsImporting(true);
+		Model model = readModel(getReader("mr3", "UTF8"), gmanager.getBaseURI());
+
+		if (model != null) {
+			File tmp = mr3.getCurrentProject(); // New Projectよりも前のを保存
+			mr3.replaceProjectModel(model);
 			mr3.setCurrentProject(tmp);
-			// 順番が重要なので、よく考えること
-			Model projectModel = pm.extractProjectModel(model);
-			mr3.mergeRDFSModel(model);
-			pm.loadProject(projectModel);
-			pm.removeEmptyClass();
-			gmanager.removeTypeCells();
-			gmanager.addTypeCells();
-			gmanager.setIsImporting(false);
 			mr3.setTitle("MR^3 - " + mr3.getCurrentProject().getAbsolutePath());
-		} catch (RDFException e1) {
-			e1.printStackTrace();
 		}
+		gmanager.clearSelection();
+		gmanager.setIsImporting(false);
 	}
 
 }

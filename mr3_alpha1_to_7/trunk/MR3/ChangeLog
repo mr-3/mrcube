@@ -4,7 +4,11 @@
 * 各グラフのノードの色を変更できるようになった．
 * 標準出力と標準エラー出力をウィンドウに表示できるようになった．
    (メニュー->Window->Log Consoleで表示)
-
+* PluginAPIに以下の３つを追加
+  * Model getProjectModel() 
+  * void replaceProjectModel()
+  * String getBaseURI()
+  
 ==== Bug Fixes
 * New Project後に，RDFプロパティの編集ができなくなっていたのを修正．
 * プロジェクトファイルに，RDFSクラス及びプロパティのlabelとcommentを保存できなかったのを

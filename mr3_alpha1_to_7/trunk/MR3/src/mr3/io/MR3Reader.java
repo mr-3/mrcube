@@ -4,6 +4,7 @@
  */
 package mr3.io;
 
+import mr3.*;
 import mr3.data.*;
 import mr3.jgraph.*;
 import mr3.ui.*;
@@ -26,13 +27,13 @@ public class MR3Reader {
 	/*
 	 *  RDFReader -> JenaReader or N3JenaReader
 	 */
-	public MR3Reader(GraphManager manager, NameSpaceTableDialog nsD) {
-		gmanager = manager;
-		nsTableDialog = nsD;
-		rdfToGraph = new RDFToJGraph(manager);
-		graphToRDF = new JGraphToRDF(manager);
+	public MR3Reader(GraphManager gm, NameSpaceTableDialog nsTableD) {
+		gmanager = gm;
+		nsTableDialog = nsTableD;
+		rdfToGraph = new RDFToJGraph(gmanager);
+		graphToRDF = new JGraphToRDF(gmanager);
 	}
-	
+
 	private void replaceGraph(RDFGraph newGraph) {
 		gmanager.getRDFGraph().setRDFState(newGraph.getRDFState());
 	}
@@ -89,7 +90,6 @@ public class MR3Reader {
 		if (model != null) {
 			replaceRDFModel(model);
 			mergeRDFSModel(new ModelMem()); // RDFからRDFSへ反映されたクラス，プロパティの処理
-//			gmanager.applyTreeLayout();
 		}
 	}
 
@@ -97,7 +97,6 @@ public class MR3Reader {
 		if (model != null) {
 			mergeRDFModel(model);
 			mergeRDFSModel(new ModelMem()); // RDFからRDFSへ反映されたクラス，プロパティの処理
-//			gmanager.applyTreeLayout();
 		}
 	}
 
@@ -105,7 +104,24 @@ public class MR3Reader {
 		if (model != null) {
 			mergeRDFSModel(model);
 			mergeRDF(model); // RDFSにRDFが含まれていた場合の処理(mergeRDFModel()ではない)
-//			gmanager.applyTreeLayout();
+		}
+	}
+
+	public void replaceProjectModel(Model model, MR3 mr3) {
+		if (model != null) {
+			if (model != null) {
+				mr3.newProject();
+				// 順番が重要
+				ProjectManager projectManager = new ProjectManager(mr3.getGraphManager(), mr3.getNSTableDialog());
+				Model projectModel = projectManager.extractProjectModel(model);
+				mergeRDFS(model); // mergeRDFModelではない．まぎらわしいなー．				
+				projectManager.loadProject(projectModel);
+				projectManager.removeEmptyClass();
+				gmanager.removeTypeCells();
+				gmanager.addTypeCells();
+				nsTableDialog.changeCellView();
+				gmanager.clearSelection();
+			}
 		}
 	}
 }
