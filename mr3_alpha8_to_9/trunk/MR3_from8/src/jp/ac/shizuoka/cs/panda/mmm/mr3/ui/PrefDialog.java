@@ -24,6 +24,8 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 
 	private JTabbedPane tab;
 
+	private JTextField defaultLangField;
+
 	private JCheckBox isAntialiasBox;
 	private JComboBox uriPrefixBox;
 	private JLabel baseURILabel;
@@ -97,7 +99,7 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 
 	private static final int URI_FIELD_WIDTH = 300;
 	private static final int URI_FIELD_HEIGHT = 40;
-	
+
 	private JPanel getButtonGroupPanel() {
 		applyButton = new JButton("Apply");
 		applyButton.addActionListener(new DesideAction());
@@ -111,6 +113,7 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 	}
 
 	private JPanel getBasePanel() {
+		initDefaultLangField();
 		initEncodingBox();
 		initBaseURIField();
 		initWorkDirectoryField();
@@ -123,6 +126,7 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 		c.weighty = 5;
 		c.anchor = GridBagConstraints.WEST;
 
+		layoutDefaultLangField(basePanel, gridbag, c);
 		layoutEncodingBox(basePanel, gridbag, c);
 		layoutBaseURIField(basePanel, gridbag, c);
 		layoutWorkDirectory(basePanel, gridbag, c);
@@ -143,7 +147,7 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 	private JPanel getMetaClassListPanel() {
 		metaClassField = new JTextField();
 		initComponent(metaClassField, "URI", LONG_URI_FIELD_WIDTH, URI_FIELD_HEIGHT);
-		
+
 		classClassListModel = new DefaultListModel();
 		classClassList = new JList(classClassListModel);
 		classClassList.addListSelectionListener(this);
@@ -438,6 +442,12 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 		innerPanel.add(baseURIPanel);
 	}
 
+	private void layoutDefaultLangField(JPanel innerPanel, GridBagLayout gridbag, GridBagConstraints c) {
+		c.gridwidth = GridBagConstraints.REMAINDER;
+		gridbag.setConstraints(defaultLangField, c);
+		innerPanel.add(defaultLangField);
+	}
+
 	private void layoutEncodingBox(JPanel innerPanel, GridBagLayout gridbag, GridBagConstraints c) {
 		c.gridwidth = GridBagConstraints.RELATIVE;
 		gridbag.setConstraints(inputEncodingLabel, c);
@@ -454,29 +464,34 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 		innerPanel.add(outputEncodingBox);
 	}
 
+	private void initDefaultLangField() {
+		defaultLangField = new JTextField();
+		initComponent(defaultLangField, "Lang", PREFIX_BOX_WIDTH, URI_FIELD_HEIGHT);
+	}
+
 	private void initEncodingBox() {
 		inputEncodingLabel = new JLabel("Input Encoding:   ");
 		Object[] encodingList = new Object[] { "JISAutoDetect", "SJIS", "EUC_JP", "ISO2022JP", "UTF-8", "UTF-16" };
 		inputEncodingBoxModel = new DefaultComboBoxModel(encodingList);
 		inputEncodingBox = new JComboBox(inputEncodingBoxModel);
-		inputEncodingBox.setPreferredSize(new Dimension(prefixBoxWidth, 30));
-		inputEncodingBox.setMinimumSize(new Dimension(prefixBoxWidth, 30));
+		inputEncodingBox.setPreferredSize(new Dimension(PREFIX_BOX_WIDTH, 30));
+		inputEncodingBox.setMinimumSize(new Dimension(PREFIX_BOX_WIDTH, 30));
 
 		outputEncodingLabel = new JLabel("Output Encoding:   ");
 		encodingList = new Object[] { "SJIS", "EUC_JP", "ISO2022JP", "UTF-8", "UTF-16" };
 		outputEncodingBoxModel = new DefaultComboBoxModel(encodingList);
 		outputEncodingBox = new JComboBox(outputEncodingBoxModel);
-		outputEncodingBox.setPreferredSize(new Dimension(prefixBoxWidth, 30));
-		outputEncodingBox.setMinimumSize(new Dimension(prefixBoxWidth, 30));
+		outputEncodingBox.setPreferredSize(new Dimension(PREFIX_BOX_WIDTH, 30));
+		outputEncodingBox.setMinimumSize(new Dimension(PREFIX_BOX_WIDTH, 30));
 	}
 
-	private static final int prefixBoxWidth = 120;
-	private static final int prefixBoxHeight = 50;
+	private static final int PREFIX_BOX_WIDTH = 120;
+	private static final int PREFIX_BOX_HEIGHT = 50;
 
 	private void initBaseURIField() {
 		uriPrefixBox = new JComboBox();
 		uriPrefixBox.addActionListener(new ChangePrefixAction());
-		initComponent(uriPrefixBox, "Prefix", prefixBoxWidth, prefixBoxHeight);
+		initComponent(uriPrefixBox, "Prefix", PREFIX_BOX_WIDTH, PREFIX_BOX_HEIGHT);
 		baseURILabel = new JLabel("");
 		initComponent(baseURILabel, "BaseURI", URI_FIELD_WIDTH, URI_FIELD_HEIGHT);
 		initPrefixBox();
@@ -503,7 +518,7 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 		public void actionPerformed(ActionEvent e) {
 			PrefixNSUtil.replacePrefix((String) uriPrefixBox.getSelectedItem(), baseURILabel);
 		}
-	}	
+	}
 
 	private void initWorkDirectoryField() {
 		workDirectoryField = new JTextField();
@@ -555,6 +570,7 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 	}
 
 	private void initParameter() {
+		defaultLangField.setText(userPrefs.get(PrefConstants.DefaultLang, "ja"));
 		inputEncodingBox.setSelectedItem(userPrefs.get(PrefConstants.InputEncoding, "SJIS"));
 		outputEncodingBox.setSelectedItem(userPrefs.get(PrefConstants.OutputEncoding, "SJIS"));
 		baseURILabel.setText(userPrefs.get(PrefConstants.BaseURI, MR3Resource.Default_URI.getURI()));
@@ -601,6 +617,7 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == applyButton) {
 				try {
+					userPrefs.put(PrefConstants.DefaultLang, (String) defaultLangField.getText());
 					userPrefs.put(PrefConstants.InputEncoding, (String) inputEncodingBox.getSelectedItem());
 					userPrefs.put(PrefConstants.OutputEncoding, (String) outputEncodingBox.getSelectedItem());
 					userPrefs.put(PrefConstants.BaseURI, baseURILabel.getText());

@@ -204,11 +204,11 @@ public class RDFSModelExtraction {
 
 		if (predicate.equals(RDFS.label)) { //rdfs:label
 			MR3Literal literal = new MR3Literal((Literal) object);
-			info.setLabel(literal);
+			info.setLastLabel(literal);
 			info.addLabel(literal);
 		} else if (predicate.equals(RDFS.comment)) { //rdfs:comment
 			MR3Literal literal = new MR3Literal((Literal) object);
-			info.setComment(literal);
+			info.setLastComment(literal);
 			info.addComment(literal);
 		} else if (predicate.equals(RDFS.isDefinedBy)) { //rdfs:isDefinedBy
 			info.setIsDefinedby(object.toString());

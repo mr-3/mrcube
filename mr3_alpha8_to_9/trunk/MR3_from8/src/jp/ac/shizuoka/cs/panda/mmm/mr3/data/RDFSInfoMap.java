@@ -267,8 +267,8 @@ public class RDFSInfoMap {
 			MR3Literal comment = (MR3Literal) i.next();
 			newInfo.addComment(comment);
 		}
-		newInfo.setLabel(orgInfo.getLabel());
-		newInfo.setComment(orgInfo.getComment());
+		newInfo.setLastLabel(orgInfo.getLastLabel());
+		newInfo.setLastComment(orgInfo.getLastComment());
 		newInfo.setIsDefinedby(orgInfo.getIsDefinedBy().toString());
 		newInfo.setInnerModel(orgInfo.getInnerModel());
 	}

@@ -34,7 +34,7 @@ public abstract class RDFSPanel extends JPanel {
 
 	protected JTextField labelField;
 	protected JTextField isDefinedBy;
-	protected JTextArea comment;
+	protected JTextArea commentArea;
 	protected JScrollPane commentScroll;
 	protected JTabbedPane metaTab;
 	protected RDFGraph graph;
@@ -166,8 +166,8 @@ public abstract class RDFSPanel extends JPanel {
 	protected void setCommentTab() {
 		commentLangField = new JTextField(LANG_FIELD_LENGTH);
 		initComponent(commentLangField, "Lang", BOX_WIDTH, FIELD_HEIGHT);
-		comment = new JTextArea(5, 20); // 縦,横        
-		commentScroll = new JScrollPane(comment);
+		commentArea = new JTextArea(5, 20); // 縦,横        
+		commentScroll = new JScrollPane(commentArea);
 		initComponent(commentScroll, "Comment", 300, 150);
 		JPanel commentPanel = new JPanel();
 		commentPanel.add(commentLangField);
@@ -226,7 +226,7 @@ public abstract class RDFSPanel extends JPanel {
 	private void clearField() {
 		labelField.setText("");
 		labelLangField.setText("");
-		comment.setText("");
+		commentArea.setText("");
 		commentLangField.setText("");
 	}
 
@@ -254,40 +254,42 @@ public abstract class RDFSPanel extends JPanel {
 	}
 
 	protected ComboBoxModel getLabelComboBoxModel(List list) {
+		MR3Literal defaultLiteral = rdfsInfo.getLastLabel();
 		DefaultComboBoxModel comboModel = new DefaultComboBoxModel();
 		for (Iterator i = list.iterator(); i.hasNext();) {
 			MR3Literal literal = (MR3Literal) i.next();
 			LiteralLang lang = new LiteralLang(literal);
 			comboModel.addElement(lang);
-			try {
-				if (isLastLiteral(literal, rdfsInfo.getLabel())) {
-					labelField.setText(literal.getString());
-					labelLangField.setText(literal.getLanguage());
-					comboModel.setSelectedItem(lang);
-				}
-			} catch (RDFException rdfex) {
-				rdfex.printStackTrace();
+			if (gmanager.getDefaultLang().equals(literal.getLanguage())) {
+				defaultLiteral = literal;
 			}
 		}
+		if (defaultLiteral != null) {
+			labelField.setText(defaultLiteral.getString());
+			labelLangField.setText(defaultLiteral.getLanguage());
+			comboModel.setSelectedItem(defaultLiteral.getLanguage());
+		}
+
 		return comboModel;
 	}
 
 	protected ComboBoxModel getCommentComboBoxModel(List list) {
+		MR3Literal defaultLiteral = rdfsInfo.getLastComment();
 		DefaultComboBoxModel comboModel = new DefaultComboBoxModel();
 		for (Iterator i = list.iterator(); i.hasNext();) {
 			MR3Literal literal = (MR3Literal) i.next();
 			LiteralLang lang = new LiteralLang(literal);
 			comboModel.addElement(lang);
-			try {
-				if (isLastLiteral(literal, rdfsInfo.getComment())) {
-					comment.setText(literal.getString());
-					commentLangField.setText(literal.getLanguage());
-					comboModel.setSelectedItem(lang);
-				}
-			} catch (RDFException rdfex) {
-				rdfex.printStackTrace();
+			if (gmanager.getDefaultLang().equals(literal.getLanguage())) {
+				defaultLiteral = literal;
 			}
 		}
+		if (defaultLiteral != null) {
+			commentArea.setText(defaultLiteral.getString());
+			commentLangField.setText(defaultLiteral.getLanguage());
+			comboModel.setSelectedItem(defaultLiteral.getLanguage());
+		}
+
 		return comboModel;
 	}
 
@@ -308,7 +310,7 @@ public abstract class RDFSPanel extends JPanel {
 				if (commentLangBox.getItemCount() == 0 || commentLangBox.getSelectedItem() == null)
 					return;
 				DefaultComboBoxModel comboModel = (DefaultComboBoxModel) commentLangBox.getModel();
-				LiteralLang addElement = new LiteralLang(new MR3Literal(comment.getText(), commentLangField.getText(), null));
+				LiteralLang addElement = new LiteralLang(new MR3Literal(commentArea.getText(), commentLangField.getText(), null));
 				LiteralLang rmElement = (LiteralLang) comboModel.getSelectedItem();
 				comboModel.removeElement(rmElement);
 				rdfsInfo.removeComment(rmElement.getLiteral());
@@ -330,7 +332,7 @@ public abstract class RDFSPanel extends JPanel {
 				rdfsInfo.addLabel(literal);
 			} else if (e.getSource() == addCommentButton) {
 				DefaultComboBoxModel comboModel = (DefaultComboBoxModel) commentLangBox.getModel();
-				MR3Literal literal = new MR3Literal(comment.getText(), commentLangField.getText(), null);
+				MR3Literal literal = new MR3Literal(commentArea.getText(), commentLangField.getText(), null);
 				LiteralLang addElement = new LiteralLang(literal);
 				comboModel.addElement(addElement);
 				comboModel.setSelectedItem(addElement);
@@ -368,7 +370,7 @@ public abstract class RDFSPanel extends JPanel {
 				MR3Literal literal = lang.getLiteral();
 				labelLangField.setText(literal.getLanguage());
 				labelField.setText(literal.getString());
-				rdfsInfo.setLabel(literal);
+				rdfsInfo.setLastLabel(literal);
 				// 最後にセットしたラベル
 			} else if (e.getSource() == commentLangBox) {
 				if (commentLangBox.getItemCount() == 0 || commentLangBox.getSelectedItem() == null)
@@ -376,8 +378,8 @@ public abstract class RDFSPanel extends JPanel {
 				LiteralLang lang = (LiteralLang) commentLangBox.getSelectedItem();
 				MR3Literal literal = lang.getLiteral();
 				commentLangField.setText(literal.getLanguage());
-				comment.setText(literal.getString());
-				rdfsInfo.setComment(literal);
+				commentArea.setText(literal.getString());
+				rdfsInfo.setLastComment(literal);
 				// 最後にセットしたコメント
 			}
 		}
@@ -445,7 +447,7 @@ public abstract class RDFSPanel extends JPanel {
 	}
 
 	abstract public void setInstanceList();
-	
+
 	protected class InstanceAction implements ListSelectionListener {
 		public void valueChanged(ListSelectionEvent e) {
 			Object cell = instanceList.getSelectedValue();

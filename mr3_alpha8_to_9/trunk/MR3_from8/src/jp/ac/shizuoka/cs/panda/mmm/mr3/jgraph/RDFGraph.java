@@ -311,12 +311,12 @@ public class RDFGraph extends JGraph {
 
 	private String getRDFSToolTipText(RDFSInfo info) {
 		String msg = "<dl><dt>URI: </dt><dd>" + info.getURI() + "</dd>";
-		MR3Literal literal = info.getLabel();
+		MR3Literal literal = info.getLastLabel();
 		if (literal != null) {
 			msg += "<dt>Label</dt><dd>Lang: " + literal.getLanguage() + "<br>" + literal.getString() + "</dd>";
 			msg += "<dt>Comment</dt>";
 		}
-		literal = info.getComment();
+		literal = info.getLastComment();
 		if (literal != null) {
 			String comment = literal.getString();
 			comment = RDFLiteralUtil.insertLineFeed(comment, COMMENT_WIDTH);
