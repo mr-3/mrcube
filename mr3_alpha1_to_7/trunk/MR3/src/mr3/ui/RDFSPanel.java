@@ -132,6 +132,9 @@ public abstract class RDFSPanel extends JPanel {
 		comment = new JTextArea(5, 15); // èc,â°        
 		commentScroll = new JScrollPane(comment);
 		initComponent(commentScroll, "Comment", 300, listHeight);
+		JPanel commentPanel = new JPanel();
+		commentPanel.add(commentLangField);
+		commentPanel.add(commentScroll);
 
 		commentLangBox = new JComboBox();
 		commentLangBox.addActionListener(new SelectLangAction());
@@ -172,12 +175,8 @@ public abstract class RDFSPanel extends JPanel {
 		inline.add(labelButtonGroup);
 
 		c.anchor = GridBagConstraints.CENTER;
-		c.gridwidth = GridBagConstraints.RELATIVE;
-		gridbag.setConstraints(commentLangField, c);
-		inline.add(commentLangField);
-		c.gridwidth = GridBagConstraints.REMAINDER;
-		gridbag.setConstraints(commentScroll, c);
-		inline.add(commentScroll);
+		gridbag.setConstraints(commentPanel, c);
+		inline.add(commentPanel);
 		c.anchor = GridBagConstraints.WEST;
 		gridbag.setConstraints(commentButtonGroup, c);
 		inline.add(commentButtonGroup);
@@ -422,7 +421,7 @@ public abstract class RDFSPanel extends JPanel {
 		}
 	}
 
-	private void setPrefix() {		
+	private void setPrefix() {
 		for (Iterator i = prefixNSInfoSet.iterator(); i.hasNext();) {
 			PrefixNSInfo prefNSInfo = (PrefixNSInfo) i.next();
 			if (prefNSInfo.getNameSpace().equals(rdfsInfo.getURI().getNameSpace())) {
