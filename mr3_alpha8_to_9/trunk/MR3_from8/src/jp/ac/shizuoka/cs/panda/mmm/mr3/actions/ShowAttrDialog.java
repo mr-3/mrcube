@@ -9,6 +9,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import jp.ac.shizuoka.cs.panda.mmm.mr3.jgraph.*;
+import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 
 /**
  * @author takeshi morita
@@ -19,7 +20,7 @@ public class ShowAttrDialog extends AbstractAction {
 	private GraphManager gmanager;
 
 	public ShowAttrDialog(RDFGraph g, GraphManager gm, String title) {
-		super(title);
+		super(title, Utilities.getImageIcon("attrDialogIcon.gif"));
 		graph = g;
 		gmanager = gm;
 	}

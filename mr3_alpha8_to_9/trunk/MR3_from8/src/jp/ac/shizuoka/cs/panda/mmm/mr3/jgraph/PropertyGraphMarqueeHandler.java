@@ -104,6 +104,7 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 		menu.add(new PasteAction(graph, "Paste"));
 
 		if (cell != null || !graph.isSelectionEmpty()) {
+			menu.addSeparator();
 			menu.add(new RemoveAction(graph, gmanager, "Remove"));
 		}
 		menu.addSeparator();
