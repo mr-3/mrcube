@@ -316,6 +316,10 @@ public class MR3 extends JFrame {
 	private static final String SelectedRDFS_NTriple = "Selected RDFS/N-Triple";
 	private static final String SelectedRDF_XML = "Selected RDF/XML";
 	private static final String SelectedRDF_NTriple = "Selected RDF/N-Triple";
+	private static final String REPLACE_RDF_FILE = "RDF/XML (File)";
+	private static final String REPLACE_RDF_URI = "RDF/XML (URI)";
+	private static final String MERGE_RDFS_FILE = "RDF(S)/XML (File)";
+	private static final String MERGE_RDFS_URI = "RDF(S)/XML (URI)";
 
 	private JMenu getFileMenu() {
 		JMenu menu = new JMenu("File");
@@ -338,20 +342,20 @@ public class MR3 extends JFrame {
 		importRDF.add(mi);
 		JMenu replace = new JMenu("Replace");
 
-		mi = new JMenuItem("RDF/XML (File)");
-		mi.addActionListener(new ReplaceRDFFileAction());
+		mi = new JMenuItem(REPLACE_RDF_FILE);
+		mi.addActionListener(new ReplaceRDFAction());
 		replace.add(mi);
-		mi = new JMenuItem("RDF/XML (URI)");
-		mi.addActionListener(new ReplaceRDFURIAction());
+		mi = new JMenuItem(REPLACE_RDF_URI);
+		mi.addActionListener(new ReplaceRDFAction());
 		replace.add(mi);
 		importRDF.add(replace);
 
 		JMenu mergeMenu = new JMenu("Merge");
-		mi = new JMenuItem("RDF(S)/XML (File)");
-		mi.addActionListener(new MergeRDFSFileAction());
+		mi = new JMenuItem(MERGE_RDFS_FILE);
+		mi.addActionListener(new MergeRDFsAction());
 		mergeMenu.add(mi);
-		mi = new JMenuItem("RDF(S)/XML (URI)");
-		mi.addActionListener(new MergeRDFSURIAction());
+		mi = new JMenuItem(MERGE_RDFS_URI);
+		mi.addActionListener(new MergeRDFsAction());
 		mergeMenu.add(mi);
 		importRDF.add(mergeMenu);
 
@@ -664,19 +668,23 @@ public class MR3 extends JFrame {
 		}
 
 		if (isOpenFile) {
-			jfc.showOpenDialog(desktop);
+			if (jfc.showOpenDialog(desktop) == JFileChooser.APPROVE_OPTION) {
+				return jfc.getSelectedFile();
+			} else {
+				return null;
+			}
 		} else {
-			jfc.showSaveDialog(desktop);
-			if (jfc.getSelectedFile() != null) {
+			if (jfc.showSaveDialog(desktop) == JFileChooser.APPROVE_OPTION) {
 				String defaultPath = jfc.getSelectedFile().getAbsolutePath();
 				if (extension.equals("mr3")) {
 					return new File(complementMR3Extension(defaultPath, extension));
 				} else {
 					return new File(complementRDFsExtension(defaultPath, extension));
 				}
+			} else {
+				return null;
 			}
 		}
-		return jfc.getSelectedFile();
 	}
 
 	private String complementMR3Extension(String tmp, String extension) {
@@ -772,26 +780,20 @@ public class MR3 extends JFrame {
 
 	public void replaceRDFModel(Model model) {
 		mr3Reader.replaceRDF(model);
-		rdfEditor.fitWindow();
 	}
 
-	class ReplaceRDFFileAction extends AbstractAction {
+	class ReplaceRDFAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
-			Model model = readModel(getReader("rdf", null), gmanager.getBaseURI());
+			Model model = null;
 			gmanager.setIsImporting(true);
+			if (e.getActionCommand().equals(REPLACE_RDF_FILE)) {
+				model = readModel(getReader("rdf", null), gmanager.getBaseURI());
+			} else if (e.getActionCommand().equals(REPLACE_RDF_FILE)) {
+				String uri = JOptionPane.showInternalInputDialog(desktop, "Open URI");
+				model = readModel(getReader(uri), gmanager.getBaseURI());
+			}
 			mr3Reader.replaceRDF(model);
-			rdfEditor.fitWindow();
-			gmanager.setIsImporting(false);
-		}
-	}
-
-	class ReplaceRDFURIAction extends AbstractAction {
-		public void actionPerformed(ActionEvent e) {
-			gmanager.setIsImporting(true);
-			String uri = JOptionPane.showInternalInputDialog(desktop, "Open URI");
-			Model model = readModel(getReader(uri), gmanager.getBaseURI());
-			mr3Reader.replaceRDF(model);
-			rdfEditor.fitWindow();
+			nsTableDialog.setCurrentNSPrefix();
 			gmanager.setIsImporting(false);
 		}
 	}
@@ -804,22 +806,18 @@ public class MR3 extends JFrame {
 		mr3Reader.mergeRDFS(model);
 	}
 
-	class MergeRDFSFileAction extends AbstractAction {
+	class MergeRDFsAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
 			gmanager.setIsImporting(true);
-			Model model = readModel(getReader("rdfs", null), gmanager.getBaseURI());
+			Model model = null;
+			if (e.getActionCommand().equals(MERGE_RDFS_FILE)) {
+				model = readModel(getReader("rdfs", null), gmanager.getBaseURI());
+			} else if (e.getActionCommand().equals(MERGE_RDFS_URI)) {
+				String uri = JOptionPane.showInternalInputDialog(desktop, "Open URI");
+				model = readModel(getReader(uri), gmanager.getBaseURI());
+			}
 			mr3Reader.mergeRDFS(model);
 			nsTableDialog.setCurrentNSPrefix();
-			gmanager.setIsImporting(false);
-		}
-	}
-
-	class MergeRDFSURIAction extends AbstractAction {
-		public void actionPerformed(ActionEvent e) {
-			gmanager.setIsImporting(true);
-			String uri = JOptionPane.showInternalInputDialog(desktop, "Open URI");
-			Model model = readModel(getReader(uri), gmanager.getBaseURI());
-			mr3Reader.mergeRDFS(model);
 			gmanager.setIsImporting(false);
 		}
 	}
@@ -1171,14 +1169,14 @@ public class MR3 extends JFrame {
 	}
 
 	class ShowTypeCellAction implements ActionListener {
-		public void actionPerformed(ActionEvent e) {			
+		public void actionPerformed(ActionEvent e) {
 			gmanager.setIsShowTypeCell(showTypeCellBox.isSelected());
 			if (showTypeCellBox.isSelected()) {
 				gmanager.addTypeCells();
 			} else {
 				gmanager.removeTypeCells();
 			}
-		}		
+		}
 	}
 
 	private void showSrcView() {
