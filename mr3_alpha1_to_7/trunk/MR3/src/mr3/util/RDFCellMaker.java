@@ -195,13 +195,15 @@ public class RDFCellMaker {
 		}
 	}
 
-	public void connect(Port source, Port target, String edgeName, RDFGraph graph) {
+	public Edge connect(Port source, Port target, String edgeName, RDFGraph graph) {
 		DefaultEdge edge = new DefaultEdge(edgeName);
 		ConnectionSet cs = new ConnectionSet(edge, source, target);
 		HashMap attributes = new HashMap();
 		Map map = getEdgeMap(edgeName);
 		attributes.put(edge, map);
 		graph.getGraphLayoutCache().insert(new Object[] { edge }, attributes, cs, null, null);
+		
+		return edge;
 	}
 
 	public void selfConnect(Port port, String edgeName, RDFGraph graph) {
