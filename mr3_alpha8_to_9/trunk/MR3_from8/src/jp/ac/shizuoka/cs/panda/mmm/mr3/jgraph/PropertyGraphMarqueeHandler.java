@@ -71,9 +71,15 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 		}
 	}
 
-	//
-	// PopupMenu
-	//
+	private void addTransformMenu(JPopupMenu menu, Object cell) {
+		if (isCellSelected(cell)) {
+			menu.addSeparator();
+			menu.add(new TransformPropertyToOtherAction(graph, gmanager, GraphType.RDF));
+			menu.add(new TransformPropertyToOtherAction(graph, gmanager, GraphType.CLASS));
+		}
+	}
+
+	/**  create PopupMenu */
 	public JPopupMenu createPopupMenu(final Point pt, final Object cell) {
 		JPopupMenu menu = new JPopupMenu();
 
@@ -83,8 +89,7 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 			}
 		});
 
-		if (cell != null || !graph.isSelectionEmpty()) {
-			// Insert Sub Property
+		if (isCellSelected(cell)) { // Insert Sub Property
 			menu.add(new AbstractAction("Insert Sub Property") {
 				public void actionPerformed(ActionEvent e) {
 					if (!graph.isSelectionEmpty()) {
@@ -98,16 +103,8 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 
 		menu.addSeparator();
 		menu.add(new ConnectAction("Connect Mode"));
-		menu.addSeparator();
-		menu.add(new CopyAction(graph, "Copy"));
-		menu.add(new CutAction(graph, "Cut"));
-		menu.add(new PasteAction(graph, "Paste"));
-
-		if (cell != null || !graph.isSelectionEmpty()) {
-			menu.addSeparator();
-			menu.add(new RemoveAction(graph, gmanager, "Remove"));
-		}
-		menu.addSeparator();
+		addTransformMenu(menu, cell);
+		addEditMenu(menu, cell);
 		menu.add(new ShowAttrDialog(graph, gmanager, "Attribute Dialog"));
 
 		return menu;

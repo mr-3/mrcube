@@ -16,35 +16,36 @@ import com.hp.hpl.jena.rdf.model.impl.*;
  * @author takeshi morita
  *
  */
-public class ConvertClass extends AbstractActionFile {
+public class ConvertRDFDoc extends AbstractActionFile {
 
-	public ConvertClass(MR3 mr3, String name) {
+	public ConvertRDFDoc(MR3 mr3, String name) {
 		super(mr3, name);
 	}
 
-	private void convertClassSRC(boolean isSelected) {
-		Writer output = new StringWriter();
+	public void convertRDFSRC(boolean isSelected) {
 		try {
 			Model model = null;
 			if (isSelected) {
-				model = mr3.getSelectedClassModel();
+				model = mr3.getSelectedRDFModel();
 			} else {
-				model = mr3.getClassModel();
+				model = mr3.getRDFModel();
 			}
+			Writer output = new StringWriter();
 			RDFWriter writer = new RDFWriterFImpl().getWriter("RDF/XML-ABBREV");
 			writeModel(model, output, writer);
+			mr3.getSourceArea().setText(output.toString());
 		} catch (RDFException e) {
 			e.printStackTrace();
 		}
-		mr3.getSourceArea().setText(output.toString());
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals("RDFS(Class)/XML")) {
-			convertClassSRC(false);
+		if (e.getActionCommand().equals("RDF/XML")) {
+			convertRDFSRC(false);
 		} else {
-			convertClassSRC(true);
+			convertRDFSRC(true);
 		}
 		showSrcView();
 	}
+
 }

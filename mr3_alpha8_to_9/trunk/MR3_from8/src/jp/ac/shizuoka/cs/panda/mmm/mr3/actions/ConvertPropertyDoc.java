@@ -16,9 +16,9 @@ import com.hp.hpl.jena.rdf.model.impl.*;
  * @author takeshi morita
  *
  */
-public class ConvertProperty extends AbstractActionFile {
+public class ConvertPropertyDoc extends AbstractActionFile {
 
-	public ConvertProperty(MR3 mr3, String name) {
+	public ConvertPropertyDoc(MR3 mr3, String name) {
 		super(mr3, name);
 	}
 
