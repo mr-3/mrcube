@@ -13,9 +13,9 @@ public abstract class RDFSInfo implements Serializable {
 
 	protected transient String uri;
 	protected transient String metaClass;
-	private transient MR3Literal label; // 現在，選択されているラベル
+	private transient MR3Literal lastSelectedLabel; // 前回選択されていたラベル
 	private transient List labelList;
-	private transient MR3Literal comment; // 現在，選択されているコメント
+	private transient MR3Literal lastSelectedComment; // 前回選択されていたコメント
 	private transient List commentList;
 	private transient String isDefinedBy;
 
@@ -35,9 +35,9 @@ public abstract class RDFSInfo implements Serializable {
 	RDFSInfo(RDFSInfo info) {
 		uri = info.getURIStr();
 		metaClass = info.getMetaClass();
-		label = info.getLabel();
+		lastSelectedLabel = info.getLastLabel();
 		labelList = new ArrayList(info.getLabelList());
-		comment = info.getComment();
+		lastSelectedComment = info.getLastComment();
 		commentList = new ArrayList(info.getCommentList());
 		isDefinedBy = info.getIsDefinedBy().getURI();
 		model = new ModelMem();
@@ -136,12 +136,12 @@ public abstract class RDFSInfo implements Serializable {
 		return tmp.getLocalName();
 	}
 
-	public void setLabel(MR3Literal label) {
-		this.label = label;
+	public void setLastLabel(MR3Literal label) {
+		this.lastSelectedLabel = label;
 	}
 
-	public MR3Literal getLabel() {
-		return label;
+	public MR3Literal getLastLabel() {
+		return lastSelectedLabel;
 	}
 
 	public void addLabel(MR3Literal literal) {
@@ -156,6 +156,16 @@ public abstract class RDFSInfo implements Serializable {
 		return Collections.unmodifiableList(labelList);
 	}
 
+	public MR3Literal getDefaultLabel(String defaultLang) {
+		for (Iterator i = labelList.iterator(); i.hasNext();) {
+			MR3Literal literal = (MR3Literal) i.next();
+			if (literal.getLanguage().equals(defaultLang)) {
+				return literal;
+			}
+		}
+		return null;
+	}
+
 	public void addComment(MR3Literal literal) {
 		commentList.add(literal);
 	}
@@ -168,12 +178,22 @@ public abstract class RDFSInfo implements Serializable {
 		return Collections.unmodifiableList(commentList);
 	}
 
-	public void setComment(MR3Literal comment) {
-		this.comment = comment;
+	public MR3Literal getDefaultComment(String defaultLang) {
+		for (Iterator i = commentList.iterator(); i.hasNext();) {
+			MR3Literal literal = (MR3Literal) i.next();
+			if (literal.getLanguage().equals(defaultLang)) {
+				return literal;
+			}
+		}
+		return null;
 	}
 
-	public MR3Literal getComment() {
-		return comment;
+	public void setLastComment(MR3Literal comment) {
+		this.lastSelectedComment = comment;
+	}
+
+	public MR3Literal getLastComment() {
+		return lastSelectedComment;
 	}
 
 	public void setIsDefinedby(String str) {
@@ -199,9 +219,9 @@ public abstract class RDFSInfo implements Serializable {
 		s.defaultWriteObject();
 		s.writeObject(uri);
 		s.writeObject(metaClass);
-		s.writeObject(label);
+		s.writeObject(lastSelectedLabel);
 		s.writeObject(labelList);
-		s.writeObject(comment);
+		s.writeObject(lastSelectedComment);
 		s.writeObject(commentList);
 		s.writeObject(isDefinedBy);
 	}
@@ -210,9 +230,9 @@ public abstract class RDFSInfo implements Serializable {
 		s.defaultReadObject();
 		uri = (String) s.readObject();
 		metaClass = (String) s.readObject();
-		label = (MR3Literal) s.readObject();
+		lastSelectedLabel = (MR3Literal) s.readObject();
 		labelList = (List) s.readObject();
-		comment = (MR3Literal) s.readObject();
+		lastSelectedComment = (MR3Literal) s.readObject();
 		commentList = (List) s.readObject();
 		isDefinedBy = (String) s.readObject();
 	}
@@ -222,8 +242,8 @@ public abstract class RDFSInfo implements Serializable {
 		if (uri != null) {
 			msg += "URI: " + uri + "\n";
 		}
-		msg += "MetaClass: "+metaClass+"\n";
-		msg += "Label: " + label + "\n" + "Comment: " + comment + "\n";
+		msg += "MetaClass: " + metaClass + "\n";
+		msg += "Label: " + lastSelectedLabel + "\n" + "Comment: " + lastSelectedComment + "\n";
 		if (isDefinedBy != null) {
 			msg += "isDefinedBy: " + isDefinedBy.toString() + "\n";
 		}

@@ -190,6 +190,10 @@ public class GraphManager {
 		return metaClassList;
 	}
 
+	public String getDefaultLang() {
+		return userPrefs.get(PrefConstants.DefaultLang, "ja");
+	}
+
 	public Set getClassClassList() {
 		return getMetaClassList(userPrefs.get(PrefConstants.ClassClassList, RDFS.Class.toString()).split(" "));
 	}
@@ -586,8 +590,10 @@ public class GraphManager {
 						setNSPrefix(uri, cell);
 					}
 				} else if (cellViewType == CellViewType.LABEL) {
-					if (info.getLabel() != null) {
-						setCellValue(cell, info.getLabel().getString());
+					if (info.getDefaultLabel(getDefaultLang()) != null) {
+						setCellValue(cell, info.getDefaultLabel(getDefaultLang()).getString());
+					} else if (info.getLastLabel() != null) {
+						setCellValue(cell, info.getLastLabel().getString());
 					} else { // labelÇ™nullÇæÇ¡ÇΩÇÁÅAURIÇï\é¶Ç∑ÇÈ
 						setNSPrefix(uri, cell);
 					}

@@ -11,6 +11,7 @@ import com.hp.hpl.jena.rdf.model.impl.*;
 public class RDFResourceInfo implements Serializable {
 
 	private Object typeCell; // RDFS Classに対応するCellを保持する
+	private Set typeCells; // RDFリソースのタイプを複数保持する．
 	private GraphCell typeViewCell; // RDF Resourceにつく矩形のCellを保持する
 
 	private String uri;
