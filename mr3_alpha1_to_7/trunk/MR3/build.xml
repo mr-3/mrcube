@@ -10,6 +10,7 @@
 
   <path id="classpath">
     <fileset dir="${lib.dir}" includes="*.jar" excludes="${jarfile}"/>
+    <fileset dir="build" includes="*.jar" excludes="${jarfile}"/>
   </path>
 
   <target name="compile">
@@ -26,6 +27,7 @@
       <fileset dir="${src.dir}/resources" >
         <include name="*.gif" />
         <include name="*.png" />
+        <include name="*.ico" />
       </fileset>
     </copy>
   </target>
