@@ -113,10 +113,11 @@ public class RDFEditor extends Editor {
 	private void selectResource(GraphCell cell) {
 		// ‘Î‰ž‚·‚éRDFSƒNƒ‰ƒX‚ð‘I‘ð
 		RDFResourceInfo info = resInfoMap.getCellInfo(cell);
-		gmanager.jumpClassArea(info.getTypeCell());		
-		
-		resPanel.displayResInfo(cell);
-		attrDialog.setContentPane(resPanel);
+		if (info != null) {
+			gmanager.jumpClassArea(info.getTypeCell());
+			resPanel.displayResInfo(cell);
+			attrDialog.setContentPane(resPanel);
+		}
 	}
 
 	private void selectProperty(GraphCell cell) {
@@ -146,12 +147,10 @@ public class RDFEditor extends Editor {
 	}
 
 	private void changeAttrPanel() {
-//		Object[] cells = graph.getDescendants(graph.getSelectionCells());
-		GraphCell rdfCell = (GraphCell) graph.getSelectionCell();
-//		GraphCell rdfCell = graph.isOneRDFCellSelected(cells);
+		Object[] cells = graph.getDescendants(graph.getSelectionCells());
+		GraphCell rdfCell = graph.isOneRDFCellSelected(cells);
 
-		if (graph.isOneCellSelected(rdfCell)) {
-//		if (rdfCell != null) {
+		if (rdfCell != null) {
 			if (graph.isRDFResourceCell(rdfCell)) {
 				selectResource(rdfCell);
 			} else if (graph.isRDFPropertyCell(rdfCell)) {
