@@ -168,6 +168,10 @@ public class PrefDialog extends JInternalFrame {
 		initComponent(uriPrefixBox, "Prefix", prefixBoxWidth, prefixBoxHeight);
 		baseURILabel = new JLabel("");
 		initComponent(baseURILabel, "BaseURI", 300, 40);
+		initPrefixBox();
+	}
+
+	public void initPrefixBox() {
 		PrefixNSUtil.setPrefixNSInfoSet(gmanager.getPrefixNSInfoSet());
 		uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
 		setPrefix();
@@ -245,7 +249,7 @@ public class PrefDialog extends JInternalFrame {
 		inputEncodingBox.setSelectedItem(userPrefs.get(PrefConstants.InputEncoding, "SJIS"));
 		outputEncodingBox.setSelectedItem(userPrefs.get(PrefConstants.OutputEncoding, "SJIS"));
 		isAntialiasBox.setSelected(userPrefs.getBoolean(PrefConstants.Antialias, true));
-		baseURILabel.setText(userPrefs.get(PrefConstants.BaseURI, MR3Resource.URI.getURI()));
+		baseURILabel.setText(userPrefs.get(PrefConstants.BaseURI, MR3Resource.Default_URI.getURI()));
 		workDirectoryField.setText(userPrefs.get(PrefConstants.DefaultWorkDirectory, ""));
 		isProxy.setSelected(userPrefs.getBoolean(PrefConstants.Proxy, false));
 		proxyHost.setText(userPrefs.get(PrefConstants.ProxyHost, "http://localhost"));
@@ -276,5 +280,4 @@ public class PrefDialog extends JInternalFrame {
 			setVisible(false);
 		}
 	}
-
 }

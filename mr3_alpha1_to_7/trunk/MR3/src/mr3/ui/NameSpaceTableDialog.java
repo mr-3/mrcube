@@ -36,7 +36,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 
 	transient private JButton addNSButton;
 	transient private JButton removeNSButton;
-	transient private JButton getNSButton;
+//	transient private JButton getNSButton;
 	transient private JButton closeButton;
 	transient private JTextField prefixField;
 	transient private JTextField nsField;
@@ -87,9 +87,10 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 	}
 
 	public void setDefaultNSPrefix() {
+		addDefaultNS("mr3", MR3Resource.getURI());
+		addDefaultNS("base", gmanager.getBaseURI());
 		addDefaultNS("rdf", RDF.getURI());
 		addDefaultNS("rdfs", RDFS.getURI());
-		addDefaultNS("mr3", MR3Resource.getURI());
 		changeCellView();
 	}
 
@@ -199,8 +200,8 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		removeNSButton = new JButton("Å\");
 		removeNSButton.addActionListener(this);
 
-		getNSButton = new JButton("GetNS");
-		getNSButton.addActionListener(this);
+//		getNSButton = new JButton("GetNS");
+//		getNSButton.addActionListener(this);
 
 		closeButton = new JButton("Close");
 		closeButton.addActionListener(this);
@@ -220,7 +221,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		inline.add(nsField);
 		inline.add(addNSButton);
 		inline.add(removeNSButton);
-		inline.add(getNSButton);
+//		inline.add(getNSButton);
 		inline.add(closeButton);
 		gbLayout.setConstraints(inline, gbc);
 		inlinePanel.add(inline);
@@ -232,8 +233,8 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 			changeCellView();
 		} else if (e.getSource() == removeNSButton) {
 			removeNameSpaceTable();
-		} else if (e.getSource() == getNSButton) {
-			getNameSpace();
+//		} else if (e.getSource() == getNSButton) {
+//			getNameSpace();
 		} else if (e.getSource() == closeButton) {
 			setVisible(false);
 		}
@@ -294,7 +295,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 			JOptionPane.showMessageDialog(null, "This NameSpace is baseURI.", "Warning", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		if (rmNS.equals(MR3Resource.URI.getNameSpace())) {
+		if (rmNS.equals(MR3Resource.Default_URI.getNameSpace())) {
 			JOptionPane.showMessageDialog(null, "This NameSpace is System URI.", "Warning", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
