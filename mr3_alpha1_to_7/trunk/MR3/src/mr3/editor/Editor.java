@@ -49,7 +49,7 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 
 	Editor(String title) {
 		super(title, true, false, true);
-		setIconifiable(true);		
+		setIconifiable(true);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		try {
 			setSelected(true);
@@ -341,8 +341,7 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 		ImageIcon cutIcon = new ImageIcon(getImageIcon("cut.gif"));
 		toolbar.add(new AbstractAction("", cutIcon) {
 			public void actionPerformed(ActionEvent e) {
-				graph.copy(new Point(10, 10));
-				gmanager.removeAction(graph);
+				graph.cut(new Point(10, 10));
 			}
 		});
 

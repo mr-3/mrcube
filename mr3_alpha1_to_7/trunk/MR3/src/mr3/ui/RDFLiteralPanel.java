@@ -1,7 +1,6 @@
 package mr3.ui;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
 
 import javax.swing.*;
 
@@ -112,15 +111,14 @@ public class RDFLiteralPanel extends JPanel implements ActionListener {
 			value.setText(newStr);
 		} else if (e.getSource() == apply) {
 			if (cell != null) {
-				Map map = cell.getAttributes();
 				String str = value.getText();
 				litInfoMap.putCellInfo(cell, new LiteralImpl(str, langField.getText()));
 				str = "<html>" + str + "</html>";
 				str = str.replaceAll("(\n|\r)+", "<br>");
-				GraphConstants.setValue(map, str);
-				cell.setAttributes(map);
+				gmanager.setCellValue(cell, str);
+				gmanager.getRDFGraph().clearSelection();
+				gmanager.getRDFGraph().setSelectionCell(cell);
 				gmanager.changeCellView();
-				// literalInfo‚ð•Û‘¶				
 				cell = null;
 			}
 		} else if (e.getSource() == close) {

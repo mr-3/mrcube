@@ -65,6 +65,7 @@ public abstract class RDFSPanel extends JPanel {
 		gmanager = manager;
 		initInstancesList();
 		apply = new JButton("Apply");
+		apply.addActionListener(new ChangeInfoAction());
 		close = new JButton("Close");
 		close.addActionListener(new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
@@ -396,6 +397,8 @@ public abstract class RDFSPanel extends JPanel {
 			if (cell != null) {
 				changeInfo();
 				gmanager.changeCellView();
+				graph.clearSelection();
+				graph.setSelectionCell(cell);
 			} else {
 				System.out.println("cell is null");
 			}

@@ -244,7 +244,6 @@ public class MR3 extends JFrame {
 		return mb;
 	}
 
-	private static final String SELECT_ALL_NODES = "Select All Nodes";
 	private static final String SELECT_ALL_RDF_NODES = "Select All RDF Nodes";
 	private static final String SELECT_ALL_CLASS_NODES = "Select All Class Nodes";
 	private static final String SELECT_ALL_PROPERTY_NODES = "Select All Property Nodes";
@@ -257,10 +256,9 @@ public class MR3 extends JFrame {
 		//		selectAbstractLevelMode.addActionListener(new SelectAbstractLevelAction());
 		//		menu.add(selectAbstractLevelMode);
 		JMenu selectMenu = new JMenu("Select");
-		selectMenu.add(new SelectNodes(this, SELECT_ALL_NODES));
-		selectMenu.add(new SelectNodes(this, SELECT_ALL_RDF_NODES));
-		selectMenu.add(new SelectNodes(this, SELECT_ALL_CLASS_NODES));
-		selectMenu.add(new SelectNodes(this, SELECT_ALL_PROPERTY_NODES));
+		selectMenu.add(new SelectNodes(gmanager.getRDFGraph(), SELECT_ALL_RDF_NODES));
+		selectMenu.add(new SelectNodes(gmanager.getClassGraph(), SELECT_ALL_CLASS_NODES));
+		selectMenu.add(new SelectNodes(gmanager.getPropertyGraph(), SELECT_ALL_PROPERTY_NODES));
 		menu.add(selectMenu);
 		menu.addSeparator();
 		menu.add(new PreferenceAction());

@@ -32,7 +32,6 @@ public class PropertyPanel extends RDFSPanel {
 
 	public PropertyPanel(GraphManager manager) {
 		super(manager.getPropertyGraph(), manager);
-		apply.addActionListener(new ChangeInfoAction());
 		setBorder(BorderFactory.createTitledBorder("RDFS Property Attributes"));
 		setBaseTab();
 		setReferenceTab();
