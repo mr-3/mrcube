@@ -39,6 +39,8 @@ public class VGJTreeLayout {
 	public void performVGJRDFSTreeLayout() {
 		performVGJTreeLayout(classGraph, 'u');
 		performVGJTreeLayout(propGraph, 'u');
+		GraphLayoutUtilities.reverseArc(cellMaker, classGraph);
+		GraphLayoutUtilities.reverseArc(cellMaker, propGraph);
 		gmanager.changeCellView();
 		gmanager.clearSelection();
 	}

@@ -285,8 +285,8 @@ public class MR3 extends JFrame {
 	 * jgraphTreeLayout.performJGraphTreeLayoutÇÃèÍçáÇÕLGPL
 	 */
 	public void performTreeLayout() {
-		//		vgjTreeLayout.performVGJTreeLayout();
-		jgraphTreeLayout.performJGraphTreeLayout();
+		vgjTreeLayout.performVGJTreeLayout();
+		//		jgraphTreeLayout.performJGraphTreeLayout();
 	}
 
 	/**
@@ -295,8 +295,8 @@ public class MR3 extends JFrame {
 	 * jgraphTreeLayout.performJGraphRDFSTreeLayoutÇÃèÍçáÇÕLGPL
 	 */
 	public void performRDFSTreeLayout() {
-		//		vgjTreeLayout.performVGJRDFSTreeLayout();
-		jgraphTreeLayout.performJGraphRDFSTreeLayout();
+		vgjTreeLayout.performVGJRDFSTreeLayout();
+		//		jgraphTreeLayout.performJGraphRDFSTreeLayout();
 	}
 
 	public NameSpaceTableDialog getNSTableDialog() {

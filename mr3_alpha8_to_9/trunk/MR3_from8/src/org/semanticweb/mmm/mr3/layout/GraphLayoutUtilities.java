@@ -21,13 +21,24 @@ public class GraphLayoutUtilities {
 
 	private static RDFResourceInfoMap resInfoMap = RDFResourceInfoMap.getInstance();
 
+	public static void reverseArc(RDFCellMaker cellMaker, RDFGraph graph) {
+		Set removeEdges = new HashSet();
+		Object[] cells = graph.getAllCells();
+		for (int i = 0; i < cells.length; i++) {
+			if (graph.isEdge(cells[i])) {
+				Edge edge = (Edge) cells[i];
+				removeEdges.add(edge);
+				cellMaker.connect((Port)graph.getModel().getTarget(edge), (Port) graph.getModel().getSource(edge), edge.toString(), graph);
+			}
+		}
+		graph.getModel().remove(removeEdges.toArray());
+	}
+
 	public static void addChild(RDFGraph graph, DefaultGraphCell cell, GraphLayoutData data, Map map) {
 		Port port = (Port) cell.getChildAt(0);
 
 		for (Iterator i = port.edges(); i.hasNext();) {
 			Edge edge = (Edge) i.next();
-//			GraphCell sourceCell = (GraphCell) rdfGraph.getSourceVertex(edge);
-//			GraphCell targetCell = (GraphCell) rdfGraph.getTargetVertex(edge);
 			GraphCell sourceCell = (GraphCell) graph.getSourceVertex(edge);
 			GraphCell targetCell = (GraphCell) graph.getTargetVertex(edge);
 

@@ -141,7 +141,7 @@ public class RDFCellMaker {
 		for (int i = 0; i < supCells.length; i++) {
 			if (graph.isPort(supCells[i])) {
 				Port supPort = (Port) supCells[i];
-				connect(supPort, subPort, "", graph);
+				connect(subPort, supPort, "", graph);
 			}
 		}
 	}
