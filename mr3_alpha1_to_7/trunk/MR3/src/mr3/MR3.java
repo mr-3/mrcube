@@ -772,7 +772,6 @@ public class MR3 extends JFrame {
 					//					rdfGraph.getGraphLayoutCache().setVisible(cell, showTypeCell.getState());
 				}
 			}
-			//			System.out.println(showTypeCell.getState());
 			graphLayoutCache.setVisible(typeList.toArray(), showTypeCell.getState());
 		}
 	}
