@@ -59,7 +59,7 @@ public class MR3Parser {
 		for (Iterator i = propertySet.iterator(); i.hasNext();) {
 			Resource property = (Resource) i.next();
 
-			//_1.._numは ， グラフに描画しない 
+			//_1.._numは ， グラフに描画しない
 			if (property.getURI().matches(RDF.getURI() + "_\\d*")) {
 				continue;
 			}
@@ -128,7 +128,8 @@ public class MR3Parser {
 
 	// TypeCellが作られた後に呼び出す
 	private boolean isTypeProperty(Statement stmt, Object subjectCell) {
-		Property predicate = stmt.getPredicate(); // get the predicate
+		Property predicate = stmt.getPredicate(); // get the
+		// predicate
 		RDFNode object = stmt.getObject(); // get the object
 
 		if (predicate.equals(RDF.type)) {
@@ -187,31 +188,23 @@ public class MR3Parser {
 		Map attributes = new HashMap();
 		RDFGraph graph = new RDFGraph();
 		GraphModel graphModel = graph.getModel();
-
-		int x = 0;
-		int y = 0;
+		Point initPoint = new Point(0, 0);
 
 		for (StmtIterator iter = model.listStatements(); iter.hasNext();) {
-			Statement stmt = iter.nextStatement(); // get next statement
-			Resource subject = stmt.getSubject(); // get the subject
-			Property predicate = stmt.getPredicate(); // get the predicate
-			RDFNode object = stmt.getObject(); // get the object
+			Statement stmt = iter.nextStatement(); 
+			Resource subject = stmt.getSubject(); 
+			Property predicate = stmt.getPredicate(); 
+			RDFNode object = stmt.getObject(); 
 
 			// Resource
 			DefaultGraphCell source = (DefaultGraphCell) resourceMap.get(subject);
 			if (source == null) {
-				source = createResourceCell(subject, resourceMap, portMap, attributes, new Point(x, y));
+				source = createResourceCell(subject, resourceMap, portMap, attributes, initPoint);
 				if (gType == GraphType.RDF) {
-					DefaultGraphCell typeCell = createTypeCell(attributes, new Point(x, y - 25));
+					DefaultGraphCell typeCell = createTypeCell(attributes, initPoint);
 					setResourceInfo(source, subject, typeCell);
 					insertGroup(graphModel, source, typeCell, attributes);
 				}
-			}
-
-			y += 150;
-			if (y > 500) {
-				y = 150;
-				x += 150;
 			}
 
 			// プロパティがrdfs:typeならば，グラフに描画しない．
@@ -224,32 +217,26 @@ public class MR3Parser {
 			if (object instanceof Resource) {
 				target = (DefaultGraphCell) resourceMap.get(object);
 				if (target == null) {
-					target = createResourceCell(object, resourceMap, portMap, attributes, new Point(x, y));
+					target = createResourceCell(object, resourceMap, portMap, attributes, initPoint);
 					if (gType == GraphType.RDF) {
-						DefaultGraphCell typeCell = createTypeCell(attributes, new Point(x, y - 25));
+						DefaultGraphCell typeCell = createTypeCell(attributes, initPoint);
 						setResourceInfo(target, (Resource) object, typeCell);
 						insertGroup(graphModel, target, typeCell, attributes);
 					}
 				}
 			} else if (object instanceof Literal) {
 				Literal literal = (Literal) object;
-				target = createLiteralCell(literal, portMap, attributes, new Point(x, y));
+				target = createLiteralCell(literal, portMap, attributes, initPoint);
 				litInfoMap.putCellInfo(target, literal);
 				graphModel.insert(new Object[] { target }, attributes, null, null, null);
 			} else {
 				System.err.println("cannot reach");
 			}
 
-			y += 150;
-			if (y > 500) {
-				y = 150;
-				x += 150;
-			}
-
 			Edge edge = getEdge(attributes, predicate.toString());
 			//			putPropertyInfo(stmt, edge);
-			/*********************************************************************/
-			/* 後で直す*/
+			/** ****************************************************************** */
+			/* 後で直す */
 			rdfsInfoMap.putEdgeInfo(edge, gmanager.getPropertyCell(predicate, false));
 
 			Port sp = (Port) portMap.get(subject);
