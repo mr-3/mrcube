@@ -4,8 +4,8 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-import com.jgraph.*;
-import com.jgraph.graph.*;
+import org.jgraph.*;
+import org.jgraph.graph.*;
 
 public class TreeLayoutAlgorithm {
 

@@ -6,7 +6,7 @@ import javax.swing.*;
 
 import jp.ac.shizuoka.cs.panda.mmm.mr3.jgraph.*;
 
-import com.jgraph.event.*;
+import org.jgraph.event.*;
 
 /**
  *

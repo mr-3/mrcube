@@ -4,7 +4,6 @@
     <classpathentry kind="src" output="plugins" path="plugins"/>
     <classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
     <classpathentry kind="lib" path="build/lib/icu4j.jar"/>
-    <classpathentry kind="lib" path="build/lib/jgraph.jar" sourcepath="E:/usr/jgraph-2.2-java1.4-src/docs"/>
     <classpathentry kind="lib" path="build/lib/jena.jar" sourcepath="E:/usr/Jena-1.6.1/src"/>
     <classpathentry kind="lib" path="plugins/nekohtml.jar"/>
     <classpathentry kind="lib" path="build/lib/xercesImpl.jar"/>
@@ -13,5 +12,6 @@
     <classpathentry kind="lib" path="build/lib/antlr.debug.jar"/>
     <classpathentry kind="lib" path="build/lib/concurrent.jar"/>
     <classpathentry kind="lib" path="build/lib/jakarta-oro-2.0.5.jar"/>
+    <classpathentry kind="lib" path="build/lib/jgraph.jar"/>
     <classpathentry kind="output" path="build/classes"/>
 </classpath>

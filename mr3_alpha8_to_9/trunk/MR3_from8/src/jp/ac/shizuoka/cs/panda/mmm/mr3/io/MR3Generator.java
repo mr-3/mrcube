@@ -4,11 +4,12 @@ import java.util.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.data.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.jgraph.*;
 
+import org.jgraph.graph.*;
+
 import com.hp.hpl.jena.mem.*;
 import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.rdf.model.impl.*;
 import com.hp.hpl.jena.vocabulary.*;
-import com.jgraph.graph.*;
 
 public class MR3Generator {
 

@@ -4,8 +4,8 @@ import jp.ac.shizuoka.cs.panda.mmm.mr3.jgraph.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.ui.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 
-import com.jgraph.event.*;
-import com.jgraph.graph.*;
+import org.jgraph.event.*;
+import org.jgraph.graph.*;
 
 /**
  *

@@ -10,7 +10,7 @@ import jp.ac.shizuoka.cs.panda.mmm.mr3.data.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.ui.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 
-import com.jgraph.graph.*;
+import org.jgraph.graph.*;
 
 //
 // Custom MarqueeHandler

@@ -7,10 +7,11 @@ import jp.ac.shizuoka.cs.panda.mmm.mr3.data.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.jgraph.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 
+import org.jgraph.graph.*;
+
 import com.hp.hpl.jena.mem.*;
 import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.vocabulary.*;
-import com.jgraph.graph.*;
 
 public class MR3Parser {
 

@@ -9,8 +9,8 @@ import java.util.*;
 
 import javax.swing.*;
 
-import com.jgraph.*;
-import com.jgraph.graph.*;
+import org.jgraph.*;
+import org.jgraph.graph.*;
 
 /**
  * Arranges the nodes with the Sugiyama Layout Algorithm.<br>

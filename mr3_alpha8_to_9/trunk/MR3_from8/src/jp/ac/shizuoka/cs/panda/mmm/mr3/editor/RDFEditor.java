@@ -4,10 +4,11 @@ import jp.ac.shizuoka.cs.panda.mmm.mr3.jgraph.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.ui.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 
+import org.jgraph.event.*;
+import org.jgraph.graph.*;
+
 import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.vocabulary.*;
-import com.jgraph.event.*;
-import com.jgraph.graph.*;
 
 /**
  * @author takeshi morita

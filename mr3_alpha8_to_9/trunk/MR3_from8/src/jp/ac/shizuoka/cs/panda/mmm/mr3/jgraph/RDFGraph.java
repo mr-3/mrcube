@@ -15,10 +15,11 @@ import jp.ac.shizuoka.cs.panda.mmm.mr3.data.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.ui.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 
+import org.jgraph.*;
+import org.jgraph.graph.*;
+import org.jgraph.plaf.basic.*;
+
 import com.hp.hpl.jena.rdf.model.*;
-import com.jgraph.*;
-import com.jgraph.graph.*;
-import com.jgraph.plaf.basic.*;
 
 public class RDFGraph extends JGraph {
 

@@ -5,10 +5,11 @@ import java.util.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.data.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.jgraph.*;
 
+import org.jgraph.*;
+import org.jgraph.graph.*;
+
 import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.vocabulary.*;
-import com.jgraph.*;
-import com.jgraph.graph.*;
 
 public class RDFCellMaker {
 

@@ -11,7 +11,7 @@ import javax.swing.event.*;
 
 import jp.ac.shizuoka.cs.panda.mmm.mr3.jgraph.*;
 
-import com.jgraph.*;
+import org.jgraph.*;
 
 /**
  * @author takeshi morita

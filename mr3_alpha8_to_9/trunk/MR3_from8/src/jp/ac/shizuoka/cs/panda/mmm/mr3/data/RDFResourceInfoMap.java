@@ -2,8 +2,9 @@ package jp.ac.shizuoka.cs.panda.mmm.mr3.data;
 import java.io.*;
 import java.util.*;
 
+import org.jgraph.graph.*;
+
 import com.hp.hpl.jena.rdf.model.*;
-import com.jgraph.graph.*;
 
 /**
  * @author takeshi morita
