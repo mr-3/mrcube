@@ -579,6 +579,7 @@ public class MR3 extends JFrame {
 					}
 					oi.close();
 					setTitle("MR^3 - " + file.getAbsolutePath());
+					currentProject = file;
 				}
 			} catch (IOException ex) {
 				ex.printStackTrace();
