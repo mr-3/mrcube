@@ -13,6 +13,5 @@
     <classpathentry kind="lib" path="build/lib/antlr.debug.jar"/>
     <classpathentry kind="lib" path="build/lib/concurrent.jar"/>
     <classpathentry kind="lib" path="build/lib/jakarta-oro-2.0.5.jar"/>
-    <classpathentry kind="lib" path="build/lib/rdf-api-2001-01-19.jar"/>
     <classpathentry kind="output" path="build/classes"/>
 </classpath>
