@@ -206,7 +206,8 @@ public class MR3 extends JFrame {
 
 	private void setLookAndFeel() {
 		try {
-			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+			//			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			SwingUtilities.updateComponentTreeUI(this);
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -831,10 +832,12 @@ public class MR3 extends JFrame {
 				if (model == null) {
 					return;
 				}
+				// 順番が重要なので、よく考えること
 				Model projectModel = pm.extractProjectModel(model);
 				mr3Reader.mergeRDFS(model);
 				nsTableDialog.setCurrentNSPrefix();
 				pm.loadProject(projectModel);
+				pm.removeEmptyClass();
 				gmanager.removeTypeCells();
 				gmanager.addTypeCells();
 				gmanager.setIsImporting(false);

@@ -377,14 +377,15 @@ public class GraphManager {
 			} else if (rdfsInfoMap.isPropertyCell(uri)) {
 				cell = (GraphCell) getPropertyCell(uri, false);
 				setCellBounds(propGraph, cell, rec.getRectangle());
-			} else if (uri.getURI().matches(MR3Resource.Literal.getURI()+".*")){
+			} else if (uri.getURI().matches(MR3Resource.Literal.getURI() + ".*")) {
 				DefaultGraphCell litCell = (DefaultGraphCell) cellMaker.insertRDFLiteral(rec.getLocation());
 				litInfoMap.putCellInfo(litCell, new LiteralImpl(rec.getString(), rec.getLanguage()));
 				setCellBounds(rdfGraph, litCell, rec.getRectangle());
-				DefaultGraphCell source = (DefaultGraphCell) getRDFResourceCell(rec.getResource());
+				setCellValue(litCell, rec.getString());
 
-				Edge edge = (Edge) getRDFResourceCell(rec.getProperty());
-				//				cellMaker.connect((Port)source.getChildAt(0), (Port)litCell.getChildAt(0), "test", rdfGraph);
+				DefaultGraphCell source = (DefaultGraphCell) getRDFResourceCell(rec.getResource());
+				Edge edge = cellMaker.connect((Port) source.getChildAt(0), (Port) litCell.getChildAt(0), "", rdfGraph);
+				rdfsInfoMap.putEdgeInfo(edge, rdfsInfoMap.getPropertyCell(rec.getProperty()));
 			}
 		}
 	}

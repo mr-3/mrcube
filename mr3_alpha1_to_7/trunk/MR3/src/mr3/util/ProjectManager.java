@@ -15,6 +15,7 @@ import mr3.ui.NameSpaceTableDialog.*;
 import com.hp.hpl.mesa.rdf.jena.common.*;
 import com.hp.hpl.mesa.rdf.jena.mem.*;
 import com.hp.hpl.mesa.rdf.jena.model.*;
+import com.hp.hpl.mesa.rdf.jena.vocabulary.*;
 import com.jgraph.graph.*;
 
 /**
@@ -56,6 +57,9 @@ public class ProjectManager {
 		projectModel.add(info.getURI(), MR3Resource.PointY, rec.getY());
 		projectModel.add(info.getURI(), MR3Resource.NodeWidth, rec.getWidth());
 		projectModel.add(info.getURI(), MR3Resource.NodeHeight, rec.getHeight());
+		if (info.getTypeCell() == null) {
+			projectModel.add(info.getURI(), RDF.type, MR3Resource.Empty);
+		}
 	}
 
 	private int addRDFLiteralProjectModel(Model projectModel, int literal_cnt, GraphCell cell) throws RDFException {
@@ -191,13 +195,26 @@ public class ProjectManager {
 		}
 	}
 
+	public void removeEmptyClass() {
+		RDFGraph graph = gmanager.getRDFGraph();
+		Object[] cells = graph.getAllCells();
+		for (int i = 0; i < cells.length; i++) {
+			GraphCell cell = (GraphCell) cells[i];
+			if (graph.isRDFResourceCell(cell)) {
+				RDFResourceInfo info = resInfoMap.getCellInfo(cell);
+				if (info.getType().equals(MR3Resource.Empty)) {
+					info.setTypeCell(null);
+					resInfoMap.putCellInfo(cell, info);
+				}
+			}
+		}
+	}
+
 	public void loadProject(Model model) throws RDFException {
 		Map uriNodeInfoMap = new HashMap();
 		Map uriPrefixMap = new HashMap();
 		Map uriIsAvailableMap = new HashMap();
 
-		// あとは，１からｎまで番号のついたリテラルリソースを
-		// 解析して，グラフに追加するだけ		
 		for (StmtIterator i = model.listStatements(); i.hasNext();) {
 			Statement stmt = i.next();
 			MR3Literal rec = (MR3Literal) uriNodeInfoMap.get(stmt.getSubject());
