@@ -10,9 +10,6 @@ import javax.swing.*;
 
 import mr3.data.*;
 
-import com.hp.hpl.mesa.rdf.jena.common.*;
-import com.hp.hpl.mesa.rdf.jena.model.*;
-
 /**
  * @author takeshi morita
  */
@@ -57,13 +54,15 @@ public class PrefixNSUtil {
 		nsLabel.setText(str);
 		nsLabel.setToolTipText(str);
 	}
-
-	public static void replacePrefix(String prefix, JLabel field) {
-		Resource resource = new ResourceImpl(field.getText());
-		if (!resource.getNameSpace().equals("http://")) {
-			String localName = resource.getLocalName();
-			setNSLabel(field, getNameSpace(prefix) + localName);
-		}
+	
+	/* nsLabel‚ðprefix‚É‘Î‰ž‚·‚é–¼‘O‹óŠÔ‚É’u‚«Š·‚¦‚é */		
+	public static void replacePrefix(String prefix, JLabel nsLabel) {
+//		Resource resource = new ResourceImpl(field.getText());
+//		if (!resource.getNameSpace().equals("http://")) {
+//			String localName = resource.getLocalName();
+//			setNSLabel(field, getNameSpace(prefix) + localName);
+			setNSLabel(nsLabel, getNameSpace(prefix));
+//		}
 	}
 
 }
