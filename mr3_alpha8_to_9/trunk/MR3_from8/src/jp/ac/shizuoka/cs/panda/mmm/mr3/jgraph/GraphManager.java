@@ -37,7 +37,7 @@ public class GraphManager {
 	private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
 
 	private AttributeDialog attrDialog;
-	private RemoveDialog refDialog;
+	private RemoveDialog rmDialog;
 	private Set prefixNSInfoSet;
 	private CellViewType cellViewType;
 	private AbstractLevelInfo abstractLevelInfo;
@@ -54,7 +54,7 @@ public class GraphManager {
 		cellMaker = new RDFCellMaker(this);
 
 		userPrefs = prefs;
-		refDialog = new RemoveDialog("Remove Dialog", this);
+		rmDialog = new RemoveDialog("Remove Dialog", this);
 		abstractLevelInfo = new AbstractLevelInfo();
 		prefixNSInfoSet = new HashSet();
 		baseURI = userPrefs.get(PrefConstants.BaseURI, MR3Resource.getURI());
@@ -150,8 +150,8 @@ public class GraphManager {
 		return Collections.unmodifiableSet(prefixNSInfoSet);
 	}
 
-	public JComponent getRefDialog() {
-		return refDialog;
+	public JComponent getRmDialog() {
+		return rmDialog;
 	}
 
 	public ArrayList storeState() {
@@ -988,45 +988,54 @@ public class GraphManager {
 	private RDFGraph removeGraph;
 
 	public void retryRemoveCells() {
-		removeCells(removeCells, removeGraph);
+		removeCells();
 	}
 
-	public void removeAction(RDFGraph graph) {
-		if (!graph.isSelectionEmpty()) {
-			Object[] cells = graph.getSelectionCells();
-			cells = graph.getDescendants(cells);
-			removeCells(cells, graph);
-		}
+	public Object[] getRemoveCells() {
+		return removeCells;
 	}
 
-	private void removeCells(Object[] cells, RDFGraph graph) {
-		removeCells = cells;
+	public void initRemoveAction(RDFGraph graph) {
 		removeGraph = graph;
+		Object[] cells = graph.getSelectionCells();
+		removeCells = graph.getDescendants(cells);
+	}
 
-		if (isRDFGraph(graph)) {
-			graph.removeCellsWithEdges(cells);
-			return;
+	public boolean removeAction() {
+		return removeCells();
+	}
+
+	private boolean removeCells() {
+
+		if (removeGraph.isSelectionEmpty()) {
+			return true;
+		}
+
+		if (isRDFGraph(removeGraph)) {
+			removeGraph.removeCellsWithEdges(removeCells);
+			return true;
 		}
 
 		Set rmableCells = new HashSet();
 		List notRmableCells = new ArrayList();
 		Set notRmableResCells = new HashSet();
 
-		Map rdfMap = checkNotRmableRDFCells(cells, notRmableCells, notRmableResCells);
-		Map propMap = checkNotRmablePropCells(cells, notRmableCells, notRmableResCells, graph);
+		Map rdfMap = checkNotRmableRDFCells(removeCells, notRmableCells, notRmableResCells);
+		Map propMap = checkNotRmablePropCells(removeCells, notRmableCells, notRmableResCells, removeGraph);
 
 		if (notRmableCells.isEmpty()) {
-			graph.removeCellsWithEdges(cells);
+			removeGraph.removeCellsWithEdges(removeCells);
 		} else {
-			for (int i = 0; i < cells.length; i++) {
-				if (!notRmableCells.contains(cells[i])) {
-					rmableCells.add(cells[i]);
+			for (int i = 0; i < removeCells.length; i++) {
+				if (!notRmableCells.contains(removeCells[i])) {
+					rmableCells.add(removeCells[i]);
 				}
 			}
-			graph.removeCellsWithEdges(rmableCells.toArray());
-			refDialog.setRefListInfo(graph, notRmableResCells, rdfMap, propMap);
-			refDialog.setVisible(true);
+			removeGraph.removeCellsWithEdges(rmableCells.toArray());
+			rmDialog.setRefListInfo(removeGraph, notRmableResCells, rdfMap, propMap);
+			rmDialog.setVisible(true);
 		}
+		return false;
 	}
 
 	public AttributeDialog getAttrDialog() {
@@ -1113,14 +1122,14 @@ public class GraphManager {
 		if (tmpRoot == null) {
 			return;
 		}
-		Set removeCells = new HashSet();
+		Set removeCellsSet = new HashSet();
 		Port port = (Port) tmpRoot.getChildAt(0);
-		removeCells.add(tmpRoot);
-		removeCells.add(port);
+		removeCellsSet.add(tmpRoot);
+		removeCellsSet.add(port);
 		for (Iterator edges = rdfGraph.getModel().edges(port); edges.hasNext();) {
-			removeCells.add(edges.next());
+			removeCellsSet.add(edges.next());
 		}
-		rdfGraph.getModel().remove(removeCells.toArray());
+		rdfGraph.getModel().remove(removeCellsSet.toArray());
 	}
 
 	public void applyTreeLayout() {

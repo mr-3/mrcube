@@ -10,5 +10,5 @@ public class RDFGraphModel extends DefaultGraphModel {
 
     public boolean acceptsTarget(Object edge, Object port) {
         return (((Edge) edge).getSource() != port); // Target only Valid if not Equal Source
-    }
+    }       
 }

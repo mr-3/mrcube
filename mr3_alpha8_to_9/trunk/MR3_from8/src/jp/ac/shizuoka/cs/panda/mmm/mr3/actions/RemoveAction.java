@@ -26,6 +26,7 @@ public class RemoveAction extends AbstractAction {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		gmanager.removeAction(graph);
+		gmanager.initRemoveAction(graph);
+		gmanager.removeAction();
 	}
 }

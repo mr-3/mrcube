@@ -194,7 +194,7 @@ public class MR3 extends JFrame {
 		desktop.add(findResDialog, JLayeredPane.MODAL_LAYER);
 		nsTableDialog = new NameSpaceTableDialog(gmanager);
 		desktop.add(nsTableDialog, JLayeredPane.MODAL_LAYER);
-		desktop.add(gmanager.getRefDialog(), JLayeredPane.MODAL_LAYER);
+		desktop.add(gmanager.getRmDialog(), JLayeredPane.MODAL_LAYER);
 		prefDialog = new PrefDialog(gmanager, userPrefs);
 		prefDialog.setVisible(false);
 		desktop.add(prefDialog, JLayeredPane.MODAL_LAYER);

@@ -19,6 +19,7 @@ import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
  */
 public class TransformElementAction extends AbstractAction {
 
+	private HashSet uriSet;
 	private RDFGraph graph;
 	private GraphType fromGraphType;
 	private GraphType toGraphType;
@@ -34,8 +35,8 @@ public class TransformElementAction extends AbstractAction {
 		toGraphType = toType;
 	}
 
-	public void actionPerformed(ActionEvent e) {
-		Set uriSet = new HashSet();
+	private Set getURISet() {
+		uriSet = new HashSet();
 		Object[] cells = graph.getDescendants(graph.getSelectionCells());
 		for (int i = 0; i < cells.length; i++) {
 			Object cell = cells[i];
@@ -56,8 +57,10 @@ public class TransformElementAction extends AbstractAction {
 			//					resSet.add(info.getURI());
 			//				}
 		}
-		gmanager.removeAction(graph);
-//		System.out.println(uriSet);
+		return uriSet;
+	}
+
+	private void insertElements(Set uriSet) {
 		Point pt = new Point(100, 100);
 		RDFCellMaker cellMaker = new RDFCellMaker(gmanager);
 		for (Iterator i = uriSet.iterator(); i.hasNext();) {
@@ -73,4 +76,42 @@ public class TransformElementAction extends AbstractAction {
 			pt.y += 20;
 		}
 	}
+
+	class TransformThread extends Thread {
+		public void run() {
+			while (gmanager.getRmDialog().isVisible()) {
+				try {
+					Thread.sleep(500); 
+				} catch (InterruptedException ie) {
+					ie.printStackTrace();
+				}
+			}
+			if (isRmCellsRemoved()) {
+				insertElements(uriSet);
+			}
+		}
+	}
+
+	private boolean isRmCellsRemoved() {
+		Object[] cells = gmanager.getRemoveCells();
+		for (int i = 0; i < cells.length; i++) {
+			if (gmanager.getRDFGraph().getModel().contains(cells[i])
+				|| gmanager.getClassGraph().getModel().contains(cells[i])
+				|| gmanager.getPropertyGraph().getModel().contains(cells[i])) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		Set uriSet = getURISet();
+		//		System.out.println(uriSet);
+		gmanager.initRemoveAction(graph);
+		gmanager.removeAction();
+		// 削除した時に，メタモデル管理が行われるが，その間にinsertされないようにするための仕掛け
+		// モーダルにできれば，いいが．．．
+		new TransformThread().start();
+	}
+
 }
