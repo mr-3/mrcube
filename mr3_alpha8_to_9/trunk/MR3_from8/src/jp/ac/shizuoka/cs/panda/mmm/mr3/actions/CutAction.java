@@ -9,6 +9,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import jp.ac.shizuoka.cs.panda.mmm.mr3.jgraph.*;
+import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 
 /**
  * @author takeshi morita
@@ -17,7 +18,7 @@ public class CutAction extends AbstractAction {
 	RDFGraph graph;
 
 	public CutAction(RDFGraph g, String title) {
-		super(title);
+		super(title, Utilities.getImageIcon("cut.gif"));
 		graph = g;
 	}
 

@@ -8,6 +8,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
+import jp.ac.shizuoka.cs.panda.mmm.mr3.actions.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.data.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.io.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.jgraph.*;
@@ -248,17 +249,14 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 			group.add(mh.moveButton);
 			group.add(mh.connectButton);
 
-			// move
-			mh.moveButton.setIcon(Utilities.getImageIcon("move.gif"));
+			mh.moveButton.setIcon(Utilities.getImageIcon("move.gif")); // move
 			toolbar.add(mh.moveButton);
 
-			// Toggle Connect Mode
-			ImageIcon connectIcon = Utilities.getImageIcon("arrow.gif");
+			ImageIcon connectIcon = Utilities.getImageIcon("arrow.gif"); // Toggle Connect Mode
 			mh.connectButton.setIcon(connectIcon);
 			toolbar.add(mh.connectButton);
 
-			// Toggle Self Connect Mode
-			if (gmanager.isRDFGraph(graph)) {
+			if (gmanager.isRDFGraph(graph)) { // Toggle Self Connect Mode
 				toolbar.add(new AbstractAction("", connectIcon) {
 					public void actionPerformed(ActionEvent e) {
 						GraphCell cell = (GraphCell) graph.getSelectionCell();
@@ -306,9 +304,8 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 		};
 		undo.setEnabled(false);
 		//				toolbar.add(undo);
-
-		// Redo
-		redo = new AbstractAction("", Utilities.getImageIcon("redo.gif")) {
+		
+		redo = new AbstractAction("", Utilities.getImageIcon("redo.gif")) { // Redo
 			public void actionPerformed(ActionEvent e) {
 				redo();
 			}
@@ -319,64 +316,38 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 		toolbar.addSeparator();
 		Action action;
 		URL url;
-
-		// Copy
-		toolbar.add(new AbstractAction("", Utilities.getImageIcon("copy.gif")) {
-			public void actionPerformed(ActionEvent e) {
-				graph.copy();
-			}
-		});
-
-		// Cut
-		toolbar.add(new AbstractAction("", Utilities.getImageIcon("cut.gif")) {
-			public void actionPerformed(ActionEvent e) {
-				graph.cut();
-			}
-		});
-
-		// Paste
-		toolbar.add(new AbstractAction("", Utilities.getImageIcon("paste.gif")) {
-			public void actionPerformed(ActionEvent e) {
-				graph.paste();
-			}
-		});
-
-		// Remove
+		
+		toolbar.add(new CopyAction(graph, "Copy")); 
+		toolbar.add(new CutAction(graph, "Cut")); 
+		toolbar.add(new PasteAction(graph, "Paste")); 
 		toolbar.addSeparator();
-		remove = new AbstractAction("", Utilities.getImageIcon("delete.gif")) {
-			public void actionPerformed(ActionEvent e) {
-				gmanager.removeAction(graph);
-			}
-		};
+		
+		remove = new RemoveAction(graph, gmanager, "Remove");	
 		remove.setEnabled(false);
 		toolbar.add(remove);
-
-		// Find Resource
+		
 		toolbar.addSeparator();
-		toolbar.add(new AbstractAction("", Utilities.getImageIcon("find.gif")) {
+		toolbar.add(new AbstractAction("", Utilities.getImageIcon("find.gif")) { // Find Resource
 			public void actionPerformed(ActionEvent e) {
 				findResDialog.setSearchArea(graph.getType());
 				findResDialog.setVisible(true);
 			}
 		});
 
-		// Zoom Std
 		toolbar.addSeparator();
-		toolbar.add(new AbstractAction("", Utilities.getImageIcon("zoom100.gif")) {
+		toolbar.add(new AbstractAction("", Utilities.getImageIcon("zoom100.gif")) { // Zoom Std
 			public void actionPerformed(ActionEvent e) {
 				graph.setScale(1.0);
 			}
 		});
 
-		// Zoom In
-		toolbar.add(new AbstractAction("", Utilities.getImageIcon("zoomin.gif")) {
+		toolbar.add(new AbstractAction("", Utilities.getImageIcon("zoomin.gif")) { // Zoom In
 			public void actionPerformed(ActionEvent e) {
 				graph.setScale(1.5 * graph.getScale());
 			}
 		});
-
-		// Zoom Out
-		toolbar.add(new AbstractAction("", Utilities.getImageIcon("zoomout.gif")) {
+		
+		toolbar.add(new AbstractAction("", Utilities.getImageIcon("zoomout.gif")) { // Zoom Out
 			public void actionPerformed(ActionEvent e) {
 				graph.setScale(graph.getScale() / 1.5);
 			}

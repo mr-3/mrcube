@@ -158,6 +158,7 @@ public class FindResourceDialog extends JInternalFrame {
 		}
 		super.setVisible(aFlag);
 	}
+	
 	class ChangePrefixAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
 			PrefixNSUtil.replacePrefix((String) uriPrefixBox.getSelectedItem(), nsLabel);
