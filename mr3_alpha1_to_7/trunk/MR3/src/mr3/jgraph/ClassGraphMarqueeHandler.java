@@ -38,7 +38,7 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 	}
 
 	public GraphCell insertResourceCell(Point pt) {
-		InsertRDFSResDialog ird = new InsertRDFSResDialog("Input Resource", gmanager.getPrefixNSInfoSet(), gmanager.getBaseURI());
+		InsertRDFSResDialog ird = new InsertRDFSResDialog("Input Resource", gmanager);
 		if (!ird.isConfirm()) {
 			return null;
 		}		
@@ -51,7 +51,7 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 	}
 
 	public void insertSubClass(Point pt, Object[] supCells) {
-		InsertRDFSResDialog ird = new InsertRDFSResDialog("Input Resource", gmanager.getPrefixNSInfoSet(), gmanager.getBaseURI());
+		InsertRDFSResDialog ird = new InsertRDFSResDialog("Input Resource", gmanager);
 		if (!ird.isConfirm()) {
 			return;
 		}

@@ -18,7 +18,7 @@ public class SelectNameSpaceDialog extends SelectListDialog {
 	private GraphManager gmanager;
 
 	public SelectNameSpaceDialog(GraphManager m, Map map) {
-		super("Select NameSpace");
+		super(m.getRoot(), "Select NameSpace");
 		gmanager = m;
 		prefixNSMap = map;
 		setClassification();

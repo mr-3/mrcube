@@ -89,6 +89,7 @@ public class MR3 extends JFrame {
 		getContentPane().add(createToolBar(), BorderLayout.NORTH);
 		createDesktop();
 		gmanager.setDesktop(desktop);
+		gmanager.setRoot(this);
 
 		rdfEditor = new RDFEditor(nsTableDialog, findResDialog, gmanager);
 		classEditor = new ClassEditor(nsTableDialog, findResDialog, gmanager);
@@ -505,7 +506,7 @@ public class MR3 extends JFrame {
 
 	private JMenu getHelpMenu() {
 		JMenu menu = new JMenu("Help");
-		menu.add(new HelpAbout());
+		menu.add(new HelpAbout(this));
 		return menu;
 	}
 

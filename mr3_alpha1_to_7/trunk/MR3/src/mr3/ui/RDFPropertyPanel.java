@@ -26,7 +26,6 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 	private JButton jumpRDFSProp;
 	private GraphCell edge;
 
-	private JList nameSpaceList;
 	private JList localNameList;
 	private Map propMap;
 	private Set propNameSpaceSet;
@@ -100,29 +99,22 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 	class ChangePrefixAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
 			PrefixNSUtil.replacePrefix((String) uriPrefixBox.getSelectedItem(), nsLabel);
+			selectNameSpaceList();
 		}
 	}
 
 	private Component createSelectPropertyPanel() {
-		nameSpaceList = new JList();
-		nameSpaceList.addListSelectionListener(this);
-		JScrollPane nameSpaceListScroll = new JScrollPane(nameSpaceList);
-		initComponent(nameSpaceListScroll, "NameSpace", 350, 100);
-
 		localNameList = new JList();
 		localNameList.addListSelectionListener(this);
 		JScrollPane localNameListScroll = new JScrollPane(localNameList);
-		initComponent(localNameListScroll, "Local Name", 350, 100);
+		initComponent(localNameListScroll, "Property ID", 350, 200);
 
 		JPanel panel = new JPanel();
-		panel.setBorder(BorderFactory.createTitledBorder("Select Property"));
 		GridBagLayout gridbag = new GridBagLayout();
 		GridBagConstraints c = new GridBagConstraints();
 		panel.setLayout(gridbag);
 		c.anchor = GridBagConstraints.PAGE_START;
 		c.gridwidth = GridBagConstraints.REMAINDER;
-		gridbag.setConstraints(nameSpaceListScroll, c);
-		panel.add(nameSpaceListScroll);
 		gridbag.setConstraints(localNameListScroll, c);
 
 		renderer = new IconCellRenderer();
@@ -148,30 +140,32 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 	}
 
 	private void selectNameSpaceList() {
+
+		if (propMap == null) {
+			return;
+		}
+
 		if (!localNameList.isSelectionEmpty()) {
 			localNameList.clearSelection();
 		}
 
-		if (nameSpaceList.getModel().getSize() == 0) {
+		String nameSpace = nsLabel.getText();
+		Set localNames = (Set) propMap.get(nameSpace);
+		if (localNames == null) {
+			localNameList.setListData(NULL);
 			return;
 		}
-		String nameSpace = (String) nameSpaceList.getSelectedValue();
-
-		Set localNames = (Set) propMap.get(nameSpace);
-		if (nameSpace != null) {
-			Set modifyLocalNames = new HashSet();
-			for (Iterator i = localNames.iterator(); i.hasNext();) {
-				String localName = (String) i.next();
-				if (localName.length() == 0) { // localNameがない場合，Nullを表示
-					modifyLocalNames.add(NULL_LOCAL_NAME);
-				} else {
-					modifyLocalNames.add(localName);
-				}
+		Set modifyLocalNames = new HashSet();
+		for (Iterator i = localNames.iterator(); i.hasNext();) {
+			String localName = (String) i.next();
+			if (localName.length() == 0) { // localNameがない場合，Nullを表示
+				modifyLocalNames.add(NULL_LOCAL_NAME);
+			} else {
+				modifyLocalNames.add(localName);
 			}
-			setRenderer(nameSpace, modifyLocalNames);
-			localNameList.setListData(modifyLocalNames.toArray());
-			setNSLabel(nameSpace);
 		}
+		setRenderer(nameSpace, modifyLocalNames);
+		localNameList.setListData(modifyLocalNames.toArray());
 	}
 
 	private void setNSLabel(String str) {
@@ -180,8 +174,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 	}
 
 	private void selectLocalNameList() {
-		if (nameSpaceList.getSelectedValue() != null && localNameList.getSelectedValue() != null) {
-			String ns = nameSpaceList.getSelectedValue().toString();
+		if (localNameList.getSelectedValue() != null) {
 			String ln = localNameList.getSelectedValue().toString();
 			if (ln.equals(NULL_LOCAL_NAME)) {
 				ln = "";
@@ -209,9 +202,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 
 	public void valueChanged(ListSelectionEvent e) {
 		try {
-			if (e.getSource() == nameSpaceList) {
-				selectNameSpaceList();
-			} else if (e.getSource() == localNameList) {
+			if (e.getSource() == localNameList) {
 				selectLocalNameList();
 			}
 		} catch (NullPointerException np) { //あとではずす
@@ -256,10 +247,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 			localNames.add(uri.getLocalName());
 		}
 
-		nameSpaceList.setListData(propNameSpaceSet.toArray());
-		localNameList.setListData(NULL);
-
-		nameSpaceList.setSelectedValue(nsLabel.getText(), true);
+		//		localNameList.setListData(NULL);
 		localNameList.setSelectedValue(idField.getText(), true);
 	}
 
@@ -311,7 +299,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 	}
 
 	private void jumpRDFSProperty() {
-		Resource uri = new ResourceImpl(nsLabel.getText()+idField.getText());
+		Resource uri = new ResourceImpl(nsLabel.getText() + idField.getText());
 		if (gmanager.isEmptyURI(uri.getURI())) {
 			return;
 		}

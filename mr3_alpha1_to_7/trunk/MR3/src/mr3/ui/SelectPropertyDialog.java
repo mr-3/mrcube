@@ -26,7 +26,7 @@ public class SelectPropertyDialog extends SelectListDialog {
 	private IconCellRenderer renderer;
 
 	public SelectPropertyDialog() {
-		super("Select Property");
+		super(null, "Select Property");
 		renderer = new IconCellRenderer();
 		lowerList.setCellRenderer(renderer);
 	}

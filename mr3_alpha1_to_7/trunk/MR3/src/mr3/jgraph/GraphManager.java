@@ -19,6 +19,8 @@ import com.jgraph.graph.*;
 
 public class GraphManager {
 
+	private JFrame root;
+	
 	private RDFGraph rdfGraph;
 	private RDFGraph realRDFGraph;
 	private RDFGraph classGraph;
@@ -59,12 +61,21 @@ public class GraphManager {
 	}
 
 	private JDesktopPane desktop;
+	
 	public void setDesktop(JDesktopPane jdp) {
 		desktop = jdp;
 	}
 
 	public JDesktopPane getDesktop() {
 		return desktop;
+	}
+
+	public void setRoot(JFrame mr3) {
+		root = mr3;
+	}
+
+	public JFrame getRoot() {
+		return root;
 	}
 
 	public boolean isImporting() {

@@ -184,7 +184,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 				list.add(cells[i]);
 			}
 		}
-		InsertRDFResDialog ird = new InsertRDFResDialog("Input Resource", list.toArray(), gmanager.getPrefixNSInfoSet(), gmanager.getBaseURI());
+		InsertRDFResDialog ird = new InsertRDFResDialog("Input Resource", list.toArray(), gmanager);
 
 		if (!ird.isConfirm()) {
 			return null;

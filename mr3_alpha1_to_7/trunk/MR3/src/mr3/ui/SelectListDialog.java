@@ -23,8 +23,8 @@ public abstract class SelectListDialog extends JDialog implements ListSelectionL
 	protected JList lowerList;
 	protected static Object[] NULL = new Object[0];
 
-	public SelectListDialog(String title) {
-		super((Frame) null, title, true);
+	public SelectListDialog(Frame frame, String title) {
+		super(frame, title, true);
 		Container contentPane = getContentPane();
 
 		upperList = new JList();
