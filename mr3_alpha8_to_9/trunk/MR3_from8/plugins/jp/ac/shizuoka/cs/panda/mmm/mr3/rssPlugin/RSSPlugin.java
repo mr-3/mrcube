@@ -101,7 +101,6 @@ public class RSSPlugin extends MR3Plugin {
 	}
 
 	public void exec() {
-		System.out.println(getDesktopPane());
 		try {
 			String uri = JOptionPane.showInternalInputDialog(getDesktopPane(), "Input URI (exp: http://panda.cs.inf.shizuoka.ac.jp/mmm/mr3/");
 			parse(uri);
