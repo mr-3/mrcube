@@ -140,7 +140,7 @@ public class RDFToJGraph {
 
 	private DefaultGraphCell createResourceCell(Object res, Map resMap, Map portMap, Map attr, Point point) {
 
-		DefaultGraphCell resCell = new EllipseCell(res.toString());
+		DefaultGraphCell resCell = new RDFResourceCell(res.toString());
 		DefaultPort port = new DefaultPort();
 		resCell.add(port);
 		portMap.put(res, port);
@@ -162,7 +162,7 @@ public class RDFToJGraph {
 		//literal = "<html>" + literal + "</html>";
 		//literal = literal.replaceAll("(\n|\r)+", "<br>");
 		String str = literal.getString();
-		DefaultGraphCell litCell = new LiteralCell(str);
+		DefaultGraphCell litCell = new RDFLiteralCell(str);
 		DefaultPort tp = new DefaultPort();
 		litCell.add(tp);
 		portMap.put(literal, tp);

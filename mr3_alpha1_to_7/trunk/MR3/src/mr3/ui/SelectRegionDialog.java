@@ -45,7 +45,7 @@ public class SelectRegionDialog extends SelectClassDialog {
         newRegionSet.removeAll(newRegionSet);
         Object[] cells = graph.getSelectionCells();
         for (int i = 0; i < cells.length; i++) {
-            if (graph.isResourceCell(cells[i])) {
+            if (graph.isRDFResourceCell(cells[i])) {
                 //RDFSInfo info = rdfsMap.getCellInfo(cells[i]);
 //				newRegionSet.add(info.getURI());
 				newRegionSet.add(cells[i]);

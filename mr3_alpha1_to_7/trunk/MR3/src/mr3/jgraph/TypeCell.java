@@ -2,7 +2,7 @@ package mr3.jgraph;
 import com.jgraph.graph.*;
 
 /**
- * @author cs9088
+ * @author takeshi morita
  *
  */
 public class TypeCell extends DefaultGraphCell {

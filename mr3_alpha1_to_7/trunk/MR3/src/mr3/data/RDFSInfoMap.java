@@ -119,16 +119,16 @@ public class RDFSInfoMap {
 					// 今から作ろうとしてるRDFCellの場合，resInfoは存在しない．
 					// 名前を変更しようとしているCellの場合は，resInfoが存在する
 					if (resInfo == null || resInfo.getTypeCell() == null) {
-						System.out.println("1 duplicated rdfs");
+//						System.out.println("1 duplicated rdfs");
 						return true;
 					}
 					RDFSInfo typeInfo = rdfsInfoMap.getCellInfo(resInfo.getTypeCell());
 					if (!((typeInfo.getURI().equals(RDFS.Class)) || typeInfo.getURI().equals(RDF.Property))) {
-						System.out.println("2 duplicated rdfs");
+//						System.out.println("2 duplicated rdfs");
 						return true;
 					}
 				} else {
-					System.out.println("3 duplicated rdfs");
+//					System.out.println("3 duplicated rdfs");
 					return true;
 				}
 			}
