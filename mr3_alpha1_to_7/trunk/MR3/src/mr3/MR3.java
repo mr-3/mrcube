@@ -2,6 +2,7 @@ package mr3;
 import java.awt.*;
 import java.awt.Container;
 import java.awt.event.*;
+import java.beans.*;
 import java.io.*;
 import java.lang.reflect.*;
 import java.net.*;
@@ -14,6 +15,7 @@ import javax.swing.event.*;
 
 import mr3.data.*;
 import mr3.editor.*;
+import mr3.editor.PropertyEditor;
 import mr3.io.*;
 import mr3.jgraph.*;
 import mr3.ui.*;
@@ -74,8 +76,6 @@ public class MR3 extends JFrame {
 	private JRadioButton uriView;
 	private JRadioButton idView;
 	private JRadioButton labelView;
-
-	private File lastSelectedFile;
 
 	private static final Color DESKTOP_BACK_COLOR = new Color(225, 225, 225);
 
@@ -162,6 +162,7 @@ public class MR3 extends JFrame {
 		internalFrames[2].addInternalFrameListener(new CloseInternalFrameAction());
 
 		srcFrame = createInternalFrame(new JScrollPane(srcArea), "Src View", DEMO_FRAME_LAYER);
+		srcFrame.setClosable(true);
 		srcFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		srcFrame.addInternalFrameListener(new CloseInternalFrameAction());
 		srcFrame.setBounds(new Rectangle(0, 0, FRAME_WIDTH, FRAME_HEIGHT));
@@ -196,7 +197,7 @@ public class MR3 extends JFrame {
 
 	public JInternalFrame createInternalFrame(Container container, String title, Integer layer) {
 		JInternalFrame jif = new JInternalFrame(title);
-		jif.setClosable(true);
+		jif.setClosable(false);
 		jif.setMaximizable(true);
 		jif.setIconifiable(true);
 		jif.setResizable(true);
@@ -225,6 +226,7 @@ public class MR3 extends JFrame {
 		mb.add(getFileMenu());
 		mb.add(getEditMenu());
 		mb.add(getViewMenu());
+		mb.add(getWindowMenu());
 		mb.add(getConvertMenu());
 		mb.add(getToolMenu());
 		return mb;
@@ -524,15 +526,11 @@ public class MR3 extends JFrame {
 
 	private File getImportFile() {
 		File file = null;
-		JFileChooser jfc = new JFileChooser(lastSelectedFile);
+		JFileChooser jfc = new JFileChooser(userPrefs.get(PrefConstants.DefaultWorkDirectory, ""));
 		int fd = jfc.showOpenDialog(desktop);
-
 		if (fd == JFileChooser.APPROVE_OPTION) {
 			file = jfc.getSelectedFile();
-			lastSelectedFile = file;
-		} else {
-			System.out.println("Can not open File");
-		}
+		} 
 		return file;
 	}
 
@@ -685,11 +683,7 @@ public class MR3 extends JFrame {
 		menu.add(idView);
 		menu.add(labelView);
 		menu.addSeparator();
-		JMenuItem item = new JMenuItem("Deploy windows");
-		item.addActionListener(new DeployWindows());
-		menu.add(item);
-		menu.addSeparator();
-		menu.add(getEditorViewMenu());
+		//		menu.add(getEditorViewMenu());
 		showSrcView = new JCheckBoxMenuItem("Show SRC", false);
 		showSrcView.addActionListener(new ShowViewAction());
 		menu.add(showSrcView);
@@ -709,6 +703,7 @@ public class MR3 extends JFrame {
 		return menu;
 	}
 
+	// エディタは常に表示しておくべきという指摘があったので，消すことはできないようにする．
 	private JMenu getEditorViewMenu() {
 		JMenu editorViewMenu = new JMenu("Editor");
 		rdfEditorView = new JCheckBoxMenuItem("Show RDF Editor", true);
@@ -721,6 +716,46 @@ public class MR3 extends JFrame {
 		propertyEditorView.addActionListener(new ShowViewAction());
 		editorViewMenu.add(propertyEditorView);
 		return editorViewMenu;
+	}
+
+	private JMenu getWindowMenu() {
+		JMenu menu = new JMenu("Window");
+		AbstractAction editorSelectAction = new EditorSelectAction();
+		JMenuItem item = new JMenuItem("To Front RDF Editor");
+		item.addActionListener(editorSelectAction);
+		menu.add(item);
+		item = new JMenuItem("To Front Class Editor");
+		item.addActionListener(editorSelectAction);
+		menu.add(item);
+		item = new JMenuItem("To Front Property Editor");
+		item.addActionListener(editorSelectAction);
+		menu.add(item);
+		menu.addSeparator();
+		item = new JMenuItem("Deploy Windows");
+		item.addActionListener(new DeployWindows());
+		menu.add(item);
+
+		return menu;
+	}
+
+	class EditorSelectAction extends AbstractAction {
+		public void actionPerformed(ActionEvent e) {
+			try {
+				String en = e.getActionCommand();
+				if (en.equals("To Front RDF Editor")) {
+					internalFrames[0].toFront();
+					internalFrames[0].setSelected(true);
+				} else if (en.equals("To Front Class Editor")) {
+					internalFrames[1].toFront();
+					internalFrames[1].setSelected(true);
+				} else if (en.equals("To Front Property Editor")) {
+					internalFrames[2].toFront();
+					internalFrames[2].setSelected(true);
+				}
+			} catch (PropertyVetoException pve) {
+				pve.printStackTrace();
+			}
+		}
 	}
 
 	private void deployWindows() {

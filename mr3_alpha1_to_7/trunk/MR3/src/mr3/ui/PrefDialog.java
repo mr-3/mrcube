@@ -2,10 +2,12 @@ package mr3.ui;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 import java.util.prefs.*;
 
 import javax.swing.*;
 
+import mr3.data.*;
 import mr3.jgraph.*;
 
 /**
@@ -17,6 +19,10 @@ public class PrefDialog extends JInternalFrame {
 	private JCheckBox isAntialiasBox;
 	private JLabel baseURILabel;
 	private JTextField baseURIField;
+
+	private JLabel workDirectoryLabel;
+	private JTextField workDirectoryField;
+	private JButton browseWorkDirectoryButton;
 
 	private JCheckBox isProxy;
 	private JTextField proxyHost;
@@ -33,12 +39,18 @@ public class PrefDialog extends JInternalFrame {
 		gmanager = manager;
 		userPrefs = prefs;
 
-		isAntialiasBox = new JCheckBox("Antialias");
-
 		baseURILabel = new JLabel("Base URI:   ");
 		baseURIField = new JTextField(20);
-		baseURIField.setPreferredSize(new Dimension(250, 20));
-		baseURIField.setMinimumSize(new Dimension(250, 20));
+		baseURIField.setPreferredSize(new Dimension(300, 20));
+		baseURIField.setMinimumSize(new Dimension(300, 20));
+
+		workDirectoryLabel = new JLabel("Work Directory:   ");
+		workDirectoryField = new JTextField(20);
+		workDirectoryField.setEditable(false);
+		workDirectoryField.setPreferredSize(new Dimension(300, 20));
+		workDirectoryField.setMinimumSize(new Dimension(300, 20));
+		browseWorkDirectoryButton = new JButton("Browse");
+		browseWorkDirectoryButton.addActionListener(new BrowseDirectory());
 
 		isProxy = new JCheckBox("Proxy");
 		isProxy.addActionListener(new CheckProxy());
@@ -51,6 +63,8 @@ public class PrefDialog extends JInternalFrame {
 		proxyPort.setMinimumSize(new Dimension(50, 40));
 		proxyPort.setBorder(BorderFactory.createTitledBorder("Port"));
 
+		isAntialiasBox = new JCheckBox("Antialias");
+
 		applyButton = new JButton("Apply");
 		applyButton.addActionListener(new DesideAction());
 		cancelButton = new JButton("Cancel");
@@ -60,37 +74,73 @@ public class PrefDialog extends JInternalFrame {
 		buttonGroup.add(cancelButton);
 
 		Container contentPane = getContentPane();
+		JPanel innerPanel = new JPanel();
+
 		GridBagLayout gridbag = new GridBagLayout();
 		GridBagConstraints c = new GridBagConstraints();
-		contentPane.setLayout(gridbag);
+		innerPanel.setLayout(gridbag);
+
 		c.weighty = 5;
 		c.anchor = GridBagConstraints.WEST;
-		c.gridwidth = GridBagConstraints.REMAINDER;
-		gridbag.setConstraints(isAntialiasBox, c);
-		contentPane.add(isAntialiasBox);
 		c.gridwidth = GridBagConstraints.RELATIVE;
 		gridbag.setConstraints(baseURILabel, c);
-		contentPane.add(baseURILabel);
+		innerPanel.add(baseURILabel);
 		c.gridwidth = GridBagConstraints.REMAINDER;
 		gridbag.setConstraints(baseURIField, c);
-		contentPane.add(baseURIField);
+		innerPanel.add(baseURIField);
+
+		c.gridwidth = GridBagConstraints.RELATIVE;
+		gridbag.setConstraints(workDirectoryLabel, c);
+		innerPanel.add(workDirectoryLabel);
+		gridbag.setConstraints(workDirectoryField, c);
+		innerPanel.add(workDirectoryField);
+		c.gridwidth = GridBagConstraints.REMAINDER;
+		gridbag.setConstraints(browseWorkDirectoryButton, c);
+		innerPanel.add(browseWorkDirectoryButton);
+
 		c.gridwidth = GridBagConstraints.RELATIVE;
 		gridbag.setConstraints(isProxy, c);
-		contentPane.add(isProxy);
+		innerPanel.add(isProxy);
 		gridbag.setConstraints(proxyHost, c);
-		contentPane.add(proxyHost);
+		innerPanel.add(proxyHost);
 		c.gridwidth = GridBagConstraints.REMAINDER;
 		gridbag.setConstraints(proxyPort, c);
-		contentPane.add(proxyPort);
+		innerPanel.add(proxyPort);
+
+		gridbag.setConstraints(isAntialiasBox, c);
+		innerPanel.add(isAntialiasBox);
+
 		c.anchor = GridBagConstraints.CENTER;
 		gridbag.setConstraints(buttonGroup, c);
-		contentPane.add(buttonGroup);
+		innerPanel.add(buttonGroup);
+		contentPane.add(innerPanel);
 
 		initParameter();
 
-		setSize(new Dimension(450, 200));
+		setSize(new Dimension(550, 250));
 		setLocation(100, 100);
 		setVisible(true);
+	}
+
+	private String getDirectoryName() {
+		File currentDirectory = new File(userPrefs.get(PrefConstants.DefaultWorkDirectory, ""));
+		JFileChooser jfc = new JFileChooser(currentDirectory);
+		jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		jfc.setDialogTitle("Select Directory");
+		int fd = jfc.showOpenDialog(this);
+		if (fd == JFileChooser.APPROVE_OPTION) {
+			return jfc.getSelectedFile().toString();
+		}
+		return null;
+	}
+
+	class BrowseDirectory extends AbstractAction {
+		public void actionPerformed(ActionEvent e) {
+			String directoryName = getDirectoryName();
+			if (directoryName != null) {
+				workDirectoryField.setText(directoryName);
+			}
+		}
 	}
 
 	class CheckProxy extends AbstractAction {
@@ -100,19 +150,14 @@ public class PrefDialog extends JInternalFrame {
 		}
 	}
 
-	private static final String Antialias = "Antialias";
-	private static final String BaseURI = "Base URI";
-	private static final String Proxy = "Proxy";
-	private static final String ProxyHost = "Proxy Host";
-	private static final String ProxyPort = "Proxy Port";
-
 	private void initParameter() {
-		isAntialiasBox.setSelected(userPrefs.getBoolean(Antialias, true));
-		baseURIField.setText(userPrefs.get(BaseURI, "http://mr3"));
-		isProxy.setSelected(userPrefs.getBoolean(Proxy, false));
-		proxyHost.setText(userPrefs.get(ProxyHost, "http://localhost"));
+		isAntialiasBox.setSelected(userPrefs.getBoolean(PrefConstants.Antialias, true));
+		baseURIField.setText(userPrefs.get(PrefConstants.BaseURI, "http://mr3"));
+		workDirectoryField.setText(userPrefs.get(PrefConstants.DefaultWorkDirectory, ""));
+		isProxy.setSelected(userPrefs.getBoolean(PrefConstants.Proxy, false));
+		proxyHost.setText(userPrefs.get(PrefConstants.ProxyHost, "http://localhost"));
 		proxyHost.setEditable(isProxy.isSelected());
-		proxyPort.setText(Integer.toString(userPrefs.getInt(ProxyPort, 3128)));
+		proxyPort.setText(Integer.toString(userPrefs.getInt(PrefConstants.ProxyPort, 3128)));
 		proxyPort.setEditable(isProxy.isSelected());
 	}
 
@@ -120,13 +165,14 @@ public class PrefDialog extends JInternalFrame {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == applyButton) {
 				try {
-					userPrefs.putBoolean(Antialias, isAntialiasBox.isSelected());
+					userPrefs.putBoolean(PrefConstants.Antialias, isAntialiasBox.isSelected());
 					gmanager.setAntialias();
-					userPrefs.put(BaseURI, baseURIField.getText());
+					userPrefs.put(PrefConstants.BaseURI, baseURIField.getText());
 					gmanager.setBaseURI(baseURIField.getText());
-					userPrefs.putBoolean(Proxy, isProxy.isSelected());
-					userPrefs.put(ProxyHost, proxyHost.getText());
-					userPrefs.putInt(ProxyPort, Integer.parseInt(proxyPort.getText()));
+					userPrefs.put(PrefConstants.DefaultWorkDirectory, workDirectoryField.getText());
+					userPrefs.putBoolean(PrefConstants.Proxy, isProxy.isSelected());
+					userPrefs.put(PrefConstants.ProxyHost, proxyHost.getText());
+					userPrefs.putInt(PrefConstants.ProxyPort, Integer.parseInt(proxyPort.getText()));
 				} catch (NumberFormatException nfe) {
 					JOptionPane.showMessageDialog(null, "Number Format Exception", "Warning", JOptionPane.ERROR_MESSAGE);
 					return;

@@ -33,4 +33,6 @@ public class PrefConstants {
 	public static final String Proxy = "Proxy";
 	public static final String ProxyHost = "Proxy Host";
 	public static final String ProxyPort = "Proxy Port";
+	
+	public static final String DefaultWorkDirectory = "DefaultWorkDirectory";
 }
