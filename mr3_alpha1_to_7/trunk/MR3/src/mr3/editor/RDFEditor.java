@@ -24,10 +24,10 @@ public class RDFEditor extends Editor {
 	private RDFPropertyPanel propPanel;
 	private RDFLiteralPanel litPanel;
 
-	public RDFEditor(NameSpaceTableDialog nsD, FindResourceDialog findResD, GraphManager manager) {
-		graph = manager.getRDFGraph();
-		graph.setMarqueeHandler(new RDFGraphMarqueeHandler(manager, graph));
-		initEditor(manager.getRDFGraph(), manager, nsD, findResD);
+	public RDFEditor(NameSpaceTableDialog nsD, FindResourceDialog findResD, GraphManager gm) {
+		graph = gm.getRDFGraph();
+		graph.setMarqueeHandler(new RDFGraphMarqueeHandler(gm, graph));
+		initEditor(gm.getRDFGraph(), gm, nsD, findResD);
 	}
 
 	protected void initField(NameSpaceTableDialog nsD, GraphManager manager) {

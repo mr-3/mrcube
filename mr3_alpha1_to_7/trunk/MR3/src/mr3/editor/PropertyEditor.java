@@ -21,10 +21,10 @@ public class PropertyEditor extends Editor {
 
 	private PropertyPanel propPanel;
 
-	public PropertyEditor(NameSpaceTableDialog nsD, FindResourceDialog findResD, GraphManager manager) {
-		graph = manager.getPropertyGraph();
+	public PropertyEditor(NameSpaceTableDialog nsD, FindResourceDialog findResD, GraphManager gm) {
+		graph = gm.getPropertyGraph();
 		graph.setDisconnectable(false);
-		initEditor(manager.getPropertyGraph(), manager, nsD, findResD);
+		initEditor(gm.getPropertyGraph(), gm, nsD, findResD);
 	}
 
 	protected void initField(NameSpaceTableDialog nsD, GraphManager manager) {

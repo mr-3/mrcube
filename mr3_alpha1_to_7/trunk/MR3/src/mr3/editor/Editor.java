@@ -46,11 +46,11 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 		internalFrames = ifs;
 	}
 
-	protected void initEditor(RDFGraph g, GraphManager manager, NameSpaceTableDialog nsD, FindResourceDialog findResD) {
+	protected void initEditor(RDFGraph g, GraphManager gm, NameSpaceTableDialog nsD, FindResourceDialog findResD) {
 		graph = g;
 		findResDialog = findResD;
 		lastSelectionCells = new Object[0];
-		initField(nsD, manager);
+		initField(nsD, gm);
 		initListener();
 		initLayout();
 	}

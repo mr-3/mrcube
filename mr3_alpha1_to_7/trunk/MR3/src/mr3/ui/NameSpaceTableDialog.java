@@ -117,6 +117,10 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		changeCellView();
 	}
 
+	public NSTableModel getNSTableModel() {
+		return nsTableModel;	
+	}
+
 	public Serializable getState() {
 		ArrayList list = new ArrayList();
 		list.add(prefixNSMap);
@@ -352,7 +356,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		return infoSet;
 	}
 
-	class NSTableModel extends DefaultTableModel implements Serializable {
+	public class NSTableModel extends DefaultTableModel implements Serializable {
 
 		private static final long serialVersionUID = -5977304717491874293L;
 
