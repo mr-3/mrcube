@@ -14,7 +14,7 @@ import javax.swing.*;
 public class HelpDialog extends JDialog {
 
 	private static final String TOOL_NAME = "<h2>MR<sup>3</sup> <br> (Meta-Model Management based on <br> RDFs Revision Reflection)</h2>";
-	private static final String VERSION = "ƒ¿5 (2003-06-)";
+	private static final String VERSION = "ƒ¿6 (2003-07-)";
 
 	public HelpDialog(ImageIcon logo) {
 		super((Frame) null, "About MR^3", true);

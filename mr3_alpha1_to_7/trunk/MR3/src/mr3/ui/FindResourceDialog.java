@@ -19,14 +19,14 @@ public class FindResourceDialog extends JInternalFrame {
 	private JTextField findField;
 	private Set prefixNSInfoSet;
 	private JComboBox uriPrefixBox;
-	private JButton searchButton;
+	private JButton findButton;
 	private JList resourceList;
 
 	private ButtonGroup group;
 	private JRadioButton rdfAreaButton;
 	private JRadioButton classAreaButton;
 	private JRadioButton propertyAreaButton;
-	private GraphType searchArea;
+	private GraphType findArea;
 
 	private GraphManager gmanager;
 	private static Object[] NULL = new Object[0];
@@ -35,50 +35,19 @@ public class FindResourceDialog extends JInternalFrame {
 	private static final int boxHeight = 30;
 
 	public FindResourceDialog(String title, GraphManager manager) {
-		//		super(title, false, true, false);
-		super(title, true, true, true);
+		super(title, false, true, false);
 		Container contentPane = getContentPane();
 
 		gmanager = manager;
 
-		SearchAction searchAction = new SearchAction();
-
-		uriPrefixBox = new JComboBox();
-		uriPrefixBox.addActionListener(new ChangePrefixAction());
-		uriPrefixBox.setPreferredSize(new Dimension(boxWidth, boxHeight));
-		uriPrefixBox.setMinimumSize(new Dimension(boxWidth, boxHeight));
-
-		findField = new JTextField(25);
-		findField.addActionListener(searchAction);
-		searchButton = new JButton("Search");
-		searchButton.addActionListener(searchAction);
-
-		SearchAreaCheck searchAreaCheck = new SearchAreaCheck();
-		rdfAreaButton = new JRadioButton("RDF");
-		rdfAreaButton.addItemListener(searchAreaCheck);
-		classAreaButton = new JRadioButton("Class");
-		classAreaButton.addItemListener(searchAreaCheck);
-		propertyAreaButton = new JRadioButton("Property");
-		propertyAreaButton.addItemListener(searchAreaCheck);
+		JComponent buttonGroupPanel = getButtonGroupPanel();
+		JComponent findAreaPanel = getFindAreaPanel();
 
 		resourceList = new JList();
 		resourceList.addListSelectionListener(new JumpAction());
 		JScrollPane resourceListScroll = new JScrollPane(resourceList);
-		resourceListScroll.setPreferredSize(new Dimension(430, 100));
-		resourceListScroll.setMinimumSize(new Dimension(430, 100));
-
-		group = new ButtonGroup();
-		rdfAreaButton.setSelected(true);
-		group.add(rdfAreaButton);
-		group.add(classAreaButton);
-		group.add(propertyAreaButton);
-		JPanel inlinePanel = new JPanel();
-		inlinePanel.setPreferredSize(new Dimension(250, 60));
-		inlinePanel.setMinimumSize(new Dimension(250, 60));
-		inlinePanel.setBorder(BorderFactory.createTitledBorder("Graph Type"));
-		inlinePanel.add(rdfAreaButton);
-		inlinePanel.add(classAreaButton);
-		inlinePanel.add(propertyAreaButton);
+		resourceListScroll.setPreferredSize(new Dimension(450, 100));
+		resourceListScroll.setMinimumSize(new Dimension(450, 100));
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE); // デフォルトの動作を消す
 		addInternalFrameListener(new InternalFrameAdapter() {
@@ -93,39 +62,75 @@ public class FindResourceDialog extends JInternalFrame {
 		c.weightx = 1;
 		c.weighty = 3;
 		c.gridwidth = GridBagConstraints.REMAINDER;
-		gridbag.setConstraints(inlinePanel, c);
-		contentPane.add(inlinePanel);
-		
-		c.anchor = GridBagConstraints.WEST;
-		c.gridwidth = GridBagConstraints.RELATIVE;
-		gridbag.setConstraints(uriPrefixBox, c);
-		contentPane.add(uriPrefixBox);
-		gridbag.setConstraints(findField, c);
-		contentPane.add(findField);
-		c.gridwidth = GridBagConstraints.REMAINDER;
-		gridbag.setConstraints(searchButton, c);
-		contentPane.add(searchButton);
-
 		c.anchor = GridBagConstraints.CENTER;
+		gridbag.setConstraints(buttonGroupPanel, c);
+		contentPane.add(buttonGroupPanel);
+
+		gridbag.setConstraints(findAreaPanel, c);
+		contentPane.add(findAreaPanel);
+
 		gridbag.setConstraints(resourceListScroll, c);
 		contentPane.add(resourceListScroll);
 
 		setLocation(100, 100);
-		setSize(new Dimension(550, 250));
+		setSize(new Dimension(500, 250));
 		setVisible(false);
+	}
+
+	private JComponent getButtonGroupPanel() {
+		FindAreaCheck findAreaCheck = new FindAreaCheck();
+		rdfAreaButton = new JRadioButton("RDF");
+		rdfAreaButton.setSelected(true);
+		rdfAreaButton.addItemListener(findAreaCheck);
+		classAreaButton = new JRadioButton("Class");
+		classAreaButton.addItemListener(findAreaCheck);
+		propertyAreaButton = new JRadioButton("Property");
+		propertyAreaButton.addItemListener(findAreaCheck);
+
+		group = new ButtonGroup();
+		group.add(rdfAreaButton);
+		group.add(classAreaButton);
+		group.add(propertyAreaButton);
+		JPanel buttonGroupPanel = new JPanel();
+		buttonGroupPanel.setPreferredSize(new Dimension(250, 60));
+		buttonGroupPanel.setMinimumSize(new Dimension(250, 60));
+		buttonGroupPanel.setBorder(BorderFactory.createTitledBorder("Graph Type"));
+		buttonGroupPanel.add(rdfAreaButton);
+		buttonGroupPanel.add(classAreaButton);
+		buttonGroupPanel.add(propertyAreaButton);
+
+		return buttonGroupPanel;
+	}
+
+	private JComponent getFindAreaPanel() {
+		JPanel inlinePanel = new JPanel();
+		FindAction findAction = new FindAction();
+		uriPrefixBox = new JComboBox();
+		uriPrefixBox.addActionListener(new ChangePrefixAction());
+		uriPrefixBox.setPreferredSize(new Dimension(boxWidth, boxHeight));
+		uriPrefixBox.setMinimumSize(new Dimension(boxWidth, boxHeight));
+
+		findField = new JTextField(28);
+		findField.addActionListener(findAction);
+		findButton = new JButton("Find");
+		findButton.addActionListener(findAction);
+		inlinePanel.add(uriPrefixBox);
+		inlinePanel.add(findField);
+		inlinePanel.add(findButton);
+		return inlinePanel;
 	}
 
 	public void setSearchArea(GraphType type) {
 		findField.setText("");
 		if (type == GraphType.RDF) {
 			rdfAreaButton.setSelected(true);
-			searchArea = GraphType.RDF;
+			findArea = GraphType.RDF;
 		} else if (type == GraphType.CLASS) {
 			classAreaButton.setSelected(true);
-			searchArea = GraphType.CLASS;
+			findArea = GraphType.CLASS;
 		} else if (type == GraphType.PROPERTY) {
 			propertyAreaButton.setSelected(true);
-			searchArea = GraphType.PROPERTY;
+			findArea = GraphType.PROPERTY;
 		}
 	}
 
@@ -149,31 +154,31 @@ public class FindResourceDialog extends JInternalFrame {
 		}
 	}
 
-	class SearchAreaCheck implements ItemListener {
+	class FindAreaCheck implements ItemListener {
 		public void itemStateChanged(ItemEvent e) {
 			if (e.getItemSelectable() == rdfAreaButton) {
-				searchArea = GraphType.RDF;
+				findArea = GraphType.RDF;
 			} else if (e.getItemSelectable() == classAreaButton) {
-				searchArea = GraphType.CLASS;
+				findArea = GraphType.CLASS;
 			} else if (e.getItemSelectable() == propertyAreaButton) {
-				searchArea = GraphType.PROPERTY;
+				findArea = GraphType.PROPERTY;
 			}
 			resourceList.setListData(NULL);
 		}
 	}
 
-	class SearchAction extends AbstractAction {
+	class FindAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
 			resourceList.removeAll();
 			// はじめの部分だけマッチしていれば，検索対象にするようにする
 			String key = findField.getText() + ".*";
 			Set resourceSet = null;
-			if (searchArea == GraphType.RDF) {
-				resourceSet = gmanager.getSearchRDFResult(key);
-			} else if (searchArea == GraphType.CLASS) {
-				resourceSet = gmanager.getSearchClassResult(key);
-			} else if (searchArea == GraphType.PROPERTY) {
-				resourceSet = gmanager.getSearchPropertyResult(key);
+			if (findArea == GraphType.RDF) {
+				resourceSet = gmanager.getFindRDFResult(key);
+			} else if (findArea == GraphType.CLASS) {
+				resourceSet = gmanager.getFindClassResult(key);
+			} else if (findArea == GraphType.PROPERTY) {
+				resourceSet = gmanager.getFindPropertyResult(key);
 			}
 			resourceList.setListData(resourceSet.toArray());
 		}
@@ -182,11 +187,11 @@ public class FindResourceDialog extends JInternalFrame {
 	class JumpAction implements ListSelectionListener {
 		public void valueChanged(ListSelectionEvent e) {
 			Object cell = resourceList.getSelectedValue();
-			if (searchArea == GraphType.RDF) {
+			if (findArea == GraphType.RDF) {
 				gmanager.jumpRDFArea(cell);
-			} else if (searchArea == GraphType.CLASS) {
+			} else if (findArea == GraphType.CLASS) {
 				gmanager.jumpClassArea(cell);
-			} else if (searchArea == GraphType.PROPERTY) {
+			} else if (findArea == GraphType.PROPERTY) {
 				gmanager.jumpPropertyArea(cell);
 			}
 		}

@@ -85,7 +85,7 @@ public abstract class SelectClassDialog extends JDialog implements ActionListene
 			if (currentKey == null || (!currentKey.equals(key))) {
 				index = 0; // index‚ðŒ³‚É–ß‚·
 				currentKey = key;
-				findList = new ArrayList(gmanager.getSearchRDFSResult(key, graph));
+				findList = new ArrayList(gmanager.getFindRDFSResult(key, graph));
 				findNextResource(findList);
 			} else {
 				findNextResource(findList);
