@@ -319,7 +319,7 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 	}
 
 	private void selectResourceType() {
-		SelectResourceTypeDialog classDialog = new SelectResourceTypeDialog();
+		SelectResourceTypeDialog classDialog = new SelectResourceTypeDialog(gmanager);
 		classDialog.replaceGraph(gmanager.getClassGraph());
 		classDialog.setInitCell(resInfo.getTypeCell());
 		classDialog.setVisible(true);

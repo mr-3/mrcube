@@ -4,6 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 
 import mr3.data.*;
+import mr3.jgraph.*;
 import mr3.util.*;
 
 import com.hp.hpl.mesa.rdf.jena.model.*;
@@ -21,8 +22,8 @@ public class SelectResourceTypeDialog extends SelectClassDialog {
 	private GraphCell cell;
 	private GraphCell prevCell;
 
-	public SelectResourceTypeDialog() {
-		super("Select Resource Type");
+	public SelectResourceTypeDialog(GraphManager manager) {
+		super("Select Resource Type", manager);
 	}
 
 	protected void initEachDialogAttr() {

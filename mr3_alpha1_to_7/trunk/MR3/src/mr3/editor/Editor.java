@@ -430,17 +430,20 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 
 		// To front RDF Editor
 		toolbar.addSeparator();
+		URL attrDialogUrl = getImageIcon("attrDialogIcon.gif");
+		ImageIcon attrDialogIcon = new ImageIcon(attrDialogUrl);
+		toolbar.add(new AbstractAction("", attrDialogIcon) {
+			public void actionPerformed(ActionEvent e) {
+				attrDialog.setVisible(true);
+			}
+		});
+
+		// To front RDF Editor
 		URL rdfEditorUrl = getImageIcon("rdfEditorIcon.gif");
 		ImageIcon rdfEditorIcon = new ImageIcon(rdfEditorUrl);
 		toolbar.add(new AbstractAction("", rdfEditorIcon) {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					internalFrames[0].toFront();
-					internalFrames[0].setIcon(false);
-					internalFrames[0].setSelected(true);
-				} catch (PropertyVetoException pve) {
-					pve.printStackTrace();
-				}
+				toFrontInternFrame(0);
 			}
 		});
 
@@ -449,13 +452,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 		ImageIcon classEditorIcon = new ImageIcon(classEditorUrl);
 		toolbar.add(new AbstractAction("", classEditorIcon) {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					internalFrames[1].toFront();
-					internalFrames[1].setIcon(false);
-					internalFrames[1].setSelected(true);
-				} catch (PropertyVetoException pve) {
-					pve.printStackTrace();
-				}
+				toFrontInternFrame(1);
 			}
 		});
 
@@ -464,13 +461,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 		ImageIcon propertyEditorIcon = new ImageIcon(propertyEditorUrl);
 		toolbar.add(new AbstractAction("", propertyEditorIcon) {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					internalFrames[2].toFront();
-					internalFrames[2].setIcon(false);
-					internalFrames[2].setSelected(true);
-				} catch (PropertyVetoException pve) {
-					pve.printStackTrace();
-				}
+				toFrontInternFrame(2);
 			}
 		});
 
@@ -498,6 +489,16 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 		//		toolbar.add(ungroup);
 
 		return toolbar;
+	}
+
+	private void toFrontInternFrame(int i) {
+		try {
+			internalFrames[i].toFront();
+			internalFrames[i].setIcon(false);
+			internalFrames[i].setSelected(true);
+		} catch (PropertyVetoException pve) {
+			pve.printStackTrace();
+		}
 	}
 
 	// This will change the source of the actionevent to graph.

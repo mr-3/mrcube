@@ -4,6 +4,8 @@ import java.util.*;
 
 import javax.swing.*;
 
+import mr3.jgraph.*;
+
 import com.jgraph.event.*;
 
 /**
@@ -17,8 +19,8 @@ public class SelectRegionDialog extends SelectClassDialog {
     private JList regionList;
     private JScrollPane regionListScroll;    
 
-    public SelectRegionDialog() {
-        super("Select Region");
+    public SelectRegionDialog(GraphManager manager) {
+        super("Select Region", manager);
         newRegionSet = new HashSet();
     }
 
