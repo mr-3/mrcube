@@ -5,7 +5,7 @@ import java.io.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-import mr3.plugin.*;
+import jp.ac.shizuoka.cs.panda.mmm.mr3.plugin.*;
 
 import com.hp.hpl.mesa.rdf.jena.model.*;
 /**

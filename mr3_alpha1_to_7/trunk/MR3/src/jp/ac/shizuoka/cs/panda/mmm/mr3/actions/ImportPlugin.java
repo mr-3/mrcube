@@ -33,6 +33,8 @@ public class ImportPlugin extends MR3AbstractAction {
 			initMethod.invoke(instance, new Object[] { mr3 });
 			Method m = classObj.getMethod(PLUGIN_METHOD_NAME, null);
 			m.invoke(instance, null);
+		} catch (NoClassDefFoundError ncdfe) {
+			ncdfe.printStackTrace();
 		} catch (NoSuchMethodException nsme) {
 			nsme.printStackTrace();
 		} catch (InstantiationException ine) {

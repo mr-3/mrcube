@@ -1,5 +1,5 @@
 package jp.ac.shizuoka.cs.panda.mmm.mr3.sample;
-import mr3.plugin.*;
+import jp.ac.shizuoka.cs.panda.mmm.mr3.plugin.*;
 
 import com.hp.hpl.mesa.rdf.jena.common.*;
 import com.hp.hpl.mesa.rdf.jena.mem.*;
