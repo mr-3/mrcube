@@ -20,7 +20,7 @@
  */
  
  /*
-  * 8/2 MR3用に改良．
+  * 8/2 MR^3用に改良．
   * 
   */
 package org.semanticweb.mmm.mr3.jgraph;
@@ -38,7 +38,7 @@ import org.jgraph.event.*;
 import org.jgraph.graph.*;
 
 /**
- * @author takeshi morita
+ * modified by takeshi morita
  */
 public class MR3OverviewPanel extends JPanel implements ComponentListener, GraphModelListener, Observer {
 	protected JGraph graph;

@@ -1,3 +1,24 @@
+/*
+ * @(#) PrefDialog.java
+ * 
+ * Copyright (C) 2003 The MMM Project
+ * 
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *  
+ */
+
 package org.semanticweb.mmm.mr3.ui;
 
 import java.awt.*;
@@ -637,21 +658,21 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 					userPrefs.put(PrefConstants.PropClassList, getMetaClassStr(propClassListModel.toArray()));
 
 					userPrefs.putInt(PrefConstants.RDFResourceColor, rdfResourceColor.getRGB());
-					ChangeCellAttributes.rdfResourceColor = rdfResourceColor;
+					ChangeCellAttrUtil.rdfResourceColor = rdfResourceColor;
 					userPrefs.putInt(PrefConstants.LiteralColor, literalColor.getRGB());
-					ChangeCellAttributes.literalColor = literalColor;
+					ChangeCellAttrUtil.literalColor = literalColor;
 					userPrefs.putInt(PrefConstants.ClassColor, classColor.getRGB());
-					ChangeCellAttributes.classColor = classColor;
+					ChangeCellAttrUtil.classColor = classColor;
 					userPrefs.putInt(PrefConstants.PropertyColor, propertyColor.getRGB());
-					ChangeCellAttributes.propertyColor = propertyColor;
+					ChangeCellAttrUtil.propertyColor = propertyColor;
 					userPrefs.putInt(PrefConstants.SelectedColor, selectedColor.getRGB());
-					ChangeCellAttributes.selectedColor = selectedColor;
+					ChangeCellAttrUtil.selectedColor = selectedColor;
 					userPrefs.putInt(PrefConstants.BackgroundColor, backgroundColor.getRGB());
 					gmanager.setGraphBackground(backgroundColor);
 					userPrefs.putBoolean(PrefConstants.Color, isColorBox.isSelected());
-					ChangeCellAttributes.isColor = isColorBox.isSelected();
+					ChangeCellAttrUtil.isColor = isColorBox.isSelected();
 					// Colorがあるかないかをチェックした後に，セルの色を変更する．
-					ChangeCellAttributes.changeAllCellColor(gmanager);
+					ChangeCellAttrUtil.changeAllCellColor(gmanager);
 
 					userPrefs.putBoolean(PrefConstants.Antialias, isAntialiasBox.isSelected());
 					gmanager.setAntialias();

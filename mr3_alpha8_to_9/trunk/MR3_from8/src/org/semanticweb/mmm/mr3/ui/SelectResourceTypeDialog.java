@@ -1,7 +1,24 @@
 /*
- * Created on 2003/09/25
- *
+ * @(#) SelectResourceTypeDialog.java
+ * 
+ * Copyright (C) 2003 The MMM Project
+ * 
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *  
  */
+
 package org.semanticweb.mmm.mr3.ui;
 
 import java.awt.*;
@@ -48,10 +65,10 @@ public class SelectResourceTypeDialog extends JDialog implements ActionListener 
 		if (panel.getPrevCell() != null) {
 			if (isOk) {
 				isOk = false;
-				ChangeCellAttributes.changeDefaultCellStye(panel.getGraph(), panel.getPrevCell(), ChangeCellAttributes.classColor);
+				ChangeCellAttrUtil.changeDefaultCellStye(panel.getGraph(), panel.getPrevCell(), ChangeCellAttrUtil.classColor);
 				return panel.getURI();
 			} else {
-				ChangeCellAttributes.changeDefaultCellStye(panel.getGraph(), panel.getPrevCell(), ChangeCellAttributes.classColor);
+				ChangeCellAttrUtil.changeDefaultCellStye(panel.getGraph(), panel.getPrevCell(), ChangeCellAttrUtil.classColor);
 				return null;
 			}
 		} else {

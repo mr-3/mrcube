@@ -1,4 +1,26 @@
+/*
+ * @(#) NameSpaceTableDialog.java
+ * 
+ * Copyright (C) 2003 The MMM Project
+ * 
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *  
+ */
+
 package org.semanticweb.mmm.mr3.ui;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -16,11 +38,10 @@ import org.semanticweb.mmm.mr3.util.*;
 import com.hp.hpl.jena.vocabulary.*;
 
 /**
- *
- * 名前空間と接頭辞の対応付けをテーブルで行う
- * チェックにより，Class, Property, Resourceの名前空間を接頭辞で置き換える
+ * 
+ * 名前空間と接頭辞の対応付けをテーブルで行う チェックにより，Class, Property, Resourceの名前空間を接頭辞で置き換える
  * 接頭辞の名前変更はテーブルから行うことができる
- *
+ * 
  * @author takeshi morita
  */
 
@@ -41,8 +62,8 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 
 	transient private GraphManager gmanager;
 	transient private Map knownNSPrefixMap;
-	
-	private static final String WARNING=Translator.getString("Warning");
+
+	private static final String WARNING = Translator.getString("Warning");
 	private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("NameSpaceTable.Icon"));
 
 	public NameSpaceTableDialog(GraphManager manager) {
@@ -80,7 +101,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		knownNSPrefixMap.put("http://www.w3.org/2002/07/owl#", "owl");
 		knownNSPrefixMap.put("http://web.resource.org/cc/", "cc");
 	}
-	
+
 	//	baseURIがrdf, rdfs, mr3の場合があるため
 	private void addDefaultNS(String prefix, String addNS) {
 		if (!isValidPrefix(prefix)) {
@@ -101,9 +122,9 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 	}
 
 	private String getKnownPrefix(String ns) {
-		String knownPrefix = (String)knownNSPrefixMap.get(ns);
+		String knownPrefix = (String) knownNSPrefixMap.get(ns);
 		if (knownPrefix == null) {
-			knownPrefix = "prefix";		
+			knownPrefix = "prefix";
 		}
 		return knownPrefix;
 	}
@@ -113,7 +134,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		for (int i = 0; true; i++) {
 			String cnt = Integer.toString(i);
 			if (isValidPrefix(nextPrefix + "_" + cnt)) {
-				nextPrefix = nextPrefix +  "_" + cnt;
+				nextPrefix = nextPrefix + "_" + cnt;
 				break;
 			}
 		}
@@ -246,7 +267,11 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		if (isValidPrefix(prefix)) {
 			return true;
 		} else {
-			JOptionPane.showInternalMessageDialog(gmanager.getDesktop(), Translator.getString("Warning.Message5"), WARNING, JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showInternalMessageDialog(
+				gmanager.getDesktop(),
+				Translator.getString("Warning.Message5"),
+				WARNING,
+				JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 	}
@@ -256,7 +281,11 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		if (isValidNS(ns)) {
 			return true;
 		} else {
-			JOptionPane.showInternalMessageDialog(gmanager.getDesktop(), Translator.getString("Warning.Message6"), WARNING, JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showInternalMessageDialog(
+				gmanager.getDesktop(),
+				Translator.getString("Warning.Message6"),
+				WARNING,
+				JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 	}
@@ -283,11 +312,19 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		String rmPrefix = (String) nsTableModel.getValueAt(row, 1);
 		String rmNS = (String) nsTableModel.getValueAt(row, 2);
 		if (rmNS.equals(gmanager.getBaseURI())) {
-			JOptionPane.showInternalMessageDialog(gmanager.getDesktop(), Translator.getString("Warning.Message7"), WARNING, JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showInternalMessageDialog(
+				gmanager.getDesktop(),
+				Translator.getString("Warning.Message7"),
+				WARNING,
+				JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		if (rmNS.equals(MR3Resource.DefaultURI.getNameSpace())) {
-			JOptionPane.showInternalMessageDialog(gmanager.getDesktop(), Translator.getString("Warning.Message8"), WARNING, JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showInternalMessageDialog(
+				gmanager.getDesktop(),
+				Translator.getString("Warning.Message8"),
+				WARNING,
+				JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		if (!gmanager.getAllNameSpaceSet().contains(rmNS)) {
@@ -295,7 +332,11 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 			nsTableModel.removeRow(row);
 			changeCellView();
 		} else {
-			JOptionPane.showInternalMessageDialog(gmanager.getDesktop(), Translator.getString("Warning.Message9"), WARNING, JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showInternalMessageDialog(
+				gmanager.getDesktop(),
+				Translator.getString("Warning.Message9"),
+				WARNING,
+				JOptionPane.ERROR_MESSAGE);
 		}
 	}
 

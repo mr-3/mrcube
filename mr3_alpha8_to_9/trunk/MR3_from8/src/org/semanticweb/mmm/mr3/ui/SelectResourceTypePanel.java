@@ -1,7 +1,24 @@
 /*
- * Created on 2003/09/25
+ * @(#) SelectResourceTypePanel.java
+ * 
+ * Copyright (C) 2003 The MMM Project
+ * 
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *  
  */
+
 package org.semanticweb.mmm.mr3.ui;
 
 import java.awt.*;
@@ -47,7 +64,7 @@ public class SelectResourceTypePanel extends SelectClassPanel {
 			GraphCell cell = (GraphCell) cells[i];
 			if (graph.isRDFSClassCell(cell)) {
 				if (cell == typeCell) {
-					ChangeCellAttributes.changeDefaultCellStye(graph, cell, ChangeCellAttributes.selectedColor);
+					ChangeCellAttrUtil.changeDefaultCellStye(graph, cell, ChangeCellAttrUtil.selectedColor);
 					prevCell = cell;
 					graph.setSelectionCell(cell);
 					break;
@@ -57,7 +74,7 @@ public class SelectResourceTypePanel extends SelectClassPanel {
 	}
 
 	public void setInitCell(Object typeCell) {
-		changeAllCellColor(ChangeCellAttributes.classColor);
+		changeAllCellColor(ChangeCellAttrUtil.classColor);
 		if (typeCell == null) {
 			prevCell = null;
 			dspURI.setText("");
@@ -71,8 +88,8 @@ public class SelectResourceTypePanel extends SelectClassPanel {
 		cell = (GraphCell) graph.getSelectionCell();
 		if (graph.getSelectionCount() == 1 && graph.getModel().getChildCount(cell) <= 1) {
 			if (graph.isRDFSClassCell(cell)) {
-				ChangeCellAttributes.changeDefaultCellStye(graph, prevCell, ChangeCellAttributes.classColor);
-				ChangeCellAttributes.changeCellStyle(graph, cell, ChangeCellAttributes.selectedColor, ChangeCellAttributes.selectedBorderColor, 2);
+				ChangeCellAttrUtil.changeDefaultCellStye(graph, prevCell, ChangeCellAttrUtil.classColor);
+				ChangeCellAttrUtil.changeCellStyle(graph, cell, ChangeCellAttrUtil.selectedColor, ChangeCellAttrUtil.selectedBorderColor, 2);
 				RDFSInfo info = rdfsMap.getCellInfo(cell);
 				dspURI.setText(info.getURIStr());
 				dspURI.setToolTipText(info.getURIStr());

@@ -1,7 +1,24 @@
 /*
- * Created on 2003/11/25
+ * @(#) GraphLayoutUtilities.java
+ * 
+ * Copyright (C) 2003 The MMM Project
+ * 
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *  
  */
+
 package org.semanticweb.mmm.mr3.layout;
 
 import java.awt.*;
@@ -71,7 +88,7 @@ public class GraphLayoutUtilities {
 		rootCell.add(rootPort);
 
 		Map attributes = new HashMap();
-		attributes.put(rootCell, cellMaker.getResourceMap(new Point(50, 50), ChangeCellAttributes.rdfResourceColor));
+		attributes.put(rootCell, cellMaker.getResourceMap(new Point(50, 50), ChangeCellAttrUtil.rdfResourceColor));
 		resInfoMap.putCellInfo(rootCell, new RDFResourceInfo(URIType.ANONYMOUS, new AnonId().toString(), null));
 		graph.getModel().insert(new Object[] { rootCell }, attributes, null, null, null);
 		GraphLayoutData rootData = new GraphLayoutData(rootCell, graph);
@@ -135,7 +152,7 @@ public class GraphLayoutUtilities {
 				cellRec.x += reviseX;
 				cellRec.y += reviseY;
 				GraphConstants.setBounds(map, cellRec);
-				ChangeCellAttributes.editCell(cell, map, graph);
+				ChangeCellAttrUtil.editCell(cell, map, graph);
 			}
 		}
 	}

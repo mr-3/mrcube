@@ -17,6 +17,5 @@
 	<classpathentry kind="lib" path="build/lib/jh.jar"/>
 	<classpathentry kind="lib" path="build/lib/junit.jar"/>
 	<classpathentry kind="lib" path="build/lib/rdf-api-2001-01-19.jar"/>
-	<classpathentry kind="lib" path="build/lib/jgraph-layout.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

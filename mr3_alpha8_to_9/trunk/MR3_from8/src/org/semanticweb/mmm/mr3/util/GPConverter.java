@@ -1,4 +1,3 @@
-package org.semanticweb.mmm.mr3.util;
 /*
  * @(#)GPConverter.java	1.2 11/11/02
  *
@@ -21,6 +20,8 @@ package org.semanticweb.mmm.mr3.util;
  * modified by takeshi morita
  *
  */
+
+package org.semanticweb.mmm.mr3.util;
 
 import java.awt.*;
 import java.awt.image.*;
