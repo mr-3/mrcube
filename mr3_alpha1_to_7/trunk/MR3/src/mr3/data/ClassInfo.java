@@ -69,7 +69,6 @@ public class ClassInfo extends RDFSInfo {
 		if (supClasses.size() > 0) {
 			msg += "SuperClasses: " + supClasses.toString() + "\n";
 		}
-
 		msg += getModelString();
 
 		return msg;

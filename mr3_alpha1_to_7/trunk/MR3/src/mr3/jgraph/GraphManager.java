@@ -1077,6 +1077,8 @@ public class GraphManager {
 		//		applyTreeLayout(classGraph, TreeLayoutAlgorithm.UP_TO_DOWN, 30, 50);
 		applyTreeLayout(propGraph, 'u');
 		//		applyTreeLayout(propGraph, TreeLayoutAlgorithm.UP_TO_DOWN, 30, 50);
+		changeCellView();
+		clearSelection();
 	}
 
 	public void applyTreeLayout(RDFGraph graph, int orientation, int distance, int border) {
@@ -1106,8 +1108,6 @@ public class GraphManager {
 		removeTemporaryRoot((DefaultGraphCell) tmpRoot);
 
 		centerCellsInGraph(graph);
-		changeCellView();
-		graph.clearSelection();
 	}
 
 	public void applyTreeLayout(RDFGraph graph, char arc) {
@@ -1138,8 +1138,6 @@ public class GraphManager {
 			data.setRealResourcePosition();
 		}
 		centerCellsInGraph(graph);
-		changeCellView();
-		graph.clearSelection();
 	}
 
 	private void centerCellsInGraph(RDFGraph graph) {
@@ -1149,9 +1147,6 @@ public class GraphManager {
 			return;
 		}
 		Rectangle rec = graph.getCellBounds(cells);
-
-		//		System.out.println("x: " + rec.x);
-		//		System.out.println("y: " + rec.y);
 
 		int reviseX = 0;
 		int reviseY = 0;
@@ -1165,9 +1160,6 @@ public class GraphManager {
 		} else if (margine < rec.y) {
 			reviseY = margine - rec.y;
 		}
-
-		//		System.out.println("revx: " + reviseX);
-		//		System.out.println("revy: " + reviseY);
 
 		for (int i = 0; i < cells.length; i++) {
 			if (graph.isRDFsCell(cells[i]) || graph.isTypeCell(cells[i])) {
