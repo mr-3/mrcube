@@ -38,15 +38,15 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 	}
 
 	public GraphCell insertResourceCell(Point pt) {
-		//		String uri = JOptionPane.showInternalInputDialog(graph, "Please input URI");
 		InsertRDFSResDialog ird = new InsertRDFSResDialog("Input Resource");
 		if (!ird.isConfirm()) {
 			return null;
 		}
 		String uri = ird.getURI();
 		URIType uriType = ird.getURIType();
-
-		if (uri == null || gmanager.isEmptyURI(uri) || gmanager.isDuplicatedWithDialog(uri, null, GraphType.CLASS)) {
+		
+		String tmpURI = getAddedBaseURI(uri, uriType);
+		if (uri == null || gmanager.isEmptyURI(tmpURI) || gmanager.isDuplicatedWithDialog(tmpURI, null, GraphType.CLASS)) {
 			return null;
 		} else {
 			return cellMaker.insertClass(pt, uri, uriType);
@@ -54,14 +54,15 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 	}
 
 	public void insertSubClass(Point pt, Object[] supCells) {
-		//		String uri = JOptionPane.showInternalInputDialog(graph, "Please input URI");
 		InsertRDFSResDialog ird = new InsertRDFSResDialog("Input Resource");
 		if (!ird.isConfirm()) {
 			return;
 		}
 		String uri = ird.getURI();
 		URIType uriType = ird.getURIType();
-		if (uri == null || gmanager.isEmptyURI(uri) || gmanager.isDuplicatedWithDialog(uri, null, GraphType.CLASS)) {
+		
+		String tmpURI = getAddedBaseURI(uri, uriType);
+		if (uri == null || gmanager.isEmptyURI(tmpURI) || gmanager.isDuplicatedWithDialog(tmpURI, null, GraphType.CLASS)) {
 			return;
 		} else {
 			pt.y += 100;

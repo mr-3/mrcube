@@ -19,6 +19,7 @@ public class SelectResourceTypeDialog extends SelectClassDialog {
 
 	private JLabel dspURI;
 	private Resource uri;
+	private URIType uriType;
 	private GraphCell cell;
 	private GraphCell prevCell;
 
@@ -73,9 +74,14 @@ public class SelectResourceTypeDialog extends SelectClassDialog {
 				dspURI.setText(info.getURIStr());
 				dspURI.setToolTipText(info.getURIStr());
 				uri = info.getURI();
+				uriType = info.getURIType();
 				prevCell = cell;
 			}
 		}
+	}
+
+	public URIType getURIType() {
+		return uriType;
 	}
 
 	public Object getValue() {

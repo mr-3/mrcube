@@ -30,7 +30,7 @@ public class RDFToJGraph {
 		RDFGraph graph = gmanager.getClassGraph();
 		extractRDFS.extractClassModel(model);
 		graph.removeEdges();
-		DefaultGraphCell rootCell = (DefaultGraphCell) gmanager.getClassCell(RDFS.Resource, false);
+		DefaultGraphCell rootCell = (DefaultGraphCell) gmanager.getClassCell(RDFS.Resource, URIType.URI, false);
 		Port rootPort = (Port) rootCell.getChildAt(0);
 
 		ClassInfo rootInfo = (ClassInfo) rdfsInfoMap.getResourceInfo(RDFS.Resource);
@@ -86,7 +86,7 @@ public class RDFToJGraph {
 
 			DefaultGraphCell subCell = null;
 			if (supInfo instanceof ClassInfo) {
-				subCell = (DefaultGraphCell) gmanager.getClassCell(subRes, false);
+				subCell = (DefaultGraphCell) gmanager.getClassCell(subRes, URIType.URI, false);
 			} else if (subInfo instanceof PropertyInfo) {
 				subCell = (DefaultGraphCell) gmanager.getPropertyCell(subRes, false);
 			} else {
@@ -133,7 +133,7 @@ public class RDFToJGraph {
 		RDFNode object = stmt.getObject(); // get the object
 
 		if (predicate.equals(RDF.type)) {
-			Object cell = gmanager.getClassCell((Resource) object, false);
+			Object cell = gmanager.getClassCell((Resource) object, URIType.URI, false);
 			RDFResourceInfo info = resInfoMap.getCellInfo(subjectCell);
 			info.setTypeCell(cell);
 			return true;

@@ -65,7 +65,12 @@ public class RDFGraph extends JGraph {
 	public void startEditingAtCell(Object cell) {
 		if (attrDialog != null) {
 			attrDialog.setVisible(true);
-			setSelectionCell(cell); // セルを表示する
+			if (isRDFResourceCell(cell)) {
+				RDFResourceCell resCell = (RDFResourceCell)cell;
+				setSelectionCell(resCell);
+			} else {
+				setSelectionCell(cell); // セルを表示する
+			}
 		}
 	}
 

@@ -114,32 +114,40 @@ public class RDFSInfoMap {
 		return (RDFSInfo) resourceInfoMap.get(resource);
 	}
 
-	/** 登録しようとしているinfoのURIが重複していればtrue．重複していなければfalse */
+	private String getAddedBaseURI(RDFSInfo rdfsInfo, String baseURI) {
+		String tmpURI = "";
+		if (rdfsInfo.getURIType() == URIType.ID) {
+			tmpURI = baseURI;
+		}
+		tmpURI += rdfsInfo.getURIStr();
+		return tmpURI;
+	}
+
 	/*
+	 * 登録しようとしているinfoのURIが重複していればtrue．重複していなければfalse  
 	 * RDFSInfo#equalsでは，Resource(uri)の重複をチェックしている．
 	 */
-	public boolean isDuplicated(String uri, Object cell, GraphType type) {
+	public boolean isDuplicated(String uri, Object cell, GraphType type, String baseURI) {
 		Collection entrySet = cellInfoMap.entrySet();
 		for (Iterator i = entrySet.iterator(); i.hasNext();) {
 			Map.Entry entry = (Map.Entry) i.next();
 			Object infoCell = entry.getKey();
-			Object info = entry.getValue();
-			if (info.equals(uri) && infoCell != cell) {
+			//			Object info = entry.getValue();
+			RDFSInfo rdfsInfo = (RDFSInfo) entry.getValue();
+			String tmpURI = getAddedBaseURI(rdfsInfo, baseURI);
+			if (tmpURI.equals(uri) && infoCell != cell) {
 				if (type == GraphType.RDF) {
 					RDFResourceInfo resInfo = resInfoMap.getCellInfo(cell);
 					// 今から作ろうとしてるRDFCellの場合，resInfoは存在しない．
 					// 名前を変更しようとしているCellの場合は，resInfoが存在する
 					if (resInfo == null || resInfo.getTypeCell() == null) {
-						//						System.out.println("1 duplicated rdfs");
 						return true;
 					}
 					RDFSInfo typeInfo = rdfsInfoMap.getCellInfo(resInfo.getTypeCell());
 					if (!((typeInfo.getURI().equals(RDFS.Class)) || typeInfo.getURI().equals(RDF.Property))) {
-						//						System.out.println("2 duplicated rdfs");
 						return true;
 					}
 				} else {
-					//					System.out.println("3 duplicated rdfs");
 					return true;
 				}
 			}

@@ -26,13 +26,17 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 
 	private JCheckBox isTypeCellCheck;
 
-	private JRadioButton uriButton;
-	private JRadioButton anonymousButton;
-	private JRadioButton idButton;
+	private JRadioButton resTypeURIButton;
+	private JRadioButton resTypeIDButton;
+
+	private JRadioButton rdfURIButton;
+	private JRadioButton rdfAnonymousButton;
+	private JRadioButton rdfIDButton;
 
 	private AttributeDialog attrDialog;
 
 	private URIType tmpURIType;
+	private URIType tmpResTypeURIType;
 
 	private GraphCell cell;
 	private RDFResourceInfo resInfo;
@@ -49,6 +53,8 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		attrDialog = pw;
 
 		setBorder(BorderFactory.createTitledBorder("Resource"));
+
+		JPanel resTypeURITypeGroupPanel = initResTypeURITypeGroupPanel();
 
 		resTypeField = new JTextField();
 		resTypeField.setPreferredSize(new Dimension(listWidth, listHeight));
@@ -70,22 +76,7 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 
 		selectTypeMode(false);
 
-		uriButton = new JRadioButton("URI");
-		idButton = new JRadioButton("ID");
-		anonymousButton = new JRadioButton("ANONYMOUS");
-		RadioAction ra = new RadioAction();
-		uriButton.addActionListener(ra);
-		idButton.addActionListener(ra);
-		anonymousButton.addActionListener(ra);
-		ButtonGroup group = new ButtonGroup();
-		group.add(uriButton);
-		group.add(idButton);
-		group.add(anonymousButton);
-		JPanel uriTypeGroupPanel = new JPanel();
-		uriTypeGroupPanel.setBorder(BorderFactory.createTitledBorder("URI Type"));
-		uriTypeGroupPanel.add(uriButton);
-		uriTypeGroupPanel.add(idButton);
-		uriTypeGroupPanel.add(anonymousButton);
+		JPanel rdfURITypeGroupPanel = initRDFURITypeGroupPanel();
 
 		uriField = new JTextField();
 		uriField.setPreferredSize(new Dimension(listWidth, listHeight));
@@ -115,15 +106,18 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		setLayout(gridbag);
 		c.anchor = GridBagConstraints.PAGE_START;
 		c.gridwidth = GridBagConstraints.REMAINDER;
-		//c.fill = GridBagConstraints.HORIZONTAL;
+		c.anchor = GridBagConstraints.WEST;
+		c.weighty = 3;
+		gridbag.setConstraints(resTypeURITypeGroupPanel, c);
+		add(resTypeURITypeGroupPanel);
 		c.anchor = GridBagConstraints.CENTER;
 		gridbag.setConstraints(resTypeField, c);
 		add(resTypeField);
 		c.anchor = GridBagConstraints.WEST;
 		gridbag.setConstraints(typePanel, c);
 		add(typePanel);
-		gridbag.setConstraints(uriTypeGroupPanel, c);
-		add(uriTypeGroupPanel);
+		gridbag.setConstraints(rdfURITypeGroupPanel, c);
+		add(rdfURITypeGroupPanel);
 		c.anchor = GridBagConstraints.CENTER;
 		gridbag.setConstraints(uriField, c);
 		add(uriField);
@@ -131,14 +125,64 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		add(buttonGroup);
 	}
 
+	private JPanel initResTypeURITypeGroupPanel() {
+		resTypeURIButton = new JRadioButton("URI");
+		resTypeIDButton = new JRadioButton("ID");
+		resTypeURIButton.setSelected(true);
+		ChangeResTypeURITypeAction action = new ChangeResTypeURITypeAction();
+		resTypeURIButton.addActionListener(action);
+		resTypeIDButton.addActionListener(action);
+		ButtonGroup group = new ButtonGroup();
+		group.add(resTypeURIButton);
+		group.add(resTypeIDButton);
+		JPanel resTypeURITypeGroupPanel = new JPanel();
+		resTypeURITypeGroupPanel.setBorder(BorderFactory.createTitledBorder("Resource Type URI Type"));
+		resTypeURITypeGroupPanel.setPreferredSize(new Dimension(200, 55));
+		resTypeURITypeGroupPanel.add(resTypeURIButton);
+		resTypeURITypeGroupPanel.add(resTypeIDButton);
+
+		return resTypeURITypeGroupPanel;
+	}
+
+	private JPanel initRDFURITypeGroupPanel() {
+		rdfURIButton = new JRadioButton("URI");
+		rdfIDButton = new JRadioButton("ID");
+		rdfAnonymousButton = new JRadioButton("ANONYMOUS");
+		ChangeRDFURITypeAction ra = new ChangeRDFURITypeAction();
+		rdfURIButton.addActionListener(ra);
+		rdfIDButton.addActionListener(ra);
+		rdfAnonymousButton.addActionListener(ra);
+		ButtonGroup group = new ButtonGroup();
+		group.add(rdfURIButton);
+		group.add(rdfIDButton);
+		group.add(rdfAnonymousButton);
+		JPanel uriTypeGroupPanel = new JPanel();
+		uriTypeGroupPanel.setBorder(BorderFactory.createTitledBorder("URI Type"));
+		uriTypeGroupPanel.add(rdfURIButton);
+		uriTypeGroupPanel.add(rdfIDButton);
+		uriTypeGroupPanel.add(rdfAnonymousButton);
+
+		return uriTypeGroupPanel;
+	}
+
 	// RDFリソースのタイプが存在すればチェックボタンにチェックする．
 	private void selectTypeMode(boolean t) {
 		isTypeCellCheck.setSelected(t);
 		if (t) {
+			RDFSInfo info = rdfsInfoMap.getCellInfo(resInfo.getTypeCell());
+			if (info != null) {
+				if (info.getURIType() == URIType.URI) {
+					resTypeURIButton.setSelected(true);
+				} else {
+					resTypeIDButton.setSelected(true);
+				}
+			}
 			setResourceTypeField(resInfo.getType().getURI());
 		} else {
 			setResourceTypeField("");
 		}
+		resTypeURIButton.setEnabled(t);
+		resTypeIDButton.setEnabled(t);
 		resTypeField.setEditable(t);
 		selectTypeButton.setEnabled(t);
 	}
@@ -161,7 +205,7 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 	//		}
 	//	}
 
-	class RadioAction implements ActionListener {
+	class ChangeRDFURITypeAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			String type = (String) e.getActionCommand();
 			tmpURIType = URIType.getURIType(type);
@@ -175,6 +219,20 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 				}
 			} else if (tmpURIType == URIType.URI) {
 				uriField.setEditable(true);
+			}
+		}
+	}
+
+	class ChangeResTypeURITypeAction implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			String type = (String) e.getActionCommand();
+			tmpResTypeURIType = URIType.getURIType(type);
+
+			if (tmpResTypeURIType == URIType.ID) {
+				uriField.setEditable(true);
+				if (resTypeField.getText().length() == 0 || resTypeField.getText().charAt(0) != '#') {
+					resTypeField.setText('#' + resTypeField.getText());
+				}
 			}
 		}
 	}
@@ -198,13 +256,13 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 	public void setURI(Resource resURI) {
 		tmpURIType = resInfo.getURIType();
 		if (tmpURIType == URIType.URI) {
-			uriButton.setSelected(true);
+			rdfURIButton.setSelected(true);
 			setURIField(resURI.getURI(), true);
 		} else if (tmpURIType == URIType.ID) {
-			idButton.setSelected(true);
+			rdfIDButton.setSelected(true);
 			setURIField(resURI.getURI(), true);
 		} else if (tmpURIType == URIType.ANONYMOUS) {
-			anonymousButton.setSelected(true);
+			rdfAnonymousButton.setSelected(true);
 			setURIField("", false);
 		}
 	}
@@ -217,11 +275,7 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 
 	private void setCellValue() {
 		String uri = uriField.getText();
-		//		if ((tmpURIType != URIType.ANONYMOUS) && isErrorResource(uri)) {
-		//			return;
-		//		}
-		// setURI()をする前にURIタイプを変更する必要あり．
-		// このバグを見つけるのに，１時間以上費やしてしまった．
+		// setURI()をする前にURIタイプを変更する必要あり．URIタイプによって処理を分けているため
 		resInfo.setURIType(tmpURIType);
 		resInfo.setURI(uri);
 		gmanager.changeCellView();
@@ -233,15 +287,36 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		if (tmpURIType == URIType.ANONYMOUS) {
 			return false;
 		}
-		String tmpURI = "";
-		if (tmpURIType == URIType.ID) {
-			tmpURI = gmanager.getBaseURI(); // チェックする時は，フルパスで．
-		}
-		tmpURI = tmpURI + uri;
-		if (gmanager.isEmptyURI(tmpURI) || gmanager.isDuplicatedWithDialog(tmpURI, cell, GraphType.RDF)) {
+		String tmpURI = getAddedBaseURI(uri, tmpURIType);
+		if (isLocalDuplicated(tmpURI) || gmanager.isEmptyURI(tmpURI) || gmanager.isDuplicatedWithDialog(tmpURI, cell, GraphType.RDF)) {
 			return true;
 		}
 		return false;
+	}
+
+	private boolean isLocalDuplicated(String tmpURI) {
+		String tmpResTypeURI = "";
+		if (isTypeCellCheck.isSelected()) {
+			if (tmpResTypeURIType == URIType.ID) {
+				tmpResTypeURI = gmanager.getBaseURI();
+			}
+			tmpResTypeURI += resTypeField.getText();
+		}
+		if (tmpURI.equals(tmpResTypeURI)) {
+			JOptionPane.showInternalMessageDialog(this, "URI is duplicated", "Warning", JOptionPane.ERROR_MESSAGE);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private String getAddedBaseURI(String uri, URIType uriType) {
+		String tmpURI = "";
+		if (uriType == URIType.ID) {
+			tmpURI = gmanager.getBaseURI(); // チェックする時は，フルパスで．
+		}
+		tmpURI += uri;
+		return tmpURI;
 	}
 
 	private GraphCell getResourceType() {
@@ -252,20 +327,20 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 			return null;
 		}
 		if (rdfsInfoMap.isClassCell(uri)) {
-			typeCell = (GraphCell) gmanager.getClassCell(uri, false);
+			typeCell = (GraphCell) gmanager.getClassCell(uri, tmpResTypeURIType, false);
 		} else {
 			if (gmanager.isDuplicatedWithDialog(uri.getURI(), null, GraphType.CLASS))
 				return null;
 			if (resInfo.getTypeCell() == null) {
 				int ans = JOptionPane.showConfirmDialog(null, "Not Defined.Create Class ?", "Warning", JOptionPane.YES_NO_OPTION);
 				if (ans == JOptionPane.YES_OPTION) {
-					typeCell = (GraphCell) gmanager.getClassCell(uri, false);
+					typeCell = (GraphCell) gmanager.getClassCell(uri, tmpResTypeURIType, false);
 				}
 			} else {
 				SelectRDFSCheckDialog dialog = new SelectRDFSCheckDialog("Choose One Select");
 				CreateRDFSType createType = (CreateRDFSType) dialog.getValue();
 				if (createType == CreateRDFSType.CREATE) {
-					typeCell = (GraphCell) gmanager.getClassCell(uri, false);
+					typeCell = (GraphCell) gmanager.getClassCell(uri, tmpResTypeURIType, false);
 				} else if (createType == CreateRDFSType.RENAME) {
 					typeCell = (GraphCell) resInfo.getTypeCell();
 					RDFSInfo rdfsInfo = rdfsInfoMap.getCellInfo(typeCell);
@@ -324,6 +399,11 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		classDialog.setVisible(true);
 		Resource uri = (Resource) classDialog.getValue();
 		if (uri != null) {
+			if (classDialog.getURIType() == URIType.URI) {
+				resTypeURIButton.setSelected(true);
+			} else {
+				resTypeIDButton.setSelected(true);
+			}
 			setResourceTypeField(uri.getURI());
 		}
 	}
