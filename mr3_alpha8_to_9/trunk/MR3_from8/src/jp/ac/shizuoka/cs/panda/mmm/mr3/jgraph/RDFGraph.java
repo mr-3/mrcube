@@ -609,9 +609,14 @@ public class RDFGraph extends JGraph {
 		return copyInfoMap;
 	}
 
-	public void copy(Point pt) {
-		//		margin_x = ADDED_MARGIN;
-		//		margin_y = ADDED_MARGIN;
+	private int margin_x;
+	private int margin_y;
+	private static final int ADDED_MARGIN = 10;
+	private static final Point COPY_PASTE_POINT = new Point(25, 25);
+	
+	public void copy() {
+		margin_x = ADDED_MARGIN;
+		margin_y = ADDED_MARGIN;
 		GraphTransferable gt = getGraphTransferable(this);
 		if (gt == null) {
 			return;
@@ -622,28 +627,20 @@ public class RDFGraph extends JGraph {
 		if (gt == null) {
 			return;
 		}
-		copyBuffer = new GraphCopyBuffer(pt, getValidCopyList(bufferGraph), gt, getCopyInfoMap(clones));
+		copyBuffer = new GraphCopyBuffer(COPY_PASTE_POINT, getValidCopyList(bufferGraph), gt, getCopyInfoMap(clones));
 	}
 
-	public void cut(Point pt) {
-		copy(pt);
+	public void cut() {
+		copy();
 		gmanager.removeAction(this);
 	}
-
-	private static final int ADDED_MARGIN = 10;
-	private int margin_x = ADDED_MARGIN;
-	private int margin_y = ADDED_MARGIN;
 
 	private void setPastePosition(GraphCell cell, String value, Point pastePoint) {
 		Map map = cell.getAttributes();
 		Rectangle rec = GraphConstants.getBounds(map);
 		Rectangle newRec = new Rectangle(rec);
-		newRec.x = pastePoint.x + rec.x;
-		newRec.y = pastePoint.y + rec.y;
-		//		newRec.x = rec.x + margin_x;
-		//		newRec.y = rec.y + margin_y;
-		//		margin_x += ADDED_MARGIN;
-		//		margin_y += ADDED_MARGIN;
+		newRec.x = pastePoint.x + rec.x + margin_x;
+		newRec.y = pastePoint.y + rec.y + margin_x;
 		GraphConstants.setBounds(map, newRec);
 		GraphConstants.setValue(map, value);
 		Map nested = new HashMap();
@@ -651,7 +648,8 @@ public class RDFGraph extends JGraph {
 		getGraphLayoutCache().edit(nested, null, null, null);
 	}
 
-	public void paste(Point pastePoint) {
+	public void paste() {
+		Point pastePoint = COPY_PASTE_POINT;
 		if (copyBuffer == null) {
 			return;
 		}
@@ -682,9 +680,23 @@ public class RDFGraph extends JGraph {
 			null);
 		gmanager.changeCellView();
 		clearSelection();
-		setSelectionCells(copyBuffer.keySet().toArray());
+		selectRDFsCells(copyBuffer.keySet());
+
+		margin_x += ADDED_MARGIN;
+		margin_y += ADDED_MARGIN;
 	}
 
+	private void selectRDFsCells(Set copyCells) {
+		Set selectionCells = new HashSet();
+		for (Iterator i = copyCells.iterator(); i.hasNext();) {
+			Object cell = i.next();
+			if (isRDFsCell(cell) || isTypeCell(cell)) {
+				selectionCells.add(cell);				
+			}
+		}
+		setSelectionCells(selectionCells.toArray());
+	}
+	
 	private String getCopyRDFSURI(RDFSInfo info, GraphType graphType) {
 		if (gmanager.isDuplicated(info.getURIStr(), null, graphType)) {
 			for (int j = 1; true; j++) {

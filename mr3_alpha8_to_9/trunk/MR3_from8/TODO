@@ -1,4 +1,4 @@
-== TODO List:
+== TODO
 * Property EditorのRegionの定義を継承できるようにする．
 * Statementの展開をできるようにする．
 * プロジェクト単位でデフォルトのエンコーディングを指定できるようにする．

@@ -312,19 +312,19 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 
 		menu.add(new AbstractAction("Copy") {
 			public void actionPerformed(ActionEvent e) {
-				graph.copy(pt);
+				graph.copy();
 			}
 		});
 
 		menu.add(new AbstractAction("Cut") {
 			public void actionPerformed(ActionEvent e) {
-				graph.cut(pt);
+				graph.cut();
 			}
 		});
 
 		menu.add(new AbstractAction("Paste") {
 			public void actionPerformed(ActionEvent e) {
-				graph.paste(pt);
+				graph.paste();
 			}
 		});
 
