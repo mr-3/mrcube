@@ -1112,13 +1112,13 @@ public class GraphManager {
 				Rectangle cellRec = GraphConstants.getBounds(map);
 				if (rec.y <= 0) {
 					cellRec.y += (-rec.y) + margine;
-				} 
+				}
 				if (rec.x <= 0) {
 					cellRec.x += (-rec.x) + margine;
-				} 
+				}
 				if (margine < rec.y) {
 					cellRec.y -= (rec.y - margine);
-				}						
+				}
 				if (margine < rec.x) {
 					cellRec.x -= (rec.x - margine);
 				}

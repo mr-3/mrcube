@@ -290,6 +290,9 @@ public class RDFGraph extends JGraph {
 
 	private String getPropertyToolTipText(Object cell) {
 		PropertyInfo info = (PropertyInfo) rdfsInfoMap.getCellInfo(cell);
+		if (info == null) {
+			return "";
+		}
 		String msg = "<center><strong>Property</strong></center>";
 		msg += getRDFSToolTipText(info);
 		msg += "<strong>SuperProperties: </strong>" + info.getSupRDFS() + "<br>";

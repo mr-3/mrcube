@@ -121,7 +121,6 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 		// Shift Jumps to "Default" Port (child index 0)
 		if (port == null && jump) {
 			Object cell = graph.getFirstCellForLocation(x, y);
-			//			if (graph.isRDFResourceCell(cell) || graph.isRDFLiteralCell(cell)) {
 			if (graph.isRDFSCell(cell) || graph.isRDFResourceCell(cell) || graph.isRDFLiteralCell(cell)) {
 				Object firstChild = graph.getModel().getChild(cell, 0);
 				CellView firstChildView = graph.getGraphLayoutCache().getMapping(firstChild, false);
@@ -329,7 +328,6 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 			}
 		});
 
-		// Remove
 		if (cell != null || !graph.isSelectionEmpty()) {
 			menu.add(new AbstractAction("Remove") {
 				public void actionPerformed(ActionEvent e) {

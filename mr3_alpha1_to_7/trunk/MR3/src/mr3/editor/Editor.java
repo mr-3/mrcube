@@ -341,9 +341,6 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 		redo.setEnabled(false);
 		//		toolbar.add(redo);
 
-		//
-		// Edit Block
-		//
 		toolbar.addSeparator();
 		Action action;
 		URL url;
