@@ -1,1 +1,1 @@
-javaw -jar build/lib/mr3.jar
+javaw -jar build/mr3.jar
