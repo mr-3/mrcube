@@ -30,6 +30,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 	protected RDFCellMaker cellMaker;
 	protected JGraphToRDF graphToRDF;
 	protected RDFToJGraph rdfToGraph;
+	protected NameSpaceTableDialog nsTableDialog;
 	protected AttributeDialog attrDialog;
 	protected FindResourceDialog findResDialog;
 
@@ -45,20 +46,21 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 		internalFrames = ifs;
 	}
 
-	protected void initEditor(RDFGraph g, GraphManager manager, AttributeDialog attrD, FindResourceDialog findResD) {
+	protected void initEditor(RDFGraph g, GraphManager manager, NameSpaceTableDialog nsD, FindResourceDialog findResD) {
 		graph = g;
 		findResDialog = findResD;
 		lastSelectionCells = new Object[0];
-		initField(attrD, manager);
+		initField(nsD, manager);
 		initListener();
 		initLayout();
 	}
 
-	protected void initField(AttributeDialog attrD, GraphManager manager) {
+	protected void initField(NameSpaceTableDialog nsD, GraphManager manager) {
 		gmanager = manager;
 		undoManager = new RDFGraphUndoManager();
 		cellMaker = new RDFCellMaker(gmanager);
-		attrDialog = attrD;
+		attrDialog = gmanager.getAttrDialog();
+		nsTableDialog = nsD;
 		rdfToGraph = new RDFToJGraph(manager);
 		graphToRDF = new JGraphToRDF(manager);
 	}
@@ -432,8 +434,15 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 			}
 		});
 
-		// To front RDF Editor
 		toolbar.addSeparator();
+		URL nsTableDialogUrl = getImageIcon("nameSpaceTableIcon.gif");
+		ImageIcon nsTableDialogIcon = new ImageIcon(nsTableDialogUrl);
+		toolbar.add(new AbstractAction("", nsTableDialogIcon) {
+			public void actionPerformed(ActionEvent e) {
+				nsTableDialog.setVisible(true);
+			}
+		});
+
 		URL attrDialogUrl = getImageIcon("attrDialogIcon.gif");
 		ImageIcon attrDialogIcon = new ImageIcon(attrDialogUrl);
 		toolbar.add(new AbstractAction("", attrDialogIcon) {
@@ -442,6 +451,8 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 			}
 		});
 
+		toolbar.addSeparator();
+		
 		// To front RDF Editor
 		URL rdfEditorUrl = getImageIcon("rdfEditorIcon.gif");
 		if (!gmanager.isRDFGraph(graph)) {

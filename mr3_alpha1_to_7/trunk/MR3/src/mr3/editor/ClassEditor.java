@@ -17,14 +17,14 @@ public class ClassEditor extends Editor {
 
 	private ClassPanel classPanel;
 
-	public ClassEditor(AttributeDialog pw, FindResourceDialog findResD, GraphManager manager) {
+	public ClassEditor(NameSpaceTableDialog nsD, FindResourceDialog findResD, GraphManager manager) {
 		graph = manager.getClassGraph();
 		graph.setDisconnectable(false);
-		initEditor(manager.getClassGraph(), manager, pw, findResD);
+		initEditor(manager.getClassGraph(), manager, nsD, findResD);
 	}
 
-	protected void initField(AttributeDialog pw, GraphManager manager) {
-		super.initField(pw, manager);
+	protected void initField(NameSpaceTableDialog nsD, GraphManager manager) {
+		super.initField(nsD, manager);
 		classPanel = new ClassPanel(graph, manager);
 		graph.setMarqueeHandler(new ClassGraphMarqueeHandler(manager, classPanel));
 	}

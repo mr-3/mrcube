@@ -24,17 +24,17 @@ public class RDFEditor extends Editor {
 	private RDFPropertyPanel propPanel;
 	private RDFLiteralPanel litPanel;
 
-	public RDFEditor(AttributeDialog pw, FindResourceDialog findResD, GraphManager manager) {
+	public RDFEditor(NameSpaceTableDialog nsD, FindResourceDialog findResD, GraphManager manager) {
 		graph = manager.getRDFGraph();
 		graph.setMarqueeHandler(new RDFGraphMarqueeHandler(manager, graph));
-		initEditor(manager.getRDFGraph(), manager, pw, findResD);
+		initEditor(manager.getRDFGraph(), manager, nsD, findResD);
 	}
 
-	protected void initField(AttributeDialog pw, GraphManager manager) {
-		super.initField(pw, manager);
-		resPanel = new RDFResourcePanel(gmanager, pw);
-		propPanel = new RDFPropertyPanel(gmanager, pw);
-		litPanel = new RDFLiteralPanel(gmanager, pw);
+	protected void initField(NameSpaceTableDialog nsD, GraphManager manager) {
+		super.initField(nsD, manager);
+		resPanel = new RDFResourcePanel(gmanager);
+		propPanel = new RDFPropertyPanel(gmanager);
+		litPanel = new RDFLiteralPanel(gmanager);
 	}
 
 	public void convertNTripleSRC(JTextComponent area, boolean isSelected) {

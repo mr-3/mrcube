@@ -38,16 +38,14 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 
 	private List propList;
 	private List validPropList;
-	private AttributeDialog attrDialog;
 	private GraphManager gmanager;
 	private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
 
 	private static final int listWidth = 350;
 	private static final int listHeight = 40;
 
-	public RDFPropertyPanel(GraphManager manager, AttributeDialog pw) {
+	public RDFPropertyPanel(GraphManager manager) {
 		gmanager = manager;
-		attrDialog = pw;
 		setBorder(BorderFactory.createTitledBorder("Property"));
 
 		JPanel uriTypeGroupPanel = getURITypeGroupPanel();
@@ -383,7 +381,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		} else if (e.getSource() == jumpRDFSProp) {
 			jumpRDFSProperty();
 		} else if (e.getSource() == close) {
-			attrDialog.setVisible(false);
+			gmanager.setVisibleAttrDialog(false);
 		}
 	}
 

@@ -39,8 +39,6 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 	private JRadioButton rdfAnonymousButton;
 	private JRadioButton rdfIDButton;
 
-	private AttributeDialog attrDialog;
-
 	private URIType tmpURIType;
 	private URIType tmpResTypeURIType;
 
@@ -55,9 +53,8 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 	private static final int listWidth = 290;
 	private static final int listHeight = 40;
 
-	public RDFResourcePanel(GraphManager manager, AttributeDialog pw) {
+	public RDFResourcePanel(GraphManager manager) {
 		gmanager = manager;
-		attrDialog = pw;
 
 		setBorder(BorderFactory.createTitledBorder("Resource"));
 
@@ -527,10 +524,6 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		}
 	}
 
-	private void close() {
-		attrDialog.setVisible(false);
-	}
-
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == applyButton) {
 			apply();
@@ -539,7 +532,7 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		} else if (e.getSource() == selectTypeButton) {
 			selectResourceType();
 		} else if (e.getSource() == closeButton) {
-			close();
+			gmanager.setVisibleAttrDialog(false);
 		}
 	}
 }
