@@ -41,7 +41,7 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 	}
 
 	public void insertResourceCell(Point pt) {
-		String uri = JOptionPane.showInputDialog("Please input URI");
+		String uri = JOptionPane.showInternalInputDialog(graph, "Please input URI");
 		if (uri == null || gmanager.isEmptyURI(uri) || gmanager.isDuplicatedWithDialog(uri, null, GraphType.PROPERTY)) {
 			return;
 		} else {
@@ -54,7 +54,7 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 	}
 
 	public void insertSubProperty(Point pt, Object[] supCells) {
-		String uri = JOptionPane.showInputDialog("Please input URI");
+		String uri = JOptionPane.showInternalInputDialog(graph, "Please input URI");
 		if (uri == null || gmanager.isEmptyURI(uri) || gmanager.isDuplicatedWithDialog(uri, null, GraphType.CLASS)) {
 			return;
 		} else {

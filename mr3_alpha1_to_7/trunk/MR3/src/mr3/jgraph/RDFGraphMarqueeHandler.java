@@ -175,7 +175,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 	}
 
 	public void insertResourceCell(Point pt) {
-		String uri = JOptionPane.showInputDialog("Please input URI");
+		String uri = JOptionPane.showInternalInputDialog(graph, "Please input URI");
 		if (uri == null || gmanager.isDuplicatedWithDialog(uri, null, GraphType.RDF)) {
 			return;
 		} else if (uri.length() == 0) {

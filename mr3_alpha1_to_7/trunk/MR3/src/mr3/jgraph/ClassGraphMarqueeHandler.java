@@ -38,7 +38,7 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 	}
 
 	public void insertResourceCell(Point pt) {
-		String uri = JOptionPane.showInputDialog("Please input URI");
+		String uri = JOptionPane.showInternalInputDialog(graph, "Please input URI");
 		if (uri == null || gmanager.isEmptyURI(uri) || gmanager.isDuplicatedWithDialog(uri, null, GraphType.CLASS)) {
 			return;
 		} else {
@@ -51,7 +51,7 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 	}
 
 	public void insertSubClass(Point pt, Object[] supCells) {
-		String uri = JOptionPane.showInputDialog("Please input URI");
+		String uri = JOptionPane.showInternalInputDialog(graph, "Please input URI");
 		if (uri == null || gmanager.isEmptyURI(uri) || gmanager.isDuplicatedWithDialog(uri, null, GraphType.CLASS)) {
 			return;
 		} else {

@@ -90,7 +90,7 @@ public class MR3 extends JFrame {
 
 		setSize(userPrefs.getInt(WindowWidth, MAIN_FRAME_WIDTH), userPrefs.getInt(WindowHeight, MAIN_FRAME_HEIGHT));
 		setLocation(userPrefs.getInt(WindowPositionX, 50), userPrefs.getInt(WindowPositionY, 50));
-		//		setLookAndFeel();
+		//setLookAndFeel();
 
 		attrDialog = new AttributeDialog();
 		gmanager = new GraphManager(attrDialog, userPrefs);
@@ -121,12 +121,11 @@ public class MR3 extends JFrame {
 
 		desktop.setBackground(DESKTOP_BACK_COLOR);
 
-		classTreePanel = new RDFSTreePanel(gmanager, rdfsInfoMap.getClassTreeModel(), new ClassTreeCellRenderer());
-		propTreePanel = new RDFSTreePanel(gmanager, rdfsInfoMap.getPropTreeModel(), new PropertyTreeCellRenderer());
-		JTabbedPane treeTab = new JTabbedPane();
-		treeTab.add("Class", classTreePanel);
-		treeTab.add("Property", propTreePanel);
-
+		//		classTreePanel = new RDFSTreePanel(gmanager, rdfsInfoMap.getClassTreeModel(), new ClassTreeCellRenderer());
+		//		propTreePanel = new RDFSTreePanel(gmanager, rdfsInfoMap.getPropTreeModel(), new PropertyTreeCellRenderer());
+		//		JTabbedPane treeTab = new JTabbedPane();
+		//		treeTab.add("Class", classTreePanel);
+		//		treeTab.add("Property", propTreePanel);
 		//		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, treeTab, desktop);
 		//		splitPane.setOneTouchExpandable(true);
 		//		getContentPane().add(splitPane);
