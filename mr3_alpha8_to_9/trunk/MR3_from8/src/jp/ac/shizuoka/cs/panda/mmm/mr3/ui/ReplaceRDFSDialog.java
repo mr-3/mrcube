@@ -26,11 +26,6 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
 
 	private GraphManager gmanager;
 
-	private Set prevClassSet;
-	private Set replaceClassSet;
-	private Set prevPropertySet;
-	private Set replacePropertySet;
-
 	private JTabbedPane tabbedPane;
 	private JList prevClassList;
 	private DefaultListModel prevClassListModel;
@@ -60,6 +55,7 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
 
 	private static final int LIST_WIDTH = 400;
 	private static final int LIST_HEIGHT = 200;
+	private static final String NULL = "NULL";
 
 	public ReplaceRDFSDialog(GraphManager gm, Model replaceModel) {
 		super(gm.getRoot(), "Replace RDFS Dialog", true);
@@ -71,31 +67,28 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
 		Model propertyModel = rdfsModelExtraction.extractPropertyModel(replaceModel);
 
 		prevClassListModel = new DefaultListModel();
-		prevClassSet = gm.getClassSet();
-		setListData(prevClassListModel, prevClassSet);
+		setListData(prevClassListModel, gm.getClassSet());
 		prevClassList = new JList(prevClassListModel);
 		prevClassList.addListSelectionListener(this);
 		JScrollPane prevClassListScroll = new JScrollPane(prevClassList);
 		initComponent(prevClassListScroll, "Prev Class List", LIST_WIDTH, LIST_HEIGHT);
 
 		replaceClassListModel = new DefaultListModel();
-		replaceClassSet = rdfsInfoMap.getClassSet(new HashSet(), RDFS.Resource);
-		setListData(replaceClassListModel, replaceClassSet);
+		setListData(replaceClassListModel, rdfsInfoMap.getClassSet(new HashSet(), RDFS.Resource));
 		replaceClassList = new JList(replaceClassListModel);
 		replaceClassList.addListSelectionListener(this);
 		JScrollPane replaceClassListScroll = new JScrollPane(replaceClassList);
 		initComponent(replaceClassListScroll, "Replace Class List", LIST_WIDTH, LIST_HEIGHT);
 
 		prevPropertyListModel = new DefaultListModel();
-		prevPropertySet = gm.getPropertySet();
-		setListData(prevPropertyListModel, prevPropertySet);
+		setListData(prevPropertyListModel, gm.getPropertySet());
 		prevPropertyList = new JList(prevPropertyListModel);
 		prevPropertyList.addListSelectionListener(this);
 		JScrollPane prevPropertyListScroll = new JScrollPane(prevPropertyList);
 		initComponent(prevPropertyListScroll, "Prev Property List", LIST_WIDTH, LIST_HEIGHT);
 
 		replacePropertyListModel = new DefaultListModel();
-		replacePropertySet = new HashSet();
+		Set replacePropertySet = new HashSet();
 		for (Iterator i = rdfsInfoMap.getRootProperties().iterator(); i.hasNext();) {
 			Resource res = (Resource) i.next();
 			replacePropertySet.add(res.getURI());
@@ -106,6 +99,8 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
 		replacePropertyList.addListSelectionListener(this);
 		JScrollPane replacePropertyListScroll = new JScrollPane(replacePropertyList);
 		initComponent(replacePropertyListScroll, "Replace Property List", LIST_WIDTH, LIST_HEIGHT);
+
+		fixListData();
 
 		prevClassUpButton = new JButton("Up");
 		prevClassUpButton.addActionListener(this);
@@ -194,6 +189,48 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
 		}
 	}
 
+	private void fixListData() {
+		fixListData(prevClassListModel, replaceClassListModel);
+		fixListData(prevPropertyListModel, replacePropertyListModel);
+	}
+
+	/**
+	 * 
+	 * 1. 同一クラスは，置換前リストと置換後リストを一致させる．
+	 * 2. 同一ID (LocalName)は，置換前リストと置換後リストを一致させる．
+	 * 3. １，２に一致しない場合には，NULLを対応させる．
+	 *    NULLは，RDFSクラスの場合は，空クラス，RDFSプロパティの場合には，MR3#Nilに対応する
+	 * 
+	 * @param prevListModel
+	 * @param replaceListModel
+	 */
+	private void fixListData(DefaultListModel prevListModel, DefaultListModel replaceListModel) {
+		for (int i = 0; i < prevListModel.getSize(); i++) {
+			Resource prevURI = ResourceFactory.createResource((String) prevListModel.getElementAt(i));
+			if (i > replaceListModel.getSize()) {
+				break;
+			}
+			boolean isHit = false;
+			for (int j = i; j < replaceListModel.getSize(); j++) {
+				Resource replaceURI = ResourceFactory.createResource((String) replaceListModel.getElementAt(j));
+				if (prevURI.equals(replaceURI)) {
+					replaceListModel.removeElementAt(j);
+					replaceListModel.insertElementAt(replaceURI.getURI(), i);
+					isHit = true;
+					break;
+				} else if (prevURI.getLocalName().equals(replaceURI.getLocalName())) {
+					replaceListModel.removeElementAt(j);
+					replaceListModel.insertElementAt(replaceURI.getURI(), i);
+					isHit = true;
+					// 完全に一致する場合があるかもしれないので，breakしない
+				}
+			}
+			if (!isHit) {
+				replaceListModel.insertElementAt(NULL, i);
+			}
+		}
+	}
+
 	private void initComponent(JComponent component, String title, int width, int height) {
 		component.setPreferredSize(new Dimension(width, height));
 		component.setMinimumSize(new Dimension(width, height));
@@ -251,7 +288,7 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
 		RDFResourceInfo resInfo = resInfoMap.getCellInfo(cell);
 		RDFSInfo rdfsInfo = rdfsInfoMap.getCellInfo(resInfo.getTypeCell());
 		String res = (String) prevReplaceMap.get(rdfsInfo.getURIStr());
-		if (res == null) {
+		if (res.equals(NULL)) {
 			resInfo.setTypeCell(null);
 		} else {
 			Resource resource = ResourceFactory.createResource(res);
@@ -263,7 +300,7 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
 		Object propCell = rdfsInfoMap.getEdgeInfo(cell);
 		RDFSInfo info = rdfsInfoMap.getCellInfo(propCell);
 		String prop = (String) prevReplaceMap.get(info.getURIStr());
-		if (prop == null) {
+		if (prop.equals(NULL)) {
 			rdfsInfoMap.putEdgeInfo(cell, gmanager.getPropertyCell(MR3Resource.Nil, false));
 		} else {
 			rdfsInfoMap.putEdgeInfo(cell, gmanager.getPropertyCell(ResourceFactory.createResource(prop), false));
@@ -357,6 +394,13 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
 
 	public boolean isApply() {
 		return isApply;
+	}
+
+	public void setVisible(boolean flag) {
+		super.setVisible(flag);
+		if (!flag) {
+			rdfsInfoMap.clearTemporaryMap();
+		}
 	}
 
 	public void actionPerformed(ActionEvent e) {
