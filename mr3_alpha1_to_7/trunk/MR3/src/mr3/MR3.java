@@ -695,7 +695,7 @@ public class MR3 extends JFrame {
 
 	public static void main(String[] arg) {
 		ImageIcon icon = new ImageIcon(MR3.class.getClassLoader().getResource("mr3/resources/mr3_logo.png"));
-		JWindow splashWindow = new HelpDialog(null, icon);
+		JWindow splashWindow = new HelpWindow(null, icon);
 		try {
 			new MR3();
 		} catch (Exception e) {

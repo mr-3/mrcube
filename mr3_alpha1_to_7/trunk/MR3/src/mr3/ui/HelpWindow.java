@@ -14,14 +14,14 @@ import mr3.util.*;
 /**
  * @author takeshi morita
  */
-public class HelpDialog extends JWindow {
+public class HelpWindow extends JWindow {
 
 	private static final String TOOL_NAME = "<h1>MR<sup>3</sup></h1> (Meta-Model Management based on <br> RDFs Revision Reflection)";
 	private static final String MR3_URL = "http://panda.cs.inf.shizuoka.ac.jp/mmm/mr3/";
 	private static final String VERSION = "ƒ¿8 (2003-08-)";
 	private static final Color DESKTOP_BACK_COLOR = new Color(235, 235, 235);
 
-	public HelpDialog(Frame root, ImageIcon logo) {
+	public HelpWindow(Frame root, ImageIcon logo) {
 		super(root);
 		JLabel logoLabel = new JLabel("<html>" + TOOL_NAME + "</html>", logo, SwingConstants.LEFT);
 		logoLabel.setFont(logoLabel.getFont().deriveFont(Font.PLAIN, 16));
@@ -37,18 +37,17 @@ public class HelpDialog extends JWindow {
 		messagePanel.add(urlLabel);
 		messagePanel.add(versionLabel);
 
-		JButton confirmButton = new JButton("OK");
-		confirmButton.addActionListener(new AbstractAction() {
-			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
-			}
-		});
-
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new BorderLayout());
 		contentPane.add(logoLabel, BorderLayout.NORTH);
 		contentPane.add(messagePanel, BorderLayout.CENTER);
 		if (root != null) {
+			JButton confirmButton = new JButton("OK");
+			confirmButton.addActionListener(new AbstractAction() {
+				public void actionPerformed(ActionEvent e) {
+					dispose();
+				}
+			});
 			contentPane.add(confirmButton, BorderLayout.SOUTH);
 		}
 		contentPane.setBackground(DESKTOP_BACK_COLOR);
