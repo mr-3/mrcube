@@ -1,4 +1,27 @@
+/*
+ * @(#) MR3Parser.java
+ *
+ *
+ * Copyright (C) 2003 The MMM Project
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *
+ */
+
 package org.semanticweb.mmm.mr3.io;
+
 import java.awt.*;
 import java.io.*;
 import java.util.*;
@@ -11,6 +34,11 @@ import org.semanticweb.mmm.mr3.util.*;
 import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.vocabulary.*;
 
+/*
+ * 
+ * @author takeshi morita
+ *
+ */
 public class MR3Parser {
 
 	private RDFCellMaker cellMaker;
@@ -145,14 +173,14 @@ public class MR3Parser {
 		resCell.add(port);
 		portMap.put(res, port);
 		resMap.put(res, resCell);
-		attr.put(resCell, cellMaker.getResourceMap(point, ChangeCellAttributes.rdfResourceColor));
+		attr.put(resCell, cellMaker.getResourceMap(point, ChangeCellAttrUtil.rdfResourceColor));
 
 		return resCell;
 	}
 
 	private DefaultGraphCell createTypeCell(Map attributes, Point point) {
 		DefaultGraphCell typeCell = new TypeCell("");
-		attributes.put(typeCell, cellMaker.getResourceMap(point, ChangeCellAttributes.classColor));
+		attributes.put(typeCell, cellMaker.getResourceMap(point, ChangeCellAttrUtil.classColor));
 		return typeCell;
 	}
 
@@ -164,7 +192,7 @@ public class MR3Parser {
 		DefaultPort tp = new DefaultPort();
 		litCell.add(tp);
 		portMap.put(literal, tp);
-		attr.put(litCell, cellMaker.getResourceMap(point, ChangeCellAttributes.literalColor));
+		attr.put(litCell, cellMaker.getResourceMap(point, ChangeCellAttrUtil.literalColor));
 
 		return litCell;
 	}

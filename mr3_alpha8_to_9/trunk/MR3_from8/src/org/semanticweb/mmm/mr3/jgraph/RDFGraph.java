@@ -1,4 +1,26 @@
+/*
+ * @(#) RDFGraph.java
+ *
+ * Copyright (C) 2003 The MMM Project
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *
+ */
+
 package org.semanticweb.mmm.mr3.jgraph;
+
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.event.*;
@@ -21,6 +43,11 @@ import org.jgraph.plaf.basic.*;
 
 import com.hp.hpl.jena.rdf.model.*;
 
+/*
+ * 
+ * @author takeshi morita
+ *
+ */
 public class RDFGraph extends JGraph {
 
 	private boolean pagevisible = false;
@@ -128,12 +155,12 @@ public class RDFGraph extends JGraph {
 
 			public boolean isAddPointEvent(MouseEvent event) {
 				return event.isShiftDown(); // Points are Added using
-													// Shift-Click
+				// Shift-Click
 			}
 
 			public boolean isRemovePointEvent(MouseEvent event) {
 				return event.isShiftDown(); // Points are Removed using
-													// Shift-Click
+				// Shift-Click
 			}
 		};
 	}
@@ -242,10 +269,10 @@ public class RDFGraph extends JGraph {
 	}
 
 	public void selectAllNodes() {
-		ChangeCellAttributes.isChangedSelectedColor = false;
+		ChangeCellAttrUtil.isChangedSelectedColor = false;
 		clearSelection();
 		addSelectionCells(getRoots()); // Descendantsまでやるとばらばら．
-		ChangeCellAttributes.isChangedSelectedColor = true;
+		ChangeCellAttrUtil.isChangedSelectedColor = true;
 	}
 
 	public Object getSourceVertex(Object edge) {
@@ -537,8 +564,11 @@ public class RDFGraph extends JGraph {
 
 		private Object createRDFResourceCellClones(Object cell) {
 			RDFResourceInfo orgInfo = (RDFResourceInfo) copyInfoMap.get(cell);
-			// RDFリソースのタイプを示す矩形セルのクローンを得る
-			GraphCell typeViewCell = (GraphCell) clones.get(orgInfo.getTypeViewCell());
+			GraphCell typeViewCell = null;
+			if (orgInfo.getTypeViewCell() != null) {
+				// RDFリソースのタイプを示す矩形セルのクローンを得る
+				typeViewCell = (GraphCell) clones.get(orgInfo.getTypeViewCell());
+			}
 			RDFResourceInfo newInfo = resInfoMap.cloneRDFResourceInfo(orgInfo, typeViewCell);
 			return newInfo;
 		}
@@ -611,7 +641,10 @@ public class RDFGraph extends JGraph {
 				newInfo = rdfsInfoMap.clonePropertyInfo(orgInfo);
 			} else if (isRDFResourceCell(cell)) {
 				RDFResourceInfo orgInfo = resInfoMap.getCellInfo(cell);
-				GraphCell cloneTypeViewCell = (GraphCell) clones.get(orgInfo.getTypeViewCell());
+				GraphCell cloneTypeViewCell = null;
+				if (orgInfo.getTypeViewCell() != null) {
+					cloneTypeViewCell = (GraphCell) clones.get(orgInfo.getTypeViewCell());
+				}
 				newInfo = resInfoMap.cloneRDFResourceInfo(orgInfo, cloneTypeViewCell);
 			} else if (isRDFPropertyCell(cell)) {
 				newInfo = rdfsInfoMap.getEdgeInfo(cell);

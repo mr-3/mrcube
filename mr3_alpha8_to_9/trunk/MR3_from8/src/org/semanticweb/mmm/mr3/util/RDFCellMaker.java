@@ -1,4 +1,26 @@
+/*
+ * @(#) RDFCellMaker.java
+ * 
+ * Copyright (C) 2003 The MMM Project
+ * 
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *  
+ */
+
 package org.semanticweb.mmm.mr3.util;
+
 import java.awt.*;
 import java.util.*;
 
@@ -11,6 +33,11 @@ import org.jgraph.graph.*;
 import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.vocabulary.*;
 
+/*
+ * 
+ * @author takeshi morita
+ *
+ */
 public class RDFCellMaker {
 
 	private GraphManager gmanager;
@@ -36,7 +63,7 @@ public class RDFCellMaker {
 	public Map getResourceMap(Point point, Color cellColor) {
 		Map map = GraphConstants.createMap();
 
-		if (ChangeCellAttributes.isColor) {
+		if (ChangeCellAttrUtil.isColor) {
 			GraphConstants.setBackground(map, cellColor);
 			GraphConstants.setOpaque(map, true);
 		} else {
@@ -51,7 +78,7 @@ public class RDFCellMaker {
 	public GraphCell insertRDFLiteral(Point point) {
 		JGraph graph = gmanager.getRDFGraph();
 		point = graph.snap(new Point(point)); // Snap the Point to the Grid
-		Map map = getResourceMap(point, ChangeCellAttributes.literalColor);
+		Map map = getResourceMap(point, ChangeCellAttrUtil.literalColor);
 
 		DefaultGraphCell vertex = new RDFLiteralCell("");
 		setCell(graph, vertex, map);
@@ -67,7 +94,7 @@ public class RDFCellMaker {
 		if (gmanager.isShowTypeCell()) {
 			typeCell = new TypeCell("");
 			Point typePoint = new Point(rec.x, rec.y + rec.height);
-			Map typeMap = getResourceMap(typePoint, ChangeCellAttributes.classColor);
+			Map typeMap = getResourceMap(typePoint, ChangeCellAttrUtil.classColor);
 			attributes.put(typeCell, typeMap);
 
 			ParentMap parentMap = new ParentMap();
@@ -89,7 +116,7 @@ public class RDFCellMaker {
 
 		RDFResourceCell resourceCell = new RDFResourceCell(uri);
 		resourceCell.add(new DefaultPort());
-		Map resMap = getResourceMap(point, ChangeCellAttributes.rdfResourceColor);
+		Map resMap = getResourceMap(point, ChangeCellAttrUtil.rdfResourceColor);
 		attributes.put(resourceCell, resMap);
 
 		DefaultGraphCell typeCell = addTypeCell(resourceCell, attributes, new Rectangle(point, new Dimension(CELL_WIDTH, CELL_HEIGHT)));
@@ -171,7 +198,7 @@ public class RDFCellMaker {
 	public GraphCell insertClass(Point point, String uri) {
 		JGraph graph = gmanager.getClassGraph();
 		point = graph.snap(new Point(point)); // Snap the Point to the Grid
-		Map map = getResourceMap(point, ChangeCellAttributes.classColor);
+		Map map = getResourceMap(point, ChangeCellAttrUtil.classColor);
 		RDFSClassCell vertex = new RDFSClassCell(uri);
 
 		setCell(graph, vertex, map);
@@ -186,7 +213,7 @@ public class RDFCellMaker {
 	public GraphCell insertProperty(Point point, String uri) {
 		JGraph graph = gmanager.getPropertyGraph();
 		point = graph.snap(new Point(point)); // Snap the Point to the Grid
-		Map map = getResourceMap(point, ChangeCellAttributes.propertyColor);
+		Map map = getResourceMap(point, ChangeCellAttrUtil.propertyColor);
 
 		RDFSPropertyCell vertex = new RDFSPropertyCell(uri);
 		PropertyInfo info = new PropertyInfo(uri);
