@@ -111,7 +111,7 @@ public class MR3 extends JFrame {
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new CloseWindow(this));
 		setVisible(true);
-		loadWindows();
+		initPreferences();
 	}
 
 	private void setTreeLayout() {
@@ -352,7 +352,7 @@ public class MR3 extends JFrame {
 		return menu;
 	}
 
-	private void loadWindows() {
+	private void initPreferences() {
 		int width = desktop.getWidth();
 		int height = desktop.getHeight();
 
@@ -373,6 +373,15 @@ public class MR3 extends JFrame {
 		editorWidth = userPrefs.getInt(PrefConstants.PropertyEditorWidth, width / 2);
 		editorHeight = userPrefs.getInt(PrefConstants.PropertyEditorHeight, height / 2);
 		iFrames[2].setBounds(new Rectangle(editorPositionX, editorPositionY, editorWidth, editorHeight)); // RDF
+		
+		ChangeCellAttributes.rdfResourceColor = new Color(userPrefs.getInt(PrefConstants.RDFResourceColor, Color.pink.getRGB()));
+		ChangeCellAttributes.literalColor = new Color(userPrefs.getInt(PrefConstants.LiteralColor, Color.orange.getRGB()));
+		ChangeCellAttributes.classColor = new Color(userPrefs.getInt(PrefConstants.ClassColor, Color.green.getRGB()));
+		ChangeCellAttributes.propertyColor = new Color(userPrefs.getInt(PrefConstants.PropertyColor, Color.pink.getRGB()));
+		ChangeCellAttributes.selectedColor = new Color(userPrefs.getInt(PrefConstants.SelectedColor, Color.pink.getRGB()));
+	
+		ChangeCellAttributes.isColor = userPrefs.getBoolean(PrefConstants.Color, true);
+		gmanager.setGraphBackground(new Color(userPrefs.getInt(PrefConstants.BackgroundColor, DESKTOP_BACK_COLOR.getRGB())));
 	}
 
 	private JMenu getPluginMenus() {

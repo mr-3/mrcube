@@ -170,6 +170,12 @@ public class GraphManager {
 		return 6;
 	}
 
+	public void setGraphBackground(Color color) {
+		rdfGraph.setBackground(color);	
+		classGraph.setBackground(color);	
+		propGraph.setBackground(color);	
+	}
+
 	public void setAntialias() {
 		boolean isAntialias = userPrefs.getBoolean(PrefConstants.Antialias, true);
 		rdfGraph.setAntiAliased(isAntialias);
