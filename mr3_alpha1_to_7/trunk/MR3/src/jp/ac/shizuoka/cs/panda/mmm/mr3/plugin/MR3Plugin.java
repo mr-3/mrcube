@@ -3,7 +3,7 @@
  *
  * getSelectedXXXメソッドを追加した．
  */
-package mr3.plugin;
+package jp.ac.shizuoka.cs.panda.mmm.mr3.plugin;
 
 import javax.swing.*;
 

@@ -8,7 +8,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-import mr3.plugin.*;
+import jp.ac.shizuoka.cs.panda.mmm.mr3.plugin.*;
 
 import org.cyberneko.html.parsers.*;
 import org.w3c.dom.*;

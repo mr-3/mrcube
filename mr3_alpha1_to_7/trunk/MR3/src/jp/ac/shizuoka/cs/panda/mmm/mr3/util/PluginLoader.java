@@ -5,7 +5,7 @@ import java.net.*;
 import java.util.*;
 import java.util.jar.*;
 
-import mr3.plugin.*;
+import jp.ac.shizuoka.cs.panda.mmm.mr3.plugin.*;
 
 public class PluginLoader {
 
