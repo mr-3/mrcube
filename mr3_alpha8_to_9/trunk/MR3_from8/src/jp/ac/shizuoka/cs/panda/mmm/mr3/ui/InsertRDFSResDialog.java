@@ -41,12 +41,12 @@ public class InsertRDFSResDialog extends JDialog implements ActionListener {
 		initComponent(idField, "ID", ID_WIDTH, LIST_HEIGHT);
 
 		uriPrefixBox = new JComboBox();
-		initComponent(uriPrefixBox, "Prefix", BOX_WIDTH, BOX_HEIGHT);
+		initComponent(uriPrefixBox, Translator.getString("Prefix"), BOX_WIDTH, BOX_HEIGHT);
 		uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
 		uriPrefixBox.addActionListener(new ChangePrefixAction());
 
 		nsLabel = new JLabel("");
-		initComponent(nsLabel, "NameSpace", LIST_WIDTH, LIST_HEIGHT);
+		initComponent(nsLabel, Translator.getString("NameSpace"), LIST_WIDTH, LIST_HEIGHT);
 		
 		uriPrefixBox.setSelectedItem(PrefixNSUtil.getBaseURIPrefix(gmanager.getBaseURI()));
 		PrefixNSUtil.replacePrefix((String) uriPrefixBox.getSelectedItem(), nsLabel);
