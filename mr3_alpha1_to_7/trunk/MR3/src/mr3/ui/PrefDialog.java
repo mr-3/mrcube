@@ -18,6 +18,8 @@ import mr3.util.*;
  */
 public class PrefDialog extends JInternalFrame {
 
+	private JTabbedPane tab;
+
 	private JCheckBox isAntialiasBox;
 	private JComboBox uriPrefixBox;
 	private JLabel baseURILabel;
@@ -41,6 +43,22 @@ public class PrefDialog extends JInternalFrame {
 	private GraphManager gmanager;
 	private Preferences userPrefs;
 
+	private JCheckBox isColorBox;
+
+	private JButton rdfResourceColorButton;
+	private JButton literalColorButton;
+	private JButton classColorButton;
+	private JButton propertyColorButton;
+	private JButton selectedColorButton;
+	private JButton backgroundColorButton;
+
+	private Color rdfResourceColor;
+	private Color literalColor;
+	private Color classColor;
+	private Color propertyColor;
+	private Color selectedColor;
+	private Color backgroundColor;
+
 	private JButton applyButton;
 	private JButton cancelButton;
 
@@ -49,13 +67,20 @@ public class PrefDialog extends JInternalFrame {
 		gmanager = manager;
 		userPrefs = prefs;
 
-		initEncodingBox();
-		initBaseURIField();
-		initWorkDirectoryField();
-		initProxyField();
+		tab = new JTabbedPane();
+		tab.add("Base", getBasePanel());
+		tab.add("Rendering", getRenderingPanel());
+		getContentPane().add(tab);
+		getContentPane().add(getButtonGroupPanel(), BorderLayout.SOUTH);
 
-		isAntialiasBox = new JCheckBox("Antialias");
+		initParameter();
 
+		setSize(new Dimension(500, 350));
+		setLocation(100, 100);
+		setVisible(true);
+	}
+
+	private JPanel getButtonGroupPanel() {
 		applyButton = new JButton("Apply");
 		applyButton.addActionListener(new DesideAction());
 		cancelButton = new JButton("Cancel");
@@ -64,34 +89,123 @@ public class PrefDialog extends JInternalFrame {
 		buttonGroup.add(applyButton);
 		buttonGroup.add(cancelButton);
 
-		Container contentPane = getContentPane();
-		JPanel innerPanel = new JPanel();
+		return buttonGroup;
+	}
 
+	private JPanel getBasePanel() {
+		initEncodingBox();
+		initBaseURIField();
+		initWorkDirectoryField();
+		initProxyField();
+
+		JPanel basePanel = new JPanel();
 		GridBagLayout gridbag = new GridBagLayout();
 		GridBagConstraints c = new GridBagConstraints();
-		innerPanel.setLayout(gridbag);
-
+		basePanel.setLayout(gridbag);
 		c.weighty = 5;
 		c.anchor = GridBagConstraints.WEST;
 
-		layoutEncodingBox(innerPanel, gridbag, c);
-		layoutBaseURIField(innerPanel, gridbag, c);
-		layoutWorkDirectory(innerPanel, gridbag, c);
-		layoutProxyField(innerPanel, gridbag, c);
+		layoutEncodingBox(basePanel, gridbag, c);
+		layoutBaseURIField(basePanel, gridbag, c);
+		layoutWorkDirectory(basePanel, gridbag, c);
+		layoutProxyField(basePanel, gridbag, c);
 
+		return basePanel;
+	}
+
+	private void initColorButton(JButton button, String name, int width, int height, Action action) {
+		button.setIcon(new ColorSwatch(name));
+		button.setPreferredSize(new Dimension(width, height));
+		button.addActionListener(action);
+	}
+
+	private static final int BUTTON_WIDTH = 200;
+	private static final int BUTTON_HEIGHT = 30;
+
+	private JPanel getRenderingPanel() {
+		ChangeColorAction action = new ChangeColorAction();
+		rdfResourceColorButton = new JButton("RDF Resource Color");
+		initColorButton(rdfResourceColorButton, "Resource", BUTTON_WIDTH, BUTTON_HEIGHT, action);
+		literalColorButton = new JButton("Literal Color");
+		initColorButton(literalColorButton, "Literal", BUTTON_WIDTH, BUTTON_HEIGHT, action);
+		classColorButton = new JButton("Class Color");
+		initColorButton(classColorButton, "Class", BUTTON_WIDTH, BUTTON_HEIGHT, action);
+		propertyColorButton = new JButton("Property Color");
+		initColorButton(propertyColorButton, "Property", BUTTON_WIDTH, BUTTON_HEIGHT, action);
+		selectedColorButton = new JButton("Selected Color");
+		initColorButton(selectedColorButton, "Selected", BUTTON_WIDTH, BUTTON_HEIGHT, action);
+		backgroundColorButton = new JButton("Background Color");
+		initColorButton(backgroundColorButton, "Background", BUTTON_WIDTH, BUTTON_HEIGHT, action);
+
+		isColorBox = new JCheckBox("Color");
+		isAntialiasBox = new JCheckBox("Antialias");
+
+		JPanel renderingPanel = new JPanel();
+		GridBagLayout gridbag = new GridBagLayout();
+		GridBagConstraints c = new GridBagConstraints();
+		renderingPanel.setLayout(gridbag);
+		c.weighty = 5;
+		c.anchor = GridBagConstraints.WEST;
+		c.gridwidth = GridBagConstraints.REMAINDER;
+
+		gridbag.setConstraints(rdfResourceColorButton, c);
+		renderingPanel.add(rdfResourceColorButton);
+		gridbag.setConstraints(literalColorButton, c);
+		renderingPanel.add(literalColorButton);
+		gridbag.setConstraints(classColorButton, c);
+		renderingPanel.add(classColorButton);
+		gridbag.setConstraints(propertyColorButton, c);
+		renderingPanel.add(propertyColorButton);
+		gridbag.setConstraints(selectedColorButton, c);
+		renderingPanel.add(selectedColorButton);
+		gridbag.setConstraints(backgroundColorButton, c);
+		renderingPanel.add(backgroundColorButton);
+
+		gridbag.setConstraints(isColorBox, c);
+		renderingPanel.add(isColorBox);
 		gridbag.setConstraints(isAntialiasBox, c);
-		innerPanel.add(isAntialiasBox);
+		renderingPanel.add(isAntialiasBox);
 
-		c.anchor = GridBagConstraints.CENTER;
-		gridbag.setConstraints(buttonGroup, c);
-		innerPanel.add(buttonGroup);
-		contentPane.add(innerPanel);
+		return renderingPanel;
+	}
 
-		initParameter();
+	class ChangeColorAction extends AbstractAction {
+		public void actionPerformed(ActionEvent e) {
+			Color current = Color.black;
 
-		setSize(new Dimension(500, 350));
-		setLocation(100, 100);
-		setVisible(true);
+			if (e.getSource() == rdfResourceColorButton) {
+				current = rdfResourceColor;
+			} else if (e.getSource() == literalColorButton) {
+				current = literalColor;
+			} else if (e.getSource() == classColorButton) {
+				current = classColor;
+			} else if (e.getSource() == propertyColorButton) {
+				current = propertyColor;
+			} else if (e.getSource() == selectedColorButton) {
+				current = selectedColor;
+			} else if (e.getSource() == backgroundColorButton) {
+				current = backgroundColor;
+			}
+
+			Color c = JColorChooser.showDialog(getContentPane(), "Choose Color", current);
+			if (c == null) {
+				c = current;
+			}
+
+			if (e.getSource() == rdfResourceColorButton) {
+				rdfResourceColor = c;
+			} else if (e.getSource() == literalColorButton) {
+				literalColor = c;
+			} else if (e.getSource() == classColorButton) {
+				classColor = c;
+			} else if (e.getSource() == propertyColorButton) {
+				propertyColor = c;
+			} else if (e.getSource() == selectedColorButton) {
+				selectedColor = c;
+			} else if (e.getSource() == backgroundColorButton) {
+				backgroundColor = c;
+			}
+		}
 	}
 
 	private void initComponent(JComponent component, String title, int width, int height) {
@@ -194,12 +308,14 @@ public class PrefDialog extends JInternalFrame {
 		}
 	}
 
+	private static final int URI_FIELD_WIDTH = 300;
+
 	private void initWorkDirectoryField() {
 		workDirectoryLabel = new JLabel("Work Directory:   ");
 		workDirectoryField = new JTextField(20);
 		workDirectoryField.setEditable(false);
-		workDirectoryField.setPreferredSize(new Dimension(300, 20));
-		workDirectoryField.setMinimumSize(new Dimension(300, 20));
+		workDirectoryField.setPreferredSize(new Dimension(URI_FIELD_WIDTH, 20));
+		workDirectoryField.setMinimumSize(new Dimension(URI_FIELD_WIDTH, 20));
 		browseWorkDirectoryButton = new JButton("Browse");
 		browseWorkDirectoryButton.addActionListener(new BrowseDirectory());
 	}
@@ -207,9 +323,9 @@ public class PrefDialog extends JInternalFrame {
 	private void initProxyField() {
 		isProxy = new JCheckBox("Proxy");
 		isProxy.addActionListener(new CheckProxy());
-		proxyHost = new JTextField(20);
-		proxyHost.setPreferredSize(new Dimension(250, 40));
-		proxyHost.setMinimumSize(new Dimension(250, 40));
+		proxyHost = new JTextField(25);
+		proxyHost.setPreferredSize(new Dimension(URI_FIELD_WIDTH, 40));
+		proxyHost.setMinimumSize(new Dimension(URI_FIELD_WIDTH, 40));
 		proxyHost.setBorder(BorderFactory.createTitledBorder("Host"));
 		proxyPort = new JTextField(5);
 		proxyPort.setPreferredSize(new Dimension(50, 40));
@@ -248,7 +364,6 @@ public class PrefDialog extends JInternalFrame {
 	private void initParameter() {
 		inputEncodingBox.setSelectedItem(userPrefs.get(PrefConstants.InputEncoding, "SJIS"));
 		outputEncodingBox.setSelectedItem(userPrefs.get(PrefConstants.OutputEncoding, "SJIS"));
-		isAntialiasBox.setSelected(userPrefs.getBoolean(PrefConstants.Antialias, true));
 		baseURILabel.setText(userPrefs.get(PrefConstants.BaseURI, MR3Resource.Default_URI.getURI()));
 		workDirectoryField.setText(userPrefs.get(PrefConstants.DefaultWorkDirectory, ""));
 		isProxy.setSelected(userPrefs.getBoolean(PrefConstants.Proxy, false));
@@ -256,6 +371,16 @@ public class PrefDialog extends JInternalFrame {
 		proxyHost.setEditable(isProxy.isSelected());
 		proxyPort.setText(Integer.toString(userPrefs.getInt(PrefConstants.ProxyPort, 3128)));
 		proxyPort.setEditable(isProxy.isSelected());
+
+		rdfResourceColor = new Color(userPrefs.getInt(PrefConstants.RDFResourceColor, Color.pink.getRGB()));
+		literalColor = new Color(userPrefs.getInt(PrefConstants.LiteralColor, Color.orange.getRGB()));
+		classColor = new Color(userPrefs.getInt(PrefConstants.ClassColor, Color.green.getRGB()));
+		propertyColor = new Color(userPrefs.getInt(PrefConstants.PropertyColor, new Color(255, 158, 62).getRGB()));
+		selectedColor = new Color(userPrefs.getInt(PrefConstants.SelectedColor, new Color(255, 255, 50).getRGB()));
+		backgroundColor = new Color(userPrefs.getInt(PrefConstants.BackgroundColor, Color.white.getRGB()));
+
+		isColorBox.setSelected(userPrefs.getBoolean(PrefConstants.Color, true));
+		isAntialiasBox.setSelected(userPrefs.getBoolean(PrefConstants.Antialias, true));
 	}
 
 	class DesideAction extends AbstractAction {
@@ -264,20 +389,75 @@ public class PrefDialog extends JInternalFrame {
 				try {
 					userPrefs.put(PrefConstants.InputEncoding, (String) inputEncodingBox.getSelectedItem());
 					userPrefs.put(PrefConstants.OutputEncoding, (String) outputEncodingBox.getSelectedItem());
-					userPrefs.putBoolean(PrefConstants.Antialias, isAntialiasBox.isSelected());
-					gmanager.setAntialias();
 					userPrefs.put(PrefConstants.BaseURI, baseURILabel.getText());
 					gmanager.setBaseURI(baseURILabel.getText());
 					userPrefs.put(PrefConstants.DefaultWorkDirectory, workDirectoryField.getText());
 					userPrefs.putBoolean(PrefConstants.Proxy, isProxy.isSelected());
 					userPrefs.put(PrefConstants.ProxyHost, proxyHost.getText());
 					userPrefs.putInt(PrefConstants.ProxyPort, Integer.parseInt(proxyPort.getText()));
+
+					userPrefs.putInt(PrefConstants.RDFResourceColor, rdfResourceColor.getRGB());
+					ChangeCellAttributes.rdfResourceColor = rdfResourceColor;
+					userPrefs.putInt(PrefConstants.LiteralColor, literalColor.getRGB());
+					ChangeCellAttributes.literalColor = literalColor;
+					userPrefs.putInt(PrefConstants.ClassColor, classColor.getRGB());
+					ChangeCellAttributes.classColor = classColor;
+					userPrefs.putInt(PrefConstants.PropertyColor, propertyColor.getRGB());
+					ChangeCellAttributes.propertyColor = propertyColor;
+					userPrefs.putInt(PrefConstants.SelectedColor, selectedColor.getRGB());
+					ChangeCellAttributes.selectedColor = selectedColor;
+					userPrefs.putInt(PrefConstants.BackgroundColor, backgroundColor.getRGB());
+					gmanager.setGraphBackground(backgroundColor);
+					userPrefs.putBoolean(PrefConstants.Color, isColorBox.isSelected());
+					ChangeCellAttributes.isColor = isColorBox.isSelected();
+					// Colorがあるかないかをチェックした後に，セルの色を変更する．
+					ChangeCellAttributes.changeAllCellColor(gmanager);
+					
+					userPrefs.putBoolean(PrefConstants.Antialias, isAntialiasBox.isSelected());
+					gmanager.setAntialias();
 				} catch (NumberFormatException nfe) {
 					JOptionPane.showInternalMessageDialog(gmanager.getDesktop(), "Number Format Exception", "Warning", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 			}
 			setVisible(false);
+		}
+	}
+
+	class ColorSwatch implements Icon {
+		private String name;
+
+		ColorSwatch(String str) {
+			name = str;
+		}
+
+		public int getIconWidth() {
+			return 11;
+		}
+
+		public int getIconHeight() {
+			return 11;
+		}
+
+		public void paintIcon(Component c, Graphics g, int x, int y) {
+			g.setColor(Color.black);
+			g.fillRect(x, y, getIconWidth(), getIconHeight());
+
+			if (name.equals("Resource")) {
+				g.setColor(rdfResourceColor);
+			} else if (name.equals("Literal")) {
+				g.setColor(literalColor);
+			} else if (name.equals("Class")) {
+				g.setColor(classColor);
+			} else if (name.equals("Property")) {
+				g.setColor(propertyColor);
+			} else if (name.equals("Selected")) {
+				g.setColor(selectedColor);
+			} else if (name.equals("Background")) {
+				g.setColor(backgroundColor);
+			}
+
+			g.fillRect(x + 2, y + 2, getIconWidth() - 4, getIconHeight() - 4);
 		}
 	}
 }

@@ -8,6 +8,7 @@ package mr3.data;
  * @author takeshi morita
  */
 public class PrefConstants {
+	
 	public static final String WindowHeight = "Window Height";
 	public static final String WindowWidth = "Window Width";
 	public static final String WindowPositionX = "Window Position X";
@@ -28,6 +29,7 @@ public class PrefConstants {
 	public static final String PropertyEditorPositionX = "Property Editor Position X";
 	public static final String PropertyEditorPositionY = "Property Editor Position Y";
 
+	public static final String Color = "Color";
 	public static final String Antialias = "Antialias";
 	
 	public static final String InputEncoding = "Input Encoding";
@@ -36,6 +38,13 @@ public class PrefConstants {
 	public static final String Proxy = "Proxy";
 	public static final String ProxyHost = "Proxy Host";
 	public static final String ProxyPort = "Proxy Port";
+	
+	public static final String RDFResourceColor = "RDF Resource Color";
+	public static final String LiteralColor = "Literal Color";
+	public static final String ClassColor = "Class Color";
+	public static final String PropertyColor = "Property Color";
+	public static final String SelectedColor = "Selected Color";
+	public static final String BackgroundColor = "Background Color";
 	
 	public static final String DefaultWorkDirectory = "DefaultWorkDirectory";
 }

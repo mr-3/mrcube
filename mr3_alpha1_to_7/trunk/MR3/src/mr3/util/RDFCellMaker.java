@@ -2,8 +2,6 @@ package mr3.util;
 import java.awt.*;
 import java.util.*;
 
-import javax.swing.*;
-
 import mr3.data.*;
 import mr3.jgraph.*;
 
@@ -28,22 +26,24 @@ public class RDFCellMaker {
 
 	public Map getEdgeMap(String value) {
 		Map map = GraphConstants.createMap();
-		GraphConstants.setLineEnd(map, GraphConstants.ARROW_CLASSIC); 
+		GraphConstants.setLineEnd(map, GraphConstants.ARROW_TECHNICAL);
 		GraphConstants.setValue(map, value);
+		
 		return map;
 	}
 
-	private static final Color RESOURCE_COLOR = new Color(255, 128, 192);
-
 	public Map getResourceMap(Point point) {
-		Dimension size = new Dimension(cellWidth, cellHeight);
 		Map map = GraphConstants.createMap();
-		GraphConstants.setBounds(map, new Rectangle(point, size));
+
+		if (ChangeCellAttributes.isColor) {
+			GraphConstants.setBackground(map, ChangeCellAttributes.rdfResourceColor);
+			GraphConstants.setOpaque(map, true);
+		} else {
+			GraphConstants.setOpaque(map, false);
+		}
 		GraphConstants.setBorderColor(map, Color.black);
-		GraphConstants.setBackground(map, Color.pink);
-		GraphConstants.setForeground(map, Color.black);
-		// Make Vertex Opaque 透明にしない(true),透明にする(false)??
-		GraphConstants.setOpaque(map, true);
+		GraphConstants.setBounds(map, new Rectangle(point, new Dimension(cellWidth, cellHeight)));
+
 		return map;
 	}
 
@@ -54,11 +54,13 @@ public class RDFCellMaker {
 	public Map getTypeMap(Rectangle rec) {
 		Map map = GraphConstants.createMap();
 		GraphConstants.setBounds(map, rec);
+		if (ChangeCellAttributes.isColor) {
+			GraphConstants.setBackground(map, ChangeCellAttributes.classColor);
+			GraphConstants.setOpaque(map, true);
+		} else {
+			GraphConstants.setOpaque(map, false);
+		}
 		GraphConstants.setBorderColor(map, Color.black);
-		GraphConstants.setBackground(map, Color.green);
-		GraphConstants.setForeground(map, Color.black);
-		GraphConstants.setBorder(map, BorderFactory.createRaisedBevelBorder());
-		GraphConstants.setOpaque(map, true);
 		GraphConstants.setConnectable(map, false);
 
 		return map;
@@ -66,32 +68,41 @@ public class RDFCellMaker {
 
 	public Map getClassMap(Point point) {
 		Map map = getResourceMap(point);
-		GraphConstants.setBackground(map, Color.green);
-		// 矩形でクラスを表現する場合以下のオプションを使う．ちょっと，立体的に見える．
-		GraphConstants.setBorder(map, BorderFactory.createRaisedBevelBorder());
-		GraphConstants.setOpaque(map, true);
+		if (ChangeCellAttributes.isColor) {
+			GraphConstants.setBackground(map, ChangeCellAttributes.classColor);
+			GraphConstants.setOpaque(map, true);
+		} else {
+			GraphConstants.setOpaque(map, false);
+		}
+		GraphConstants.setBorderColor(map, Color.black);
+
 		return map;
 	}
 
-	private static final Color PROPERTY_COLOR = new Color(255, 158, 62);
-
 	public Map getPropertyMap(Point point) {
 		Map map = getResourceMap(point);
-		GraphConstants.setBackground(map, PROPERTY_COLOR);
-		GraphConstants.setOpaque(map, true);
+		if (ChangeCellAttributes.isColor) {
+			GraphConstants.setBackground(map, ChangeCellAttributes.propertyColor);
+			GraphConstants.setOpaque(map, true);
+		} else {
+			GraphConstants.setOpaque(map, false);
+		}
+		GraphConstants.setBorderColor(map, Color.black);
 
 		return map;
 	}
 
 	public Map getLiteralMap(Point point) {
 		Map map = GraphConstants.createMap();
-		Dimension size = new Dimension(cellWidth, cellHeight);
-		GraphConstants.setBounds(map, new Rectangle(point, size));
+		if (ChangeCellAttributes.isColor) {
+			GraphConstants.setBackground(map, ChangeCellAttributes.literalColor);
+			GraphConstants.setOpaque(map, true);
+		} else {
+			GraphConstants.setOpaque(map, false);
+		}
 		GraphConstants.setBorderColor(map, Color.black);
-		GraphConstants.setBackground(map, Color.orange);
-		GraphConstants.setForeground(map, Color.black);
-		GraphConstants.setBorder(map, BorderFactory.createRaisedBevelBorder());
-		GraphConstants.setOpaque(map, true);
+		GraphConstants.setBounds(map, new Rectangle(point, new Dimension(cellWidth, cellHeight)));
+
 		return map;
 	}
 
@@ -202,7 +213,7 @@ public class RDFCellMaker {
 		Map map = getEdgeMap(edgeName);
 		attributes.put(edge, map);
 		graph.getGraphLayoutCache().insert(new Object[] { edge }, attributes, cs, null, null);
-		
+
 		return edge;
 	}
 
