@@ -19,7 +19,7 @@ public class HelpWindow extends JWindow {
 
 	private static final String TOOL_NAME = "<h1>MR<sup>3</sup></h1> (Meta-Model Management based on <br> RDFs Revision Reflection)";
 	private static final String MR3_URL = "http://panda.cs.inf.shizuoka.ac.jp/mmm/mr3/";
-	private static final String VERSION = "ƒ¿9 (2003-10-03)";
+	private static final String VERSION = "ƒ¿9 (2003-10-06)";
 	private static final Color DESKTOP_BACK_COLOR = new Color(245, 245, 245);
 
 	public HelpWindow(Frame root, ImageIcon logo) {

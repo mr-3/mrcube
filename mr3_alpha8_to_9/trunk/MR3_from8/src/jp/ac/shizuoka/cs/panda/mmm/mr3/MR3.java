@@ -163,7 +163,7 @@ public class MR3 extends JFrame {
 
 	private JToolBar createToolBar() {
 		JToolBar toolbar = new JToolBar();
-		toolbar.setFloatable(false);
+		toolbar.setFloatable(true);
 		toolbar.add(newProjectAction);
 		toolbar.add(openProjectAction);
 		toolbar.add(saveProjectAction);
