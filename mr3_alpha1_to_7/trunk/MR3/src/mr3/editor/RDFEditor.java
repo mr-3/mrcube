@@ -108,7 +108,7 @@ public class RDFEditor extends Editor {
 		gmanager.jumpPropertyArea(propCell);
 
 		if (attrDialog.isVisible()) {
-			propPanel.dspPropertyInfo(cell);
+			propPanel.showPropertyInfo(cell);
 			Edge edge = (Edge) cell;
 			Object domainType = getDomainType(edge);
 			Object rangeType = getRangeType(edge);
@@ -119,7 +119,7 @@ public class RDFEditor extends Editor {
 
 	private void selectLiteral(GraphCell cell) {
 		if (attrDialog.isVisible()) {
-			litPanel.dspLiteralInfo(cell);
+			litPanel.showLiteralInfo(cell);
 			attrDialog.setContentPane(litPanel);
 		}
 	}

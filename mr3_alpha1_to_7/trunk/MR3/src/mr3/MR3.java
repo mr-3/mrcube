@@ -129,7 +129,8 @@ public class MR3 extends JFrame {
 
 		setJMenuBar(createMenuBar());
 		setIcon();
-
+		
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				exitProgram();

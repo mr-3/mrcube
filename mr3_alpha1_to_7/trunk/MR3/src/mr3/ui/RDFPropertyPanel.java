@@ -246,7 +246,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		}
 	}
 
-	public void dspPropertyInfo(GraphCell c) {
+	public void showPropertyInfo(GraphCell c) {
 		edge = c;
 		Object propertyCell = rdfsInfoMap.getEdgeInfo(edge);
 		if (propertyCell == null) {
