@@ -74,7 +74,7 @@ public class MR3 extends JFrame {
 	private JCheckBoxMenuItem rdfEditorView;
 	private JCheckBoxMenuItem classEditorView;
 	private JCheckBoxMenuItem propertyEditorView;
-	private JCheckBoxMenuItem showSrcView;
+	private JCheckBoxMenuItem showSrcWindowBox;
 
 	private JRadioButton uriView;
 	private JRadioButton idView;
@@ -94,7 +94,7 @@ public class MR3 extends JFrame {
 
 		setSize(userPrefs.getInt(PrefConstants.WindowWidth, MAIN_FRAME_WIDTH), userPrefs.getInt(PrefConstants.WindowHeight, MAIN_FRAME_HEIGHT));
 		setLocation(userPrefs.getInt(PrefConstants.WindowPositionX, 50), userPrefs.getInt(PrefConstants.WindowPositionY, 50));
-		//		setLookAndFeel();
+//		setLookAndFeel();
 
 		attrDialog = new AttributeDialog();
 		gmanager = new GraphManager(attrDialog, userPrefs);
@@ -130,14 +130,15 @@ public class MR3 extends JFrame {
 		setIcon();
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-		addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				exitProgram();
-			}
-		});
-
+		addWindowListener(new WindowChangedAction());
 		setVisible(true);
 		loadWindows();
+	}
+
+	class WindowChangedAction extends WindowAdapter {
+		public void windowClosing(WindowEvent e) {
+			exitProgram();
+		}
 	}
 
 	private void createDesktop() {
@@ -198,7 +199,7 @@ public class MR3 extends JFrame {
 			} else if (tmp == internalFrames[2]) {
 				propertyEditorView.setSelected(false);
 			} else if (tmp == srcFrame) {
-				showSrcView.setSelected(false);
+				showSrcWindowBox.setSelected(false);
 			}
 			tmp.setVisible(false);
 		}
@@ -265,28 +266,28 @@ public class MR3 extends JFrame {
 		//		layout.add(mi);
 		//		menu.add(layout);
 		JMenu selectMenu = new JMenu("Select");
-		mi = new JMenuItem("Select all nodes");
+		mi = new JMenuItem("Select All nodes");
 		mi.addActionListener(new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
 				gmanager.selectAllNodes();
 			}
 		});
 		selectMenu.add(mi);
-		mi = new JMenuItem("Select all RDF nodes");
+		mi = new JMenuItem("Select All RDF nodes");
 		mi.addActionListener(new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
 				gmanager.selectAllRDFNodes();
 			}
 		});
 		selectMenu.add(mi);
-		mi = new JMenuItem("Select all RDFS class nodes");
+		mi = new JMenuItem("Select All RDFS class nodes");
 		mi.addActionListener(new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
 				gmanager.selectAllClassNodes();
 			}
 		});
 		selectMenu.add(mi);
-		mi = new JMenuItem("Select all RDFS property nodes");
+		mi = new JMenuItem("Select All RDFS property nodes");
 		mi.addActionListener(new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
 				gmanager.selectAllPropertyNodes();
@@ -952,11 +953,11 @@ public class MR3 extends JFrame {
 		menu.add(labelView);
 		menu.addSeparator();
 		//		menu.add(getEditorViewMenu());
-		showSrcView = new JCheckBoxMenuItem("Show Source Window", false);
-		showSrcView.addActionListener(new ShowViewAction());
+		showSrcWindowBox = new JCheckBoxMenuItem("Show Source Window", false);
+		showSrcWindowBox.addActionListener(new ShowViewAction());
 		menu.add(attrDialog.getShowPropWindow());
 		menu.add(nsTableDialog.getShowNSTable());
-		menu.add(showSrcView);
+		menu.add(showSrcWindowBox);
 		showTypeCellBox = new JCheckBoxMenuItem("Show Type", true);
 		gmanager.setIsShowTypeCell(true);
 		showTypeCellBox.addActionListener(new ShowTypeCellAction());
@@ -1030,11 +1031,19 @@ public class MR3 extends JFrame {
 	}
 
 	private void deployWindows() {
-		int width = desktop.getWidth();
-		int height = desktop.getHeight();
-		internalFrames[0].setBounds(new Rectangle(0, height / 2, width, height / 2)); // RDF
-		internalFrames[1].setBounds(new Rectangle(0, 0, width / 2, height / 2)); // Class
-		internalFrames[2].setBounds(new Rectangle(width / 2, 0, width / 2, height / 2)); //Property
+		try {
+			int width = desktop.getWidth();
+			int height = desktop.getHeight();
+			internalFrames[0].setBounds(new Rectangle(0, height / 2, width, height / 2)); // RDF
+			internalFrames[0].setIcon(false);
+			internalFrames[1].setBounds(new Rectangle(0, 0, width / 2, height / 2)); // Class
+			internalFrames[1].setIcon(false);
+			internalFrames[2].setBounds(new Rectangle(width / 2, 0, width / 2, height / 2)); //Property
+			internalFrames[2].setIcon(false);
+		} catch (PropertyVetoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	class DeployWindows extends AbstractAction {
@@ -1048,12 +1057,15 @@ public class MR3 extends JFrame {
 			JCheckBoxMenuItem tmp = (JCheckBoxMenuItem) e.getSource();
 			if (tmp == rdfEditorView) {
 				internalFrames[0].setVisible(rdfEditorView.getState());
+				internalFrames[0].toFront();
 			} else if (tmp == classEditorView) {
 				internalFrames[1].setVisible(classEditorView.getState());
+				internalFrames[1].toFront();
 			} else if (tmp == propertyEditorView) {
 				internalFrames[2].setVisible(propertyEditorView.getState());
-			} else if (tmp == showSrcView) {
-				srcFrame.setVisible(showSrcView.getState());
+				internalFrames[2].toFront();
+			} else if (tmp == showSrcWindowBox) {
+				srcFrame.setVisible(showSrcWindowBox.getState());
 			}
 		}
 	}
@@ -1168,7 +1180,7 @@ public class MR3 extends JFrame {
 				addTypeCells(rdfGraph, rdfCells);
 			} else {
 				gmanager.removeTypeCells(rdfGraph, rdfCells);
-			}			
+			}
 		}
 
 		private void addTypeCells(RDFGraph rdfGraph, Object[] rdfCells) {
@@ -1192,7 +1204,7 @@ public class MR3 extends JFrame {
 			srcFrame.toFront();
 			srcFrame.setVisible(true);
 			srcFrame.setIcon(false);
-			showSrcView.setState(true);
+			showSrcWindowBox.setState(true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
