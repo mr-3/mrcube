@@ -25,17 +25,21 @@ public class OpenProject extends AbstractActionFile {
 
 	public OpenProject(MR3 mr3) {
 		super(mr3, OPEN_PROJECT);
+		setValues();
 	}
 
 	public OpenProject(MR3 mr3, ImageIcon icon) {
 		super(mr3, OPEN_PROJECT, icon);
+		setValues();
+	}
+
+	private void setValues() {
+		putValue(SHORT_DESCRIPTION, "Open Project");
+//		putValue(MNEMONIC_KEY, Event.CTRL_MASK);
+//		putValue(ACTION_COMMAND_KEY, KeyEvent.VK_N);
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		openProject();
-	}
-
-	private void openProject() {
 		GraphManager gmanager = mr3.getGraphManager();
 		try {
 			ProjectManager pm = new ProjectManager(gmanager, mr3.getNSTableDialog());
@@ -61,4 +65,5 @@ public class OpenProject extends AbstractActionFile {
 			e1.printStackTrace();
 		}
 	}
+
 }

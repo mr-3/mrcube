@@ -17,8 +17,12 @@ import mr3.*;
  */
 public class EditorSelect extends MR3AbstractAction {
 
-	public EditorSelect(MR3 mr3, String title) {
-		super(mr3, title);
+	public EditorSelect(MR3 mr3, String name) {
+		super(mr3, name);
+	}
+
+	public EditorSelect(MR3 mr3, String name, ImageIcon icon) {
+		super(mr3, name, icon);
 	}
 
 	private static final String TO_FRONT_RDF_EDITOR = "To Front RDF Editor";
@@ -37,12 +41,11 @@ public class EditorSelect extends MR3AbstractAction {
 
 	public void actionPerformed(ActionEvent e) {
 		JInternalFrame[] iFrame = mr3.getInternalFrames();
-		String en = e.getActionCommand();
-		if (en.equals(TO_FRONT_RDF_EDITOR)) {
+		if (getName().equals(TO_FRONT_RDF_EDITOR)) {
 			toFrontInternalFrame(iFrame[0]);
-		} else if (en.equals(TO_FRONT_CLASS_EDITOR)) {
+		} else if (getName().equals(TO_FRONT_CLASS_EDITOR)) {
 			toFrontInternalFrame(iFrame[1]);
-		} else if (en.equals(TO_FRONT_PROPERTY_EDITOR)) {
+		} else if (getName().equals(TO_FRONT_PROPERTY_EDITOR)) {
 			toFrontInternalFrame(iFrame[2]);
 		}
 	}

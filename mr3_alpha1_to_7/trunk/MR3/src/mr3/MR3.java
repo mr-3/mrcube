@@ -58,7 +58,7 @@ public class MR3 extends JFrame {
 	private JCheckBoxMenuItem showTypeCellBox;
 	private JCheckBoxMenuItem selectAbstractLevelMode;
 	private JCheckBoxMenuItem showToolTips;
-	private JInternalFrame[] internalFrames = new JInternalFrame[3];
+	private JInternalFrame[] iFrames = new JInternalFrame[3];
 	private SourceFrame srcFrame;
 	private JCheckBoxMenuItem rdfEditorView;
 	private JCheckBoxMenuItem classEditorView;
@@ -97,15 +97,9 @@ public class MR3 extends JFrame {
 
 		createInternalFrames();
 
+		//		setTreeLayout();
 		desktop.setBackground(DESKTOP_BACK_COLOR);
-		//		classTreePanel = new RDFSTreePanel(gmanager, rdfsInfoMap.getClassTreeModel(), new ClassTreeCellRenderer());
-		//		propTreePanel = new RDFSTreePanel(gmanager, rdfsInfoMap.getPropTreeModel(), new PropertyTreeCellRenderer());
-		//		JTabbedPane treeTab = new JTabbedPane();
-		//		treeTab.add("Class", classTreePanel);
-		//		treeTab.add("Property", propTreePanel);
-		//		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, treeTab, desktop);
-		//		splitPane.setOneTouchExpandable(true);
-		//		getContentPane().add(splitPane);
+
 		getContentPane().add(desktop);
 
 		setJMenuBar(createMenuBar());
@@ -117,11 +111,22 @@ public class MR3 extends JFrame {
 		loadWindows();
 	}
 
+	private void setTreeLayout() {
+		//		classTreePanel = new RDFSTreePanel(gmanager, rdfsInfoMap.getClassTreeModel(), new ClassTreeCellRenderer());
+		//		propTreePanel = new RDFSTreePanel(gmanager, rdfsInfoMap.getPropTreeModel(), new PropertyTreeCellRenderer());
+		//		JTabbedPane treeTab = new JTabbedPane();
+		//		treeTab.add("Class", classTreePanel);
+		//		treeTab.add("Property", propTreePanel);
+		//		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, treeTab, desktop);
+		//		splitPane.setOneTouchExpandable(true);
+		//		getContentPane().add(splitPane);		
+	}
+
 	private URL getImageIcon(String image) {
 		return this.getClass().getClassLoader().getResource("mr3/resources/" + image);
 	}
 
-	public JToolBar createToolBar() {
+	private JToolBar createToolBar() {
 		JToolBar toolbar = new JToolBar();
 		toolbar.setFloatable(false);
 
@@ -133,6 +138,48 @@ public class MR3 extends JFrame {
 		toolbar.add(new SaveProject(this, "Save Project", saveProjectIcon));
 		ImageIcon saveAsProjectIcon = new ImageIcon(getImageIcon("saveas.gif"));
 		toolbar.add(new SaveProject(this, "Save Project As", saveAsProjectIcon));
+
+		toolbar.addSeparator();
+
+		ImageIcon nsTableDialogIcon = new ImageIcon(getImageIcon("nameSpaceTableIcon.gif"));
+		toolbar.add(new AbstractAction("", nsTableDialogIcon) {
+			public void actionPerformed(ActionEvent e) {
+				nsTableDialog.setVisible(true);
+			}
+		});
+
+		ImageIcon attrDialogIcon = new ImageIcon(getImageIcon("attrDialogIcon.gif"));
+		toolbar.add(new AbstractAction("", attrDialogIcon) {
+			public void actionPerformed(ActionEvent e) {
+				RDFGraph graph = null;
+				Object selectionCell = null;
+				if (iFrames[0].isSelected()) {
+					graph = gmanager.getRDFGraph();
+					selectionCell = graph.getSelectionCell();
+				} else if (iFrames[1].isSelected()) {
+					graph = gmanager.getClassGraph();
+					selectionCell = graph.getSelectionCell();
+				} else if (iFrames[2].isSelected()) {
+					graph = gmanager.getPropertyGraph();
+					selectionCell = graph.getSelectionCell();
+				}
+
+				attrDialog.setVisible(true);
+
+				if (graph != null && selectionCell != null) {
+					graph.setSelectionCell(selectionCell);
+				}
+			}
+		});
+
+		toolbar.addSeparator();
+
+		ImageIcon rdfIcon = new ImageIcon(getImageIcon("rdfEditorIcon.gif"));
+		toolbar.add(new EditorSelect(this, TO_FRONT_RDF_EDITOR, rdfIcon));
+		ImageIcon classIcon = new ImageIcon(getImageIcon("classEditorIcon.gif"));
+		toolbar.add(new EditorSelect(this, TO_FRONT_CLASS_EDITOR, classIcon));
+		ImageIcon propertyIcon = new ImageIcon(getImageIcon("propertyEditorIcon.gif"));
+		toolbar.add(new EditorSelect(this, TO_FRONT_PROPERTY_EDITOR, propertyIcon));
 
 		return toolbar;
 	}
@@ -151,19 +198,19 @@ public class MR3 extends JFrame {
 	}
 
 	private void createInternalFrames() {
-		internalFrames[0] = rdfEditor;
-		internalFrames[1] = classEditor;
-		internalFrames[2] = propertyEditor;
+		iFrames[0] = rdfEditor;
+		iFrames[1] = classEditor;
+		iFrames[2] = propertyEditor;
 		srcFrame = new SourceFrame("Source Window");
 
-		desktop.add(internalFrames[0], DEFAULT_CURSOR);
-		desktop.add(internalFrames[1], DEFAULT_CURSOR);
-		desktop.add(internalFrames[2], DEFAULT_CURSOR);
+		desktop.add(iFrames[0], DEFAULT_CURSOR);
+		desktop.add(iFrames[1], DEFAULT_CURSOR);
+		desktop.add(iFrames[2], DEFAULT_CURSOR);
 		desktop.add(srcFrame, DEFAULT_CURSOR);
 
-		rdfEditor.setInternalFrames(internalFrames);
-		classEditor.setInternalFrames(internalFrames);
-		propertyEditor.setInternalFrames(internalFrames);
+		rdfEditor.setInternalFrames(iFrames);
+		classEditor.setInternalFrames(iFrames);
+		propertyEditor.setInternalFrames(iFrames);
 	}
 
 	private void setLookAndFeel() {
@@ -220,7 +267,7 @@ public class MR3 extends JFrame {
 	}
 
 	public JInternalFrame[] getInternalFrames() {
-		return internalFrames;
+		return iFrames;
 	}
 
 	public GraphManager getGraphManager() {
@@ -308,19 +355,19 @@ public class MR3 extends JFrame {
 		int editorPositionY = userPrefs.getInt(PrefConstants.RDFEditorPositionY, height / 2);
 		int editorWidth = userPrefs.getInt(PrefConstants.RDFEditorWidth, width);
 		int editorHeight = userPrefs.getInt(PrefConstants.RDFEditorHeight, height / 2);
-		internalFrames[0].setBounds(new Rectangle(editorPositionX, editorPositionY, editorWidth, editorHeight)); // RDF
+		iFrames[0].setBounds(new Rectangle(editorPositionX, editorPositionY, editorWidth, editorHeight)); // RDF
 
 		editorPositionX = userPrefs.getInt(PrefConstants.ClassEditorPositionX, 0);
 		editorPositionY = userPrefs.getInt(PrefConstants.ClassEditorPositionY, 0);
 		editorWidth = userPrefs.getInt(PrefConstants.ClassEditorWidth, width / 2);
 		editorHeight = userPrefs.getInt(PrefConstants.ClassEditorHeight, height / 2);
-		internalFrames[1].setBounds(new Rectangle(editorPositionX, editorPositionY, editorWidth, editorHeight)); // RDF
+		iFrames[1].setBounds(new Rectangle(editorPositionX, editorPositionY, editorWidth, editorHeight)); // RDF
 
 		editorPositionX = userPrefs.getInt(PrefConstants.PropertyEditorPositionX, width / 2);
 		editorPositionY = userPrefs.getInt(PrefConstants.PropertyEditorPositionY, 0);
 		editorWidth = userPrefs.getInt(PrefConstants.PropertyEditorWidth, width / 2);
 		editorHeight = userPrefs.getInt(PrefConstants.PropertyEditorHeight, height / 2);
-		internalFrames[2].setBounds(new Rectangle(editorPositionX, editorPositionY, editorWidth, editorHeight)); // RDF
+		iFrames[2].setBounds(new Rectangle(editorPositionX, editorPositionY, editorWidth, editorHeight)); // RDF
 	}
 
 	private JMenu getPluginMenus() {

@@ -20,10 +20,18 @@ public class NewProject extends AbstractActionFile {
 
 	public NewProject(MR3 mr3) {
 		super(mr3, NEW_PROJECT);
+		setValues();
 	}
 
 	public NewProject(MR3 mr3, ImageIcon icon) {
 		super(mr3, NEW_PROJECT, icon);
+		setValues();
+	}
+
+	private void setValues() {
+		putValue(SHORT_DESCRIPTION, "New Project");
+		//		putValue(MNEMONIC_KEY, Event.CTRL_MASK);
+		//		putValue(ACTION_COMMAND_KEY, KeyEvent.VK_N);
 	}
 
 	public void actionPerformed(ActionEvent e) {
