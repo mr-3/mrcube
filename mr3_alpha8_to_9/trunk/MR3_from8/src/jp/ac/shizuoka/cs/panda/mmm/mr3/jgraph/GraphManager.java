@@ -733,12 +733,10 @@ public class GraphManager {
 		Object cell = rdfsInfoMap.getClassCell(uri);
 		if (cell != null) {
 			return cell;
+		} else if (isCheck && isDuplicated(uri.getURI(), null, classGraph.getType())) {
+			return null;
 		} else {
-			if (isCheck && isDuplicated(uri.getURI(), null, classGraph.getType())) {
-				return null;
-			} else {
-				return cellMaker.insertClass(new Point(50, 50), uri.getURI());
-			}
+			return cellMaker.insertClass(new Point(50, 50), uri.getURI());
 		}
 	}
 
@@ -771,12 +769,10 @@ public class GraphManager {
 		Object cell = rdfsInfoMap.getPropertyCell(uri);
 		if (cell != null) {
 			return cell;
+		} else if (isCheck && isDuplicated(uri.getURI(), null, propGraph.getType())) {
+			return null;
 		} else {
-			if (isCheck && isDuplicated(uri.getURI(), null, propGraph.getType())) {
-				return null;
-			} else {
-				return cellMaker.insertProperty(new Point(50, 50), uri.getURI());
-			}
+			return cellMaker.insertProperty(new Point(50, 50), uri.getURI());
 		}
 	}
 
@@ -879,6 +875,9 @@ public class GraphManager {
 	}
 
 	public void jumpArea(Object cell, JGraph graph) {
+		if (!graph.getModel().contains(cell)) {
+			return;
+		}
 		graph.scrollCellToVisible(cell);
 		if (graph == rdfGraph) {
 			Object parent = graph.getModel().getParent(cell);

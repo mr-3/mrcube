@@ -21,8 +21,7 @@ import jp.ac.shizuoka.cs.panda.mmm.mr3.util.Utilities;
 import com.hp.hpl.jena.rdf.model.*;
 
 /**
-  *   Meta-  Model Management founded on RDF-baed Revision Reflection  
-  *   {MR} ^3
+  *   {MR} ^3 Meta-Model Management founded on RDF-baed Revision Reflection  
   */
 public class MR3 extends JFrame {
 

@@ -31,8 +31,6 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 	private JTextField resTypeField;
 	private JLabel resTypeNSLabel;
 
-	private boolean isAnonymous;
-
 	private JCheckBox isTypeCellCheckBox;
 	private JCheckBox isAnonBox;
 
@@ -89,7 +87,7 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		initComponent(uriField, "RDF Resource ID", BOX_WIDTH, LIST_HEIGHT);
 		uriField.addActionListener(this);
 
-		isAnonBox = new JCheckBox(" isAnon ");
+		isAnonBox = new JCheckBox(" isBlank ");
 		isAnonBox.addActionListener(new IsAnonAction());
 
 		JPanel resPanel = new JPanel();
