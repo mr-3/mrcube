@@ -43,8 +43,8 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 	private RDFLiteralInfoMap litInfoMap = RDFLiteralInfoMap.getInstance();
 	private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
 
-	private static final int boxWidth = 150;
-	private static final int listWidth = 300;
+	private static final int boxWidth = 120;
+	private static final int listWidth = 350;
 	private static final int listHeight = 40;
 
 	public RDFResourcePanel(GraphManager manager) {

@@ -40,7 +40,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 
 	private static final int boxWidth = 120;
 	private static final int boxHeight = 50;
-	private static final int listWidth = 300;
+	private static final int listWidth = 350;
 	private static final int listHeight = 40;
 
 	public RDFPropertyPanel(GraphManager manager) {
@@ -52,7 +52,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		initComponent(uriPrefixBox, "Prefix", boxWidth, boxHeight);
 
 		idField = new JTextField();
-		initComponent(idField, "ID", boxWidth, boxHeight);
+		initComponent(idField, "ID", boxWidth, listHeight);
 		idField.addActionListener(this);
 
 		jumpRDFSProp = new JButton("Jump RDFS");

@@ -113,6 +113,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 				addNameSpaceTable(new Boolean(true), getMR3Prefix(), ns);
 			}
 		}
+		changeCellView();
 	}
 
 	public Serializable getState() {
