@@ -270,7 +270,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		}
 
 		gmanager.jumpPropertyArea(propertyCell); // 対応するRDFSプロパティを選択する
-
+				
 		rdfsInfoMap.putEdgeInfo(edge, propertyCell);
 		String propValue = gmanager.getPropertyGraph().convertValueToString(propertyCell);
 		gmanager.setCellValue(edge, propValue);
@@ -294,7 +294,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		if (e.getSource() == apply || e.getSource() == uriField) {
 			if (edge != null) {
 				changeProperty();
-				gmanager.jumpRDFArea(edge); // AttributeDialogの表示をRDFプロパティに戻す
+				gmanager.getRDFGraph().setSelectionCell(edge); // jumpだとうまくいかなかった．
 			}
 		} else if (e.getSource() == jumpRDFSProp) {
 			jumpRDFSProperty();

@@ -690,7 +690,7 @@ public class GraphManager {
 		jumpArea(cell, classGraph);
 	}
 
-	public void jumpPropertyArea(Object cell) {
+	public void jumpPropertyArea(Object cell) {	
 		jumpArea(cell, propGraph);
 	}
 
