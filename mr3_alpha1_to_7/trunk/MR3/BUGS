@@ -1,4 +1,4 @@
-== Known Bugs in MR^3 α3
+== Known Bugs in MR^3 α5
 
 * RDFSプロパティを初めて挿入したときには，挿入したプロパティではなく，
   http://mr3#Propertyの表示内容がAttribute Dialogに表示されてしまう．

@@ -66,7 +66,7 @@ public class RDFGraph extends JGraph {
 		if (attrDialog != null) {
 			attrDialog.setVisible(true);
 			if (isRDFResourceCell(cell)) {
-				RDFResourceCell resCell = (RDFResourceCell)cell;
+				RDFResourceCell resCell = (RDFResourceCell) cell;
 				setSelectionCell(resCell);
 			} else {
 				setSelectionCell(cell); // セルを表示する
@@ -628,36 +628,35 @@ public class RDFGraph extends JGraph {
 		gmanager.changeCellView();
 	}
 
-	private void pasteRDFSPropertyCell(Point pastePoint, GraphCell cell) {
-		PropertyInfo info = (PropertyInfo) copyBuffer.get(cell);
-		if (gmanager.isDuplicated(info.getURIStr(), null, GraphType.PROPERTY)) {
+	private String getCopyRDFSURI(RDFSInfo info, GraphType graphType) {
+		if (gmanager.isDuplicated(info.getURIStr(gmanager.getBaseURI()), null, graphType)) {
 			for (int j = 1; true; j++) {
-				String copyURI = info.getURIStr() + "-copy" + j;
-				if (!gmanager.isDuplicated(copyURI, null, GraphType.PROPERTY)) {
-					info.setURI(copyURI);
-					break;
+				String compURI = info.getURIStr(gmanager.getBaseURI()) + "-copy" + j;
+				if (!gmanager.isDuplicated(compURI, null, graphType)) {
+					return info.getURIStr() + "-copy" + j;
 				}
 			}
+		} else {
+			return info.getURIStr();
 		}
+	}
+
+	private void pasteRDFSPropertyCell(Point pastePoint, GraphCell cell) {
+		PropertyInfo info = (PropertyInfo) copyBuffer.get(cell);
+		String uri = getCopyRDFSURI(info, GraphType.PROPERTY);
+		info.setURI(uri);
 		info.removeNullDomain();
 		info.removeNullRange();
 		rdfsInfoMap.putCellInfo(cell, info);
-		setPastePosition(cell, info.getURIStr(), pastePoint);
+		setPastePosition(cell, uri, pastePoint);
 	}
 
 	private void pasteRDFSClassCell(Point pastePoint, GraphCell cell) {
 		ClassInfo info = (ClassInfo) copyBuffer.get(cell);
-		if (gmanager.isDuplicated(info.getURIStr(), null, GraphType.CLASS)) {
-			for (int j = 1; true; j++) {
-				String copyURI = info.getURIStr() + "-copy" + j;
-				if (!gmanager.isDuplicated(copyURI, null, GraphType.CLASS)) {
-					info.setURI(copyURI);
-					break;
-				}
-			}
-		}
+		String uri = getCopyRDFSURI(info, GraphType.CLASS);
+		info.setURI(uri);
 		rdfsInfoMap.putCellInfo(cell, info);
-		setPastePosition(cell, info.getURIStr(), pastePoint);
+		setPastePosition(cell, uri, pastePoint);
 	}
 
 	private void pasteRDFLiteralCell(Point pastePoint, GraphCell cell) {
@@ -680,18 +679,23 @@ public class RDFGraph extends JGraph {
 		rdfsInfoMap.putEdgeInfo(edge, rdfsPropCell);
 	}
 
-	private void pasteRDFResourceCell(Point pastePoint, GraphCell cell) {
-		RDFResourceInfo info = (RDFResourceInfo) copyBuffer.get(cell);
-
-		if (info.getURIType() != URIType.ANONYMOUS && gmanager.isDuplicated(info.getURI().getURI(), null, GraphType.RDF)) {
+	private String getCopyRDFURI(RDFResourceInfo info) {
+		if (info.getURIType() != URIType.ANONYMOUS && gmanager.isDuplicated(info.getURIStr(gmanager.getBaseURI()), null, GraphType.RDF)) {
 			for (int j = 1; true; j++) {
-				String copyURI = info.getURI() + "-copy" + j;
-				if (!gmanager.isDuplicated(copyURI, null, GraphType.RDF)) {
-					info.setURI(copyURI);
-					break;
+				String compURI = info.getURIStr(gmanager.getBaseURI()) + "-copy" + j;
+				if (!gmanager.isDuplicated(compURI, null, GraphType.RDF)) {
+					return info.getURIStr() + "-copy" + j;
 				}
 			}
+		} else {
+			return info.getURIStr();
 		}
+	}
+
+	private void pasteRDFResourceCell(Point pastePoint, GraphCell cell) {
+		RDFResourceInfo info = (RDFResourceInfo) copyBuffer.get(cell);
+		String uri = getCopyRDFURI(info);
+		info.setURI(uri);
 
 		// タイプに対応するクラスが削除されていた場合，表示を空にする．
 		if (rdfsInfoMap.getCellInfo(info.getTypeCell()) == null) {
@@ -705,7 +709,7 @@ public class RDFGraph extends JGraph {
 		if (info.getURIType() == URIType.ANONYMOUS) {
 			setPastePosition(cell, "", pastePoint);
 		} else {
-			setPastePosition(cell, info.getURI().getURI(), pastePoint);
+			setPastePosition(cell, uri, pastePoint);
 		}
 	}
 }

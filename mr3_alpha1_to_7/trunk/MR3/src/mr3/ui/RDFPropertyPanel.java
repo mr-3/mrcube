@@ -119,10 +119,11 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 					setURIField('#' + uriField.getText());
 				}
 				nameSpaceList.setListData(idPropNameSpaces.toArray());
+				nameSpaceList.setSelectedIndex(0);
 			} else if (uriType == URIType.URI) {
 				nameSpaceList.setListData(uriPropNameSpaces.toArray());
+				localNameList.setListData(NULL);
 			}
-			localNameList.setListData(NULL);
 		}
 	}
 
@@ -161,17 +162,21 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 	private static final String NULL_LOCAL_NAME = "(Null)";
 
 	private void selectNameSpaceList() {
-		Map tmpPropMap = null;
 		if (!localNameList.isSelectionEmpty()) {
 			localNameList.clearSelection();
 		}
 
+		Map tmpPropMap = null;
+		if (nameSpaceList.getModel().getSize() == 0) {
+			return;
+		}
+		String nameSpace = (String) nameSpaceList.getSelectedValue();		
 		if (uriButton.isSelected()) {
 			tmpPropMap = uriPropMap;
 		} else {
 			tmpPropMap = idPropMap;
 		}
-		String nameSpace = (String) nameSpaceList.getSelectedValue();
+
 		Set localNames = (Set) tmpPropMap.get(nameSpace);
 		if (nameSpace != null) {
 			Set modifyLocalNames = new HashSet();
@@ -207,9 +212,9 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 				ln = "";
 			}
 			if (uriButton.isSelected()) {
-				setURIField(ns+ln);
+				setURIField(ns + ln);
 			} else {
-				setURIField('#'+ln);
+				setURIField('#' + ln);
 			}
 		}
 	}
@@ -249,16 +254,18 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		if (propertyCell == null) {
 			String defaultProperty = MR3Resource.Nil.getURI();
 			setValue(defaultProperty);
+			uriType = URIType.URI;
 			uriButton.setSelected(true);
 			changeProperty();
 		} else {
 			RDFSInfo info = rdfsInfoMap.getCellInfo(propertyCell);
+			uriType = info.getURIType();
 			if (info.getURIType() == URIType.URI) {
 				uriButton.setSelected(true);
 			} else {
 				idButton.setSelected(true);
 			}
-			setValue(info.getURI().toString());
+			setValue(info.getURIStr());
 		}
 	}
 
@@ -298,10 +305,13 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 
 		if (uriButton.isSelected()) {
 			nameSpaceList.setListData(uriPropNameSpaces.toArray());
+			localNameList.setListData(NULL);
 		} else {
+			String uri = uriField.getText();
 			nameSpaceList.setListData(idPropNameSpaces.toArray());
+			nameSpaceList.setSelectedIndex(0);
+			uriField.setText(uri);
 		}
-		localNameList.setListData(NULL);
 	}
 
 	public void setValue(String s) {

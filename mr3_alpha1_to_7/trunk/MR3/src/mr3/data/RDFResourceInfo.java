@@ -12,7 +12,7 @@ public class RDFResourceInfo implements Serializable {
 	private Object typeCell; // RDFS Classに対応するCellを保持する
 	private GraphCell typeViewCell; // RDF Resourceにつく矩形のCellを保持する
 
-//	private Resource uri;
+	//	private Resource uri;
 	private String uri;
 	private URIType uriType;
 	transient private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
@@ -20,10 +20,10 @@ public class RDFResourceInfo implements Serializable {
 	public RDFResourceInfo(URIType ut, String uri, GraphCell typeCell) {
 		uriType = ut;
 		if (uriType == URIType.ANONYMOUS) {
-//			this.uri = getAnonResource();
+			//			this.uri = getAnonResource();
 			this.uri = getAnonResource().toString(); // getURI()は，nullを返してしまうため．
 		} else {
-//			this.uri = new ResourceImpl(uri);
+			//			this.uri = new ResourceImpl(uri);
 			this.uri = uri;
 		}
 		this.typeViewCell = typeCell;
@@ -32,8 +32,8 @@ public class RDFResourceInfo implements Serializable {
 	public RDFResourceInfo(RDFResourceInfo info) {
 		uri = info.getURIStr();
 		// プロジェクトを保存したときの各URITypeのHashCodeは，読み出した際に変化するため．
-		uriType = URIType.getURIType(info.getURIType().toString()); 
-		typeViewCell = (GraphCell)info.getTypeViewCell();
+		uriType = URIType.getURIType(info.getURIType().toString());
+		typeViewCell = (GraphCell) info.getTypeViewCell();
 		typeCell = info.getTypeCell();
 	}
 
@@ -105,10 +105,10 @@ public class RDFResourceInfo implements Serializable {
 
 	public void setURI(String str) {
 		if (uriType == URIType.ANONYMOUS) {
-//			uri = getAnonResource();
+			//			uri = getAnonResource();
 			uri = getAnonResource().toString(); // getURI()は，nullを返してしまうため，toString
 		} else {
-//			uri = new ResourceImpl(str);
+			//			uri = new ResourceImpl(str);
 			uri = str;
 		}
 	}
@@ -123,6 +123,14 @@ public class RDFResourceInfo implements Serializable {
 
 	public String getURIStr() {
 		return uri;
+	}
+
+	public String getURIStr(String baseURI) {
+		if (uriType == URIType.ID) {
+			return baseURI+uri;
+		} else {
+			return uri;
+		}
 	}
 
 	public String toString() {
