@@ -31,7 +31,7 @@ public abstract class MR3Plugin {
 		return menuName;
 	}
 
-	public void setMRCube(MR3 mr3) {
+	public void setMR3(MR3 mr3) {
 		this.mr3 = mr3;
 	}
 
@@ -88,5 +88,4 @@ public abstract class MR3Plugin {
 	protected JDesktopPane getDesktopPane() {
 		return mr3.getDesktopPane();
 	}
-	
 }

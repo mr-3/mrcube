@@ -148,8 +148,8 @@ public abstract class SelectClassDialog extends JDialog implements ActionListene
 
 	protected void setGraphLayout() {
 		JScrollPane graphScroll = new JScrollPane(graph);
-		graphScroll.setPreferredSize(new Dimension(450, 300));
-		graphScroll.setMinimumSize(new Dimension(450, 300));
+		graphScroll.setPreferredSize(new Dimension(450, 250));
+		graphScroll.setMinimumSize(new Dimension(450, 250));
 		gridbag.setConstraints(graphScroll, c);
 		inlinePanel.add(graphScroll);
 	}

@@ -28,7 +28,7 @@ public class RDFCellMaker {
 
 	public Map getEdgeMap(String value) {
 		Map map = GraphConstants.createMap();
-		GraphConstants.setLineEnd(map, GraphConstants.ARROW_TECHNICAL); // Add a Line End Attribute
+		GraphConstants.setLineEnd(map, GraphConstants.ARROW_CLASSIC); 
 		GraphConstants.setValue(map, value);
 		return map;
 	}
