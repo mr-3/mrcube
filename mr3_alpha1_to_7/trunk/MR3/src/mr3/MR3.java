@@ -308,7 +308,7 @@ public class MR3 extends JFrame {
 		return menu;
 	}
 
-	private static final String PROJECT = "Project (RDF/XML)";
+	private static final String PROJECT = "Project (Java Object)";
 	private static final String RDFS_XML = "RDFS/XML";
 	private static final String RDFS_NTriple = "RDFS/N-Triple";
 	private static final String RDF_XML = "RDF/XML";
@@ -558,7 +558,6 @@ public class MR3 extends JFrame {
 		gmanager.removeAllCells();
 		nsTableDialog.setDefaultNSPrefix();
 		setTitle("MR^3 - New Project");
-		currentProject = null;
 	}
 
 	class NewProjectAction extends AbstractAction {
@@ -571,41 +570,28 @@ public class MR3 extends JFrame {
 	}
 
 	class OpenProjectAction extends AbstractAction {
-
-		private ObjectInputStream createInputStream(File file) throws FileNotFoundException, IOException {
-			InputStream fi = new FileInputStream(file);
-			fi = new GZIPInputStream(fi);
-			return new ObjectInputStream(fi);
-		}
-
-		public void openProject(File file) {
-			try {
-				if (file != null) {
-					newProject();
-					ObjectInputStream oi = createInputStream(file);
-					Object obj = oi.readObject();
-					if (obj instanceof ArrayList) {
-						ArrayList list = (ArrayList) obj;
-						int index = gmanager.loadState(list);
-						nsTableDialog.loadState((List) list.get(index));
-					}
-					oi.close();
-					setTitle("MR^3 - " + file.getAbsolutePath());
-					currentProject = file;
-				}
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			} catch (ClassNotFoundException cnfe) {
-				cnfe.printStackTrace();
-			}
-		}
-
 		public void actionPerformed(ActionEvent e) {
-			File file = getFile(true, "mr3");
-			if (file == null) {
-				return;
+			try {				
+				ProjectManager pm = new ProjectManager(gmanager, nsTableDialog);
+				gmanager.setIsImporting(true);
+				Model model = readModel(getReader("mr3", "UTF8"), gmanager.getBaseURI());
+				if (model == null) {
+					return;
+				}
+				newProject();
+				// 順番が重要なので、よく考えること
+				Model projectModel = pm.extractProjectModel(model);
+				mr3Reader.mergeRDFS(model);
+				nsTableDialog.setCurrentNSPrefix();
+				pm.loadProject(projectModel);
+				pm.removeEmptyClass();
+				gmanager.removeTypeCells();
+				gmanager.addTypeCells();
+				gmanager.setIsImporting(false);
+				setTitle("MR^3 - " + currentProject.getAbsolutePath());
+			} catch (RDFException e1) {
+				e1.printStackTrace();
 			}
-			openProject(file);
 		}
 	}
 
@@ -617,17 +603,25 @@ public class MR3 extends JFrame {
 
 	private void saveProject(File file) {
 		try {
-			ObjectOutputStream oo = createOutputStream(file);
-			ArrayList list = gmanager.storeState();
-			list.add(nsTableDialog.getState());
-			oo.writeObject(list);
-			oo.flush();
-			oo.close();
+			// 順番に注意．リテラルのモデルを抽出して，プロジェクトモデルを抽出してから
+			// リテラルモデルを削除する
+			ProjectManager pm = new ProjectManager(gmanager, nsTableDialog);
+			Model exportModel = getRDFModel();
+			exportModel.add(getRDFSModel());
+			Model literalModel = pm.getLiteralModel(exportModel);
+			exportModel.add(pm.getProjectModel());
+			exportModel.remove(literalModel);
+			Writer output = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
+			RDFWriter writer = new RDFWriterFImpl().getWriter("RDF/XML-ABBREV");
+			rdfEditor.writeModel(exportModel, output, writer);
 			setTitle("MR^3 - " + file.getAbsolutePath());
-		} catch (FileNotFoundException fne) {
-			fne.printStackTrace();
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
+			currentProject = file;
+		} catch (RDFException e1) {
+			e1.printStackTrace();
+		} catch (FileNotFoundException e2) {
+			e2.printStackTrace();
+		} catch (UnsupportedEncodingException e3) {
+			e3.printStackTrace();
 		}
 	}
 
@@ -641,6 +635,7 @@ public class MR3 extends JFrame {
 	}
 
 	class SaveProjectAction extends AbstractAction {
+
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("Save Project")) {
 				if (currentProject == null) {
@@ -742,7 +737,7 @@ public class MR3 extends JFrame {
 		} catch (MalformedURLException uriex) {
 			uriex.printStackTrace();
 		} catch (IOException ioe) {
-			ioe.printStackTrace();
+			JOptionPane.showInternalMessageDialog(desktop, "File Not Found.", "Warning", JOptionPane.ERROR_MESSAGE);
 		}
 
 		return null;
@@ -752,6 +747,9 @@ public class MR3 extends JFrame {
 		File file = getFile(true, ext);
 		if (file == null) {
 			return null;
+		}
+		if (ext.equals("mr3")) {
+			currentProject = file;
 		}
 		try {
 			if (encoding == null) {
@@ -824,53 +822,60 @@ public class MR3 extends JFrame {
 	}
 
 	class ImportProjectAction extends AbstractAction {
-		public void actionPerformed(ActionEvent e) {
+		private ObjectInputStream createInputStream(File file) throws FileNotFoundException, IOException {
+			InputStream fi = new FileInputStream(file);
+			fi = new GZIPInputStream(fi);
+			return new ObjectInputStream(fi);
+		}
+
+		public void openProject(File file) {
 			try {
-				ProjectManager pm = new ProjectManager(gmanager, nsTableDialog);
-				gmanager.setIsImporting(true);
-				Model model = readModel(getReader("mr3", "UTF8"), gmanager.getBaseURI());
-				if (model == null) {
-					return;
+				newProject();
+				ObjectInputStream oi = createInputStream(file);
+				Object obj = oi.readObject();
+				if (obj instanceof ArrayList) {
+					ArrayList list = (ArrayList) obj;
+					int index = gmanager.loadState(list);
+					nsTableDialog.loadState((List) list.get(index));
 				}
-				// 順番が重要なので、よく考えること
-				Model projectModel = pm.extractProjectModel(model);
-				mr3Reader.mergeRDFS(model);
-				nsTableDialog.setCurrentNSPrefix();
-				pm.loadProject(projectModel);
-				pm.removeEmptyClass();
-				gmanager.removeTypeCells();
-				gmanager.addTypeCells();
-				gmanager.setIsImporting(false);
-			} catch (RDFException e1) {
-				e1.printStackTrace();
+				oi.close();
+				setTitle("MR^3 - " + file.getAbsolutePath());
+				currentProject = file;
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			} catch (ClassNotFoundException cnfe) {
+				cnfe.printStackTrace();
 			}
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			File file = getFile(true, "mr3");
+			if (file == null) {
+				return;
+			}
+			openProject(file);
 		}
 	}
 
 	class ExportProjectAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
+			File file = getFile(false, "mr3");
+			if (file == null) {
+				return;
+			}
 			try {
-				File file = getFile(false, "mr3");
-				if (file == null) {
-					return;
-				}
-				// 順番に注意．リテラルのモデルを抽出して，プロジェクトモデルを抽出してから
-				// リテラルモデルを削除する
-				ProjectManager pm = new ProjectManager(gmanager, nsTableDialog);
-				Model exportModel = getRDFModel();
-				exportModel.add(getRDFSModel());
-				Model literalModel = pm.getLiteralModel(exportModel);
-				exportModel.add(pm.getProjectModel());
-				exportModel.remove(literalModel);
-				Writer output = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
-				RDFWriter writer = new RDFWriterFImpl().getWriter("RDF/XML-ABBREV");
-				rdfEditor.writeModel(exportModel, output, writer);
-			} catch (RDFException e1) {
-				e1.printStackTrace();
-			} catch (FileNotFoundException e2) {
-				e2.printStackTrace();
-			} catch (UnsupportedEncodingException e3) {
-				e3.printStackTrace();
+				ObjectOutputStream oo = createOutputStream(file);
+				ArrayList list = gmanager.storeState();
+				list.add(nsTableDialog.getState());
+				oo.writeObject(list);
+				oo.flush();
+				oo.close();
+				setTitle("MR^3 - " + file.getAbsolutePath());
+				currentProject = file;
+			} catch (FileNotFoundException fne) {
+				fne.printStackTrace();
+			} catch (IOException ioe) {
+				ioe.printStackTrace();
 			}
 		}
 	}

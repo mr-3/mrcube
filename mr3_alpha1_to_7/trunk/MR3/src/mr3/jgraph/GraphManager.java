@@ -471,7 +471,7 @@ public class GraphManager {
 				changeRDFResourceCellView(cell);
 			} else if (rdfGraph.isRDFPropertyCell(cell)) {
 				changeRDFPropertyCellView(cell);
-			}
+			} 
 		}
 		rdfGraph.getGraphLayoutCache().reload();
 		rdfGraph.repaint();
