@@ -226,6 +226,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		}
 
 		nameSpaceList.setListData(propNameSpaces.toArray());
+		localNameList.setListData(NULL);
 		propMap = pMap;
 	}
 

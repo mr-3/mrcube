@@ -674,7 +674,12 @@ public class GraphManager {
 
 	private void jumpArea(Object cell, JGraph graph) {
 		graph.scrollCellToVisible(cell);
-		graph.setSelectionCell(cell);
+		if (graph == rdfGraph) {
+			Object parent = graph.getModel().getParent(cell);
+			graph.setSelectionCell(parent);
+		} else {
+			graph.setSelectionCell(cell);
+		}
 	}
 
 	public void jumpRDFArea(Object cell) {
