@@ -564,6 +564,7 @@ public class GraphManager {
 
 	private void changePropertyCellView() {
 		Object[] propCells = propGraph.getAllCells();
+		propCells = rdfsInfoMap.getCellSet().toArray();
 		changeRDFSCellView(propCells);
 		propGraph.getGraphLayoutCache().reload();
 		propGraph.repaint();
