@@ -79,6 +79,30 @@ public class RDFGraph extends JGraph {
 		return type;
 	}
 
+	/**
+	 * Returns true if <code>object</code> is a vertex, that is, if it
+	 * is not an instance of Port or Edge, and all of its children are
+	 * ports, or it has no children.
+	 */
+	public boolean isGroup(Object cell) {
+		// Map the Cell to its View
+		CellView view = getGraphLayoutCache().getMapping(cell, false);
+		if (view != null)
+			return !view.isLeaf();
+		return false;
+	}
+
+	/**
+	 * Returns true if <code>object</code> is a vertex, that is, if it
+	 * is not an instance of Port or Edge, and all of its children are
+	 * ports, or it has no children.
+	 */
+	public boolean isVertex(Object object) {
+		if (!(object instanceof Port) && !(object instanceof Edge))
+			return !isGroup(object) && object != null;
+		return false;
+	}
+
 	private void initStatus() {
 		setGridSize(6);
 		setSelectNewCells(true);
@@ -614,7 +638,7 @@ public class RDFGraph extends JGraph {
 	private int margin_y;
 	private static final int ADDED_MARGIN = 10;
 	private static final Point COPY_PASTE_POINT = new Point(25, 25);
-	
+
 	public void copy() {
 		margin_x = ADDED_MARGIN;
 		margin_y = ADDED_MARGIN;
@@ -693,12 +717,12 @@ public class RDFGraph extends JGraph {
 		for (Iterator i = copyCells.iterator(); i.hasNext();) {
 			Object cell = i.next();
 			if (isRDFsCell(cell) || isTypeCell(cell)) {
-				selectionCells.add(cell);				
+				selectionCells.add(cell);
 			}
 		}
 		setSelectionCells(selectionCells.toArray());
 	}
-	
+
 	private String getCopyRDFSURI(RDFSInfo info, GraphType graphType) {
 		if (gmanager.isDuplicated(info.getURIStr(), null, graphType)) {
 			for (int j = 1; true; j++) {

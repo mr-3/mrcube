@@ -5,6 +5,8 @@
    への変換，RDFSプロパティからRDFリソース，RDFSクラスへの変換が可能になった．
    (ポップアップメニューの「Transform from X to X」)
 * デフォルトのLangをEdit->Preferenceで設定できるようになった．
+* RDFグラフ，クラスグラフ，プロパティグラフをPNG形式でエクスポートできるようになった．
+   File->Export->IMG->*
 
 ==== Bug Fixes
 * 初めて起動するときに，各エディタが表示されていなかったのを修正．
