@@ -32,7 +32,7 @@
 
   <target name="jar" depends="compile">
     <mkdir dir="${lib.dir}"/>
-    <jar jarfile="${lib.dir}/${app.name}.jar"
+    <jar jarfile="build/${app.name}.jar"
       basedir="${build.dir}" includes="**" manifest="src/mr3.mf"/>
   </target>
 

@@ -1,2 +1,2 @@
 #!/bin/sh
-java -jar build/lib/mr3.jar
+java -jar build/mr3.jar
