@@ -109,13 +109,9 @@ public class InsertRDFResDialog extends JDialog implements ActionListener, ItemL
 
 	class IsAnonAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
-			if (isAnonBox.isSelected()) {
-				setIDField("", false);
-				uriPrefixBox.setEnabled(false);
-			} else {
-				setIDField("", true);
-				uriPrefixBox.setEnabled(true);
-			}
+			setIDField("", !isAnonBox.isSelected());
+			nsLabel.setEnabled(!isAnonBox.isSelected());
+			uriPrefixBox.setEnabled(!isAnonBox.isSelected());
 		}
 	}
 
@@ -132,7 +128,7 @@ public class InsertRDFResDialog extends JDialog implements ActionListener, ItemL
 	}
 
 	public String getURI() {
-		return nsLabel.getText()+idField.getText();
+		return nsLabel.getText() + idField.getText();
 	}
 
 	public void itemStateChanged(ItemEvent e) {

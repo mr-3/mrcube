@@ -126,11 +126,11 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		add(resTypePanel);
 		gridbag.setConstraints(resTypeNSLabel, c);
 		add(resTypeNSLabel);
-		
+
 		c.anchor = GridBagConstraints.EAST;
 		gridbag.setConstraints(typePanel, c);
 		add(typePanel);
-		
+
 		c.anchor = GridBagConstraints.CENTER;
 		gridbag.setConstraints(resPanel, c);
 		add(resPanel);
@@ -167,6 +167,7 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		} else {
 			setResourceTypeField("");
 		}
+		resTypeNSLabel.setEnabled(t);
 		resTypePrefixBox.setEnabled(t);
 		resTypeField.setEditable(t);
 		selectTypeButton.setEnabled(t);
@@ -193,11 +194,8 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 
 	class IsAnonAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
-			if (isAnonBox.isSelected()) {
-				setURIField("", false);
-			} else {
-				setURIField("", true);
-			}
+			setURIField("", !isAnonBox.isSelected());
+			resNSLabel.setEnabled(!isAnonBox.isSelected());
 		}
 	}
 
