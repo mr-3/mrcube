@@ -16,7 +16,7 @@ public class RDFCellMaker {
 	private GraphManager gmanager;
 	private RDFResourceInfoMap resInfoMap = RDFResourceInfoMap.getInstance();
 	private RDFLiteralInfoMap litInfoMap = RDFLiteralInfoMap.getInstance();
-	private RDFSInfoMap rdfsMap = RDFSInfoMap.getInstance();
+	private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
 
 	private static final int cellWidth = 100;
 	private static final int cellHeight = 30;
@@ -140,7 +140,7 @@ public class RDFCellMaker {
 		setCell(graph, vertex, map);
 
 		RDFSInfo info = new ClassInfo(uri);
-		rdfsMap.putCellInfo(vertex, info);
+		rdfsInfoMap.putCellInfo(vertex, info);
 
 		return vertex;
 	}
@@ -149,12 +149,11 @@ public class RDFCellMaker {
 		JGraph graph = gmanager.getPropertyGraph();
 		point = graph.snap(new Point(point)); // Snap the Point to the Grid
 		Map map = getPropertyMap(point);
-//		RDFResourceCell vertex = new RDFResourceCell(uri);
 		RDFSPropertyCell vertex = new RDFSPropertyCell(uri);
 		setCell(graph, vertex, map);
 
 		RDFSInfo info = new PropertyInfo(uri);
-		rdfsMap.putCellInfo(vertex, info);
+		rdfsInfoMap.putCellInfo(vertex, info);
 
 		return vertex;
 	}

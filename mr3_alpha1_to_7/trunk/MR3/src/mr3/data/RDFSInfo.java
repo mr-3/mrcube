@@ -47,6 +47,14 @@ public abstract class RDFSInfo implements Serializable {
 		}
 	}
 
+	public Model getInnerModel() {
+		return model;
+	}
+
+	public void setInnerModel(Model m) {
+		model = m;
+	}
+	
 	public Model getModel() throws RDFException {
 		Model tmpModel = new ModelMem();
 
