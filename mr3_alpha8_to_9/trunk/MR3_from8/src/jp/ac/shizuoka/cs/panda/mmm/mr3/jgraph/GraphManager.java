@@ -256,6 +256,30 @@ public class GraphManager {
 		changeCellView();
 	}
 
+	public Set getClassSet() {
+		Set classSet = new HashSet();
+		Object[] cells = classGraph.getAllCells();
+		for (int i = 0; i < cells.length; i++) {
+			if (classGraph.isRDFSClassCell(cells[i])) {
+				RDFSInfo info = rdfsInfoMap.getCellInfo(cells[i]);
+				classSet.add(info.getURIStr());
+			}
+		}
+		return classSet;
+	}
+
+	public Set getPropertySet() {
+		Set propertySet = new HashSet();
+		Object[] cells = propGraph.getAllCells();
+		for (int i = 0; i < cells.length; i++) {
+			if (classGraph.isRDFSPropertyCell(cells[i])) {
+				RDFSInfo info = rdfsInfoMap.getCellInfo(cells[i]);
+				propertySet.add(info.getURIStr());
+			}
+		}
+		return propertySet;
+	}
+
 	public void addTypeCells() {
 		Object[] rdfCells = rdfGraph.getAllCells();
 		RDFCellMaker cellMaker = new RDFCellMaker(this);
@@ -1148,6 +1172,10 @@ public class GraphManager {
 		applyTreeLayout(rdfGraph, 'r');
 		//		applyTreeLayout(rdfGraph, TreeLayoutAlgorithm.LEFT_TO_RIGHT, 200, 20);
 		addTypeCells();
+		applyRDFSTreeLayout();
+	}
+
+	public void applyRDFSTreeLayout() {
 		//		applySugiyamaLayout(classGraph, new Point(200, 200));
 		applyTreeLayout(classGraph, 'u');
 		//		applyTreeLayout(classGraph, TreeLayoutAlgorithm.UP_TO_DOWN, 30, 50);

@@ -112,6 +112,28 @@ public class RDFSInfoMap {
 		return (RDFSInfo) resourceInfoMap.get(resource);
 	}
 
+	/** RDFSModelExtraction#extractClassModelの後にクラスのセットを得る */
+	public Set getClassSet(Set classSet, Resource resource) {
+		classSet.add(resource.getURI());
+		RDFSInfo info = (RDFSInfo) resourceInfoMap.get(resource);
+		for (Iterator i = info.getRDFSSubList().iterator(); i.hasNext();) {
+			Resource res = (Resource) i.next();
+			getClassSet(classSet, res);
+		}
+		return classSet;
+	}
+	
+	/** RDFSModelExtraction#extractPropertyModelの後にプロパティのセットを得る */
+	public Set getPropertySet(Set propertySet, Resource resource) {
+		propertySet.add(resource.getURI());
+		RDFSInfo info = (RDFSInfo) resourceInfoMap.get(resource);
+		for (Iterator i = info.getRDFSSubList().iterator(); i.hasNext();) {
+			Resource res = (Resource) i.next();
+			getClassSet(propertySet, res);
+		}
+		return propertySet;
+	}
+
 	/*
 	 * 登録しようとしているinfoのURIが重複していればtrue．重複していなければfalse  
 	 * RDFSInfo#equalsでは，Resource(uri)の重複をチェックしている．
@@ -199,7 +221,7 @@ public class RDFSInfoMap {
 	}
 
 	public Set getCellSet() {
-		return Collections.unmodifiableSet(cellInfoMap.keySet()); 
+		return Collections.unmodifiableSet(cellInfoMap.keySet());
 	}
 
 	/** cell -> info */

@@ -24,7 +24,7 @@ public class ClassInfo extends RDFSInfo {
 	}
 
 	public ClassInfo(ClassInfo info) {
-		super(info);		
+		super(info);
 		subClasses = new HashSet();
 		supClasses = new HashSet();
 	}
@@ -54,12 +54,20 @@ public class ClassInfo extends RDFSInfo {
 		subClasses.add(subClass);
 	}
 
+	public void clearSubClass() {
+		subClasses = new HashSet();
+	}
+
 	public void addSupClass(Resource supClass) {
 		supClasses.add(supClass);
 	}
 
 	public Set getSupClasses() {
 		return Collections.unmodifiableSet(supClasses);
+	}
+
+	public void clearSupClass() {
+		supClasses = new HashSet();
 	}
 
 	public String toString() {

@@ -20,16 +20,15 @@ public class FileExportImg extends AbstractActionFile {
 
 	private String fileType;
 	private GraphType graphType;
-	private GraphManager gmanager;
 
-	public FileExportImg(MR3 mr3, GraphManager gm, GraphType gt, String ft, String title) {
+	public FileExportImg(MR3 mr3, GraphType gt, String ft, String title) {
 		super(mr3, title);
-		gmanager = gm;
 		graphType = gt;
 		fileType = ft;
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		GraphManager gmanager =mr3.getGraphManager(); 
 		File file = getFile(false, "png");
 		if (file == null) {
 			return;

@@ -14,7 +14,7 @@ public class RDFSModelExtraction {
 	private GraphManager gmanager;
 	private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
 
-	RDFSModelExtraction(GraphManager manager) {
+	public RDFSModelExtraction(GraphManager manager) {
 		gmanager = manager;
 	}
 
