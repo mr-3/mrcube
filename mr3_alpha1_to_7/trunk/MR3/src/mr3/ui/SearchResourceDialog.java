@@ -26,12 +26,12 @@ public class SearchResourceDialog extends JInternalFrame {
 	private GraphType searchArea;
 
 	private JButton closeButton;
-	 
+
 	private GraphManager gmanager;
 	private static Object[] NULL = new Object[0];
 
 	public SearchResourceDialog(String title, GraphManager manager) {
-		super(title, false, false);
+		super(title, false, true, false);
 		Container contentPane = getContentPane();
 
 		gmanager = manager;
@@ -69,17 +69,19 @@ public class SearchResourceDialog extends JInternalFrame {
 		closeButton = new JButton("Close");
 		closeButton.addActionListener(new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
-				setVisible(false);		
-			}
-		});
-
-		// うまく動かない
-		addInternalFrameListener(new InternalFrameAdapter() {
-			public void internalFrameClosed(InternalFrameEvent e) {
 				setVisible(false);
 			}
 		});
-	
+
+		// デフォルトの動作を消す
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		// 閉じるときに，setVisible(false）にする
+		addInternalFrameListener(new InternalFrameAdapter() {
+			public void internalFrameClosing(InternalFrameEvent e) {
+				setVisible(false);
+			}
+		});
+		
 		GridBagLayout gridbag = new GridBagLayout();
 		GridBagConstraints c = new GridBagConstraints();
 		contentPane.setLayout(gridbag);
@@ -96,10 +98,10 @@ public class SearchResourceDialog extends JInternalFrame {
 
 		gridbag.setConstraints(resourceListScroll, c);
 		contentPane.add(resourceListScroll);
-		
+
 		gridbag.setConstraints(closeButton, c);
 		contentPane.add(closeButton);
-	
+
 		setLocation(100, 100);
 		setSize(new Dimension(400, 200));
 		setVisible(false);

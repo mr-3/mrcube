@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.prefs.*;
 
 import javax.swing.*;
+import javax.swing.event.*;
 
 import mr3.data.*;
 import mr3.editor.*;
@@ -64,6 +65,9 @@ public class MR3 extends JFrame {
 	private JCheckBoxMenuItem showToolTips;
 	private JInternalFrame[] internalFrames = new JInternalFrame[3];
 	private JInternalFrame srcFrame;
+	private JCheckBoxMenuItem rdfEditorView;
+	private JCheckBoxMenuItem classEditorView;
+	private JCheckBoxMenuItem propertyEditorView;
 	private JCheckBoxMenuItem showSrcView;
 	//	private JCheckBoxMenuItem lightView;
 
@@ -113,13 +117,7 @@ public class MR3 extends JFrame {
 		prefDialog.setVisible(false);
 		desktop.add(prefDialog, JLayeredPane.MODAL_LAYER);
 
-		internalFrames[0] = createInternalFrame(rdfEditor, "RDF Editor", DEMO_FRAME_LAYER);
-		//		createInternalFrame(realRDFEditor, "Real RDF Editor", DEMO_FRAME_LAYER);
-		internalFrames[1] = createInternalFrame(classEditor, "Class Editor", DEMO_FRAME_LAYER);
-		internalFrames[2] = createInternalFrame(propertyEditor, "Property Editor", DEMO_FRAME_LAYER);
-		srcFrame = createInternalFrame(new JScrollPane(srcArea), "Src View", DEMO_FRAME_LAYER);
-		srcFrame.setBounds(new Rectangle(0, 0, FRAME_WIDTH, FRAME_HEIGHT));
-		srcFrame.setVisible(false);
+		createInternalFrames();
 
 		desktop.setBackground(DESKTOP_BACK_COLOR);
 
@@ -149,6 +147,44 @@ public class MR3 extends JFrame {
 		loadWindows();
 	}
 
+	private void createInternalFrames() {
+		internalFrames[0] = createInternalFrame(rdfEditor, "RDF Editor", DEMO_FRAME_LAYER);
+		internalFrames[0].setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		internalFrames[0].addInternalFrameListener(new CloseInternalFrameAction());
+
+		//		createInternalFrame(realRDFEditor, "Real RDF Editor", DEMO_FRAME_LAYER);
+		internalFrames[1] = createInternalFrame(classEditor, "Class Editor", DEMO_FRAME_LAYER);
+		internalFrames[1].setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		internalFrames[1].addInternalFrameListener(new CloseInternalFrameAction());
+
+		internalFrames[2] = createInternalFrame(propertyEditor, "Property Editor", DEMO_FRAME_LAYER);
+		internalFrames[2].setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		internalFrames[2].addInternalFrameListener(new CloseInternalFrameAction());
+
+		srcFrame = createInternalFrame(new JScrollPane(srcArea), "Src View", DEMO_FRAME_LAYER);
+		srcFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		srcFrame.addInternalFrameListener(new CloseInternalFrameAction());
+		srcFrame.setBounds(new Rectangle(0, 0, FRAME_WIDTH, FRAME_HEIGHT));
+		srcFrame.setVisible(false);
+	}
+
+	class CloseInternalFrameAction extends InternalFrameAdapter {
+		public void internalFrameClosing(InternalFrameEvent e) {
+			JInternalFrame tmp = e.getInternalFrame();
+
+			if (tmp == internalFrames[0]) {
+				rdfEditorView.setSelected(false);
+			} else if (tmp == internalFrames[1]) {
+				classEditorView.setSelected(false);
+			} else if (tmp == internalFrames[2]) {
+				propertyEditorView.setSelected(false);
+			} else if (tmp == srcFrame) {
+				showSrcView.setSelected(false);
+			}
+			tmp.setVisible(false);
+		}
+	}
+
 	private void setLookAndFeel() {
 		try {
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
@@ -160,7 +196,7 @@ public class MR3 extends JFrame {
 
 	public JInternalFrame createInternalFrame(Container container, String title, Integer layer) {
 		JInternalFrame jif = new JInternalFrame(title);
-		jif.setClosable(false);
+		jif.setClosable(true);
 		jif.setMaximizable(true);
 		jif.setIconifiable(true);
 		jif.setResizable(true);
@@ -449,7 +485,8 @@ public class MR3 extends JFrame {
 
 	class NewAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
-			int messageType = JOptionPane.showInternalConfirmDialog(desktop, "Are you sure you want to continue?", "Warning", JOptionPane.YES_NO_OPTION);
+			int messageType =
+				JOptionPane.showInternalConfirmDialog(desktop, "Are you sure you want to continue?", "Warning", JOptionPane.YES_NO_OPTION);
 			if (messageType == JOptionPane.YES_OPTION) {
 				attrDialog.setNullPanel();
 				resInfoMap.clear();
@@ -541,13 +578,13 @@ public class MR3 extends JFrame {
 			rdfURI = getURI(uri);
 			Reader reader = new InputStreamReader(rdfURI.openStream());
 			return reader;
-		} catch(UnknownHostException uhe) {
-			JOptionPane.showInternalMessageDialog(desktop, "Unknown Host(Proxy)", "Warning", JOptionPane.ERROR_MESSAGE);	
+		} catch (UnknownHostException uhe) {
+			JOptionPane.showInternalMessageDialog(desktop, "Unknown Host(Proxy)", "Warning", JOptionPane.ERROR_MESSAGE);
 		} catch (MalformedURLException uriex) {
 			uriex.printStackTrace();
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
-		} 
+		}
 
 		return null;
 	}
@@ -668,23 +705,38 @@ public class MR3 extends JFrame {
 		item.addActionListener(new DeployWindows());
 		menu.add(item);
 		menu.addSeparator();
+		menu.add(getEditorViewMenu());
+		showSrcView = new JCheckBoxMenuItem("Show SRC", false);
+		showSrcView.addActionListener(new ShowViewAction());
+		menu.add(showSrcView);
 		menu.add(attrDialog.getShowPropWindow());
 		menu.add(nsTableDialog.getShowNSTable());
-		showTypeCell = new JCheckBoxMenuItem("Show Type", true);
-		showTypeCell.addActionListener(new ShowTypeCellAction());
-		menu.add(showTypeCell);
+		//		showTypeCell = new JCheckBoxMenuItem("Show Type", true);
+		//		showTypeCell.addActionListener(new ShowTypeCellAction());
+		//		menu.add(showTypeCell);
 		showToolTips = new JCheckBoxMenuItem("Show ToolTips", false);
 		showToolTips.addActionListener(new ShowToolTipsAction());
 		ToolTipManager.sharedInstance().setEnabled(false);
 		menu.add(showToolTips);
-		showSrcView = new JCheckBoxMenuItem("Show SRC View", false);
-		showSrcView.addActionListener(new ShowSrcViewAction());
-		menu.add(showSrcView);
 		//		lightView = new JCheckBoxMenuItem("Color Mode", false);
 		//		lightView.addActionListener(new LightViewAction());
 		//		menu.add(lightView);
 
 		return menu;
+	}
+
+	private JMenu getEditorViewMenu() {
+		JMenu editorViewMenu = new JMenu("Editor");
+		rdfEditorView = new JCheckBoxMenuItem("Show RDF Editor", true);
+		rdfEditorView.addActionListener(new ShowViewAction());
+		editorViewMenu.add(rdfEditorView);
+		classEditorView = new JCheckBoxMenuItem("Show Class Editor", true);
+		classEditorView.addActionListener(new ShowViewAction());
+		editorViewMenu.add(classEditorView);
+		propertyEditorView = new JCheckBoxMenuItem("Show Property Editor", true);
+		propertyEditorView.addActionListener(new ShowViewAction());
+		editorViewMenu.add(propertyEditorView);
+		return editorViewMenu;
 	}
 
 	private void deployWindows() {
@@ -701,9 +753,18 @@ public class MR3 extends JFrame {
 		}
 	}
 
-	class ShowSrcViewAction extends AbstractAction {
+	class ShowViewAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
-			srcFrame.setVisible(showSrcView.getState());
+			JCheckBoxMenuItem tmp = (JCheckBoxMenuItem) e.getSource();
+			if (tmp == rdfEditorView) {
+				internalFrames[0].setVisible(rdfEditorView.getState());
+			} else if (tmp == classEditorView) {
+				internalFrames[1].setVisible(classEditorView.getState());
+			} else if (tmp == propertyEditorView) {
+				internalFrames[2].setVisible(propertyEditorView.getState());
+			} else if (tmp == showSrcView) {
+				srcFrame.setVisible(showSrcView.getState());
+			}
 		}
 	}
 
