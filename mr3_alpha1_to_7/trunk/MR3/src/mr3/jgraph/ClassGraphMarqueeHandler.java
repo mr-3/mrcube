@@ -25,7 +25,7 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 			Port source = (Port) firstPort.getCell();
 			DefaultPort target = (DefaultPort) port.getCell();
 			connect(source, target, "");
-			classPanel.displayRDFSInfo((DefaultGraphCell) graph.getModel().getParent(source));
+			classPanel.showRDFSInfo((DefaultGraphCell) graph.getModel().getParent(source));
 			e.consume();
 		} else {
 			graph.repaint();

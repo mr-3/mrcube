@@ -96,7 +96,7 @@ public class RDFEditor extends Editor {
 		if (info != null) {
 			gmanager.jumpClassArea(info.getTypeCell());
 			if (attrDialog.isVisible()) {
-				resPanel.displayResInfo(cell);
+				resPanel.showRDFResInfo(cell);
 				attrDialog.setContentPane(resPanel);
 			}
 		}

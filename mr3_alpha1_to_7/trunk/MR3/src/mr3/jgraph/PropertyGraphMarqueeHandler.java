@@ -29,7 +29,7 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 			Port source = (Port) firstPort.getCell();
 			DefaultPort target = (DefaultPort) port.getCell();
 			connect(source, target, "");
-			propertyPanel.displayRDFSInfo((DefaultGraphCell) graph.getModel().getParent(source));
+			propertyPanel.showRDFSInfo((DefaultGraphCell) graph.getModel().getParent(source));
 			e.consume();
 		} else {
 			graph.repaint();
