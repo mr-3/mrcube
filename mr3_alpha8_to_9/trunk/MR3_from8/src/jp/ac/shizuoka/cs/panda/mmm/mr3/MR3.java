@@ -74,7 +74,7 @@ public class MR3 extends JFrame {
 	private JRadioButton idView;
 	private JRadioButton labelView;
 
-	private static final Color DESKTOP_BACK_COLOR = new Color(235, 235, 235);
+	private static final Color DESKTOP_BACK_COLOR = new Color(245, 245, 245);
 
 	private Preferences userPrefs; // ユーザの設定を保存(Windowサイズなど）
 	private static ResourceBundle resources;
@@ -120,8 +120,8 @@ public class MR3 extends JFrame {
 		addWindowListener(new CloseWindow(this));
 		setIcon();
 		setTitle("MR^3 - New Project");
-		initPreferences();
 		setJMenuBar(createMenuBar());
+		initPreferences();
 		setVisible(true);
 	}
 
@@ -338,7 +338,7 @@ public class MR3 extends JFrame {
 		menu.add(new SaveProject(this, "Save Project As"));
 		menu.addSeparator();
 		JMenu importRDF = new JMenu("Import");
-		
+
 		JMenu replace = new JMenu("Replace");
 		replace.add(new ReplaceRDF(this, REPLACE_RDF_FILE));
 		replace.add(new ReplaceRDF(this, REPLACE_RDF_URI));
@@ -348,9 +348,9 @@ public class MR3 extends JFrame {
 		mergeMenu.add(new MergeRDFs(this, MERGE_RDFS_FILE));
 		mergeMenu.add(new MergeRDFs(this, MERGE_RDFS_URI));
 		importRDF.add(mergeMenu);
-		
+
 		importRDF.add(new ImportJavaObject(this));
-		
+
 		menu.add(importRDF);
 
 		JMenu exportMenu = new JMenu("Export");
@@ -381,9 +381,9 @@ public class MR3 extends JFrame {
 	}
 
 	private void initPreferences() {
-		int width = desktop.getWidth();
-		int height = desktop.getHeight();
-
+		int width = 792; // desktop.getWidth() -> 0
+		int height = 518; // desktop.getHeight()->0
+		
 		int editorPositionX = userPrefs.getInt(PrefConstants.RDFEditorPositionX, 0);
 		int editorPositionY = userPrefs.getInt(PrefConstants.RDFEditorPositionY, height / 2);
 		int editorWidth = userPrefs.getInt(PrefConstants.RDFEditorWidth, width);
@@ -394,19 +394,19 @@ public class MR3 extends JFrame {
 		editorPositionY = userPrefs.getInt(PrefConstants.ClassEditorPositionY, 0);
 		editorWidth = userPrefs.getInt(PrefConstants.ClassEditorWidth, width / 2);
 		editorHeight = userPrefs.getInt(PrefConstants.ClassEditorHeight, height / 2);
-		iFrames[1].setBounds(new Rectangle(editorPositionX, editorPositionY, editorWidth, editorHeight)); // RDF
+		iFrames[1].setBounds(new Rectangle(editorPositionX, editorPositionY, editorWidth, editorHeight)); // Class
 
 		editorPositionX = userPrefs.getInt(PrefConstants.PropertyEditorPositionX, width / 2);
 		editorPositionY = userPrefs.getInt(PrefConstants.PropertyEditorPositionY, 0);
 		editorWidth = userPrefs.getInt(PrefConstants.PropertyEditorWidth, width / 2);
 		editorHeight = userPrefs.getInt(PrefConstants.PropertyEditorHeight, height / 2);
-		iFrames[2].setBounds(new Rectangle(editorPositionX, editorPositionY, editorWidth, editorHeight)); // RDF
+		iFrames[2].setBounds(new Rectangle(editorPositionX, editorPositionY, editorWidth, editorHeight)); // Property
 
 		ChangeCellAttributes.rdfResourceColor = new Color(userPrefs.getInt(PrefConstants.RDFResourceColor, Color.pink.getRGB()));
 		ChangeCellAttributes.literalColor = new Color(userPrefs.getInt(PrefConstants.LiteralColor, Color.orange.getRGB()));
 		ChangeCellAttributes.classColor = new Color(userPrefs.getInt(PrefConstants.ClassColor, Color.green.getRGB()));
-		ChangeCellAttributes.propertyColor = new Color(userPrefs.getInt(PrefConstants.PropertyColor, Color.pink.getRGB()));
-		ChangeCellAttributes.selectedColor = new Color(userPrefs.getInt(PrefConstants.SelectedColor, Color.pink.getRGB()));
+		ChangeCellAttributes.propertyColor = new Color(userPrefs.getInt(PrefConstants.PropertyColor, new Color(255, 158, 62).getRGB()));
+		ChangeCellAttributes.selectedColor = new Color(userPrefs.getInt(PrefConstants.SelectedColor, new Color(255, 255, 50).getRGB()));
 
 		ChangeCellAttributes.isColor = userPrefs.getBoolean(PrefConstants.Color, true);
 		gmanager.setGraphBackground(new Color(userPrefs.getInt(PrefConstants.BackgroundColor, DESKTOP_BACK_COLOR.getRGB())));
