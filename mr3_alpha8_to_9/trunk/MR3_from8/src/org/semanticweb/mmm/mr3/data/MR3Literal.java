@@ -1,6 +1,6 @@
 /*
  * Created on 2003/06/08
- *
+ *  
  */
 package org.semanticweb.mmm.mr3.data;
 
@@ -11,11 +11,10 @@ import org.semanticweb.mmm.mr3.util.*;
 
 import com.hp.hpl.jena.datatypes.*;
 import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.rdf.model.impl.*;
 
 /**
  * @author takeshi morita
- * 
+ *  
  */
 public class MR3Literal implements Serializable {
 
@@ -74,7 +73,7 @@ public class MR3Literal implements Serializable {
 	public void setDatatype(String dt) {
 		dataType = dt;
 	}
-	
+
 	public RDFDatatype getDatatype() {
 		return TypeMapper.getInstance().getTypeByName(dataType);
 	}
@@ -107,7 +106,7 @@ public class MR3Literal implements Serializable {
 	}
 
 	public void setResource(String res) {
-		resource = new ResourceImpl(res);
+		resource = ResourceFactory.createResource(res);
 	}
 
 	public Resource getResource() {
@@ -116,7 +115,7 @@ public class MR3Literal implements Serializable {
 
 	public void setProperty(String prop) {
 		try {
-			property = new PropertyImpl(prop);
+			property = ResourceFactory.createProperty(prop);
 		} catch (RDFException e) {
 			e.printStackTrace();
 		}

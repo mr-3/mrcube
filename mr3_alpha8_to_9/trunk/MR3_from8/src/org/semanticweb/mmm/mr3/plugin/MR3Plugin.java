@@ -4,10 +4,14 @@
  */
 package org.semanticweb.mmm.mr3.plugin;
 
+import java.util.*;
+
 import javax.swing.*;
 
 import org.jgraph.*;
 import org.semanticweb.mmm.mr3.*;
+import org.semanticweb.mmm.mr3.data.*;
+import org.semanticweb.mmm.mr3.jgraph.*;
 
 import com.hp.hpl.jena.rdf.model.*;
 
@@ -18,9 +22,11 @@ public abstract class MR3Plugin {
 
 	private MR3 mr3;
 	private String menuName;
+	private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
+	private RDFResourceInfoMap resInfoMap = RDFResourceInfoMap.getInstance();
 
 	protected MR3Plugin(String mn) {
-		menuName = mn;		
+		menuName = mn;
 	}
 
 	protected MR3Plugin() {
@@ -194,4 +200,75 @@ public abstract class MR3Plugin {
 	protected JDesktopPane getDesktopPane() {
 		return mr3.getDesktopPane();
 	}
+
+	/**
+	 * 
+	 * URI文字列のセットを受け取って，RDFエディタ内の指定されたノードを選択する
+	 *  
+	 */
+	protected void selectRDFNodes(Set nodes) {
+		Set selectionCells = new HashSet();
+		RDFGraph graph = mr3.getRDFGraph();
+
+		for (Iterator node = nodes.iterator(); node.hasNext();) {
+			String uri = (String) node.next();
+			addRDFNode(graph, uri, selectionCells);
+		}
+		graph.setSelectionCells(selectionCells.toArray());
+	}
+
+	private void addRDFNode(RDFGraph graph, String uri, Set selectionCells) {	
+		Object[] cells = graph.getAllCells();
+		for (int i = 0; i < cells.length; i++) {
+			if (graph.isRDFResourceCell(cells[i])) {
+				RDFResourceInfo info = resInfoMap.getCellInfo(cells[i]);
+				if (uri.equals(info.getURIStr())) {
+					selectionCells.add(cells[i]);
+				}
+			} else if (graph.isRDFPropertyCell(cells[i])) {
+				Object propCell = rdfsInfoMap.getEdgeInfo(cells[i]);
+				RDFSInfo info = rdfsInfoMap.getCellInfo(propCell);
+				if (uri.equals(info.getURIStr())) {
+					selectionCells.add(cells[i]);
+				}
+			}
+		}
+	}
+
+	/**
+	 * 
+	 * URI文字列のセットを受け取って，クラスエディタ内の指定されたノードを選択する
+	 *  
+	 */
+	protected void selectClassNodes(Set nodes) {
+		Set selectionCells = new HashSet();
+		RDFGraph graph = mr3.getClassGraph();
+		graph.clearSelection();
+		for (Iterator i = nodes.iterator(); i.hasNext();) {
+			Object cell = rdfsInfoMap.getClassCell(ResourceFactory.createResource((String) i.next()));
+			if (cell != null) {
+				selectionCells.add(cell);
+			}
+		}
+		graph.setSelectionCells(selectionCells.toArray());
+	}
+
+	/**
+	 * 
+	 * URI文字列のセットを受け取って，プロパティエディタ内の指定されたノードを選択する
+	 *  
+	 */
+	protected void selectPropertyNodes(Set nodes) {
+		Set selectionCells = new HashSet();
+		RDFGraph graph = mr3.getPropertyGraph();
+		graph.clearSelection();
+		for (Iterator i = nodes.iterator(); i.hasNext();) {
+			Object cell = rdfsInfoMap.getPropertyCell(ResourceFactory.createResource((String) i.next()));
+			if (cell != null) {
+				selectionCells.add(cell);
+			}
+		}
+		graph.setSelectionCells(selectionCells.toArray());
+	}
+
 }

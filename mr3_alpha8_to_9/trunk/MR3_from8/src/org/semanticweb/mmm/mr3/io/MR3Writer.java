@@ -1,14 +1,13 @@
 /*
  * Created on 2003/03/27
- *
-  */
+ *  
+ */
 package org.semanticweb.mmm.mr3.io;
 
 import org.semanticweb.mmm.mr3.*;
 import org.semanticweb.mmm.mr3.jgraph.*;
 import org.semanticweb.mmm.mr3.util.*;
 
-import com.hp.hpl.jena.mem.*;
 import com.hp.hpl.jena.rdf.model.*;
 
 /**
@@ -31,9 +30,8 @@ public class MR3Writer {
 	}
 
 	public Model getRDFSModel() {
-		Model model = null;
+		Model model = ModelFactory.createDefaultModel();
 		try {
-			model = new ModelMem();
 			model.add(getClassModel());
 			model.add(getPropertyModel());
 		} catch (RDFException e) {
@@ -44,9 +42,8 @@ public class MR3Writer {
 	}
 
 	public Model getSelectedRDFSModel() {
-		Model model = null;
+		Model model = ModelFactory.createDefaultModel();
 		try {
-			model = new ModelMem();
 			model.add(getSelectedClassModel());
 			model.add(getSelectedPropertyModel());
 		} catch (RDFException e) {
@@ -78,7 +75,7 @@ public class MR3Writer {
 			// 順番に注意．リテラルのモデルを抽出して，プロジェクトモデルを抽出してから
 			// リテラルモデルを削除する
 			// クラスとプロパティのリテラルモデルを抽出してはいけないので，
-			// RDFモデルのリテラルモデルを抽出してから，ＲＤＦＳモデルを抽出する			
+			// RDFモデルのリテラルモデルを抽出してから，ＲＤＦＳモデルを抽出する
 			ProjectManager projectManager = new ProjectManager(mr3.getGraphManager(), mr3.getNSTableDialog());
 			Model literalModel = projectManager.getLiteralModel(exportModel);
 			exportModel.add(getRDFSModel());

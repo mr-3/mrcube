@@ -7,17 +7,14 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
 
+import org.jgraph.graph.*;
 import org.semanticweb.mmm.mr3.data.*;
 import org.semanticweb.mmm.mr3.jgraph.*;
 import org.semanticweb.mmm.mr3.util.*;
 
-import org.jgraph.graph.*;
-
 import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.rdf.model.impl.*;
 
 /**
- *
  * @author takeshi morita
  */
 public abstract class RDFSPanel extends JPanel {
@@ -164,7 +161,7 @@ public abstract class RDFSPanel extends JPanel {
 	protected void setCommentTab() {
 		commentLangField = new JTextField(LANG_FIELD_LENGTH);
 		Utilities.initComponent(commentLangField, Translator.getString("Lang"), BOX_WIDTH, FIELD_HEIGHT);
-		commentArea = new JTextArea(5, 20); // èc,â°        
+		commentArea = new JTextArea(5, 20); // èc,â°
 		commentScroll = new JScrollPane(commentArea);
 		Utilities.initComponent(commentScroll, Translator.getString("Comment"), 300, 150);
 		JPanel commentPanel = new JPanel();
@@ -247,7 +244,7 @@ public abstract class RDFSPanel extends JPanel {
 	protected void setMetaClassBox(Set metaClassList) {
 		ComboBoxModel model = new DefaultComboBoxModel(metaClassList.toArray());
 		metaClassBox.setModel(model);
-		metaClassBox.setSelectedItem(new ResourceImpl(rdfsInfo.getMetaClass()));
+		metaClassBox.setSelectedItem(ResourceFactory.createResource(rdfsInfo.getMetaClass()));
 		metaClassBox.setEnabled(!metaClassList.contains(rdfsInfo.getURI()));
 	}
 

@@ -16,7 +16,6 @@ import org.semanticweb.mmm.mr3.*;
 import org.semanticweb.mmm.mr3.data.*;
 import org.semanticweb.mmm.mr3.util.*;
 
-import com.hp.hpl.jena.mem.*;
 import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.rdf.model.impl.*;
 
@@ -72,7 +71,7 @@ public abstract class AbstractActionFile extends MR3AbstractAction {
 		if (r == null) {
 			return null;
 		}
-		Model model = new ModelMem();
+		Model model = ModelFactory.createDefaultModel();
 		try {
 			// ˆÈ‰º‚ÌABBREV‚Æ“¯—l
 			RDFReader reader = new RDFReaderFImpl().getReader(type);

@@ -1,6 +1,6 @@
 /*
  * Created on 2003/09/25
- *
+ *  
  */
 package org.semanticweb.mmm.mr3.ui;
 
@@ -29,9 +29,9 @@ public class SelectResourceTypePanel extends SelectClassPanel {
 	private GraphCell prevCell;
 
 	SelectResourceTypePanel(GraphManager gm) {
-		super(gm);	
+		super(gm);
 	}
-	
+
 	protected void initEachDialogAttr() {
 		dspURI = new JLabel();
 		Utilities.initComponent(dspURI, "URI", LIST_WIDTH, LIST_HEIGHT);
@@ -72,7 +72,7 @@ public class SelectResourceTypePanel extends SelectClassPanel {
 		if (graph.getSelectionCount() == 1 && graph.getModel().getChildCount(cell) <= 1) {
 			if (graph.isRDFSClassCell(cell)) {
 				ChangeCellAttributes.changeDefaultCellStye(graph, prevCell, ChangeCellAttributes.classColor);
-				ChangeCellAttributes.changeDefaultCellStye(graph, cell, ChangeCellAttributes.selectedColor);
+				ChangeCellAttributes.changeCellStyle(graph, cell, ChangeCellAttributes.selectedColor, ChangeCellAttributes.selectedBorderColor, 2);
 				RDFSInfo info = rdfsMap.getCellInfo(cell);
 				dspURI.setText(info.getURIStr());
 				dspURI.setToolTipText(info.getURIStr());

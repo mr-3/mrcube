@@ -8,13 +8,11 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-import org.semanticweb.mmm.mr3.plugin.*;
-
 import org.cyberneko.html.parsers.*;
+import org.semanticweb.mmm.mr3.plugin.*;
 import org.w3c.dom.*;
 import org.xml.sax.*;
 
-import com.hp.hpl.jena.mem.*;
 import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.rdf.model.impl.*;
 import com.hp.hpl.jena.vocabulary.*;
@@ -35,7 +33,8 @@ public class RSSPlugin extends MR3Plugin {
 		DOMParser parser = new DOMParser();
 		parser.parse(uri);
 		channelInfo = new ItemInfo(new URI(uri));
-		//		System.out.println("root: "+parser.getDocument().getDocumentElement());
+		//		System.out.println("root:
+		// "+parser.getDocument().getDocumentElement());
 		Element rootElement = parser.getDocument().getDocumentElement();
 		storeChannelInfo(rootElement);
 	}
@@ -56,16 +55,16 @@ public class RSSPlugin extends MR3Plugin {
 	public class ImportAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
 			try {
-				Model rssModel = new ModelMem();
-				Resource channel = new ResourceImpl(pluginUI.getChannelURI());
-				rssModel.add(new StatementImpl(channel, RDF.type, RSS.channel));
-				rssModel.add(new StatementImpl(channel, RSS.link, rssModel.createLiteral(pluginUI.getChannelLink())));
-				rssModel.add(new StatementImpl(channel, RSS.description, rssModel.createLiteral(pluginUI.getChannelDescription())));
-				rssModel.add(new StatementImpl(channel, RSS.title, rssModel.createLiteral(pluginUI.getChannelTitle())));
-				rssModel.add(new StatementImpl(channel, DC.language, rssModel.createLiteral(pluginUI.getChannelLanguage())));
+				Model rssModel = ModelFactory.createDefaultModel();
+				Resource channel = ResourceFactory.createResource(pluginUI.getChannelURI());
+				rssModel.add(ResourceFactory.createStatement(channel, RDF.type, RSS.channel));
+				rssModel.add(ResourceFactory.createStatement(channel, RSS.link, rssModel.createLiteral(pluginUI.getChannelLink())));
+				rssModel.add(ResourceFactory.createStatement(channel, RSS.description, rssModel.createLiteral(pluginUI.getChannelDescription())));
+				rssModel.add(ResourceFactory.createStatement(channel, RSS.title, rssModel.createLiteral(pluginUI.getChannelTitle())));
+				rssModel.add(ResourceFactory.createStatement(channel, DC.language, rssModel.createLiteral(pluginUI.getChannelLanguage())));
 				Resource anon = new ResourceImpl(new AnonId());
-				rssModel.add(new StatementImpl(channel, RSS.items, anon));
-				rssModel.add(new StatementImpl(anon, RDF.type, RDF.Seq));
+				rssModel.add(ResourceFactory.createStatement(channel, RSS.items, anon));
+				rssModel.add(ResourceFactory.createStatement(anon, RDF.type, RDF.Seq));
 
 				int itemCnt = 0;
 				DOMParser parser = new DOMParser();
@@ -83,12 +82,12 @@ public class RSSPlugin extends MR3Plugin {
 						ItemInfo info = (ItemInfo) itemInfoMap.get(uri);
 						storeItemInfo(parser.getDocument().getDocumentElement(), info);
 
-						Resource item = new ResourceImpl(info.getURI().toString());
-						rssModel.add(new StatementImpl(anon, RDF.li(itemCnt++), item));
-						rssModel.add(new StatementImpl(item, RDF.type, RSS.item));
-						rssModel.add(new StatementImpl(item, RSS.link, rssModel.createLiteral(info.getLink())));
-						rssModel.add(new StatementImpl(item, RSS.description, rssModel.createLiteral(info.getDescription())));
-						rssModel.add(new StatementImpl(item, RSS.title, rssModel.createLiteral(info.getTitle())));
+						Resource item = ResourceFactory.createResource(info.getURI().toString());
+						rssModel.add(ResourceFactory.createStatement(anon, RDF.li(itemCnt++), item));
+						rssModel.add(ResourceFactory.createStatement(item, RDF.type, RSS.item));
+						rssModel.add(ResourceFactory.createStatement(item, RSS.link, rssModel.createLiteral(info.getLink())));
+						rssModel.add(ResourceFactory.createStatement(item, RSS.description, rssModel.createLiteral(info.getDescription())));
+						rssModel.add(ResourceFactory.createStatement(item, RSS.title, rssModel.createLiteral(info.getTitle())));
 					}
 				}
 				replaceRDFModel(rssModel);
@@ -113,7 +112,7 @@ public class RSSPlugin extends MR3Plugin {
 		}
 	}
 
-	/** 　デバッグ用メソッド */
+	/** デバッグ用メソッド */
 	public void printModel(Model model) {
 		try {
 			model.write(new PrintWriter(System.out));

@@ -2,12 +2,11 @@ package org.semanticweb.mmm.mr3.data;
 import java.util.*;
 
 import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.rdf.model.impl.*;
 import com.hp.hpl.jena.vocabulary.*;
 
 /**
  * @author takeshi morita
- *
+ *  
  */
 public class PropertyInfo extends RDFSInfo {
 
@@ -48,8 +47,7 @@ public class PropertyInfo extends RDFSInfo {
 		try {
 			Model tmpModel = super.getModel();
 			Resource res = getURI();
-
-			tmpModel.add(tmpModel.createStatement(res, RDF.type, new ResourceImpl(metaClass)));
+			tmpModel.add(tmpModel.createStatement(res, RDF.type, ResourceFactory.createResource(metaClass)));
 			for (Iterator i = supRDFS.iterator(); i.hasNext();) {
 				RDFSInfo propInfo = rdfsInfoMap.getCellInfo(i.next());
 				if (!propInfo.getURI().equals(MR3Resource.Property)) { // MRCUBE.Propertyは，ルートになっているだけなので．
@@ -144,7 +142,7 @@ public class PropertyInfo extends RDFSInfo {
 	public Set getSupProperties() {
 		return Collections.unmodifiableSet(supProperties);
 	}
-	
+
 	public void clearSupProperty() {
 		supProperties = new HashSet();
 	}
