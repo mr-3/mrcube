@@ -52,6 +52,7 @@ public class MR3 extends JFrame {
 	private NameSpaceTableDialog nsTableDialog;
 	private SearchResourceDialog searchResDialog;
 	private AttributeDialog attrDialog;
+	private PrefDialog prefDialog;
 
 	private GraphManager gmanager;
 	private RDFResourceInfoMap resInfoMap = RDFResourceInfoMap.getInstance();
@@ -88,7 +89,7 @@ public class MR3 extends JFrame {
 		//		setLookAndFeel();
 
 		attrDialog = new AttributeDialog();
-		gmanager = new GraphManager(attrDialog);
+		gmanager = new GraphManager(attrDialog, userPrefs);
 
 		rdfEditor = new RDFEditor(attrDialog, gmanager);
 		//		realRDFEditor = new RealRDFEditor(propDialog, gmanager);
@@ -107,6 +108,10 @@ public class MR3 extends JFrame {
 		nsTableDialog = new NameSpaceTableDialog(gmanager);
 		desktop.add(nsTableDialog, JLayeredPane.MODAL_LAYER);
 		desktop.add(gmanager.getRefDialog(), JLayeredPane.MODAL_LAYER);
+
+		prefDialog = new PrefDialog(gmanager, userPrefs);
+		prefDialog.setVisible(false);
+		desktop.add(prefDialog, JLayeredPane.MODAL_LAYER);
 
 		internalFrames[0] = createInternalFrame(rdfEditor, "RDF Editor", DEMO_FRAME_LAYER);
 		//		createInternalFrame(realRDFEditor, "Real RDF Editor", DEMO_FRAME_LAYER);
@@ -225,7 +230,8 @@ public class MR3 extends JFrame {
 		mi = new JMenuItem("Preference");
 		mi.addActionListener(new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
-				new PrefDialog(gmanager);
+				prefDialog.setVisible(true);
+				//				new PrefDialog(gmanager, userPrefs);
 			}
 		});
 		menu.add(mi);
@@ -264,6 +270,9 @@ public class MR3 extends JFrame {
 		JMenu mergeMenu = new JMenu("Merge");
 		mi = new JMenuItem("RDFS(File)");
 		mi.addActionListener(new MergeRDFSFileAction());
+		mergeMenu.add(mi);
+		mi = new JMenuItem("RDFS(URI)");
+		mi.addActionListener(new MergeRDFSURIAction());
 		mergeMenu.add(mi);
 		mi = new JMenuItem("RDF/XML(File)");
 		mi.addActionListener(new MergeRDFFileAction());
@@ -441,7 +450,7 @@ public class MR3 extends JFrame {
 
 	class NewAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
-			int messageType = JOptionPane.showConfirmDialog(null, "Are you sure you want to continue?", "Warning", JOptionPane.YES_NO_OPTION);
+			int messageType = JOptionPane.showInternalConfirmDialog(desktop, "Are you sure you want to continue?", "Warning", JOptionPane.YES_NO_OPTION);
 			if (messageType == JOptionPane.YES_OPTION) {
 				attrDialog.setNullPanel();
 				resInfoMap.clear();
@@ -511,20 +520,36 @@ public class MR3 extends JFrame {
 		return file;
 	}
 
+	private URL getURI(String uri) throws MalformedURLException, UnknownHostException {
+		URL rdfURI = null;
+		boolean isProxy = userPrefs.getBoolean("Proxy", false);
+		if (isProxy) {
+			String proxyURL = userPrefs.get("ProxyHost", "http://localhost");
+			int proxyPort = userPrefs.getInt("ProxyPort", 8080);
+			rdfURI = new URL("http", proxyURL, proxyPort, uri);
+		} else {
+			rdfURI = new URL(uri);
+		}
+		return rdfURI;
+	}
+
 	private Reader getReader(String uri) {
 		if (uri == null) {
 			return null;
 		}
 		URL rdfURI = null;
 		try {
-			rdfURI = new URL(uri);
+			rdfURI = getURI(uri);
 			Reader reader = new InputStreamReader(rdfURI.openStream());
 			return reader;
+		} catch(UnknownHostException uhe) {
+			JOptionPane.showInternalMessageDialog(desktop, "Unknown Host(Proxy)", "Warning", JOptionPane.ERROR_MESSAGE);	
 		} catch (MalformedURLException uriex) {
 			uriex.printStackTrace();
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
-		}
+		} 
+
 		return null;
 	}
 
@@ -571,7 +596,7 @@ public class MR3 extends JFrame {
 
 	class ReplaceRDFURIAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
-			String uri = JOptionPane.showInputDialog(null, "Open URI");
+			String uri = JOptionPane.showInternalInputDialog(desktop, "Open URI");
 			Model model = readModel(getReader(uri), gmanager.getBaseURI());
 			mr3Reader.replaceRDF(model);
 			rdfEditor.fitWindow();
@@ -591,7 +616,7 @@ public class MR3 extends JFrame {
 
 	class MergeRDFURIAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
-			String uri = JOptionPane.showInputDialog(null, "Open URI");
+			String uri = JOptionPane.showInternalInputDialog(desktop, "Open URI");
 			Model model = readModel(getReader(uri), gmanager.getBaseURI());
 			mr3Reader.mergeRDF(model);
 		}
@@ -604,6 +629,14 @@ public class MR3 extends JFrame {
 	class MergeRDFSFileAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
 			Model model = readModel(getReader(), gmanager.getBaseURI());
+			mr3Reader.mergeRDFS(model);
+		}
+	}
+
+	class MergeRDFSURIAction extends AbstractAction {
+		public void actionPerformed(ActionEvent e) {
+			String uri = JOptionPane.showInternalInputDialog(desktop, "Open URI");
+			Model model = readModel(getReader(uri), gmanager.getBaseURI());
 			mr3Reader.mergeRDFS(model);
 		}
 	}

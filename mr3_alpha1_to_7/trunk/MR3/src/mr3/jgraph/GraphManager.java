@@ -3,6 +3,7 @@ import java.awt.*;
 import java.io.*;
 import java.util.*;
 import java.util.List;
+import java.util.prefs.*;
 
 import javax.swing.*;
 
@@ -36,10 +37,10 @@ public class GraphManager {
 	private CellViewType cellViewType;
 	private AbstractLevelInfo abstractLevelInfo;
 
-	private boolean isAntialias;
+	private Preferences userPrefs;
 	private String baseURI;
-
-	public GraphManager(AttributeDialog attrD) {
+	
+	public GraphManager(AttributeDialog attrD, Preferences prefs) {
 		rdfGraph = new RDFGraph(this, attrD, GraphType.RDF);
 		realRDFGraph = new RDFGraph(this, attrD, GraphType.REAL_RDF);
 		classGraph = new RDFGraph(this, attrD, GraphType.CLASS);
@@ -47,13 +48,12 @@ public class GraphManager {
 		registerComponent();
 		cellMaker = new RDFCellMaker(this);
 
+		userPrefs = prefs;
 		attrDialog = attrD;
 		refDialog = new ReferenceListDialog("Referenced Resource List", this);
 		abstractLevelInfo = new AbstractLevelInfo();
 		prefixNSInfoSet = new HashSet();
-
-		isAntialias = true;
-		baseURI = "http://mrcube";
+		baseURI = userPrefs.get("BaseURI", "http://mr3");
 	}
 
 	public RDFGraph getRDFGraph() {
@@ -148,12 +148,8 @@ public class GraphManager {
 		ChangeCellAttributes.isChangedSelectedColor = true;
 	}
 
-	public boolean isAntialias() {
-		return isAntialias;
-	}
-
-	public void setAntialias(boolean t) {
-		isAntialias = t;
+	public void setAntialias() {
+		boolean isAntialias = userPrefs.getBoolean("Antialias", true);
 		rdfGraph.setAntiAliased(isAntialias);
 		propGraph.setAntiAliased(isAntialias);
 		classGraph.setAntiAliased(isAntialias);
