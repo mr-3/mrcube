@@ -54,10 +54,10 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		setBorder(BorderFactory.createTitledBorder(Translator.getString("AttributeDialog.RDFResourceAttribute.Text")));
 
 		resTypePrefixBox = new JComboBox();
-		initComponent(resTypePrefixBox, Translator.getString("Prefix"), BOX_WIDTH, 50);
+		Utilities.initComponent(resTypePrefixBox, Translator.getString("Prefix"), BOX_WIDTH, 50);
 
 		resTypeField = new JTextField();
-		initComponent(resTypeField, Translator.getString("ResourceType") + " ID", BOX_WIDTH, LIST_HEIGHT);
+		Utilities.initComponent(resTypeField, Translator.getString("ResourceType") + " ID", BOX_WIDTH, LIST_HEIGHT);
 		resTypePrefixBox.addActionListener(new ChangePrefixAction());
 
 		isTypeCellCheckBox = new JCheckBox(Translator.getString("IsType"));
@@ -69,7 +69,7 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		resTypePanel.add(isTypeCellCheckBox);
 
 		resTypeNSLabel = new JLabel();
-		initComponent(resTypeNSLabel, Translator.getString("NameSpace"), LIST_WIDTH, LIST_HEIGHT);
+		Utilities.initComponent(resTypeNSLabel, Translator.getString("NameSpace"), LIST_WIDTH, LIST_HEIGHT);
 
 		selectTypeButton = new JButton(Translator.getString("SelectType"));
 		selectTypeButton.addActionListener(this);
@@ -83,11 +83,11 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		selectTypeMode(false);
 
 		resPrefixBox = new JComboBox();
-		initComponent(resPrefixBox, Translator.getString("Prefix"), BOX_WIDTH, 50);
+		Utilities.initComponent(resPrefixBox, Translator.getString("Prefix"), BOX_WIDTH, 50);
 		resPrefixBox.addActionListener(new ChangePrefixAction());
 
 		uriField = new JTextField();
-		initComponent(uriField, Translator.getString("RDFResource") + " ID", BOX_WIDTH, LIST_HEIGHT);
+		Utilities.initComponent(uriField, Translator.getString("RDFResource") + " ID", BOX_WIDTH, LIST_HEIGHT);
 		uriField.addActionListener(this);
 
 		isAnonBox = new JCheckBox(Translator.getString("IsBlank"));
@@ -99,7 +99,7 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		resPanel.add(isAnonBox);
 
 		resNSLabel = new JLabel();
-		initComponent(resNSLabel, Translator.getString("NameSpace"), LIST_WIDTH, LIST_HEIGHT);
+		Utilities.initComponent(resNSLabel, Translator.getString("NameSpace"), LIST_WIDTH, LIST_HEIGHT);
 
 		applyButton = new JButton(Translator.getString("Apply"));
 		applyButton.addActionListener(this);
@@ -143,12 +143,6 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		c.anchor = GridBagConstraints.CENTER;
 		gridbag.setConstraints(buttonGroup, c);
 		add(buttonGroup);
-	}
-
-	private void initComponent(JComponent component, String title, int width, int height) {
-		component.setPreferredSize(new Dimension(width, height));
-		component.setMinimumSize(new Dimension(width, height));
-		component.setBorder(BorderFactory.createTitledBorder(title));
 	}
 
 	class ChangePrefixAction extends AbstractAction {

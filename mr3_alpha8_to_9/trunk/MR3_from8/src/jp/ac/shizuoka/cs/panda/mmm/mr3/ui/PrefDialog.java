@@ -151,13 +151,13 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 
 	private JPanel getMetaClassListPanel() {
 		metaClassField = new JTextField();
-		initComponent(metaClassField, "URI", LONG_URI_FIELD_WIDTH, URI_FIELD_HEIGHT);
+		Utilities.initComponent(metaClassField, "URI", LONG_URI_FIELD_WIDTH, URI_FIELD_HEIGHT);
 
 		classClassListModel = new DefaultListModel();
 		classClassList = new JList(classClassListModel);
 		classClassList.addListSelectionListener(this);
 		JScrollPane classClassListScroll = new JScrollPane(classClassList);
-		initComponent(classClassListScroll, "Class Class List", LONG_URI_FIELD_WIDTH, 80);
+		Utilities.initComponent(classClassListScroll, "Class Class List", LONG_URI_FIELD_WIDTH, 80);
 		Action classClassButtonAction = new ClassClassButtonAction();
 		classClassEditButton = new JButton(EDIT);
 		classClassEditButton.addActionListener(classClassButtonAction);
@@ -174,7 +174,7 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 		propClassList = new JList(propClassListModel);
 		propClassList.addListSelectionListener(this);
 		JScrollPane propClassListScroll = new JScrollPane(propClassList);
-		initComponent(propClassListScroll, "Property Class List", LONG_URI_FIELD_WIDTH, 80);
+		Utilities.initComponent(propClassListScroll, "Property Class List", LONG_URI_FIELD_WIDTH, 80);
 		Action propClassButtonAction = new PropClassButtonAction();
 		propClassEditButton = new JButton(EDIT);
 		propClassEditButton.addActionListener(propClassButtonAction);
@@ -415,12 +415,6 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 		}
 	}
 
-	private void initComponent(JComponent component, String title, int width, int height) {
-		component.setPreferredSize(new Dimension(width, height));
-		component.setMinimumSize(new Dimension(width, height));
-		component.setBorder(BorderFactory.createTitledBorder(title));
-	}
-
 	private void layoutProxyField(JPanel innerPanel, GridBagLayout gridbag, GridBagConstraints c) {
 		JPanel proxyPanel = new JPanel();
 		proxyPanel.add(isProxy);
@@ -474,9 +468,9 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 
 	private void initLangField() {
 		defaultLangField = new JTextField();
-		initComponent(defaultLangField, Translator.getString("Lang"), PREFIX_BOX_WIDTH, URI_FIELD_HEIGHT);
+		Utilities.initComponent(defaultLangField, Translator.getString("Lang"), PREFIX_BOX_WIDTH, URI_FIELD_HEIGHT);
 		uiLangBox = new JComboBox(new Object[]{"en", "ja"});
-		initComponent(uiLangBox, "UI "+Translator.getString("Lang"), PREFIX_BOX_WIDTH, PREFIX_BOX_HEIGHT);
+		Utilities.initComponent(uiLangBox, "UI "+Translator.getString("Lang"), PREFIX_BOX_WIDTH, PREFIX_BOX_HEIGHT);
 	}
 
 	private void initEncodingBox() {
@@ -501,9 +495,9 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 	private void initBaseURIField() {
 		uriPrefixBox = new JComboBox();
 		uriPrefixBox.addActionListener(new ChangePrefixAction());
-		initComponent(uriPrefixBox, Translator.getString("Prefix"), PREFIX_BOX_WIDTH, PREFIX_BOX_HEIGHT);
+		Utilities.initComponent(uriPrefixBox, Translator.getString("Prefix"), PREFIX_BOX_WIDTH, PREFIX_BOX_HEIGHT);
 		baseURILabel = new JLabel("");
-		initComponent(baseURILabel, "BaseURI", URI_FIELD_WIDTH, URI_FIELD_HEIGHT);
+		Utilities.initComponent(baseURILabel, "BaseURI", URI_FIELD_WIDTH, URI_FIELD_HEIGHT);
 		initPrefixBox();
 	}
 
@@ -533,7 +527,7 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 	private void initWorkDirectoryField() {
 		workDirectoryField = new JTextField();
 		workDirectoryField.setEditable(false);
-		initComponent(workDirectoryField, "Work Directory", URI_FIELD_WIDTH, URI_FIELD_HEIGHT);
+		Utilities.initComponent(workDirectoryField, "Work Directory", URI_FIELD_WIDTH, URI_FIELD_HEIGHT);
 		browseWorkDirectoryButton = new JButton("Browse");
 		browseWorkDirectoryButton.addActionListener(new BrowseDirectory());
 	}

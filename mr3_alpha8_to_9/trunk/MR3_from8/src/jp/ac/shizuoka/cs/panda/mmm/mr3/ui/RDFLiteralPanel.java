@@ -55,14 +55,14 @@ public class RDFLiteralPanel extends JPanel implements ActionListener {
 		isTypedLiteralBox.setSelected(false);
 		typeBox = new JComboBox();
 		typeBox.setEnabled(false);
-		initComponent(typeBox, Translator.getString("Type"), 300, 50);
+		Utilities.initComponent(typeBox, Translator.getString("Type"), 300, 50);
 		JPanel typedLitPanel = new JPanel();
 		typedLitPanel.add(isTypedLiteralBox);
 		typedLitPanel.add(typeBox);
 
 		labelValueArea = new JTextArea();
 		JScrollPane valueScroll = new JScrollPane(labelValueArea);
-		initComponent(valueScroll, Translator.getString("Literal"), LABEL_WIDTH, LABEL_HEIGHT);
+		Utilities.initComponent(valueScroll, Translator.getString("Literal"), LABEL_WIDTH, LABEL_HEIGHT);
 
 		applyButton = new JButton(Translator.getString("Apply"));
 		applyButton.addActionListener(this);
@@ -88,12 +88,6 @@ public class RDFLiteralPanel extends JPanel implements ActionListener {
 		add(valueScroll);
 		gridbag.setConstraints(buttonGroup, c);
 		add(buttonGroup);
-	}
-
-	private void initComponent(JComponent component, String title, int width, int height) {
-		component.setPreferredSize(new Dimension(width, height));
-		component.setMinimumSize(new Dimension(width, height));
-		component.setBorder(BorderFactory.createTitledBorder(title));
 	}
 
 	private void clearTextField() {

@@ -66,10 +66,10 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		propOnlyCheck.setSelected(true);
 		uriPrefixBox = new JComboBox();
 		uriPrefixBox.addActionListener(new ChangePrefixAction());
-		initComponent(uriPrefixBox, Translator.getString("Prefix"), BOX_WIDTH, BOX_HEIGHT);
+		Utilities.initComponent(uriPrefixBox, Translator.getString("Prefix"), BOX_WIDTH, BOX_HEIGHT);
 
 		idField = new JTextField();
-		initComponent(idField, "ID", BOX_WIDTH, LIST_HEIGHT);
+		Utilities.initComponent(idField, "ID", BOX_WIDTH, LIST_HEIGHT);
 		idField.addActionListener(this);
 
 		jumpRDFSProp = new JButton(Translator.getString("Jump")+" RDFS");
@@ -81,7 +81,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		uriPanel.add(jumpRDFSProp);
 
 		nsLabel = new JLabel();
-		initComponent(nsLabel, Translator.getString("NameSpace"), LIST_WIDTH, LIST_HEIGHT);
+		Utilities.initComponent(nsLabel, Translator.getString("NameSpace"), LIST_WIDTH, LIST_HEIGHT);
 
 		apply = new JButton(Translator.getString("Apply"));
 		apply.addActionListener(this);
@@ -111,12 +111,6 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		add(selectPropertyPanel);
 		gridbag.setConstraints(buttonGroup, c);
 		add(buttonGroup);
-	}
-
-	private void initComponent(JComponent component, String title, int width, int height) {
-		component.setPreferredSize(new Dimension(width, height));
-		component.setMinimumSize(new Dimension(width, height));
-		component.setBorder(BorderFactory.createTitledBorder(title));
 	}
 
 	private void setContainer(boolean t) {
@@ -149,7 +143,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		localNameList = new JList();
 		localNameList.addListSelectionListener(this);
 		JScrollPane localNameListScroll = new JScrollPane(localNameList);
-		initComponent(localNameListScroll, Translator.getString("Property")+" ID", 350, 120);
+		Utilities.initComponent(localNameListScroll, Translator.getString("Property")+" ID", 350, 120);
 
 		JPanel panel = new JPanel();
 		GridBagLayout gridbag = new GridBagLayout();
