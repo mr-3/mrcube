@@ -281,6 +281,8 @@ public class RDFSInfoMap {
 	public PropertyInfo clonePropertyInfo(PropertyInfo orgInfo) {
 		PropertyInfo newInfo = new PropertyInfo("");
 		cloneRDFSInfo(orgInfo, newInfo);
+		newInfo.addAllDomain(orgInfo.getDomain());
+		newInfo.addAllRange(orgInfo.getRange());
 		return newInfo;
 	}
 

@@ -1,6 +1,5 @@
 package mr3.jgraph;
 import java.awt.*;
-import java.io.*;
 import java.util.*;
 import java.util.List;
 import java.util.prefs.*;
@@ -110,7 +109,7 @@ public class GraphManager {
 		return refDialog;
 	}
 
-	public Serializable storeState() {
+	public ArrayList storeState() {
 		ArrayList list = new ArrayList();
 		list.add(rdfsInfoMap.getState());
 		list.add(resInfoMap.getState());
@@ -121,16 +120,15 @@ public class GraphManager {
 		return list;
 	}
 
-	public void loadState(Object obj) {
-		if (obj instanceof ArrayList) {
-			ArrayList list = (ArrayList) obj;
-			rdfsInfoMap.setState((List) list.get(0));
-			resInfoMap.setState((Map) list.get(1));
-			litInfoMap.setState((Map) list.get(2));
-			rdfGraph.setRDFState(list.get(3));
-			classGraph.setRDFState(list.get(4));
-			propGraph.setRDFState(list.get(5));
-		}
+	// indexを返す
+	public int loadState(ArrayList list) {
+		rdfsInfoMap.setState((List) list.get(0));
+		resInfoMap.setState((Map) list.get(1));
+		litInfoMap.setState((Map) list.get(2));
+		rdfGraph.setRDFState(list.get(3));
+		classGraph.setRDFState(list.get(4));
+		propGraph.setRDFState(list.get(5));
+		return 6;
 	}
 
 	public void selectAllRDFNodes() {
@@ -186,7 +184,7 @@ public class GraphManager {
 			if (info.equals(uri) && infoCell != cell) {
 				RDFResourceInfo resInfo = (RDFResourceInfo) info;
 				RDFSInfo rdfsInfo = rdfsInfoMap.getCellInfo(resInfo.getTypeCell());
-//				System.out.println("RDF Resource Duplicated");
+				//				System.out.println("RDF Resource Duplicated");
 				/*
 				 *  Classエディタ内の重複チェックをしていて，RDFエディタ内のクラス定義にかかった場合
 				 *   重複とみなさないようにする．
@@ -701,13 +699,12 @@ public class GraphManager {
 			Object cell = cells[i];
 			Object[] propCells = propGraph.getAllCells();
 			Set propSet = new HashSet();
-			//			if (propGraph.isRDFResourceCell(cell)) {
-			if (propGraph.isRDFSPropertyCell(cell)) {
+
+			if (propGraph.isRDFSClassCell(cell)) { // 削除したクラスのセル				
 				//　cellを参照していないかどうかすべてのプロパティに対して調べる
 				// domainかrangeに含まれている可能性がある．
 				for (int j = 0; j < propCells.length; j++) {
 					Object propCell = propCells[j];
-					//					if (propGraph.isRDFResourceCell(propCell)) {
 					if (propGraph.isRDFSPropertyCell(propCell)) {
 						PropertyInfo info = (PropertyInfo) rdfsInfoMap.getCellInfo(propCell);
 						Set domain = info.getDomain();
@@ -801,7 +798,7 @@ public class GraphManager {
 
 		Map rdfMap = checkNotRmableRDFCells(cells, notRmableCells, notRmableResCells);
 		Map propMap = checkNotRmablePropCells(cells, notRmableCells, notRmableResCells, graph);
-
+		
 		if (notRmableCells.isEmpty()) {
 			graph.removeCellsWithEdges(cells);
 		} else {

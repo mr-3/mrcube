@@ -2,10 +2,12 @@ package mr3.jgraph;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.List;
 
 import javax.swing.*;
 
 import mr3.data.*;
+import mr3.ui.*;
 import mr3.util.*;
 
 import com.jgraph.graph.*;
@@ -175,13 +177,26 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 	}
 
 	public void insertResourceCell(Point pt) {
-		String uri = JOptionPane.showInternalInputDialog(graph, "Please input URI");
+		Object[] cells = gmanager.getClassGraph().getAllCells();
+		List list = new ArrayList();
+		list.add(null); // リソースのタイプが空の場合
+		for (int i = 0; i < cells.length; i++) {
+			if (graph.isRDFSClassCell(cells[i])) {
+				list.add(cells[i]);
+			}
+		}
+		InsertResourceDialog ird = new InsertResourceDialog("Input Resource", list.toArray());
+		if (!ird.isConfirm()) {
+			return;
+		}
+		String uri = ird.getURI();
+		Object resTypeCell = ird.getResourceType(); 
 		if (uri == null || gmanager.isDuplicatedWithDialog(uri, null, GraphType.RDF)) {
 			return;
 		} else if (uri.length() == 0) {
-			cellMaker.insertRDFResource(pt, uri, URIType.ANONYMOUS);
+			cellMaker.insertRDFResource(pt, uri, resTypeCell, URIType.ANONYMOUS);
 		} else {
-			cellMaker.insertRDFResource(pt, uri, URIType.URI);
+			cellMaker.insertRDFResource(pt, uri, resTypeCell, URIType.URI);
 		}
 	}
 
