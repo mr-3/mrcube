@@ -114,13 +114,14 @@ public class PrefDialog extends JInternalFrame {
 	}
 
 	private void initColorButton(JButton button, String name, int width, int height, Action action) {
+		button.setHorizontalAlignment(JButton.LEFT);
 		button.setIcon(new ColorSwatch(name));
 		button.setPreferredSize(new Dimension(width, height));
 		button.addActionListener(action);
 	}
 
 	private static final int BUTTON_WIDTH = 200;
-	private static final int BUTTON_HEIGHT = 30;
+	private static final int BUTTON_HEIGHT = 25;
 
 	private JPanel getRenderingPanel() {
 		ChangeColorAction action = new ChangeColorAction();

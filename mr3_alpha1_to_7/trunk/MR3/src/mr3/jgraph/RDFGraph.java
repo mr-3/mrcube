@@ -2,6 +2,7 @@ package mr3.jgraph;
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.event.*;
+import java.awt.print.*;
 import java.io.*;
 import java.util.*;
 import java.util.List;
@@ -20,6 +21,11 @@ import com.jgraph.graph.*;
 import com.jgraph.plaf.basic.*;
 
 public class RDFGraph extends JGraph {
+
+	private boolean pagevisible = false;
+	private transient PageFormat pageFormat = new PageFormat();
+
+	private Image background;
 
 	private GraphType type;
 	private GraphManager gmanager;
@@ -44,6 +50,30 @@ public class RDFGraph extends JGraph {
 		initStatus();
 	}
 
+	public void setBackgroundImage(Image image) {
+		background = image;
+	}
+
+	public Image getBackgroundImage() {
+		return background;
+	}
+
+	public void setPageFormat(PageFormat format) {
+		pageFormat = format;
+	}
+
+	public PageFormat getPageFormat() {
+		return pageFormat;
+	}
+
+	public void setPageVisible(boolean flag) {
+		pagevisible = flag;
+	}
+
+	public boolean isPageVisible() {
+		return pagevisible;
+	}
+
 	public GraphType getType() {
 		return type;
 	}
@@ -60,6 +90,7 @@ public class RDFGraph extends JGraph {
 		setAntiAliased(true);
 		setEditable(false);
 		//		setHighlightColor(Color.orange); // ëIëÇ≥ÇÍÇƒÇ¢ÇÈêF 				
+		setUI(new RDFGraphUI());
 		setBackground(GRAPH_BACK_COLOR);
 		selectionModel.setChildrenSelectable(false);
 	}
@@ -573,8 +604,8 @@ public class RDFGraph extends JGraph {
 	}
 
 	public void copy(Point pt) {
-//		margin_x = ADDED_MARGIN;
-//		margin_y = ADDED_MARGIN;
+		//		margin_x = ADDED_MARGIN;
+		//		margin_y = ADDED_MARGIN;
 		GraphTransferable gt = getGraphTransferable(this);
 		if (gt == null) {
 			return;
@@ -605,8 +636,8 @@ public class RDFGraph extends JGraph {
 		newRec.y = pastePoint.y + rec.y;
 		//		newRec.x = rec.x + margin_x;
 		//		newRec.y = rec.y + margin_y;
-//		margin_x += ADDED_MARGIN;
-//		margin_y += ADDED_MARGIN;
+		//		margin_x += ADDED_MARGIN;
+		//		margin_y += ADDED_MARGIN;
 		GraphConstants.setBounds(map, newRec);
 		GraphConstants.setValue(map, value);
 		Map nested = new HashMap();

@@ -173,7 +173,7 @@ public class GraphManager {
 	public void setGraphBackground(Color color) {
 		rdfGraph.setBackground(color);	
 		classGraph.setBackground(color);	
-		propGraph.setBackground(color);	
+		propGraph.setBackground(color);
 	}
 
 	public void setAntialias() {
@@ -204,7 +204,7 @@ public class GraphManager {
 				GraphCell typeCell = cellMaker.addTypeCell(cell, new HashMap(), rec);
 				info.setTypeViewCell(typeCell);
 			}
-		}
+		}		
 		changeCellView();
 	}
 
