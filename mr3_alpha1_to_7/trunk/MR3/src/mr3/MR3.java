@@ -300,6 +300,15 @@ public class MR3 extends JFrame {
 		return menu;
 	}
 
+	private static final String RDFS_XML = "RDFS/XML";
+	private static final String RDFS_NTriple = "RDFS/N-Triple";
+	private static final String RDF_XML = "RDF/XML";
+	private static final String RDF_NTriple = "RDF/N-Triple";
+	private static final String SelectedRDFS_XML = "Selected RDFS/XML";
+	private static final String SelectedRDFS_NTriple = "Selected RDFS/N-Triple";
+	private static final String SelectedRDF_XML = "Selected RDF/XML";
+	private static final String SelectedRDF_NTriple = "Selected RDF/N-Triple";
+
 	private JMenu getFileMenu() {
 		JMenu menu = new JMenu("File");
 		JMenuItem mi = new JMenuItem(" New Project");
@@ -341,19 +350,34 @@ public class MR3 extends JFrame {
 		menu.add(importRDF);
 
 		JMenu exportMenu = new JMenu("Export");
-		mi = new JMenuItem("RDFS/XML");
-		mi.addActionListener(new ExportRDFSAction());
-		exportMenu.add(mi);
-		mi = new JMenuItem("RDFS/N-Triple");
-		mi.addActionListener(new ExportRDFSAction());
-		exportMenu.add(mi);
-		mi = new JMenuItem("RDF/XML");
-		mi.addActionListener(new ExportRDFAction());
-		exportMenu.add(mi);
-		mi = new JMenuItem("RDF/N-Triple");
-		mi.addActionListener(new ExportRDFAction());
-		exportMenu.add(mi);
 		menu.add(exportMenu);
+		mi = new JMenuItem(RDFS_XML);
+		mi.addActionListener(new ExportRDFSAction());
+		exportMenu.add(mi);
+		mi = new JMenuItem(RDFS_NTriple);
+		mi.addActionListener(new ExportRDFSAction());
+		exportMenu.add(mi);
+		mi = new JMenuItem(RDF_XML);
+		mi.addActionListener(new ExportRDFAction());
+		exportMenu.add(mi);
+		mi = new JMenuItem(RDF_NTriple);
+		mi.addActionListener(new ExportRDFAction());
+		exportMenu.add(mi);
+
+		JMenu selectedMenu = new JMenu("Selected");
+		exportMenu.add(selectedMenu);
+		mi = new JMenuItem(SelectedRDFS_XML);
+		mi.addActionListener(new ExportRDFSAction());
+		selectedMenu.add(mi);
+		mi = new JMenuItem(SelectedRDFS_NTriple);
+		mi.addActionListener(new ExportRDFSAction());
+		selectedMenu.add(mi);
+		mi = new JMenuItem(SelectedRDF_XML);
+		mi.addActionListener(new ExportRDFAction());
+		selectedMenu.add(mi);
+		mi = new JMenuItem(SelectedRDF_NTriple);
+		mi.addActionListener(new ExportRDFAction());
+		selectedMenu.add(mi);
 
 		menu.addSeparator();
 		menu.add(getPluginMenus()); // JavaWebStartでは，pluginは使用できないと思われる．
@@ -576,11 +600,14 @@ public class MR3 extends JFrame {
 
 	private static MR3FileFilter mr3FileFilter = new MR3FileFilter();
 	private static RDFsFileFilter rdfsFileFilter = new RDFsFileFilter();
+	private static NTripleFileFilter n3FileFilter = new NTripleFileFilter();
 
 	private File getFile(boolean isOpenFile, String extension) {
 		JFileChooser jfc = new JFileChooser(userPrefs.get(PrefConstants.DefaultWorkDirectory, ""));
 		if (extension.equals("mr3")) {
 			jfc.setFileFilter(mr3FileFilter);
+		} else if (extension.equals("n3")) {
+			jfc.setFileFilter(n3FileFilter);
 		} else {
 			jfc.setFileFilter(rdfsFileFilter);
 		}
@@ -727,7 +754,7 @@ public class MR3 extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			String type = e.getActionCommand();
 			String ext = "rdfs";
-			if (type.equals("RDFS/N-Triple")) {
+			if (type.equals(RDFS_NTriple) || type.equals(SelectedRDFS_NTriple)) {
 				ext = "n3";
 			}
 			File file = getFile(false, ext);
@@ -738,10 +765,15 @@ public class MR3 extends JFrame {
 				FileWriter output = null;
 				output = new FileWriter(file);
 				RDFWriter writer = new RDFWriterFImpl().getWriter("RDF/XML-ABBREV");
-				if (type.equals("RDFS/N-Triple")) {
+				if (type.equals(RDFS_NTriple) || type.equals(SelectedRDFS_NTriple)) {
 					writer = new RDFWriterFImpl().getWriter("N-TRIPLE");
 				}
-				rdfEditor.writeModel(getRDFSModel(), output, writer);
+
+				if (type.equals(SelectedRDFS_XML) || type.equals(SelectedRDFS_NTriple)) {
+					rdfEditor.writeModel(getSelectedRDFSModel(), output, writer);
+				} else {
+					rdfEditor.writeModel(getRDFSModel(), output, writer);
+				}
 			} catch (RDFException re) {
 				re.printStackTrace();
 			} catch (IOException ioe) {
@@ -754,7 +786,7 @@ public class MR3 extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			String type = e.getActionCommand();
 			String ext = "rdf";
-			if (type.equals("RDF/N-Triple")) {
+			if (type.equals(RDF_NTriple) || type.equals(SelectedRDF_NTriple)) {
 				ext = "n3";
 			}
 			File file = getFile(false, ext);
@@ -765,10 +797,14 @@ public class MR3 extends JFrame {
 			try {
 				output = new FileWriter(file);
 				RDFWriter writer = new RDFWriterFImpl().getWriter("RDF/XML-ABBREV");
-				if (type.equals("RDF/N-Triple")) {
+				if (type.equals(RDF_NTriple) || type.equals(SelectedRDF_NTriple)) {
 					writer = new RDFWriterFImpl().getWriter("N-TRIPLE");
 				}
-				rdfEditor.writeModel(getRDFModel(), output, writer);
+				if (type.equals(SelectedRDF_XML) || type.equals(SelectedRDF_NTriple)) {
+					rdfEditor.writeModel(getSelectedRDFModel(), output, writer);
+				} else {
+					rdfEditor.writeModel(getRDFModel(), output, writer);
+				}
 				output.close();
 			} catch (Exception ex) {
 				ex.printStackTrace();
@@ -912,6 +948,7 @@ public class MR3 extends JFrame {
 
 	private JMenu getConvertMenu() {
 		JMenu menu = new JMenu("Convert");
+
 		JMenu rdfView = new JMenu("RDF");
 		menu.add(rdfView);
 		JMenuItem mi = new JMenuItem("RDF/XML");
@@ -920,7 +957,18 @@ public class MR3 extends JFrame {
 		mi = new JMenuItem("RDF/N-Triple");
 		mi.addActionListener(new JGraphToNTripleAction());
 		rdfView.add(mi);
+
+		JMenu selectedRDFView = new JMenu("Selected RDF");
+		menu.add(selectedRDFView);
+		mi = new JMenuItem("Selected RDF/XML");
+		mi.addActionListener(new JGraphToSelectedRDFAction());
+		selectedRDFView.add(mi);
+		mi = new JMenuItem("Selected RDF/N-Triple");
+		mi.addActionListener(new JGraphToSelectedNTripleAction());
+		selectedRDFView.add(mi);
+
 		JMenu rdfsView = new JMenu("RDFS");
+		menu.add(rdfsView);
 		mi = new JMenuItem("RDFS(Class/Property)/XML");
 		mi.addActionListener(new JGraphToRDFSAction());
 		rdfsView.add(mi);
@@ -930,7 +978,18 @@ public class MR3 extends JFrame {
 		mi = new JMenuItem("RDFS(Property)/XML");
 		mi.addActionListener(new JGraphToPropertyAction());
 		rdfsView.add(mi);
-		menu.add(rdfsView);
+
+		JMenu selectedRDFSView = new JMenu("Selected RDFS");
+		menu.add(selectedRDFSView);
+		mi = new JMenuItem("Selected RDFS(Class/Property)/XML");
+		mi.addActionListener(new JGraphToRDFSAction());
+		selectedRDFSView.add(mi);
+		mi = new JMenuItem("Selected RDFS(Class)/XML");
+		mi.addActionListener(new JGraphToSelectedClassAction());
+		selectedRDFSView.add(mi);
+		mi = new JMenuItem("Selected RDFS(Property)/XML");
+		mi.addActionListener(new JGraphToSelectedPropertyAction());
+		selectedRDFSView.add(mi);
 
 		return menu;
 	}
@@ -1001,28 +1060,56 @@ public class MR3 extends JFrame {
 
 	class JGraphToRDFAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
-			rdfEditor.convertRDFSRC(srcArea);
+			rdfEditor.convertRDFSRC(srcArea, false);
+			showSrcView();
+		}
+	}
+
+	class JGraphToSelectedRDFAction extends AbstractAction {
+		public void actionPerformed(ActionEvent e) {
+			rdfEditor.convertRDFSRC(srcArea, true);
 			showSrcView();
 		}
 	}
 
 	class JGraphToNTripleAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
-			rdfEditor.convertNTripleSRC(srcArea);
+			rdfEditor.convertNTripleSRC(srcArea, false);
+			showSrcView();
+		}
+	}
+
+	class JGraphToSelectedNTripleAction extends AbstractAction {
+		public void actionPerformed(ActionEvent e) {
+			rdfEditor.convertNTripleSRC(srcArea, true);
 			showSrcView();
 		}
 	}
 
 	class JGraphToClassAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
-			classEditor.convertSRC(srcArea);
+			classEditor.convertSRC(srcArea, false);
+			showSrcView();
+		}
+	}
+
+	class JGraphToSelectedClassAction extends AbstractAction {
+		public void actionPerformed(ActionEvent e) {
+			classEditor.convertSRC(srcArea, true);
 			showSrcView();
 		}
 	}
 
 	class JGraphToPropertyAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
-			propertyEditor.convertSRC(srcArea);
+			propertyEditor.convertSRC(srcArea, false);
+			showSrcView();
+		}
+	}
+
+	class JGraphToSelectedPropertyAction extends AbstractAction {
+		public void actionPerformed(ActionEvent e) {
+			propertyEditor.convertSRC(srcArea, true);
 			showSrcView();
 		}
 	}
@@ -1031,22 +1118,45 @@ public class MR3 extends JFrame {
 		return mr3Writer.getRDFModel();
 	}
 
+	public Model getSelectedRDFModel() {
+		return mr3Writer.getSelectedRDFModel();
+	}
+
 	public Model getClassModel() {
 		return mr3Writer.getClassModel();
+	}
+
+	public Model getSelectedClassModel() {
+		return mr3Writer.getSelectedClassModel();
 	}
 
 	public Model getPropertyModel() {
 		return mr3Writer.getPropertyModel();
 	}
 
+	public Model getSelectedPropertyModel() {
+		return mr3Writer.getSelectedPropertyModel();
+	}
+
 	public Model getRDFSModel() {
 		return mr3Writer.getRDFSModel();
 	}
 
+	public Model getSelectedRDFSModel() {
+		return mr3Writer.getSelectedRDFSModel();
+	}
+
 	class JGraphToRDFSAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
+			String command = e.getActionCommand();
 			try {
-				Model model = getRDFSModel();
+				Model model = null;
+				if (command.equals("RDFS(Class/Property)/XML")) {
+					model = getRDFSModel();
+				} else {
+					model = getSelectedRDFSModel();
+				}
+
 				Writer output = new StringWriter();
 				RDFWriter writer = new RDFWriterFImpl().getWriter("RDF/XML-ABBREV");
 				rdfEditor.writeModel(model, output, writer);

@@ -29,10 +29,15 @@ public class ClassEditor extends Editor {
 		graph.setMarqueeHandler(new ClassGraphMarqueeHandler(manager, classPanel));
 	}
 
-	public void convertSRC(JTextComponent area) {
+	public void convertSRC(JTextComponent area, boolean isSelected) {
 		Writer output = new StringWriter();
 		try {
-			Model model = graphToRDF.getClassModel();
+			Model model = null;
+			if (isSelected) {
+				model = graphToRDF.getSelectedClassModel();
+			} else {
+				model = graphToRDF.getClassModel();
+			}
 			RDFWriter writer = new RDFWriterFImpl().getWriter("RDF/XML-ABBREV");
 			writeModel(model, output, writer);
 		} catch (RDFException e) {

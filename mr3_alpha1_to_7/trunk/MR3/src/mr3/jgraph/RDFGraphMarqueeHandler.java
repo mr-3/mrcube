@@ -221,7 +221,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 		}
 		Port targetPort = (Port) targetCell.getChildAt(0);
 		connectCells(selectedResourcePorts, targetPort);
-		graph.setSelectionCell(targetCell);
+		graph.setSelectionCell(targetCell.getParent());
 	}
 
 	public void insertConnectedLiteralCell(Point pt) {

@@ -11,7 +11,7 @@ import com.hp.hpl.mesa.rdf.jena.mem.*;
 import com.hp.hpl.mesa.rdf.jena.model.*;
 
 /**
- * @author cs9088
+ * @author takeshi morita
  */
 public class MR3Writer {
 
@@ -23,6 +23,10 @@ public class MR3Writer {
 
 	public Model getRDFModel() {
 		return graphToRDF.getRDFModel();
+	}
+
+	public Model getSelectedRDFModel() {
+		return graphToRDF.getSelectedRDFModel();
 	}
 
 	public Model getRDFSModel() {
@@ -38,24 +42,33 @@ public class MR3Writer {
 		return model;
 	}
 
-	public Model getClassModel() {
+	public Model getSelectedRDFSModel() {
+		Model model = null;
 		try {
-			Model model = graphToRDF.getClassModel();
-			return model;
+			model = new ModelMem();
+			model.add(getSelectedClassModel());
+			model.add(getSelectedPropertyModel());
 		} catch (RDFException e) {
 			e.printStackTrace();
 		}
-		return null;
+
+		return model;
+	}
+
+	public Model getClassModel() {
+		return graphToRDF.getClassModel();
+	}
+
+	public Model getSelectedClassModel() {
+		return graphToRDF.getSelectedClassModel();
 	}
 
 	public Model getPropertyModel() {
-		try {
-			Model model = graphToRDF.getPropertyModel();
-			return model;
-		} catch (RDFException e) {
-			e.printStackTrace();
-		}
-		return null;
+		return graphToRDF.getPropertyModel();
+	}
+
+	public Model getSelectedPropertyModel() {
+		return graphToRDF.getSelectedPropertyModel();
 	}
 
 }

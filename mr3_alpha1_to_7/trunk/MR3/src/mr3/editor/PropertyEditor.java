@@ -33,10 +33,15 @@ public class PropertyEditor extends Editor {
 		graph.setMarqueeHandler(new PropertyGraphMarqueeHandler(manager, propPanel));
 	}
 	
-	public void convertSRC(JTextComponent area) {
+	public void convertSRC(JTextComponent area, boolean isSelected) {
 		Writer output = new StringWriter();
 		try {
-			Model model = graphToRDF.getPropertyModel();
+			Model model = null;
+			if (isSelected) {
+				model = graphToRDF.getSelectedPropertyModel();
+			} else {
+				model = graphToRDF.getPropertyModel();
+			}
 			RDFWriter writer = new RDFWriterFImpl().getWriter("RDF/XML-ABBREV");
 			writeModel(model, output, writer);
 		} catch (RDFException e) {

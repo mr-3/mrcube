@@ -134,9 +134,14 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 		}
 	}
 
-	public Writer writeModel(Model model, Writer output, RDFWriter writer) throws RDFException {
-		setNsPrefix(writer);
-		writer.write(model, output, null);
+	public Writer writeModel(Model model, Writer output, RDFWriter writer) {
+		try {
+			setNsPrefix(writer);
+			writer.write(model, output, null);
+		} catch (RDFException e) {
+			e.printStackTrace();
+		}
+
 		return output;
 	}
 
