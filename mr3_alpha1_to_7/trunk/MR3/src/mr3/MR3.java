@@ -238,6 +238,7 @@ public class MR3 extends JFrame {
 		JMenuBar mb = new JMenuBar();
 		mb.add(getFileMenu());
 		mb.add(getEditMenu());
+		mb.add(getSelectMenu());
 		mb.add(getViewMenu());
 		mb.add(getWindowMenu());
 		mb.add(getConvertMenu());
@@ -256,15 +257,18 @@ public class MR3 extends JFrame {
 		//		selectAbstractLevelMode = new JCheckBoxMenuItem("Change Abstract Level", false);
 		//		selectAbstractLevelMode.addActionListener(new SelectAbstractLevelAction());
 		//		menu.add(selectAbstractLevelMode);
+		menu.add(new PreferenceAction());
+
+		return menu;
+	}
+
+	private JMenu getSelectMenu() {
 		JMenu selectMenu = new JMenu("Select");
 		selectMenu.add(new SelectNodes(gmanager.getRDFGraph(), SELECT_ALL_RDF_NODES));
 		selectMenu.add(new SelectNodes(gmanager.getClassGraph(), SELECT_ALL_CLASS_NODES));
 		selectMenu.add(new SelectNodes(gmanager.getPropertyGraph(), SELECT_ALL_PROPERTY_NODES));
-		menu.add(selectMenu);
-		menu.addSeparator();
-		menu.add(new PreferenceAction());
-
-		return menu;
+		
+		return selectMenu;
 	}
 
 	public JInternalFrame[] getInternalFrames() {

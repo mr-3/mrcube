@@ -596,17 +596,18 @@ public class RDFGraph extends JGraph {
 	private static final int ADDED_MARGIN = 10;
 	private int margin_x = ADDED_MARGIN;
 	private int margin_y = ADDED_MARGIN;
-	
+
 	private void setPastePosition(GraphCell cell, String value, Point pastePoint) {
 		Map map = cell.getAttributes();
 		Rectangle rec = GraphConstants.getBounds(map);
-		//		System.out.println(rec);
-		//		System.out.println("paste: "+pastePoint);
-		rec.x = pastePoint.x + rec.x;
-		rec.y = pastePoint.y + rec.y;
+		Rectangle newRec = new Rectangle(rec);
+		newRec.x = pastePoint.x + rec.x;
+		newRec.y = pastePoint.y + rec.y;
+		//		newRec.x = rec.x + margin_x;
+		//		newRec.y = rec.y + margin_y;
 //		margin_x += ADDED_MARGIN;
 //		margin_y += ADDED_MARGIN;
-		GraphConstants.setBounds(map, rec);
+		GraphConstants.setBounds(map, newRec);
 		GraphConstants.setValue(map, value);
 		Map nested = new HashMap();
 		nested.put(cell, GraphConstants.cloneMap(map));
@@ -643,9 +644,8 @@ public class RDFGraph extends JGraph {
 			null,
 			null);
 		gmanager.changeCellView();
-		Object cell = getSelectionCell();
 		clearSelection();
-		setSelectionCell(cell);
+		setSelectionCells(copyBuffer.keySet().toArray());
 	}
 
 	private String getCopyRDFSURI(RDFSInfo info, GraphType graphType) {

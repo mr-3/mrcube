@@ -354,6 +354,7 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 		});
 
 		// Remove
+		toolbar.addSeparator();
 		ImageIcon removeIcon = new ImageIcon(getImageIcon("delete.gif"));
 		remove = new AbstractAction("", removeIcon) {
 			public void actionPerformed(ActionEvent e) {
