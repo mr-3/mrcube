@@ -70,7 +70,7 @@ public class MR3Parser {
 			rdfsInfoMap.putCellInfo(pCell, info);
 
 			Edge edge = getEdge(attributes, "");
-			ConnectionSet cs = new ConnectionSet(edge, rootPort, pPort);
+			ConnectionSet cs = new ConnectionSet(edge, pPort, rootPort);
 			graph.getModel().insert(new Object[] { edge }, attributes, cs, null, null);
 
 			if (info.getRDFSSubList().size() > 0) {
@@ -100,7 +100,7 @@ public class MR3Parser {
 			subInfo.addSupRDFS(supCell);
 
 			Edge edge = getEdge(attributes, "");
-			ConnectionSet cs = new ConnectionSet(edge, supPort, subPort);
+			ConnectionSet cs = new ConnectionSet(edge, subPort, supPort);
 			graphModel.insert(new Object[] { edge }, attributes, cs, null, null);
 
 			if (subInfo.getRDFSSubList().size() > 0) {

@@ -40,7 +40,8 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 	transient private JPanel inlinePanel;
 
 	transient private GraphManager gmanager;
-
+	transient private Map knownNSPrefixMap;
+	
 	private static final String WARNING=Translator.getString("Warning");
 	private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("NameSpaceTable.Icon"));
 
@@ -64,12 +65,22 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 			}
 		});
 
+		initKnownPrefixNSMap();
 		setDefaultNSPrefix();
 		setSize(new Dimension(750, 210));
 		setLocation(10, 100);
 		setVisible(false);
 	}
 
+	private void initKnownPrefixNSMap() {
+		knownNSPrefixMap = new HashMap();
+		knownNSPrefixMap.put("http://purl.org/dc/elements/1.1/", "dc");
+		knownNSPrefixMap.put("http://purl.org/rss/1.0/", "rss");
+		knownNSPrefixMap.put("http://xmlns.com/foaf/0.1/", "foaf");
+		knownNSPrefixMap.put("http://www.w3.org/2002/07/owl#", "owl");
+		knownNSPrefixMap.put("http://web.resource.org/cc/", "cc");
+	}
+	
 	//	baseURIÇ™rdf, rdfs, mr3ÇÃèÍçáÇ™Ç†ÇÈÇΩÇﬂ
 	private void addDefaultNS(String prefix, String addNS) {
 		if (!isValidPrefix(prefix)) {
@@ -90,17 +101,11 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 	}
 
 	private String getKnownPrefix(String ns) {
-		if (ns.equals("http://purl.org/dc/elements/1.1/")) {
-			return "dc";
-		} else if (ns.equals("http://purl.org/rss/1.0/")) {
-			return "rss";
-		} else if (ns.equals("http://xmlns.com/foaf/0.1/")) {
-			return "foaf";
-		} else if (ns.equals("http://www.w3.org/2002/07/owl#")) {
-			return "owl";
-		} else {
-			return "prefix";
+		String knownPrefix = (String)knownNSPrefixMap.get(ns);
+		if (knownPrefix == null) {
+			knownPrefix = "prefix";		
 		}
+		return knownPrefix;
 	}
 
 	private String getMR3Prefix(String ns) {

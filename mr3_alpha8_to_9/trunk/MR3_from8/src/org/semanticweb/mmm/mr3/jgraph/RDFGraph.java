@@ -290,9 +290,9 @@ public class RDFGraph extends JGraph {
 		Set supCells = new HashSet();
 		for (Iterator edges = graphModel.edges(port); edges.hasNext();) {
 			Edge edge = (Edge) edges.next();
-			Object target = getSourceVertex(edge);
-			if (target != cell) {
-				supCells.add(target);
+			Object source = getSourceVertex(edge);
+			if (source != cell) {
+				supCells.add(source);
 			}
 		}
 		return supCells;

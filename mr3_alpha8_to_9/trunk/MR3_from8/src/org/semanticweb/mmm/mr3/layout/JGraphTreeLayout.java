@@ -37,8 +37,12 @@ public class JGraphTreeLayout {
 	}
 
 	public void performJGraphRDFSTreeLayout() {
+		GraphLayoutUtilities.reverseArc(cellMaker, classGraph);
+		GraphLayoutUtilities.reverseArc(cellMaker, propGraph);
 		performJGraphTreeLayout(classGraph, TreeLayoutAlgorithm.UP_TO_DOWN, 30, 50);
 		performJGraphTreeLayout(propGraph, TreeLayoutAlgorithm.UP_TO_DOWN, 30, 50);
+		GraphLayoutUtilities.reverseArc(cellMaker, classGraph);
+		GraphLayoutUtilities.reverseArc(cellMaker, propGraph);
 		gmanager.changeCellView();
 		gmanager.clearSelection();
 	}
