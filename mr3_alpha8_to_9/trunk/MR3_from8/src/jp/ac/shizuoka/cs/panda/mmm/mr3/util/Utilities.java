@@ -13,7 +13,7 @@ import javax.swing.*;
  */
 public class Utilities {
 
-	private static final String RESOURCE_DIR = "jp/ac/shizuoka/cs/panda/mmm/mr3/resources/"; 
+	private static final String RESOURCE_DIR = "jp/ac/shizuoka/cs/panda/mmm/mr3/resources/";
 
 	public static void center(Window frame) {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -23,5 +23,11 @@ public class Utilities {
 
 	public static ImageIcon getImageIcon(String image) {
 		return new ImageIcon(Utilities.class.getClassLoader().getResource(RESOURCE_DIR + image));
+	}
+
+	public static void initComponent(JComponent component, String title, int width, int height) {
+		component.setPreferredSize(new Dimension(width, height));
+		component.setMinimumSize(new Dimension(width, height));
+		component.setBorder(BorderFactory.createTitledBorder(title));
 	}
 }

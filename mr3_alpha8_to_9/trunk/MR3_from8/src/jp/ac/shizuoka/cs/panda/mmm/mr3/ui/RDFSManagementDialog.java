@@ -12,6 +12,7 @@ import javax.swing.*;
 
 import jp.ac.shizuoka.cs.panda.mmm.mr3.data.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.jgraph.*;
+import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 
 /**
  * @author takeshi morita
@@ -25,9 +26,10 @@ public class RDFSManagementDialog extends JDialog implements ActionListener {
 	private JRadioButton createButton;
 	private SelectRDFSPanel panel;
 	private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
+	private static final String TITLE = Translator.getString("RDFSManagementDialog.Title"); 
 
-	public RDFSManagementDialog(String title, GraphManager gm) {
-		super(gm.getRoot(), title, true);
+	public RDFSManagementDialog(GraphManager gm) {
+		super(gm.getRoot(), TITLE, true);
 		getContentPane().add(getChooseOnePanel(), BorderLayout.NORTH);
 		panel = new SelectRDFSPanel(gm);
 		getContentPane().add(panel, BorderLayout.CENTER);
@@ -39,7 +41,6 @@ public class RDFSManagementDialog extends JDialog implements ActionListener {
 
 		setLocation(100, 100);
 		setSize(new Dimension(500, 550));
-		setResizable(false);
 		setVisible(false);
 	}
 
@@ -49,9 +50,9 @@ public class RDFSManagementDialog extends JDialog implements ActionListener {
 	private JComponent getChooseOnePanel() {
 		JPanel chooseOnePanel = new JPanel();
 		ButtonGroup group = new ButtonGroup();
-		renameButton = new JRadioButton("Rename");
+		renameButton = new JRadioButton(Translator.getString("Rename"));
 		renameButton.addActionListener(this);
-		createButton = new JRadioButton("Create");
+		createButton = new JRadioButton(Translator.getString("Create"));
 		createButton.addActionListener(this);
 		createButton.setSelected(true);
 		group.add(renameButton);
@@ -59,16 +60,14 @@ public class RDFSManagementDialog extends JDialog implements ActionListener {
 		chooseOnePanel.setLayout(new BoxLayout(chooseOnePanel, BoxLayout.X_AXIS));
 		chooseOnePanel.add(renameButton);
 		chooseOnePanel.add(createButton);
-//		chooseOnePanel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-//		chooseOnePanel.setMinimumSize(new Dimension(WIDTH, HEIGHT));
-		chooseOnePanel.setBorder(BorderFactory.createTitledBorder("Choose One Select"));
+		chooseOnePanel.setBorder(BorderFactory.createTitledBorder(Translator.getString("ChooseOneSelect")));
 		return chooseOnePanel;
 	}
 
 	private void initButton() {
-		confirmButton = new JButton("OK");
+		confirmButton = new JButton(Translator.getString("OK"));
 		confirmButton.addActionListener(this);
-		cancelButton = new JButton("Cancel");
+		cancelButton = new JButton(Translator.getString("Cancel"));
 		cancelButton.addActionListener(this);
 	}
 

@@ -38,17 +38,17 @@ public class InsertRDFResDialog extends JDialog implements ActionListener, ItemL
 		resourceType = null;
 
 		resTypeBox = new JComboBox(new DefaultComboBoxModel(cells));
-		initComponent(resTypeBox, Translator.getString("ResourceType"), 350, 50);
+		Utilities.initComponent(resTypeBox, Translator.getString("ResourceType"), 350, 50);
 		resTypeBox.addItemListener(this);
 
 		idField = new JTextField();
-		initComponent(idField, "ID", ID_WIDTH, 40);
+		Utilities.initComponent(idField, "ID", ID_WIDTH, 40);
 
 		isAnonBox = new JCheckBox(Translator.getString("IsBlank"));
 		isAnonBox.addActionListener(new IsAnonAction());
 
 		uriPrefixBox = new JComboBox();
-		initComponent(uriPrefixBox, Translator.getString("Prefix"), BOX_WIDTH, BOX_HEIGHT);
+		Utilities.initComponent(uriPrefixBox, Translator.getString("Prefix"), BOX_WIDTH, BOX_HEIGHT);
 		uriPrefixBox.addActionListener(new ChangePrefixAction());
 		uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
 
@@ -58,7 +58,12 @@ public class InsertRDFResDialog extends JDialog implements ActionListener, ItemL
 		uriPanel.add(isAnonBox);
 
 		nsLabel = new JLabel("");
-		initComponent(nsLabel, Translator.getString("NameSpace"), 350, 40);
+		Utilities.initComponent(nsLabel, Translator.getString("NameSpace"), 350, 40);
+
+		JPanel centerPanel = new JPanel();
+		centerPanel.setLayout(new BorderLayout());
+		centerPanel.add(uriPanel, BorderLayout.CENTER);
+		centerPanel.add(nsLabel, BorderLayout.SOUTH);
 
 		uriPrefixBox.setSelectedItem(PrefixNSUtil.getBaseURIPrefix(gmanager.getBaseURI()));
 		PrefixNSUtil.replacePrefix((String) uriPrefixBox.getSelectedItem(), nsLabel);
@@ -72,33 +77,16 @@ public class InsertRDFResDialog extends JDialog implements ActionListener, ItemL
 		buttonPanel.add(cancel);
 
 		JPanel panel = new JPanel();
-		GridBagLayout gridbag = new GridBagLayout();
-		GridBagConstraints c = new GridBagConstraints();
-		panel.setLayout(gridbag);
-		c.weightx = 1;
-		c.weighty = 5;
-		c.anchor = GridBagConstraints.PAGE_START;
-		c.gridwidth = GridBagConstraints.REMAINDER;
-		gridbag.setConstraints(resTypeBox, c);
-		panel.add(resTypeBox);
-		gridbag.setConstraints(uriPanel, c);
-		panel.add(uriPanel);
-		gridbag.setConstraints(nsLabel, c);
-		panel.add(nsLabel);
-		gridbag.setConstraints(buttonPanel, c);
-		panel.add(buttonPanel);
+		panel.setLayout(new BorderLayout());
+		panel.add(resTypeBox, BorderLayout.NORTH);
+		panel.add(centerPanel, BorderLayout.CENTER);
+		panel.add(buttonPanel, BorderLayout.SOUTH);
 		contentPane.add(panel);
 
 		setLocation(300, 300);
-		setSize(new Dimension(400, 230));
+		setSize(new Dimension(400, 220));
 		setResizable(false);
 		setVisible(true);
-	}
-
-	private void initComponent(JComponent component, String title, int width, int height) {
-		component.setPreferredSize(new Dimension(width, height));
-		component.setMinimumSize(new Dimension(width, height));
-		component.setBorder(BorderFactory.createTitledBorder(title));
 	}
 
 	class ChangePrefixAction extends AbstractAction {

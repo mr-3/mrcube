@@ -37,26 +37,22 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 	transient private JButton closeButton;
 	transient private JTextField prefixField;
 	transient private JTextField nsField;
-
-	transient private GridBagLayout gbLayout;
-	transient private GridBagConstraints gbc;
 	transient private JPanel inlinePanel;
 
 	transient private GraphManager gmanager;
-//	transient private JCheckBoxMenuItem showNSTable;
+
+	private static final String WARNING=Translator.getString("Warning");
 
 	public NameSpaceTableDialog(GraphManager manager) {
-		super(Translator.getString("NameSpaceTable.Title"), false, true, false);
+		super(Translator.getString("NameSpaceTable.Title"), true, true, false);
 
 		gmanager = manager;
 		prefixNSMap = new HashMap();
 		initTable();
 		inlinePanel = new JPanel();
-		initGridLayout();
+		inlinePanel.setLayout(new BorderLayout());
 		setTableLayout();
 		setInputLayout();
-//		showNSTable = new JCheckBoxMenuItem("Show NameSpace Table", true);
-//		showNSTable.addActionListener(new CloseNSTableAction());
 		getContentPane().add(inlinePanel);
 
 		setFrameIcon(Utilities.getImageIcon(Translator.getString("NameSpaceTable.Icon")));
@@ -160,23 +156,6 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		changeCellView();
 	}
 
-//	class CloseNSTableAction extends AbstractAction {
-//		public void actionPerformed(ActionEvent e) {
-//			setVisible(showNSTable.getState());
-//		}
-//	}
-
-	public void setVisible(boolean b) {
-		super.setVisible(b);
-//		if (showNSTable != null) {
-//			showNSTable.setState(b);
-//		}
-	}
-
-//	public JCheckBoxMenuItem getShowNSTable() {
-//		return showNSTable;
-//	}
-
 	public void resetNSTable() {
 		prefixNSMap = new HashMap();
 		// àÍãCÇ…Ç∑Ç◊ÇƒçÌèúÇ∑ÇÈï˚ñ@Ç™ÇÌÇ©ÇÁÇ»Ç¢ÅD
@@ -198,19 +177,11 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		tcModel.getColumn(2).setPreferredWidth(450);
 	}
 
-	private void initGridLayout() {
-		gbLayout = new GridBagLayout();
-		gbc = new GridBagConstraints();
-		inlinePanel.setLayout(gbLayout);
-		gbc.gridwidth = GridBagConstraints.REMAINDER;
-	}
-
 	private void setTableLayout() {
 		JScrollPane nsTableScroll = new JScrollPane(nsTable);
 		nsTableScroll.setPreferredSize(new Dimension(700, 115));
 		nsTableScroll.setMinimumSize(new Dimension(700, 115));
-		gbLayout.setConstraints(nsTableScroll, gbc);
-		inlinePanel.add(nsTableScroll);
+		inlinePanel.add(nsTableScroll, BorderLayout.CENTER);
 	}
 
 	private void setInputLayout() {
@@ -239,8 +210,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		inline.add(addNSButton);
 		inline.add(removeNSButton);
 		inline.add(closeButton);
-		gbLayout.setConstraints(inline, gbc);
-		inlinePanel.add(inline);
+		inlinePanel.add(inline, BorderLayout.SOUTH);
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -269,7 +239,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		if (isValidPrefix(prefix)) {
 			return true;
 		} else {
-			JOptionPane.showInternalMessageDialog(gmanager.getDesktop(), "Prefix is not valid.", "Warning", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showInternalMessageDialog(gmanager.getDesktop(), Translator.getString("Warning.Message5"), WARNING, JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 	}
@@ -279,7 +249,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		if (isValidNS(ns)) {
 			return true;
 		} else {
-			JOptionPane.showInternalMessageDialog(gmanager.getDesktop(), "NameSpace is not valid.", "Warning", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showInternalMessageDialog(gmanager.getDesktop(), Translator.getString("Warning.Message6"), WARNING, JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 	}
@@ -306,11 +276,11 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		String rmPrefix = (String) nsTableModel.getValueAt(row, 1);
 		String rmNS = (String) nsTableModel.getValueAt(row, 2);
 		if (rmNS.equals(gmanager.getBaseURI())) {
-			JOptionPane.showInternalMessageDialog(gmanager.getDesktop(), "This NameSpace is baseURI.", "Warning", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showInternalMessageDialog(gmanager.getDesktop(), Translator.getString("Warning.Message7"), WARNING, JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		if (rmNS.equals(MR3Resource.DefaultURI.getNameSpace())) {
-			JOptionPane.showInternalMessageDialog(gmanager.getDesktop(), "This NameSpace is System URI.", "Warning", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showInternalMessageDialog(gmanager.getDesktop(), Translator.getString("Warning.Message8"), WARNING, JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		if (!gmanager.getAllNameSpaceSet().contains(rmNS)) {
@@ -318,7 +288,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 			nsTableModel.removeRow(row);
 			changeCellView();
 		} else {
-			JOptionPane.showInternalMessageDialog(gmanager.getDesktop(), "This NameSpace is used.", "Warning", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showInternalMessageDialog(gmanager.getDesktop(), Translator.getString("Warning.Message9"), WARNING, JOptionPane.ERROR_MESSAGE);
 		}
 	}
 

@@ -308,8 +308,6 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		selectNameSpaceList();
 	}
 
-	private static final String selectSupPropertiesTitle = "Select Super Properties";
-
 	private String getURI() {
 		return nsLabel.getText() + idField.getText();
 	}
@@ -324,7 +322,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 			if (gmanager.isDuplicatedWithDialog(uri.getURI(), null, GraphType.PROPERTY)) {
 				return;
 			}
-			RDFSManagementDialog dialog = new RDFSManagementDialog("Choose One Select", gmanager);
+			RDFSManagementDialog dialog = new RDFSManagementDialog(gmanager);
 			dialog.replaceGraph(gmanager.getPropertyGraph());
 			dialog.setRegionSet(new HashSet());
 			dialog.setVisible(true);
@@ -363,7 +361,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 			Object propertyCell = (GraphCell) rdfsInfoMap.getPropertyCell(uri);
 			gmanager.jumpPropertyArea(propertyCell);
 		} else {
-			JOptionPane.showInternalMessageDialog(gmanager.getDesktop(), "Not Defined", "Warning", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showInternalMessageDialog(gmanager.getDesktop(), Translator.getString("Warning.Message3"), Translator.getString("Warning"), JOptionPane.ERROR_MESSAGE);
 		}
 	}
 

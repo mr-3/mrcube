@@ -46,6 +46,8 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 	private static final int LIST_WIDTH = 350;
 	private static final int LIST_HEIGHT = 40;
 
+	private static final String WARNING = Translator.getString("Warning");
+
 	public RDFResourcePanel(GraphManager manager) {
 		gmanager = manager;
 
@@ -55,7 +57,7 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		initComponent(resTypePrefixBox, Translator.getString("Prefix"), BOX_WIDTH, 50);
 
 		resTypeField = new JTextField();
-		initComponent(resTypeField, Translator.getString("ResourceType")+" ID", BOX_WIDTH, LIST_HEIGHT);
+		initComponent(resTypeField, Translator.getString("ResourceType") + " ID", BOX_WIDTH, LIST_HEIGHT);
 		resTypePrefixBox.addActionListener(new ChangePrefixAction());
 
 		isTypeCellCheckBox = new JCheckBox(Translator.getString("IsType"));
@@ -71,7 +73,7 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 
 		selectTypeButton = new JButton(Translator.getString("SelectType"));
 		selectTypeButton.addActionListener(this);
-		jumpRDFSClassButton = new JButton(Translator.getString("Jump")+" RDFS");
+		jumpRDFSClassButton = new JButton(Translator.getString("Jump") + " RDFS");
 		jumpRDFSClassButton.addActionListener(this);
 
 		JPanel typePanel = new JPanel();
@@ -85,7 +87,7 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		resPrefixBox.addActionListener(new ChangePrefixAction());
 
 		uriField = new JTextField();
-		initComponent(uriField, Translator.getString("RDFResource") +" ID", BOX_WIDTH, LIST_HEIGHT);
+		initComponent(uriField, Translator.getString("RDFResource") + " ID", BOX_WIDTH, LIST_HEIGHT);
 		uriField.addActionListener(this);
 
 		isAnonBox = new JCheckBox(Translator.getString("IsBlank"));
@@ -308,14 +310,12 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 			tmpResTypeURI = getResourceTypeURI();
 		}
 		if (tmpURI.equals(tmpResTypeURI)) {
-			JOptionPane.showInternalMessageDialog(this, "URI is duplicated", "Warning", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showInternalMessageDialog(this, Translator.getString("Warning.Message1"), WARNING, JOptionPane.ERROR_MESSAGE);
 			return true;
 		} else {
 			return false;
 		}
 	}
-
-	private static final String selectSupClassesTitle = "Select Super Classes";
 
 	private GraphCell getResourceType() {
 		GraphCell typeCell = null;
@@ -331,16 +331,16 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 				return null;
 			if (resInfo.getTypeCell() == null) {
 				int ans =
-					JOptionPane.showInternalConfirmDialog(gmanager.getDesktop(), "Not Defined.Create Class ?", "Warning", JOptionPane.YES_NO_OPTION);
+					JOptionPane.showInternalConfirmDialog(gmanager.getDesktop(), Translator.getString("Warning.Message2"), WARNING, JOptionPane.YES_NO_OPTION);
 				if (ans == JOptionPane.YES_OPTION) {
-					Set supClasses = gmanager.getSupRDFS(gmanager.getClassGraph(), selectSupClassesTitle);
+					Set supClasses = gmanager.getSupRDFS(gmanager.getClassGraph(), Translator.getString("SelectSupClassesDialog.Title"));
 					if (supClasses == null) {
 						return null;
 					}
 					typeCell = (GraphCell) gmanager.insertSubRDFS(uri, supClasses, gmanager.getClassGraph());
 				}
 			} else {
-				RDFSManagementDialog dialog = new RDFSManagementDialog("Choose One Select", gmanager);
+				RDFSManagementDialog dialog = new RDFSManagementDialog(gmanager);
 				dialog.replaceGraph(gmanager.getClassGraph());
 				dialog.setRegionSet(new HashSet());
 				dialog.setVisible(true);
@@ -377,7 +377,7 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 			Object classCell = (GraphCell) rdfsInfoMap.getClassCell(uri);
 			gmanager.jumpClassArea(classCell);
 		} else {
-			JOptionPane.showInternalMessageDialog(gmanager.getDesktop(), "Not Defined", "Warning", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showInternalMessageDialog(gmanager.getDesktop(), Translator.getString("Warning.Message3"), WARNING, JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -400,12 +400,11 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 	}
 
 	private void selectResourceType() {
-		//		SelectResourceTypeDialog classDialog = new SelectResourceTypeDialog(gmanager);
-		SelectResourceTypeDialog classDialog = new SelectResourceTypeDialog("Select Resource Type Dialog", gmanager);
-		classDialog.replaceGraph(gmanager.getClassGraph());
-		classDialog.setInitCell(resInfo.getTypeCell());
-		classDialog.setVisible(true);
-		Resource uri = (Resource) classDialog.getValue();
+		SelectResourceTypeDialog selectResDialog = new SelectResourceTypeDialog(gmanager);
+		selectResDialog.replaceGraph(gmanager.getClassGraph());
+		selectResDialog.setInitCell(resInfo.getTypeCell());
+		selectResDialog.setVisible(true);
+		Resource uri = (Resource) selectResDialog.getValue();
 		if (uri != null) {
 			setResTypePrefix(uri.getNameSpace());
 			PrefixNSUtil.setNSLabel(resTypeNSLabel, uri.getNameSpace());

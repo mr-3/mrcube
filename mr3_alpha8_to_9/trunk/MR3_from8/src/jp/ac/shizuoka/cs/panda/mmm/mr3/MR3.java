@@ -348,7 +348,7 @@ public class MR3 extends JFrame {
 		JMenu mergeMenu = new JMenu(Translator.getString("Component.File.Import.Merge.Text"));
 		mergeMenu.add(new MergeRDFs(this, Translator.getString("Component.File.Import.Merge.RDF(S)/XML(File).Text")));
 		mergeMenu.add(new MergeRDFs(this, Translator.getString("Component.File.Import.Merge.RDF(S)/XML(URI).Text")));
-		mergeMenu.addSeparator();		
+		mergeMenu.addSeparator();
 		mergeMenu.add(new MergeRDFs(this, Translator.getString("Component.File.Import.Merge.RDF(S)/N-Triple(File).Text")));
 		mergeMenu.add(new MergeRDFs(this, Translator.getString("Component.File.Import.Merge.RDF(S)/N-Triple(URI).Text")));
 		importMenu.add(mergeMenu);
@@ -363,6 +363,7 @@ public class MR3 extends JFrame {
 		exportMenu.add(rdfMenu);
 		rdfMenu.add(new ExportRDF(this, Translator.getString("Component.File.Export.RDF/XML.RDF.Text")));
 		rdfMenu.add(new ExportRDFS(this, Translator.getString("Component.File.Export.RDF/XML.RDFS.Text")));
+		rdfMenu.addSeparator();
 		rdfMenu.add(new ExportRDF(this, Translator.getString("Component.File.Export.RDF/XML.SelectedRDF.Text")));
 		rdfMenu.add(new ExportRDFS(this, Translator.getString("Component.File.Export.RDF/XML.SelectedRDFS.Text")));
 
@@ -370,6 +371,7 @@ public class MR3 extends JFrame {
 		exportMenu.add(nTripleMenu);
 		nTripleMenu.add(new ExportRDF(this, Translator.getString("Component.File.Export.N-Triple.RDF.Text")));
 		nTripleMenu.add(new ExportRDFS(this, Translator.getString("Component.File.Export.N-Triple.RDFS.Text")));
+		nTripleMenu.addSeparator();
 		nTripleMenu.add(new ExportRDF(this, Translator.getString("Component.File.Export.N-Triple.SelectedRDF.Text")));
 		nTripleMenu.add(new ExportRDFS(this, Translator.getString("Component.File.Export.N-Triple.SelectedRDFS.Text")));
 
@@ -382,7 +384,7 @@ public class MR3 extends JFrame {
 		exportMenu.add(new ExportJavaObject(this));
 
 		menu.addSeparator();
-		menu.add(getPluginMenus()); // JavaWebStartでは，pluginは使用できないと思われる．
+		menu.add(getPluginMenus()); 
 		menu.addSeparator();
 		menu.add(new ExitAction(this));
 
@@ -546,6 +548,7 @@ public class MR3 extends JFrame {
 		rdfsView.add(new ConvertRDFSDoc(this, Translator.getString("Component.Convert.RDFS/XML.RDFS(Class/Property).Text")));
 		rdfsView.add(new ConvertClassDoc(this, Translator.getString("Component.Convert.RDFS/XML.RDFS(Class).Text")));
 		rdfsView.add(new ConvertPropertyDoc(this, Translator.getString("Component.Convert.RDFS/XML.RDFS(Property).Text")));
+		rdfsView.addSeparator();
 		rdfsView.add(new ConvertRDFSDoc(this, Translator.getString("Component.Convert.RDFS/XML.SelectedRDFS(Class/Property).Text")));
 		rdfsView.add(new ConvertClassDoc(this, Translator.getString("Component.Convert.RDFS/XML.SelectedRDFS(Class).Text")));
 		rdfsView.add(new ConvertPropertyDoc(this, Translator.getString("Component.Convert.RDFS/XML.SelectedRDFS(Property).Text")));
