@@ -15,16 +15,13 @@ public class URIType implements Serializable {
 	}
 
 	public static final URIType URI = new URIType("URI");
-	public static final URIType ID = new URIType("ID");
 	public static final URIType ANONYMOUS = new URIType("ANONYMOUS");
 
-	private static final URIType[] PRIVATE_VALUES = { URI, ID, ANONYMOUS };
+	private static final URIType[] PRIVATE_VALUES = { URI, ANONYMOUS };
 
 	public static URIType getURIType(String t) {
 		if (t.equals("URI")) {
 			return URI;
-		} else if (t.equals("ID")) {
-			return ID;
 		} else if (t.equals("ANONYMOUS")) {
 			return ANONYMOUS;
 		}

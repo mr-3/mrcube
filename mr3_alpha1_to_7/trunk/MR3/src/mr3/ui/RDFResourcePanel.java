@@ -320,15 +320,6 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		}
 	}
 
-	private String getAddedBaseURI(String uri, URIType uriType) {
-		String tmpURI = "";
-		if (uriType == URIType.ID) {
-			tmpURI = gmanager.getBaseURI(); // チェックする時は，フルパスで．
-		}
-		tmpURI += uri;
-		return tmpURI;
-	}
-
 	private static final String selectSupClassesTitle = "Select Super Classes";
 
 	private GraphCell getResourceType() {
@@ -360,7 +351,6 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 					RDFSInfo rdfsInfo = rdfsInfoMap.getCellInfo(typeCell);
 					rdfsInfoMap.removeURICellMap(rdfsInfo);
 					rdfsInfo.setURI(uri.getURI());
-					//					rdfsInfo.setURIType(tmpResTypeURIType);
 					rdfsInfoMap.putURICellMap(rdfsInfo, typeCell);
 				} else {
 					return null;
