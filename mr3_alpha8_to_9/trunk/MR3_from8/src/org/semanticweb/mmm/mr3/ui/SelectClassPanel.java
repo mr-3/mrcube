@@ -157,7 +157,7 @@ public abstract class SelectClassPanel extends JPanel implements GraphSelectionL
 		for (int i = 0; i < cells.length; i++) {
 			GraphCell cell = (GraphCell) cells[i];
 			if (graph.isRDFSCell(cell)) {
-				ChangeCellAttributes.changeCellColor(graph, cell, color);
+				ChangeCellAttributes.changeDefaultCellStye(graph, cell, color);
 			}
 		}
 	}

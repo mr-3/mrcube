@@ -27,7 +27,7 @@ public class ClassEditor extends Editor {
 
 	public void valueChanged(GraphSelectionEvent e) {
 		if (!gmanager.isImporting()) {
-			lastSelectionCells = ChangeCellAttributes.changeSelectionCellColor(graph, lastSelectionCells);
+			lastSelectionCells = ChangeCellAttributes.changeSelectionCellStyle(graph, lastSelectionCells);
 			if (gmanager.isSelectAbstractLevelMode()) {
 				Object[] cells = graph.getSelectionCells();
 				gmanager.setClassAbstractLevelSet(cells);
