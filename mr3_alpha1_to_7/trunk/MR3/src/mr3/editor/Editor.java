@@ -31,6 +31,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 	protected JGraphToRDF graphToRDF;
 	protected RDFToJGraph rdfToGraph;
 	protected AttributeDialog attrDialog;
+	protected FindResourceDialog findResDialog;
 
 	protected RDFResourceInfoMap resInfoMap = RDFResourceInfoMap.getInstance();
 	protected RDFLiteralInfoMap litInfoMap = RDFLiteralInfoMap.getInstance();
@@ -44,8 +45,9 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 		internalFrames = ifs;
 	}
 
-	protected void initEditor(RDFGraph g, GraphManager manager, AttributeDialog attrD) {
+	protected void initEditor(RDFGraph g, GraphManager manager, AttributeDialog attrD, FindResourceDialog findResD) {
 		graph = g;
+		findResDialog = findResD;
 		lastSelectionCells = new Object[0];
 		initField(attrD, manager);
 		initListener();
@@ -377,6 +379,17 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 		};
 		remove.setEnabled(false);
 		toolbar.add(remove);
+
+		// Find Resource
+		toolbar.addSeparator();
+		URL findUrl = getImageIcon("find.gif");
+		ImageIcon findIcon = new ImageIcon(findUrl);
+		toolbar.add(new AbstractAction("", findIcon) {
+			public void actionPerformed(ActionEvent e) {
+				findResDialog.setSearchArea(graph.getType());
+				findResDialog.setVisible(true);
+			}
+		});
 
 		// Zoom Std
 		toolbar.addSeparator();

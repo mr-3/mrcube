@@ -17,10 +17,10 @@ public class ClassEditor extends Editor {
 
 	private ClassPanel classPanel;
 
-	public ClassEditor(AttributeDialog pw, GraphManager manager) {
+	public ClassEditor(AttributeDialog pw, FindResourceDialog findResD, GraphManager manager) {
 		graph = manager.getClassGraph();
 		graph.setDisconnectable(false);
-		initEditor(manager.getClassGraph(), manager, pw);
+		initEditor(manager.getClassGraph(), manager, pw, findResD);
 	}
 
 	protected void initField(AttributeDialog pw, GraphManager manager) {

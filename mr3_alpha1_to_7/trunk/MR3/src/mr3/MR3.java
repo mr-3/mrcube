@@ -55,7 +55,7 @@ public class MR3 extends JFrame {
 	private MR3Writer mr3Writer;
 
 	private NameSpaceTableDialog nsTableDialog;
-	private SearchResourceDialog searchResDialog;
+	private FindResourceDialog findResDialog;
 	private AttributeDialog attrDialog;
 	private PrefDialog prefDialog;
 
@@ -97,33 +97,21 @@ public class MR3 extends JFrame {
 
 		attrDialog = new AttributeDialog();
 		gmanager = new GraphManager(attrDialog, userPrefs);
+		createDesktop();
 
-		rdfEditor = new RDFEditor(attrDialog, gmanager);
-		//		realRDFEditor = new RealRDFEditor(propDialog, gmanager);
-		classEditor = new ClassEditor(attrDialog, gmanager);
-		propertyEditor = new PropertyEditor(attrDialog, gmanager);
+		rdfEditor = new RDFEditor(attrDialog, findResDialog, gmanager);
+		//		realRDFEditor = new RealRDFEditor(propDialog, findResDialog,gmanager);
+		classEditor = new ClassEditor(attrDialog, findResDialog, gmanager);
+		propertyEditor = new PropertyEditor(attrDialog, findResDialog, gmanager);
 		srcArea = new JTextArea();
 		srcArea.setEditable(false);
 
 		mr3Reader = new MR3Reader(gmanager);
 		mr3Writer = new MR3Writer(gmanager);
 
-		desktop = new JDesktopPane();
-		desktop.add(attrDialog, JLayeredPane.MODAL_LAYER);
-		searchResDialog = new SearchResourceDialog("Search Resource", gmanager);
-		desktop.add(searchResDialog, JLayeredPane.MODAL_LAYER);
-		nsTableDialog = new NameSpaceTableDialog(gmanager);
-		desktop.add(nsTableDialog, JLayeredPane.MODAL_LAYER);
-		desktop.add(gmanager.getRefDialog(), JLayeredPane.MODAL_LAYER);
-
-		prefDialog = new PrefDialog(gmanager, userPrefs);
-		prefDialog.setVisible(false);
-		desktop.add(prefDialog, JLayeredPane.MODAL_LAYER);
-
 		createInternalFrames();
 
 		desktop.setBackground(DESKTOP_BACK_COLOR);
-
 		//		classTreePanel = new RDFSTreePanel(gmanager, rdfsInfoMap.getClassTreeModel(), new ClassTreeCellRenderer());
 		//		propTreePanel = new RDFSTreePanel(gmanager, rdfsInfoMap.getPropTreeModel(), new PropertyTreeCellRenderer());
 		//		JTabbedPane treeTab = new JTabbedPane();
@@ -147,6 +135,19 @@ public class MR3 extends JFrame {
 		});
 		setVisible(true);
 		loadWindows();
+	}
+
+	private void createDesktop() {
+		desktop = new JDesktopPane();
+		desktop.add(attrDialog, JLayeredPane.MODAL_LAYER);
+		findResDialog = new FindResourceDialog("Find Resource", gmanager);
+		desktop.add(findResDialog, JLayeredPane.MODAL_LAYER);
+		nsTableDialog = new NameSpaceTableDialog(gmanager);
+		desktop.add(nsTableDialog, JLayeredPane.MODAL_LAYER);
+		desktop.add(gmanager.getRefDialog(), JLayeredPane.MODAL_LAYER);
+		prefDialog = new PrefDialog(gmanager, userPrefs);
+		prefDialog.setVisible(false);
+		desktop.add(prefDialog, JLayeredPane.MODAL_LAYER);
 	}
 
 	private void createInternalFrames() {
@@ -240,14 +241,25 @@ public class MR3 extends JFrame {
 		mb.add(getViewMenu());
 		mb.add(getWindowMenu());
 		mb.add(getConvertMenu());
-		mb.add(getToolMenu());
 		return mb;
 	}
 
 	private JMenu getEditMenu() {
 		JMenu menu = new JMenu("Edit");
+		JMenuItem mi = new JMenuItem("Find Resource");
+		mi.addActionListener(new FindAction());
+		menu.add(mi);
+		menu.addSeparator();
+		//		selectAbstractLevelMode = new JCheckBoxMenuItem("Change Abstract Level", false);
+		//		selectAbstractLevelMode.addActionListener(new SelectAbstractLevelAction());
+		//		menu.add(selectAbstractLevelMode);
+		//JMenu layout = new JMenu("Layout");
+		//mi = new JMenuItem("TreeAlgorithm");
+		//mi.addActionListener(new GraphLayoutAction());
+		//		layout.add(mi);
+		//		menu.add(layout);
 		JMenu selectMenu = new JMenu("Select");
-		JMenuItem mi = new JMenuItem("Select all nodes");
+		mi = new JMenuItem("Select all nodes");
 		mi.addActionListener(new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
 				gmanager.selectAllNodes();
@@ -901,23 +913,6 @@ public class MR3 extends JFrame {
 		}
 	}
 
-	private JMenu getToolMenu() {
-		JMenu menu = new JMenu("Tool");
-		JMenuItem mi = new JMenuItem("search resource");
-		mi.addActionListener(new SearchAction());
-		menu.add(mi);
-		//		selectAbstractLevelMode = new JCheckBoxMenuItem("Change Abstract Level", false);
-		//		selectAbstractLevelMode.addActionListener(new SelectAbstractLevelAction());
-		//		menu.add(selectAbstractLevelMode);
-		//JMenu layout = new JMenu("Layout");
-		//mi = new JMenuItem("TreeAlgorithm");
-		//mi.addActionListener(new GraphLayoutAction());
-		//		layout.add(mi);
-		//		menu.add(layout);
-
-		return menu;
-	}
-
 	class GraphLayoutAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
 			gmanager.applyTreeLayout();
@@ -937,9 +932,9 @@ public class MR3 extends JFrame {
 		}
 	}
 
-	class SearchAction implements ActionListener {
+	class FindAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			searchResDialog.setVisible(true);
+			findResDialog.setVisible(true);
 		}
 	}
 
