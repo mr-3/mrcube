@@ -24,7 +24,7 @@ public class HelpDialog extends JDialog {
 		JLabel logoLabel = new JLabel("<html>"+TOOL_NAME+"</html>",logo, SwingConstants.LEFT);
 		logoLabel.setFont(logoLabel.getFont().deriveFont(Font.PLAIN, 16));
 		JLabel brLabel = new JLabel("<html><br></html>");
-		JLabel urlLabel = new JLabel("   URL: " + MR3_URL);
+		JLabel urlLabel = new JLabel("   HP: " + MR3_URL);
 		urlLabel.setFont(urlLabel.getFont().deriveFont(Font.PLAIN, 14));
 		JLabel versionLabel = new JLabel("   Version: " + VERSION);
 		versionLabel.setFont(versionLabel.getFont().deriveFont(Font.PLAIN, 14));
