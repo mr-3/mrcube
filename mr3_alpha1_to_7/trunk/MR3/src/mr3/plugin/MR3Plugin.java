@@ -7,7 +7,7 @@ package mr3.plugin;
 
 import javax.swing.*;
 
-import mr3.*;
+import jp.ac.shizuoka.cs.panda.mmm.mr3.*;
 
 import com.hp.hpl.mesa.rdf.jena.model.*;
 
@@ -41,7 +41,7 @@ public abstract class MR3Plugin {
 		return menuName;
 	}
 
-	protected void replaceRDFModel(Model model) {
+	protected void replaceRDFModel(Model model) {		
 		mr3.replaceRDFModel(model);
 		mr3.getGraphManager().applyTreeLayout();
 	}
