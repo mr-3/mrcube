@@ -15,11 +15,15 @@ import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
  * @author takeshi morita
  */
 public class CopyAction extends AbstractAction {
-	RDFGraph graph;
+	
+	private RDFGraph graph;
+	private static final String TITLE = "Copy";
+	private static final ImageIcon ICON = Utilities.getImageIcon("copy.gif"); 
 
-	public CopyAction(RDFGraph g, String title) {
-		super(title, Utilities.getImageIcon("copy.gif"));
+	public CopyAction(RDFGraph g) {
+		super(TITLE, ICON);
 		graph = g;
+		putValue(SHORT_DESCRIPTION, TITLE);
 	}
 
 	public void actionPerformed(ActionEvent e) {

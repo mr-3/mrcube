@@ -17,15 +17,16 @@ import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
  */
 public class NewProject extends AbstractActionFile {
 
-	private static final String NEW_PROJECT = "New Project";
+	private static final String TITLE = "New Project";
+	private static final ImageIcon ICON = Utilities.getImageIcon("new.gif"); 
 
 	public NewProject(MR3 mr3) {
-		super(mr3, NEW_PROJECT, Utilities.getImageIcon("new.gif"));
+		super(mr3, TITLE, ICON);
 		setValues();
 	}
 
 	private void setValues() {
-		putValue(SHORT_DESCRIPTION, "New Project");
+		putValue(SHORT_DESCRIPTION, TITLE);
 		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_MASK));
 //		putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_N));
 	}

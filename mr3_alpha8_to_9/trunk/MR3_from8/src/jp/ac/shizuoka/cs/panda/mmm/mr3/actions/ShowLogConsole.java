@@ -15,8 +15,10 @@ import jp.ac.shizuoka.cs.panda.mmm.mr3.*;
  */
 public class ShowLogConsole extends MR3AbstractAction {
 
-	public ShowLogConsole(MR3 mr3, String name) {
-		super(mr3, name);	
+	private static final String TITLE = "Show Log Console";
+
+	public ShowLogConsole(MR3 mr3) {
+		super(mr3, TITLE);	
 	}
 	
 	public void actionPerformed(ActionEvent e) {

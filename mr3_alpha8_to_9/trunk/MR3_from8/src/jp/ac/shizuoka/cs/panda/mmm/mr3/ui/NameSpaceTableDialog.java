@@ -43,7 +43,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 	transient private JPanel inlinePanel;
 
 	transient private GraphManager gmanager;
-	transient private JCheckBoxMenuItem showNSTable;
+//	transient private JCheckBoxMenuItem showNSTable;
 
 	public NameSpaceTableDialog(GraphManager manager) {
 		super("NameSpace Table", false, true, false);
@@ -55,8 +55,8 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		initGridLayout();
 		setTableLayout();
 		setInputLayout();
-		showNSTable = new JCheckBoxMenuItem("Show NameSpace Table", true);
-		showNSTable.addActionListener(new CloseNSTableAction());
+//		showNSTable = new JCheckBoxMenuItem("Show NameSpace Table", true);
+//		showNSTable.addActionListener(new CloseNSTableAction());
 		getContentPane().add(inlinePanel);
 
 		setFrameIcon(Utilities.getImageIcon("nameSpaceTableIcon.gif"));
@@ -160,22 +160,22 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		changeCellView();
 	}
 
-	class CloseNSTableAction extends AbstractAction {
-		public void actionPerformed(ActionEvent e) {
-			setVisible(showNSTable.getState());
-		}
-	}
+//	class CloseNSTableAction extends AbstractAction {
+//		public void actionPerformed(ActionEvent e) {
+//			setVisible(showNSTable.getState());
+//		}
+//	}
 
 	public void setVisible(boolean b) {
 		super.setVisible(b);
-		if (showNSTable != null) {
-			showNSTable.setState(b);
-		}
+//		if (showNSTable != null) {
+//			showNSTable.setState(b);
+//		}
 	}
 
-	public JCheckBoxMenuItem getShowNSTable() {
-		return showNSTable;
-	}
+//	public JCheckBoxMenuItem getShowNSTable() {
+//		return showNSTable;
+//	}
 
 	public void resetNSTable() {
 		prefixNSMap = new HashMap();

@@ -39,7 +39,7 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 	}
 
 	public GraphCell insertResourceCell(Point pt) {
-		InsertRDFSResDialog ird = new InsertRDFSResDialog("Input Resource", gmanager);
+		InsertRDFSResDialog ird = new InsertRDFSResDialog("Input Class", gmanager);
 		if (!ird.isConfirm()) {
 			return null;
 		}
@@ -52,7 +52,7 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 	}
 
 	public void insertSubClass(Point pt, Object[] supCells) {
-		InsertRDFSResDialog ird = new InsertRDFSResDialog("Input Resource", gmanager);
+		InsertRDFSResDialog ird = new InsertRDFSResDialog("Input Sub Class", gmanager);
 		if (!ird.isConfirm()) {
 			return;
 		}
@@ -101,7 +101,7 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 		menu.add(new ConnectAction("Connect Mode"));
 		addTransformMenu(menu, cell);
 		addEditMenu(menu, cell);
-		menu.add(new ShowAttrDialog(graph, gmanager, "Attribute Dialog"));
+		menu.add(new ShowAttrDialog());
 
 		return menu;
 	}

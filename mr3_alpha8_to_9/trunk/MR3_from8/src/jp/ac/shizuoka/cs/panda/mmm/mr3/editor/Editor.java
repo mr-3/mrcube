@@ -232,10 +232,8 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 			graph.setScale(scale);
 		}
 	}
-
-	//
-	// ToolBar
-	//
+	
+	/** _Create ToolBar */
 	public JToolBar createToolBar() {
 		JToolBar toolbar = new JToolBar();
 		toolbar.setFloatable(false);
@@ -313,16 +311,16 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 		//		toolbar.add(redo);
 
 		toolbar.addSeparator();
-		toolbar.add(new CopyAction(graph, "Copy")); 
-		toolbar.add(new CutAction(graph, "Cut")); 
-		toolbar.add(new PasteAction(graph, "Paste")); 
+		toolbar.add(new CopyAction(graph)); 
+		toolbar.add(new CutAction(graph)); 
+		toolbar.add(new PasteAction(graph)); 
 		toolbar.addSeparator();
-		remove = new RemoveAction(graph, gmanager, "Remove");	
+		remove = new RemoveAction(graph, gmanager);	
 		remove.setEnabled(false);
 		toolbar.add(remove);
 		
 		toolbar.addSeparator();		
-		toolbar.add(new FindResAction(graph, findResDialog, "Find Resource"));
+		toolbar.add(new FindResAction(graph, findResDialog));
 		toolbar.addSeparator();
 		toolbar.add(new AbstractAction("", Utilities.getImageIcon("zoom100.gif")) { // Zoom Std
 			public void actionPerformed(ActionEvent e) {

@@ -17,15 +17,16 @@ import jp.ac.shizuoka.cs.panda.mmm.mr3.util.Utilities;
  * @author takeshi morita
  *
  */
-public class SourceFrame extends JInternalFrame {
+public class SourceDialog extends JInternalFrame {
 
 	private JTextArea srcArea;
-	private JCheckBoxMenuItem showSrcWindowBox;
+//	private JCheckBoxMenuItem showSrcWindowBox;
 	private static final int FRAME_HEIGHT = 400;
 	private static final int FRAME_WIDTH = 600;
+	private static final String TITLE = "Source Dialog";
 
-	public SourceFrame(String title) {
-		super(title, true, true, true);
+	public SourceDialog() {
+		super(TITLE, true, true, true);
 //		URL srcAreaUrl = this.getClass().getClassLoader().getResource("mr3/resources/source_window.gif");
 		setFrameIcon(Utilities.getImageIcon("source_window.gif"));
 		setIconifiable(true);
@@ -34,8 +35,8 @@ public class SourceFrame extends JInternalFrame {
 		srcArea.setEditable(false);
 		setContentPane(new JScrollPane(srcArea));
 
-		showSrcWindowBox = new JCheckBoxMenuItem("Show Source Window", false);
-		showSrcWindowBox.addActionListener(new ShowViewAction());
+//		showSrcWindowBox = new JCheckBoxMenuItem("Show Source Window", false);
+//		showSrcWindowBox.addActionListener(new ShowViewAction());
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addInternalFrameListener(new CloseInternalFrameAction());
@@ -45,21 +46,21 @@ public class SourceFrame extends JInternalFrame {
 
 	class CloseInternalFrameAction extends InternalFrameAdapter {
 		public void internalFrameClosing(InternalFrameEvent e) {
-			showSrcWindowBox.setSelected(false);
+//			showSrcWindowBox.setSelected(false);
 			setVisible(false);
 		}
 	}
 
 	class ShowViewAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
-			setVisible(showSrcWindowBox.getState());
+//			setVisible(showSrcWindowBox.getState());
 			toFront();
 		}
 	}
 
-	public JCheckBoxMenuItem getShowSrcWindowBox() {
-		return showSrcWindowBox;
-	}
+//	public JCheckBoxMenuItem getShowSrcWindowBox() {
+//		return showSrcWindowBox;
+//	}
 	
 	public JTextComponent getSourceArea() {
 		return srcArea;

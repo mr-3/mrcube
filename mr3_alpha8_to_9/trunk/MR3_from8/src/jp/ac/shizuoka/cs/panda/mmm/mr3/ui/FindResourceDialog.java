@@ -38,8 +38,12 @@ public class FindResourceDialog extends JInternalFrame {
 	private static final int LIST_HEIGHT = 30;
 	private static final int FIELD_HEIGHT = 40;
 
-	public FindResourceDialog(String title, GraphManager manager) {
-		super(title, false, true, false);
+	private static final String TITLE = "Find Resource";
+	private static final ImageIcon ICON = Utilities.getImageIcon("find.gif");
+
+	public FindResourceDialog(GraphManager manager) {
+		super(TITLE, false, true, false);
+		setFrameIcon(ICON);
 		Container contentPane = getContentPane();
 
 		gmanager = manager;
@@ -158,7 +162,7 @@ public class FindResourceDialog extends JInternalFrame {
 		}
 		super.setVisible(aFlag);
 	}
-	
+
 	class ChangePrefixAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
 			PrefixNSUtil.replacePrefix((String) uriPrefixBox.getSelectedItem(), nsLabel);
@@ -182,7 +186,7 @@ public class FindResourceDialog extends JInternalFrame {
 		public void actionPerformed(ActionEvent e) {
 			resourceList.removeAll();
 			// はじめの部分だけマッチしていれば，検索対象にするようにする
-			String key = nsLabel.getText()+findField.getText() + ".*";
+			String key = nsLabel.getText() + findField.getText() + ".*";
 			Set resourceSet = new HashSet();
 			if (findArea == GraphType.RDF) {
 				resourceSet = gmanager.getFindRDFResult(key);

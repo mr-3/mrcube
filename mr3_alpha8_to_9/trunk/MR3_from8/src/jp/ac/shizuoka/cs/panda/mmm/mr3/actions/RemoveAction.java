@@ -18,11 +18,14 @@ public class RemoveAction extends AbstractAction {
 
 	private RDFGraph graph;
 	private GraphManager gmanager;
+	private static final String TITLE = "Remove";
+	private static final ImageIcon ICON = Utilities.getImageIcon("delete.gif");
 
-	public RemoveAction(RDFGraph g, GraphManager gm, String title) {
-		super(title, Utilities.getImageIcon("delete.gif"));
+	public RemoveAction(RDFGraph g, GraphManager gm) {
+		super(TITLE, ICON);
 		graph = g;
 		gmanager = gm;
+		putValue(SHORT_DESCRIPTION, TITLE);
 	}
 
 	public void actionPerformed(ActionEvent e) {
