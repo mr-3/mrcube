@@ -90,8 +90,8 @@ public class RDFEditor extends Editor {
 		}
 	}
 
+	//	対応するRDFSクラスを選択
 	private void selectResource(GraphCell cell) {
-		// 対応するRDFSクラスを選択
 		RDFResourceInfo info = resInfoMap.getCellInfo(cell);
 		if (info != null) {
 			gmanager.jumpClassArea(info.getTypeCell());
