@@ -384,6 +384,7 @@ public class RDFGraph extends JGraph {
 	}
 
 	private boolean isContain(Object[] cells, Object cell) {
+		cells = getDescendants(cells);
 		for (int i = 0; i < cells.length; i++) {
 			if (cells[i] == cell) {
 				return true;
@@ -485,7 +486,7 @@ public class RDFGraph extends JGraph {
 		private Object createRDFResourceCellClones(Object cell) {
 			RDFResourceInfo orgInfo = (RDFResourceInfo) copyInfoMap.get(cell);
 			// RDFリソースのタイプを示す矩形セルのクローンを得る
-			GraphCell typeViewCell = (GraphCell)clones.get(orgInfo.getTypeViewCell());
+			GraphCell typeViewCell = (GraphCell) clones.get(orgInfo.getTypeViewCell());
 			RDFResourceInfo newInfo = resInfoMap.cloneRDFResourceInfo(orgInfo, typeViewCell);
 			return newInfo;
 		}
@@ -512,7 +513,7 @@ public class RDFGraph extends JGraph {
 				} else if (isRDFResourceCell(cell)) {
 					newInfo = createRDFResourceCellClones(cell);
 				} else if (isRDFPropertyCell(cell)) {
-
+					newInfo = copyInfoMap.get(cell);
 				} else if (isRDFLiteralCell(cell)) {
 					newInfo = createRDFLiteralCellClones(cell);
 				}
@@ -548,25 +549,25 @@ public class RDFGraph extends JGraph {
 	private Map getCopyInfoMap(Map clones) {
 		Map copyInfoMap = new HashMap();
 		for (Iterator i = clones.keySet().iterator(); i.hasNext();) {
+			Object newInfo = null;
 			Object cell = i.next();
 			if (isRDFSClassCell(cell)) {
 				ClassInfo orgInfo = (ClassInfo) rdfsInfoMap.getCellInfo(cell);
-				ClassInfo newInfo = rdfsInfoMap.cloneClassInfo(orgInfo);
-				copyInfoMap.put(clones.get(cell), newInfo);
+				newInfo = rdfsInfoMap.cloneClassInfo(orgInfo);
 			} else if (isRDFSPropertyCell(cell)) {
 				PropertyInfo orgInfo = (PropertyInfo) rdfsInfoMap.getCellInfo(cell);
-				PropertyInfo newInfo = rdfsInfoMap.clonePropertyInfo(orgInfo);
-				copyInfoMap.put(clones.get(cell), newInfo);
+				newInfo = rdfsInfoMap.clonePropertyInfo(orgInfo);
 			} else if (isRDFResourceCell(cell)) {
 				RDFResourceInfo orgInfo = resInfoMap.getCellInfo(cell);
-				GraphCell cloneTypeViewCell = (GraphCell)clones.get(orgInfo.getTypeViewCell());
-				RDFResourceInfo newInfo = resInfoMap.cloneRDFResourceInfo(orgInfo, cloneTypeViewCell);
-				copyInfoMap.put(clones.get(cell), newInfo);
+				GraphCell cloneTypeViewCell = (GraphCell) clones.get(orgInfo.getTypeViewCell());
+				newInfo = resInfoMap.cloneRDFResourceInfo(orgInfo, cloneTypeViewCell);
+			} else if (isRDFPropertyCell(cell)) {
+				newInfo = rdfsInfoMap.getEdgeInfo(cell);
 			} else if (isRDFLiteralCell(cell)) {
 				Literal orgInfo = litInfoMap.getCellInfo(cell);
-				Literal newInfo = litInfoMap.cloneRDFLiteralInfo(orgInfo);
-				copyInfoMap.put(clones.get(cell), newInfo);
+				newInfo = litInfoMap.cloneRDFLiteralInfo(orgInfo);
 			}
+			copyInfoMap.put(clones.get(cell), newInfo);
 		}
 		return copyInfoMap;
 	}
@@ -614,7 +615,7 @@ public class RDFGraph extends JGraph {
 			} else if (isRDFResourceCell(cell)) {
 				pasteRDFResourceCell(pastePoint, cell);
 			} else if (isRDFPropertyCell(cell)) {
-
+				pasteRDFPropertyCell(cell);
 			} else if (isRDFLiteralCell(cell)) {
 				pasteRDFLiteralCell(pastePoint, cell);
 			} else {
@@ -671,9 +672,20 @@ public class RDFGraph extends JGraph {
 		}
 	}
 
+	private void pasteRDFPropertyCell(GraphCell edge) {
+		Object rdfsPropCell = copyBuffer.get(edge);
+		if (rdfsInfoMap.getCellInfo(rdfsPropCell) == null) {
+			// ここでも，クラスと同様にrdfsPropCellのValueにURIが
+			// 保持されていれば，新たにプロパティを作成することが可能と思われる
+			rdfsPropCell = null;
+		}
+		rdfsInfoMap.putEdgeInfo(edge, rdfsPropCell);
+	}
+
 	private void pasteRDFResourceCell(Point pastePoint, GraphCell cell) {
 		RDFResourceInfo info = (RDFResourceInfo) copyBuffer.get(cell);
-		if (gmanager.isDuplicated(info.getURI().getURI(), null, GraphType.RDF)) {
+
+		if (info.getURIType() != URIType.ANONYMOUS && gmanager.isDuplicated(info.getURI().getURI(), null, GraphType.RDF)) {
 			for (int j = 1; true; j++) {
 				String copyURI = info.getURI() + "-copy" + j;
 				if (!gmanager.isDuplicated(copyURI, null, GraphType.RDF)) {
@@ -689,9 +701,13 @@ public class RDFGraph extends JGraph {
 			// クラスを貼り付けることができそう
 			//System.out.println(info.getTypeCell());
 			info.setTypeCell(null);
-		} 
-		
+		}
+
 		resInfoMap.putCellInfo(cell, info);
-		setPastePosition(cell, info.getURI().getURI(), pastePoint);
+		if (info.getURIType() == URIType.ANONYMOUS) {
+			setPastePosition(cell, "", pastePoint);
+		} else {
+			setPastePosition(cell, info.getURI().getURI(), pastePoint);
+		}
 	}
 }
