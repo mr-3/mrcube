@@ -364,7 +364,6 @@ public class GraphManager {
 				litInfoMap.putCellInfo(litCell, new LiteralImpl(rec.getString(), rec.getLanguage()));
 				setCellBounds(rdfGraph, litCell, rec.getRectangle());
 				setCellValue(litCell, rec.getString());
-
 				DefaultGraphCell source = (DefaultGraphCell) getRDFResourceCell(rec.getResource());
 				Edge edge = cellMaker.connect((Port) source.getChildAt(0), (Port) litCell.getChildAt(0), "", rdfGraph);
 				rdfsInfoMap.putEdgeInfo(edge, rdfsInfoMap.getPropertyCell(rec.getProperty()));
@@ -646,7 +645,13 @@ public class GraphManager {
 		for (int i = 0; i < cells.length; i++) {
 			if (rdfGraph.isRDFResourceCell(cells[i])) {
 				RDFResourceInfo info = resInfoMap.getCellInfo(cells[i]);
-				if (info.getURI().equals(uri)) {
+				/*
+				 * Resourceクラスのインスタンスをequalsで比べるとisAnon()
+				 * によって，true,falseを決められる．文字列を保存しているuri
+				 * は，isAnonは必ずfalseとなるため，文字列比較をするために
+				 * toStringを用いている．toStringを消すな．
+				 */
+				if (info.getURI().toString().equals(uri.toString())) {
 					return cells[i];
 				}
 			}
