@@ -182,7 +182,7 @@ public class FindResourceDialog extends JInternalFrame {
 			resourceList.removeAll();
 			// はじめの部分だけマッチしていれば，検索対象にするようにする
 			String key = nsLabel.getText()+findField.getText() + ".*";
-			Set resourceSet = null;
+			Set resourceSet = new HashSet();
 			if (findArea == GraphType.RDF) {
 				resourceSet = gmanager.getFindRDFResult(key);
 			} else if (findArea == GraphType.CLASS) {

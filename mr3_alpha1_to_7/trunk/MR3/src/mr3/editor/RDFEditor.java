@@ -1,14 +1,9 @@
 package mr3.editor;
-import java.io.*;
-
-import javax.swing.text.*;
-
 import mr3.data.*;
 import mr3.jgraph.*;
 import mr3.ui.*;
 import mr3.util.*;
 
-import com.hp.hpl.mesa.rdf.jena.common.*;
 import com.hp.hpl.mesa.rdf.jena.model.*;
 import com.hp.hpl.mesa.rdf.jena.vocabulary.*;
 import com.jgraph.event.*;
@@ -35,36 +30,6 @@ public class RDFEditor extends Editor {
 		resPanel = new RDFResourcePanel(gmanager);
 		propPanel = new RDFPropertyPanel(gmanager);
 		litPanel = new RDFLiteralPanel(gmanager);
-	}
-
-	public void convertNTripleSRC(JTextComponent area, boolean isSelected) {
-		Model model = null;
-		if (isSelected) {
-			model = graphToRDF.getSelectedRDFModel();
-		} else {
-			model = graphToRDF.getRDFModel();
-		}
-		Writer output = new StringWriter();
-		RDFWriter writer = new NTripleWriter();
-		writeModel(model, output, writer);
-		area.setText(output.toString());
-	}
-
-	public void convertRDFSRC(JTextComponent area, boolean isSelected) {
-		try {
-			Model model = null;
-			if (isSelected) {
-				model = graphToRDF.getSelectedRDFModel();
-			} else {
-				model = graphToRDF.getRDFModel();
-			}
-			Writer output = new StringWriter();
-			RDFWriter writer = new RDFWriterFImpl().getWriter("RDF/XML-ABBREV");
-			writeModel(model, output, writer);
-			area.setText(output.toString());
-		} catch (RDFException e) {
-			e.printStackTrace();
-		}
 	}
 
 	private Object getDomainType(Edge edge) {

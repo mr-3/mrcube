@@ -14,7 +14,7 @@ import javax.swing.*;
  */
 public class HelpDialog extends JDialog {
 
-	private static final String TOOL_NAME = "<h2>MR<sup>3</sup></h2> (Meta-Model Management based on <br> RDFs Revision Reflection)";
+	private static final String TOOL_NAME = "<h1>MR<sup>3</sup></h1> (Meta-Model Management based on <br> RDFs Revision Reflection)";
 	private static final String MR3_URL = "http://panda.cs.inf.shizuoka.ac.jp/mmm/mr3#";
 	private static final String VERSION = "ƒ¿6 (2003-07-)";
 	private static final Color DESKTOP_BACK_COLOR = new Color(225, 225, 225);
