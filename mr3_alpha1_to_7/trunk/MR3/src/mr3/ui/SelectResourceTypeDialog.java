@@ -74,7 +74,6 @@ public class SelectResourceTypeDialog extends SelectClassDialog {
 				dspURI.setText(info.getURIStr());
 				dspURI.setToolTipText(info.getURIStr());
 				uri = info.getURI();
-				uriType = info.getURIType();
 				prevCell = cell;
 			}
 		}

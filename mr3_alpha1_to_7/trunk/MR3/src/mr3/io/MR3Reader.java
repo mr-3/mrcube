@@ -12,7 +12,7 @@ import com.hp.hpl.mesa.rdf.jena.mem.*;
 import com.hp.hpl.mesa.rdf.jena.model.*;
 
 /**
- * @author cs9088
+ * @author takeshi morita
  */
 public class MR3Reader {
 

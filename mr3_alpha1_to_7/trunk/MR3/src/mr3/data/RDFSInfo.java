@@ -13,8 +13,6 @@ public abstract class RDFSInfo implements Serializable {
 
 	//	transient protected Resource uri;
 	protected transient String uri;
-	protected transient URIType uriType;
-	protected transient String uriTypeStr;
 	//	transient private Literal label; // 現在，選択されているラベル
 	private transient MR3Literal label; // 現在，選択されているラベル
 	private transient List labelList;
@@ -27,10 +25,9 @@ public abstract class RDFSInfo implements Serializable {
 	transient protected Set supRDFS;
 	transient protected RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
 
-	RDFSInfo(String uri, URIType type) {
+	RDFSInfo(String uri) {
 		//			this.uri = new ResourceImpl(uri);
 		this.uri = uri;
-		setURIType(type);
 		labelList = new ArrayList();
 		commentList = new ArrayList();
 		//		isDefinedBy = new ResourceImpl("");
@@ -41,7 +38,6 @@ public abstract class RDFSInfo implements Serializable {
 
 	RDFSInfo(RDFSInfo info) {
 		uri = info.getURIStr();
-		setURIType(info.getURIType());
 		label = info.getLabel();
 		labelList = new ArrayList(info.getLabelList());
 		comment = info.getComment();
@@ -117,37 +113,30 @@ public abstract class RDFSInfo implements Serializable {
 		uri = str;
 	}
 
-	public URIType getURIType() {
-		return uriType;
-	}
-
-	public void setURIType(URIType type) {
-		uriType = type;
-		uriTypeStr = type.toString();
-	}
-
 	public Resource getURI() {
 		return new ResourceImpl(uri);
 	}
 
 	public Resource getURI(String baseURI) {
-		if (uriType == URIType.ID) {
-			return new ResourceImpl(baseURI+uri);
-		} else {
-			return new ResourceImpl(uri);
-		}
+		return new ResourceImpl(uri);
 	}
 
 	public String getURIStr() {
 		return uri;
 	}
 
+	public String getNameSpace() {
+		Resource tmp = new ResourceImpl(uri);
+		return tmp.getNameSpace();
+	}
+
+	public String getLocalName() {
+		Resource tmp = new ResourceImpl(uri);
+		return tmp.getLocalName();
+	}
+
 	public String getURIStr(String baseURI) {
-		if (uriType == URIType.ID) {
-			return baseURI + uri;
-		} else {
-			return uri;
-		}
+		return uri;
 	}
 
 	public void setLabel(MR3Literal label) {
@@ -212,8 +201,6 @@ public abstract class RDFSInfo implements Serializable {
 	private void writeObject(ObjectOutputStream s) throws IOException {
 		s.defaultWriteObject();
 		s.writeObject(uri);
-		s.writeObject(uriType);
-		s.writeObject(uriTypeStr);
 		s.writeObject(label);
 		s.writeObject(labelList);
 		s.writeObject(comment);
@@ -224,8 +211,6 @@ public abstract class RDFSInfo implements Serializable {
 	private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
 		s.defaultReadObject();
 		uri = (String) s.readObject();
-		uriType = (URIType) s.readObject();
-		uriTypeStr = (String) s.readObject();
 		label = (MR3Literal) s.readObject();
 		labelList = (List) s.readObject();
 		comment = (MR3Literal) s.readObject();

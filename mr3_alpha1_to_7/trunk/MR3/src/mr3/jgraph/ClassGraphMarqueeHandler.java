@@ -38,35 +38,35 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 	}
 
 	public GraphCell insertResourceCell(Point pt) {
-		InsertRDFSResDialog ird = new InsertRDFSResDialog("Input Resource", gmanager.getPrefixNSInfoSet());
+		InsertRDFSResDialog ird = new InsertRDFSResDialog("Input Resource", gmanager.getPrefixNSInfoSet(), gmanager.getBaseURI());
 		if (!ird.isConfirm()) {
 			return null;
 		}		
 		String uri = ird.getURI();
-		URIType uriType = ird.getURIType();
+//		URIType uriType = ird.getURIType();
 		
 		
-		String tmpURI = getAddedBaseURI(uri, uriType);
-		if (uri == null || gmanager.isEmptyURI(tmpURI) || gmanager.isDuplicatedWithDialog(tmpURI, null, GraphType.CLASS)) {
+//		String tmpURI = getAddedBaseURI(uri, uriType);
+		if (uri == null || gmanager.isEmptyURI(uri) || gmanager.isDuplicatedWithDialog(uri, null, GraphType.CLASS)) {
 			return null;
 		} else {
-			return cellMaker.insertClass(pt, uri, uriType);
+			return cellMaker.insertClass(pt, uri);
 		}
 	}
 
 	public void insertSubClass(Point pt, Object[] supCells) {
-		InsertRDFSResDialog ird = new InsertRDFSResDialog("Input Resource", gmanager.getPrefixNSInfoSet());
+		InsertRDFSResDialog ird = new InsertRDFSResDialog("Input Resource", gmanager.getPrefixNSInfoSet(), gmanager.getBaseURI());
 		if (!ird.isConfirm()) {
 			return;
 		}
 		String uri = ird.getURI();
-		URIType uriType = ird.getURIType();
+//		URIType uriType = ird.getURIType();
 		
-		String tmpURI = getAddedBaseURI(uri, uriType);
-		if (uri == null || gmanager.isEmptyURI(tmpURI) || gmanager.isDuplicatedWithDialog(tmpURI, null, GraphType.CLASS)) {
+//		String tmpURI = getAddedBaseURI(uri, uriType);
+		if (uri == null || gmanager.isEmptyURI(uri) || gmanager.isDuplicatedWithDialog(uri, null, GraphType.CLASS)) {
 			return;
 		} else {
-			cellMaker.insertClass(pt, uri, uriType);
+			cellMaker.insertClass(pt, uri);
 			DefaultGraphCell cell = (DefaultGraphCell) graph.getSelectionCell();
 			Port sourcePort = (Port) cell.getChildAt(0);
 			cellMaker.connectSubToSups(sourcePort, supCells, graph);

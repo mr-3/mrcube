@@ -15,8 +15,8 @@ public class ClassInfo extends RDFSInfo {
 	private transient Set subClasses;
 	private transient Set supClasses;
 
-	public ClassInfo(String uri, URIType type) {
-		super(uri, type);
+	public ClassInfo(String uri) {
+		super(uri);
 		subClasses = new HashSet();
 		supClasses = new HashSet();
 	}

@@ -10,7 +10,6 @@ import java.util.*;
 
 import javax.swing.*;
 
-import mr3.data.*;
 import mr3.util.*;
 
 /**
@@ -19,55 +18,42 @@ import mr3.util.*;
 public class InsertRDFSResDialog extends JDialog implements ActionListener {
 
 	private boolean isConfirm;
-	private JTextField uriField;
-	private Set prefixNSInfoSet;
+	private JTextField idField;
+	private JLabel nsLabel;
 	private JComboBox uriPrefixBox;
-	private URIType uriType;
+
+	private String baseURI;
 
 	private JButton confirm;
 	private JButton cancel;
 
-	private JRadioButton uriButton;
-	private JRadioButton idButton;
+	private static final int boxWidth = 120;
+	private static final int boxHeight = 50;
 
-	private static final int boxWidth = 70;
-	private static final int boxHeight = 30;
-
-	public InsertRDFSResDialog(String title, Set pnis) {
+	public InsertRDFSResDialog(String title, Set pnis, String base) {
 		super((Frame) null, title, true);
 		Container contentPane = getContentPane();
-
-		uriButton = new JRadioButton("URI");
-		idButton = new JRadioButton("ID");
-		RadioAction ra = new RadioAction();
-		uriButton.addActionListener(ra);
-		idButton.addActionListener(ra);
-		idButton.setSelected(true);
-		uriType = URIType.ID;
-		ButtonGroup group = new ButtonGroup();
-		group.add(uriButton);
-		group.add(idButton);
-		JPanel uriTypeGroupPanel = new JPanel();
-		uriTypeGroupPanel.setBorder(BorderFactory.createTitledBorder("URI Type"));
-		uriTypeGroupPanel.setPreferredSize(new Dimension(130, 55));
-		uriTypeGroupPanel.setMinimumSize(new Dimension(130, 55));
-		uriTypeGroupPanel.add(uriButton);
-		uriTypeGroupPanel.add(idButton);
-
-		uriField = new JTextField(27);
-		uriField.setText("#");
-		uriField.setBorder(BorderFactory.createTitledBorder("URI"));
-		uriField.setPreferredSize(new Dimension(300, 40));
-		uriPrefixBox = new JComboBox();
-		uriPrefixBox.addActionListener(new ChangePrefixAction());
-		uriPrefixBox.setPreferredSize(new Dimension(boxWidth, boxHeight));
-		uriPrefixBox.setMinimumSize(new Dimension(boxWidth, boxHeight));
-		uriPrefixBox.setEnabled(false);
-		prefixNSInfoSet = pnis;
+		baseURI = base;
 		PrefixNSUtil.setPrefixNSInfoSet(pnis);
+
+		idField = new JTextField(15);
+		idField.setText("");
+		initComponent(idField, "Local Name", 150, 40);
+
+		uriPrefixBox = new JComboBox();
+		initComponent(uriPrefixBox, "Prefix", boxWidth, boxHeight);
 		uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
-		uriPrefixBox.insertItemAt("", 0);
-		uriPrefixBox.setSelectedIndex(0);
+		uriPrefixBox.addActionListener(new ChangePrefixAction());
+
+		nsLabel = new JLabel("");
+		initComponent(nsLabel, "NameSpace", 300, 40);
+		
+		uriPrefixBox.setSelectedItem(PrefixNSUtil.getBaseURIPrefix(baseURI));
+		PrefixNSUtil.replacePrefix((String) uriPrefixBox.getSelectedItem(), nsLabel);
+
+		JPanel uriPanel = new JPanel();
+		uriPanel.add(uriPrefixBox);
+		uriPanel.add(idField);
 
 		confirm = new JButton("OK");
 		confirm.addActionListener(this);
@@ -83,17 +69,12 @@ public class InsertRDFSResDialog extends JDialog implements ActionListener {
 		panel.setLayout(gridbag);
 		c.weightx = 2;
 		c.weighty = 5;
-		c.anchor = GridBagConstraints.WEST;
-		c.gridwidth = GridBagConstraints.REMAINDER;
-		gridbag.setConstraints(uriTypeGroupPanel, c);
-		panel.add(uriTypeGroupPanel);
 		c.anchor = GridBagConstraints.CENTER;
-		c.gridwidth = GridBagConstraints.RELATIVE;
-		gridbag.setConstraints(uriPrefixBox, c);
-		panel.add(uriPrefixBox);
 		c.gridwidth = GridBagConstraints.REMAINDER;
-		gridbag.setConstraints(uriField, c);
-		panel.add(uriField);
+		gridbag.setConstraints(uriPanel, c);
+		panel.add(uriPanel);
+		gridbag.setConstraints(nsLabel, c);
+		panel.add(nsLabel);
 		gridbag.setConstraints(buttonPanel, c);
 		panel.add(buttonPanel);
 		contentPane.add(panel);
@@ -104,9 +85,15 @@ public class InsertRDFSResDialog extends JDialog implements ActionListener {
 		setVisible(true);
 	}
 
+	private void initComponent(JComponent component, String title, int width, int height) {
+		component.setPreferredSize(new Dimension(width, height));
+		component.setMinimumSize(new Dimension(width, height));
+		component.setBorder(BorderFactory.createTitledBorder(title));
+	}
+
 	class ChangePrefixAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
-			PrefixNSUtil.replacePrefix((String) uriPrefixBox.getSelectedItem(), uriField);
+			PrefixNSUtil.replacePrefix((String) uriPrefixBox.getSelectedItem(), nsLabel);
 		}
 	}
 
@@ -114,34 +101,8 @@ public class InsertRDFSResDialog extends JDialog implements ActionListener {
 		return isConfirm;
 	}
 
-	public URIType getURIType() {
-		return uriType;
-	}
-
 	public String getURI() {
-		return uriField.getText();
-	}
-
-	class RadioAction implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			String type = (String) e.getActionCommand();
-			uriType = URIType.getURIType(type);
-
-			if (uriType == URIType.ID) {
-				if (uriField.getText().length() == 0 || uriField.getText().charAt(0) != '#') {
-					uriField.setText('#' + uriField.getText());
-				}
-				uriPrefixBox.setEnabled(false);
-			} else if (uriType == URIType.URI) {
-				uriPrefixBox.setEnabled(true);
-			}
-		}
-	}
-
-	private void setURIField(String str, boolean t) {
-		uriField.setText(str);
-		uriField.setToolTipText(str);
-		uriField.setEditable(t);
+		return nsLabel.getText() + idField.getText();
 	}
 
 	public void actionPerformed(ActionEvent e) {

@@ -31,9 +31,9 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 	private Map prefixNSMap;
 	private JTable nsTable;
 	private NSTableModel nsTableModel;
-	
-	private static final long serialVersionUID = 5974381131839067739L;		
-		
+
+	private static final long serialVersionUID = 5974381131839067739L;
+
 	transient private JButton addNSButton;
 	transient private JButton removeNSButton;
 	transient private JButton getNSButton;
@@ -48,7 +48,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 	transient private GraphManager gmanager;
 	transient private SelectNameSpaceDialog nsDialog;
 	transient private JCheckBoxMenuItem showNSTable;
-	
+
 	public NameSpaceTableDialog(GraphManager manager) {
 		super("NameSpace Table", false, true, false);
 
@@ -72,15 +72,47 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		});
 
 		setDefaultNSPrefix();
-		setSize(new Dimension(750, 200));
-		setLocation(10, 350);
+		setSize(new Dimension(750, 400));
+		setLocation(10, 100);
 		setVisible(false);
 	}
 
+	private void addDefaultNS(String prefix, String addNS) {
+		if (!isValidPrefix(prefix)) {
+			prefix = getMR3Prefix();
+		}
+		if (isValidNS(addNS)) {
+			addNameSpaceTable(new Boolean(true), prefix, addNS);
+		}
+	}
+
 	public void setDefaultNSPrefix() {
-		addNameSpaceTable(new Boolean(true), "rdf", RDF.getURI());
-		addNameSpaceTable(new Boolean(true), "rdfs", RDFS.getURI());
+		addDefaultNS("rdf", RDF.getURI());
+		addDefaultNS("rdfs", RDFS.getURI());
+		addDefaultNS("mr3", MR3Resource.getURI());
 		changeCellView();
+	}
+
+	private String getMR3Prefix() {
+		String nextPrefix = "mr3_prfix";
+		for (int i = 0; true; i++) {
+			String cnt = Integer.toString(i);
+			if (isValidPrefix(nextPrefix + cnt)) {
+				nextPrefix = nextPrefix + cnt;
+				break;
+			}
+		}
+		return nextPrefix;
+	}
+
+	public void setCurrentNSPrefix() {
+		Set allNSSet = gmanager.getAllNameSpaceSet();
+		for (Iterator i = allNSSet.iterator(); i.hasNext();) {
+			String ns = (String) i.next();
+			if (isValidNS(ns)) {
+				addNameSpaceTable(new Boolean(true), getMR3Prefix(), ns);
+			}
+		}
 	}
 
 	public Serializable getState() {
@@ -148,8 +180,8 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 
 	private void setTableLayout() {
 		JScrollPane nsTableScroll = new JScrollPane(nsTable);
-		nsTableScroll.setPreferredSize(new Dimension(700, 100));
-		nsTableScroll.setMinimumSize(new Dimension(700, 100));
+		nsTableScroll.setPreferredSize(new Dimension(700, 300));
+		nsTableScroll.setMinimumSize(new Dimension(700, 300));
 		gbLayout.setConstraints(nsTableScroll, gbc);
 		inlinePanel.add(nsTableScroll);
 	}
@@ -201,10 +233,19 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		}
 	}
 
-	/** prefix Ç™ãÛÇ≈Ç»Ç≠Ç©Ç¬ÅCÇ∑Ç≈Ç…ìoò^Ç≥ÇÍÇƒÇ¢Ç»Ç¢èÍçátrue */
 	private boolean isValidPrefix(String prefix) {
 		Set keySet = prefixNSMap.keySet();
-		if  (!keySet.contains(prefix) && !prefix.equals("")) {
+		return (!keySet.contains(prefix) && !prefix.equals(""));
+	}
+
+	private boolean isValidNS(String ns) {
+		Collection values = prefixNSMap.values();
+		return (ns != null && !ns.equals("") && !values.contains(ns));
+	}
+
+	/** prefix Ç™ãÛÇ≈Ç»Ç≠Ç©Ç¬ÅCÇ∑Ç≈Ç…ìoò^Ç≥ÇÍÇƒÇ¢Ç»Ç¢èÍçátrue */
+	private boolean isValidPrefixWithWarning(String prefix) {
+		if (isValidPrefix(prefix)) {
 			return true;
 		} else {
 			JOptionPane.showMessageDialog(null, "Prefix is not valid.", "Warning", JOptionPane.ERROR_MESSAGE);
@@ -213,10 +254,9 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 	}
 
 	/** nsÇ™ãÛÇ≈Ç‡nullÇ≈Ç‡Ç»Ç≠ÅCÇ∑Ç≈Ç…ìoò^Ç≥ÇÍÇƒÇ»Ç¢èÍçá true */
-	private boolean isValidNS(String ns) {
-		Collection values = prefixNSMap.values();
-		if (ns != null && !ns.equals("") && !values.contains(ns)) {
-			return true;			
+	private boolean isValidNSWithWarning(String ns) {
+		if (isValidNS(ns)) {
+			return true;
 		} else {
 			JOptionPane.showMessageDialog(null, "NameSpace is not valid.", "Warning", JOptionPane.ERROR_MESSAGE);
 			return false;
@@ -224,7 +264,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 	}
 
 	private void addNameSpaceTable(Boolean isAvailable, String prefix, String ns) {
-		if (isValidPrefix(prefix) && isValidNS(ns)) {
+		if (isValidPrefixWithWarning(prefix) && isValidNSWithWarning(ns)) {
 			prefixNSMap.put(prefix, ns);
 			Object[] list = new Object[] { isAvailable, prefix, ns };
 			nsTableModel.insertRow(nsTableModel.getRowCount(), list);
@@ -242,9 +282,16 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 			return;
 		}
 		int row = removeList[0];
-		prefixNSMap.remove(nsTableModel.getValueAt(row, 1));
-		nsTableModel.removeRow(row);
-		changeCellView();
+		String rmPrefix = (String) nsTableModel.getValueAt(row, 1);
+		String rmNS = (String) nsTableModel.getValueAt(row, 2);
+		System.out.println(rmNS.equals(MR3Resource.URI.getNameSpace()));
+		if (!rmNS.equals(MR3Resource.URI.getNameSpace()) && !gmanager.getAllNameSpaceSet().contains(rmNS)) {
+			prefixNSMap.remove(rmPrefix);
+			nsTableModel.removeRow(row);
+			changeCellView();
+		} else {
+			JOptionPane.showMessageDialog(null, "This NameSpace is used.", "Warning", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	private void changeCellView() {
@@ -292,7 +339,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 	}
 
 	class NSTableModel extends DefaultTableModel implements Serializable {
-		
+
 		private static final long serialVersionUID = -5977304717491874293L;
 
 		public NSTableModel(Object[] columnNames, int rowCount) {
@@ -313,7 +360,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 			if (aValue instanceof String) {
 				String prefix = (String) aValue;
-				if (isValidPrefix(prefix)) {
+				if (isValidPrefixWithWarning(prefix)) {
 					String oldPrefix = (String) nsTableModel.getValueAt(rowIndex, columnIndex);
 					prefixNSMap.remove(oldPrefix);
 					String ns = (String) nsTableModel.getValueAt(rowIndex, 2);
@@ -326,5 +373,5 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 			changeCellView();
 		}
 	}
-	
+
 }

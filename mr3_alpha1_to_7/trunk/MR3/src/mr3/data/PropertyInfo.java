@@ -17,8 +17,8 @@ public class PropertyInfo extends RDFSInfo {
 
 	private static final long serialVersionUID = -1326136347122640640L;
 
-	public PropertyInfo(String uri, URIType type) {
-		super(uri, type);
+	public PropertyInfo(String uri) {
+		super(uri);
 		domain = new HashSet();
 		range = new HashSet();
 		subProperties = new HashSet();

@@ -112,15 +112,6 @@ public class RDFSInfoMap {
 		return (RDFSInfo) resourceInfoMap.get(resource);
 	}
 
-	private String getAddedBaseURI(RDFSInfo rdfsInfo, String baseURI) {
-		String tmpURI = "";
-		if (rdfsInfo.getURIType() == URIType.ID) {
-			tmpURI = baseURI;
-		}
-		tmpURI += rdfsInfo.getURIStr();
-		return tmpURI;
-	}
-
 	/*
 	 * 登録しようとしているinfoのURIが重複していればtrue．重複していなければfalse  
 	 * RDFSInfo#equalsでは，Resource(uri)の重複をチェックしている．
@@ -132,7 +123,7 @@ public class RDFSInfoMap {
 			Object infoCell = entry.getKey();
 			//			Object info = entry.getValue();
 			RDFSInfo rdfsInfo = (RDFSInfo) entry.getValue();
-			String tmpURI = getAddedBaseURI(rdfsInfo, baseURI);
+			String tmpURI = rdfsInfo.getURIStr();
 			if (tmpURI.equals(uri) && infoCell != cell) {
 				if (type == GraphType.RDF) {
 					RDFResourceInfo resInfo = resInfoMap.getCellInfo(cell);
@@ -262,7 +253,6 @@ public class RDFSInfoMap {
 
 	private void cloneRDFSInfo(RDFSInfo orgInfo, RDFSInfo newInfo) {
 		newInfo.setURI(orgInfo.getURIStr());
-		newInfo.setURIType(orgInfo.getURIType());
 		// Labelをコピーする
 		for (Iterator i = orgInfo.getLabelList().iterator(); i.hasNext();) {
 			MR3Literal lit = (MR3Literal) i.next();
@@ -280,13 +270,13 @@ public class RDFSInfoMap {
 	}
 
 	public ClassInfo cloneClassInfo(ClassInfo orgInfo) {
-		ClassInfo newInfo = new ClassInfo("", URIType.URI);
+		ClassInfo newInfo = new ClassInfo("");
 		cloneRDFSInfo(orgInfo, newInfo);
 		return newInfo;
 	}
 
 	public PropertyInfo clonePropertyInfo(PropertyInfo orgInfo) {
-		PropertyInfo newInfo = new PropertyInfo("", URIType.URI);
+		PropertyInfo newInfo = new PropertyInfo("");
 		cloneRDFSInfo(orgInfo, newInfo);
 		newInfo.addAllDomain(orgInfo.getDomain());
 		newInfo.addAllRange(orgInfo.getRange());
