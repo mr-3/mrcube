@@ -302,7 +302,7 @@ public class MR3 extends JFrame {
 
 	private JMenu getFileMenu() {
 		JMenu menu = new JMenu("File");
-		JMenuItem mi = new JMenuItem("New Project");
+		JMenuItem mi = new JMenuItem(" New Project");
 		mi.addActionListener(new NewProjectAction());
 		menu.add(mi);
 		mi = new JMenuItem("Open Project");
@@ -770,7 +770,7 @@ public class MR3 extends JFrame {
 		menu.add(labelView);
 		menu.addSeparator();
 		//		menu.add(getEditorViewMenu());
-		showSrcView = new JCheckBoxMenuItem("Show SRC", false);
+		showSrcView = new JCheckBoxMenuItem("Show Source", false);
 		showSrcView.addActionListener(new ShowViewAction());
 		menu.add(showSrcView);
 		menu.add(attrDialog.getShowPropWindow());

@@ -108,6 +108,7 @@ public class FindResourceDialog extends JInternalFrame {
 	}
 
 	public void setSearchArea(GraphType type) {
+		findField.setText("");		
 		if (type == GraphType.RDF) {
 			rdfAreaButton.setSelected(true);
 			searchArea = GraphType.RDF;
