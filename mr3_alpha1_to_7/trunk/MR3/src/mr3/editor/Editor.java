@@ -1,6 +1,7 @@
 package mr3.editor;
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.*;
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -36,6 +37,12 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 	protected RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
 
 	protected Action undo, redo, remove, group, ungroup;
+
+	private JInternalFrame[] internalFrames = new JInternalFrame[3];
+
+	public void setInternalFrames(JInternalFrame[] ifs) {
+		internalFrames = ifs;
+	}
 
 	protected void initEditor(RDFGraph g, GraphManager manager, AttributeDialog attrD) {
 		graph = g;
@@ -380,7 +387,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 				graph.setScale(1.0);
 			}
 		});
-		
+
 		// Zoom In
 		URL zoomInUrl = getImageIcon("zoomin.gif");
 		ImageIcon zoomInIcon = new ImageIcon(zoomInUrl);
@@ -389,7 +396,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 				graph.setScale(1.5 * graph.getScale());
 			}
 		});
-		
+
 		// Zoom Out
 		URL zoomOutUrl = getImageIcon("zoomout.gif");
 		ImageIcon zoomOutIcon = new ImageIcon(zoomOutUrl);
@@ -405,6 +412,52 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 			public void actionPerformed(ActionEvent e) {
 				//				fitWindow(graph);
 				fitWindow();
+			}
+		});
+
+		// To front RDF Editor
+		toolbar.addSeparator();
+		URL rdfEditorUrl = getImageIcon("rdfEditorIcon.gif");
+		ImageIcon rdfEditorIcon = new ImageIcon(rdfEditorUrl);
+		toolbar.add(new AbstractAction("", rdfEditorIcon) {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					internalFrames[0].toFront();
+					internalFrames[0].setIcon(false);
+					internalFrames[0].setSelected(true);
+				} catch (PropertyVetoException pve) {
+					pve.printStackTrace();
+				}
+			}
+		});
+
+		// To front Class Editor
+		URL classEditorUrl = getImageIcon("classEditorIcon.gif");
+		ImageIcon classEditorIcon = new ImageIcon(classEditorUrl);
+		toolbar.add(new AbstractAction("", classEditorIcon) {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					internalFrames[1].toFront();
+					internalFrames[1].setIcon(false);
+					internalFrames[1].setSelected(true);
+				} catch (PropertyVetoException pve) {
+					pve.printStackTrace();
+				}
+			}
+		});
+
+		// To front Property Editor
+		URL propertyEditorUrl = getImageIcon("propertyEditorIcon.gif");
+		ImageIcon propertyEditorIcon = new ImageIcon(propertyEditorUrl);
+		toolbar.add(new AbstractAction("", propertyEditorIcon) {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					internalFrames[2].toFront();
+					internalFrames[2].setIcon(false);
+					internalFrames[2].setSelected(true);
+				} catch (PropertyVetoException pve) {
+					pve.printStackTrace();
+				}
 			}
 		});
 
