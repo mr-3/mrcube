@@ -28,7 +28,8 @@ public class JGraphToRDF {
 
 		for (int i = 0; i < cells.length; i++) {
 			Object cell = cells[i];
-			if (graph.isRDFResourceCell(cell)) {
+			//			if (graph.isRDFResourceCell(cell)) {
+			if (graph.isRDFSPropertyCell(cell)) {
 				PropertyInfo info = (PropertyInfo) rdfsInfoMap.getCellInfo(cell);
 				Set supProperties = graph.getTargetCells((DefaultGraphCell) cell);
 				info.setSupRDFS(supProperties);
@@ -47,7 +48,8 @@ public class JGraphToRDF {
 
 		for (int i = 0; i < cells.length; i++) {
 			Object cell = cells[i];
-			if (graph.isRDFResourceCell(cell)) {
+			//			if (graph.isRDFResourceCell(cell)) {
+			if (graph.isRDFSClassCell(cell)) {
 				ClassInfo info = (ClassInfo) rdfsInfoMap.getCellInfo(cell);
 				Set supClasses = graph.getTargetCells((DefaultGraphCell) cell);
 				info.setSupRDFS(supClasses);
@@ -88,17 +90,17 @@ public class JGraphToRDF {
 
 	private Resource getResource(RDFResourceInfo info) {
 		if (info.getURIType() == URIType.ANONYMOUS) {
-//			System.out.println(info.getURI().isAnon());
+			//			System.out.println(info.getURI().isAnon());
 			return info.getURI();
-		} else if (info.getURIType() == URIType.ID) {				
-			return new ResourceImpl(gmanager.getBaseURI()+info.getURI());
+		} else if (info.getURIType() == URIType.ID) {
+			return new ResourceImpl(gmanager.getBaseURI() + info.getURI());
 		} else {
 			return info.getURI();
 		}
 	}
 
 	public Model getRDFModel() {
-		RDFGraph graph = gmanager.getRDFGraph();		
+		RDFGraph graph = gmanager.getRDFGraph();
 		Model rdfModel = new ModelMem();
 		Object[] edges = getEdges(rdfModel, graph);
 

@@ -57,7 +57,7 @@ public abstract class RDFSPanel extends JPanel {
 	public RDFSPanel(RDFGraph g, GraphManager manager) {
 		graph = g;
 		gmanager = manager;
-		initInstancesList();		
+		initInstancesList();
 		apply = new JButton("Apply");
 		close = new JButton("Close");
 		close.addActionListener(new AbstractAction() {
@@ -65,7 +65,7 @@ public abstract class RDFSPanel extends JPanel {
 				gmanager.setVisibleAttrDialog(false);
 			}
 		});
-		metaTab = new JTabbedPane();	
+		metaTab = new JTabbedPane();
 	}
 
 	protected void initComponent(JComponent component, String title, int width, int height) {
@@ -392,7 +392,8 @@ public abstract class RDFSPanel extends JPanel {
 	}
 
 	public void displayRDFSInfo(DefaultGraphCell cell) {
-		if (graph.isRDFResourceCell(cell)) {
+		//		if (graph.isRDFResourceCell(cell)) {
+		if (graph.isRDFSCell(cell)) {
 			rdfsInfo = rdfsInfoMap.getCellInfo(cell);
 			if (rdfsInfo != null) {
 				setCell(cell);

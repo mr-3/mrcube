@@ -63,6 +63,8 @@ public class RDFCellMaker {
 	public Map getClassMap(Point point) {
 		Map map = getResourceMap(point);
 		GraphConstants.setBackground(map, Color.green);
+		// 矩形でクラスを表現する場合以下のオプションを使う．ちょっと，立体的に見える．
+		GraphConstants.setBorder(map, BorderFactory.createRaisedBevelBorder());
 		GraphConstants.setOpaque(map, true);
 		return map;
 	}
@@ -89,7 +91,7 @@ public class RDFCellMaker {
 		return map;
 	}
 
-	public GraphCell insertLiteral(Point point) {
+	public GraphCell insertRDFLiteral(Point point) {
 		JGraph graph = gmanager.getRDFGraph();
 		point = graph.snap(new Point(point)); // Snap the Point to the Grid
 		Map map = getLiteralMap(point);
@@ -97,11 +99,11 @@ public class RDFCellMaker {
 		DefaultGraphCell vertex = new RDFLiteralCell("");
 		setCell(graph, vertex, map);
 		litInfoMap.putCellInfo(vertex, new LiteralImpl("", ""));
-		
+
 		return vertex;
 	}
 
-	public void insertResource(Point point, String uri, URIType type) {
+	public void insertRDFResource(Point point, String uri, URIType type) {
 		JGraph graph = gmanager.getRDFGraph();
 		HashMap attributes = new HashMap();
 		point = graph.snap(new Point(point));
@@ -116,7 +118,7 @@ public class RDFCellMaker {
 		Map typeMap = getTypeMap(typePoint);
 		attributes.put(typeCell, typeMap);
 
-//		ParentMap parentMap = new ParentMap(); // 2.0系はこうだった
+		//		ParentMap parentMap = new ParentMap(); // 2.0系はこうだった
 		ParentMap parentMap = new ParentMap(graph.getModel());
 		DefaultGraphCell group = new DefaultGraphCell();
 		parentMap.addEntry(resourceCell, group);
@@ -132,14 +134,14 @@ public class RDFCellMaker {
 		JGraph graph = gmanager.getClassGraph();
 		point = graph.snap(new Point(point)); // Snap the Point to the Grid
 		Map map = getClassMap(point);
-		RDFResourceCell vertex = new RDFResourceCell(uri);
-//		DefaultGraphCell vertex = new DefaultGraphCell(uri);
+		//		RDFResourceCell vertex = new RDFResourceCell(uri);
+		RDFSClassCell vertex = new RDFSClassCell(uri);
 
 		setCell(graph, vertex, map);
 
 		RDFSInfo info = new ClassInfo(uri);
 		rdfsMap.putCellInfo(vertex, info);
-		
+
 		return vertex;
 	}
 
@@ -147,12 +149,13 @@ public class RDFCellMaker {
 		JGraph graph = gmanager.getPropertyGraph();
 		point = graph.snap(new Point(point)); // Snap the Point to the Grid
 		Map map = getPropertyMap(point);
-		RDFResourceCell vertex = new RDFResourceCell(uri);
+//		RDFResourceCell vertex = new RDFResourceCell(uri);
+		RDFSPropertyCell vertex = new RDFSPropertyCell(uri);
 		setCell(graph, vertex, map);
 
 		RDFSInfo info = new PropertyInfo(uri);
 		rdfsMap.putCellInfo(vertex, info);
-		
+
 		return vertex;
 	}
 

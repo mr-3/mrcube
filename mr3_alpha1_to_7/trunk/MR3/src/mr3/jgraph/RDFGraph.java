@@ -224,7 +224,8 @@ public class RDFGraph extends JGraph {
 				for (Iterator edges = graphModel.edges(port); edges.hasNext();) {
 					removeCells.add(edges.next());
 				}
-			} else if (isRDFResourceCell(cells[i])) {
+//			} else if (isRDFResourceCell(cells[i])) {
+			} else if (isRDFResourceCell(cells[i]) || isRDFSCell(cells[i])) {
 				rdfsInfoMap.removeCellInfo(cells[i]);
 				resInfoMap.removeCellInfo(cells[i]);
 			}
@@ -339,11 +340,11 @@ public class RDFGraph extends JGraph {
 						}
 					}
 				} else if (type == GraphType.CLASS) {
-					if (isRDFResourceCell(cell)) {
+					if (isRDFSClassCell(cell)) {
 						msg = getClassToolTipText(cell);
 					}
 				} else if (type == GraphType.PROPERTY) {
-					if (isRDFResourceCell(cell)) {
+					if (isRDFSPropertyCell(cell)) {
 						msg = getPropertyToolTipText(cell);
 					}
 				}

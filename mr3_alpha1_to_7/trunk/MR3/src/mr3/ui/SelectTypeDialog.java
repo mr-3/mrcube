@@ -48,7 +48,8 @@ public class SelectTypeDialog extends SelectClassDialog {
 			Object[] cells = graph.getAllCells();
 			for (int i = 0; i < cells.length; i++) {
 				GraphCell cell = (GraphCell) cells[i];
-				if (graph.isRDFResourceCell(cell)) {
+//				if (graph.isRDFResourceCell(cell)) {
+				if (graph.isRDFSClassCell(cell)) {
 					if (cell == typeCell) {
 						setCellColor(cell, Color.yellow);
 						prevCell = cell;
@@ -81,7 +82,8 @@ public class SelectTypeDialog extends SelectClassDialog {
 	public void valueChanged(GraphSelectionEvent e) {
 		cell = (GraphCell) graph.getSelectionCell();
 		if (graph.getSelectionCount() == 1 && graph.getModel().getChildCount(cell) <= 1) {
-			if (graph.isRDFResourceCell(cell)) {	
+//			if (graph.isRDFResourceCell(cell)) {	
+			if (graph.isRDFSClassCell(cell)) {	
 				setCellColor(prevCell, Color.green);
 				setCellColor(cell, Color.yellow);
 				RDFSInfo info = rdfsMap.getCellInfo(cell);
