@@ -23,6 +23,7 @@ public class RDFResourceInfoMap {
 
 	public RDFResourceInfo cloneRDFResourceInfo(RDFResourceInfo orgInfo, GraphCell typeCell) {
 		RDFResourceInfo newInfo = new RDFResourceInfo(orgInfo.getURIType(), orgInfo.getURI().getURI(), typeCell);
+		newInfo.setTypeCell(orgInfo.getTypeCell());
 		return newInfo;
 	}
 

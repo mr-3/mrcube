@@ -131,7 +131,7 @@ public class RDFToJGraph {
 		if (predicate.equals(RDF.type)) {
 			Object cell = gmanager.getClassCell((Resource) object, false);
 			RDFResourceInfo info = resInfoMap.getCellInfo(subjectCell);
-			info.setType(cell);
+			info.setTypeCell(cell);
 			return true;
 		} else {
 			return false;

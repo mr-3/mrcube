@@ -418,7 +418,7 @@ public class RDFGraph extends JGraph {
 		private Map orgAttributesMap;
 		private Map cloneAttributes; // cloneのAttributes
 
-		private Map cloneMap;
+		private Map clones;
 		private Map cloneInfoMap;
 
 		private Map copyInfoMap;
@@ -452,21 +452,21 @@ public class RDFGraph extends JGraph {
 		}
 
 		public Map getCloneMap() {
-			return cloneMap;
+			return clones;
 		}
 
 		private void setCellPosition(Object cell) {
 			// 元のセルとコピー位置との差を求める
 			GraphCell orgCell = (GraphCell) cell;
 			Map orgMap = orgCell.getAttributes();
-			Map newMap = ((GraphCell) cloneMap.get(cell)).getAttributes();
+			Map newMap = ((GraphCell) clones.get(cell)).getAttributes();
 			Rectangle orgRec = GraphConstants.getBounds(orgMap);
 			Rectangle newRec = new Rectangle(orgRec);
 			newRec.x = orgRec.x - copyPoint.x;
 			newRec.y = orgRec.y - copyPoint.y;
 			GraphConstants.setBounds(newMap, newRec);
 			Map nested = new HashMap();
-			nested.put(cloneMap.get(cell), GraphConstants.cloneMap(newMap));
+			nested.put(clones.get(cell), GraphConstants.cloneMap(newMap));
 			getModel().edit(nested, null, null, null);
 		}
 
@@ -484,7 +484,9 @@ public class RDFGraph extends JGraph {
 
 		private Object createRDFResourceCellClones(Object cell) {
 			RDFResourceInfo orgInfo = (RDFResourceInfo) copyInfoMap.get(cell);
-			RDFResourceInfo newInfo = resInfoMap.cloneRDFResourceInfo(orgInfo, null);
+			// RDFリソースのタイプを示す矩形セルのクローンを得る
+			GraphCell typeViewCell = (GraphCell)clones.get(orgInfo.getTypeViewCell());
+			RDFResourceInfo newInfo = resInfoMap.cloneRDFResourceInfo(orgInfo, typeViewCell);
 			return newInfo;
 		}
 
@@ -495,12 +497,12 @@ public class RDFGraph extends JGraph {
 		}
 
 		public void createClones() {
-			cloneMap = cloneCells(copyList);
+			clones = cloneCells(copyList);
 			cloneAttributes = GraphConstants.cloneMap(orgAttributesMap);
 
-			csClone = orgCs.clone(cloneMap);
+			csClone = orgCs.clone(clones);
 			cloneInfoMap = new HashMap();
-			for (Iterator i = cloneMap.keySet().iterator(); i.hasNext();) {
+			for (Iterator i = clones.keySet().iterator(); i.hasNext();) {
 				Object newInfo = null;
 				Object cell = i.next();
 				if (isRDFSClassCell(cell)) {
@@ -514,10 +516,9 @@ public class RDFGraph extends JGraph {
 				} else if (isRDFLiteralCell(cell)) {
 					newInfo = createRDFLiteralCellClones(cell);
 				}
-				cloneInfoMap.put(cloneMap.get(cell), newInfo);
+				cloneInfoMap.put(clones.get(cell), newInfo);
 				setCellPosition(cell);
 			}
-
 		}
 	}
 
@@ -558,7 +559,8 @@ public class RDFGraph extends JGraph {
 				copyInfoMap.put(clones.get(cell), newInfo);
 			} else if (isRDFResourceCell(cell)) {
 				RDFResourceInfo orgInfo = resInfoMap.getCellInfo(cell);
-				RDFResourceInfo newInfo = resInfoMap.cloneRDFResourceInfo(orgInfo, null);
+				GraphCell cloneTypeViewCell = (GraphCell)clones.get(orgInfo.getTypeViewCell());
+				RDFResourceInfo newInfo = resInfoMap.cloneRDFResourceInfo(orgInfo, cloneTypeViewCell);
 				copyInfoMap.put(clones.get(cell), newInfo);
 			} else if (isRDFLiteralCell(cell)) {
 				Literal orgInfo = litInfoMap.getCellInfo(cell);
@@ -680,6 +682,15 @@ public class RDFGraph extends JGraph {
 				}
 			}
 		}
+
+		// タイプに対応するクラスが削除されていた場合，表示を空にする．
+		if (rdfsInfoMap.getCellInfo(info.getTypeCell()) == null) {
+			// ここで，URIをcloneのセルの値として保存しておけば，コピーした際に持っていた
+			// クラスを貼り付けることができそう
+			//System.out.println(info.getTypeCell());
+			info.setTypeCell(null);
+		} 
+		
 		resInfoMap.putCellInfo(cell, info);
 		setPastePosition(cell, info.getURI().getURI(), pastePoint);
 	}
