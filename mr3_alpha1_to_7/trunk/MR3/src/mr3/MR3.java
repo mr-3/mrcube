@@ -203,10 +203,10 @@ public class MR3 extends JFrame {
 		iFrames[2] = propertyEditor;
 		srcFrame = new SourceFrame("Source Window");
 
-		desktop.add(iFrames[0], DEFAULT_CURSOR);
-		desktop.add(iFrames[1], DEFAULT_CURSOR);
-		desktop.add(iFrames[2], DEFAULT_CURSOR);
-		desktop.add(srcFrame, DEFAULT_CURSOR);
+		desktop.add(iFrames[0], Cursor.DEFAULT_CURSOR);
+		desktop.add(iFrames[1], Cursor.DEFAULT_CURSOR);
+		desktop.add(iFrames[2], Cursor.DEFAULT_CURSOR);
+		desktop.add(srcFrame, Cursor.DEFAULT_CURSOR);
 
 		rdfEditor.setInternalFrames(iFrames);
 		classEditor.setInternalFrames(iFrames);
