@@ -48,7 +48,7 @@ public class InsertRDFResDialog extends JDialog implements ActionListener, ItemL
 		isAnonBox.addActionListener(new IsAnonAction());
 
 		uriPrefixBox = new JComboBox();
-		initComponent(uriPrefixBox, "Prefix", BOX_WIDTH, BOX_HEIGHT);
+		initComponent(uriPrefixBox, Translator.getString("Prefix"), BOX_WIDTH, BOX_HEIGHT);
 		uriPrefixBox.addActionListener(new ChangePrefixAction());
 		uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
 
@@ -58,7 +58,7 @@ public class InsertRDFResDialog extends JDialog implements ActionListener, ItemL
 		uriPanel.add(isAnonBox);
 
 		nsLabel = new JLabel("");
-		initComponent(nsLabel, "NameSpace", 350, 40);
+		initComponent(nsLabel, Translator.getString("NameSpace"), 350, 40);
 
 		uriPrefixBox.setSelectedItem(PrefixNSUtil.getBaseURIPrefix(gmanager.getBaseURI()));
 		PrefixNSUtil.replacePrefix((String) uriPrefixBox.getSelectedItem(), nsLabel);
