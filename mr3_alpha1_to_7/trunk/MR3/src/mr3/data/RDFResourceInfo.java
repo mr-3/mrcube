@@ -90,6 +90,11 @@ public class RDFResourceInfo implements Serializable {
 		return typeCell;
 	}
 
+	public void setTypeViewCell(GraphCell cell) {
+		typeViewCell = cell;
+		setTypeCellValue();
+	}
+
 	public Object getTypeViewCell() {
 		return typeViewCell;
 	}

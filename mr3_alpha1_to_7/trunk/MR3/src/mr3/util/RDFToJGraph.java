@@ -112,7 +112,6 @@ public class RDFToJGraph {
 
 	private void setResourceInfo(Object cell, Resource uri, GraphCell typeCell) {
 		RDFResourceInfo resInfo = null;
-//		System.out.println(uri);
 		if (uri.isAnon() || uri.getURI().length() == 0) {
 			resInfo = new RDFResourceInfo(URIType.ANONYMOUS, "", typeCell);
 		} else {
@@ -150,7 +149,6 @@ public class RDFToJGraph {
 	private DefaultGraphCell createTypeCell(Map attributes, Point point) {
 		DefaultGraphCell typeCell = new TypeCell("");
 		attributes.put(typeCell, cellMaker.getTypeMap(point));
-
 		return typeCell;
 	}
 
@@ -168,15 +166,13 @@ public class RDFToJGraph {
 	}
 
 	private void insertGroup(GraphModel model, Object cell, Object typeCell, Map attr) {
-		//		ParentMap parentMap = new ParentMap(); // 2.0Œn
 		ParentMap parentMap = new ParentMap(model);
 		DefaultGraphCell group = new DefaultGraphCell();
 
 		parentMap.addEntry(cell, group);
 		parentMap.addEntry(typeCell, group);
 
-		Object[] cells = new Object[] { cell, typeCell, group };
-		model.insert(cells, attr, null, parentMap, null);
+		model.insert(new Object[] { cell, typeCell, group }, attr, null, parentMap, null);
 	}
 
 	private RDFGraph createRDFGraph(Model model, GraphType gType) throws RDFException {

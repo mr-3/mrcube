@@ -15,6 +15,9 @@ public class MR3Resource {
 	private static final String DEFAULT_URI = "http://panda.cs.inf.shizuoka.ac.jp/mmm/mr3#";
 	private static final String PROPERTY = "Property";
 	private static final String NIL = "nil";
+	private static final String LITERAL = "literal";
+	private static final String HAS_LITERAL_RESOURCE = "hasLiteralResource";
+	private static final String LITERAL_VALUE = "literal_value";
 	private static final String POINT_X = "point_x";
 	private static final String POINT_Y = "point_y";
 	private static final String PREFIX = "prefix";
@@ -23,6 +26,9 @@ public class MR3Resource {
 	public static Resource Default_URI;
 	public static Property Property;
 	public static Property Nil;
+	public static Resource Literal;
+	public static Property HasLiteralResource;
+	public static Property LiteralValue;
 	public static Property Point_x;
 	public static Property Point_y;
 	public static Property Prefix;
@@ -40,6 +46,9 @@ public class MR3Resource {
 			Default_URI = new ResourceImpl(DEFAULT_URI);
 			Property = new PropertyImpl(DEFAULT_URI + PROPERTY);
 			Nil = new PropertyImpl(DEFAULT_URI + NIL);
+			Literal = new ResourceImpl(DEFAULT_URI + LITERAL);
+			HasLiteralResource = new PropertyImpl(DEFAULT_URI + HAS_LITERAL_RESOURCE);
+			LiteralValue = new PropertyImpl(DEFAULT_URI + LITERAL_VALUE);
 			Point_x = new PropertyImpl(DEFAULT_URI+POINT_X);
 			Point_y = new PropertyImpl(DEFAULT_URI+POINT_Y);
 			Prefix = new PropertyImpl(DEFAULT_URI+PREFIX);
