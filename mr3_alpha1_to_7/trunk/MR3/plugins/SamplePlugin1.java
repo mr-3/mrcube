@@ -1,5 +1,3 @@
-import java.io.*;
-
 import mr3.plugin.*;
 
 import com.hp.hpl.mesa.rdf.jena.common.*;
@@ -22,7 +20,7 @@ public class SamplePlugin1 extends MR3Plugin {
 		ModelMem sampleModel = new ModelMem();
 		try {
 			Resource sampleResource = new ResourceImpl("http://mrcube.sample.resource");
-			Resource sampleResourceType = new ResourceImple("http://mrcube.sample.resourceType")
+			Resource sampleResourceType = new ResourceImpl("http://mrcube.sample.resourceType");
 			Property sampleProperty = new PropertyImpl("http://mrcube.sample.property");
             Literal sampleLiteral = new LiteralImpl("Sample");
 			Statement stmt = sampleModel.createStatement(sampleResource, sampleProperty, sampleLiteral);
