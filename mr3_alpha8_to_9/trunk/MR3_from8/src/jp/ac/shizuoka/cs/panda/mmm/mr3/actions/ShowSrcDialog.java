@@ -17,7 +17,7 @@ import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 public class ShowSrcDialog extends MR3AbstractAction {
 
 	private static final String TITLE = Translator.getString("Component.Window.SrcDialog.Text");
-	private static final ImageIcon ICON = Utilities.getImageIcon("source_window.gif");
+	private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("SourceDialog.Icon"));
 
 	public ShowSrcDialog(MR3 mr3) {
 		super(mr3, TITLE, ICON);

@@ -75,7 +75,7 @@ public abstract class MR3Plugin {
 
 	/**
 	 * Jenaが提供するModelを，MR^3のプロジェクトへ変換する．
-	 * @param MR^3のプロジェクトファイル． 
+	 * @param model MR^3のプロジェクトファイル． 
 	 */
 	protected void replaceProjectModel(Model model) {
 		mr3.replaceProjectModel(model);
@@ -111,7 +111,7 @@ public abstract class MR3Plugin {
 
 	/**
 	 * MR3のクラスグラフをJenaのModelに変換する．
-	 * @return
+	 * @return Model
 	 */
 	protected Model getClassModel() {
 		return mr3.getClassModel();
@@ -119,7 +119,7 @@ public abstract class MR3Plugin {
 
 	/**
 	 * 選択されているMR3のクラスグラフをJenaのModelに変換する．
-	 * @return
+	 * @return Model
 	 */
 	protected Model getSelectedClassModel() {
 		return mr3.getSelectedClassModel();
@@ -127,7 +127,7 @@ public abstract class MR3Plugin {
 
 	/**
 	 * MR3のプロパティグラフをJenaのModelに変換する．
-	 * @return
+	 * @return Model
 	 */
 	protected Model getPropertyModel() {
 		return mr3.getPropertyModel();
@@ -135,7 +135,7 @@ public abstract class MR3Plugin {
 
 	/**
 	 * 選択されているMR3のプロパティグラフをJenaのModelに変換する．
-	 * @return
+	 * @return Model
 	 */
 	protected Model getSelectedPropertyModel() {
 		return mr3.getSelectedPropertyModel();
@@ -143,7 +143,7 @@ public abstract class MR3Plugin {
 
 	/**
 	 * プロジェクトをJenaのModelに変換する．
-	 * @return
+	 * @return Model
 	 */
 	protected Model getProjectModel() {
 		return mr3.getProjectModel();
@@ -175,7 +175,7 @@ public abstract class MR3Plugin {
 
 	/**
 	 * BaseURIを得る．
-	 * @return
+	 * @return String
 	 */
 	protected String getBaseURI() {
 		return mr3.getBaseURI();
@@ -183,7 +183,7 @@ public abstract class MR3Plugin {
 
 	/**
 	 * JDesktopPaneを得る．内部ウィンドウを作成する際に用いる．
-	 * @return
+	 * @return JDesktopPane
 	 */
 	protected JDesktopPane getDesktopPane() {
 		return mr3.getDesktopPane();

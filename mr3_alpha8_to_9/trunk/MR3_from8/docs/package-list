@@ -5,6 +5,9 @@ jp.ac.shizuoka.cs.panda.mmm.mr3.editor
 jp.ac.shizuoka.cs.panda.mmm.mr3.io
 jp.ac.shizuoka.cs.panda.mmm.mr3.jgraph
 jp.ac.shizuoka.cs.panda.mmm.mr3.layout
+jp.ac.shizuoka.cs.panda.mmm.mr3.layoutPlugin
 jp.ac.shizuoka.cs.panda.mmm.mr3.plugin
+jp.ac.shizuoka.cs.panda.mmm.mr3.rssPlugin
+jp.ac.shizuoka.cs.panda.mmm.mr3.sample
 jp.ac.shizuoka.cs.panda.mmm.mr3.ui
 jp.ac.shizuoka.cs.panda.mmm.mr3.util
