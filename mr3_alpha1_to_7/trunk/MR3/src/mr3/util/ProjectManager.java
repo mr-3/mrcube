@@ -15,6 +15,7 @@ import mr3.ui.NameSpaceTableDialog.*;
 import com.hp.hpl.mesa.rdf.jena.common.*;
 import com.hp.hpl.mesa.rdf.jena.mem.*;
 import com.hp.hpl.mesa.rdf.jena.model.*;
+import com.hp.hpl.mesa.rdf.jena.vocabulary.*;
 import com.jgraph.graph.*;
 
 /**
@@ -40,7 +41,7 @@ public class ProjectManager {
 		RDFGraph graph = gmanager.getRDFGraph();
 		Object[] cells = graph.getAllCells();
 		for (int i = 0; i < cells.length; i++) {
-			if (graph.isRDFResourceCell(cells[i])) {				
+			if (graph.isRDFResourceCell(cells[i])) {
 				GraphCell cell = (GraphCell) cells[i];
 				Rectangle rec = GraphConstants.getBounds(cell.getAttributes());
 				RDFResourceInfo info = resInfoMap.getCellInfo(cell);
@@ -53,13 +54,26 @@ public class ProjectManager {
 				GraphCell sourceCell = (GraphCell) graph.getSourceVertex(edge);
 				GraphCell targetCell = (GraphCell) graph.getTargetVertex(edge);
 				if (graph.isRDFLiteralCell(targetCell)) {
+					Object propCell = rdfsInfoMap.getEdgeInfo(edge);
+					RDFSInfo propInfo = rdfsInfoMap.getCellInfo(propCell);
 					RDFResourceInfo info = resInfoMap.getCellInfo(sourceCell);
+					Property property = null;
+					if (propInfo == null) {
+						property = MR3Resource.Nil;
+					} else {
+						property = new PropertyImpl(propInfo.getURI().getURI());
+					}
 					Rectangle rec = GraphConstants.getBounds(targetCell.getAttributes());
 					Literal litInfo = litInfoMap.getCellInfo(targetCell);
-					Resource litRes = new ResourceImpl(MR3Resource.Literal + Integer.toString(literal_cnt++));
-					projectModel.add(litRes, MR3Resource.HasLiteralResource, info.getURI());
+					Resource litRes = new ResourceImpl();
+					projectModel.add(litRes, RDF.type, new ResourceImpl(MR3Resource.Literal + Integer.toString(literal_cnt++)));
+					projectModel.add(info.getURI(), property, litRes);
+					projectModel.add(litRes, MR3Resource.LiteralLang, litInfo.getLanguage());
+					projectModel.add(litRes, MR3Resource.LiteralString, litInfo.getString());
 					projectModel.add(litRes, MR3Resource.PointX, rec.getX());
 					projectModel.add(litRes, MR3Resource.PointY, rec.getY());
+					projectModel.add(litRes, MR3Resource.NodeWidth, rec.getWidth());
+					projectModel.add(litRes, MR3Resource.NodeHeight, rec.getHeight());
 				}
 			}
 		}
@@ -113,6 +127,8 @@ public class ProjectManager {
 				|| stmt.getPredicate().equals(MR3Resource.PointY)
 				|| stmt.getPredicate().equals(MR3Resource.NodeWidth)
 				|| stmt.getPredicate().equals(MR3Resource.NodeHeight)
+				|| stmt.getPredicate().equals(MR3Resource.LiteralLang)
+				|| stmt.getPredicate().equals(MR3Resource.LiteralString)
 				|| stmt.getPredicate().equals(MR3Resource.Prefix)
 				|| stmt.getPredicate().equals(MR3Resource.Is_prefix_available));
 	}

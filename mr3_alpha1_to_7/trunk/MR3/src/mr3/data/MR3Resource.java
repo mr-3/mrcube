@@ -17,7 +17,8 @@ public class MR3Resource {
 	private static final String NIL = "nil";
 	private static final String LITERAL = "literal";
 	private static final String HAS_LITERAL_RESOURCE = "hasLiteralResource";
-	private static final String LITERAL_VALUE = "literal_value";
+	private static final String LITERAL_LANG = "literal_lang";
+	private static final String LITERAL_STRING = "literal_value";
 	private static final String POINT_X = "point_x";
 	private static final String POINT_Y = "point_y";
 	private static final String NODE_WIDTH = "node_width";
@@ -30,7 +31,8 @@ public class MR3Resource {
 	public static Property Nil;
 	public static Resource Literal;
 	public static Property HasLiteralResource;
-	public static Property LiteralValue;
+	public static Property LiteralLang;
+	public static Property LiteralString;
 	public static Property PointX;
 	public static Property PointY;
 	public static Property NodeWidth;
@@ -52,7 +54,8 @@ public class MR3Resource {
 			Nil = new PropertyImpl(DEFAULT_URI + NIL);
 			Literal = new ResourceImpl(DEFAULT_URI + LITERAL);
 			HasLiteralResource = new PropertyImpl(DEFAULT_URI + HAS_LITERAL_RESOURCE);
-			LiteralValue = new PropertyImpl(DEFAULT_URI + LITERAL_VALUE);
+			LiteralLang = new PropertyImpl(DEFAULT_URI + LITERAL_LANG);
+			LiteralString = new PropertyImpl(DEFAULT_URI + LITERAL_STRING);
 			PointX = new PropertyImpl(DEFAULT_URI + POINT_X);
 			PointY = new PropertyImpl(DEFAULT_URI + POINT_Y);
 			NodeWidth = new PropertyImpl(DEFAULT_URI + NODE_WIDTH);
