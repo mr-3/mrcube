@@ -9,6 +9,7 @@ import javax.swing.event.*;
 
 import mr3.data.*;
 import mr3.jgraph.*;
+import mr3.util.*;
 
 import com.hp.hpl.mesa.rdf.jena.model.*;
 import com.jgraph.graph.*;
@@ -28,6 +29,9 @@ public abstract class RDFSPanel extends JPanel {
 	protected URIType uriType;
 
 	protected JTextField uriField;
+	protected JComboBox uriPrefixBox;
+	protected Set prefixNSInfoSet;
+
 	protected JTextField labelField;
 	protected JTextField isDefinedBy;
 	protected JTextArea comment;
@@ -96,7 +100,15 @@ public abstract class RDFSPanel extends JPanel {
 		}
 	}
 
+	private static final int boxWidth = 70;
+	private static final int boxHeight = 30;
+
 	protected void setBaseTab() {
+		uriPrefixBox = new JComboBox();
+		uriPrefixBox.addActionListener(new ChangePrefixAction());
+		uriPrefixBox.setPreferredSize(new Dimension(boxWidth, boxHeight));
+		uriPrefixBox.setMinimumSize(new Dimension(boxWidth, boxHeight));
+
 		uriButton = new JRadioButton("URI");
 		idButton = new JRadioButton("ID");
 		RadioAction ra = new RadioAction();
@@ -113,13 +125,13 @@ public abstract class RDFSPanel extends JPanel {
 		uriTypeGroupPanel.add(idButton);
 
 		uriField = new JTextField();
-		initComponent(uriField, "URI", listWidth, fieldHeight);
+		initComponent(uriField, "URI", 290, fieldHeight);
 
 		isDefinedBy = new JTextField();
 		initComponent(isDefinedBy, "isDefinedBy", listWidth, fieldHeight);
 
 		labelLangField = new JTextField(LangFieldLength);
-		initComponent(labelLangField, "Lang", 50, fieldHeight);
+		initComponent(labelLangField, "Lang", boxWidth, fieldHeight);
 		labelField = new JTextField();
 		initComponent(labelField, "Label", 300, fieldHeight);
 		JPanel labelGroup = new JPanel();
@@ -128,8 +140,8 @@ public abstract class RDFSPanel extends JPanel {
 
 		labelLangBox = new JComboBox();
 		labelLangBox.addActionListener(new SelectLangAction());
-		labelLangBox.setPreferredSize(new Dimension(70, 25));
-		labelLangBox.setMinimumSize(new Dimension(70, 25));
+		labelLangBox.setPreferredSize(new Dimension(boxWidth, boxHeight));
+		labelLangBox.setMinimumSize(new Dimension(boxWidth, boxHeight));
 		editLabelButton = new JButton("edit");
 		editLabelButton.addActionListener(new EditLiteralAction());
 		addLabelButton = new JButton("add");
@@ -143,17 +155,14 @@ public abstract class RDFSPanel extends JPanel {
 		labelButtonGroup.add(removeLabelButton);
 
 		commentLangField = new JTextField(LangFieldLength);
-		initComponent(commentLangField, "Lang", 50, fieldHeight);
+		initComponent(commentLangField, "Lang", boxWidth, fieldHeight);
 		comment = new JTextArea(5, 15); // èc,â°        
 		commentScroll = new JScrollPane(comment);
 		initComponent(commentScroll, "Comment", 300, listHeight);
-		JPanel commentGroup = new JPanel();
-		commentGroup.add(commentLangField);
-		commentGroup.add(commentScroll);
 
 		commentLangBox = new JComboBox();
 		commentLangBox.addActionListener(new SelectLangAction());
-		commentLangBox.setPreferredSize(new Dimension(70, 25));
+		commentLangBox.setPreferredSize(new Dimension(boxWidth, boxHeight));
 		editCommentButton = new JButton("edit");
 		editCommentButton.addActionListener(new EditLiteralAction());
 		addCommentButton = new JButton("add");
@@ -170,34 +179,48 @@ public abstract class RDFSPanel extends JPanel {
 		GridBagLayout gridbag = new GridBagLayout();
 		GridBagConstraints c = new GridBagConstraints();
 		inline.setLayout(gridbag);
+		c.weightx = 3;
+		c.weighty = 3;
 		c.anchor = GridBagConstraints.WEST;
 		c.gridwidth = GridBagConstraints.REMAINDER;
-		c.weighty = 10;
 
 		gridbag.setConstraints(uriTypeGroupPanel, c);
 		inline.add(uriTypeGroupPanel);
 
-		c.anchor = GridBagConstraints.PAGE_START;
-
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridwidth = GridBagConstraints.RELATIVE;
+		gridbag.setConstraints(uriPrefixBox, c);
+		inline.add(uriPrefixBox);
+		c.gridwidth = GridBagConstraints.REMAINDER;
 		gridbag.setConstraints(uriField, c);
 		inline.add(uriField);
 		//		gridbag.setConstraints(isDefinedBy, c);
 		//		inline.add(isDefinedBy);
 
+		c.anchor = GridBagConstraints.WEST;
 		gridbag.setConstraints(labelGroup, c);
 		inline.add(labelGroup);
-		c.anchor = GridBagConstraints.WEST;
 		gridbag.setConstraints(labelButtonGroup, c);
 		inline.add(labelButtonGroup);
 
 		c.anchor = GridBagConstraints.CENTER;
-		gridbag.setConstraints(commentGroup, c);
-		inline.add(commentGroup);
+		c.gridwidth = GridBagConstraints.RELATIVE;
+		gridbag.setConstraints(commentLangField, c);
+		inline.add(commentLangField);
+		c.gridwidth = GridBagConstraints.REMAINDER;
+		gridbag.setConstraints(commentScroll, c);
+		inline.add(commentScroll);
 		c.anchor = GridBagConstraints.WEST;
 		gridbag.setConstraints(commentButtonGroup, c);
 		inline.add(commentButtonGroup);
 
 		metaTab.addTab("Base", inline);
+	}
+	
+	class ChangePrefixAction extends AbstractAction {
+		public void actionPerformed(ActionEvent e) {
+			PrefixNSUtil.replacePrefix((String) uriPrefixBox.getSelectedItem(), uriField);
+		}
 	}
 
 	private void initInstancesList() {
@@ -444,11 +467,30 @@ public abstract class RDFSPanel extends JPanel {
 		}
 	}
 
+	private void setPrefix() {
+		uriPrefixBox.setSelectedIndex(0);
+		if (rdfsInfo.getURIType() != URIType.URI) {
+			return;
+		}
+		for (Iterator i = prefixNSInfoSet.iterator(); i.hasNext();) {
+			PrefixNSInfo prefNSInfo = (PrefixNSInfo) i.next();
+			if (prefNSInfo.getNameSpace().equals(rdfsInfo.getURI().getNameSpace())) {
+				uriPrefixBox.setSelectedItem(prefNSInfo.getPrefix());
+				break;
+			}
+		}
+	}
+
 	public void showRDFSInfo(DefaultGraphCell cell) {
 		if (graph.isRDFSCell(cell)) {
 			rdfsInfo = rdfsInfoMap.getCellInfo(cell);
 			if (rdfsInfo != null) {
 				setCell(cell);
+				prefixNSInfoSet = gmanager.getPrefixNSInfoSet();
+				PrefixNSUtil.setPrefixNSInfoSet(prefixNSInfoSet);
+				uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
+				uriPrefixBox.insertItemAt("", 0);
+				setPrefix();
 				setInstanceList();
 				Set targetCells = graph.getTargetCells(cell);
 				setValue(targetCells);

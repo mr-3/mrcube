@@ -9,10 +9,11 @@ import com.hp.hpl.mesa.rdf.jena.model.*;
  * @author takeshi morita
  *
  */
-public class RDFLiteralInfoMap implements Serializable {
+public class RDFLiteralInfoMap {
+
 	private Map cellInfoMap;
 	private static RDFLiteralInfoMap litInfoMap = new RDFLiteralInfoMap();
-
+	
 	private RDFLiteralInfoMap() {
 		cellInfoMap = new HashMap();
 	}

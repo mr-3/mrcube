@@ -7,6 +7,7 @@ import javax.swing.*;
 
 import mr3.data.*;
 import mr3.jgraph.*;
+import mr3.util.*;
 
 import com.hp.hpl.mesa.rdf.jena.common.*;
 import com.hp.hpl.mesa.rdf.jena.model.*;
@@ -56,7 +57,7 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 	public RDFResourcePanel(GraphManager manager) {
 		gmanager = manager;
 
-		setBorder(BorderFactory.createTitledBorder("Resource"));
+		setBorder(BorderFactory.createTitledBorder("RDF Resource Attributes"));
 
 		JPanel resTypeURITypeGroupPanel = initResTypeURITypeGroupPanel();
 
@@ -152,30 +153,12 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		add(buttonGroup);
 	}
 
-	private String getNameSpace(String prefix) {
-		for (Iterator i = prefixNSInfoSet.iterator(); i.hasNext();) {
-			PrefixNSInfo info = (PrefixNSInfo) i.next();
-			if (info.getPrefix().equals(prefix)) {
-				return info.getNameSpace();
-			}
-		}
-		return "#";
-	}
-
-	private void replacePrefix(String prefix, JTextField field) {
-		Resource resource = new ResourceImpl(field.getText());
-		if (!resource.getNameSpace().equals("http://")) {
-			String localName = resource.getLocalName();
-			field.setText(getNameSpace(prefix) + localName);
-		}
-	}
-
 	class ChangePrefixAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == resPrefixBox) {
-				replacePrefix((String) resPrefixBox.getSelectedItem(), uriField);
+				PrefixNSUtil.replacePrefix((String) resPrefixBox.getSelectedItem(), uriField);
 			} else if (e.getSource() == resTypePrefixBox) {
-				replacePrefix((String) resTypePrefixBox.getSelectedItem(), resTypeField);
+				PrefixNSUtil.replacePrefix((String) resTypePrefixBox.getSelectedItem(), resTypeField);
 			}
 		}
 	}
@@ -316,22 +299,13 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		resTypeField.setToolTipText(uri);
 	}
 
-	private Set getPrefixes() {
-		Set prefixes = new HashSet();
-		for (Iterator i = prefixNSInfoSet.iterator(); i.hasNext();) {
-			PrefixNSInfo info = (PrefixNSInfo) i.next();
-			prefixes.add(info.getPrefix());
-		}
-		return prefixes;
-	}
-
 	private void setResPrefix() {
 		resPrefixBox.setSelectedIndex(0);
 		if (resInfo.getURIType() == URIType.URI) {
 			for (Iterator i = prefixNSInfoSet.iterator(); i.hasNext();) {
-				PrefixNSInfo info = (PrefixNSInfo) i.next();
-				if (info.getNameSpace().equals(resInfo.getURI().getNameSpace())) {
-					resPrefixBox.setSelectedItem(info.getPrefix());
+				PrefixNSInfo prefNSInfo = (PrefixNSInfo) i.next();
+				if (prefNSInfo.getNameSpace().equals(resInfo.getURI().getNameSpace())) {
+					resPrefixBox.setSelectedItem(prefNSInfo.getPrefix());
 					break;
 				}
 			}
@@ -340,12 +314,12 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 
 	private void setResTypePrefix() {
 		resTypePrefixBox.setSelectedIndex(0);
-		if (resInfo.getURIType() == URIType.URI) {
+		RDFSInfo rdfsInfo = rdfsInfoMap.getCellInfo(resInfo.getTypeCell());
+		if (rdfsInfo != null && rdfsInfo.getURIType() == URIType.URI) {
 			for (Iterator i = prefixNSInfoSet.iterator(); i.hasNext();) {
-				PrefixNSInfo info = (PrefixNSInfo) i.next();
-				RDFSInfo rdfsInfo = rdfsInfoMap.getCellInfo(resInfo.getTypeCell());
-				if (rdfsInfo != null && info.getNameSpace().equals(rdfsInfo.getURI().getNameSpace())) {
-					resTypePrefixBox.setSelectedItem(info.getPrefix());
+				PrefixNSInfo prefNSInfo = (PrefixNSInfo) i.next();
+				if (prefNSInfo.getNameSpace().equals(rdfsInfo.getURI().getNameSpace())) {
+					resTypePrefixBox.setSelectedItem(prefNSInfo.getPrefix());
 					break;
 				}
 			}
@@ -356,9 +330,10 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		cell = c;
 		resInfo = resInfoMap.getCellInfo(cell);
 		prefixNSInfoSet = gmanager.getPrefixNSInfoSet();
-		resPrefixBox.setModel(new DefaultComboBoxModel(getPrefixes().toArray()));
+		PrefixNSUtil.setPrefixNSInfoSet(prefixNSInfoSet);
+		resPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
 		resPrefixBox.insertItemAt("", 0);
-		resTypePrefixBox.setModel(new DefaultComboBoxModel(getPrefixes().toArray()));
+		resTypePrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
 		resTypePrefixBox.insertItemAt("", 0);
 		setResPrefix();
 		setResTypePrefix();

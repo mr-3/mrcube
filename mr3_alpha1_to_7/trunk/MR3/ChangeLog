@@ -11,6 +11,8 @@
 * AtributeDialogを表示していない状態で，各エディタのリソースを
   選択し，その後にAttributeDialogを表示すると，リソースの情報がAttributeDialog
   に表示されないバグを修正．
+* クラス及びプロパティのCommentを削除できなかったのを修正．
+* その他，細かい修正．
 
 === ■ α5 (2003-06-27)
 * Convertメニューに，Selected RDFとSelected RDFSメニューを追加した．選択しているリソース

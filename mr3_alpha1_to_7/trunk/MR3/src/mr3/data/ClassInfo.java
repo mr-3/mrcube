@@ -1,7 +1,6 @@
 package mr3.data;
 import java.util.*;
 
-import com.hp.hpl.mesa.rdf.jena.common.*;
 import com.hp.hpl.mesa.rdf.jena.model.*;
 import com.hp.hpl.mesa.rdf.jena.vocabulary.*;
 
@@ -10,8 +9,11 @@ import com.hp.hpl.mesa.rdf.jena.vocabulary.*;
  *
  */
 public class ClassInfo extends RDFSInfo {
-	transient private Set subClasses;
-	transient private Set supClasses;
+
+	private static final long serialVersionUID = -3455137904632666118L;
+
+	private transient Set subClasses;
+	private transient Set supClasses;
 
 	public ClassInfo(String uri, URIType type) {
 		super(uri, type);
@@ -32,21 +34,12 @@ public class ClassInfo extends RDFSInfo {
 	public Model getModel(String baseURI) {
 		try {
 			Model tmpModel = super.getModel();
-			Resource res = null;
-			if (uriType == URIType.URI) {
-				res = new ResourceImpl(uri);
-			} else {
-				res = new ResourceImpl(baseURI + uri);
-			}
+			Resource res = getURI(baseURI);
 
 			tmpModel.add(tmpModel.createStatement(res, RDF.type, RDFS.Class));
 			for (Iterator i = supRDFS.iterator(); i.hasNext();) {
 				RDFSInfo classInfo = rdfsInfoMap.getCellInfo(i.next());
-				if (classInfo.getURIType() == URIType.URI) {
-					tmpModel.add(tmpModel.createStatement(res, RDFS.subClassOf, classInfo.getURI()));
-				} else {
-					tmpModel.add(tmpModel.createStatement(res, RDFS.subClassOf, new ResourceImpl(baseURI + classInfo.getURIStr())));
-				}
+				tmpModel.add(tmpModel.createStatement(res, RDFS.subClassOf, classInfo.getURI(baseURI)));
 			}
 			return tmpModel;
 		} catch (RDFException rdfex) {

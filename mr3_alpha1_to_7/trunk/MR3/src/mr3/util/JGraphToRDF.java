@@ -93,9 +93,9 @@ public class JGraphToRDF {
 
 	private void setResourceType(Model rdfModel, Object cell) {
 		try {
-			RDFResourceInfo info = resInfoMap.getCellInfo(cell);
-			if (info.getType().getURI().length() != 0) {
-				rdfModel.add(rdfModel.createStatement(info.getURI(), RDF.type, info.getType()));
+			RDFResourceInfo resInfo = resInfoMap.getCellInfo(cell);
+			if (resInfo.getType().getURI().length() != 0) {
+				rdfModel.add(rdfModel.createStatement(resInfo.getURI(gmanager.getBaseURI()), RDF.type, resInfo.getType(gmanager.getBaseURI())));
 			}
 		} catch (RDFException rex) {
 			rex.printStackTrace();
@@ -117,17 +117,6 @@ public class JGraphToRDF {
 			return result.toArray();
 		}
 		return null;
-	}
-
-	private Resource getResource(RDFResourceInfo info) {
-		if (info.getURIType() == URIType.ANONYMOUS) {
-			//			System.out.println(info.getURI().isAnon());
-			return info.getURI();
-		} else if (info.getURIType() == URIType.ID) {
-			return new ResourceImpl(gmanager.getBaseURI() + info.getURI());
-		} else {
-			return info.getURI();
-		}
 	}
 
 	public Model getSelectedRDFModel() {
@@ -152,21 +141,17 @@ public class JGraphToRDF {
 		for (int i = 0; i < edges.length; i++) {
 			Edge edge = (Edge) edges[i];
 			RDFResourceInfo info = resInfoMap.getCellInfo(graph.getSourceVertex(edge));
-			Resource subject = getResource(info);
+			Resource subject = info.getURI(gmanager.getBaseURI());
 			try {
 				Object propCell = rdfsInfoMap.getEdgeInfo(edge);
 				RDFSInfo propInfo = rdfsInfoMap.getCellInfo(propCell);
-				Property property = null;
-				if (propInfo.getURIType() == URIType.URI) {
-					property = new PropertyImpl(propInfo.getURI().getURI());
-				} else {
-					property = new PropertyImpl(gmanager.getBaseURI()+propInfo.getURI().getURI());
-				}
+				Property property = new PropertyImpl(propInfo.getURI(gmanager.getBaseURI()).getURI());
+
 				GraphCell targetCell = (GraphCell) graph.getTargetVertex(edge);
 
 				if (graph.isRDFResourceCell(targetCell)) {
 					info = resInfoMap.getCellInfo(targetCell);
-					Resource object = getResource(info);
+					Resource object = info.getURI(gmanager.getBaseURI());
 					rdfModel.add(rdfModel.createStatement(subject, property, object));
 				} else if (graph.isRDFLiteralCell(targetCell)) {
 					Literal object = litInfoMap.getCellInfo(targetCell);

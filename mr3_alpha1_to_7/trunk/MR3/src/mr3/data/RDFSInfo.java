@@ -9,17 +9,20 @@ import com.hp.hpl.mesa.rdf.jena.vocabulary.*;
 
 public abstract class RDFSInfo implements Serializable {
 
+	private static final long serialVersionUID = -2970145279588775430L;
+
 	//	transient protected Resource uri;
-	protected String uri;
-	protected URIType uriType;
-	protected String uriTypeStr;
-//	transient private Literal label; // 現在，選択されているラベル
-	private MR3Literal label; // 現在，選択されているラベル
-	private List labelList;
-//	transient private Literal comment; // 現在，選択されているコメント
-	private MR3Literal comment; // 現在，選択されているコメント
-	private List commentList;
-	private String isDefinedBy;
+	protected transient String uri;
+	protected transient URIType uriType;
+	protected transient String uriTypeStr;
+	//	transient private Literal label; // 現在，選択されているラベル
+	private transient MR3Literal label; // 現在，選択されているラベル
+	private transient List labelList;
+	//	transient private Literal comment; // 現在，選択されているコメント
+	private transient MR3Literal comment; // 現在，選択されているコメント
+	private transient List commentList;
+	private transient String isDefinedBy;
+
 	transient protected Model model;
 	transient protected Set supRDFS;
 	transient protected RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
@@ -27,10 +30,10 @@ public abstract class RDFSInfo implements Serializable {
 	RDFSInfo(String uri, URIType type) {
 		//			this.uri = new ResourceImpl(uri);
 		this.uri = uri;
-		setURIType(type); 
+		setURIType(type);
 		labelList = new ArrayList();
 		commentList = new ArrayList();
-//		isDefinedBy = new ResourceImpl("");
+		//		isDefinedBy = new ResourceImpl("");
 		isDefinedBy = "";
 		model = new ModelMem();
 		supRDFS = new HashSet();
@@ -47,10 +50,10 @@ public abstract class RDFSInfo implements Serializable {
 		model = new ModelMem();
 		supRDFS = new HashSet();
 	}
-	
+
 	RDFSInfo() {
 	}
-	
+
 	public abstract Set getRDFSSubList();
 
 	/** uriが等しければ，等しいとする */
@@ -117,18 +120,22 @@ public abstract class RDFSInfo implements Serializable {
 	public URIType getURIType() {
 		return uriType;
 	}
-	
-	public void recoverURIType() {
-		uriType = URIType.getURIType(uriTypeStr);
-	}
-	
+
 	public void setURIType(URIType type) {
 		uriType = type;
-		uriTypeStr = type.toString();		
+		uriTypeStr = type.toString();
 	}
-	
+
 	public Resource getURI() {
 		return new ResourceImpl(uri);
+	}
+
+	public Resource getURI(String baseURI) {
+		if (uriType == URIType.ID) {
+			return new ResourceImpl(baseURI+uri);
+		} else {
+			return new ResourceImpl(uri);
+		}
 	}
 
 	public String getURIStr() {
@@ -137,7 +144,7 @@ public abstract class RDFSInfo implements Serializable {
 
 	public String getURIStr(String baseURI) {
 		if (uriType == URIType.ID) {
-			return baseURI+uri;		
+			return baseURI + uri;
 		} else {
 			return uri;
 		}
@@ -200,6 +207,30 @@ public abstract class RDFSInfo implements Serializable {
 		}
 
 		return writer.toString();
+	}
+
+	private void writeObject(ObjectOutputStream s) throws IOException {
+		s.defaultWriteObject();
+		s.writeObject(uri);
+		s.writeObject(uriType);
+		s.writeObject(uriTypeStr);
+		s.writeObject(label);
+		s.writeObject(labelList);
+		s.writeObject(comment);
+		s.writeObject(commentList);
+		s.writeObject(isDefinedBy);
+	}
+
+	private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
+		s.defaultReadObject();
+		uri = (String) s.readObject();
+		uriType = (URIType) s.readObject();
+		uriTypeStr = (String) s.readObject();
+		label = (MR3Literal) s.readObject();
+		labelList = (List) s.readObject();
+		comment = (MR3Literal) s.readObject();
+		commentList = (List) s.readObject();
+		isDefinedBy = (String) s.readObject();
 	}
 
 	public String toString() {

@@ -46,7 +46,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 
 	public RDFPropertyPanel(GraphManager manager) {
 		gmanager = manager;
-		setBorder(BorderFactory.createTitledBorder("Property"));
+		setBorder(BorderFactory.createTitledBorder("RDF Property Attributes"));
 
 		JPanel uriTypeGroupPanel = getURITypeGroupPanel();
 
