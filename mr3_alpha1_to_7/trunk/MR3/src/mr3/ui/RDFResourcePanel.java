@@ -30,7 +30,9 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 	private JRadioButton anonymousButton;
 	private JRadioButton idButton;
 
-	private AttributeDialog propDialog;
+	private AttributeDialog attrDialog;
+
+	private URIType tmpURIType;
 
 	private GraphCell cell;
 	private RDFResourceInfo resInfo;
@@ -44,7 +46,7 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 
 	public RDFResourcePanel(GraphManager manager, AttributeDialog pw) {
 		gmanager = manager;
-		propDialog = pw;
+		attrDialog = pw;
 
 		setBorder(BorderFactory.createTitledBorder("Resource"));
 
@@ -129,12 +131,13 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		add(buttonGroup);
 	}
 
+	// RDFリソースのタイプが存在すればチェックボタンにチェックする．
 	private void selectTypeMode(boolean t) {
 		isTypeCellCheck.setSelected(t);
 		if (t) {
-			setTypeField(resInfo.getType().getURI());
+			setResourceTypeField(resInfo.getType().getURI());
 		} else {
-			setTypeField("");
+			setResourceTypeField("");
 		}
 		resTypeField.setEditable(t);
 		selectTypeButton.setEnabled(t);
@@ -161,34 +164,26 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 	class RadioAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			String type = (String) e.getActionCommand();
-			resInfo.setURIType(URIType.getURIType(type));
-//			System.out.println(type);
-//			System.out.println(resInfo.getURIType());
-			if (resInfo.getURIType() == URIType.ANONYMOUS) {
-				setAnonymousCell();
-			} else if (resInfo.getURIType() == URIType.ID) {
+			tmpURIType = URIType.getURIType(type);
+
+			if (tmpURIType == URIType.ANONYMOUS) {
+				setURIField("", false);
+			} else if (tmpURIType == URIType.ID) {
+				uriField.setEditable(true);
 				if (uriField.getText().length() == 0 || uriField.getText().charAt(0) != '#') {
 					uriField.setText('#' + uriField.getText());
 				}
-				uriField.setEditable(true);
-			} else {
+			} else if (tmpURIType == URIType.URI) {
 				uriField.setEditable(true);
 			}
 		}
-	}
-
-	public void setAnonymousCell() {
-		anonymousButton.setSelected(true);
-		setURIField("", false);
-		resInfo.setURIType(URIType.ANONYMOUS);
-		setCellValue();
 	}
 
 	private boolean isTypeURI() {
 		return resInfo.getType().getURI().length() != 0;
 	}
 
-	private void setTypeField(String uri) {
+	private void setResourceTypeField(String uri) {
 		resTypeField.setText(uri);
 		resTypeField.setToolTipText(uri);
 	}
@@ -201,16 +196,16 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 	}
 
 	public void setURI(Resource resURI) {
-		if (resInfo.getURIType() == URIType.URI) {
+		tmpURIType = resInfo.getURIType();
+		if (tmpURIType == URIType.URI) {
 			uriButton.setSelected(true);
-			resInfo.setURIType(URIType.URI);
 			setURIField(resURI.getURI(), true);
-		} else if (resInfo.getURIType() == URIType.ID) {
+		} else if (tmpURIType == URIType.ID) {
 			idButton.setSelected(true);
-			resInfo.setURIType(URIType.ID);
 			setURIField(resURI.getURI(), true);
-		} else if (resInfo.getURIType() == URIType.ANONYMOUS) {
-			setAnonymousCell();
+		} else if (tmpURIType == URIType.ANONYMOUS) {
+			anonymousButton.setSelected(true);
+			setURIField("", false);
 		}
 	}
 
@@ -222,21 +217,30 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 
 	private void setCellValue() {
 		String uri = uriField.getText();
-		if (resInfo.getURIType() != URIType.ANONYMOUS) {
-			if (resInfo.getURIType() == URIType.ID) {
-				uri = gmanager.getBaseURI() + uri; // チェックする時は，フルパスで．
-			}
-			if (gmanager.isEmptyURI(uri) || gmanager.isDuplicatedWithDialog(uri, cell, GraphType.RDF)) {
-				return;
-			}
+		if ((tmpURIType != URIType.ANONYMOUS) && isErrorResource(uri)) {
+			return;
 		}
-		uri = uriField.getText();
-		gmanager.setCellValue(cell, uri);
+		// setURI()をする前にURIタイプを変更する必要あり．
+		// このバグを見つけるのに，１時間以上費やしてしまった．
+		resInfo.setURIType(tmpURIType);
 		resInfo.setURI(uri);
 		gmanager.changeCellView();
 	}
 
-	private GraphCell getType() {
+	// URIの重複と，空のチェックをする．URITypeがIDの場合は，baseURIを含めた形でチェックする．
+	private boolean isErrorResource(String uri) {
+		String tmpURI = "";
+		if (tmpURIType == URIType.ID) {
+			tmpURI = gmanager.getBaseURI(); // チェックする時は，フルパスで．
+		}
+		tmpURI = tmpURI + uri;
+		if (gmanager.isEmptyURI(tmpURI) || gmanager.isDuplicatedWithDialog(tmpURI, cell, GraphType.RDF)) {
+			return true;
+		}
+		return false;
+	}
+
+	private GraphCell getResourceType() {
 		GraphCell typeCell = null;
 		Resource uri = new ResourceImpl(resTypeField.getText());
 
@@ -273,11 +277,10 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		return typeCell;
 	}
 
-	private void setType(GraphCell typeCell) {
+	private void setResourceType(GraphCell typeCell) {
 		resInfo.setType(typeCell);
 		String typeValue = resInfo.getType().getURI();
-		resTypeField.setText(typeValue);
-		resTypeField.setToolTipText(typeValue);
+		setResourceTypeField(typeValue);
 	}
 
 	private void jumpRDFSClass() {
@@ -295,32 +298,29 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 
 	private void apply() {
 		if (isTypeCellCheck.isSelected()) {
-			GraphCell t = getType();
-			if (t != null) {
-				setType(t);
+			GraphCell resTypeCell = getResourceType();
+			if (resTypeCell != null) {
+				setResourceType(resTypeCell);
 			}
 		} else {
-			setType(null);
+			setResourceType(null);
 		}
 		setCellValue();
 	}
 
-	private void selectType() {
+	private void selectResourceType() {
 		SelectTypeDialog classDialog = new SelectTypeDialog();
 		classDialog.replaceGraph(gmanager.getClassGraph());
 		classDialog.setInitCell(resInfo.getTypeCell());
 		classDialog.setVisible(true);
 		Resource uri = (Resource) classDialog.getValue();
 		if (uri != null) {
-			resTypeField.setText(uri.getURI());
+			setResourceTypeField(uri.getURI());
 		}
 	}
 
 	private void close() {
-		if (resInfo.getURI().isAnon() || uriField.getText().length() == 0) {
-			setAnonymousCell();
-		}
-		propDialog.setVisible(false);
+		attrDialog.setVisible(false);
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -329,7 +329,7 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		} else if (e.getSource() == jumpRDFSClassButton) {
 			jumpRDFSClass();
 		} else if (e.getSource() == selectTypeButton) {
-			selectType();
+			selectResourceType();
 		} else if (e.getSource() == closeButton) {
 			close();
 		}
