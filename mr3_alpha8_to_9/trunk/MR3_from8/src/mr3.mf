@@ -1,2 +1,2 @@
-Main-Class: jp.ac.shizuoka.cs.panda.mmm.mr3.MR3
+Main-Class: org.semanticweb.mmm.mr3.MR3
 Class-Path:  ./lib/rdf-api-2001-01-19.jar\ ./log4j-1.2.7.jar\ ./lib/junit.jar\ ./lib/concurrent.jar\ ./lib/antlr.jar\ ./lib/antlr.debug.jar\ ./lib/log4j-1.2.7.jar \ ./lib/icu4j.jar \ ./lib/jena.jar  \ ./lib/jgraph.jar \ ./lib/xercesImpl.jar \ ./lib/xmlParserAPIs.jar \ ./lib/jakarta-oro-2.0.5.jar \ ./lib/jh.jar

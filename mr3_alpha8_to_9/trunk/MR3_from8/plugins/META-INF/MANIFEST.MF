@@ -1,18 +1,18 @@
 Manifest-Version: 1.0
 
-Name: jp.ac.shizuoka.cs.panda.mmm.mr3.sample.SamplePlugin1.class
+Name: org.semanticweb.mmm.mr3.sample.SamplePlugin1.class
 menu-name: SamplePlugin1
 
-Name: jp.ac.shizuoka.cs.panda.mmm.mr3.sample.SamplePlugin2.class
+Name: org.semanticweb.mmm.mr3.sample.SamplePlugin2.class
 menu-name: SamplePlugin2
 
-Name: jp.ac.shizuoka.cs.panda.mmm.mr3.sample.SamplePlugin3.class
+Name: org.semanticweb.mmm.mr3.sample.SamplePlugin3.class
 menu-name: ReplaceProjectPlugin
 
-Name: jp.ac.shizuoka.cs.panda.mmm.mr3.rssPlugin.RSSPlugin.class
+Name: org.semanticweb.mmm.mr3.rssPlugin.RSSPlugin.class
 menu-name: RSSPlugin
 
-Name: jp.ac.shizuoka.cs.panda.mmm.mr3.layoutPlugin.SugiyamaLayoutPlugin.class
+Name: org.semanticweb.mmm.mr3.layoutPlugin.SugiyamaLayoutPlugin.class
 menu-name: SugiyamaLayout
 
 
