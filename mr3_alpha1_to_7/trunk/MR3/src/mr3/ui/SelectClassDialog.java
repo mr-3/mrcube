@@ -59,16 +59,20 @@ public abstract class SelectClassDialog extends JDialog implements ActionListene
 	protected abstract void initEachDialogAttr();
 
 	protected void initFindGroup() {
+		AbstractAction findAction = new FindAction();
 		findField = new JTextField(30);
+		findField.addActionListener(findAction);
 		findButton = new JButton("Find Resource");
-		findButton.addActionListener(new FindAction());
+		findButton.addActionListener(findAction);
 	}
 
 	class FindAction extends AbstractAction {
 
 		private void findNextResource(List findList) {
+			System.out.println("index: "+index);
+			System.out.println("size: "+findList.size());
 			if (findList != null && findList.size() > 0) {
-				if (index == findList.size()) {
+				if (index == findList.size()) { 
 					index = 0;
 				}
 				gmanager.jumpArea(findList.get(index), graph);
@@ -79,6 +83,7 @@ public abstract class SelectClassDialog extends JDialog implements ActionListene
 		public void actionPerformed(ActionEvent e) {
 			String key = findField.getText() + ".*";
 			if (currentKey == null || (!currentKey.equals(key))) {
+				index = 0; // index‚ðŒ³‚É–ß‚·
 				currentKey = key;
 				findList = new ArrayList(gmanager.getSearchRDFSResult(key, graph));
 				findNextResource(findList);
