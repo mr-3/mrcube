@@ -22,7 +22,7 @@ public class SamplePlugin1 extends MR3Plugin {
 		try {
 			Resource sampleResource = new ResourceImpl("http://mrcube.sample.resource");
 			Property sampleProperty = new PropertyImpl("http://mrcube.sample.property");
-			Literal sampleLiteral = new LiteralImpl("Sample");
+            Literal sampleLiteral = new LiteralImpl("Sample");
 			Statement stmt = sampleModel.createStatement(sampleResource, sampleProperty, sampleLiteral);
 			sampleModel.add(stmt);
 		} catch (RDFException e) {

@@ -28,7 +28,7 @@ import com.hp.hpl.mesa.rdf.jena.model.*;
 import com.jgraph.graph.*;
 
 /**
-  *   Meta-  Model Management founded on RDF-based Revision Reflection  
+  *   Meta-  Model Management founded on RDF-baed Revision Reflection  
   *   {MR} ^3
   */
 public class MR3 extends JFrame {
@@ -828,7 +828,7 @@ public class MR3 extends JFrame {
 		}
 	}
 
-	//	class LightViewAction extends AbstractAction {
+	//	cass LightViewAction extends AbstractAction {
 	//	public void actionPerformed(ActionEvent e) {	
 	//		
 	//		}
