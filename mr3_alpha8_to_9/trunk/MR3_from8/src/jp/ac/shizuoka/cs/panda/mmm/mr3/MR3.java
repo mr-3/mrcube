@@ -370,6 +370,12 @@ public class MR3 extends JFrame {
 		nTripleMenu.add(new ExportRDF(this, SelectedRDF_NTriple));
 		nTripleMenu.add(new ExportRDFS(this, SelectedRDFS_NTriple));
 
+		JMenu imgMenu = new JMenu("Img");
+		exportMenu.add(imgMenu);
+		imgMenu.add(new FileExportImg(this, gmanager, GraphType.RDF, "png", "RDF Graph -> PNG"));
+		imgMenu.add(new FileExportImg(this, gmanager, GraphType.CLASS, "png", "Class Graph -> PNG"));
+		imgMenu.add(new FileExportImg(this, gmanager, GraphType.PROPERTY, "png", "Property Graph -> PNG"));
+
 		exportMenu.add(new ExportJavaObject(this));
 
 		menu.addSeparator();
@@ -383,7 +389,7 @@ public class MR3 extends JFrame {
 	private void initPreferences() {
 		int width = 792; // desktop.getWidth() -> 0
 		int height = 518; // desktop.getHeight()->0
-		
+
 		int editorPositionX = userPrefs.getInt(PrefConstants.RDFEditorPositionX, 0);
 		int editorPositionY = userPrefs.getInt(PrefConstants.RDFEditorPositionY, height / 2);
 		int editorWidth = userPrefs.getInt(PrefConstants.RDFEditorWidth, width);

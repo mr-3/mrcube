@@ -132,6 +132,7 @@ public abstract class AbstractActionFile extends MR3AbstractAction {
 	private static MR3FileFilter mr3FileFilter = new MR3FileFilter();
 	private static RDFsFileFilter rdfsFileFilter = new RDFsFileFilter();
 	private static NTripleFileFilter n3FileFilter = new NTripleFileFilter();
+	private static PNGFileFilter pngFileFilter = new PNGFileFilter();
 
 	protected File getFile(boolean isOpenFile, String extension) {
 		Component desktop = mr3.getDesktopPane();
@@ -141,6 +142,8 @@ public abstract class AbstractActionFile extends MR3AbstractAction {
 			jfc.setFileFilter(mr3FileFilter);
 		} else if (extension.equals("n3")) {
 			jfc.setFileFilter(n3FileFilter);
+		} else if (extension.equals("png")) {
+			jfc.setFileFilter(pngFileFilter);
 		} else {
 			jfc.setFileFilter(rdfsFileFilter);
 		}
