@@ -125,7 +125,7 @@ public class GraphManager {
 		if (obj instanceof ArrayList) {
 			ArrayList list = (ArrayList) obj;
 			rdfsInfoMap.setState((List) list.get(0));
-			resInfoMap.setState((List) list.get(1));
+			resInfoMap.setState((Map) list.get(1));
 			litInfoMap.setState((Map) list.get(2));
 			rdfGraph.setRDFState(list.get(3));
 			classGraph.setRDFState(list.get(4));
@@ -186,7 +186,7 @@ public class GraphManager {
 			if (info.equals(uri) && infoCell != cell) {
 				RDFResourceInfo resInfo = (RDFResourceInfo) info;
 				RDFSInfo rdfsInfo = rdfsInfoMap.getCellInfo(resInfo.getTypeCell());
-				System.out.println("RDF Resource Duplicated");
+//				System.out.println("RDF Resource Duplicated");
 				/*
 				 *  Classエディタ内の重複チェックをしていて，RDFエディタ内のクラス定義にかかった場合
 				 *   重複とみなさないようにする．
@@ -441,11 +441,7 @@ public class GraphManager {
 					}
 				} else if (cellViewType == CellViewType.LABEL) {
 					if (info.getLabel() != null) {
-						try {
-							setCellValue(cell, info.getLabel().getString());
-						} catch (RDFException e) {
-							e.printStackTrace();
-						}
+						setCellValue(cell, info.getLabel().getString());
 					} else { // labelがnullだったら、URIを表示する
 						setNSPrefix(uri, cell);
 					}

@@ -4,7 +4,6 @@ import java.util.*;
 
 import javax.swing.tree.*;
 
-import com.hp.hpl.mesa.rdf.jena.common.*;
 import com.hp.hpl.mesa.rdf.jena.model.*;
 import com.hp.hpl.mesa.rdf.jena.vocabulary.*;
 
@@ -20,7 +19,6 @@ public class RDFSInfoMap {
 	private DefaultTreeModel propTreeModel;
 
 	private static RDFResourceInfoMap resInfoMap = RDFResourceInfoMap.getInstance();
-
 	private static RDFSInfoMap rdfsInfoMap = new RDFSInfoMap();
 
 	private RDFSInfoMap() {
@@ -58,36 +56,17 @@ public class RDFSInfoMap {
 		ArrayList list = new ArrayList();
 		//		list.add(resourceInfoMap);
 		list.add(cellInfoMap);
-		list.add(getRDFSCellMapState(classCellMap));
-		list.add(getRDFSCellMapState(propertyCellMap));
+		list.add(classCellMap);
+		list.add(propertyCellMap);
 		list.add(edgeInfoMap);
 		return list;
-	}
-
-	private Map getRDFSCellMapState(Map rdfsCellMap) {
-		Map map = new HashMap();
-		for (Iterator i = rdfsCellMap.keySet().iterator(); i.hasNext();) {
-			Resource uri = (Resource) i.next();
-			Object cell = rdfsCellMap.get(uri);
-			map.put(uri.toString(), cell);
-		}
-
-		return map;
-	}
-
-	private void setRDFSCellMapState(Map map, Map rdfsCellMap) {
-		for (Iterator i = map.keySet().iterator(); i.hasNext();) {
-			String uri = (String) i.next();
-			Object cell = map.get(uri);
-			rdfsCellMap.put(new ResourceImpl(uri), cell);
-		}
 	}
 
 	public void setState(List list) {
 		//		resourceInfoMap.putAll((Map) list.get(0));
 		setCellInfoMap((Map) list.get(0));
-		setRDFSCellMapState((Map) list.get(1), classCellMap);
-		setRDFSCellMapState((Map) list.get(2), propertyCellMap);
+		classCellMap.putAll((Map) list.get(1));
+		propertyCellMap.putAll((Map) list.get(2));
 		edgeInfoMap.putAll((Map) list.get(3));
 	}
 
@@ -96,9 +75,9 @@ public class RDFSInfoMap {
 			Object cell = i.next();
 			RDFSInfo info = (RDFSInfo) map.get(cell);
 			if (info instanceof ClassInfo) {
-				cellInfoMap.put(cell, new ClassInfo(cell.toString()));
+				cellInfoMap.put(cell, new ClassInfo((ClassInfo) info));
 			} else if (info instanceof PropertyInfo) {
-				cellInfoMap.put(cell, new PropertyInfo(cell.toString()));
+				cellInfoMap.put(cell, new PropertyInfo((PropertyInfo) info));
 			}
 		}
 	}
@@ -175,25 +154,25 @@ public class RDFSInfoMap {
 
 	public void putURICellMap(RDFSInfo info, Object cell) {
 		if (info instanceof ClassInfo) {
-			classCellMap.put(info.getURI(), cell);
+			classCellMap.put(info.getURIStr(), cell);
 		} else if (info instanceof PropertyInfo) {
-			propertyCellMap.put(info.getURI(), cell);
+			propertyCellMap.put(info.getURIStr(), cell);
 		}
 	}
 
 	public void removeURICellMap(RDFSInfo info) {
 		if (info instanceof ClassInfo) {
-			classCellMap.remove(info.getURI());
+			classCellMap.remove(info.getURIStr());
 		} else {
-			propertyCellMap.remove(info.getURI());
+			propertyCellMap.remove(info.getURIStr());
 		}
 	}
 
 	public void removeCellInfo(Object cell) {
 		RDFSInfo info = (RDFSInfo) cellInfoMap.get(cell);
 		if (info != null) {
-			classCellMap.remove(info.getURI());
-			propertyCellMap.remove(info.getURI());
+			classCellMap.remove(info.getURIStr());
+			propertyCellMap.remove(info.getURIStr());
 			cellInfoMap.remove(cell);
 		}
 	}
@@ -203,7 +182,7 @@ public class RDFSInfoMap {
 	}
 
 	public Object getClassCell(Resource uri) {
-		return classCellMap.get(uri);
+		return classCellMap.get(uri.getURI());
 	}
 
 	public boolean isPropertyCell(Resource uri) {
@@ -211,7 +190,7 @@ public class RDFSInfoMap {
 	}
 
 	public Object getPropertyCell(Resource uri) {
-		return propertyCellMap.get(uri);
+		return propertyCellMap.get(uri.getURI());
 	}
 
 	public Object getRDFSCell(Resource uri) {
@@ -279,12 +258,12 @@ public class RDFSInfoMap {
 		newInfo.setURI(orgInfo.getURIStr());
 		// Labelをコピーする
 		for (Iterator i = orgInfo.getLabelList().iterator(); i.hasNext();) {
-			Literal lit = (Literal) i.next();
+			MR3Literal lit = (MR3Literal) i.next();
 			newInfo.addLabel(lit);
 		}
 		// コメントをコピーする
 		for (Iterator i = orgInfo.getCommentList().iterator(); i.hasNext();) {
-			Literal comment = (Literal) i.next();
+			MR3Literal comment = (MR3Literal) i.next();
 			newInfo.addComment(comment);
 		}
 		newInfo.setLabel(orgInfo.getLabel());

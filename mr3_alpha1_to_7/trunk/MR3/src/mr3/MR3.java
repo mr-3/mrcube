@@ -461,7 +461,7 @@ public class MR3 extends JFrame {
 		}
 	}
 
-	private void newProject() {
+	private boolean newProject() {
 		int messageType = JOptionPane.showInternalConfirmDialog(desktop, "Are you sure you want to continue?", "Warning", JOptionPane.YES_NO_OPTION);
 		if (messageType == JOptionPane.YES_OPTION) {
 			attrDialog.setNullPanel();
@@ -469,7 +469,9 @@ public class MR3 extends JFrame {
 			litInfoMap.clear();
 			rdfsInfoMap.clear();
 			gmanager.removeAllCells();
+			return true;
 		}
+		return false;
 	}
 
 	class NewProjectAction extends AbstractAction {
@@ -496,12 +498,13 @@ public class MR3 extends JFrame {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			newProject();
-			File file = getFile(true, "mr3");
-			if (file == null) {
-				return;
+			if (newProject()) {
+				File file = getFile(true, "mr3");
+				if (file == null) {
+					return;
+				}
+				loadProject(file);
 			}
-			loadProject(file);
 		}
 	}
 

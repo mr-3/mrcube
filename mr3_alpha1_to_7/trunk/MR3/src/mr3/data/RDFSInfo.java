@@ -9,34 +9,50 @@ import com.hp.hpl.mesa.rdf.jena.vocabulary.*;
 
 public abstract class RDFSInfo implements Serializable {
 
-	transient protected Resource uri;
-	transient private Literal label;        // 現在，選択されているラベル
-	transient private List labelList;
-	transient private Literal comment; // 現在，選択されているコメント
-	transient private List commentList;
-	transient private Resource isDefinedBy;
+	//	transient protected Resource uri;
+	protected String uri;
+//	transient private Literal label; // 現在，選択されているラベル
+	private MR3Literal label; // 現在，選択されているラベル
+	private List labelList;
+//	transient private Literal comment; // 現在，選択されているコメント
+	private MR3Literal comment; // 現在，選択されているコメント
+	private List commentList;
+	private String isDefinedBy;
 	transient protected Model model;
 	transient protected Set supRDFS;
 	transient protected RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
 
 	RDFSInfo(String uri) {
-		try {
-			this.uri = new ResourceImpl(uri);
-		} catch (Exception e) {
-		}
+		//			this.uri = new ResourceImpl(uri);
+		this.uri = uri;
 		labelList = new ArrayList();
 		commentList = new ArrayList();
-		isDefinedBy = new ResourceImpl("");
+//		isDefinedBy = new ResourceImpl("");
+		isDefinedBy = "";
 		model = new ModelMem();
 		supRDFS = new HashSet();
 	}
 
+	RDFSInfo(RDFSInfo info) {
+		uri = info.getURIStr();
+		label = info.getLabel();
+		labelList = new ArrayList(info.getLabelList());
+		comment = info.getComment();
+		commentList = new ArrayList(info.getCommentList());
+		isDefinedBy = info.getIsDefinedBy().getURI();
+		model = new ModelMem();
+		supRDFS = new HashSet();
+	}
+	
+	RDFSInfo() {
+	}
+	
 	public abstract Set getRDFSSubList();
 
 	/** uriが等しければ，等しいとする */
 	public boolean equals(Object o) {
 		String uriStr = (String) o;
-		return uriStr.equals(uri.getURI());
+		return uriStr.equals(uri);
 	}
 
 	public void addStatement(Statement stmt) {
@@ -54,23 +70,24 @@ public abstract class RDFSInfo implements Serializable {
 	public void setInnerModel(Model m) {
 		model = m;
 	}
-	
+
 	public Model getModel() throws RDFException {
 		Model tmpModel = new ModelMem();
 
 		tmpModel.add(model);
-		if (isDefinedBy.getURI().length() != 0) {
-			tmpModel.add(tmpModel.createStatement(uri, RDFS.isDefinedBy, isDefinedBy));
+		Resource res = new ResourceImpl(uri);
+		if (isDefinedBy.length() != 0) {
+			tmpModel.add(tmpModel.createStatement(res, RDFS.isDefinedBy, new ResourceImpl(isDefinedBy)));
 		}
 
 		for (Iterator i = labelList.iterator(); i.hasNext();) {
-			Literal literal = (Literal) i.next();
-			tmpModel.add(tmpModel.createStatement(uri, RDFS.label, literal));
+			MR3Literal literal = (MR3Literal) i.next();
+			tmpModel.add(tmpModel.createStatement(res, RDFS.label, literal.getLiteral()));
 		}
 
 		for (Iterator i = commentList.iterator(); i.hasNext();) {
-			Literal literal = (Literal) i.next();
-			tmpModel.add(tmpModel.createStatement(uri, RDFS.comment, literal));
+			MR3Literal literal = (MR3Literal) i.next();
+			tmpModel.add(tmpModel.createStatement(res, RDFS.comment, literal.getLiteral()));
 		}
 
 		return tmpModel;
@@ -90,30 +107,30 @@ public abstract class RDFSInfo implements Serializable {
 	}
 
 	public void setURI(String str) {
-		uri = new ResourceImpl(str);
+		uri = str;
 	}
 
 	public Resource getURI() {
-		return uri;
+		return new ResourceImpl(uri);
 	}
 
 	public String getURIStr() {
-		return uri.getURI();
+		return uri;
 	}
 
-	public void setLabel(Literal label) {
+	public void setLabel(MR3Literal label) {
 		this.label = label;
 	}
 
-	public Literal getLabel() {
+	public MR3Literal getLabel() {
 		return label;
 	}
 
-	public void addLabel(Literal literal) {
+	public void addLabel(MR3Literal literal) {
 		labelList.add(literal);
 	}
 
-	public void removeLabel(Literal literal) {
+	public void removeLabel(MR3Literal literal) {
 		labelList.remove(literal);
 	}
 
@@ -121,11 +138,11 @@ public abstract class RDFSInfo implements Serializable {
 		return Collections.unmodifiableList(labelList);
 	}
 
-	public void addComment(Literal literal) {
+	public void addComment(MR3Literal literal) {
 		commentList.add(literal);
 	}
 
-	public void removeComment(Literal literal) {
+	public void removeComment(MR3Literal literal) {
 		commentList.remove(literal);
 	}
 
@@ -133,20 +150,20 @@ public abstract class RDFSInfo implements Serializable {
 		return Collections.unmodifiableList(commentList);
 	}
 
-	public void setComment(Literal comment) {
+	public void setComment(MR3Literal comment) {
 		this.comment = comment;
 	}
 
-	public Literal getComment() {
+	public MR3Literal getComment() {
 		return comment;
 	}
 
 	public void setIsDefinedby(String str) {
-		isDefinedBy = new ResourceImpl(str);
+		isDefinedBy = str;
 	}
 
 	public Resource getIsDefinedBy() {
-		return isDefinedBy;
+		return new ResourceImpl(isDefinedBy);
 	}
 
 	public String getModelString() {
