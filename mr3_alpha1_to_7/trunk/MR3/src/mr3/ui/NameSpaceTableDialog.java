@@ -381,14 +381,11 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 			if (aValue instanceof String) {
 				String prefix = (String) aValue;
-				if (isValidPrefixWithWarning(prefix)) {
-					String oldPrefix = (String) nsTableModel.getValueAt(rowIndex, columnIndex);
-					prefixNSMap.remove(oldPrefix);
-					String ns = (String) nsTableModel.getValueAt(rowIndex, 2);
-					prefixNSMap.put(prefix, ns);
-				} else {
-					return;
-				}
+				// 多分prefixのチェックはいらない．
+				String oldPrefix = (String) nsTableModel.getValueAt(rowIndex, columnIndex);
+				prefixNSMap.remove(oldPrefix);
+				String ns = (String) nsTableModel.getValueAt(rowIndex, 2);
+				prefixNSMap.put(prefix, ns);
 			}
 			super.setValueAt(aValue, rowIndex, columnIndex);
 			changeCellView();

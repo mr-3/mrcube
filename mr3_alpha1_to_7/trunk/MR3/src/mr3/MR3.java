@@ -558,6 +558,7 @@ public class MR3 extends JFrame {
 		gmanager.removeAllCells();
 		nsTableDialog.setDefaultNSPrefix();
 		setTitle("MR^3 - New Project");
+		currentProject = null;
 	}
 
 	class NewProjectAction extends AbstractAction {
@@ -578,7 +579,9 @@ public class MR3 extends JFrame {
 				if (model == null) {
 					return;
 				}
+				File tmp = currentProject;
 				newProject();
+				currentProject = tmp;
 				// 順番が重要なので、よく考えること
 				Model projectModel = pm.extractProjectModel(model);
 				mr3Reader.mergeRDFS(model);
@@ -635,7 +638,6 @@ public class MR3 extends JFrame {
 	}
 
 	class SaveProjectAction extends AbstractAction {
-
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("Save Project")) {
 				if (currentProject == null) {
