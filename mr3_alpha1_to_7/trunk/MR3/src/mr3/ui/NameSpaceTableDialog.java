@@ -285,8 +285,15 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		int row = removeList[0];
 		String rmPrefix = (String) nsTableModel.getValueAt(row, 1);
 		String rmNS = (String) nsTableModel.getValueAt(row, 2);
-		System.out.println(rmNS.equals(MR3Resource.URI.getNameSpace()));
-		if (!rmNS.equals(MR3Resource.URI.getNameSpace()) && !gmanager.getAllNameSpaceSet().contains(rmNS)) {
+		if (rmNS.equals(gmanager.getBaseURI())) {
+			JOptionPane.showMessageDialog(null, "This NameSpace is baseURI.", "Warning", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		if (rmNS.equals(MR3Resource.URI.getNameSpace())) {
+			JOptionPane.showMessageDialog(null, "This NameSpace is System URI.", "Warning", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		if (!gmanager.getAllNameSpaceSet().contains(rmNS)) {
 			prefixNSMap.remove(rmPrefix);
 			nsTableModel.removeRow(row);
 			changeCellView();
