@@ -37,7 +37,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 	protected RDFLiteralInfoMap litInfoMap = RDFLiteralInfoMap.getInstance();
 	protected RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
 
-	protected Action undo, redo, remove, group, ungroup;
+	protected Action undo, redo, remove;
 
 	private JInternalFrame[] internalFrames = new JInternalFrame[3];
 
@@ -132,6 +132,10 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 				writer.setNsPrefix(info.getPrefix(), info.getNameSpace());
 			}
 		}
+		String baseURIPrefix = gmanager.getBaseURIPrefix();
+		if (baseURIPrefix.length() != 0) {
+			writer.setNsPrefix(baseURIPrefix, gmanager.getBaseURI()+'#');
+		}
 	}
 
 	public Writer writeModel(Model model, Writer output, RDFWriter writer) {
@@ -218,12 +222,8 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 	}
 
 	protected void setToolStatus() {
-		// Group Button only Enabled if more than One Cell Selected
-		//group.setEnabled(graph.getSelectionCount() > 1);
-		// Update Button States based on Current Selection
 		boolean enabled = !graph.isSelectionEmpty();
 		remove.setEnabled(enabled);
-		//ungroup.setEnabled(enabled);
 	}
 
 	//	public void fitWindow(RDFGraph graph) {
@@ -479,29 +479,6 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 				}
 			});
 		}
-
-		// Group
-		//		toolbar.addSeparator();
-		//		URL groupUrl = getClass().getClassLoader().getResource("img/group.gif");
-		//		ImageIcon groupIcon = new ImageIcon(groupUrl);
-		//		group = new AbstractAction("", groupIcon) {
-		//			public void actionPerformed(ActionEvent e) {
-		//				group(graph.getSelectionCells());
-		//			}
-		//		};
-		//		group.setEnabled(false);
-		//		toolbar.add(group);
-		//
-		//		// Ungroup
-		//		URL ungroupUrl = getClass().getClassLoader().getResource("img/ungroup.gif");
-		//		ImageIcon ungroupIcon = new ImageIcon(ungroupUrl);
-		//		ungroup = new AbstractAction("", ungroupIcon) {
-		//			public void actionPerformed(ActionEvent e) {
-		//				ungroup(graph.getSelectionCells());
-		//			}
-		//		};
-		//		ungroup.setEnabled(false);
-		//		toolbar.add(ungroup);
 
 		return toolbar;
 	}

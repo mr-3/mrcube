@@ -793,8 +793,8 @@ public class MR3 extends JFrame {
 				return;
 			}
 			try {
-				FileWriter output = null;
-				output = new FileWriter(file);
+				String encoding = userPrefs.get(PrefConstants.OutputEncoding, "EUC_JP");
+				Writer output = new OutputStreamWriter(new FileOutputStream(file), encoding);
 				RDFWriter writer = new RDFWriterFImpl().getWriter("RDF/XML-ABBREV");
 				if (type.equals(RDFS_NTriple) || type.equals(SelectedRDFS_NTriple)) {
 					writer = new RDFWriterFImpl().getWriter("N-TRIPLE");
@@ -824,9 +824,9 @@ public class MR3 extends JFrame {
 			if (file == null) {
 				return;
 			}
-			FileWriter output = null;
 			try {
-				output = new FileWriter(file);
+				String encoding = userPrefs.get(PrefConstants.OutputEncoding, "EUC_JP");
+				Writer output = new OutputStreamWriter(new FileOutputStream(file), encoding);
 				RDFWriter writer = new RDFWriterFImpl().getWriter("RDF/XML-ABBREV");
 				if (type.equals(RDF_NTriple) || type.equals(SelectedRDF_NTriple)) {
 					writer = new RDFWriterFImpl().getWriter("N-TRIPLE");

@@ -16,10 +16,13 @@
 * Help -> About MR^3でバージョンを表示するようになった．
 * 新規にRDFリソースを作った時点で、ＵＲＩ、ＩＤ、Anonymousの設定ができるようになった．
 * RDFSクラス，プロパティでURI，IDを選択できるようになった．
-
+* export時の，ファイルのエンコーディングを選択できるようになった．
 
 ==== Bug Fixes
 * ソースコードを表示するウィンドウが前面に表示されなかったのを修正．
+* ファイル出力時のエンコーディングがnullになるのを修正した．
+   (EncodingをUTF-8または，UTF-16にすると，nullになる)
+   
   
 === ■ α4 (2003/6/16)
 * RDF Editorのポップアップメニューに，Insert Connected ResourceとInsertConnected Literal
