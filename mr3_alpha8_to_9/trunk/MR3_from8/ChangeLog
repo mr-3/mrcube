@@ -13,7 +13,8 @@
 * getRDFGraph()，getClassGraph()，getPropertyGraph()メソッドをMR3Pluginクラスに追加．
    プラグインで，レイアウトを行えるようになった．(File->Plugins->SugiyamaLayout)
 * Look & Feelを変更できるようになった．(View->Look & Feel->Metal, Windows, Motif)   
-* UIの表示を日本語と英語の２種類から選択できるようになった．
+* インタフェースの表示を日本語と英語の２種類から選択できるようになった．
+* JenaのバージョンがJena2になった．
 * その他，細かい修正．
    
 ==== Bug Fixes
@@ -31,8 +32,8 @@
   Show Class Graph Overview, Show Property Graph Overview)
 * 起動時にSplashWindowを表示するようになった．
 * RDFリテラルにデータ型を指定できるようになった．
-* JenaのバージョンをJena2 Betaにした．
-* JGraphのバージョンをJGraph3にした．
+* JenaのバージョンがJena2 Betaになった．
+* JGraphのバージョンがJGraph3になった．
 * パッケージ名を変更(jp.ac.shizuoka.cs.panda.mmm.mr3.*)
 * rdf_1..._(数)のプロパティは，表示しないようになった．
 * その他，細かい修正．

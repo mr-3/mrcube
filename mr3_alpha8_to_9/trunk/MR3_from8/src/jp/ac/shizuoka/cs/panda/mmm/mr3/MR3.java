@@ -119,7 +119,7 @@ public class MR3 extends JFrame {
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new CloseWindow(this));
-		setIconImage(Utilities.getImageIcon("mr3_logo.png").getImage());
+		setIconImage(MR3Constants.LOGO.getImage());
 		setTitle("MR^3 - " + Translator.getString("Component.File.NewProject.Text"));
 		setJMenuBar(createMenuBar());
 		initPreferences();

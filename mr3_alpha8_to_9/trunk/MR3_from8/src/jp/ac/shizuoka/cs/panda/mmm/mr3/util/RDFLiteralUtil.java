@@ -13,7 +13,7 @@ public class RDFLiteralUtil {
 	private static Model model = ModelFactory.createDefaultModel();
 	
 	public static Literal createLiteral(String value, String lang, RDFDatatype dataType) {
-		return model.createTypedLiteral(value, lang, dataType);
+		return model.createTypedLiteral(value, dataType);
 	}
 	
 	public static String insertLineFeed(String str, int lineLen) {
