@@ -102,10 +102,10 @@ public class MR3 extends JFrame {
 		createDesktop();
 		gmanager.setDesktop(desktop);
 
-		rdfEditor = new RDFEditor(attrDialog, findResDialog, gmanager);
-		//		realRDFEditor = new RealRDFEditor(propDialog, findResDialog,gmanager);
-		classEditor = new ClassEditor(attrDialog, findResDialog, gmanager);
-		propertyEditor = new PropertyEditor(attrDialog, findResDialog, gmanager);
+		rdfEditor = new RDFEditor(nsTableDialog, findResDialog, gmanager);
+		//		realRDFEditor = new RealRDFEditor(nsTableDialog, findResDialog, gmanager);
+		classEditor = new ClassEditor(nsTableDialog, findResDialog, gmanager);
+		propertyEditor = new PropertyEditor(nsTableDialog, findResDialog, gmanager);
 		srcArea = new JTextArea();
 		srcArea.setEditable(false);
 

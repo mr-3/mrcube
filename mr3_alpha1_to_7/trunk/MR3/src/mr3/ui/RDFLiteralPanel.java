@@ -23,13 +23,11 @@ public class RDFLiteralPanel extends JPanel implements ActionListener {
 	private JButton close;
 	private GraphCell cell;
 	private GraphManager gmanager;
-	private AttributeDialog propWindow;
 
 	private RDFLiteralInfoMap litInfoMap = RDFLiteralInfoMap.getInstance();
 
-	public RDFLiteralPanel(GraphManager manager, AttributeDialog pw) {
+	public RDFLiteralPanel(GraphManager manager) {
 		gmanager = manager;
-		propWindow = pw;
 		setBorder(BorderFactory.createTitledBorder("Literal"));
 
 		langField = new JTextField(10);
@@ -126,7 +124,7 @@ public class RDFLiteralPanel extends JPanel implements ActionListener {
 				cell = null;
 			}
 		} else if (e.getSource() == close) {
-			propWindow.setVisible(false);
+			gmanager.setVisibleAttrDialog(false);
 		}
 	}
 }

@@ -850,6 +850,10 @@ public class GraphManager {
 		}
 	}
 
+	public AttributeDialog getAttrDialog() {
+		return attrDialog;
+	}
+	
 	public void setVisibleAttrDialog(boolean t) {
 		attrDialog.setVisible(t);
 	}
