@@ -72,6 +72,7 @@ public class MR3 extends JFrame {
 	//	private JCheckBoxMenuItem lightView;
 
 	private JRadioButton uriView;
+	private JRadioButton idView;
 	private JRadioButton labelView;
 
 	private File lastSelectedFile;
@@ -670,14 +671,18 @@ public class MR3 extends JFrame {
 		JMenu menu = new JMenu("View");
 		ChangeCellViewAction changeCellViewAction = new ChangeCellViewAction();
 		uriView = new JRadioButton("URI View");
-		uriView.addItemListener(changeCellViewAction);
-		uriView.setSelected(true);
+		uriView.addItemListener(changeCellViewAction);		
+		idView = new JRadioButton("ID View");
+		idView.addItemListener(changeCellViewAction);
+		idView.setSelected(true);
 		labelView = new JRadioButton("Label View");
 		labelView.addItemListener(changeCellViewAction);
 		ButtonGroup group = new ButtonGroup();
 		group.add(uriView);
+		group.add(idView);
 		group.add(labelView);
 		menu.add(uriView);
+		menu.add(idView);
 		menu.add(labelView);
 		menu.addSeparator();
 		JMenuItem item = new JMenuItem("Deploy windows");
@@ -811,6 +816,8 @@ public class MR3 extends JFrame {
 		public void itemStateChanged(ItemEvent e) {
 			if (e.getItemSelectable() == uriView) {
 				gmanager.setCellViewType(CellViewType.URI);
+			} else if (e.getItemSelectable() == idView) {
+				gmanager.setCellViewType(CellViewType.ID);
 			} else if (e.getItemSelectable() == labelView) {
 				gmanager.setCellViewType(CellViewType.LABEL);
 			}
