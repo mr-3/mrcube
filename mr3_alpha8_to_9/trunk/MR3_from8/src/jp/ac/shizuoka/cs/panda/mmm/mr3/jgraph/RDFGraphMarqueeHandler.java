@@ -272,8 +272,8 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 	private void addTransformMenu(JPopupMenu menu, Object cell) {
 		if (isCellSelected(cell)) {
 			menu.addSeparator();
-			menu.add(new TransformRDFToRDFSAction(graph, gmanager, GraphType.CLASS));
-			menu.add(new TransformRDFToRDFSAction(graph, gmanager, GraphType.PROPERTY));
+			menu.add(new TransformElementAction(graph, gmanager, GraphType.RDF, GraphType.CLASS));
+			menu.add(new TransformElementAction(graph, gmanager, GraphType.RDF, GraphType.PROPERTY));
 		}
 	}
 

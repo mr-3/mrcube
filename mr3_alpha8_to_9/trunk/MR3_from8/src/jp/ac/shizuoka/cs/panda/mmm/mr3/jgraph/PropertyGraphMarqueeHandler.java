@@ -74,8 +74,8 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 	private void addTransformMenu(JPopupMenu menu, Object cell) {
 		if (isCellSelected(cell)) {
 			menu.addSeparator();
-			menu.add(new TransformPropertyToOtherAction(graph, gmanager, GraphType.RDF));
-			menu.add(new TransformPropertyToOtherAction(graph, gmanager, GraphType.CLASS));
+			menu.add(new TransformElementAction(graph, gmanager, GraphType.PROPERTY, GraphType.RDF));
+			menu.add(new TransformElementAction(graph, gmanager, GraphType.PROPERTY, GraphType.CLASS));
 		}
 	}
 
