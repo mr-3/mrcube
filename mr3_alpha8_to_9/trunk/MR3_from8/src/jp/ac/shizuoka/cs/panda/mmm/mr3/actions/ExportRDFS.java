@@ -21,13 +21,14 @@ import com.hp.hpl.jena.rdf.model.impl.*;
  */
 public class ExportRDFS extends AbstractActionFile {
 
+	public static final String RDFS_XML = Translator.getString("Component.File.Export.RDF/XML.RDFS.Text");
+	public static final String RDFS_NTriple = Translator.getString("Component.File.Export.N-Triple.RDFS.Text");
+	public static final String SelectedRDFS_XML = Translator.getString("Component.File.Export.RDF/XML.SelectedRDFS.Text");
+	public static final String SelectedRDFS_NTriple = Translator.getString("Component.File.Export.N-Triple.SelectedRDFS.Text");
+
 	public ExportRDFS(MR3 mr3, String title) {
 		super(mr3, title);
 	}
-	private static final String RDFS_XML = Translator.getString("Component.File.Export.RDF/XML.RDFS.Text");
-	private static final String RDFS_NTriple = Translator.getString("Component.File.Export.N-Triple.RDFS.Text");
-	private static final String SelectedRDFS_XML = Translator.getString("Component.File.Export.RDF/XML.SelectedRDFS.Text");
-	private static final String SelectedRDFS_NTriple = Translator.getString("Component.File.Export.N-Triple.SelectedRDFS.Text");
 
 	public void actionPerformed(ActionEvent e) {
 		Preferences userPrefs = mr3.getUserPrefs();

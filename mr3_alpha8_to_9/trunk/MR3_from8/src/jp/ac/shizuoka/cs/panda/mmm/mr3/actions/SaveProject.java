@@ -18,9 +18,12 @@ import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
  */
 public class SaveProject extends AbstractActionFile {
 
-	private static final String SAVE_PROJECT = Translator.getString("Component.File.SaveProject.Text");
-	private static final String SAVE_AS_PROJECT = Translator.getString("Component.File.SaveAsProject.Text");
-	
+	public static final String SAVE_PROJECT = Translator.getString("Component.File.SaveProject.Text");
+	public static final String SAVE_AS_PROJECT = Translator.getString("Component.File.SaveAsProject.Text");
+
+	public static final ImageIcon SAVE_PROJECT_ICON = Utilities.getImageIcon(Translator.getString("Component.File.SaveProject.Icon"));
+	public static final ImageIcon SAVE_AS_PROJECT_ICON = Utilities.getImageIcon(Translator.getString("Component.File.SaveAsProject.Icon"));
+
 	public SaveProject(MR3 mr3, String name) {
 		super(mr3, name);
 		setValues(name);
@@ -36,7 +39,7 @@ public class SaveProject extends AbstractActionFile {
 		if (shortDescription.equals(SAVE_PROJECT)) {
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_MASK));
 		} else if (shortDescription.equals(SAVE_AS_PROJECT)) {
-			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_MASK+KeyEvent.SHIFT_MASK));
+			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_MASK + KeyEvent.SHIFT_MASK));
 		}
 	}
 

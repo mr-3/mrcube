@@ -25,14 +25,15 @@ import com.hp.hpl.jena.rdf.model.*;
   */
 public class MR3 extends JFrame {
 
+	private File currentProject;
 	private JDesktopPane desktop;
+	private Preferences userPrefs; // ユーザの設定を保存(Windowサイズなど）
+	private static ResourceBundle resources;
 	private static final int MAIN_FRAME_HEIGHT = 600;
 	private static final int MAIN_FRAME_WIDTH = 800;
 	private static final int FRAME_HEIGHT = 400;
 	private static final int FRAME_WIDTH = 600;
 	private static final Integer DEMO_FRAME_LAYER = new Integer(0);
-
-	private File currentProject;
 
 	private RDFEditor rdfEditor;
 	private OverviewDialog rdfEditorOverview;
@@ -59,29 +60,27 @@ public class MR3 extends JFrame {
 	private RDFLiteralInfoMap litInfoMap = RDFLiteralInfoMap.getInstance();
 	private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
 
-	private JCheckBoxMenuItem showTypeCellBox;
-	private JCheckBoxMenuItem selectAbstractLevelMode;
-	private JCheckBoxMenuItem showToolTips;
-	private JCheckBoxMenuItem isGroup;
-
-	private JInternalFrame[] iFrames = new JInternalFrame[3];
-	private SourceDialog srcDialog;
-	private JCheckBoxMenuItem rdfEditorView;
-	private JCheckBoxMenuItem classEditorView;
-	private JCheckBoxMenuItem propertyEditorView;
-
 	private JRadioButton uriView;
 	private JRadioButton idView;
 	private JRadioButton labelView;
 
+	private JCheckBoxMenuItem showTypeCellBox;
+	private JCheckBoxMenuItem showToolTips;
+	private JCheckBoxMenuItem isGroup;
+	private JCheckBoxMenuItem selectAbstractLevelMode;
+
+	private SourceDialog srcDialog;
+	private JCheckBoxMenuItem rdfEditorView;
+	private JCheckBoxMenuItem classEditorView;
+	private JCheckBoxMenuItem propertyEditorView;
+	private JInternalFrame[] iFrames = new JInternalFrame[3];
+
 	private static final Color DESKTOP_BACK_COLOR = new Color(245, 245, 245);
 
-	private Preferences userPrefs; // ユーザの設定を保存(Windowサイズなど）
-	private static ResourceBundle resources;
-
-	MR3() {
+	MR3() {	
 		userPrefs = Preferences.userNodeForPackage(this.getClass());
-		Translator.loadResourceBundle(userPrefs.get(PrefConstants.UILang, "en"));
+		Translator.loadResourceBundle(userPrefs.get(PrefConstants.UILang, getDefaultLocaleStr()));
+		MR3Constants.initConstants();
 
 		setSize(userPrefs.getInt(PrefConstants.WindowWidth, MAIN_FRAME_WIDTH), userPrefs.getInt(PrefConstants.WindowHeight, MAIN_FRAME_HEIGHT));
 		setLocation(userPrefs.getInt(PrefConstants.WindowPositionX, 50), userPrefs.getInt(PrefConstants.WindowPositionY, 50));
@@ -128,16 +127,24 @@ public class MR3 extends JFrame {
 		setVisible(true);
 	}
 
-	private void setTreeLayout() {
-		//		classTreePanel = new RDFSTreePanel(gmanager, rdfsInfoMap.getClassTreeModel(), new ClassTreeCellRenderer());
-		//		propTreePanel = new RDFSTreePanel(gmanager, rdfsInfoMap.getPropTreeModel(), new PropertyTreeCellRenderer());
-		//		JTabbedPane treeTab = new JTabbedPane();
-		//		treeTab.add("Class", classTreePanel);
-		//		treeTab.add("Property", propTreePanel);
-		//		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, treeTab, desktop);
-		//		splitPane.setOneTouchExpandable(true);
-		//		getContentPane().add(splitPane);		
+	private String getDefaultLocaleStr() {
+		if (Locale.getDefault() == Locale.JAPAN) {
+			return "ja";
+		} else {
+			return "en";
+		}
 	}
+
+	//	private void setTreeLayout() {
+	//		classTreePanel = new RDFSTreePanel(gmanager, rdfsInfoMap.getClassTreeModel(), new ClassTreeCellRenderer());
+	//		propTreePanel = new RDFSTreePanel(gmanager, rdfsInfoMap.getPropTreeModel(), new PropertyTreeCellRenderer());
+	//		JTabbedPane treeTab = new JTabbedPane();
+	//		treeTab.add("Class", classTreePanel);
+	//		treeTab.add("Property", propTreePanel);
+	//		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, treeTab, desktop);
+	//		splitPane.setOneTouchExpandable(true);
+	//		getContentPane().add(splitPane);		
+	//	}
 
 	private AbstractAction newProjectAction;
 	private AbstractAction openProjectAction;
@@ -153,31 +160,11 @@ public class MR3 extends JFrame {
 	private void initAction() {
 		newProjectAction = new NewProject(this);
 		openProjectAction = new OpenProject(this);
-		saveProjectAction =
-			new SaveProject(
-				this,
-				Translator.getString("Component.File.SaveProject.Text"),
-				Utilities.getImageIcon(Translator.getString("Component.File.SaveProject.Icon")));
-		saveProjectAsAction =
-			new SaveProject(
-				this,
-				Translator.getString("Component.File.SaveAsProject.Text"),
-				Utilities.getImageIcon(Translator.getString("Component.File.SaveAsProject.Icon")));
-		toFrontRDFEditorAction =
-			new EditorSelect(
-				this,
-				Translator.getString("Component.Window.RDFEditor.Text"),
-				Utilities.getImageIcon(Translator.getString("RDFEditor.Icon")));
-		toFrontClassEditorAction =
-			new EditorSelect(
-				this,
-				Translator.getString("Component.Window.ClassEditor.Text"),
-				Utilities.getImageIcon(Translator.getString("ClassEditor.Icon")));
-		toFrontPropertyEditorAction =
-			new EditorSelect(
-				this,
-				Translator.getString("Component.Window.PropertyEditor.Text"),
-				Utilities.getImageIcon(Translator.getString("PropertyEditor.Icon")));
+		saveProjectAction = new SaveProject(this, SaveProject.SAVE_PROJECT, SaveProject.SAVE_PROJECT_ICON);
+		saveProjectAsAction = new SaveProject(this, SaveProject.SAVE_AS_PROJECT, SaveProject.SAVE_AS_PROJECT_ICON);
+		toFrontRDFEditorAction = new EditorSelect(this, EditorSelect.RDF_EDITOR, EditorSelect.RDF_EDITOR_ICON);
+		toFrontClassEditorAction = new EditorSelect(this, EditorSelect.CLASS_EDITOR, EditorSelect.CLASS_EDITOR_ICON);
+		toFrontPropertyEditorAction = new EditorSelect(this, EditorSelect.PROPERTY_EDITOR, EditorSelect.PROPERTY_EDITOR_ICON);
 		showAttrDialogAction = new ShowAttrDialog(this);
 		showNSTableDialogAction = new ShowNSTableDialog(this);
 		showSrcDialogAction = new ShowSrcDialog(this);
@@ -332,25 +319,25 @@ public class MR3 extends JFrame {
 		importMenu.add(replaceMenu);
 		JMenu replaceRDFMenu = new JMenu(Translator.getString("Component.File.Import.Replace.RDF.Text"));
 		replaceMenu.add(replaceRDFMenu);
-		replaceRDFMenu.add(new ReplaceRDF(this, Translator.getString("Component.File.Import.Replace.RDF/XML(File).Text")));
-		replaceRDFMenu.add(new ReplaceRDF(this, Translator.getString("Component.File.Import.Replace.RDF/XML(URI).Text")));
+		replaceRDFMenu.add(new ReplaceRDF(this, ReplaceRDF.REPLACE_RDF_FILE));
+		replaceRDFMenu.add(new ReplaceRDF(this, ReplaceRDF.REPLACE_RDF_URI));
 		replaceRDFMenu.addSeparator();
-		replaceRDFMenu.add(new ReplaceRDF(this, Translator.getString("Component.File.Import.Replace.RDF/N-Triple(File).Text")));
-		replaceRDFMenu.add(new ReplaceRDF(this, Translator.getString("Component.File.Import.Replace.RDF/N-Triple(URI).Text")));
+		replaceRDFMenu.add(new ReplaceRDF(this, ReplaceRDF.REPLACE_N_TRIPLE_FILE));
+		replaceRDFMenu.add(new ReplaceRDF(this, ReplaceRDF.REPLACE_N_TRIPLE_URI));
 		JMenu replaceRDFSMenu = new JMenu(Translator.getString("Component.File.Import.Replace.RDFS.Text"));
 		replaceMenu.add(replaceRDFSMenu);
-		replaceRDFSMenu.add(new ReplaceRDFS(this, Translator.getString("Component.File.Import.Replace.RDFS/XML(File).Text")));
-		replaceRDFSMenu.add(new ReplaceRDFS(this, Translator.getString("Component.File.Import.Replace.RDFS/XML(URI).Text")));
+		replaceRDFSMenu.add(new ReplaceRDFS(this, ReplaceRDFS.REPLACE_RDFS_FILE));
+		replaceRDFSMenu.add(new ReplaceRDFS(this, ReplaceRDFS.REPLACE_RDFS_URI));
 		replaceRDFSMenu.addSeparator();
-		replaceRDFSMenu.add(new ReplaceRDFS(this, Translator.getString("Component.File.Import.Replace.RDFS/N-Triple(File).Text")));
-		replaceRDFSMenu.add(new ReplaceRDFS(this, Translator.getString("Component.File.Import.Replace.RDFS/N-Triple(URI).Text")));
+		replaceRDFSMenu.add(new ReplaceRDFS(this, ReplaceRDFS.REPLACE_N_TRIPLE_FILE));
+		replaceRDFSMenu.add(new ReplaceRDFS(this, ReplaceRDFS.REPLACE_N_TRIPLE_URI));
 
 		JMenu mergeMenu = new JMenu(Translator.getString("Component.File.Import.Merge.Text"));
-		mergeMenu.add(new MergeRDFs(this, Translator.getString("Component.File.Import.Merge.RDF(S)/XML(File).Text")));
-		mergeMenu.add(new MergeRDFs(this, Translator.getString("Component.File.Import.Merge.RDF(S)/XML(URI).Text")));
+		mergeMenu.add(new MergeRDFs(this, MergeRDFs.MERGE_RDFS_FILE));
+		mergeMenu.add(new MergeRDFs(this, MergeRDFs.MERGE_RDFS_URI));
 		mergeMenu.addSeparator();
-		mergeMenu.add(new MergeRDFs(this, Translator.getString("Component.File.Import.Merge.RDF(S)/N-Triple(File).Text")));
-		mergeMenu.add(new MergeRDFs(this, Translator.getString("Component.File.Import.Merge.RDF(S)/N-Triple(URI).Text")));
+		mergeMenu.add(new MergeRDFs(this, MergeRDFs.MERGE_N_TRIPLE_FILE));
+		mergeMenu.add(new MergeRDFs(this, MergeRDFs.MERGE_N_TRIPLE_URI));
 		importMenu.add(mergeMenu);
 
 		importMenu.add(new ImportJavaObject(this));
@@ -361,19 +348,19 @@ public class MR3 extends JFrame {
 
 		JMenu rdfMenu = new JMenu(Translator.getString("Component.File.Export.RDF/XML.Text"));
 		exportMenu.add(rdfMenu);
-		rdfMenu.add(new ExportRDF(this, Translator.getString("Component.File.Export.RDF/XML.RDF.Text")));
-		rdfMenu.add(new ExportRDFS(this, Translator.getString("Component.File.Export.RDF/XML.RDFS.Text")));
+		rdfMenu.add(new ExportRDF(this, ExportRDF.RDF_XML));
+		rdfMenu.add(new ExportRDFS(this, ExportRDFS.RDFS_XML));
 		rdfMenu.addSeparator();
-		rdfMenu.add(new ExportRDF(this, Translator.getString("Component.File.Export.RDF/XML.SelectedRDF.Text")));
-		rdfMenu.add(new ExportRDFS(this, Translator.getString("Component.File.Export.RDF/XML.SelectedRDFS.Text")));
+		rdfMenu.add(new ExportRDF(this, ExportRDF.SelectedRDF_XML));
+		rdfMenu.add(new ExportRDFS(this, ExportRDFS.SelectedRDFS_XML));
 
 		JMenu nTripleMenu = new JMenu("N-Triple");
 		exportMenu.add(nTripleMenu);
-		nTripleMenu.add(new ExportRDF(this, Translator.getString("Component.File.Export.N-Triple.RDF.Text")));
-		nTripleMenu.add(new ExportRDFS(this, Translator.getString("Component.File.Export.N-Triple.RDFS.Text")));
+		nTripleMenu.add(new ExportRDF(this, ExportRDF.RDF_NTriple));
+		nTripleMenu.add(new ExportRDFS(this, ExportRDFS.RDFS_NTriple));
 		nTripleMenu.addSeparator();
-		nTripleMenu.add(new ExportRDF(this, Translator.getString("Component.File.Export.N-Triple.SelectedRDF.Text")));
-		nTripleMenu.add(new ExportRDFS(this, Translator.getString("Component.File.Export.N-Triple.SelectedRDFS.Text")));
+		nTripleMenu.add(new ExportRDF(this, ExportRDF.SelectedRDF_NTriple));
+		nTripleMenu.add(new ExportRDFS(this, ExportRDFS.SelectedRDFS_NTriple));
 
 		JMenu imgMenu = new JMenu("Image");
 		exportMenu.add(imgMenu);
@@ -384,7 +371,7 @@ public class MR3 extends JFrame {
 		exportMenu.add(new ExportJavaObject(this));
 
 		menu.addSeparator();
-		menu.add(getPluginMenus()); 
+		menu.add(getPluginMenus());
 		menu.addSeparator();
 		menu.add(new ExitAction(this));
 
@@ -460,16 +447,6 @@ public class MR3 extends JFrame {
 	private static RDFsFileFilter rdfsFileFilter = new RDFsFileFilter();
 	private static NTripleFileFilter n3FileFilter = new NTripleFileFilter();
 
-	// encodingの指定ができない．
-	//	private Model loadModel(String ext, String lang) {
-	//		File file = getFile(true, ext);
-	//		if (file == null) {
-	//			return null;
-	//		}
-	//		Model model = ModelLoader.loadModel(file.getAbsolutePath(), lang);	
-	//		return model;
-	//	}
-
 	private JMenu getViewMenu() {
 		JMenu menu = new JMenu(Translator.getString("Component.View.Text"));
 		ChangeCellViewAction changeCellViewAction = new ChangeCellViewAction();
@@ -502,9 +479,9 @@ public class MR3 extends JFrame {
 		menu.add(isGroup);
 		JMenu lookAndFeel = new JMenu(Translator.getString("Component.View.LookAndFeel.Text"));
 		menu.add(lookAndFeel);
-		lookAndFeel.add(new ChangeLookAndFeelAction(this, Translator.getString("Component.View.LookAndFeel.Metal.Text")));
-		lookAndFeel.add(new ChangeLookAndFeelAction(this, Translator.getString("Component.View.LookAndFeel.Windows.Text")));
-		lookAndFeel.add(new ChangeLookAndFeelAction(this, Translator.getString("Component.View.LookAndFeel.Motif.Text")));
+		lookAndFeel.add(new ChangeLookAndFeelAction(this, ChangeLookAndFeelAction.METAL));
+		lookAndFeel.add(new ChangeLookAndFeelAction(this, ChangeLookAndFeelAction.WINDOWS));
+		lookAndFeel.add(new ChangeLookAndFeelAction(this, ChangeLookAndFeelAction.MOTIF));
 
 		return menu;
 	}
@@ -704,13 +681,12 @@ public class MR3 extends JFrame {
 
 	public static void main(String[] arg) {
 		Translator.loadResourceBundle("en");
-		ImageIcon icon = Utilities.getImageIcon(Translator.getString("Logo"));
-		JWindow splashWindow = new HelpWindow(null, icon);
+		System.setProperty("swing.plaf.metal.controlFont", Translator.getString("ControlFont"));
+		JWindow splashWindow = new HelpWindow(null, MR3Constants.LOGO);
 		try {
 			new MR3();
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.err.println(e.getMessage());
 		} finally {
 			splashWindow.dispose();
 		}

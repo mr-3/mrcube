@@ -21,14 +21,14 @@ import com.hp.hpl.jena.rdf.model.*;
  */
 public class MergeRDFs extends AbstractActionFile {
 
+	public static final String MERGE_RDFS_FILE = Translator.getString("Component.File.Import.Merge.RDF(S)/XML(File).Text");
+	public static final String MERGE_RDFS_URI = Translator.getString("Component.File.Import.Merge.RDF(S)/XML(URI).Text");
+	public static final String MERGE_N_TRIPLE_FILE = Translator.getString("Component.File.Import.Merge.RDF(S)/N-Triple(File).Text");
+	public static final String MERGE_N_TRIPLE_URI = Translator.getString("Component.File.Import.Merge.RDF(S)/N-Triple(URI).Text");
+
 	public MergeRDFs(MR3 mr3, String title) {
 		super(mr3, title);
 	}
-
-	private static final String MERGE_RDFS_FILE = Translator.getString("Component.File.Import.Merge.RDF(S)/XML(File).Text");
-	private static final String MERGE_RDFS_URI = Translator.getString("Component.File.Import.Merge.RDF(S)/XML(URI).Text");
-	private static final String MERGE_N_TRIPLE_FILE = Translator.getString("Component.File.Import.Merge.RDF(S)/N-Triple(File).Text");
-	private static final String MERGE_N_TRIPLE_URI = Translator.getString("Component.File.Import.Merge.RDF(S)/N-Triple(URI).Text");
 
 	public void actionPerformed(ActionEvent e) {
 		Component desktop = mr3.getDesktopPane();

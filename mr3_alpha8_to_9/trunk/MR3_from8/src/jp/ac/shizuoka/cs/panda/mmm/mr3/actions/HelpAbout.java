@@ -9,6 +9,7 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
+import jp.ac.shizuoka.cs.panda.mmm.mr3.data.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.ui.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 
@@ -18,9 +19,8 @@ import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
  */
 public class HelpAbout extends MR3AbstractAction {
 
-	Frame supFrame;
+	private Frame supFrame;
 	private static final String TITLE = Translator.getString("Component.Help.About.Text");
-	private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("Logo")); 
 	
 	public HelpAbout(Frame frame) {
 		super(TITLE);
@@ -34,7 +34,7 @@ public class HelpAbout extends MR3AbstractAction {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		new HelpWindow(supFrame, ICON);
+		new HelpWindow(supFrame, MR3Constants.LOGO);
 	}
 
 }

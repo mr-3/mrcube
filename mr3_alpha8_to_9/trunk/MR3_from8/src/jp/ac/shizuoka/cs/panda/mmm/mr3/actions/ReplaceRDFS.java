@@ -20,10 +20,10 @@ import com.hp.hpl.jena.rdf.model.*;
  */
 public class ReplaceRDFS extends AbstractActionFile {
 
-	private static final String REPLACE_RDFS_FILE = Translator.getString("Component.File.Import.Replace.RDFS/XML(File).Text");
-	private static final String REPLACE_RDFS_URI = Translator.getString("Component.File.Import.Replace.RDFS/XML(URI).Text");
-	private static final String REPLACE_N_TRIPLE_FILE = Translator.getString("Component.File.Import.Replace.RDFS/N-Triple(File).Text");
-	private static final String REPLACE_N_TRIPLE_URI = Translator.getString("Component.File.Import.Replace.RDFS/N-Triple(URI).Text");
+	public static final String REPLACE_RDFS_FILE = Translator.getString("Component.File.Import.Replace.RDFS/XML(File).Text");
+	public static final String REPLACE_RDFS_URI = Translator.getString("Component.File.Import.Replace.RDFS/XML(URI).Text");
+	public static final String REPLACE_N_TRIPLE_FILE = Translator.getString("Component.File.Import.Replace.RDFS/N-Triple(File).Text");
+	public static final String REPLACE_N_TRIPLE_URI = Translator.getString("Component.File.Import.Replace.RDFS/N-Triple(URI).Text");
 
 	public ReplaceRDFS(MR3 mr3, String title) {
 		super(mr3, title);
