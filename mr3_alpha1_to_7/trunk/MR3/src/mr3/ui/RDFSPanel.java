@@ -62,7 +62,7 @@ public abstract class RDFSPanel extends JPanel {
 		close = new JButton("Close");
 		close.addActionListener(new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
-				gmanager.setVisiblePropWindow(false);
+				gmanager.setVisibleAttrDialog(false);
 			}
 		});
 		metaTab = new JTabbedPane();	

@@ -28,7 +28,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 	protected RDFCellMaker cellMaker;
 	protected JGraphToRDF graphToRDF;
 	protected RDFToJGraph rdfToGraph;
-	protected AttributeDialog propWindow;
+	protected AttributeDialog attrDialog;
 
 	protected RDFResourceInfoMap resInfoMap = RDFResourceInfoMap.getInstance();
 	protected RDFLiteralInfoMap litInfoMap = RDFLiteralInfoMap.getInstance();
@@ -36,18 +36,18 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 
 	protected Action undo, redo, remove, group, ungroup, tofront, toback, cut, copy, paste;
 
-	protected void initEditor(RDFGraph g, GraphManager manager, AttributeDialog pw) {
+	protected void initEditor(RDFGraph g, GraphManager manager, AttributeDialog attrD) {
 		graph = g;
-		initField(pw, manager);
+		initField(attrD, manager);
 		initListener();
 		initLayout();
 	}
 
-	protected void initField(AttributeDialog pw, GraphManager manager) {
+	protected void initField(AttributeDialog attrD, GraphManager manager) {
 		gmanager = manager;
 		undoManager = new RDFGraphUndoManager();
 		cellMaker = new RDFCellMaker(gmanager);
-		propWindow = pw;
+		attrDialog = attrD;
 		rdfToGraph = new RDFToJGraph(manager);
 		graphToRDF = new JGraphToRDF(manager);
 	}
@@ -281,6 +281,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 			ImageIcon connectIcon = new ImageIcon(connectUrl);
 			mh.connectButton.setIcon(connectIcon);
 			toolbar.add(mh.connectButton);
+
 
 			// Toggle Self Connect Mode
 			URL selfConnectUrl = getImageIcon("arrow.gif");

@@ -110,30 +110,38 @@ public class RDFEditor extends Editor {
 	}
 
 	private void selectResource(GraphCell cell) {
+		// 対応するRDFSクラスを選択
+		RDFResourceInfo info = resInfoMap.getCellInfo(cell);
+		gmanager.jumpClassArea(info.getTypeCell());
+
 		resPanel.displayResInfo(cell);
-		propWindow.setContentPane(resPanel);
+		attrDialog.setContentPane(resPanel);
 	}
 
 	private void selectProperty(GraphCell cell) {
+		// 対応するRDFSプロパティを選択
+		GraphCell propCell = (GraphCell)rdfsInfoMap.getEdgeInfo(cell);
+		gmanager.jumpPropertyArea(propCell);
+
 		propPanel.dspPropertyInfo(cell);
 		Edge edge = (Edge) cell;
 		Object domainType = getDomainType(edge);
 		Object rangeType = getRangeType(edge);
 		propPanel.setPropertyList(gmanager.getPropertyList());
 		propPanel.setValidPropertyList(gmanager.getValidPropertyList(domainType, rangeType));
-		propWindow.setContentPane(propPanel);
+		attrDialog.setContentPane(propPanel);
 	}
 
 	private void selectLiteral(GraphCell cell) {
 		litPanel.dspLiteralInfo(cell);
-		propWindow.setContentPane(litPanel);
+		attrDialog.setContentPane(litPanel);
 	}
 
 	// From GraphSelectionListener Interface
 	public void valueChanged(GraphSelectionEvent e) {
 		setToolStatus();
 		changeAttrPanel();
-		propWindow.validate(); // validateメソッドを呼ばないと再描画がうまくいかない
+		attrDialog.validate(); // validateメソッドを呼ばないと再描画がうまくいかない
 	}
 
 	private void changeAttrPanel() {
@@ -147,7 +155,7 @@ public class RDFEditor extends Editor {
 				selectLiteral(cell);
 			}
 		} else {
-			propWindow.setNullPanel();
+			attrDialog.setNullPanel();
 		}
 	}
 }

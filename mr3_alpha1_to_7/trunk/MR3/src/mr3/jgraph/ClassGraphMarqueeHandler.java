@@ -50,6 +50,22 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 		}
 	}
 
+	public void insertSubClass(Point pt, Object[] supCells) {
+		String uri = JOptionPane.showInputDialog("Please input URI");
+		if (uri == null || gmanager.isEmptyURI(uri) || gmanager.isDuplicatedWithDialog(uri, null, GraphType.CLASS)) {
+			return;
+		} else {
+			pt.y += 100;
+			cellMaker.insertClass(pt, uri);
+			DefaultGraphCell cell = (DefaultGraphCell) graph.getSelectionCell();
+			Port sourcePort = (Port)cell.getChildAt(0);
+			connectSubToSups(sourcePort, supCells);
+			if (graph.isOneCellSelected(cell)) {
+				classPanel.displayRDFSInfo(cell);
+			}
+		}
+	}
+
 	//
 	// PopupMenu
 	//
@@ -62,16 +78,19 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 			}
 		});
 
-		menu.addSeparator();
-
-		menu.add(new AbstractAction("Connect mode") {
-			public void actionPerformed(ActionEvent e) {
-				connectAction();
-			}
-		});
-
-		// Remove
 		if (!graph.isSelectionEmpty()) {
+			// Insert Sub Class
+			menu.add(new AbstractAction("Insert Sub Class") {
+				public void actionPerformed(ActionEvent e) {
+					if (!graph.isSelectionEmpty()) {
+						Object[] supCells = graph.getSelectionCells();
+						supCells = graph.getDescendants(supCells);
+						insertSubClass(pt, supCells);
+					}
+				}
+			});
+
+			//			Remove	
 			menu.add(new AbstractAction("Remove") {
 				public void actionPerformed(ActionEvent e) {
 					if (!graph.isSelectionEmpty()) {
@@ -82,6 +101,22 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 				}
 			});
 		}
+
+		menu.addSeparator();
+
+		menu.add(new AbstractAction("Connect mode") {
+			public void actionPerformed(ActionEvent e) {
+				connectAction();
+			}
+		});
+
+		menu.addSeparator();
+		menu.add(new AbstractAction("Attribute Dialog") {
+			public void actionPerformed(ActionEvent e) {
+				gmanager.setVisibleAttrDialog(true);
+			}
+		});
+
 		return menu;
 	}
 }

@@ -11,7 +11,7 @@ public class RDFSInfoMap {
 
 	private Map resourceInfoMap; // Resourceとメタ情報の関連づけ
 	private Map cellInfoMap; // CELLとメタ情報の関連づけ
-	private Map edgeInfoMap; // EdgeとPropertyのセルとの関連づけ
+	private Map edgeInfoMap; // Edge(RDFプロパティのセル)とRDFSプロパティのセルとの関連づけ
 	private Map classCellMap; // uriとClassの関連づけ 
 	private Map propertyCellMap; // uriとPropertyの関連づけ
 	private Set rootProperties; // subPropertyOf Propertyのセット

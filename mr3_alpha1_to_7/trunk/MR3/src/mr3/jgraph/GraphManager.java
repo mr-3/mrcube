@@ -30,7 +30,7 @@ public class GraphManager {
 	private RDFLiteralInfoMap litInfoMap = RDFLiteralInfoMap.getInstance();
 	private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
 
-	private AttributeDialog propWindow;
+	private AttributeDialog attrDialog;
 	private ReferenceListDialog refDialog;
 	private Set prefixNSInfoSet;
 	private CellViewType cellViewType;
@@ -39,15 +39,15 @@ public class GraphManager {
 	private boolean isAntialias;
 	private String baseURI;
 
-	public GraphManager(AttributeDialog pw) {
-		rdfGraph = new RDFGraph(this, pw, GraphType.RDF);
-		realRDFGraph = new RDFGraph(this, pw, GraphType.REAL_RDF);
-		classGraph = new RDFGraph(this, pw, GraphType.CLASS);
-		propGraph = new RDFGraph(this, pw, GraphType.PROPERTY);
+	public GraphManager(AttributeDialog attrD) {
+		rdfGraph = new RDFGraph(this, attrD, GraphType.RDF);
+		realRDFGraph = new RDFGraph(this, attrD, GraphType.REAL_RDF);
+		classGraph = new RDFGraph(this, attrD, GraphType.CLASS);
+		propGraph = new RDFGraph(this, attrD, GraphType.PROPERTY);
 		registerComponent();
 		cellMaker = new RDFCellMaker(this);
 
-		propWindow = pw;
+		attrDialog = attrD;
 		refDialog = new ReferenceListDialog("Referenced Resource List", this);
 		abstractLevelInfo = new AbstractLevelInfo();
 		prefixNSInfoSet = new HashSet();
@@ -775,8 +775,8 @@ public class GraphManager {
 		}
 	}
 
-	public void setVisiblePropWindow(boolean t) {
-		propWindow.setVisible(t);
+	public void setVisibleAttrDialog(boolean t) {
+		attrDialog.setVisible(t);
 	}
 
 	private boolean isGraphEmpty() {
@@ -970,7 +970,7 @@ public class GraphManager {
 		public void setSelectAbstractLevelMode(boolean t) {
 			isSelectAbstractLevelMode = t;
 			if (t) {
-				propWindow.setVisible(false);
+				attrDialog.setVisible(false);
 			} else {
 				clearAbstractLevelSet();
 			}
