@@ -683,7 +683,7 @@ public class GraphManager {
 		return instanceSet;
 	}
 
-	public Set getSearchRDFResult(String key) {
+	public Set getFindRDFResult(String key) {
 		Set result = new HashSet();
 		Object[] cells = rdfGraph.getAllCells();
 		for (int i = 0; i < cells.length; i++) {
@@ -703,7 +703,7 @@ public class GraphManager {
 		return result;
 	}
 
-	public Set getSearchRDFSResult(String key, RDFGraph graph) {
+	public Set getFindRDFSResult(String key, RDFGraph graph) {
 		Set result = new HashSet();
 		Object[] cells = graph.getAllCells();
 
@@ -718,12 +718,12 @@ public class GraphManager {
 		return result;
 	}
 
-	public Set getSearchClassResult(String key) {
-		return getSearchRDFSResult(key, classGraph);
+	public Set getFindClassResult(String key) {
+		return getFindRDFSResult(key, classGraph);
 	}
 
-	public Set getSearchPropertyResult(String key) {
-		return getSearchRDFSResult(key, propGraph);
+	public Set getFindPropertyResult(String key) {
+		return getFindRDFSResult(key, propGraph);
 	}
 
 	public void jumpArea(Object cell, JGraph graph) {
