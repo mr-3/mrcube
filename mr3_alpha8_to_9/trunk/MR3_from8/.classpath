@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-    <classpathentry kind="src" path="src"/>
-    <classpathentry kind="src" output="plugins" path="plugins"/>
-    <classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-    <classpathentry kind="lib" path="build/lib/icu4j.jar"/>
-    <classpathentry kind="lib" path="build/lib/jena.jar" sourcepath="E:/usr/Jena-1.6.1/src"/>
-    <classpathentry kind="lib" path="plugins/nekohtml.jar"/>
-    <classpathentry kind="lib" path="build/lib/xercesImpl.jar"/>
-    <classpathentry kind="lib" path="build/lib/xmlParserAPIs.jar"/>
-    <classpathentry kind="lib" path="build/lib/log4j-1.2.7.jar"/>
-    <classpathentry kind="lib" path="build/lib/antlr.debug.jar"/>
-    <classpathentry kind="lib" path="build/lib/concurrent.jar"/>
-    <classpathentry kind="lib" path="build/lib/jakarta-oro-2.0.5.jar"/>
-    <classpathentry kind="lib" path="build/lib/jgraph.jar"/>
-    <classpathentry kind="lib" path="build/lib/antlr.jar"/>
-    <classpathentry kind="lib" path="build/lib/jh.jar"/>
-    <classpathentry kind="lib" path="build/lib/junit.jar"/>
-    <classpathentry kind="lib" path="build/lib/rdf-api-2001-01-19.jar"/>
-    <classpathentry kind="output" path="build/classes"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry output="plugins" kind="src" path="plugins"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="build/lib/icu4j.jar"/>
+	<classpathentry sourcepath="E:/usr/Jena-1.6.1/src" kind="lib" path="build/lib/jena.jar"/>
+	<classpathentry kind="lib" path="plugins/nekohtml.jar"/>
+	<classpathentry kind="lib" path="build/lib/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="build/lib/xmlParserAPIs.jar"/>
+	<classpathentry kind="lib" path="build/lib/log4j-1.2.7.jar"/>
+	<classpathentry kind="lib" path="build/lib/antlr.debug.jar"/>
+	<classpathentry kind="lib" path="build/lib/concurrent.jar"/>
+	<classpathentry kind="lib" path="build/lib/jakarta-oro-2.0.5.jar"/>
+	<classpathentry kind="lib" path="build/lib/jgraph.jar"/>
+	<classpathentry kind="lib" path="build/lib/antlr.jar"/>
+	<classpathentry kind="lib" path="build/lib/jh.jar"/>
+	<classpathentry kind="lib" path="build/lib/junit.jar"/>
+	<classpathentry kind="lib" path="build/lib/rdf-api-2001-01-19.jar"/>
+	<classpathentry kind="lib" path="build/lib/jgraph-layout.jar"/>
+	<classpathentry kind="output" path="build/classes"/>
 </classpath>

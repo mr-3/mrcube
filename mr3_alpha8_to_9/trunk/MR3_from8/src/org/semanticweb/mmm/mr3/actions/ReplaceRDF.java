@@ -51,7 +51,7 @@ public class ReplaceRDF extends AbstractActionFile {
 			return;
 		}
 		mr3.replaceRDFModel(model);
-		gmanager.applyTreeLayout();
+		mr3.performTreeLayout();
 		gmanager.setIsImporting(false);
 	}
 
