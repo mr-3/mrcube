@@ -11,7 +11,7 @@ public class PluginLoader {
 
 	private static ClassLoader _classLoader;
 	private static Collection _manifests = new ArrayList();
-	private static Map _pluginMenuMap = new HashMap();
+	private static SortedMap _pluginMenuMap = new TreeMap();
 	private static FilenameFilter _jarFilter = new FilenameFilter() {
 		public boolean accept(File dir, String name) {
 			return name.endsWith(".jar");
