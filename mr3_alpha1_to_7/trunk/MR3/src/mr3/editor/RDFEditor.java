@@ -120,7 +120,7 @@ public class RDFEditor extends Editor {
 
 	private void selectProperty(GraphCell cell) {
 		// 対応するRDFSプロパティを選択
-		GraphCell propCell = (GraphCell)rdfsInfoMap.getEdgeInfo(cell);
+		GraphCell propCell = (GraphCell) rdfsInfoMap.getEdgeInfo(cell);
 		gmanager.jumpPropertyArea(propCell);
 
 		propPanel.dspPropertyInfo(cell);
@@ -140,6 +140,7 @@ public class RDFEditor extends Editor {
 	// From GraphSelectionListener Interface
 	public void valueChanged(GraphSelectionEvent e) {
 		setToolStatus();
+		changeSelectionCellColor();
 		changeAttrPanel();
 		attrDialog.validate(); // validateメソッドを呼ばないと再描画がうまくいかない
 	}

@@ -301,6 +301,8 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 			GraphCell resTypeCell = getResourceType();
 			if (resTypeCell != null) {
 				setResourceType(resTypeCell);
+				gmanager.jumpClassArea(resTypeCell); // 対応するクラスを選択する
+				gmanager.jumpRDFArea(cell);				// AttributeDialogの表示をRDFリソースに戻す
 			}
 		} else {
 			setResourceType(null);
@@ -309,7 +311,7 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 	}
 
 	private void selectResourceType() {
-		SelectTypeDialog classDialog = new SelectTypeDialog();
+		SelectResourceTypeDialog classDialog = new SelectResourceTypeDialog();
 		classDialog.replaceGraph(gmanager.getClassGraph());
 		classDialog.setInitCell(resInfo.getTypeCell());
 		classDialog.setVisible(true);
