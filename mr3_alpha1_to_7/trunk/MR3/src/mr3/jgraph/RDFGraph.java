@@ -28,11 +28,11 @@ public class RDFGraph extends JGraph {
 
 	private GraphCopyBuffer copyBuffer;
 
-	public RDFGraph(GraphManager manager, AttributeDialog attrD, GraphType type) {
+	public RDFGraph(GraphManager manager, GraphType type) {
 		super(new RDFGraphModel());
 		initStatus();
 		gmanager = manager;
-		attrDialog = attrD;
+		attrDialog = gmanager.getAttrDialog();
 		this.type = type;
 	}
 

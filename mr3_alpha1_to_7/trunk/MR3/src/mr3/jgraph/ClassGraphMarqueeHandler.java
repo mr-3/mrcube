@@ -138,6 +138,7 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 		menu.add(new AbstractAction("Attribute Dialog") {
 			public void actionPerformed(ActionEvent e) {
 				gmanager.setVisibleAttrDialog(true);
+				graph.setSelectionCell(graph.getSelectionCell());
 			}
 		});
 
