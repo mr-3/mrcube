@@ -124,7 +124,6 @@ public class RDFSModelExtraction {
 			} else {
 				info.addStatement(stmt); // RDFS以外のプロパティを持つ文を保存				
 			}
-//			orgModel.remove(stmt);
 				removeModel.add(stmt);
 		}
 

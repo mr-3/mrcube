@@ -37,6 +37,8 @@ public class VGJTreeLayout {
 	}
 
 	public void performVGJRDFSTreeLayout() {
+		GraphLayoutUtilities.reverseArc(cellMaker, classGraph);
+		GraphLayoutUtilities.reverseArc(cellMaker, propGraph);
 		performVGJTreeLayout(classGraph, 'u');
 		performVGJTreeLayout(propGraph, 'u');
 		GraphLayoutUtilities.reverseArc(cellMaker, classGraph);
