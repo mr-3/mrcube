@@ -78,10 +78,10 @@ public class InsertRDFResDialog extends JDialog implements ActionListener, ItemL
 		c.weighty = 5;
 		c.anchor = GridBagConstraints.PAGE_START;
 		c.gridwidth = GridBagConstraints.REMAINDER;
-		gridbag.setConstraints(uriTypeGroupPanel, c);
-		panel.add(uriTypeGroupPanel);
 		gridbag.setConstraints(resTypeBox, c);
 		panel.add(resTypeBox);
+		gridbag.setConstraints(uriTypeGroupPanel, c);
+		panel.add(uriTypeGroupPanel);
 		gridbag.setConstraints(uriField, c);
 		panel.add(uriField);
 		gridbag.setConstraints(buttonPanel, c);
@@ -89,7 +89,7 @@ public class InsertRDFResDialog extends JDialog implements ActionListener, ItemL
 		contentPane.add(panel);
 
 		setLocation(300, 300);
-		setSize(new Dimension(400, 220));
+		setSize(new Dimension(400, 230));
 		setResizable(false);
 		setVisible(true);
 	}

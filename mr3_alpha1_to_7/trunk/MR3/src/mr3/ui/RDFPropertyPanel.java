@@ -23,9 +23,16 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 	private JButton jumpRDFSProp;
 	private GraphCell edge;
 
+	private URIType uriType;
+	private JRadioButton uriButton;
+	private JRadioButton idButton;
+
 	private JList nameSpaceList;
 	private JList localNameList;
-	private Map propMap;
+	private Map uriPropMap;
+	private Map idPropMap;
+	private Set uriPropNameSpaces;
+	private Set idPropNameSpaces;
 	private IconCellRenderer renderer;
 	private static Object[] NULL = new Object[0];
 
@@ -42,6 +49,8 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		gmanager = manager;
 		attrDialog = pw;
 		setBorder(BorderFactory.createTitledBorder("Property"));
+
+		JPanel uriTypeGroupPanel = getURITypeGroupPanel();
 
 		uriField = new JTextField();
 		uriField.setPreferredSize(new Dimension(listWidth, listHeight));
@@ -63,20 +72,58 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		GridBagLayout gridbag = new GridBagLayout();
 		GridBagConstraints c = new GridBagConstraints();
 		setLayout(gridbag);
-		c.anchor = GridBagConstraints.PAGE_START;
-		c.gridwidth = GridBagConstraints.REMAINDER;
-		gridbag.setConstraints(uriField, c);
-		add(uriField);
-		c.anchor = GridBagConstraints.EAST;
+		c.weighty = 5;
+		c.anchor = GridBagConstraints.WEST;
+		c.gridwidth = GridBagConstraints.RELATIVE;
+		gridbag.setConstraints(uriTypeGroupPanel, c);
+		add(uriTypeGroupPanel);
 		c.gridwidth = GridBagConstraints.REMAINDER;
 		gridbag.setConstraints(jumpRDFSProp, c);
 		add(jumpRDFSProp);
-		Component selectPropertyPanel = createSelectPropertyPanel();
 		c.anchor = GridBagConstraints.CENTER;
+		gridbag.setConstraints(uriField, c);
+		add(uriField);
+		Component selectPropertyPanel = createSelectPropertyPanel();
 		gridbag.setConstraints(selectPropertyPanel, c);
 		add(selectPropertyPanel);
 		gridbag.setConstraints(buttonGroup, c);
 		add(buttonGroup);
+	}
+
+	private JPanel getURITypeGroupPanel() {
+		uriButton = new JRadioButton("URI");
+		idButton = new JRadioButton("ID");
+		RadioAction ra = new RadioAction();
+		uriButton.addActionListener(ra);
+		idButton.addActionListener(ra);
+		idButton.setSelected(true);
+		uriType = URIType.ID;
+		ButtonGroup group = new ButtonGroup();
+		group.add(uriButton);
+		group.add(idButton);
+		JPanel uriTypeGroupPanel = new JPanel();
+		uriTypeGroupPanel.setBorder(BorderFactory.createTitledBorder("URI Type"));
+		uriTypeGroupPanel.setPreferredSize(new Dimension(150, 55));
+		uriTypeGroupPanel.add(uriButton);
+		uriTypeGroupPanel.add(idButton);
+		return uriTypeGroupPanel;
+	}
+
+	class RadioAction implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			String type = (String) e.getActionCommand();
+			uriType = URIType.getURIType(type);
+
+			if (uriType == URIType.ID) {
+				if (uriField.getText().length() == 0 || uriField.getText().charAt(0) != '#') {
+					setURIField('#' + uriField.getText());
+				}
+				nameSpaceList.setListData(idPropNameSpaces.toArray());
+			} else if (uriType == URIType.URI) {
+				nameSpaceList.setListData(uriPropNameSpaces.toArray());
+			}
+			localNameList.setListData(NULL);
+		}
 	}
 
 	private Component createSelectPropertyPanel() {
@@ -84,13 +131,13 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		nameSpaceList.addListSelectionListener(this);
 		JScrollPane nameSpaceListScroll = new JScrollPane(nameSpaceList);
 		nameSpaceListScroll.setBorder(BorderFactory.createTitledBorder("NameSpace"));
-		nameSpaceListScroll.setPreferredSize(new Dimension(350, 110));
+		nameSpaceListScroll.setPreferredSize(new Dimension(350, 100));
 
 		localNameList = new JList();
 		localNameList.addListSelectionListener(this);
 		JScrollPane localNameListScroll = new JScrollPane(localNameList);
 		localNameListScroll.setBorder(BorderFactory.createTitledBorder("LocalName"));
-		localNameListScroll.setPreferredSize(new Dimension(350, 110));
+		localNameListScroll.setPreferredSize(new Dimension(350, 100));
 
 		JPanel panel = new JPanel();
 		panel.setBorder(BorderFactory.createTitledBorder("Select Property"));
@@ -114,11 +161,18 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 	private static final String NULL_LOCAL_NAME = "(Null)";
 
 	private void selectNameSpaceList() {
+		Map tmpPropMap = null;
 		if (!localNameList.isSelectionEmpty()) {
 			localNameList.clearSelection();
 		}
+
+		if (uriButton.isSelected()) {
+			tmpPropMap = uriPropMap;
+		} else {
+			tmpPropMap = idPropMap;
+		}
 		String nameSpace = (String) nameSpaceList.getSelectedValue();
-		Set localNames = (Set) propMap.get(nameSpace);
+		Set localNames = (Set) tmpPropMap.get(nameSpace);
 		if (nameSpace != null) {
 			Set modifyLocalNames = new HashSet();
 			for (Iterator i = localNames.iterator(); i.hasNext();) {
@@ -132,9 +186,17 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 			setRenderer(nameSpace, modifyLocalNames);
 			localNameList.setListData(modifyLocalNames.toArray());
 
-			uriField.setText(nameSpace);
-			uriField.setToolTipText(nameSpace);
+			if (uriButton.isSelected()) {
+				setURIField(nameSpace);
+			} else {
+				setURIField("#");
+			}
 		}
+	}
+
+	private void setURIField(String str) {
+		uriField.setText(str);
+		uriField.setToolTipText(str);
 	}
 
 	private void selectLocalNameList() {
@@ -144,14 +206,11 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 			if (ln.equals(NULL_LOCAL_NAME)) {
 				ln = "";
 			}
-			uriField.setText(ns + ln);
-			uriField.setToolTipText(ns + ln);
-
-			//		jumpした際に，リストを再構築してしまい，もともと選んでいたのがわからなくなってしまう．			
-			//			Resource uri = new ResourceImpl(uriField.getText());
-			//			Object propCell = (GraphCell) gmanager.getPropertyCell(uri, false);
-			//			gmanager.jumpPropertyArea(propCell); // 対応するRDFSプロパティを選択する
-			//			gmanager.jumpRDFArea(edge); // AttributeDialogの表示をRDFプロパティに戻す
+			if (uriButton.isSelected()) {
+				setURIField(ns+ln);
+			} else {
+				setURIField('#'+ln);
+			}
 		}
 	}
 
@@ -190,9 +249,15 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		if (propertyCell == null) {
 			String defaultProperty = MR3Resource.Nil.getURI();
 			setValue(defaultProperty);
+			uriButton.setSelected(true);
 			changeProperty();
 		} else {
 			RDFSInfo info = rdfsInfoMap.getCellInfo(propertyCell);
+			if (info.getURIType() == URIType.URI) {
+				uriButton.setSelected(true);
+			} else {
+				idButton.setSelected(true);
+			}
 			setValue(info.getURI().toString());
 		}
 	}
@@ -204,35 +269,44 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 	public void setPropertyList(List plist, List vlist) {
 		propList = plist;
 		validPropList = vlist;
-		Map pMap = new HashMap();
-		Set propNameSpaces = new HashSet();
+		Map tmpPropMap = null;
+		uriPropMap = new HashMap();
+		idPropMap = new HashMap();
+		Set tmpNameSpaces = null;
+		uriPropNameSpaces = new HashSet();
+		idPropNameSpaces = new HashSet();
 
 		for (Iterator i = propList.iterator(); i.hasNext();) {
 			RDFSInfo info = rdfsInfoMap.getCellInfo(i.next());
 			Resource uri = info.getURI();
-			propNameSpaces.add(uri.getNameSpace());
-
-			Set localNames = (Set) pMap.get(uri.getNameSpace());
+			if (info.getURIType() == URIType.URI) {
+				tmpPropMap = uriPropMap;
+				tmpNameSpaces = uriPropNameSpaces;
+			} else {
+				tmpPropMap = idPropMap;
+				tmpNameSpaces = idPropNameSpaces;
+				uri = new ResourceImpl(gmanager.getBaseURI() + info.getURIStr());
+			}
+			tmpNameSpaces.add(uri.getNameSpace());
+			Set localNames = (Set) tmpPropMap.get(uri.getNameSpace());
 			if (localNames == null) {
 				localNames = new HashSet();
-				pMap.put(uri.getNameSpace(), localNames);
+				tmpPropMap.put(uri.getNameSpace(), localNames);
 			}
 			localNames.add(uri.getLocalName());
 		}
 
-		for (Iterator i = propNameSpaces.iterator(); i.hasNext();) {
-			String nameSpace = (String) i.next();
-			Set localNames = (Set) pMap.get(nameSpace);
+		if (uriButton.isSelected()) {
+			nameSpaceList.setListData(uriPropNameSpaces.toArray());
+		} else {
+			nameSpaceList.setListData(idPropNameSpaces.toArray());
 		}
-
-		nameSpaceList.setListData(propNameSpaces.toArray());
 		localNameList.setListData(NULL);
-		propMap = pMap;
 	}
 
 	public void setValue(String s) {
 		if (s != null) {
-			uriField.setText(s);
+			setURIField(s);
 		}
 	}
 
@@ -244,24 +318,24 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 			return;
 		}
 		if (rdfsInfoMap.isPropertyCell(uri)) {
-			propertyCell = (GraphCell) gmanager.getPropertyCell(uri, false);
+			propertyCell = (GraphCell) gmanager.getPropertyCell(uri, uriType, false);
 		} else {
 			if (gmanager.isDuplicatedWithDialog(uri.getURI(), null, GraphType.PROPERTY)) {
 				return;
 			}
 			if (uri.equals(MR3Resource.Nil)) {
-				propertyCell = (GraphCell) gmanager.getPropertyCell(uri, false);
-				//			JOptionPane.showMessageDialog(null, "Create Default Property.", "Warning", JOptionPane.ERROR_MESSAGE);
+				propertyCell = (GraphCell) gmanager.getPropertyCell(uri, URIType.URI, false);
 			} else {
 				SelectRDFSCheckDialog dialog = new SelectRDFSCheckDialog("Choose One Select");
 				CreateRDFSType createType = (CreateRDFSType) dialog.getValue();
 				if (createType == CreateRDFSType.CREATE) {
-					propertyCell = (GraphCell) gmanager.getPropertyCell(uri, false);
+					propertyCell = (GraphCell) gmanager.getPropertyCell(uri, uriType, false);
 				} else if (createType == CreateRDFSType.RENAME) {
 					propertyCell = (GraphCell) rdfsInfoMap.getEdgeInfo(edge);
 					RDFSInfo rdfsInfo = rdfsInfoMap.getCellInfo(propertyCell);
 					rdfsInfoMap.removeURICellMap(rdfsInfo);
 					rdfsInfo.setURI(uri.getURI());
+					rdfsInfo.setURIType(uriType);
 					rdfsInfoMap.putURICellMap(rdfsInfo, propertyCell);
 				} else {
 					return;
