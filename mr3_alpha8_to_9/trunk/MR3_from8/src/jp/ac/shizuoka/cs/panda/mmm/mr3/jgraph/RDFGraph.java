@@ -810,9 +810,9 @@ public class RDFGraph extends JGraph {
 
 	public ActionMap createActionMap() {
 		ActionMap map = new ActionMapUIResource();
-		map.put(TransferHandler.getCutAction().getValue(Action.NAME), new CutAction(this, "cut"));
-		map.put(TransferHandler.getCopyAction().getValue(Action.NAME), new CopyAction(this, "copy"));
-		map.put(TransferHandler.getPasteAction().getValue(Action.NAME), new PasteAction(this, "paste"));
+		map.put(TransferHandler.getCutAction().getValue(Action.NAME), new CutAction(this));
+		map.put(TransferHandler.getCopyAction().getValue(Action.NAME), new CopyAction(this));
+		map.put(TransferHandler.getPasteAction().getValue(Action.NAME), new PasteAction(this));
 		map.put("selectAll", new SelectNodes(this, "selectAll"));
 
 		return map;

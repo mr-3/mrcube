@@ -295,7 +295,6 @@ public abstract class AbstractActionFile extends MR3AbstractAction {
 			srcFrame.toFront();
 			srcFrame.setVisible(true);
 			srcFrame.setIcon(false);
-			mr3.getShowSrcWindowBox().setState(true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -21,15 +21,16 @@ import com.hp.hpl.jena.rdf.model.*;
  */
 public class OpenProject extends AbstractActionFile {
 
-	private static final String OPEN_PROJECT = "Open Project";
+	private static final String TITLE = "Open Project";
+	private static final ImageIcon ICON = Utilities.getImageIcon("open.gif");
 
 	public OpenProject(MR3 mr3) {
-		super(mr3, OPEN_PROJECT, Utilities.getImageIcon("open.gif"));
+		super(mr3, TITLE, ICON);
 		setValues();
 	}
 
 	private void setValues() {
-		putValue(SHORT_DESCRIPTION, "Open Project");
+		putValue(SHORT_DESCRIPTION, TITLE);
 		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_MASK));
 	}
 

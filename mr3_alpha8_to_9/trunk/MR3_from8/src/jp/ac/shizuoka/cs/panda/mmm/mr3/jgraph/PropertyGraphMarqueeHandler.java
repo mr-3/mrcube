@@ -42,7 +42,7 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 	}
 
 	public GraphCell insertResourceCell(Point pt) {
-		InsertRDFSResDialog ird = new InsertRDFSResDialog("Input Resource", gmanager);
+		InsertRDFSResDialog ird = new InsertRDFSResDialog("Input Property", gmanager);
 		if (!ird.isConfirm()) {
 			return null;
 		}
@@ -55,7 +55,7 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 	}
 
 	public void insertSubProperty(Point pt, Object[] supCells) {
-		InsertRDFSResDialog ird = new InsertRDFSResDialog("Input Resource", gmanager);
+		InsertRDFSResDialog ird = new InsertRDFSResDialog("Input Sub Property", gmanager);
 		if (!ird.isConfirm()) {
 			return;
 		}
@@ -105,7 +105,7 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 		menu.add(new ConnectAction("Connect Mode"));
 		addTransformMenu(menu, cell);
 		addEditMenu(menu, cell);
-		menu.add(new ShowAttrDialog(graph, gmanager, "Attribute Dialog"));
+		menu.add(new ShowAttrDialog());
 
 		return menu;
 	}

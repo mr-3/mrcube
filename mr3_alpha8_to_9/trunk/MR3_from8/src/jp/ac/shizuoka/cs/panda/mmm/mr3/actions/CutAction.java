@@ -15,11 +15,14 @@ import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
  * @author takeshi morita
  */
 public class CutAction extends AbstractAction {
-	RDFGraph graph;
+	private RDFGraph graph;
+	private static final String TITLE = "Cut";
+	private static final ImageIcon ICON = Utilities.getImageIcon("cut.gif");
 
-	public CutAction(RDFGraph g, String title) {
-		super(title, Utilities.getImageIcon("cut.gif"));
+	public CutAction(RDFGraph g) {
+		super(TITLE, ICON);
 		graph = g;
+		putValue(SHORT_DESCRIPTION, TITLE);
 	}
 
 	public void actionPerformed(ActionEvent e) {

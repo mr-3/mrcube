@@ -16,11 +16,15 @@ import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
  */
 
 public class PasteAction extends AbstractAction {
-	RDFGraph graph;
 
-	public PasteAction(RDFGraph g, String title) {
-		super(title, Utilities.getImageIcon("paste.gif"));
+	private RDFGraph graph;
+	private static final String TITLE = "Paste";
+	private static final ImageIcon ICON = Utilities.getImageIcon("paste.gif");
+
+	public PasteAction(RDFGraph g) {
+		super(TITLE, ICON);
 		graph = g;
+		putValue(SHORT_DESCRIPTION, TITLE);
 	}
 
 	public void actionPerformed(ActionEvent e) {

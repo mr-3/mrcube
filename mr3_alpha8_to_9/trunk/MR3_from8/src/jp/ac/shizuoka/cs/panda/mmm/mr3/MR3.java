@@ -65,7 +65,7 @@ public class MR3 extends JFrame {
 	private JCheckBoxMenuItem isGroup;
 
 	private JInternalFrame[] iFrames = new JInternalFrame[3];
-	private SourceFrame srcFrame;
+	private SourceDialog srcDialog;
 	private JCheckBoxMenuItem rdfEditorView;
 	private JCheckBoxMenuItem classEditorView;
 	private JCheckBoxMenuItem propertyEditorView;
@@ -89,6 +89,7 @@ public class MR3 extends JFrame {
 		logger = new MR3LogConsole("Log Console", null);
 		attrDialog = new AttributeDialog();
 		gmanager = new GraphManager(attrDialog, userPrefs);
+		initAction();
 		getContentPane().add(createToolBar(), BorderLayout.NORTH);
 		createDesktop();
 		gmanager.setDesktop(desktop);
@@ -118,7 +119,7 @@ public class MR3 extends JFrame {
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new CloseWindow(this));
-		setIcon();
+		setIconImage(Utilities.getImageIcon("mr3_logo.png").getImage());
 		setTitle("MR^3 - New Project");
 		setJMenuBar(createMenuBar());
 		initPreferences();
@@ -136,52 +137,45 @@ public class MR3 extends JFrame {
 		//		getContentPane().add(splitPane);		
 	}
 
+	private AbstractAction newProjectAction;
+	private AbstractAction openProjectAction;
+	private AbstractAction saveProjectAction;
+	private AbstractAction saveProjectAsAction;
+	private AbstractAction toFrontRDFEditorAction;
+	private AbstractAction toFrontClassEditorAction;
+	private AbstractAction toFrontPropertyEditorAction;
+	private AbstractAction showAttrDialogAction;
+	private AbstractAction showNSTableDialogAction;
+	private AbstractAction showSrcDialogAction;
+
+	private void initAction() {
+		newProjectAction = new NewProject(this);
+		openProjectAction = new OpenProject(this);
+		saveProjectAction = new SaveProject(this, "Save Project", Utilities.getImageIcon("save.gif"));
+		saveProjectAsAction = new SaveProject(this, "Save Project As", Utilities.getImageIcon("saveas.gif"));
+		toFrontRDFEditorAction = new EditorSelect(this, TO_FRONT_RDF_EDITOR, Utilities.getImageIcon("rdfEditorIcon.gif"));
+		toFrontClassEditorAction = new EditorSelect(this, TO_FRONT_CLASS_EDITOR, Utilities.getImageIcon("classEditorIcon.gif"));
+		toFrontPropertyEditorAction = new EditorSelect(this, TO_FRONT_PROPERTY_EDITOR, Utilities.getImageIcon("propertyEditorIcon.gif"));
+		showAttrDialogAction = new ShowAttrDialog(this);
+		showNSTableDialogAction = new ShowNSTableDialog(this);
+		showSrcDialogAction = new ShowSrcDialog(this); 
+	}
+
 	private JToolBar createToolBar() {
 		JToolBar toolbar = new JToolBar();
 		toolbar.setFloatable(false);
-
-		toolbar.add(new NewProject(this));
-		toolbar.add(new OpenProject(this));
-		toolbar.add(new SaveProject(this, "Save Project", Utilities.getImageIcon("save.gif")));
-		toolbar.add(new SaveProject(this, "Save Project As", Utilities.getImageIcon("saveas.gif")));
-
+		toolbar.add(newProjectAction);
+		toolbar.add(openProjectAction);
+		toolbar.add(saveProjectAction);
+		toolbar.add(saveProjectAsAction);
 		toolbar.addSeparator();
-
-		ImageIcon nsTableDialogIcon = Utilities.getImageIcon("nameSpaceTableIcon.gif");
-		toolbar.add(new AbstractAction("", nsTableDialogIcon) {
-			public void actionPerformed(ActionEvent e) {
-				nsTableDialog.setVisible(true);
-			}
-		});
-
-		ImageIcon attrDialogIcon = Utilities.getImageIcon("attrDialogIcon.gif");
-		toolbar.add(new AbstractAction("", attrDialogIcon) {
-			public void actionPerformed(ActionEvent e) {
-				RDFGraph graph = null;
-				Object selectionCell = null;
-				if (iFrames[0].isSelected()) {
-					graph = getRDFGraph();
-					selectionCell = graph.getSelectionCell();
-				} else if (iFrames[1].isSelected()) {
-					graph = getClassGraph();
-					selectionCell = graph.getSelectionCell();
-				} else if (iFrames[2].isSelected()) {
-					graph = getPropertyGraph();
-					selectionCell = graph.getSelectionCell();
-				}
-
-				attrDialog.setVisible(true);
-
-				if (graph != null && selectionCell != null) {
-					graph.setSelectionCell(selectionCell);
-				}
-			}
-		});
-
+		toolbar.add(toFrontRDFEditorAction);
+		toolbar.add(toFrontClassEditorAction);
+		toolbar.add(toFrontPropertyEditorAction);
 		toolbar.addSeparator();
-		toolbar.add(new EditorSelect(this, TO_FRONT_RDF_EDITOR, Utilities.getImageIcon("rdfEditorIcon.gif")));
-		toolbar.add(new EditorSelect(this, TO_FRONT_CLASS_EDITOR, Utilities.getImageIcon("classEditorIcon.gif")));
-		toolbar.add(new EditorSelect(this, TO_FRONT_PROPERTY_EDITOR, Utilities.getImageIcon("propertyEditorIcon.gif")));
+		toolbar.add(showAttrDialogAction);
+		toolbar.add(showNSTableDialogAction);
+		toolbar.add(showSrcDialogAction);
 
 		return toolbar;
 	}
@@ -189,7 +183,7 @@ public class MR3 extends JFrame {
 	private void createDesktop() {
 		desktop = new JDesktopPane();
 		desktop.add(attrDialog, JLayeredPane.MODAL_LAYER);
-		findResDialog = new FindResourceDialog("Find Resource", gmanager);
+		findResDialog = new FindResourceDialog(gmanager);
 		desktop.add(findResDialog, JLayeredPane.MODAL_LAYER);
 		nsTableDialog = new NameSpaceTableDialog(gmanager);
 		desktop.add(nsTableDialog, JLayeredPane.MODAL_LAYER);
@@ -203,12 +197,12 @@ public class MR3 extends JFrame {
 		iFrames[0] = rdfEditor;
 		iFrames[1] = classEditor;
 		iFrames[2] = propertyEditor;
-		srcFrame = new SourceFrame("Source Window");
+		srcDialog = new SourceDialog();
 
 		desktop.add(iFrames[0], Cursor.DEFAULT_CURSOR);
 		desktop.add(iFrames[1], Cursor.DEFAULT_CURSOR);
 		desktop.add(iFrames[2], Cursor.DEFAULT_CURSOR);
-		desktop.add(srcFrame, Cursor.DEFAULT_CURSOR);
+		desktop.add(srcDialog, Cursor.DEFAULT_CURSOR);
 
 		rdfEditor.setInternalFrames(iFrames);
 		classEditor.setInternalFrames(iFrames);
@@ -225,10 +219,13 @@ public class MR3 extends JFrame {
 		}
 	}
 
-	private void setIcon() {
-		ImageIcon jgraphIcon = Utilities.getImageIcon("mr3_logo.png");
-		setIconImage(jgraphIcon.getImage());
-	}
+	private static final String FILE_MENU = "File";
+	private static final String EDIT_MENU = "Edit";
+	private static final String SELECT_MENU = "Select";
+	private static final String VIEW_MENU = "View";
+	private static final String WINDOW_MENU = "Window";
+	private static final String CONVERT_MENU = "Convert";
+	private static final String HELP_MENU = "Help";
 
 	private JMenuBar createMenuBar() {
 		JMenuBar mb = new JMenuBar();
@@ -248,7 +245,7 @@ public class MR3 extends JFrame {
 
 	private JMenu getEditMenu() {
 		JMenu menu = new JMenu("Edit");
-		menu.add(new FindResAction(getRDFGraph(), findResDialog, "Find Resource"));
+		menu.add(new FindResAction(getRDFGraph(), findResDialog));
 		menu.addSeparator();
 		//		selectAbstractLevelMode = new JCheckBoxMenuItem("Change Abstract Level", false);
 		//		selectAbstractLevelMode.addActionListener(new SelectAbstractLevelAction());
@@ -259,7 +256,7 @@ public class MR3 extends JFrame {
 	}
 
 	private JMenu getSelectMenu() {
-		JMenu selectMenu = new JMenu("Select");
+		JMenu selectMenu = new JMenu(SELECT_MENU);
 		selectMenu.add(new SelectNodes(getRDFGraph(), SELECT_ALL_RDF_NODES));
 		selectMenu.add(new SelectNodes(getClassGraph(), SELECT_ALL_CLASS_NODES));
 		selectMenu.add(new SelectNodes(getPropertyGraph(), SELECT_ALL_PROPERTY_NODES));
@@ -304,6 +301,10 @@ public class MR3 extends JFrame {
 		return nsTableDialog;
 	}
 
+	public SourceDialog getSrcDialog() {
+		return srcDialog;
+	}
+
 	class PreferenceAction extends AbstractAction {
 		PreferenceAction() {
 			super("Preference");
@@ -332,31 +333,33 @@ public class MR3 extends JFrame {
 	private static final String MERGE_RDFS_URI = "RDF(S)/XML (URI)";
 
 	private JMenu getFileMenu() {
-		JMenu menu = new JMenu("File");
-		menu.add(new NewProject(this));
-		menu.add(new OpenProject(this));
-		menu.add(new SaveProject(this, "Save Project", Utilities.getImageIcon("save.gif")));
-		menu.add(new SaveProject(this, "Save Project As", Utilities.getImageIcon("saveas.gif")));
+		JMenu menu = new JMenu(FILE_MENU);
+		menu.add(newProjectAction);
+		menu.add(openProjectAction);
+		menu.add(saveProjectAction);
+		menu.add(saveProjectAsAction);
 		menu.addSeparator();
-		JMenu importRDF = new JMenu("Import");
+
+		JMenu importMenu = new JMenu("Import");
+		importMenu.setIcon(Utilities.getImageIcon("import.gif"));
+		menu.add(importMenu);
 
 		JMenu replaceMenu = new JMenu("Replace");
 		replaceMenu.add(new ReplaceRDF(this, REPLACE_RDF_FILE));
 		replaceMenu.add(new ReplaceRDF(this, REPLACE_RDF_URI));
 		replaceMenu.add(new ReplaceRDFS(this, REPLACE_RDFS_FILE));
 		replaceMenu.add(new ReplaceRDFS(this, REPLACE_RDFS_URI));
-		importRDF.add(replaceMenu);
+		importMenu.add(replaceMenu);
 
 		JMenu mergeMenu = new JMenu("Merge");
 		mergeMenu.add(new MergeRDFs(this, MERGE_RDFS_FILE));
 		mergeMenu.add(new MergeRDFs(this, MERGE_RDFS_URI));
-		importRDF.add(mergeMenu);
+		importMenu.add(mergeMenu);
 
-		importRDF.add(new ImportJavaObject(this));
-
-		menu.add(importRDF);
+		importMenu.add(new ImportJavaObject(this));
 
 		JMenu exportMenu = new JMenu("Export");
+		exportMenu.setIcon(Utilities.getImageIcon("export.gif"));
 		menu.add(exportMenu);
 
 		JMenu rdfMenu = new JMenu("RDF/XML");
@@ -373,7 +376,7 @@ public class MR3 extends JFrame {
 		nTripleMenu.add(new ExportRDF(this, SelectedRDF_NTriple));
 		nTripleMenu.add(new ExportRDFS(this, SelectedRDFS_NTriple));
 
-		JMenu imgMenu = new JMenu("Img");
+		JMenu imgMenu = new JMenu("Image");
 		exportMenu.add(imgMenu);
 		imgMenu.add(new FileExportImg(this, GraphType.RDF, "png", "RDF Graph -> PNG"));
 		imgMenu.add(new FileExportImg(this, GraphType.CLASS, "png", "Class Graph -> PNG"));
@@ -384,7 +387,7 @@ public class MR3 extends JFrame {
 		menu.addSeparator();
 		menu.add(getPluginMenus()); // JavaWebStartでは，pluginは使用できないと思われる．
 		menu.addSeparator();
-		menu.add(new Exit(this));
+		menu.add(new ExitAction(this));
 
 		return menu;
 	}
@@ -469,7 +472,7 @@ public class MR3 extends JFrame {
 	//	}
 
 	private JMenu getViewMenu() {
-		JMenu menu = new JMenu("View");
+		JMenu menu = new JMenu(VIEW_MENU);
 		ChangeCellViewAction changeCellViewAction = new ChangeCellViewAction();
 		uriView = new JRadioButton("URI View");
 		uriView.setSelected(true);
@@ -487,9 +490,6 @@ public class MR3 extends JFrame {
 		menu.add(idView);
 		menu.add(labelView);
 		menu.addSeparator();
-		menu.add(attrDialog.getShowAttrDialogItem());
-		menu.add(nsTableDialog.getShowNSTable());
-		menu.add(srcFrame.getShowSrcWindowBox());
 		showTypeCellBox = new JCheckBoxMenuItem("Show Type", true);
 		gmanager.setIsShowTypeCell(true);
 		showTypeCellBox.addActionListener(new ShowTypeCellAction());
@@ -516,16 +516,19 @@ public class MR3 extends JFrame {
 	private static final String TO_FRONT_PROPERTY_EDITOR = "To Front Property Editor";
 
 	private JMenu getWindowMenu() {
-		JMenu menu = new JMenu("Window");
-		menu.add(new ShowLogConsole(this, "Log Console"));
-		menu.addSeparator();
+		JMenu menu = new JMenu(WINDOW_MENU);
 		menu.add(new ShowOverview(this, rdfEditorOverview, "Show RDF Graph Overview"));
 		menu.add(new ShowOverview(this, classEditorOverview, "Show Class Graph Overview"));
 		menu.add(new ShowOverview(this, propertyEditorOverview, "Show Property Graph Overview"));
 		menu.addSeparator();
-		menu.add(new EditorSelect(this, TO_FRONT_RDF_EDITOR, Utilities.getImageIcon("rdfEditorIcon.gif")));
-		menu.add(new EditorSelect(this, TO_FRONT_CLASS_EDITOR, Utilities.getImageIcon("classEditorIcon.gif")));
-		menu.add(new EditorSelect(this, TO_FRONT_PROPERTY_EDITOR, Utilities.getImageIcon("propertyEditorIcon.gif")));
+		menu.add(toFrontRDFEditorAction);
+		menu.add(toFrontClassEditorAction);
+		menu.add(toFrontPropertyEditorAction);
+		menu.add(showAttrDialogAction);
+		menu.add(showNSTableDialogAction);
+		menu.add(showSrcDialogAction);
+		menu.addSeparator();
+		menu.add(new ShowLogConsole(this));
 		menu.addSeparator();
 		menu.add(new DeployWindows(this));
 
@@ -533,7 +536,7 @@ public class MR3 extends JFrame {
 	}
 
 	private JMenu getConvertMenu() {
-		JMenu menu = new JMenu("Convert");
+		JMenu menu = new JMenu(CONVERT_MENU);
 
 		JMenu rdfView = new JMenu("RDF/XML");
 		menu.add(rdfView);
@@ -558,7 +561,7 @@ public class MR3 extends JFrame {
 	}
 
 	private JMenu getHelpMenu() {
-		JMenu menu = new JMenu("Help");
+		JMenu menu = new JMenu(HELP_MENU);
 		menu.add(new HelpAbout(this));
 		return menu;
 	}
@@ -610,12 +613,8 @@ public class MR3 extends JFrame {
 		setCurrentProject(null);
 	}
 
-	public JCheckBoxMenuItem getShowSrcWindowBox() {
-		return srcFrame.getShowSrcWindowBox();
-	}
-
 	public JInternalFrame getSourceFrame() {
-		return srcFrame;
+		return srcDialog;
 	}
 
 	public JDesktopPane getDesktopPane() {
@@ -699,7 +698,7 @@ public class MR3 extends JFrame {
 	}
 
 	public JTextComponent getSourceArea() {
-		return srcFrame.getSourceArea();
+		return srcDialog.getSourceArea();
 	}
 
 	public static void main(String[] arg) {

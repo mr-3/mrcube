@@ -279,13 +279,13 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 
 	protected void addEditMenu(JPopupMenu menu, Object cell) {
 		menu.addSeparator();
-		menu.add(new CopyAction(graph, "Copy"));
-		menu.add(new CutAction(graph, "Cut"));
-		menu.add(new PasteAction(graph, "Paste"));
+		menu.add(new CopyAction(graph));
+		menu.add(new CutAction(graph));
+		menu.add(new PasteAction(graph));
 
 		if (isCellSelected(cell)) {
 			menu.addSeparator();
-			menu.add(new RemoveAction(graph, gmanager, "Remove"));
+			menu.add(new RemoveAction(graph, gmanager));
 		}
 		menu.addSeparator();
 	}
@@ -335,9 +335,28 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 		}
 		addTransformMenu(menu, cell);
 		addEditMenu(menu, cell);
-		menu.add(new ShowAttrDialog(graph, gmanager, "Attribute Dialog"));
+		menu.add(new ShowAttrDialog());
 
 		return menu;
 	}
 
+	protected class ShowAttrDialog extends AbstractAction {
+
+		private static final String TITLE = "Show Attribute Dialog";
+
+		public ShowAttrDialog() {
+			super(TITLE, Utilities.getImageIcon("attrDialogIcon.gif"));
+			setValues();
+		}
+
+		private void setValues() {
+			putValue(SHORT_DESCRIPTION, TITLE);
+			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.ALT_MASK));
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			gmanager.setVisibleAttrDialog(true);
+			graph.setSelectionCell(graph.getSelectionCell());
+		}
+	}
 }

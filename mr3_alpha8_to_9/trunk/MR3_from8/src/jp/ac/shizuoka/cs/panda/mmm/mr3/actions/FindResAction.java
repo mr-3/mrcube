@@ -19,16 +19,18 @@ public class FindResAction extends AbstractAction {
 
 	private RDFGraph graph;
 	private FindResourceDialog findResDialog;
-
-	public FindResAction(RDFGraph g, FindResourceDialog frd, String title) {
-		super(title, Utilities.getImageIcon("find.gif"));
+	private static final String TITLE = "Find Resource";
+	private static final ImageIcon ICON = Utilities.getImageIcon("find.gif"); 
+	
+	public FindResAction(RDFGraph g, FindResourceDialog frd) {
+		super(TITLE, ICON);
 		setValues();
 		graph = g;
 		findResDialog = frd;
 	}
 
 	private void setValues() {
-		putValue(SHORT_DESCRIPTION, "Find Resource");
+		putValue(SHORT_DESCRIPTION, TITLE);
 		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.ALT_MASK));
 	}
 

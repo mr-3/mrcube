@@ -9,15 +9,19 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import jp.ac.shizuoka.cs.panda.mmm.mr3.*;
+import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 
 /**
  * @author takeshi morita
  *
  */
-public class Exit extends AbstractActionFile {
+public class ExitAction extends AbstractActionFile {
 
-	public Exit(MR3 mr3) {
-		super(mr3, "Exit");
+	private static final String TITLE = "Exit";
+	private static final ImageIcon ICON = Utilities.getImageIcon("stop.gif");
+		
+	public ExitAction(MR3 mr3) {
+		super(mr3, TITLE, ICON);
 		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Q, KeyEvent.CTRL_MASK));
 	}
 
