@@ -1,0 +1,29 @@
+<project name="SamplePlugin" default="compile" basedir=".">
+  <property name="app.name"  value="SamplePlugin"/>
+  <property name="src.dir" value="."/>
+  <property name="build.dir" value="."/>
+  <property name="lib.dir1"   value="../build/"/>
+  <property name="lib.dir2"   value="../build/lib/"/>
+  <property name="jarfile"   value="${name}.jar"/>
+
+
+  <path id="classpath">
+    <fileset dir="${lib.dir1}" includes="*.jar" excludes="${jarfile}"/>
+    <fileset dir="${lib.dir2}" includes="*.jar" excludes="${jarfile}"/>
+  </path>
+
+  <target name="compile">
+    <javac encoding="sjis" srcdir="${src.dir}" 
+		source="1.4" 
+		destdir="${build.dir}"> 
+      <include name="**/*.java"/>
+      <classpath refid="classpath"/>
+    </javac>
+  </target>
+
+  <target name="jar" depends="compile">
+    <jar jarfile="${app.name}.jar"
+      basedir="${build.dir}" includes="*.class" manifest="META-INF/MANIFEST.MF"/>
+  </target>
+
+</project>

@@ -37,7 +37,7 @@ public class NewProject extends AbstractActionFile {
 	public void actionPerformed(ActionEvent e) {
 		int messageType = confirmExitProject("New Project");
 		if (messageType != JOptionPane.CANCEL_OPTION) {
-			newProject();
+			mr3.newProject();
 		}
 	}
 }

@@ -56,6 +56,10 @@ public abstract class MR3Plugin {
 		mr3.getGraphManager().applyTreeLayout();
 	}
 
+	protected void replaceProjectModel(Model model) {
+		mr3.replaceProjectModel(model);
+	}
+	
 	protected Model getRDFModel() {
 		return mr3.getRDFModel();
 	}
@@ -88,6 +92,14 @@ public abstract class MR3Plugin {
 		return mr3.getSelectedPropertyModel();
 	}
 
+	protected Model getProjectModel() {
+		return mr3.getProjectModel();
+	}
+
+	protected String getBaseURI() {
+		return mr3.getBaseURI();
+	}
+	
 	protected JDesktopPane getDesktopPane() {
 		return mr3.getDesktopPane();
 	}

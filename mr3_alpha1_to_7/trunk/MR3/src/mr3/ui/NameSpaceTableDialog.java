@@ -321,7 +321,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		}
 	}
 
-	private void changeCellView() {
+	public void changeCellView() {
 		gmanager.setPrefixNSInfoSet(getPrefixNSInfoSet());
 		gmanager.changeCellView();
 	}

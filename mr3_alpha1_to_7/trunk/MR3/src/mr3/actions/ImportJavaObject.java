@@ -31,7 +31,7 @@ public class ImportJavaObject extends AbstractActionFile {
 
 	public void openProject(File file) {
 		try {
-			newProject();
+			mr3.newProject();
 			ObjectInputStream oi = createInputStream(file);
 			Object obj = oi.readObject();
 			if (obj instanceof ArrayList) {

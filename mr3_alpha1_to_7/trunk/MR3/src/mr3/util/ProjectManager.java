@@ -136,13 +136,17 @@ public class ProjectManager {
 		return projectModel;
 	}
 
-	public Model getLiteralModel(Model model) throws RDFException {
+	public Model getLiteralModel(Model model) {
 		Model literalModel = new ModelMem();
-		for (StmtIterator i = model.listStatements(); i.hasNext();) {
-			Statement stmt = i.next();
-			if (stmt.getObject() instanceof Literal) {
-				literalModel.add(stmt);
+		try {
+			for (StmtIterator i = model.listStatements(); i.hasNext();) {
+				Statement stmt = i.next();
+				if (stmt.getObject() instanceof Literal) {
+					literalModel.add(stmt);
+				}
 			}
+		} catch (RDFException e) {
+			e.printStackTrace();
 		}
 		return literalModel;
 	}
@@ -161,15 +165,20 @@ public class ProjectManager {
 				|| stmt.getPredicate().equals(MR3Resource.Is_prefix_available));
 	}
 
-	public Model extractProjectModel(Model model) throws RDFException {
+	public Model extractProjectModel(Model model) {
 		Model extractModel = new ModelMem();
-		for (StmtIterator i = model.listStatements(); i.hasNext();) {
-			Statement stmt = i.next();
-			if (hasProjectPredicate(stmt)) {
-				extractModel.add(stmt);
+		try {
+			for (StmtIterator i = model.listStatements(); i.hasNext();) {
+				Statement stmt = i.next();
+				if (hasProjectPredicate(stmt)) {
+					extractModel.add(stmt);
+				}
 			}
+			model.remove(extractModel);
+		} catch (RDFException e) {
+			e.printStackTrace();
 		}
-		model.remove(extractModel);
+
 		return extractModel;
 	}
 
@@ -179,12 +188,14 @@ public class ProjectManager {
 			String nameSpace = (String) nsTableModel.getValueAt(i, NS_COLUMN);
 			String prefix = (String) uriPrefixMap.get(nameSpace);
 			Boolean isAvailable = (Boolean) uriIsAvailableMap.get(nameSpace);
+
 			if (!nsTableModel.getValueAt(i, PREFIX_COLUMN).equals(prefix)) {
 				nsTableModel.setValueAt(prefix, i, PREFIX_COLUMN);
 			}
 			nsTableModel.setValueAt(isAvailable, i, IS_AVAILABLE_COLUMN);
 			existNSSet.add(nameSpace);
 		}
+
 		Collection notExistNSSet = uriPrefixMap.keySet();
 		notExistNSSet.removeAll(existNSSet);
 		for (Iterator i = notExistNSSet.iterator(); i.hasNext();) {
@@ -215,47 +226,50 @@ public class ProjectManager {
 		gmanager.removeAction(graph);
 	}
 
-	public void loadProject(Model model) throws RDFException {
+	public void loadProject(Model model) {
 		Map uriNodeInfoMap = new HashMap();
 		Map uriPrefixMap = new HashMap();
 		Map uriIsAvailableMap = new HashMap();
-
-		for (StmtIterator i = model.listStatements(); i.hasNext();) {
-			Statement stmt = i.next();
-			MR3Literal rec = (MR3Literal) uriNodeInfoMap.get(stmt.getSubject());
-			if (rec == null) {
-				rec = new MR3Literal();
-				uriNodeInfoMap.put(stmt.getSubject(), rec);
-			}
-			if (stmt.getPredicate().equals(MR3Resource.PointX)) {
-				setPositionX(uriNodeInfoMap, stmt, rec);
-			} else if (stmt.getPredicate().equals(MR3Resource.PointY)) {
-				setPositionY(uriNodeInfoMap, stmt, rec);
-			} else if (stmt.getPredicate().equals(MR3Resource.NodeWidth)) {
-				setNodeWidth(uriNodeInfoMap, stmt, rec);
-			} else if (stmt.getPredicate().equals(MR3Resource.NodeHeight)) {
-				setNodeHeight(uriNodeInfoMap, stmt, rec);
-			} else if (stmt.getPredicate().equals(MR3Resource.LiteralLang)) {
-				rec.setLanguage(stmt.getObject().toString());
-				uriNodeInfoMap.put(stmt.getSubject(), rec);
-			} else if (stmt.getPredicate().equals(MR3Resource.LiteralString)) {
-				rec.setString(stmt.getObject().toString());
-				uriNodeInfoMap.put(stmt.getSubject(), rec);
-			} else if (stmt.getPredicate().equals(MR3Resource.Prefix)) {
-				uriPrefixMap.put(stmt.getSubject().getURI(), stmt.getObject().toString());
-			} else if (stmt.getPredicate().equals(MR3Resource.HasLiteralResource)) {
-				rec.setResource(stmt.getObject().toString());
-				uriNodeInfoMap.put(stmt.getSubject(), rec);
-			} else if (stmt.getPredicate().equals(MR3Resource.LiteralProperty)) {
-				rec.setProperty(stmt.getObject().toString());
-				uriNodeInfoMap.put(stmt.getSubject(), rec);
-			} else if (stmt.getPredicate().equals(MR3Resource.Is_prefix_available)) {
-				if (stmt.getObject().toString().equals("true")) {
-					uriIsAvailableMap.put(stmt.getSubject().getURI(), new Boolean(true));
-				} else {
-					uriIsAvailableMap.put(stmt.getSubject().getURI(), new Boolean(false));
+		try {
+			for (StmtIterator i = model.listStatements(); i.hasNext();) {
+				Statement stmt = i.next();
+				MR3Literal rec = (MR3Literal) uriNodeInfoMap.get(stmt.getSubject());
+				if (rec == null) {
+					rec = new MR3Literal();
+					uriNodeInfoMap.put(stmt.getSubject(), rec);
+				}
+				if (stmt.getPredicate().equals(MR3Resource.PointX)) {
+					setPositionX(uriNodeInfoMap, stmt, rec);
+				} else if (stmt.getPredicate().equals(MR3Resource.PointY)) {
+					setPositionY(uriNodeInfoMap, stmt, rec);
+				} else if (stmt.getPredicate().equals(MR3Resource.NodeWidth)) {
+					setNodeWidth(uriNodeInfoMap, stmt, rec);
+				} else if (stmt.getPredicate().equals(MR3Resource.NodeHeight)) {
+					setNodeHeight(uriNodeInfoMap, stmt, rec);
+				} else if (stmt.getPredicate().equals(MR3Resource.LiteralLang)) {
+					rec.setLanguage(stmt.getObject().toString());
+					uriNodeInfoMap.put(stmt.getSubject(), rec);
+				} else if (stmt.getPredicate().equals(MR3Resource.LiteralString)) {
+					rec.setString(stmt.getObject().toString());
+					uriNodeInfoMap.put(stmt.getSubject(), rec);
+				} else if (stmt.getPredicate().equals(MR3Resource.Prefix)) {
+					uriPrefixMap.put(stmt.getSubject().getURI(), stmt.getObject().toString());
+				} else if (stmt.getPredicate().equals(MR3Resource.HasLiteralResource)) {
+					rec.setResource(stmt.getObject().toString());
+					uriNodeInfoMap.put(stmt.getSubject(), rec);
+				} else if (stmt.getPredicate().equals(MR3Resource.LiteralProperty)) {
+					rec.setProperty(stmt.getObject().toString());
+					uriNodeInfoMap.put(stmt.getSubject(), rec);
+				} else if (stmt.getPredicate().equals(MR3Resource.Is_prefix_available)) {
+					if (stmt.getObject().toString().equals("true")) {
+						uriIsAvailableMap.put(stmt.getSubject().getURI(), new Boolean(true));
+					} else {
+						uriIsAvailableMap.put(stmt.getSubject().getURI(), new Boolean(false));
+					}
 				}
 			}
+		} catch (RDFException e) {
+			e.printStackTrace();
 		}
 		gmanager.setNodeBounds(uriNodeInfoMap);
 		changeNSModel(uriPrefixMap, uriIsAvailableMap);

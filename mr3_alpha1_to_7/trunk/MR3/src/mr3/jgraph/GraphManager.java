@@ -20,7 +20,7 @@ import com.jgraph.graph.*;
 public class GraphManager {
 
 	private JFrame root;
-	
+
 	private RDFGraph rdfGraph;
 	private RDFGraph realRDFGraph;
 	private RDFGraph classGraph;
@@ -60,7 +60,7 @@ public class GraphManager {
 	}
 
 	private JDesktopPane desktop;
-	
+
 	public void setDesktop(JDesktopPane jdp) {
 		desktop = jdp;
 	}
@@ -131,6 +131,12 @@ public class GraphManager {
 		return null;
 	}
 
+	public void clearSelection() {
+		rdfGraph.clearSelection();
+		classGraph.clearSelection();
+		propGraph.clearSelection();
+	}
+
 	public void setCellViewType(CellViewType type) {
 		cellViewType = type;
 	}
@@ -170,8 +176,8 @@ public class GraphManager {
 	}
 
 	public void setGraphBackground(Color color) {
-		rdfGraph.setBackground(color);	
-		classGraph.setBackground(color);	
+		rdfGraph.setBackground(color);
+		classGraph.setBackground(color);
 		propGraph.setBackground(color);
 	}
 
@@ -203,7 +209,7 @@ public class GraphManager {
 				GraphCell typeCell = cellMaker.addTypeCell(cell, new HashMap(), rec);
 				info.setTypeViewCell(typeCell);
 			}
-		}		
+		}
 		changeCellView();
 	}
 
@@ -447,7 +453,7 @@ public class GraphManager {
 				changeRDFResourceCellView(cell);
 			} else if (rdfGraph.isRDFPropertyCell(cell)) {
 				changeRDFPropertyCellView(cell);
-			} 
+			}
 		}
 		rdfGraph.getGraphLayoutCache().reload();
 		rdfGraph.repaint();
@@ -1109,6 +1115,7 @@ public class GraphManager {
 		}
 		centerCellsInGraph(graph);
 		changeCellView();
+		graph.clearSelection();
 	}
 
 	private void centerCellsInGraph(RDFGraph graph) {

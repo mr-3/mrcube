@@ -17,8 +17,8 @@ import mr3.util.*;
  */
 public class ImportPlugin extends MR3AbstractAction {
 
-	public ImportPlugin(MR3 mr3, String title) {
-		super(mr3, title);
+	public ImportPlugin(MR3 mr3, String name) {
+		super(mr3, name);
 	}
 	
 	private static final String PLUGIN_METHOD_NAME = "exec";
