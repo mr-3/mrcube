@@ -132,10 +132,6 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 				writer.setNsPrefix(info.getPrefix(), info.getNameSpace());
 			}
 		}
-		String baseURIPrefix = gmanager.getBaseURIPrefix();
-		if (baseURIPrefix.length() != 0) {
-			writer.setNsPrefix(baseURIPrefix, gmanager.getBaseURI()+'#');
-		}
 	}
 
 	public Writer writeModel(Model model, Writer output, RDFWriter writer) {

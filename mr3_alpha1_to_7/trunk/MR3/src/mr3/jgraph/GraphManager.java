@@ -183,10 +183,6 @@ public class GraphManager {
 		classGraph.setAntiAliased(isAntialias);
 	}
 
-	public String getBaseURIPrefix() {
-		return userPrefs.get(PrefConstants.BaseURIPrefix, "");
-	}
-
 	public String getBaseURI() {
 		return baseURI;
 	}
@@ -280,6 +276,9 @@ public class GraphManager {
 			if (rdfGraph.isRDFResourceCell(cell)) {
 				RDFResourceInfo info = resInfoMap.getCellInfo(rdfCells[i]);
 				Resource uri = info.getURI();
+				if (info.getURIType() == URIType.ID) {
+					uri = new ResourceImpl(getBaseURI() + uri.getURI());
+				}
 				nameSpaces.add(uri.getNameSpace());
 			}
 		}
@@ -295,6 +294,9 @@ public class GraphManager {
 			if (classGraph.isRDFSClassCell(cell)) {
 				RDFSInfo info = rdfsInfoMap.getCellInfo(cell);
 				Resource uri = info.getURI();
+				if (info.getURIType() == URIType.ID) {
+					uri = new ResourceImpl(getBaseURI() + uri.getURI());
+				}
 				nameSpaces.add(uri.getNameSpace());
 			}
 		}
@@ -310,6 +312,9 @@ public class GraphManager {
 			if (propGraph.isRDFSPropertyCell(cell)) {
 				RDFSInfo info = rdfsInfoMap.getCellInfo(cell);
 				Resource uri = info.getURI();
+				if (info.getURIType() == URIType.ID) {
+					uri = new ResourceImpl(getBaseURI() + uri.getURI());
+				}
 				nameSpaces.add(uri.getNameSpace());
 			}
 		}
@@ -319,7 +324,7 @@ public class GraphManager {
 	public void setCellValue(GraphCell cell, String value) {
 		Map map = cell.getAttributes();
 		GraphConstants.setValue(map, value);
-		//		cell.setAttributes(map);
+		//			cell.setAttributes(map);
 		//		set->changeにしないと，cellのValueが変更されず，Cellを削除した時に表示が変化しない
 		cell.changeAttributes(map);
 	}

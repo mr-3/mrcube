@@ -18,6 +18,11 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 	private JButton applyButton;
 	private JButton closeButton;
 
+	private JComboBox resPrefixBox;
+	private ComboBoxModel resPrefixBoxModel;
+	private JComboBox resTypePrefixBox;
+	private ComboBoxModel resTypePrefixBoxModel;
+
 	private JTextField uriField;
 	//	private RDFSClassTree classTree;
 	private JTextField resTypeField;
@@ -45,7 +50,7 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 	private RDFLiteralInfoMap litInfoMap = RDFLiteralInfoMap.getInstance();
 	private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
 
-	private static final int listWidth = 350;
+	private static final int listWidth = 300;
 	private static final int listHeight = 40;
 
 	public RDFResourcePanel(GraphManager manager, AttributeDialog pw) {
@@ -55,6 +60,11 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		setBorder(BorderFactory.createTitledBorder("Resource"));
 
 		JPanel resTypeURITypeGroupPanel = initResTypeURITypeGroupPanel();
+
+		resTypePrefixBoxModel = new DefaultComboBoxModel();
+		resTypePrefixBox = new JComboBox(resTypePrefixBoxModel);
+		resTypePrefixBox.setPreferredSize(new Dimension(50, 30));
+		resTypePrefixBox.setMinimumSize(new Dimension(50, 30));
 
 		resTypeField = new JTextField();
 		resTypeField.setPreferredSize(new Dimension(listWidth, listHeight));
@@ -77,6 +87,11 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		selectTypeMode(false);
 
 		JPanel rdfURITypeGroupPanel = initRDFURITypeGroupPanel();
+
+		resPrefixBoxModel = new DefaultComboBoxModel();
+		resPrefixBox = new JComboBox(resPrefixBoxModel);
+		resPrefixBox.setPreferredSize(new Dimension(50, 30));
+		resPrefixBox.setMinimumSize(new Dimension(50, 30));
 
 		uriField = new JTextField();
 		uriField.setPreferredSize(new Dimension(listWidth, listHeight));
@@ -108,19 +123,32 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		c.gridwidth = GridBagConstraints.REMAINDER;
 		c.anchor = GridBagConstraints.WEST;
 		c.weighty = 3;
+		c.weightx = 2;
 		gridbag.setConstraints(resTypeURITypeGroupPanel, c);
 		add(resTypeURITypeGroupPanel);
+
 		c.anchor = GridBagConstraints.CENTER;
+		c.gridwidth = GridBagConstraints.RELATIVE;
+		gridbag.setConstraints(resTypePrefixBox, c);
+		add(resTypePrefixBox);
+		c.gridwidth = GridBagConstraints.REMAINDER;
 		gridbag.setConstraints(resTypeField, c);
 		add(resTypeField);
+
 		c.anchor = GridBagConstraints.WEST;
 		gridbag.setConstraints(typePanel, c);
 		add(typePanel);
 		gridbag.setConstraints(rdfURITypeGroupPanel, c);
 		add(rdfURITypeGroupPanel);
 		c.anchor = GridBagConstraints.CENTER;
+
+		c.gridwidth = GridBagConstraints.RELATIVE;
+		gridbag.setConstraints(resPrefixBox, c);
+		add(resPrefixBox);
+		c.gridwidth = GridBagConstraints.REMAINDER;
 		gridbag.setConstraints(uriField, c);
 		add(uriField);
+
 		gridbag.setConstraints(buttonGroup, c);
 		add(buttonGroup);
 	}
@@ -173,8 +201,10 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 			if (info != null) {
 				if (info.getURIType() == URIType.URI) {
 					resTypeURIButton.setSelected(true);
+					resTypePrefixBox.setEnabled(true);
 				} else {
 					resTypeIDButton.setSelected(true);
+					resTypePrefixBox.setEnabled(false);
 				}
 			}
 			setResourceTypeField(resInfo.getType().getURI());
@@ -183,6 +213,7 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		}
 		resTypeURIButton.setEnabled(t);
 		resTypeIDButton.setEnabled(t);
+		resTypePrefixBox.setEnabled(t);
 		resTypeField.setEditable(t);
 		selectTypeButton.setEnabled(t);
 	}
