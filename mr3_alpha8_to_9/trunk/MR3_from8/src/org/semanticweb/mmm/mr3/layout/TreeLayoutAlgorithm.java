@@ -18,7 +18,7 @@ public class TreeLayoutAlgorithm {
 	 *
 	 *  http://www.computer.org/software/so1990/s4021abs.htm
 	 *
-		 *
+	 *
 	 * modified by @author takeshi morita
 	 ** */
 

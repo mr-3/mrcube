@@ -8,7 +8,7 @@ import org.jgraph.graph.*;
 
 /**
  * @author takeshi morita
- *
+ *  
  */
 public class GraphLayoutData {
 
@@ -19,8 +19,8 @@ public class GraphLayoutData {
 	private GraphCell cell;
 	private Set children;
 	private boolean hasParent;
-	TreeAlgorithmData data;
-
+	TreeAlgorithm.TreeAlgorithmData data;
+	
 	public GraphLayoutData(GraphCell cell, JGraph graph) {
 		this.cell = cell;
 		this.graph = graph;
@@ -70,10 +70,10 @@ public class GraphLayoutData {
 	}
 
 	private static final int cellHeight = 25;
-	
+
 	public void setRealTypePosition(GraphCell typeCell) {
 		rec.x = (int) point.x;
-		rec.y = (int) (point.y+cellHeight);
+		rec.y = (int) (point.y + cellHeight);
 		rec.height = cellHeight;
 		setRealPosition(typeCell);
 	}
@@ -81,7 +81,7 @@ public class GraphLayoutData {
 	public void setRealResourcePosition() {
 		rec.x = (int) point.x;
 		rec.y = (int) point.y;
-			
+
 		setRealPosition(cell);
 	}
 

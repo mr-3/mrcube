@@ -39,7 +39,8 @@ public class MR3 extends JFrame {
 	private static final Integer DEMO_FRAME_LAYER = new Integer(0);
 
 	private GraphManager gmanager;
-	private MR3TreeLayout vgjTreeLayout;
+	private VGJTreeLayout vgjTreeLayout;
+	private JGraphTreeLayout jgraphTreeLayout;
 	private RDFEditor rdfEditor;
 	private OverviewDialog rdfEditorOverview;
 	private ClassEditor classEditor;
@@ -92,7 +93,8 @@ public class MR3 extends JFrame {
 		logger = new MR3LogConsole(Translator.getString("LogConsole.Title"), null);
 		attrDialog = new AttributeDialog();
 		gmanager = new GraphManager(attrDialog, userPrefs);
-		vgjTreeLayout = new MR3TreeLayout(gmanager);
+		vgjTreeLayout = new VGJTreeLayout(gmanager);
+		jgraphTreeLayout = new JGraphTreeLayout(gmanager);
 		initAction();
 		getContentPane().add(createToolBar(), BorderLayout.NORTH);
 		createDesktop();
@@ -134,7 +136,8 @@ public class MR3 extends JFrame {
 	//	private void setTreeLayout() {
 	//		classTreePanel = new RDFSTreePanel(gmanager,
 	// rdfsInfoMap.getClassTreeModel(), new ClassTreeCellRenderer());
-	//		propTreePanel = new RDFSTreePanel(gmanager,
+	//		
+	//	propTreePanel = new RDFSTreePanel(gmanager,
 	// rdfsInfoMap.getPropTreeModel(), new PropertyTreeCellRenderer());
 	//		JTabbedPane treeTab = new JTabbedPane();
 	//		treeTab.add("Class", classTreePanel);
@@ -277,25 +280,23 @@ public class MR3 extends JFrame {
 	}
 
 	/**
-	 *
-	 * グラフのレイアウトを行う 
-	 * vgjTreeLayout.performVGJTreeLayoutの場合はGPL
-	 * vgjTreeLayout.performJGraphTreeLayoutの場合はLGPL
+	 * 
+	 * グラフのレイアウトを行う vgjTreeLayout.performVGJTreeLayoutを使用する場合はGPL
+	 * jgraphTreeLayout.performJGraphTreeLayoutの場合はLGPL
 	 */
 	public void performTreeLayout() {
-		vgjTreeLayout.performVGJTreeLayout();
-		//vgjTreeLayout.performJGraphTreeLayout();
+		//		vgjTreeLayout.performVGJTreeLayout();
+		jgraphTreeLayout.performJGraphTreeLayout();
 	}
 
 	/**
-	 *
-	 * グラフのレイアウトを行う 
-	 * vgjTreeLayout.performVGJRDFSTreeLayoutの場合はGPL
-	 * vgjTreeLayout.performJGraphRDFSTreeLayoutの場合はLGPL
+	 * 
+	 * グラフのレイアウトを行う vgjTreeLayout.performVGJRDFSTreeLayoutを使用する場合はGPL
+	 * jgraphTreeLayout.performJGraphRDFSTreeLayoutの場合はLGPL
 	 */
 	public void performRDFSTreeLayout() {
-		vgjTreeLayout.performVGJRDFSTreeLayout();
-		//vgjTreeLayout.performJGraphRDFSTreeLayout();
+		//		vgjTreeLayout.performVGJRDFSTreeLayout();
+		jgraphTreeLayout.performJGraphRDFSTreeLayout();
 	}
 
 	public NameSpaceTableDialog getNSTableDialog() {
