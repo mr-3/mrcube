@@ -15,6 +15,7 @@ import javax.swing.event.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.data.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.io.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.jgraph.*;
+import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 
 import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.vocabulary.*;
@@ -102,36 +103,36 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
 
 		fixListData();
 
-		prevClassUpButton = new JButton("Up");
+		prevClassUpButton = new JButton(Utilities.getImageIcon("up.gif"));
 		prevClassUpButton.addActionListener(this);
-		prevClassDownButton = new JButton("Down");
+		prevClassDownButton = new JButton(Utilities.getImageIcon("down.gif"));
 		prevClassDownButton.addActionListener(this);
 		JPanel prevClassButtonPanel = new JPanel();
 		prevClassButtonPanel.setLayout(new BoxLayout(prevClassButtonPanel, BoxLayout.Y_AXIS));
 		prevClassButtonPanel.add(prevClassUpButton);
 		prevClassButtonPanel.add(prevClassDownButton);
 
-		replaceClassUpButton = new JButton("Up");
+		replaceClassUpButton = new JButton(Utilities.getImageIcon("up.gif"));
 		replaceClassUpButton.addActionListener(this);
-		replaceClassDownButton = new JButton("Down");
+		replaceClassDownButton = new JButton(Utilities.getImageIcon("down.gif"));
 		replaceClassDownButton.addActionListener(this);
 		JPanel replaceClassButtonPanel = new JPanel();
 		replaceClassButtonPanel.setLayout(new BoxLayout(replaceClassButtonPanel, BoxLayout.Y_AXIS));
 		replaceClassButtonPanel.add(replaceClassUpButton);
 		replaceClassButtonPanel.add(replaceClassDownButton);
 
-		prevPropertyUpButton = new JButton("Up");
+		prevPropertyUpButton = new JButton(Utilities.getImageIcon("up.gif"));
 		prevPropertyUpButton.addActionListener(this);
-		prevPropertyDownButton = new JButton("Down");
+		prevPropertyDownButton = new JButton(Utilities.getImageIcon("down.gif"));
 		prevPropertyDownButton.addActionListener(this);
 		JPanel prevPropertyButtonPanel = new JPanel();
 		prevPropertyButtonPanel.setLayout(new BoxLayout(prevPropertyButtonPanel, BoxLayout.Y_AXIS));
 		prevPropertyButtonPanel.add(prevPropertyUpButton);
 		prevPropertyButtonPanel.add(prevPropertyDownButton);
 
-		replacePropertyUpButton = new JButton("Up");
+		replacePropertyUpButton = new JButton(Utilities.getImageIcon("up.gif"));
 		replacePropertyUpButton.addActionListener(this);
-		replacePropertyDownButton = new JButton("Down");
+		replacePropertyDownButton = new JButton(Utilities.getImageIcon("down.gif"));
 		replacePropertyDownButton.addActionListener(this);
 		JPanel replacePropertyButtonPanel = new JPanel();
 		replacePropertyButtonPanel.setLayout(new BoxLayout(replacePropertyButtonPanel, BoxLayout.Y_AXIS));
@@ -178,7 +179,7 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
 		contentPane.add(tabbedPane, BorderLayout.CENTER);
 		contentPane.add(decisionPanel, BorderLayout.SOUTH);
 
-		setSize(new Dimension(500, 550));
+		setSize(new Dimension(500, 530));
 		setLocation(100, 100);
 		setVisible(true);
 	}
