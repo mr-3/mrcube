@@ -23,7 +23,7 @@
 
   <target name="jar" depends="compile">
     <jar jarfile="${app.name}.jar"
-      basedir="${build.dir}" includes="*.class" manifest="META-INF/MANIFEST.MF"/>
+      basedir="${build.dir}" includes="**/*.class" manifest="META-INF/MANIFEST.MF"/>
   </target>
 
 </project>
