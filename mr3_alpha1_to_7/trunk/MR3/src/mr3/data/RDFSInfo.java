@@ -11,12 +11,9 @@ public abstract class RDFSInfo implements Serializable {
 
 	private static final long serialVersionUID = -2970145279588775430L;
 
-	//	transient protected Resource uri;
 	protected transient String uri;
-	//	transient private Literal label; // 現在，選択されているラベル
 	private transient MR3Literal label; // 現在，選択されているラベル
 	private transient List labelList;
-	//	transient private Literal comment; // 現在，選択されているコメント
 	private transient MR3Literal comment; // 現在，選択されているコメント
 	private transient List commentList;
 	private transient String isDefinedBy;
@@ -26,11 +23,9 @@ public abstract class RDFSInfo implements Serializable {
 	transient protected RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
 
 	RDFSInfo(String uri) {
-		//			this.uri = new ResourceImpl(uri);
 		this.uri = uri;
 		labelList = new ArrayList();
 		commentList = new ArrayList();
-		//		isDefinedBy = new ResourceImpl("");
 		isDefinedBy = "";
 		model = new ModelMem();
 		supRDFS = new HashSet();
@@ -131,10 +126,6 @@ public abstract class RDFSInfo implements Serializable {
 		return tmp.getLocalName();
 	}
 
-	public String getURIStr(String baseURI) {
-		return uri;
-	}
-
 	public void setLabel(MR3Literal label) {
 		this.label = label;
 	}
@@ -216,12 +207,10 @@ public abstract class RDFSInfo implements Serializable {
 
 	public String toString() {
 		String msg = "";
-
-		if (uri != null)
+		if (uri != null) {
 			msg += "URI: " + uri + "\n";
-
+		}
 		msg += "Label: " + label + "\n" + "Comment: " + comment + "\n";
-
 		if (isDefinedBy != null) {
 			msg += "isDefinedBy: " + isDefinedBy.toString() + "\n";
 		}

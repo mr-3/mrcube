@@ -95,7 +95,7 @@ public class JGraphToRDF {
 		try {
 			RDFResourceInfo resInfo = resInfoMap.getCellInfo(cell);
 			if (resInfo.getType().getURI().length() != 0) {
-				rdfModel.add(rdfModel.createStatement(resInfo.getURI(gmanager.getBaseURI()), RDF.type, resInfo.getType()));
+				rdfModel.add(rdfModel.createStatement(resInfo.getURI(), RDF.type, resInfo.getType()));
 			}
 		} catch (RDFException rex) {
 			rex.printStackTrace();
@@ -153,14 +153,14 @@ public class JGraphToRDF {
 		for (int i = 0; i < edges.length; i++) {
 			Edge edge = (Edge) edges[i];
 			RDFResourceInfo info = resInfoMap.getCellInfo(graph.getSourceVertex(edge));
-			Resource subject = info.getURI(gmanager.getBaseURI());
+			Resource subject = info.getURI();
 			try {
 				Property property = getRDFProperty(edge);
 				GraphCell targetCell = (GraphCell) graph.getTargetVertex(edge);
 
 				if (graph.isRDFResourceCell(targetCell)) {
 					info = resInfoMap.getCellInfo(targetCell);
-					Resource object = info.getURI(gmanager.getBaseURI());
+					Resource object = info.getURI();
 					rdfModel.add(rdfModel.createStatement(subject, property, object));
 				} else if (graph.isRDFLiteralCell(targetCell)) {
 					Literal object = litInfoMap.getCellInfo(targetCell);

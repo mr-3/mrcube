@@ -127,7 +127,12 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		Map map = (Map) list.get(0);
 		NSTableModel model = (NSTableModel) list.get(1);
 		for (int i = 0; i < model.getRowCount(); i++) {
-			addNameSpaceTable((Boolean) model.getValueAt(i, 0), (String) model.getValueAt(i, 1), (String) model.getValueAt(i, 2));
+			Boolean isAvailable = (Boolean) model.getValueAt(i, 0);
+			String prefix =(String) model.getValueAt(i, 1);
+			String ns = (String) model.getValueAt(i, 2);
+			if (isValidPrefix(prefix) && isValidNS(ns)) {
+				addNameSpaceTable(isAvailable, prefix, ns);
+			}
 		}
 		// ここでprefixNSMapを設定しないと，上の内容を元に戻すことができない．(non validとなる）
 		prefixNSMap.putAll(map);
