@@ -16,7 +16,7 @@ public class HelpDialog extends JDialog {
 
 	private static final String TOOL_NAME = "<h1>MR<sup>3</sup></h1> (Meta-Model Management based on <br> RDFs Revision Reflection)";
 	private static final String MR3_URL = "http://panda.cs.inf.shizuoka.ac.jp/mmm/mr3/";
-	private static final String VERSION = "ƒ¿7 (2003-08-)";
+	private static final String VERSION = "ƒ¿7 (2003-07-31)";
 	private static final Color DESKTOP_BACK_COLOR = new Color(225, 225, 225);
 	
 	public HelpDialog(Frame root, ImageIcon logo) {
