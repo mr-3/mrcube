@@ -141,7 +141,6 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 	public Writer writeModel(Model model, Writer output, RDFWriter writer) {
 		try {
 			setNsPrefix(writer);
-			writer.setProperty("showXmlDeclaration", "true");
 			writer.write(model, output, gmanager.getBaseURI());
 		} catch (RDFException e) {
 			e.printStackTrace();
