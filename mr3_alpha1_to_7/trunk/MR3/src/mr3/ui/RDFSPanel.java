@@ -107,7 +107,8 @@ public abstract class RDFSPanel extends JPanel {
 		group.add(idButton);
 		JPanel uriTypeGroupPanel = new JPanel();
 		uriTypeGroupPanel.setBorder(BorderFactory.createTitledBorder("URI Type"));
-		uriTypeGroupPanel.setPreferredSize(new Dimension(100, 55));
+		uriTypeGroupPanel.setPreferredSize(new Dimension(130, 55));
+		uriTypeGroupPanel.setMinimumSize(new Dimension(130, 55));
 		uriTypeGroupPanel.add(uriButton);
 		uriTypeGroupPanel.add(idButton);
 
