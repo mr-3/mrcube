@@ -254,7 +254,7 @@ public class TreeAlgorithm {
 					left_sibling++;
 
 				if (tmpnode != null) {
-					double slide_value = move_distance / (double) left_sibling;
+					double slide_value = move_distance / left_sibling;
 					for (tmpnode = node; tmpnode != ancestor_neighbor; tmpnode = tmpnode.data.leftSibling) {
 						tmpnode.data.prelim += move_distance;
 						tmpnode.data.modifier += move_distance;

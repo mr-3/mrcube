@@ -160,7 +160,7 @@ public class RSSPlugin extends MR3Plugin {
 		return (uri != null && isValidScheme(uri.getScheme()) && isValidHost(uri.getHost()) && isFile(uri));
 	}
 
-	public void storeChannelInfo(Element rootElement) throws MalformedURLException, IOException, SAXException, URISyntaxException {
+	public void storeChannelInfo(Element rootElement) throws URISyntaxException {
 		if (rootElement == null) {
 			return;
 		}

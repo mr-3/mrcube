@@ -47,8 +47,8 @@ public class EllipseView extends VertexView {
 		int b = (r.height + 1) / 2;
 
 		// Get center
-		int xCenter = (int) (x + a);
-		int yCenter = (int) (y + b);
+		int xCenter = x + a;
+		int yCenter = y + b;
 
 		// Compute angle
 		int dx = p.x - xCenter;

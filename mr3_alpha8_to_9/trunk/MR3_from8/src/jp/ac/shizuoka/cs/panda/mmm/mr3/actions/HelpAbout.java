@@ -1,5 +1,5 @@
 /*
- * Created on 2003/07/19
+ * Created on 2003-07-19
  *
  */
 package jp.ac.shizuoka.cs.panda.mmm.mr3.actions;

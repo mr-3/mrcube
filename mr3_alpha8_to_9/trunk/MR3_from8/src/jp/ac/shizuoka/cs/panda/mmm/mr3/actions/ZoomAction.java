@@ -68,9 +68,9 @@ public class ZoomAction extends AbstractAction {
 				return;
 			}
 			if (Math.abs(s.getWidth() - (p.x + p.getWidth())) > Math.abs(s.getHeight() - (p.x + p.getHeight())))
-				scale = (double) s.getWidth() / (p.x + p.getWidth());
+				scale = s.getWidth() / (p.x + p.getWidth());
 			else
-				scale = (double) s.getHeight() / (p.y + p.getHeight());
+				scale = s.getHeight() / (p.y + p.getHeight());
 			scale = Math.max(Math.min(scale, 16), .01);
 			graph.setScale(scale);
 		}

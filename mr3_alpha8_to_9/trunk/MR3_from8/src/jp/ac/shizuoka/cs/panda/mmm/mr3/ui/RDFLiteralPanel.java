@@ -46,7 +46,7 @@ public class RDFLiteralPanel extends JPanel implements ActionListener {
 		fillTextButton.addActionListener(this);
 		JPanel inlinePanel = new JPanel();
 		inlinePanel.add(langField);
-		;
+
 		inlinePanel.add(lineLength);
 		inlinePanel.add(fillTextButton);
 
