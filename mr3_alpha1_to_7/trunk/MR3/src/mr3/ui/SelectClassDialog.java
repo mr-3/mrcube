@@ -1,6 +1,8 @@
 package mr3.ui;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.*;
+import java.util.List;
 
 import javax.swing.*;
 
@@ -15,106 +17,155 @@ import com.jgraph.graph.*;
  *
  * @auther takeshi morita
  */
-public abstract class SelectClassDialog extends JDialog
-    implements ActionListener, GraphSelectionListener {
-     
-    protected boolean isOk;
-    protected JButton confirm;
-    protected JButton cancel;
+public abstract class SelectClassDialog extends JDialog implements ActionListener, GraphSelectionListener {
 
-    protected RDFGraph graph;
-    protected JPanel inlinePanel = new JPanel();
-    protected GridBagLayout gridbag;
-    protected GridBagConstraints c;
-    
-    protected RDFSInfoMap rdfsMap = RDFSInfoMap.getInstance();
+	protected boolean isOk;
+	protected JButton confirm;
+	protected JButton cancel;
 
-    public SelectClassDialog(String title) {
-        super((Frame)null, title, true);
+	private int index; // 検索のインデックス 
+	private String currentKey; //現在のキー
+	private List findList; // 検索リスト
+	protected JTextField findField;
+	protected JButton findButton;
 
-        initGraph();     
-        initEachDialogAttr();
-        initButton();
+	protected RDFGraph graph;
+	protected JPanel inlinePanel = new JPanel();
+	protected GridBagLayout gridbag;
+	protected GridBagConstraints c;
 
-        initGridLayout();
+	protected GraphManager gmanager;
+	protected RDFSInfoMap rdfsMap = RDFSInfoMap.getInstance();
 
-        setGraphLayout();
-        setEachDialogAttrLayout();
-        setCommonLayout();
-    }
+	public SelectClassDialog(String title, GraphManager manager) {
+		super((Frame) null, title, true);
+		gmanager = manager;
+		index = 0;
+		currentKey = null;
+		setResizable(false);
 
-    protected abstract void initEachDialogAttr();
-    
-    protected void initButton() {
-        confirm = new JButton("OK");
-        confirm.addActionListener(this);
-        cancel = new JButton("Cancel");
-        cancel.addActionListener(this);
-    }
+		initFindGroup();
+		initGraph();
+		initEachDialogAttr();
+		initButton();
 
-    protected void initGridLayout() {
-        gridbag = new GridBagLayout();
-        c = new GridBagConstraints();
-        inlinePanel.setLayout(gridbag);
-        c.anchor = GridBagConstraints.PAGE_START;
-        c.gridwidth = GridBagConstraints.REMAINDER;
-    }
-    
-    protected void setGraphLayout() {
-        JScrollPane graphScroll = new JScrollPane(graph);
-        graphScroll.setPreferredSize(new Dimension(450, 300));
-        graphScroll.setMinimumSize(new Dimension(450, 300));        
-        gridbag.setConstraints(graphScroll, c);
-        inlinePanel.add(graphScroll);
-    }
-    
-    protected abstract void setEachDialogAttrLayout();
+		initGridLayout();
+		setFindGroupLayout();
+		setGraphLayout();
+		setEachDialogAttrLayout();
+		setCommonLayout();
+	}
 
-    protected void setCommonLayout() {
-        c.gridwidth = GridBagConstraints.RELATIVE;
-        c.weightx = 1.0;
-        gridbag.setConstraints(confirm, c);
-        inlinePanel.add(confirm);
-        c.gridwidth = GridBagConstraints.REMAINDER;
-        gridbag.setConstraints(cancel, c);
-        inlinePanel.add(cancel);
+	protected abstract void initEachDialogAttr();
 
-        Container contentPane = getContentPane();
-        contentPane.add(inlinePanel);
-        setLocation(100, 100);
-        setSize(new Dimension(550, 450));
-        setVisible(false);
-    }
-    
-    private void initGraph() {
-        graph = new RDFGraph();
-        graph.setMarqueeHandler(new BasicMarqueeHandler());
-        graph.getSelectionModel().addGraphSelectionListener(this);
-        graph.setCloneable(false);
-        graph.setBendable(false);
-        graph.setDisconnectable(false);
-        graph.setPortsVisible(false);
-        graph.setDragEnabled(false);
-        graph.setDropEnabled(false);
-        graph.setEditable(false);
-    }
+	protected void initFindGroup() {
+		findField = new JTextField(30);
+		findButton = new JButton("Find Resource");
+		findButton.addActionListener(new FindAction());
+	}
 
-    public void replaceGraph(RDFGraph newGraph) {
-       	graph.setRDFState(newGraph.getRDFState());
-       	changeAllCellColor(Color.green);
-    }
+	class FindAction extends AbstractAction {
 
-    public abstract void valueChanged(GraphSelectionEvent e);
-    
-    public void actionPerformed(ActionEvent e) {
-        String type = (String)e.getActionCommand();
-        if (type.equals("OK")) {
-            isOk = true;
-        } else {
-            isOk = false;    
-        }
-        setVisible(false);
-    }
+		private void findNextResource(List findList) {
+			if (findList != null && findList.size() > 0) {
+				if (index == findList.size()) {
+					index = 0;
+				}
+				gmanager.jumpArea(findList.get(index), graph);
+				index++;
+			}
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			String key = findField.getText() + ".*";
+			if (currentKey == null || (!currentKey.equals(key))) {
+				currentKey = key;
+				findList = new ArrayList(gmanager.getSearchRDFSResult(key, graph));
+				findNextResource(findList);
+			} else {
+				findNextResource(findList);
+			}
+		}
+	}
+
+	protected void initButton() {
+		confirm = new JButton("OK");
+		confirm.addActionListener(this);
+		cancel = new JButton("Cancel");
+		cancel.addActionListener(this);
+	}
+
+	protected void initGridLayout() {
+		gridbag = new GridBagLayout();
+		c = new GridBagConstraints();
+		inlinePanel.setLayout(gridbag);
+		c.anchor = GridBagConstraints.PAGE_START;
+		c.gridwidth = GridBagConstraints.REMAINDER;
+	}
+
+	protected void setFindGroupLayout() {
+		JPanel findPanel = new JPanel();
+		findPanel.add(findField);
+		findPanel.add(findButton);
+		gridbag.setConstraints(findPanel, c);
+		inlinePanel.add(findPanel);
+	}
+
+	protected void setGraphLayout() {
+		JScrollPane graphScroll = new JScrollPane(graph);
+		graphScroll.setPreferredSize(new Dimension(450, 300));
+		graphScroll.setMinimumSize(new Dimension(450, 300));
+		gridbag.setConstraints(graphScroll, c);
+		inlinePanel.add(graphScroll);
+	}
+
+	protected abstract void setEachDialogAttrLayout();
+
+	protected void setCommonLayout() {
+		c.gridwidth = GridBagConstraints.RELATIVE;
+		c.weightx = 1.0;
+		gridbag.setConstraints(confirm, c);
+		inlinePanel.add(confirm);
+		c.gridwidth = GridBagConstraints.REMAINDER;
+		gridbag.setConstraints(cancel, c);
+		inlinePanel.add(cancel);
+
+		Container contentPane = getContentPane();
+		contentPane.add(inlinePanel);
+		setLocation(100, 100);
+		setSize(new Dimension(550, 500));
+		setVisible(false);
+	}
+
+	private void initGraph() {
+		graph = new RDFGraph();
+		graph.setMarqueeHandler(new BasicMarqueeHandler());
+		graph.getSelectionModel().addGraphSelectionListener(this);
+		graph.setCloneable(false);
+		graph.setBendable(false);
+		graph.setDisconnectable(false);
+		graph.setPortsVisible(false);
+		graph.setDragEnabled(false);
+		graph.setDropEnabled(false);
+		graph.setEditable(false);
+	}
+
+	public void replaceGraph(RDFGraph newGraph) {
+		graph.setRDFState(newGraph.getRDFState());
+		changeAllCellColor(Color.green);
+	}
+
+	public abstract void valueChanged(GraphSelectionEvent e);
+
+	public void actionPerformed(ActionEvent e) {
+		String type = (String) e.getActionCommand();
+		if (type.equals("OK")) {
+			isOk = true;
+		} else {
+			isOk = false;
+		}
+		setVisible(false);
+	}
 
 	protected void changeAllCellColor(Color color) {
 		Object[] cells = graph.getAllCells();

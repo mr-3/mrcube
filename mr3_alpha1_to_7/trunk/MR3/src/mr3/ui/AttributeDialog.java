@@ -1,6 +1,7 @@
 package mr3.ui;
 import java.awt.*;
 import java.awt.event.*;
+import java.net.*;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -15,6 +16,8 @@ public class AttributeDialog extends JInternalFrame implements ActionListener {
 
 	public AttributeDialog() {
 		super("Attribute Dialog", false, true);
+		URL attrDialogUrl = this.getClass().getClassLoader().getResource("mr3/resources/attrDialogIcon.gif");
+		setFrameIcon(new ImageIcon(attrDialogUrl));
 		showPropDialog = new JCheckBoxMenuItem("Show Attribute Dialog", true);
 		showPropDialog.addActionListener(this);
 		addInternalFrameListener(new InternalFrameAdapter() {

@@ -646,12 +646,11 @@ public class GraphManager {
 		return result;
 	}
 
-	private Set getSearchRDFSResult(String key, RDFGraph graph) {
+	public Set getSearchRDFSResult(String key, RDFGraph graph) {
 		Set result = new HashSet();
 		Object[] cells = graph.getAllCells();
 
 		for (int i = 0; i < cells.length; i++) {
-			//			if (graph.isRDFResourceCell(cells[i])) {
 			if (graph.isRDFSCell(cells[i])) {
 				RDFSInfo info = rdfsInfoMap.getCellInfo(cells[i]);
 				if (isMatches(key, info.getURI())) {
@@ -670,7 +669,7 @@ public class GraphManager {
 		return getSearchRDFSResult(key, propGraph);
 	}
 
-	private void jumpArea(Object cell, JGraph graph) {
+	public void jumpArea(Object cell, JGraph graph) {
 		graph.scrollCellToVisible(cell);
 		if (graph == rdfGraph) {
 			Object parent = graph.getModel().getParent(cell);

@@ -825,25 +825,28 @@ public class MR3 extends JFrame {
 	}
 
 	class EditorSelectAction extends AbstractAction {
-		public void actionPerformed(ActionEvent e) {
+
+		private void toFrontInternalFrame(int i) {
 			try {
-				String en = e.getActionCommand();
-				if (en.equals("To Front RDF Editor")) {
-					internalFrames[0].toFront();
-					internalFrames[0].setIcon(false);
-					internalFrames[0].setSelected(true);
-				} else if (en.equals("To Front Class Editor")) {
-					internalFrames[1].toFront();
-					internalFrames[1].setIcon(false);
-					internalFrames[1].setSelected(true);
-				} else if (en.equals("To Front Property Editor")) {
-					internalFrames[2].toFront();
-					internalFrames[2].setIcon(false);
-					internalFrames[2].setSelected(true);
-				}
+				internalFrames[i].toFront();
+				internalFrames[i].setIcon(false);
+				internalFrames[i].setSelected(true);
 			} catch (PropertyVetoException pve) {
 				pve.printStackTrace();
 			}
+		}
+
+		public void actionPerformed(ActionEvent e) {
+
+			String en = e.getActionCommand();
+			if (en.equals("To Front RDF Editor")) {
+				toFrontInternalFrame(0);
+			} else if (en.equals("To Front Class Editor")) {
+				toFrontInternalFrame(1);
+			} else if (en.equals("To Front Property Editor")) {
+				toFrontInternalFrame(2);
+			}
+
 		}
 	}
 
