@@ -15,6 +15,8 @@ import com.hp.hpl.mesa.rdf.jena.model.*;
  * upperList ... nameSpaces
  * lowerList ... localNames
  *
+ * RDFPropertyPanelÇ…ëgÇ›çûÇÒÇæÅD
+ *
  * @auther takeshi morita
  */
 public class SelectPropertyDialog extends SelectListDialog {

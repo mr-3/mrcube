@@ -128,8 +128,7 @@ public class RDFEditor extends Editor {
 		Edge edge = (Edge) cell;
 		Object domainType = getDomainType(edge);
 		Object rangeType = getRangeType(edge);
-		propPanel.setPropertyList(gmanager.getPropertyList());
-		propPanel.setValidPropertyList(gmanager.getValidPropertyList(domainType, rangeType));
+		propPanel.setPropertyList(gmanager.getPropertyList(), gmanager.getValidPropertyList(domainType, rangeType));
 		attrDialog.setContentPane(propPanel);
 	}
 
