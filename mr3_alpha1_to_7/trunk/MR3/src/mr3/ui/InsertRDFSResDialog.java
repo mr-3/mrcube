@@ -27,6 +27,7 @@ public class InsertRDFSResDialog extends JDialog implements ActionListener {
 	private JButton confirm;
 	private JButton cancel;
 
+	private static final int listWidth = 300;
 	private static final int boxWidth = 120;
 	private static final int boxHeight = 50;
 
@@ -46,7 +47,7 @@ public class InsertRDFSResDialog extends JDialog implements ActionListener {
 		uriPrefixBox.addActionListener(new ChangePrefixAction());
 
 		nsLabel = new JLabel("");
-		initComponent(nsLabel, "NameSpace", 300, 40);
+		initComponent(nsLabel, "NameSpace", listWidth, 40);
 		
 		uriPrefixBox.setSelectedItem(PrefixNSUtil.getBaseURIPrefix(baseURI));
 		PrefixNSUtil.replacePrefix((String) uriPrefixBox.getSelectedItem(), nsLabel);

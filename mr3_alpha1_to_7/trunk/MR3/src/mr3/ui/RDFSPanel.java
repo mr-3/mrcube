@@ -91,14 +91,14 @@ public abstract class RDFSPanel extends JPanel {
 		initComponent(uriPrefixBox, "Prefix", prefixBoxWidth, prefixBoxHeight);
 
 		idField = new JTextField();
-		initComponent(idField, "Local Name", 150, fieldHeight);
+		initComponent(idField, "Local Name", prefixBoxWidth, fieldHeight);
 
 		JPanel uriPanel = new JPanel();
 		uriPanel.add(uriPrefixBox);
 		uriPanel.add(idField);
 
 		nsLabel = new JLabel("");
-		initComponent(nsLabel, "NameSpace", 300, fieldHeight);
+		initComponent(nsLabel, "NameSpace", listWidth, fieldHeight);
 
 		isDefinedBy = new JTextField();
 		initComponent(isDefinedBy, "isDefinedBy", listWidth, fieldHeight);
