@@ -32,7 +32,7 @@ public class ExportRDF extends AbstractActionFile {
 
 	public void actionPerformed(ActionEvent e) {
 		Preferences userPrefs = mr3.getUserPrefs();
-		String type = e.getActionCommand();
+		String type = getName();
 		String ext = "rdf";
 		if (type.equals(RDF_NTriple) || type.equals(SelectedRDF_NTriple)) {
 			ext = "n3";
