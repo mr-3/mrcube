@@ -9,7 +9,7 @@ import javax.swing.tree.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.data.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.jgraph.*;
 
-import com.jgraph.graph.*;
+import org.jgraph.graph.*;
 
 public class RDFSTreePanel extends JPanel implements TreeSelectionListener {
 

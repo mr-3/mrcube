@@ -9,8 +9,8 @@ import java.util.*;
 
 import jp.ac.shizuoka.cs.panda.mmm.mr3.jgraph.*;
 
-import com.jgraph.*;
-import com.jgraph.graph.*;
+import org.jgraph.*;
+import org.jgraph.graph.*;
 
 /**
  * @author takeshi morita

@@ -3,8 +3,8 @@ import java.awt.*;
 import java.awt.geom.*;
 import java.util.*;
 
-import com.jgraph.*;
-import com.jgraph.graph.*;
+import org.jgraph.*;
+import org.jgraph.graph.*;
 
 /**
  * @author takeshi morita

@@ -33,9 +33,9 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-import com.jgraph.*;
-import com.jgraph.event.*;
-import com.jgraph.graph.*;
+import org.jgraph.*;
+import org.jgraph.event.*;
+import org.jgraph.graph.*;
 
 /**
  * @author takeshi morita

@@ -22,8 +22,8 @@
 package jp.ac.shizuoka.cs.panda.mmm.mr3.jgraph;
 import java.awt.*;
 
-import com.jgraph.*;
-import com.jgraph.graph.*;
+import org.jgraph.*;
+import org.jgraph.graph.*;
 
 public class EllipseView extends VertexView {
 

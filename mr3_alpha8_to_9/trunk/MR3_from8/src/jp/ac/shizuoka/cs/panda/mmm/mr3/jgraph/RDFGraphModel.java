@@ -1,5 +1,5 @@
 package jp.ac.shizuoka.cs.panda.mmm.mr3.jgraph;
-import com.jgraph.graph.*;
+import org.jgraph.graph.*;
 
 // A Custom Model that does not allow Self-References
 public class RDFGraphModel extends DefaultGraphModel {

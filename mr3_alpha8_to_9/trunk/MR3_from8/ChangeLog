@@ -5,6 +5,7 @@
   Show Class Graph Overview, Show Property Graph Overview)
 * 起動時にSplashWindowを表示するようになった．
 * JenaのバージョンをJena2 Betaにした．
+* JGraphのバージョンをJGraph3にした．
 * RDFリテラルにデータ型を指定できるようになった．
 * rdf_1..._(数)のプロパティは，表示しないようになった．
 * その他，細かい修正．

@@ -7,7 +7,7 @@ package jp.ac.shizuoka.cs.panda.mmm.mr3.jgraph;
 import java.awt.*;
 import java.awt.geom.*;
 
-import com.jgraph.plaf.basic.*;
+import org.jgraph.plaf.basic.*;
 
 /**
  * @author takeshi morita
