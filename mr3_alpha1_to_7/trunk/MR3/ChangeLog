@@ -25,6 +25,7 @@
    (EncodingをUTF-8または，UTF-16にすると，nullになる)
 * URIタイプがIDのＲＤＦリソースをコピー，ペーストする際，URIの重複を許していたのを修正．
 * プロジェクト保存時に，URIのタイプを保存できていなかったのを修正．
+* IDかＵＲＩかをimport時に判別できていなかったのを修正．
   
 === ■ α4 (2003-06-16)
 * RDF Editorのポップアップメニューに，Insert Connected ResourceとInsertConnected Literal
