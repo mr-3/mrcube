@@ -27,7 +27,6 @@ import com.hp.hpl.jena.rdf.arp.*;
 import com.hp.hpl.mesa.rdf.jena.common.*;
 import com.hp.hpl.mesa.rdf.jena.mem.*;
 import com.hp.hpl.mesa.rdf.jena.model.*;
-import com.jgraph.graph.*;
 
 /**
   *   Meta-  Model Management founded on RDF-baed Revision Reflection  
@@ -94,7 +93,7 @@ public class MR3 extends JFrame {
 
 		setSize(userPrefs.getInt(PrefConstants.WindowWidth, MAIN_FRAME_WIDTH), userPrefs.getInt(PrefConstants.WindowHeight, MAIN_FRAME_HEIGHT));
 		setLocation(userPrefs.getInt(PrefConstants.WindowPositionX, 50), userPrefs.getInt(PrefConstants.WindowPositionY, 50));
-//		setLookAndFeel();
+		//		setLookAndFeel();
 
 		attrDialog = new AttributeDialog();
 		gmanager = new GraphManager(attrDialog, userPrefs);
@@ -334,9 +333,9 @@ public class MR3 extends JFrame {
 		menu.add(mi);
 		menu.addSeparator();
 		JMenu importRDF = new JMenu("Import");
-		//		mi = new JMenuItem(PROJECT);
-		//		mi.addActionListener(new ImportProjectAction());
-		//		importRDF.add(mi);
+		mi = new JMenuItem(PROJECT);
+		mi.addActionListener(new ImportProjectAction());
+		importRDF.add(mi);
 		JMenu replace = new JMenu("Replace");
 
 		mi = new JMenuItem("RDF/XML (File)");
@@ -363,9 +362,9 @@ public class MR3 extends JFrame {
 
 		JMenu exportMenu = new JMenu("Export");
 		menu.add(exportMenu);
-		//		mi = new JMenuItem(PROJECT);
-		//		mi.addActionListener(new ExportProjectAction());
-		//		exportMenu.add(mi);
+		mi = new JMenuItem(PROJECT);
+		mi.addActionListener(new ExportProjectAction());
+		exportMenu.add(mi);
 		mi = new JMenuItem(RDFS_XML);
 		mi.addActionListener(new ExportRDFSAction());
 		exportMenu.add(mi);
@@ -837,9 +836,9 @@ public class MR3 extends JFrame {
 				Model projectModel = pm.extractProjectModel(model);
 				mr3Reader.mergeRDFS(model);
 				nsTableDialog.setCurrentNSPrefix();
-				pm.loadProject(projectModel, gmanager.getRDFGraph());
-				pm.loadProject(projectModel, gmanager.getClassGraph());
-				pm.loadProject(projectModel, gmanager.getPropertyGraph());
+				pm.loadProject(projectModel);
+				gmanager.removeTypeCells();
+				gmanager.addTypeCells();
 				gmanager.setIsImporting(false);
 			} catch (RDFException e1) {
 				e1.printStackTrace();
@@ -1172,31 +1171,14 @@ public class MR3 extends JFrame {
 	}
 
 	class ShowTypeCellAction implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			RDFGraph rdfGraph = gmanager.getRDFGraph();
-			Object[] rdfCells = rdfGraph.getAllCells();
+		public void actionPerformed(ActionEvent e) {			
 			gmanager.setIsShowTypeCell(showTypeCellBox.isSelected());
 			if (showTypeCellBox.isSelected()) {
-				addTypeCells(rdfGraph, rdfCells);
+				gmanager.addTypeCells();
 			} else {
-				gmanager.removeTypeCells(rdfGraph, rdfCells);
+				gmanager.removeTypeCells();
 			}
-		}
-
-		private void addTypeCells(RDFGraph rdfGraph, Object[] rdfCells) {
-			RDFCellMaker cellMaker = new RDFCellMaker(gmanager);
-			for (int i = 0; i < rdfCells.length; i++) {
-				if (rdfGraph.isRDFResourceCell(rdfCells[i])) {
-					DefaultGraphCell cell = (DefaultGraphCell) rdfCells[i];
-					RDFResourceInfo info = resInfoMap.getCellInfo(cell);
-					Map map = cell.getAttributes();
-					Rectangle rec = GraphConstants.getBounds(map);
-					GraphCell typeCell = cellMaker.addTypeCell(cell, new HashMap(), rec);
-					info.setTypeViewCell(typeCell);
-				}
-			}
-			gmanager.changeCellView();
-		}
+		}		
 	}
 
 	private void showSrcView() {
