@@ -26,7 +26,8 @@ public class RDFResourceInfoMap {
 	public RDFResourceInfo cloneRDFResourceInfo(RDFResourceInfo orgInfo, GraphCell typeCell) {
 		RDFResourceInfo newInfo = null;
 		if (orgInfo.getURIType() == URIType.ANONYMOUS) {
-			newInfo = new RDFResourceInfo(orgInfo.getURIType(), new AnonId().toString(), typeCell); 
+//			newInfo = new RDFResourceInfo(orgInfo.getURIType(), new AnonId().toString(), typeCell); 
+			newInfo = new RDFResourceInfo(orgInfo.getURIType(), ResourceFactory.createResource().toString(), typeCell); 
 		} else {
 			newInfo = new RDFResourceInfo(orgInfo.getURIType(), orgInfo.getURIStr(), typeCell);
 		}

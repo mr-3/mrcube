@@ -102,9 +102,9 @@ public class RDFResourceInfo implements Serializable {
 
 	public Resource getURI() {
 		if (uriType == URIType.ANONYMOUS) {
-			return new ResourceImpl(new AnonId(uri)); 
+			return new ResourceImpl(new AnonId(uri));
 		} else {
-			return ResourceFactory.createResource(uri); 
+			return ResourceFactory.createResource(uri);
 		}
 	}
 

@@ -14,6 +14,7 @@ public class ClassEditor extends Editor {
 	public ClassEditor(NameSpaceTableDialog nsD, FindResourceDialog findResD, GraphManager gm) {
 		super(Translator.getString("ClassEditor.Title"));
 		graph = gm.getClassGraph();
+		graph.setEditable(true);
 		graph.setDisconnectable(false);
 		initEditor(gm.getClassGraph(), gm, nsD, findResD);
 		setFrameIcon(Utilities.getImageIcon(Translator.getString("ClassEditor.Icon")));

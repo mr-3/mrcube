@@ -14,7 +14,6 @@ import org.w3c.dom.*;
 import org.xml.sax.*;
 
 import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.rdf.model.impl.*;
 import com.hp.hpl.jena.vocabulary.*;
 
 public class RSSPlugin extends MR3Plugin {
@@ -62,7 +61,8 @@ public class RSSPlugin extends MR3Plugin {
 				rssModel.add(ResourceFactory.createStatement(channel, RSS.description, rssModel.createLiteral(pluginUI.getChannelDescription())));
 				rssModel.add(ResourceFactory.createStatement(channel, RSS.title, rssModel.createLiteral(pluginUI.getChannelTitle())));
 				rssModel.add(ResourceFactory.createStatement(channel, DC.language, rssModel.createLiteral(pluginUI.getChannelLanguage())));
-				Resource anon = new ResourceImpl(new AnonId());
+//				Resource anon = new ResourceImpl(new AnonId());
+				Resource anon = ResourceFactory.createResource();
 				rssModel.add(ResourceFactory.createStatement(channel, RSS.items, anon));
 				rssModel.add(ResourceFactory.createStatement(anon, RDF.type, RDF.Seq));
 

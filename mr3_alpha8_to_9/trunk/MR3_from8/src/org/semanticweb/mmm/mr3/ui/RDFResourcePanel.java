@@ -271,7 +271,8 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		// setURI()をする前にURIタイプを変更する必要あり．URIタイプによって処理を分けているため
 		if (isAnonBox.isSelected()) {
 			resInfo.setURIType(URIType.ANONYMOUS);
-			resInfo.setURI(new AnonId().toString());
+//			resInfo.setURI(new AnonId().toString());
+			resInfo.setURI(ResourceFactory.createResource().toString());
 		} else {
 			resInfo.setURIType(URIType.URI);
 			resInfo.setURI(getResourceURI());
