@@ -1,0 +1,2 @@
+Main-Class: jp.ac.shizuoka.cs.panda.mmm.mr3.MR3
+Class-Path: ./lib/icu4j.jar \ ./lib/jena.jar  \ ./lib/jgraph.jar \ ./lib/xerces.jar \
