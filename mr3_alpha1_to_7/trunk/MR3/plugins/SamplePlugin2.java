@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.io.*;
 
 import javax.swing.*;
@@ -21,20 +22,21 @@ public class SamplePlugin2 extends MR3Plugin {
 		textArea = new JTextArea();
 		initSRCFrame();
 		srcFrame.getContentPane().add(textArea);				
-		getDesktopPane().add(srcFrame);
 	}
 
 	private void initSRCFrame() {
-		srcFrame = new JInternalFrame("Sample Plugin 2");
+		srcFrame = new JInternalFrame("Sample Plugin 2", true, true);
 		srcFrame.addInternalFrameListener(new InternalFrameAdapter() {
 			public void internalFrameClosing(InternalFrameEvent e) {
 				srcFrame.setVisible(false);
 			}
 		});
 		srcFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		srcFrame.setBounds(new Rectangle(100, 100, 450, 300));
 	}
 
 	public void exec() {
+		getDesktopPane().add(srcFrame);
 		srcFrame.setVisible(true);
 		try {
 			Model rdfModel = getRDFModel();
@@ -45,4 +47,5 @@ public class SamplePlugin2 extends MR3Plugin {
 			e.printStackTrace();
 		}
 	}
+	
 }

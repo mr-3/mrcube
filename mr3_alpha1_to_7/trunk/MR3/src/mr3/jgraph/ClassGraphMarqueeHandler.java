@@ -38,24 +38,38 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 	}
 
 	public GraphCell insertResourceCell(Point pt) {
-		String uri = JOptionPane.showInternalInputDialog(graph, "Please input URI");
+		//		String uri = JOptionPane.showInternalInputDialog(graph, "Please input URI");
+		InsertRDFSResDialog ird = new InsertRDFSResDialog("Input Resource");
+		if (!ird.isConfirm()) {
+			return null;
+		}
+		String uri = ird.getURI();
+		URIType uriType = ird.getURIType();
+
 		if (uri == null || gmanager.isEmptyURI(uri) || gmanager.isDuplicatedWithDialog(uri, null, GraphType.CLASS)) {
 			return null;
 		} else {
-			return cellMaker.insertClass(pt, uri);
+			return cellMaker.insertClass(pt, uri, uriType);
 		}
 	}
 
 	public void insertSubClass(Point pt, Object[] supCells) {
-		String uri = JOptionPane.showInternalInputDialog(graph, "Please input URI");
+		//		String uri = JOptionPane.showInternalInputDialog(graph, "Please input URI");
+		InsertRDFSResDialog ird = new InsertRDFSResDialog("Input Resource");
+		if (!ird.isConfirm()) {
+			return;
+		}
+		String uri = ird.getURI();
+		URIType uriType = ird.getURIType();
 		if (uri == null || gmanager.isEmptyURI(uri) || gmanager.isDuplicatedWithDialog(uri, null, GraphType.CLASS)) {
 			return;
 		} else {
 			pt.y += 100;
-			cellMaker.insertClass(pt, uri);
+			cellMaker.insertClass(pt, uri, uriType);
 			DefaultGraphCell cell = (DefaultGraphCell) graph.getSelectionCell();
 			Port sourcePort = (Port) cell.getChildAt(0);
 			connectSubToSups(sourcePort, supCells);
+			graph.setSelectionCell(cell);
 		}
 	}
 
@@ -71,8 +85,8 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 			}
 		});
 
-		if (!graph.isSelectionEmpty()) {
-			// Insert Sub Class
+		// cell != nullにしないと，一つだけセルを選択したときに，メニューが表示されない．なぜ？
+		if (cell != null || !graph.isSelectionEmpty()) { // Insert Sub Class
 			menu.add(new AbstractAction("Insert Sub Class") {
 				public void actionPerformed(ActionEvent e) {
 					if (!graph.isSelectionEmpty()) {
@@ -104,7 +118,7 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 			}
 		});
 
-		if (!graph.isSelectionEmpty()) {
+		if (cell != null || !graph.isSelectionEmpty()) {
 			menu.add(new AbstractAction("Remove") {
 				public void actionPerformed(ActionEvent e) {
 					gmanager.removeAction(graph);

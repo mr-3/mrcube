@@ -47,15 +47,19 @@ public class ClassEditor extends Editor {
 	}
 
 	public void valueChanged(GraphSelectionEvent e) {
-		lastSelectionCells = ChangeCellAttributes.changeSelectionCellColor(graph, lastSelectionCells);
-		if (gmanager.isSelectAbstractLevelMode()) {
-			Object[] cells = graph.getSelectionCells();
-			gmanager.setClassAbstractLevelSet(cells);
-			gmanager.changeCellView();
-		} else {
-			setToolStatus();
-			changeAttrPanel();
-			attrDialog.validate();
+		if (!gmanager.isImporting()) {
+			lastSelectionCells = ChangeCellAttributes.changeSelectionCellColor(graph, lastSelectionCells);
+			if (gmanager.isSelectAbstractLevelMode()) {
+				Object[] cells = graph.getSelectionCells();
+				gmanager.setClassAbstractLevelSet(cells);
+				gmanager.changeCellView();
+			} else {
+				setToolStatus();
+				if (attrDialog.isVisible()) {
+					changeAttrPanel();
+					attrDialog.validate();
+				}
+			}
 		}
 	}
 

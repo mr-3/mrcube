@@ -16,8 +16,8 @@ public class PropertyInfo extends RDFSInfo {
 	transient private Set subProperties;
 	transient private Set supProperties;
 
-	public PropertyInfo(String uri) {
-		super(uri);
+	public PropertyInfo(String uri, URIType type) {
+		super(uri, type);
 		domain = new HashSet();
 		range = new HashSet();
 		subProperties = new HashSet();
@@ -36,24 +36,43 @@ public class PropertyInfo extends RDFSInfo {
 		return Collections.unmodifiableSet(subProperties);
 	}
 
-	public Model getModel() {
+	public Model getModel(String baseURI) {
 		try {
 			Model tmpModel = super.getModel();
-			Resource res = new ResourceImpl(uri);
+			Resource res = null;
+
+			if (uriType == URIType.URI) {
+				res = new ResourceImpl(uri);
+			} else {
+				res = new ResourceImpl(baseURI + uri);
+			}
 
 			tmpModel.add(tmpModel.createStatement(res, RDF.type, RDF.Property));
 			for (Iterator i = supRDFS.iterator(); i.hasNext();) {
 				RDFSInfo propInfo = rdfsInfoMap.getCellInfo(i.next());
-				if (!propInfo.getURI().equals(MR3Resource.Property)) // MRCUBE.Propertyは，ルートになっているだけなので．
-					tmpModel.add(tmpModel.createStatement(res, RDFS.subPropertyOf, propInfo.getURI()));
+				if (!propInfo.getURI().equals(MR3Resource.Property)) { // MRCUBE.Propertyは，ルートになっているだけなので．
+					if (propInfo.getURIType() == URIType.URI) {
+						tmpModel.add(tmpModel.createStatement(res, RDFS.subPropertyOf, propInfo.getURI()));
+					} else {
+						tmpModel.add(tmpModel.createStatement(res, RDFS.subPropertyOf, new ResourceImpl(baseURI + propInfo.getURIStr())));
+					}
+				}
 			}
 			for (Iterator i = domain.iterator(); i.hasNext();) {
 				RDFSInfo classInfo = rdfsInfoMap.getCellInfo(i.next());
-				tmpModel.add(tmpModel.createStatement(res, RDFS.domain, classInfo.getURI()));
+				if (classInfo.getURIType() == URIType.URI) {
+					tmpModel.add(tmpModel.createStatement(res, RDFS.domain, classInfo.getURI()));
+				} else {
+					tmpModel.add(tmpModel.createStatement(res, RDFS.domain, new ResourceImpl(baseURI + classInfo.getURIStr())));
+				}
 			}
 			for (Iterator i = range.iterator(); i.hasNext();) {
 				RDFSInfo classInfo = rdfsInfoMap.getCellInfo(i.next());
-				tmpModel.add(tmpModel.createStatement(res, RDFS.range, classInfo.getURI()));
+				if (classInfo.getURIType() == URIType.URI) {
+					tmpModel.add(tmpModel.createStatement(res, RDFS.range, classInfo.getURI()));
+				} else {
+					tmpModel.add(tmpModel.createStatement(res, RDFS.domain, new ResourceImpl(baseURI + classInfo.getURIStr())));
+				}
 			}
 			return tmpModel;
 		} catch (RDFException e) {

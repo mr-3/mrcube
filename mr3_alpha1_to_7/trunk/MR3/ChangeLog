@@ -1,16 +1,31 @@
 == 更新履歴
 
-=== ■ α4 (2003/6/16)
-* RDF Editorのポップアップメニューに，Insert Connected ResourceとInsertConnected Literal
-  メニューを追加した．(選択されているリソースと矢印でつながった状態で，リソース（リテラル）
-  が挿入される）
+=== ■ α5 (2003/6/23)
 * Convertメニューに，Selected RDFとSelected RDFSメニューを追加した．選択しているリソース
 	を，XML表現または，N-Tripleに変換する．
 * 選択しているリソースを，XML表現または，N-Triple表現で保存可能になった．
 	(RDF及びRDFSで可能 )
 * Pluginのユーティリティメソッドに，	getSelectedRDFModel, getSelectedRDFSModel, 
   getSelectedClassModel, getSelectedPropertyModelを追加した．
+* プロジェクト名がタイトルバーに表示されるようになった
+* プログラム終了時に，プロジェクトの保存を確認するようになった．
+* Class Editorのメニューバー上のInsert Classアイコンを楕円から矩形にした
+* プロジェクトの保存で，ネームスペースのチェックを保存できるようになった．
+* 名前空間テーブルで，接頭辞を設定してテーブルに加えた時にデフォルトで
+　チェックするように変更した．
+* Help -> About MR^3でバージョンを表示するようになった．
+* 新規にRDFリソースを作った時点で、ＵＲＩ、ＩＤ、Anonymousの設定ができるようになった．
+* RDFSクラス，プロパティでURI，IDを選択できるようになった．
 
+
+==== Bug Fixes
+* ソースコードを表示するウィンドウが前面に表示されなかったのを修正．
+  
+=== ■ α4 (2003/6/16)
+* RDF Editorのポップアップメニューに，Insert Connected ResourceとInsertConnected Literal
+  メニューを追加した．(選択されているリソースと矢印でつながった状態で，リソース（リテラル）
+  が挿入される）
+  
 ==== Bug Fixes
 * 同じＩＤを持つはずの無名リソースがすべて違うＩＤを持ってしまうバグを修正．
 

@@ -135,30 +135,29 @@ public class RDFCellMaker {
 		return resourceCell;
 	}
 
-	public GraphCell insertClass(Point point, String uri) {
+	public GraphCell insertClass(Point point, String uri, URIType uriType) {
 		JGraph graph = gmanager.getClassGraph();
 		point = graph.snap(new Point(point)); // Snap the Point to the Grid
 		Map map = getClassMap(point);
-		//		RDFResourceCell vertex = new RDFResourceCell(uri);
 		RDFSClassCell vertex = new RDFSClassCell(uri);
 
 		setCell(graph, vertex, map);
 
-		RDFSInfo info = new ClassInfo(uri);
+		RDFSInfo info = new ClassInfo(uri, uriType);
 		rdfsInfoMap.putCellInfo(vertex, info);
 		gmanager.changeCellView();
 		gmanager.jumpClassArea(vertex);
 		return vertex;
 	}
 
-	public GraphCell insertProperty(Point point, String uri) {
+	public GraphCell insertProperty(Point point, String uri, URIType uriType) {
 		JGraph graph = gmanager.getPropertyGraph();
 		point = graph.snap(new Point(point)); // Snap the Point to the Grid
 		Map map = getPropertyMap(point);
 		RDFSPropertyCell vertex = new RDFSPropertyCell(uri);
 		setCell(graph, vertex, map);
 
-		RDFSInfo info = new PropertyInfo(uri);
+		RDFSInfo info = new PropertyInfo(uri, uriType);
 		rdfsInfoMap.putCellInfo(vertex, info);
 		gmanager.changeCellView();
 		gmanager.jumpPropertyArea(vertex);		

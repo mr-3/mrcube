@@ -185,18 +185,19 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 				list.add(cells[i]);
 			}
 		}
-		InsertResourceDialog ird = new InsertResourceDialog("Input Resource", list.toArray());
+		InsertRDFResDialog ird = new InsertRDFResDialog("Input Resource", list.toArray());
 		if (!ird.isConfirm()) {
 			return null;
 		}
 		String uri = ird.getURI();
 		Object resTypeCell = ird.getResourceType();
+		URIType uriType = ird.getURIType();
 		if (uri == null || gmanager.isDuplicatedWithDialog(uri, null, GraphType.RDF)) {
 			return null;
 		} else if (uri.length() == 0) {
 			return cellMaker.insertRDFResource(pt, uri, resTypeCell, URIType.ANONYMOUS);
 		} else {
-			return cellMaker.insertRDFResource(pt, uri, resTypeCell, URIType.URI);
+			return cellMaker.insertRDFResource(pt, uri, resTypeCell, uriType);
 		}
 	}
 
@@ -315,7 +316,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 		});
 
 		// Remove
-		if (!graph.isSelectionEmpty()) {
+		if (cell != null || !graph.isSelectionEmpty()) {
 			menu.add(new AbstractAction("Remove") {
 				public void actionPerformed(ActionEvent e) {
 					gmanager.removeAction(graph);

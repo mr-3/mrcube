@@ -11,6 +11,7 @@ public abstract class RDFSInfo implements Serializable {
 
 	//	transient protected Resource uri;
 	protected String uri;
+	protected URIType uriType;
 //	transient private Literal label; // 現在，選択されているラベル
 	private MR3Literal label; // 現在，選択されているラベル
 	private List labelList;
@@ -22,9 +23,10 @@ public abstract class RDFSInfo implements Serializable {
 	transient protected Set supRDFS;
 	transient protected RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
 
-	RDFSInfo(String uri) {
+	RDFSInfo(String uri, URIType type) {
 		//			this.uri = new ResourceImpl(uri);
 		this.uri = uri;
+		uriType = type;
 		labelList = new ArrayList();
 		commentList = new ArrayList();
 //		isDefinedBy = new ResourceImpl("");
@@ -110,6 +112,14 @@ public abstract class RDFSInfo implements Serializable {
 		uri = str;
 	}
 
+	public URIType getURIType() {
+		return uriType;
+	}
+	
+	public void setURIType(URIType type) {
+		uriType = type;		
+	}
+	
 	public Resource getURI() {
 		return new ResourceImpl(uri);
 	}

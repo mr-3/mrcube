@@ -12,6 +12,8 @@ import javax.swing.table.*;
 import mr3.data.*;
 import mr3.jgraph.*;
 
+import com.hp.hpl.mesa.rdf.jena.vocabulary.*;
+
 /**
  *  2002/12/29 NameSpaceTableDialog
  *
@@ -72,9 +74,16 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 			}
 		});
 
+		setDefaultNSPrefix();
 		setSize(new Dimension(780, 170));
 		setLocation(10, 350);
 		setVisible(false);
+	}
+
+	public void setDefaultNSPrefix() {
+		addNameSpaceTable(new Boolean(true), "rdf", RDF.getURI());
+		addNameSpaceTable(new Boolean(true), "rdfs", RDFS.getURI());
+		changeCellView();
 	}
 
 	public Serializable getState() {
@@ -88,10 +97,11 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		Map map = (Map) list.get(0);
 		NSTableModel model = (NSTableModel) list.get(1);
 		for (int i = 0; i < model.getRowCount(); i++) {
-			addNameSpaceTable((String)model.getValueAt(i, 1), (String)model.getValueAt(i, 2));
+			addNameSpaceTable((Boolean) model.getValueAt(i, 0), (String) model.getValueAt(i, 1), (String) model.getValueAt(i, 2));
 		}
 		// ここでprefixNSMapを設定しないと，上の内容を元に戻すことができない．(non validとなる）
 		prefixNSMap.putAll(map);
+		changeCellView();
 	}
 
 	class CloseNSTableAction extends AbstractAction {
@@ -115,11 +125,11 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		prefixNSMap = new HashMap();
 		// 一気にすべて削除する方法がわからない．
 		while (nsTableModel.getRowCount() != 0) {
-			nsTableModel.removeRow(nsTableModel.getRowCount()-1);
+			nsTableModel.removeRow(nsTableModel.getRowCount() - 1);
 		}
-		gmanager.setPrefixNSInfoSet(new HashSet());		
+		gmanager.setPrefixNSInfoSet(new HashSet());
 	}
-	
+
 	private void initTable() {
 		Object[] columnNames = new Object[] { "available", "prefix", "URI" };
 		nsTableModel = new NSTableModel(columnNames, 0);
@@ -183,7 +193,8 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == addNSButton) {
-			addNameSpaceTable(prefixField.getText(), nsLabel.getText());
+			addNameSpaceTable(new Boolean(true), prefixField.getText(), nsLabel.getText());
+			changeCellView();
 		} else if (e.getSource() == removeNSButton) {
 			removeNameSpaceTable();
 		} else if (e.getSource() == getNSButton) {
@@ -204,10 +215,10 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		return (ns != null && !ns.equals(""));
 	}
 
-	private void addNameSpaceTable(String prefix, String ns) {
+	private void addNameSpaceTable(Boolean isAvailable, String prefix, String ns) {
 		if (isValidPrefix(prefix) && isValidNS(ns)) {
 			prefixNSMap.put(prefix, ns);
-			Object[] list = new Object[] { new Boolean(false), prefix, ns };
+			Object[] list = new Object[] { isAvailable, prefix, ns };
 			nsTableModel.insertRow(nsTableModel.getRowCount(), list);
 			prefixField.setText("");
 			nsLabel.setText("");
