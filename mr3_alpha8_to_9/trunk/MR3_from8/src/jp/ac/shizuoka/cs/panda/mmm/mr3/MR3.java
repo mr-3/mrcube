@@ -127,7 +127,7 @@ public class MR3 extends JFrame {
 	}
 
 	private String getDefaultLocaleStr() {
-		if (Locale.getDefault() == Locale.JAPAN) {
+		if (Locale.getDefault().equals(Locale.JAPAN)) {
 			return "ja";
 		} else {
 			return "en";
