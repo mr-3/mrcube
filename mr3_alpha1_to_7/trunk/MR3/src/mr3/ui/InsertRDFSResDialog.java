@@ -28,6 +28,7 @@ public class InsertRDFSResDialog extends JDialog implements ActionListener {
 	private JButton cancel;
 
 	private static final int listWidth = 300;
+	private static final int listHeight = 40;
 	private static final int boxWidth = 120;
 	private static final int boxHeight = 50;
 
@@ -39,7 +40,7 @@ public class InsertRDFSResDialog extends JDialog implements ActionListener {
 
 		idField = new JTextField(15);
 		idField.setText("");
-		initComponent(idField, "ID", 150, 40);
+		initComponent(idField, "ID", 150, listHeight);
 
 		uriPrefixBox = new JComboBox();
 		initComponent(uriPrefixBox, "Prefix", boxWidth, boxHeight);
@@ -47,7 +48,7 @@ public class InsertRDFSResDialog extends JDialog implements ActionListener {
 		uriPrefixBox.addActionListener(new ChangePrefixAction());
 
 		nsLabel = new JLabel("");
-		initComponent(nsLabel, "NameSpace", listWidth, 40);
+		initComponent(nsLabel, "NameSpace", listWidth, listHeight);
 		
 		uriPrefixBox.setSelectedItem(PrefixNSUtil.getBaseURIPrefix(baseURI));
 		PrefixNSUtil.replacePrefix((String) uriPrefixBox.getSelectedItem(), nsLabel);
@@ -81,7 +82,7 @@ public class InsertRDFSResDialog extends JDialog implements ActionListener {
 		contentPane.add(panel);
 
 		setLocation(300, 300);
-		setSize(new Dimension(400, 180));
+		setSize(new Dimension(350, 180));
 		setResizable(false);
 		setVisible(true);
 	}

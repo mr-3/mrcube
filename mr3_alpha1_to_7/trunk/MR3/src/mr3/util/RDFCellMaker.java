@@ -195,7 +195,7 @@ public class RDFCellMaker {
 		HashMap attributes = new HashMap();
 		Map map = getEdgeMap(edgeName);
 		attributes.put(edge, map);
-		graph.getModel().insert(new Object[] { edge }, attributes, cs, null, null);
+		graph.getGraphLayoutCache().insert(new Object[] { edge }, attributes, cs, null, null);
 	}
 
 	public void selfConnect(Port port, String edgeName, RDFGraph graph) {
@@ -205,7 +205,7 @@ public class RDFCellMaker {
 		Map map = getEdgeMap(edgeName);
 		GraphConstants.setRouting(map, GraphConstants.ROUTING_SIMPLE);
 		attributes.put(edge, map);
-		graph.getModel().insert(new Object[] { edge }, attributes, cs, null, null);
+		graph.getGraphLayoutCache().insert(new Object[] { edge }, attributes, cs, null, null);
 	}
 
 	public GraphCell insertClass(Point point, String uri) {

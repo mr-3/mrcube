@@ -19,9 +19,10 @@ public class SamplePlugin1 extends MR3Plugin {
 	public void exec() {
 		ModelMem sampleModel = new ModelMem();
 		try {
-			Resource sampleResource = new ResourceImpl("http://mrcube.sample.resource");
-			Resource sampleResourceType = new ResourceImpl("http://mrcube.sample.resourceType");
-			Property sampleProperty = new PropertyImpl("http://mrcube.sample.property");
+			String sampleURI = "http://panda.cs.inf.shizuoka.ac.jp/mmm/mr3#";
+			Resource sampleResource = new ResourceImpl(sampleURI+"sample_resource");
+			Resource sampleResourceType = new ResourceImpl(sampleURI+"sample_resourceType");
+			Property sampleProperty = new PropertyImpl(sampleURI+"sample_property");
             Literal sampleLiteral = new LiteralImpl("Sample");
 			Statement stmt = sampleModel.createStatement(sampleResource, sampleProperty, sampleLiteral);
 			sampleModel.add(stmt);
