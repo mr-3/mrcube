@@ -15,7 +15,6 @@ import mr3.ui.NameSpaceTableDialog.*;
 import com.hp.hpl.mesa.rdf.jena.common.*;
 import com.hp.hpl.mesa.rdf.jena.mem.*;
 import com.hp.hpl.mesa.rdf.jena.model.*;
-import com.hp.hpl.mesa.rdf.jena.vocabulary.*;
 import com.jgraph.graph.*;
 
 /**
@@ -41,42 +40,54 @@ public class ProjectManager {
 		RDFGraph graph = gmanager.getRDFGraph();
 		Object[] cells = graph.getAllCells();
 		for (int i = 0; i < cells.length; i++) {
-			if (graph.isRDFResourceCell(cells[i])) {
-				GraphCell cell = (GraphCell) cells[i];
-				Rectangle rec = GraphConstants.getBounds(cell.getAttributes());
-				RDFResourceInfo info = resInfoMap.getCellInfo(cell);
-				projectModel.add(info.getURI(), MR3Resource.PointX, rec.getX());
-				projectModel.add(info.getURI(), MR3Resource.PointY, rec.getY());
-				projectModel.add(info.getURI(), MR3Resource.NodeWidth, rec.getWidth());
-				projectModel.add(info.getURI(), MR3Resource.NodeHeight, rec.getHeight());
-			} else if (graph.isRDFPropertyCell(cells[i])) {
-				Edge edge = (Edge) cells[i];
-				GraphCell sourceCell = (GraphCell) graph.getSourceVertex(edge);
-				GraphCell targetCell = (GraphCell) graph.getTargetVertex(edge);
-				if (graph.isRDFLiteralCell(targetCell)) {
-					Object propCell = rdfsInfoMap.getEdgeInfo(edge);
-					RDFSInfo propInfo = rdfsInfoMap.getCellInfo(propCell);
-					RDFResourceInfo info = resInfoMap.getCellInfo(sourceCell);
-					Property property = null;
-					if (propInfo == null) {
-						property = MR3Resource.Nil;
-					} else {
-						property = new PropertyImpl(propInfo.getURI().getURI());
-					}
-					Rectangle rec = GraphConstants.getBounds(targetCell.getAttributes());
-					Literal litInfo = litInfoMap.getCellInfo(targetCell);
-					Resource litRes = new ResourceImpl();
-					projectModel.add(litRes, RDF.type, new ResourceImpl(MR3Resource.Literal + Integer.toString(literal_cnt++)));
-					projectModel.add(info.getURI(), property, litRes);
-					projectModel.add(litRes, MR3Resource.LiteralLang, litInfo.getLanguage());
-					projectModel.add(litRes, MR3Resource.LiteralString, litInfo.getString());
-					projectModel.add(litRes, MR3Resource.PointX, rec.getX());
-					projectModel.add(litRes, MR3Resource.PointY, rec.getY());
-					projectModel.add(litRes, MR3Resource.NodeWidth, rec.getWidth());
-					projectModel.add(litRes, MR3Resource.NodeHeight, rec.getHeight());
-				}
+			GraphCell cell = (GraphCell) cells[i];
+			if (graph.isRDFResourceCell(cell)) {
+				addRDFResourceProjectModel(projectModel, cell);
+			} else if (graph.isRDFPropertyCell(cell)) {
+				literal_cnt = addRDFLiteralProjectModel(projectModel, literal_cnt, cell);
 			}
 		}
+	}
+
+	private void addRDFResourceProjectModel(Model projectModel, GraphCell cell) throws RDFException {
+		Rectangle rec = GraphConstants.getBounds(cell.getAttributes());
+		RDFResourceInfo info = resInfoMap.getCellInfo(cell);
+		projectModel.add(info.getURI(), MR3Resource.PointX, rec.getX());
+		projectModel.add(info.getURI(), MR3Resource.PointY, rec.getY());
+		projectModel.add(info.getURI(), MR3Resource.NodeWidth, rec.getWidth());
+		projectModel.add(info.getURI(), MR3Resource.NodeHeight, rec.getHeight());
+	}
+
+	private int addRDFLiteralProjectModel(Model projectModel, int literal_cnt, GraphCell cell) throws RDFException {
+		Edge edge = (Edge) cell;
+		RDFGraph graph = gmanager.getRDFGraph();
+		GraphCell sourceCell = (GraphCell) graph.getSourceVertex(edge);
+		GraphCell targetCell = (GraphCell) graph.getTargetVertex(edge);
+		if (graph.isRDFLiteralCell(targetCell)) {
+			RDFResourceInfo info = resInfoMap.getCellInfo(sourceCell);
+
+			Object propCell = rdfsInfoMap.getEdgeInfo(edge);
+			RDFSInfo propInfo = rdfsInfoMap.getCellInfo(propCell);
+
+			Resource litRes = new ResourceImpl(MR3Resource.Literal + Integer.toString(literal_cnt++));
+			projectModel.add(litRes, MR3Resource.HasLiteralResource, info.getURI());
+			if (propInfo == null) {
+				projectModel.add(litRes, MR3Resource.LiteralProperty, MR3Resource.Nil);
+			} else {
+				projectModel.add(litRes, MR3Resource.LiteralProperty, propInfo.getURI());
+			}
+
+			Literal litInfo = litInfoMap.getCellInfo(targetCell);
+			projectModel.add(litRes, MR3Resource.LiteralLang, litInfo.getLanguage());
+			projectModel.add(litRes, MR3Resource.LiteralString, litInfo.getString());
+
+			Rectangle rec = GraphConstants.getBounds(targetCell.getAttributes());
+			projectModel.add(litRes, MR3Resource.PointX, rec.getX());
+			projectModel.add(litRes, MR3Resource.PointY, rec.getY());
+			projectModel.add(litRes, MR3Resource.NodeWidth, rec.getWidth());
+			projectModel.add(litRes, MR3Resource.NodeHeight, rec.getHeight());
+		}
+		return literal_cnt;
 	}
 
 	private void addRDFSProjectModel(Model projectModel, RDFGraph graph) throws RDFException {
@@ -121,12 +132,25 @@ public class ProjectManager {
 		return projectModel;
 	}
 
+	public Model getLiteralModel(Model model) throws RDFException {
+		Model literalModel = new ModelMem();
+		for (StmtIterator i = model.listStatements(); i.hasNext();) {
+			Statement stmt = i.next();
+			if (stmt.getObject() instanceof Literal) {
+				literalModel.add(stmt);
+			}
+		}
+		return literalModel;
+	}
+
 	private boolean hasProjectPredicate(Statement stmt) {
 		return (
 			stmt.getPredicate().equals(MR3Resource.PointX)
 				|| stmt.getPredicate().equals(MR3Resource.PointY)
 				|| stmt.getPredicate().equals(MR3Resource.NodeWidth)
 				|| stmt.getPredicate().equals(MR3Resource.NodeHeight)
+				|| stmt.getPredicate().equals(MR3Resource.LiteralProperty)
+				|| stmt.getPredicate().equals(MR3Resource.HasLiteralResource)
 				|| stmt.getPredicate().equals(MR3Resource.LiteralLang)
 				|| stmt.getPredicate().equals(MR3Resource.LiteralString)
 				|| stmt.getPredicate().equals(MR3Resource.Prefix)
@@ -171,11 +195,14 @@ public class ProjectManager {
 		Map uriNodeInfoMap = new HashMap();
 		Map uriPrefixMap = new HashMap();
 		Map uriIsAvailableMap = new HashMap();
+
+		// あとは，１からｎまで番号のついたリテラルリソースを
+		// 解析して，グラフに追加するだけ		
 		for (StmtIterator i = model.listStatements(); i.hasNext();) {
 			Statement stmt = i.next();
-			Rectangle rec = (Rectangle) uriNodeInfoMap.get(stmt.getSubject());
+			MR3Literal rec = (MR3Literal) uriNodeInfoMap.get(stmt.getSubject());
 			if (rec == null) {
-				rec = new Rectangle();
+				rec = new MR3Literal();
 				uriNodeInfoMap.put(stmt.getSubject(), rec);
 			}
 			if (stmt.getPredicate().equals(MR3Resource.PointX)) {
@@ -186,8 +213,20 @@ public class ProjectManager {
 				setNodeWidth(uriNodeInfoMap, stmt, rec);
 			} else if (stmt.getPredicate().equals(MR3Resource.NodeHeight)) {
 				setNodeHeight(uriNodeInfoMap, stmt, rec);
+			} else if (stmt.getPredicate().equals(MR3Resource.LiteralLang)) {
+				rec.setLanguage(stmt.getObject().toString());
+				uriNodeInfoMap.put(stmt.getSubject(), rec);
+			} else if (stmt.getPredicate().equals(MR3Resource.LiteralString)) {
+				rec.setString(stmt.getObject().toString());
+				uriNodeInfoMap.put(stmt.getSubject(), rec);
 			} else if (stmt.getPredicate().equals(MR3Resource.Prefix)) {
 				uriPrefixMap.put(stmt.getSubject().getURI(), stmt.getObject().toString());
+			} else if (stmt.getPredicate().equals(MR3Resource.HasLiteralResource)) {
+				rec.setResource(stmt.getObject().toString());
+				uriNodeInfoMap.put(stmt.getSubject(), rec);
+			} else if (stmt.getPredicate().equals(MR3Resource.LiteralProperty)) {
+				rec.setProperty(stmt.getObject().toString());
+				uriNodeInfoMap.put(stmt.getSubject(), rec);
 			} else if (stmt.getPredicate().equals(MR3Resource.Is_prefix_available)) {
 				if (stmt.getObject().toString().equals("true")) {
 					uriIsAvailableMap.put(stmt.getSubject().getURI(), new Boolean(true));
@@ -200,27 +239,27 @@ public class ProjectManager {
 		changeNSModel(uriPrefixMap, uriIsAvailableMap);
 	}
 
-	private void setNodeWidth(Map uriNodeInfoMap, Statement stmt, Rectangle rec) {
+	private void setNodeWidth(Map uriNodeInfoMap, Statement stmt, MR3Literal rec) {
 		int width = (int) Float.parseFloat(stmt.getObject().toString());
-		rec.width = width;
+		rec.setWidth(width);
 		uriNodeInfoMap.put(stmt.getSubject(), rec);
 	}
 
-	private void setNodeHeight(Map uriNodeInfoMap, Statement stmt, Rectangle rec) {
+	private void setNodeHeight(Map uriNodeInfoMap, Statement stmt, MR3Literal rec) {
 		int height = (int) Float.parseFloat(stmt.getObject().toString());
-		rec.height = height;
+		rec.setHeight(height);
 		uriNodeInfoMap.put(stmt.getSubject(), rec);
 	}
 
-	private void setPositionY(Map uriNodeInfoMap, Statement stmt, Rectangle rec) {
+	private void setPositionY(Map uriNodeInfoMap, Statement stmt, MR3Literal rec) {
 		int y = (int) Float.parseFloat(stmt.getObject().toString());
-		rec.y = y;
+		rec.setY(y);
 		uriNodeInfoMap.put(stmt.getSubject(), rec);
 	}
 
-	private void setPositionX(Map uriNodeInfoMap, Statement stmt, Rectangle rec) {
+	private void setPositionX(Map uriNodeInfoMap, Statement stmt, MR3Literal rec) {
 		int x = (int) Float.parseFloat(stmt.getObject().toString());
-		rec.x = x;
+		rec.setX(x);
 		uriNodeInfoMap.put(stmt.getSubject(), rec);
 	}
 
