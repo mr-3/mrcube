@@ -277,7 +277,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		}
 	}
 
-	private void addNameSpaceTable(Boolean isAvailable, String prefix, String ns) {
+	public void addNameSpaceTable(Boolean isAvailable, String prefix, String ns) {
 		if (isValidPrefixWithWarning(prefix) && isValidNSWithWarning(ns)) {
 			prefixNSMap.put(prefix, ns);
 			Object[] list = new Object[] { isAvailable, prefix, ns };

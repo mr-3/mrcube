@@ -201,7 +201,24 @@ public class GraphManager {
 		changeCellView();
 	}
 
-	public void removeTypeCells(RDFGraph rdfGraph, Object[] rdfCells) {
+	public void addTypeCells() {
+		Object[] rdfCells = rdfGraph.getAllCells();
+		RDFCellMaker cellMaker = new RDFCellMaker(this);
+		for (int i = 0; i < rdfCells.length; i++) {
+			if (rdfGraph.isRDFResourceCell(rdfCells[i])) {
+				DefaultGraphCell cell = (DefaultGraphCell) rdfCells[i];
+				RDFResourceInfo info = resInfoMap.getCellInfo(cell);
+				Map map = cell.getAttributes();
+				Rectangle rec = GraphConstants.getBounds(map);
+				GraphCell typeCell = cellMaker.addTypeCell(cell, new HashMap(), rec);
+				info.setTypeViewCell(typeCell);
+			}
+		}
+		changeCellView();
+	}
+
+	public void removeTypeCells() {
+		Object[] rdfCells = rdfGraph.getAllCells();
 		List typeCellList = new ArrayList();
 		for (int i = 0; i < rdfCells.length; i++) {
 			GraphCell cell = (GraphCell) rdfCells[i];
@@ -346,68 +363,34 @@ public class GraphManager {
 		return nameSpaces;
 	}
 
-	private GraphCell getCell(Resource res, RDFGraph graph) {
-		GraphCell cell = null;
-		if (isRDFGraph(graph)) {
-			cell = (GraphCell) getRDFResourceCell(res);
-		} else if (isClassGraph(graph)) {
-			if (rdfsInfoMap.isClassCell(res)) {
-				cell = (GraphCell) getClassCell(res, false);
-			}
-		} else if (isPropertyGraph(graph)) {
-			if (rdfsInfoMap.isPropertyCell(res)) {
-				cell = (GraphCell) getPropertyCell(res, false);
+	public void setNodeBounds(Map uriNodeInfoMap) {
+		for (Iterator i = uriNodeInfoMap.keySet().iterator(); i.hasNext();) {
+			Resource uri = (Resource) i.next();
+			Rectangle rec = (Rectangle) uriNodeInfoMap.get(uri);
+
+			GraphCell cell = (GraphCell) getRDFResourceCell(uri);
+			if (cell != null) {
+				setCellBounds(rdfGraph, cell, rec);
+			} else if (rdfsInfoMap.isClassCell(uri)) {
+				cell = (GraphCell) getClassCell(uri, false);
+				setCellBounds(classGraph, cell, rec);
+			} else if (rdfsInfoMap.isPropertyCell(uri)) {
+				cell = (GraphCell) getPropertyCell(uri, false);
+				setCellBounds(propGraph, cell, rec);
 			}
 		}
-		return cell;
+	}
+
+	private void setCellBounds(RDFGraph graph, GraphCell cell, Rectangle rec) {
+		Map map = cell.getAttributes();
+		GraphConstants.setBounds(map, rec);
+		editCell(cell, map, graph);
 	}
 
 	private void editCell(GraphCell cell, Map map, RDFGraph graph) {
 		Map nested = new HashMap();
 		nested.put(cell, GraphConstants.cloneMap(map));
 		graph.getModel().edit(nested, null, null, null);
-	}
-
-	public void setPositionX(Resource subject, RDFNode object, RDFGraph graph) {
-		GraphCell cell = getCell(subject, graph);
-		if (cell == null) {
-			return;
-		}
-		if (isRDFGraph(graph)) {
-			RDFResourceInfo info = resInfoMap.getCellInfo(cell);
-			GraphCell typeCell = (GraphCell) info.getTypeViewCell();
-			Map map = typeCell.getAttributes();
-			Rectangle rec = GraphConstants.getBounds(map);
-			rec.x = (int) Float.parseFloat(object.toString());
-			GraphConstants.setBounds(map, rec);
-			editCell(typeCell, map, graph);
-		}
-		Map map = cell.getAttributes();
-		Rectangle rec = GraphConstants.getBounds(map);
-		rec.x = (int) Float.parseFloat(object.toString());
-		GraphConstants.setBounds(map, rec);
-		editCell(cell, map, graph);
-	}
-
-	public void setPositionY(Resource subject, RDFNode object, RDFGraph graph) {
-		GraphCell cell = getCell(subject, graph);
-		if (cell == null) {
-			return;
-		}
-		if (isRDFGraph(graph)) {
-			RDFResourceInfo info = resInfoMap.getCellInfo(cell);
-			GraphCell typeCell = (GraphCell) info.getTypeViewCell();
-			Map map = typeCell.getAttributes();
-			Rectangle rec = GraphConstants.getBounds(map);
-			rec.y = (int) Float.parseFloat(object.toString()) + 25;
-			GraphConstants.setBounds(map, rec);
-			editCell(typeCell, map, graph);
-		}
-		Map map = cell.getAttributes();
-		Rectangle rec = GraphConstants.getBounds(map);
-		rec.y = (int) Float.parseFloat(object.toString());
-		GraphConstants.setBounds(map, rec);
-		editCell(cell, map, graph);
 	}
 
 	public void setCellValue(GraphCell cell, String value) {
@@ -573,7 +556,7 @@ public class GraphManager {
 
 	public void changeCellView() {
 		if (!isShowTypeCell) {
-			removeTypeCells(getRDFGraph(), getRDFGraph().getAllCells());
+			removeTypeCells();
 		}
 		changeClassCellView();
 		changePropertyCellView();
