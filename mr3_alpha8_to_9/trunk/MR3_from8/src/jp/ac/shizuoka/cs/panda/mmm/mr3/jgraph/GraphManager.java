@@ -1168,7 +1168,6 @@ public class GraphManager {
 
 	public void applyTreeLayout() {
 		removeTypeCells();
-		//		applySugiyamaLayout(rdfGraph, new Point(200, 200));
 		applyTreeLayout(rdfGraph, 'r');
 		//		applyTreeLayout(rdfGraph, TreeLayoutAlgorithm.LEFT_TO_RIGHT, 200, 20);
 		addTypeCells();
@@ -1176,50 +1175,42 @@ public class GraphManager {
 	}
 
 	public void applyRDFSTreeLayout() {
-		//		applySugiyamaLayout(classGraph, new Point(200, 200));
 		applyTreeLayout(classGraph, 'u');
-		//		applyTreeLayout(classGraph, TreeLayoutAlgorithm.UP_TO_DOWN, 30, 50);
-		//		applySugiyamaLayout(propGraph, new Point(200, 200));
+		//		applyTreeLayout(classGraph, TreeLayoutAlgorithm.UP_TO_DOWN, 30, 50);		
 		applyTreeLayout(propGraph, 'u');
 		//		applyTreeLayout(propGraph, TreeLayoutAlgorithm.UP_TO_DOWN, 30, 50);
 		changeCellView();
 		clearSelection();
 	}
 
-	public void applySugiyamaLayout(RDFGraph graph, Point space) {
-		SugiyamaLayoutAlgorithm sugiyamaLayout = new SugiyamaLayoutAlgorithm();
-		sugiyamaLayout.perform(graph, true, space);
-		centerCellsInGraph(graph);
-	}
-
-	public void applyTreeLayout(RDFGraph graph, int orientation, int distance, int border) {
-		Map cellLayoutMap = new HashMap();
-		Set dataSet = initGraphLayoutData(graph, cellLayoutMap);
-		Set rootCells = new HashSet();
-		for (Iterator i = dataSet.iterator(); i.hasNext();) {
-			GraphLayoutData data = (GraphLayoutData) i.next();
-			DefaultGraphCell cell = (DefaultGraphCell) data.getCell();
-			addChild(graph, cell, data, cellLayoutMap);
-			if (!data.hasParent()) {
-				rootCells.add(cell);
-			}
-		}
-
-		Object tmpRoot = null;
-		if (rootCells.size() != 1) {
-			tmpRoot = collectRoot(rootCells, dataSet, cellLayoutMap);
-		}
-		TreeLayoutAlgorithm treeLayout = new TreeLayoutAlgorithm(orientation, distance, border);
-		if (tmpRoot != null) {
-			treeLayout.perform(graph, new Object[] { tmpRoot });
-		} else {
-			treeLayout.perform(graph, rootCells.toArray());
-		}
-		dataSet.remove(cellLayoutMap.get(tmpRoot));
-		removeTemporaryRoot((DefaultGraphCell) tmpRoot);
-
-		centerCellsInGraph(graph);
-	}
+	//	public void applyTreeLayout(RDFGraph graph, int orientation, int distance, int border) {
+	//		Map cellLayoutMap = new HashMap();
+	//		Set dataSet = initGraphLayoutData(graph, cellLayoutMap);
+	//		Set rootCells = new HashSet();
+	//		for (Iterator i = dataSet.iterator(); i.hasNext();) {
+	//			GraphLayoutData data = (GraphLayoutData) i.next();
+	//			DefaultGraphCell cell = (DefaultGraphCell) data.getCell();
+	//			addChild(graph, cell, data, cellLayoutMap);
+	//			if (!data.hasParent()) {
+	//				rootCells.add(cell);
+	//			}
+	//		}
+	//
+	//		Object tmpRoot = null;
+	//		if (rootCells.size() != 1) {
+	//			tmpRoot = collectRoot(rootCells, dataSet, cellLayoutMap);
+	//		}
+	//		TreeLayoutAlgorithm treeLayout = new TreeLayoutAlgorithm(orientation, distance, border);
+	//		if (tmpRoot != null) {
+	//			treeLayout.perform(graph, new Object[] { tmpRoot });
+	//		} else {
+	//			treeLayout.perform(graph, rootCells.toArray());
+	//		}
+	//		dataSet.remove(cellLayoutMap.get(tmpRoot));
+	//		removeTemporaryRoot((DefaultGraphCell) tmpRoot);
+	//
+	//		centerCellsInGraph(graph);
+	//	}
 
 	public void applyTreeLayout(RDFGraph graph, char arc) {
 		Map cellLayoutMap = new HashMap();

@@ -9,7 +9,8 @@
 * RDFグラフ，クラスグラフ，プロパティグラフをPNG形式でエクスポートできるようになった．
    File->Export->IMG->*
 * RDFSの置換ができるようになった．File->Import->Replace->RDFS/XML(File|URI)
-
+* getRDFGraph()，getClassGraph()，getPropertyGraph()メソッドをMR3Pluginクラスに追加．
+   プラグインで，レイアウトを行えるようになった．(File->Plugins->SugiyamaLayout)
 ==== Bug Fixes
 * 初めて起動するときに，各エディタが表示されていなかったのを修正．
 * デフォルトの選択時の色とRDFSプロパティの色がRDFリソースの色と同色だったのを修正．

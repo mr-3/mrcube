@@ -1,7 +1,7 @@
 // This file is part of the Echidna project
 // (C) 2002 Forschungszentrum Informatik (FZI) Karlsruhe
 // Please visit our website at http://echidna.sf.net
-package jp.ac.shizuoka.cs.panda.mmm.mr3.layout;
+package jp.ac.shizuoka.cs.panda.mmm.mr3.layoutPlugin;
 
 import java.awt.*;
 import java.text.*;

@@ -1,4 +1,4 @@
-package jp.ac.shizuoka.cs.panda.mmm.mr3.layout;
+package jp.ac.shizuoka.cs.panda.mmm.mr3.layoutPlugin;
 
 import java.awt.*;
 import java.util.*;
@@ -27,7 +27,7 @@ public class TreeLayoutAlgorithm {
 	public static final int UP_TO_DOWN = 1;
 	public static final int DEFAULT_ORIENTATION = LEFT_TO_RIGHT;
 
-	protected ProgressDialog dlgProgress = new ProgressDialog((Frame) null, "Progress:", false);
+	public ProgressDialog dlgProgress = new ProgressDialog((Frame) null, "Progress:", false);
 
 	private JGraph jgraph;
 	protected int orientation;
