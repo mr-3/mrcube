@@ -11,6 +11,7 @@ import javax.swing.*;
 
 import jp.ac.shizuoka.cs.panda.mmm.mr3.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.jgraph.*;
+import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 
 import com.hp.hpl.jena.rdf.model.*;
 
@@ -24,8 +25,8 @@ public class MergeRDFs extends AbstractActionFile {
 		super(mr3, title);
 	}
 
-	private static final String MERGE_RDFS_FILE = "RDF(S)/XML (File)";
-	private static final String MERGE_RDFS_URI = "RDF(S)/XML (URI)";
+	private static final String MERGE_RDFS_FILE = Translator.getString("Component.File.Import.Merge.RDF(S)/XML(File).Text");
+	private static final String MERGE_RDFS_URI = Translator.getString("Component.File.Import.Merge.RDF(S)/XML(URI).Text");
 
 	public void actionPerformed(ActionEvent e) {
 		Component desktop = mr3.getDesktopPane();

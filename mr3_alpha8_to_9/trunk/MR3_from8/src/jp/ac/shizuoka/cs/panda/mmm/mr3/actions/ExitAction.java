@@ -17,7 +17,7 @@ import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
  */
 public class ExitAction extends AbstractActionFile {
 
-	private static final String TITLE = "Exit";
+	private static final String TITLE = Translator.getString("Component.File.Exit.Text");
 	private static final ImageIcon ICON = Utilities.getImageIcon("stop.gif");
 		
 	public ExitAction(MR3 mr3) {

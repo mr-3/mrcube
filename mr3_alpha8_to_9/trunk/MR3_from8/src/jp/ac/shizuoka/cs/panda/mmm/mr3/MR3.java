@@ -81,6 +81,7 @@ public class MR3 extends JFrame {
 
 	MR3() {
 		userPrefs = Preferences.userNodeForPackage(this.getClass());
+		Translator.loadResourceBundle();
 
 		setSize(userPrefs.getInt(PrefConstants.WindowWidth, MAIN_FRAME_WIDTH), userPrefs.getInt(PrefConstants.WindowHeight, MAIN_FRAME_HEIGHT));
 		setLocation(userPrefs.getInt(PrefConstants.WindowPositionX, 50), userPrefs.getInt(PrefConstants.WindowPositionY, 50));
@@ -151,11 +152,11 @@ public class MR3 extends JFrame {
 	private void initAction() {
 		newProjectAction = new NewProject(this);
 		openProjectAction = new OpenProject(this);
-		saveProjectAction = new SaveProject(this, "Save Project", Utilities.getImageIcon("save.gif"));
-		saveProjectAsAction = new SaveProject(this, "Save Project As", Utilities.getImageIcon("saveas.gif"));
-		toFrontRDFEditorAction = new EditorSelect(this, TO_FRONT_RDF_EDITOR, Utilities.getImageIcon("rdfEditorIcon.gif"));
-		toFrontClassEditorAction = new EditorSelect(this, TO_FRONT_CLASS_EDITOR, Utilities.getImageIcon("classEditorIcon.gif"));
-		toFrontPropertyEditorAction = new EditorSelect(this, TO_FRONT_PROPERTY_EDITOR, Utilities.getImageIcon("propertyEditorIcon.gif"));
+		saveProjectAction = new SaveProject(this, Translator.getString("Component.File.SaveProject.Text"), Utilities.getImageIcon("save.gif"));
+		saveProjectAsAction = new SaveProject(this, Translator.getString("Component.File.SaveAsProject.Text"), Utilities.getImageIcon("saveas.gif"));
+		toFrontRDFEditorAction = new EditorSelect(this, Translator.getString("Component.Window.RDFEditor.Text"), Utilities.getImageIcon("rdfEditorIcon.gif"));
+		toFrontClassEditorAction = new EditorSelect(this, Translator.getString("Component.Window.ClassEditor.Text"), Utilities.getImageIcon("classEditorIcon.gif"));
+		toFrontPropertyEditorAction = new EditorSelect(this, Translator.getString("Component.Window.PropertyEditor.Text"), Utilities.getImageIcon("propertyEditorIcon.gif"));
 		showAttrDialogAction = new ShowAttrDialog(this);
 		showNSTableDialogAction = new ShowNSTableDialog(this);
 		showSrcDialogAction = new ShowSrcDialog(this); 
@@ -219,14 +220,6 @@ public class MR3 extends JFrame {
 		}
 	}
 
-	private static final String FILE_MENU = "File";
-	private static final String EDIT_MENU = "Edit";
-	private static final String SELECT_MENU = "Select";
-	private static final String VIEW_MENU = "View";
-	private static final String WINDOW_MENU = "Window";
-	private static final String CONVERT_MENU = "Convert";
-	private static final String HELP_MENU = "Help";
-
 	private JMenuBar createMenuBar() {
 		JMenuBar mb = new JMenuBar();
 		mb.add(getFileMenu());
@@ -239,12 +232,8 @@ public class MR3 extends JFrame {
 		return mb;
 	}
 
-	private static final String SELECT_ALL_RDF_NODES = "Select All RDF Nodes";
-	private static final String SELECT_ALL_CLASS_NODES = "Select All Class Nodes";
-	private static final String SELECT_ALL_PROPERTY_NODES = "Select All Property Nodes";
-
 	private JMenu getEditMenu() {
-		JMenu menu = new JMenu("Edit");
+		JMenu menu = new JMenu(Translator.getString("Component.Edit.Text"));
 		menu.add(new FindResAction(getRDFGraph(), findResDialog));
 		menu.addSeparator();
 		//		selectAbstractLevelMode = new JCheckBoxMenuItem("Change Abstract Level", false);
@@ -256,10 +245,10 @@ public class MR3 extends JFrame {
 	}
 
 	private JMenu getSelectMenu() {
-		JMenu selectMenu = new JMenu(SELECT_MENU);
-		selectMenu.add(new SelectNodes(getRDFGraph(), SELECT_ALL_RDF_NODES));
-		selectMenu.add(new SelectNodes(getClassGraph(), SELECT_ALL_CLASS_NODES));
-		selectMenu.add(new SelectNodes(getPropertyGraph(), SELECT_ALL_PROPERTY_NODES));
+		JMenu selectMenu = new JMenu(Translator.getString("Component.Select.Text"));
+		selectMenu.add(new SelectNodes(getRDFGraph(), Translator.getString("Component.Select.RDF.Text")));
+		selectMenu.add(new SelectNodes(getClassGraph(), Translator.getString("Component.Select.Class.Text")));
+		selectMenu.add(new SelectNodes(getPropertyGraph(), Translator.getString("Component.Select.Property.Text")));
 
 		return selectMenu;
 	}
@@ -307,7 +296,7 @@ public class MR3 extends JFrame {
 
 	class PreferenceAction extends AbstractAction {
 		PreferenceAction() {
-			super("Preference");
+			super(Translator.getString("Component.Edit.Preference.Text"));
 		}
 
 		public void actionPerformed(ActionEvent e) {
@@ -316,71 +305,55 @@ public class MR3 extends JFrame {
 		}
 	}
 
-	private static final String PROJECT = "Project (Java Object)";
-	private static final String RDFS_XML = "RDFS/XML";
-	private static final String RDFS_NTriple = "RDFS/N-Triple";
-	private static final String RDF_XML = "RDF/XML";
-	private static final String RDF_NTriple = "RDF/N-Triple";
-	private static final String SelectedRDFS_XML = "Selected RDFS/XML";
-	private static final String SelectedRDFS_NTriple = "Selected RDFS/N-Triple";
-	private static final String SelectedRDF_XML = "Selected RDF/XML";
-	private static final String SelectedRDF_NTriple = "Selected RDF/N-Triple";
-	private static final String REPLACE_RDF_FILE = "RDF/XML (File)";
-	private static final String REPLACE_RDF_URI = "RDF/XML (URI)";
-	private static final String REPLACE_RDFS_FILE = "RDFS/XML (File)";
-	private static final String REPLACE_RDFS_URI = "RDFS/XML (URI)";
-	private static final String MERGE_RDFS_FILE = "RDF(S)/XML (File)";
-	private static final String MERGE_RDFS_URI = "RDF(S)/XML (URI)";
-
 	private JMenu getFileMenu() {
-		JMenu menu = new JMenu(FILE_MENU);
+		JMenu menu = new JMenu(Translator.getString("Component.File.Text"));
 		menu.add(newProjectAction);
 		menu.add(openProjectAction);
 		menu.add(saveProjectAction);
 		menu.add(saveProjectAsAction);
 		menu.addSeparator();
 
-		JMenu importMenu = new JMenu("Import");
+		JMenu importMenu = new JMenu(Translator.getString("Component.File.Import.Text"));
 		importMenu.setIcon(Utilities.getImageIcon("import.gif"));
 		menu.add(importMenu);
 
-		JMenu replaceMenu = new JMenu("Replace");
-		replaceMenu.add(new ReplaceRDF(this, REPLACE_RDF_FILE));
-		replaceMenu.add(new ReplaceRDF(this, REPLACE_RDF_URI));
-		replaceMenu.add(new ReplaceRDFS(this, REPLACE_RDFS_FILE));
-		replaceMenu.add(new ReplaceRDFS(this, REPLACE_RDFS_URI));
+		JMenu replaceMenu = new JMenu(Translator.getString("Component.File.Import.Replace.Text"));
+		replaceMenu.add(new ReplaceRDF(this, Translator.getString("Component.File.Import.Replace.RDF/XML(File).Text")));
+		replaceMenu.add(new ReplaceRDF(this, Translator.getString("Component.File.Import.Replace.RDF/XML(URI).Text")));
+		replaceMenu.add(new ReplaceRDFS(this, Translator.getString("Component.File.Import.Replace.RDFS/XML(File).Text")));
+		replaceMenu.add(new ReplaceRDFS(this, Translator.getString("Component.File.Import.Replace.RDF/XML(URI).Text")));
 		importMenu.add(replaceMenu);
 
-		JMenu mergeMenu = new JMenu("Merge");
-		mergeMenu.add(new MergeRDFs(this, MERGE_RDFS_FILE));
-		mergeMenu.add(new MergeRDFs(this, MERGE_RDFS_URI));
+		JMenu mergeMenu = new JMenu(Translator.getString("Component.File.Import.Merge.Text"));
+		mergeMenu.add(new MergeRDFs(this, Translator.getString("Component.File.Import.Merge.RDF(S)/XML(File).Text")));
+		mergeMenu.add(new MergeRDFs(this, Translator.getString("Component.File.Import.Merge.RDF(S)/XML(URI).Text")));
 		importMenu.add(mergeMenu);
 
 		importMenu.add(new ImportJavaObject(this));
 
-		JMenu exportMenu = new JMenu("Export");
+		JMenu exportMenu = new JMenu(Translator.getString("Component.File.Export.Text"));
 		exportMenu.setIcon(Utilities.getImageIcon("export.gif"));
 		menu.add(exportMenu);
 
-		JMenu rdfMenu = new JMenu("RDF/XML");
+		JMenu rdfMenu = new JMenu(Translator.getString("Component.File.Export.RDF/XML.Text"));
 		exportMenu.add(rdfMenu);
-		rdfMenu.add(new ExportRDF(this, RDF_XML));
-		rdfMenu.add(new ExportRDFS(this, RDFS_XML));
-		rdfMenu.add(new ExportRDF(this, SelectedRDF_XML));
-		rdfMenu.add(new ExportRDFS(this, SelectedRDFS_XML));
+		rdfMenu.add(new ExportRDF(this, Translator.getString("Component.File.Export.RDF/XML.RDF.Text")));
+		rdfMenu.add(new ExportRDFS(this, Translator.getString("Component.File.Export.RDF/XML.RDFS.Text")));
+		rdfMenu.add(new ExportRDF(this, Translator.getString("Component.File.Export.RDF/XML.SelectedRDF.Text")));
+		rdfMenu.add(new ExportRDFS(this, Translator.getString("Component.File.Export.RDF/XML.SelectedRDFS.Text")));
 
 		JMenu nTripleMenu = new JMenu("N-Triple");
 		exportMenu.add(nTripleMenu);
-		nTripleMenu.add(new ExportRDF(this, RDF_NTriple));
-		nTripleMenu.add(new ExportRDFS(this, RDFS_NTriple));
-		nTripleMenu.add(new ExportRDF(this, SelectedRDF_NTriple));
-		nTripleMenu.add(new ExportRDFS(this, SelectedRDFS_NTriple));
+		nTripleMenu.add(new ExportRDF(this, Translator.getString("Component.File.Export.N-Triple.RDF.Text")));
+		nTripleMenu.add(new ExportRDFS(this, Translator.getString("Component.File.Export.N-Triple.RDFS.Text")));
+		nTripleMenu.add(new ExportRDF(this, Translator.getString("Component.File.Export.N-Triple.SelectedRDF.Text")));
+		nTripleMenu.add(new ExportRDFS(this, Translator.getString("Component.File.Export.N-Triple.SelectedRDFS.Text")));
 
 		JMenu imgMenu = new JMenu("Image");
 		exportMenu.add(imgMenu);
-		imgMenu.add(new FileExportImg(this, GraphType.RDF, "png", "RDF Graph -> PNG"));
-		imgMenu.add(new FileExportImg(this, GraphType.CLASS, "png", "Class Graph -> PNG"));
-		imgMenu.add(new FileExportImg(this, GraphType.PROPERTY, "png", "Property Graph -> PNG"));
+		imgMenu.add(new FileExportImg(this, GraphType.RDF, "png", Translator.getString("Component.File.Export.Image.RDFGraph.Text")));
+		imgMenu.add(new FileExportImg(this, GraphType.CLASS, "png", Translator.getString("Component.File.Export.Image.ClassGraph.Text")));
+		imgMenu.add(new FileExportImg(this, GraphType.PROPERTY, "png", Translator.getString("Component.File.Export.Image.PropertyGraph.Text")));
 
 		exportMenu.add(new ExportJavaObject(this));
 
@@ -425,7 +398,7 @@ public class MR3 extends JFrame {
 	}
 
 	private JMenu getPluginMenus() {
-		JMenu menu = new JMenu("Plugins");
+		JMenu menu = new JMenu(Translator.getString("Component.File.Plugins.Text"));
 		Map pluginMenuMap = PluginLoader.getPluginMenuMap();
 		Set keys = pluginMenuMap.keySet();
 		for (Iterator i = keys.iterator(); i.hasNext();) {
@@ -472,15 +445,15 @@ public class MR3 extends JFrame {
 	//	}
 
 	private JMenu getViewMenu() {
-		JMenu menu = new JMenu(VIEW_MENU);
+		JMenu menu = new JMenu(Translator.getString("Component.View.Text"));
 		ChangeCellViewAction changeCellViewAction = new ChangeCellViewAction();
-		uriView = new JRadioButton("URI View");
+		uriView = new JRadioButton(Translator.getString("Component.View.URI.Text"));
 		uriView.setSelected(true);
 		gmanager.setCellViewType(CellViewType.URI);
 		uriView.addItemListener(changeCellViewAction);
-		idView = new JRadioButton("ID View");
+		idView = new JRadioButton(Translator.getString("Component.View.ID.Text"));
 		idView.addItemListener(changeCellViewAction);
-		labelView = new JRadioButton("Label View");
+		labelView = new JRadioButton(Translator.getString("Component.View.Label.Text"));
 		labelView.addItemListener(changeCellViewAction);
 		ButtonGroup group = new ButtonGroup();
 		group.add(uriView);
@@ -490,15 +463,15 @@ public class MR3 extends JFrame {
 		menu.add(idView);
 		menu.add(labelView);
 		menu.addSeparator();
-		showTypeCellBox = new JCheckBoxMenuItem("Show Type", true);
+		showTypeCellBox = new JCheckBoxMenuItem(Translator.getString("Component.View.Type.Text"), true);
 		gmanager.setIsShowTypeCell(true);
 		showTypeCellBox.addActionListener(new ShowTypeCellAction());
 		menu.add(showTypeCellBox);
-		showToolTips = new JCheckBoxMenuItem("Show ToolTips", true);
+		showToolTips = new JCheckBoxMenuItem(Translator.getString("Component.View.ToolTips.Text"), true);
 		showToolTips.addActionListener(new ShowToolTipsAction());
 		ToolTipManager.sharedInstance().setEnabled(true);
 		menu.add(showToolTips);
-		isGroup = new JCheckBoxMenuItem("is Group", true);
+		isGroup = new JCheckBoxMenuItem(Translator.getString("Component.View.Group.Text"), true);
 		isGroup.addActionListener(new IsGroupAction());
 		menu.add(isGroup);
 
@@ -511,15 +484,11 @@ public class MR3 extends JFrame {
 		}
 	}
 
-	private static final String TO_FRONT_RDF_EDITOR = "To Front RDF Editor";
-	private static final String TO_FRONT_CLASS_EDITOR = "To Front Class Editor";
-	private static final String TO_FRONT_PROPERTY_EDITOR = "To Front Property Editor";
-
 	private JMenu getWindowMenu() {
-		JMenu menu = new JMenu(WINDOW_MENU);
-		menu.add(new ShowOverview(this, rdfEditorOverview, "Show RDF Graph Overview"));
-		menu.add(new ShowOverview(this, classEditorOverview, "Show Class Graph Overview"));
-		menu.add(new ShowOverview(this, propertyEditorOverview, "Show Property Graph Overview"));
+		JMenu menu = new JMenu(Translator.getString("Component.Window.Text"));
+		menu.add(new ShowOverview(this, rdfEditorOverview, Translator.getString("Component.Window.RDFEditorOverview.Text")));
+		menu.add(new ShowOverview(this, classEditorOverview, Translator.getString("Component.Window.ClassEditorOverview.Text")));
+		menu.add(new ShowOverview(this, propertyEditorOverview, Translator.getString("Component.Window.PropertyEditorOverview.Text")));
 		menu.addSeparator();
 		menu.add(toFrontRDFEditorAction);
 		menu.add(toFrontClassEditorAction);
@@ -536,32 +505,32 @@ public class MR3 extends JFrame {
 	}
 
 	private JMenu getConvertMenu() {
-		JMenu menu = new JMenu(CONVERT_MENU);
+		JMenu menu = new JMenu(Translator.getString("Component.Convert.Text"));
 
-		JMenu rdfView = new JMenu("RDF/XML");
+		JMenu rdfView = new JMenu(Translator.getString("Component.Convert.RDF/XML.Text"));
 		menu.add(rdfView);
-		rdfView.add(new ConvertRDFDoc(this, "RDF/XML"));
-		rdfView.add(new ConvertRDFDoc(this, "Selected RDF/XML"));
+		rdfView.add(new ConvertRDFDoc(this, Translator.getString("Component.Convert.RDF/XML.RDF.Text")));
+		rdfView.add(new ConvertRDFDoc(this, Translator.getString("Component.Convert.RDF/XML.SelectedRDF.Text")));
 
-		JMenu rdfsView = new JMenu("RDFS/XML");
+		JMenu rdfsView = new JMenu(Translator.getString("Component.Convert.RDFS/XML.Text"));
 		menu.add(rdfsView);
-		rdfsView.add(new ConvertRDFSDoc(this, "RDFS(Class/Property)/XML"));
-		rdfsView.add(new ConvertClassDoc(this, "RDFS(Class)/XML"));
-		rdfsView.add(new ConvertPropertyDoc(this, "RDFS(Property)/XML"));
-		rdfsView.add(new ConvertRDFSDoc(this, "Selected RDFS(Class/Property)/XML"));
-		rdfsView.add(new ConvertClassDoc(this, "Selected RDFS(Class)/XML"));
-		rdfsView.add(new ConvertPropertyDoc(this, "Selected RDFS(Property)/XML"));
+		rdfsView.add(new ConvertRDFSDoc(this, Translator.getString("Component.Convert.RDFS/XML.RDFS(Class/Property).Text")));
+		rdfsView.add(new ConvertClassDoc(this, Translator.getString("Component.Convert.RDFS/XML.RDFS(Class).Text")));
+		rdfsView.add(new ConvertPropertyDoc(this, Translator.getString("Component.Convert.RDFS/XML.RDFS(Property).Text")));
+		rdfsView.add(new ConvertRDFSDoc(this, Translator.getString("Component.Convert.RDFS/XML.SelectedRDFS(Class/Property).Text")));
+		rdfsView.add(new ConvertClassDoc(this, Translator.getString("Component.Convert.RDFS/XML.SelectedRDFS(Class).Text")));
+		rdfsView.add(new ConvertPropertyDoc(this, Translator.getString("Component.Convert.RDFS/XML.SelectedRDFS(Property).Text")));
 
-		JMenu nTripleView = new JMenu("RDF/N-Triple");
+		JMenu nTripleView = new JMenu(Translator.getString("Component.Convert.RDF/N-Triple.Text"));
 		menu.add(nTripleView);
-		nTripleView.add(new ConvertNTriple(this, "RDF/N-Triple"));
-		nTripleView.add(new ConvertNTriple(this, "Selected RDF/N-Triple"));
+		nTripleView.add(new ConvertNTriple(this, Translator.getString("Component.Convert.RDF/N-Triple.RDF.Text")));
+		nTripleView.add(new ConvertNTriple(this, Translator.getString("Component.Convert.RDF/N-Triple.SelectedRDF.Text")));
 
 		return menu;
 	}
 
 	private JMenu getHelpMenu() {
-		JMenu menu = new JMenu(HELP_MENU);
+		JMenu menu = new JMenu(Translator.getString("Component.Help.Text"));
 		menu.add(new HelpAbout(this));
 		return menu;
 	}

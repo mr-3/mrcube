@@ -8,6 +8,7 @@ import java.awt.event.*;
 import java.io.*;
 
 import jp.ac.shizuoka.cs.panda.mmm.mr3.*;
+import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 
 import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.rdf.model.impl.*;
@@ -40,7 +41,7 @@ public class ConvertRDFDoc extends AbstractActionFile {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals("RDF/XML")) {
+		if (e.getActionCommand().equals(Translator.getString("Component.Convert.RDF/XML.RDF.Text"))) {
 			convertRDFSRC(false);
 		} else {
 			convertRDFSRC(true);

@@ -10,6 +10,7 @@ import java.beans.*;
 import javax.swing.*;
 
 import jp.ac.shizuoka.cs.panda.mmm.mr3.*;
+import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 
 /**
  * @author takeshi morita
@@ -17,22 +18,22 @@ import jp.ac.shizuoka.cs.panda.mmm.mr3.*;
  */
 public class EditorSelect extends MR3AbstractAction {
 
+	private static final String RDF_EDITOR = Translator.getString("Component.Window.RDFEditor.Text");
+	private static final String CLASS_EDITOR =Translator.getString("Component.Window.ClassEditor.Text");
+	private static final String PROPERTY_EDITOR =Translator.getString("Component.Window.PropertyEditor.Text");
+
 	public EditorSelect(MR3 mr3, String name, ImageIcon icon) {
 		super(mr3, name, icon);
 		setValues();
 	}
 
-	private static final String TO_FRONT_RDF_EDITOR = "To Front RDF Editor";
-	private static final String TO_FRONT_CLASS_EDITOR = "To Front Class Editor";
-	private static final String TO_FRONT_PROPERTY_EDITOR = "To Front Property Editor";
-
 	private void setValues() {
 		putValue(SHORT_DESCRIPTION, getName());
-		if (getName().equals(TO_FRONT_RDF_EDITOR)) {
+		if (getName().equals(RDF_EDITOR)) {
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.ALT_MASK));
-		} else if (getName().equals(TO_FRONT_CLASS_EDITOR)) {
+		} else if (getName().equals(CLASS_EDITOR)) {
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.ALT_MASK));
-		} else if (getName().equals(TO_FRONT_PROPERTY_EDITOR)) {
+		} else if (getName().equals(PROPERTY_EDITOR)) {
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.ALT_MASK));
 		}
 	}
@@ -49,11 +50,11 @@ public class EditorSelect extends MR3AbstractAction {
 
 	public void actionPerformed(ActionEvent e) {
 		JInternalFrame[] iFrame = mr3.getInternalFrames();
-		if (getName().equals(TO_FRONT_RDF_EDITOR)) {
+		if (getName().equals(RDF_EDITOR)) {
 			toFrontInternalFrame(iFrame[0]);
-		} else if (getName().equals(TO_FRONT_CLASS_EDITOR)) {
+		} else if (getName().equals(CLASS_EDITOR)) {
 			toFrontInternalFrame(iFrame[1]);
-		} else if (getName().equals(TO_FRONT_PROPERTY_EDITOR)) {
+		} else if (getName().equals(PROPERTY_EDITOR)) {
 			toFrontInternalFrame(iFrame[2]);
 		}
 	}

@@ -19,8 +19,8 @@ import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 public class HelpAbout extends MR3AbstractAction {
 
 	Frame supFrame;
-	private static final String TITLE = "About MR^3";
-	private static final ImageIcon ICON = Utilities.getImageIcon("mr3_logo.png"); 
+	private static final String TITLE = Translator.getString("Component.Help.About.Text");
+	private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("Logo")); 
 	
 	public HelpAbout(Frame frame) {
 		super(TITLE);

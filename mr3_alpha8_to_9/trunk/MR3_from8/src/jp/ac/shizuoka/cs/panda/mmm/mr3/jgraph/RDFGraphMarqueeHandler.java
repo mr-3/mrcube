@@ -173,6 +173,12 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 
 		protected ConnectAction(String title) {
 			super(title);
+			setValues(title);
+		}
+
+		private void setValues(String title) {
+			putValue(SHORT_DESCRIPTION, title);
+//			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_I, KeyEvent.CTRL_MASK));
 		}
 
 		public void actionPerformed(ActionEvent e) {

@@ -16,7 +16,7 @@ import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
  */
 public class ShowNSTableDialog extends MR3AbstractAction {
 
-	private static final String TITLE = "Show NameSpace Table";
+	private static final String TITLE = Translator.getString("Component.Window.NSTable.Text");
 	private static final ImageIcon ICON = Utilities.getImageIcon("nameSpaceTableIcon.gif");
 
 	public ShowNSTableDialog(MR3 mr3) {

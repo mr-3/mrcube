@@ -10,6 +10,7 @@ import java.util.prefs.*;
 
 import jp.ac.shizuoka.cs.panda.mmm.mr3.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.data.*;
+import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 
 import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.rdf.model.impl.*;
@@ -24,10 +25,10 @@ public class ExportRDF extends AbstractActionFile {
 		super(mr3, title);
 	}
 
-	private static final String RDF_XML = "RDF/XML";
-	private static final String RDF_NTriple = "RDF/N-Triple";
-	private static final String SelectedRDF_XML = "Selected RDF/XML";
-	private static final String SelectedRDF_NTriple = "Selected RDF/N-Triple";
+	private static final String RDF_XML = Translator.getString("Component.File.Export.RDF/XML.RDF.Text");
+	private static final String RDF_NTriple = Translator.getString("Component.File.Export.N-Triple.RDF.Text");
+	private static final String SelectedRDF_XML = Translator.getString("Component.File.Export.RDF/XML.SelectedRDF.Text");
+	private static final String SelectedRDF_NTriple = Translator.getString("Component.File.Export.N-Triple.SelectedRDF.Text");
 
 	public void actionPerformed(ActionEvent e) {
 		Preferences userPrefs = mr3.getUserPrefs();

@@ -9,13 +9,14 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import jp.ac.shizuoka.cs.panda.mmm.mr3.*;
+import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 
 /**
  * @author takeshi morita
  */
 public class ShowLogConsole extends MR3AbstractAction {
 
-	private static final String TITLE = "Show Log Console";
+	private static final String TITLE = Translator.getString("Component.Window.LogConsole.Text");
 
 	public ShowLogConsole(MR3 mr3) {
 		super(mr3, TITLE);	

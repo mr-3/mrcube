@@ -8,6 +8,7 @@ import java.awt.event.*;
 import java.io.*;
 
 import jp.ac.shizuoka.cs.panda.mmm.mr3.*;
+import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 
 import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.rdf.model.impl.*;
@@ -41,7 +42,7 @@ public class ConvertPropertyDoc extends AbstractActionFile {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals("RDFS(Property)/XML")) {
+		if (e.getActionCommand().equals(Translator.getString("Component.Convert.RDFS/XML.RDFS(Property).Text"))) {
 			convertPropertySRC(false);
 		} else {
 			convertPropertySRC(true);
