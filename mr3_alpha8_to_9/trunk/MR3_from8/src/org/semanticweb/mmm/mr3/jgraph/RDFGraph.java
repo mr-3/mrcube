@@ -39,10 +39,10 @@ public class RDFGraph extends JGraph {
 
 	public RDFGraph(GraphManager manager, GraphType type) {
 		super(new RDFGraphModel());
-		initStatus();
+		this.type = type;
 		gmanager = manager;
 		attrDialog = gmanager.getAttrDialog();
-		this.type = type;
+		initStatus();
 		SwingUtilities.replaceUIActionMap(this, createActionMap());
 	}
 
@@ -112,20 +112,8 @@ public class RDFGraph extends JGraph {
 		setDisconnectable(true);
 		setAntiAliased(true);
 		setEditable(false);
-		setUI(new RDFGraphUI());
+		setUI(new RDFGraphUI(this, attrDialog));
 		selectionModel.setChildrenSelectable(false);
-	}
-
-	public void startEditingAtCell(Object cell) {
-		if (attrDialog != null) {
-			attrDialog.setVisible(true);
-			if (isRDFResourceCell(cell)) {
-				RDFResourceCell resCell = (RDFResourceCell) cell;
-				setSelectionCell(resCell);
-			} else {
-				setSelectionCell(cell);
-			}
-		}
 	}
 
 	protected VertexView createVertexView(Object v, CellMapper cm) {

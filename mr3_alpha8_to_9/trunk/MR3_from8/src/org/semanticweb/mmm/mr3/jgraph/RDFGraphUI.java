@@ -1,21 +1,32 @@
 /*
  * Created on 2003/07/29
- *
+ *  
  */
 package org.semanticweb.mmm.mr3.jgraph;
 
 import java.awt.*;
+import java.awt.event.*;
 import java.awt.geom.*;
 
 import org.jgraph.plaf.basic.*;
+import org.semanticweb.mmm.mr3.data.*;
+import org.semanticweb.mmm.mr3.ui.*;
 
 /**
  * @author takeshi morita
  */
 public class RDFGraphUI extends BasicGraphUI {
 
+	private RDFGraph graph;
+	private AttributeDialog attrDialog;
+
+	RDFGraphUI(RDFGraph g, AttributeDialog attrD) {
+		graph = g;
+		attrDialog = attrD;
+	}
+
 	public RDFGraph getRDFGraph() {
-		return (RDFGraph) graph;
+		return graph;
 	}
 
 	//
@@ -23,9 +34,25 @@ public class RDFGraphUI extends BasicGraphUI {
 	//
 	// @jdk14
 	/*
-	protected TransferHandler createTransferHandler() {
-		return new GPTransferHandler();
-	}*/
+	 * protected TransferHandler createTransferHandler() { return new
+	 * GPTransferHandler();
+	 */
+
+	private boolean isRDFSGraph() {
+		return graph.getType() == GraphType.CLASS || graph.getType() == GraphType.PROPERTY;
+	}
+
+	protected boolean startEditing(Object cell, MouseEvent event) {
+		if (isRDFSGraph() && graph.isEdge(cell)) {
+			return super.startEditing(cell, event);
+		} else {
+			if (attrDialog != null) {
+				attrDialog.setVisible(true);
+				graph.setSelectionCell(cell);
+			}
+		}
+		return true;
+	}
 
 	/**
 	 * Paint the background of this graph. Calls paintGrid.
