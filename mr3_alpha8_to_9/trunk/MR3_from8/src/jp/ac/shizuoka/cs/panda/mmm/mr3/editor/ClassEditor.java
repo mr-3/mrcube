@@ -12,11 +12,11 @@ public class ClassEditor extends Editor {
 	private ClassPanel classPanel;
 
 	public ClassEditor(NameSpaceTableDialog nsD, FindResourceDialog findResD, GraphManager gm) {
-		super("Class Editor");
+		super(Translator.getString("ClassEditor.Title"));
 		graph = gm.getClassGraph();
 		graph.setDisconnectable(false);
 		initEditor(gm.getClassGraph(), gm, nsD, findResD);
-		setFrameIcon(Utilities.getImageIcon("classEditorIcon.gif"));
+		setFrameIcon(Utilities.getImageIcon(Translator.getString("ClassEditor.Icon")));
 	}
 
 	protected void initField(NameSpaceTableDialog nsD, GraphManager manager) {

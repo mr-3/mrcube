@@ -80,14 +80,13 @@ public class MR3 extends JFrame {
 	private static ResourceBundle resources;
 
 	MR3() {
-		userPrefs = Preferences.userNodeForPackage(this.getClass());
-		Translator.loadResourceBundle();
+		userPrefs = Preferences.userNodeForPackage(this.getClass());	
 
 		setSize(userPrefs.getInt(PrefConstants.WindowWidth, MAIN_FRAME_WIDTH), userPrefs.getInt(PrefConstants.WindowHeight, MAIN_FRAME_HEIGHT));
 		setLocation(userPrefs.getInt(PrefConstants.WindowPositionX, 50), userPrefs.getInt(PrefConstants.WindowPositionY, 50));
 		//		setLookAndFeel();
 
-		logger = new MR3LogConsole("Log Console", null);
+		logger = new MR3LogConsole(Translator.getString("LogConsole.Title"), null);
 		attrDialog = new AttributeDialog();
 		gmanager = new GraphManager(attrDialog, userPrefs);
 		initAction();
@@ -97,16 +96,16 @@ public class MR3 extends JFrame {
 		gmanager.setRoot(this);
 
 		rdfEditor = new RDFEditor(nsTableDialog, findResDialog, gmanager);
-		rdfEditorOverview = new OverviewDialog("RDF Editor Overview", rdfEditor.getGraph(), rdfEditor.getJViewport());
-		rdfEditorOverview.setFrameIcon(Utilities.getImageIcon("rdfEditorIcon.gif"));
+		rdfEditorOverview = new OverviewDialog(Translator.getString("RDFEditorOverview.Title"), rdfEditor.getGraph(), rdfEditor.getJViewport());
+		rdfEditorOverview.setFrameIcon(Utilities.getImageIcon(Translator.getString("RDFEditor.Icon")));
 		desktop.add(rdfEditorOverview, JLayeredPane.MODAL_LAYER);
 		classEditor = new ClassEditor(nsTableDialog, findResDialog, gmanager);
-		classEditorOverview = new OverviewDialog("Class Editor Overview", classEditor.getGraph(), classEditor.getJViewport());
-		classEditorOverview.setFrameIcon(Utilities.getImageIcon("classEditorIcon.gif"));
+		classEditorOverview = new OverviewDialog(Translator.getString("ClassEditorOverview.Title"), classEditor.getGraph(), classEditor.getJViewport());
+		classEditorOverview.setFrameIcon(Utilities.getImageIcon(Translator.getString("ClassEditor.Icon")));
 		desktop.add(classEditorOverview, JLayeredPane.MODAL_LAYER);
 		propertyEditor = new PropertyEditor(nsTableDialog, findResDialog, gmanager);
-		propertyEditorOverview = new OverviewDialog("Property Editor Overview", propertyEditor.getGraph(), propertyEditor.getJViewport());
-		propertyEditorOverview.setFrameIcon(Utilities.getImageIcon("propertyEditorIcon.gif"));
+		propertyEditorOverview = new OverviewDialog(Translator.getString("PropertyEditorOverview.Title"), propertyEditor.getGraph(), propertyEditor.getJViewport());
+		propertyEditorOverview.setFrameIcon(Utilities.getImageIcon(Translator.getString("PropertyEditor.Icon")));
 		desktop.add(propertyEditorOverview, JLayeredPane.MODAL_LAYER);
 
 		mr3Reader = new MR3Reader(gmanager, nsTableDialog);
@@ -121,7 +120,7 @@ public class MR3 extends JFrame {
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new CloseWindow(this));
 		setIconImage(Utilities.getImageIcon("mr3_logo.png").getImage());
-		setTitle("MR^3 - New Project");
+		setTitle("MR^3 - "+Translator.getString("Component.File.NewProject.Text"));
 		setJMenuBar(createMenuBar());
 		initPreferences();
 		setVisible(true);
@@ -152,11 +151,11 @@ public class MR3 extends JFrame {
 	private void initAction() {
 		newProjectAction = new NewProject(this);
 		openProjectAction = new OpenProject(this);
-		saveProjectAction = new SaveProject(this, Translator.getString("Component.File.SaveProject.Text"), Utilities.getImageIcon("save.gif"));
-		saveProjectAsAction = new SaveProject(this, Translator.getString("Component.File.SaveAsProject.Text"), Utilities.getImageIcon("saveas.gif"));
-		toFrontRDFEditorAction = new EditorSelect(this, Translator.getString("Component.Window.RDFEditor.Text"), Utilities.getImageIcon("rdfEditorIcon.gif"));
-		toFrontClassEditorAction = new EditorSelect(this, Translator.getString("Component.Window.ClassEditor.Text"), Utilities.getImageIcon("classEditorIcon.gif"));
-		toFrontPropertyEditorAction = new EditorSelect(this, Translator.getString("Component.Window.PropertyEditor.Text"), Utilities.getImageIcon("propertyEditorIcon.gif"));
+		saveProjectAction = new SaveProject(this, Translator.getString("Component.File.SaveProject.Text"), Utilities.getImageIcon(Translator.getString("Component.File.SaveProject.Icon")));
+		saveProjectAsAction = new SaveProject(this, Translator.getString("Component.File.SaveAsProject.Text"), Utilities.getImageIcon(Translator.getString("Component.File.SaveAsProject.Icon")));
+		toFrontRDFEditorAction = new EditorSelect(this, Translator.getString("Component.Window.RDFEditor.Text"), Utilities.getImageIcon(Translator.getString("RDFEditor.Icon")));
+		toFrontClassEditorAction = new EditorSelect(this, Translator.getString("Component.Window.ClassEditor.Text"), Utilities.getImageIcon(Translator.getString("ClassEditor.Icon")));
+		toFrontPropertyEditorAction = new EditorSelect(this, Translator.getString("Component.Window.PropertyEditor.Text"), Utilities.getImageIcon(Translator.getString("PropertyEditor.Icon")));
 		showAttrDialogAction = new ShowAttrDialog(this);
 		showNSTableDialogAction = new ShowNSTableDialog(this);
 		showSrcDialogAction = new ShowSrcDialog(this); 
@@ -314,7 +313,7 @@ public class MR3 extends JFrame {
 		menu.addSeparator();
 
 		JMenu importMenu = new JMenu(Translator.getString("Component.File.Import.Text"));
-		importMenu.setIcon(Utilities.getImageIcon("import.gif"));
+		importMenu.setIcon(Utilities.getImageIcon(Translator.getString("Component.File.Import.Icon")));
 		menu.add(importMenu);
 
 		JMenu replaceMenu = new JMenu(Translator.getString("Component.File.Import.Replace.Text"));
@@ -332,7 +331,7 @@ public class MR3 extends JFrame {
 		importMenu.add(new ImportJavaObject(this));
 
 		JMenu exportMenu = new JMenu(Translator.getString("Component.File.Export.Text"));
-		exportMenu.setIcon(Utilities.getImageIcon("export.gif"));
+		exportMenu.setIcon(Utilities.getImageIcon(Translator.getString("Component.File.Export.Icon")));
 		menu.add(exportMenu);
 
 		JMenu rdfMenu = new JMenu(Translator.getString("Component.File.Export.RDF/XML.Text"));
@@ -578,7 +577,7 @@ public class MR3 extends JFrame {
 		clearMap();
 		gmanager.removeAllCells();
 		nsTableDialog.setDefaultNSPrefix();
-		setTitle("MR^3 - New Project");
+		setTitle("MR^3 - "+Translator.getString("Component.File.NewProject.Text"));
 		setCurrentProject(null);
 	}
 
@@ -671,7 +670,8 @@ public class MR3 extends JFrame {
 	}
 
 	public static void main(String[] arg) {
-		ImageIcon icon = Utilities.getImageIcon("mr3_logo.png");
+		Translator.loadResourceBundle();
+		ImageIcon icon = Utilities.getImageIcon(Translator.getString("Logo"));
 		JWindow splashWindow = new HelpWindow(null, icon);
 		try {
 			new MR3();

@@ -227,7 +227,7 @@ public abstract class AbstractActionFile extends MR3AbstractAction {
 	}
 
 	protected void exitProgram() {
-		int messageType = confirmExitProject("Exit Program"); // もっと適切なメソッド名にすべき
+		int messageType = confirmExitProject(Translator.getString("ExitProgram")); 
 		if (messageType == JOptionPane.CANCEL_OPTION) {
 			return;
 		}
@@ -279,7 +279,7 @@ public abstract class AbstractActionFile extends MR3AbstractAction {
 		int messageType =
 			JOptionPane.showInternalConfirmDialog(
 				desktop,
-				"Save changes ?",
+				Translator.getString("SaveChanges"),
 				"MR^3 - " + title,
 				JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.INFORMATION_MESSAGE);

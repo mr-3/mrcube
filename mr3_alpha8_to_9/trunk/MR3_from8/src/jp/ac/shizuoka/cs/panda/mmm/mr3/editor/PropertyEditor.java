@@ -16,11 +16,11 @@ public class PropertyEditor extends Editor {
 	private PropertyPanel propPanel;
 
 	public PropertyEditor(NameSpaceTableDialog nsD, FindResourceDialog findResD, GraphManager gm) {
-		super("Property Editor");
+		super(Translator.getString("PropertyEditor.Title"));
 		graph = gm.getPropertyGraph();
 		graph.setDisconnectable(false);
 		initEditor(gm.getPropertyGraph(), gm, nsD, findResD);
-		setFrameIcon(Utilities.getImageIcon("propertyEditorIcon.gif"));
+		setFrameIcon(Utilities.getImageIcon(Translator.getString("PropertyEditor.Icon")));
 	}
 
 	protected void initField(NameSpaceTableDialog nsD, GraphManager manager) {

@@ -18,8 +18,8 @@ import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 public class PasteAction extends AbstractAction {
 
 	private RDFGraph graph;
-	private static final String TITLE = "Paste";
-	private static final ImageIcon ICON = Utilities.getImageIcon("paste.gif");
+	private static final String TITLE = Translator.getString("Action.Paste.Title");
+	private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("Action.Paste.Icon"));
 
 	public PasteAction(RDFGraph g) {
 		super(TITLE, ICON);

@@ -38,12 +38,9 @@ public class FindResourceDialog extends JInternalFrame {
 	private static final int LIST_HEIGHT = 30;
 	private static final int FIELD_HEIGHT = 40;
 
-	private static final String TITLE = "Find Resource";
-	private static final ImageIcon ICON = Utilities.getImageIcon("find.gif");
-
 	public FindResourceDialog(GraphManager manager) {
-		super(TITLE, false, true, false);
-		setFrameIcon(ICON);
+		super(Translator.getString("FindResourceDialog.Title"), false, true, false);
+		setFrameIcon(Utilities.getImageIcon(Translator.getString("FindResourceDialog.Icon")));
 		Container contentPane = getContentPane();
 
 		gmanager = manager;

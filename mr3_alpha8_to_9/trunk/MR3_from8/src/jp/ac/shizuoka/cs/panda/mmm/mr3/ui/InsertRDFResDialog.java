@@ -31,8 +31,8 @@ public class InsertRDFResDialog extends JDialog implements ActionListener, ItemL
 	private static final int BOX_HEIGHT = 50;
 	private static final int ID_WIDTH = 120;
 
-	public InsertRDFResDialog(String title, Object[] cells, GraphManager gmanager) {
-		super(gmanager.getRoot(), title, true);
+	public InsertRDFResDialog(Object[] cells, GraphManager gmanager) {
+		super(gmanager.getRoot(), Translator.getString("InsertResourceDialog.Title"), true);
 		Container contentPane = getContentPane();
 		PrefixNSUtil.setPrefixNSInfoSet(gmanager.getPrefixNSInfoSet());
 		resourceType = null;

@@ -18,7 +18,7 @@ import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 public class NewProject extends AbstractActionFile {
 
 	private static final String TITLE = Translator.getString("Component.File.NewProject.Text");
-	private static final ImageIcon ICON = Utilities.getImageIcon("new.gif"); 
+	private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("Component.File.NewProject.Icon")); 
 
 	public NewProject(MR3 mr3) {
 		super(mr3, TITLE, ICON);

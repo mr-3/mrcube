@@ -46,7 +46,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 //	transient private JCheckBoxMenuItem showNSTable;
 
 	public NameSpaceTableDialog(GraphManager manager) {
-		super("NameSpace Table", false, true, false);
+		super(Translator.getString("NameSpaceTable.Title"), false, true, false);
 
 		gmanager = manager;
 		prefixNSMap = new HashMap();
@@ -59,7 +59,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 //		showNSTable.addActionListener(new CloseNSTableAction());
 		getContentPane().add(inlinePanel);
 
-		setFrameIcon(Utilities.getImageIcon("nameSpaceTableIcon.gif"));
+		setFrameIcon(Utilities.getImageIcon(Translator.getString("NameSpaceTable.Icon")));
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			public void internalFrameClosing(InternalFrameEvent e) {

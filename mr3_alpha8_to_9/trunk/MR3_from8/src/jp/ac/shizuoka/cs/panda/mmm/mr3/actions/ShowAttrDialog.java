@@ -18,7 +18,7 @@ import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 public class ShowAttrDialog extends MR3AbstractAction {
 	
 	private static final String TITLE = Translator.getString("Component.Window.AttrDialog.Text");
-	private static final ImageIcon ICON = Utilities.getImageIcon("attrDialogIcon.gif"); 
+	private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("AttributeDialog.Icon")); 
 
 	public ShowAttrDialog(MR3 mr3) {
 		super(mr3, TITLE, ICON);

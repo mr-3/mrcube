@@ -21,11 +21,11 @@ public class RDFEditor extends Editor {
 	private RDFLiteralPanel litPanel;
 
 	public RDFEditor(NameSpaceTableDialog nsD, FindResourceDialog findResD, GraphManager gm) {
-		super("RDF Editor");
+		super(Translator.getString("RDFEditor.Title"));
 		graph = gm.getRDFGraph();
 		graph.setMarqueeHandler(new RDFGraphMarqueeHandler(gm, graph));
 		initEditor(gm.getRDFGraph(), gm, nsD, findResD);
-		setFrameIcon(Utilities.getImageIcon("rdfEditorIcon.gif"));
+		setFrameIcon(Utilities.getImageIcon(Translator.getString("RDFEditor.Icon")));
 	}
 
 	protected void initField(NameSpaceTableDialog nsD, GraphManager manager) {
