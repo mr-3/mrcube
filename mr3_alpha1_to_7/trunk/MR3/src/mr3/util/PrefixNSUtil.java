@@ -32,7 +32,7 @@ public class PrefixNSUtil {
 	}
 
 	public static Set getPrefixes() {
-		Set prefixes = new HashSet();
+		Set prefixes = new TreeSet();
 		for (Iterator i = prefixNSInfoSet.iterator(); i.hasNext();) {
 			PrefixNSInfo info = (PrefixNSInfo) i.next();
 			prefixes.add(info.getPrefix());
