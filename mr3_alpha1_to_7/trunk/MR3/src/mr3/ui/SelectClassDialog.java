@@ -26,6 +26,8 @@ public abstract class SelectClassDialog extends JDialog implements ActionListene
 	private int index; // 検索のインデックス 
 	private String currentKey; //現在のキー
 	private List findList; // 検索リスト
+	protected JComboBox uriPrefixBox;
+	protected JLabel nsLabel;
 	protected JTextField findField;
 	protected JButton findButton;
 
@@ -58,21 +60,44 @@ public abstract class SelectClassDialog extends JDialog implements ActionListene
 
 	protected abstract void initEachDialogAttr();
 
+	private static final int prefixBoxWidth = 120;
+	private static final int prefixBoxHeight = 50;
+	protected static final int listWidth = 450;
+	protected static final int listHeight = 40;
+
+	protected void initComponent(JComponent component, String title, int width, int height) {
+		component.setPreferredSize(new Dimension(width, height));
+		component.setMinimumSize(new Dimension(width, height));
+		component.setBorder(BorderFactory.createTitledBorder(title));
+	}
+
 	protected void initFindGroup() {
 		AbstractAction findAction = new FindAction();
-		findField = new JTextField(30);
+		uriPrefixBox = new JComboBox();
+		uriPrefixBox.addActionListener(new ChangePrefixAction());
+		PrefixNSUtil.setPrefixNSInfoSet(gmanager.getPrefixNSInfoSet());
+		uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
+		initComponent(uriPrefixBox, "Prefix", prefixBoxWidth, prefixBoxHeight);
+		findField = new JTextField(15);
+		initComponent(findField, "ID", prefixBoxWidth, listHeight);
 		findField.addActionListener(findAction);
-		findButton = new JButton("Find Resource");
+		findButton = new JButton("Find");
 		findButton.addActionListener(findAction);
+		nsLabel = new JLabel("");
+		initComponent(nsLabel, "NameSpace", listWidth, listHeight);
+	}
+
+	class ChangePrefixAction extends AbstractAction {
+		public void actionPerformed(ActionEvent e) {
+			PrefixNSUtil.replacePrefix((String) uriPrefixBox.getSelectedItem(), nsLabel);
+		}
 	}
 
 	class FindAction extends AbstractAction {
 
 		private void findNextResource(List findList) {
-			System.out.println("index: "+index);
-			System.out.println("size: "+findList.size());
 			if (findList != null && findList.size() > 0) {
-				if (index == findList.size()) { 
+				if (index == findList.size()) {
 					index = 0;
 				}
 				gmanager.jumpArea(findList.get(index), graph);
@@ -81,7 +106,7 @@ public abstract class SelectClassDialog extends JDialog implements ActionListene
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			String key = findField.getText() + ".*";
+			String key = nsLabel.getText()+findField.getText() + ".*";
 			if (currentKey == null || (!currentKey.equals(key))) {
 				index = 0; // indexを元に戻す
 				currentKey = key;
@@ -106,14 +131,19 @@ public abstract class SelectClassDialog extends JDialog implements ActionListene
 		inlinePanel.setLayout(gridbag);
 		c.anchor = GridBagConstraints.PAGE_START;
 		c.gridwidth = GridBagConstraints.REMAINDER;
+		c.weightx = 1;
+		c.weighty = 3;
 	}
 
 	protected void setFindGroupLayout() {
 		JPanel findPanel = new JPanel();
+		findPanel.add(uriPrefixBox);
 		findPanel.add(findField);
 		findPanel.add(findButton);
 		gridbag.setConstraints(findPanel, c);
 		inlinePanel.add(findPanel);
+		gridbag.setConstraints(nsLabel, c);
+		inlinePanel.add(nsLabel);
 	}
 
 	protected void setGraphLayout() {
@@ -128,7 +158,6 @@ public abstract class SelectClassDialog extends JDialog implements ActionListene
 
 	protected void setCommonLayout() {
 		c.gridwidth = GridBagConstraints.RELATIVE;
-		c.weightx = 1.0;
 		gridbag.setConstraints(confirm, c);
 		inlinePanel.add(confirm);
 		c.gridwidth = GridBagConstraints.REMAINDER;
@@ -138,7 +167,7 @@ public abstract class SelectClassDialog extends JDialog implements ActionListene
 		Container contentPane = getContentPane();
 		contentPane.add(inlinePanel);
 		setLocation(100, 100);
-		setSize(new Dimension(550, 500));
+		setSize(new Dimension(550, 550));
 		setVisible(false);
 	}
 

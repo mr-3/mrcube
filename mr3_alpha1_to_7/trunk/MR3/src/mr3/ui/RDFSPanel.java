@@ -91,7 +91,7 @@ public abstract class RDFSPanel extends JPanel {
 		initComponent(uriPrefixBox, "Prefix", prefixBoxWidth, prefixBoxHeight);
 
 		idField = new JTextField();
-		initComponent(idField, "Local Name", prefixBoxWidth, fieldHeight);
+		initComponent(idField, "ID", prefixBoxWidth, fieldHeight);
 
 		JPanel uriPanel = new JPanel();
 		uriPanel.add(uriPrefixBox);

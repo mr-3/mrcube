@@ -29,8 +29,7 @@ public class SelectResourceTypeDialog extends SelectClassDialog {
 
 	protected void initEachDialogAttr() {
 		dspURI = new JLabel();
-		dspURI.setBorder(BorderFactory.createTitledBorder("URI"));
-		dspURI.setPreferredSize(new Dimension(450, 50));
+		initComponent(dspURI, "URI", listWidth, listHeight);
 	}
 
 	protected void setEachDialogAttrLayout() {

@@ -86,7 +86,7 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		resPrefixBox.addActionListener(new ChangePrefixAction());
 
 		uriField = new JTextField();
-		initComponent(uriField, "Local Name", boxWidth, listHeight);
+		initComponent(uriField, "RDF Resource ID", boxWidth, listHeight);
 		uriField.addActionListener(this);
 
 		isAnonBox = new JCheckBox("isAnon");
@@ -294,7 +294,7 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 		return resTypeNSLabel.getText() + resTypeField.getText();
 	}
 
-	// URIの重複と，空のチェックをする．URITypeがIDの場合は，baseURIを含めた形でチェックする．
+	// URIの重複と，空のチェックをする．
 	private boolean isErrorResource() {
 		String uri = getResourceURI();
 		if (isAnonBox.isSelected()) {

@@ -32,23 +32,27 @@ public class FindResourceDialog extends JInternalFrame {
 	private GraphManager gmanager;
 	private static Object[] NULL = new Object[0];
 
-	private static final int boxWidth = 70;
-	private static final int boxHeight = 30;
+	private static final int boxWidth = 120;
+	private static final int boxHeight = 50;
+	private static final int listWidth = 350;
+	private static final int listHeight = 30;
+	private static final int fieldHeight = 40;
 
 	public FindResourceDialog(String title, GraphManager manager) {
 		super(title, false, true, false);
 		Container contentPane = getContentPane();
 
 		gmanager = manager;
-		nsLabel = new JLabel("");
 		JComponent buttonGroupPanel = getButtonGroupPanel();
 		JComponent findAreaPanel = getFindAreaPanel();
+
+		nsLabel = new JLabel("");
+		initComponent(nsLabel, "NameSpace", listWidth, fieldHeight);
 
 		resourceList = new JList();
 		resourceList.addListSelectionListener(new JumpAction());
 		JScrollPane resourceListScroll = new JScrollPane(resourceList);
-		resourceListScroll.setPreferredSize(new Dimension(450, 100));
-		resourceListScroll.setMinimumSize(new Dimension(450, 100));
+		initComponent(resourceListScroll, "Find List", listWidth, 100);
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE); // デフォルトの動作を消す
 		addInternalFrameListener(new InternalFrameAdapter() {
@@ -70,12 +74,21 @@ public class FindResourceDialog extends JInternalFrame {
 		gridbag.setConstraints(findAreaPanel, c);
 		contentPane.add(findAreaPanel);
 
+		gridbag.setConstraints(nsLabel, c);
+		contentPane.add(nsLabel);
+
 		gridbag.setConstraints(resourceListScroll, c);
 		contentPane.add(resourceListScroll);
 
 		setLocation(100, 100);
-		setSize(new Dimension(500, 250));
+		setSize(new Dimension(400, 350));
 		setVisible(false);
+	}
+
+	private void initComponent(JComponent component, String title, int width, int height) {
+		component.setPreferredSize(new Dimension(width, height));
+		component.setMinimumSize(new Dimension(width, height));
+		component.setBorder(BorderFactory.createTitledBorder(title));
 	}
 
 	private JComponent getButtonGroupPanel() {
@@ -93,9 +106,7 @@ public class FindResourceDialog extends JInternalFrame {
 		group.add(classAreaButton);
 		group.add(propertyAreaButton);
 		JPanel buttonGroupPanel = new JPanel();
-		buttonGroupPanel.setPreferredSize(new Dimension(250, 60));
-		buttonGroupPanel.setMinimumSize(new Dimension(250, 60));
-		buttonGroupPanel.setBorder(BorderFactory.createTitledBorder("Graph Type"));
+		initComponent(buttonGroupPanel, "GraphType", 250, 60);
 		buttonGroupPanel.add(rdfAreaButton);
 		buttonGroupPanel.add(classAreaButton);
 		buttonGroupPanel.add(propertyAreaButton);
@@ -108,10 +119,10 @@ public class FindResourceDialog extends JInternalFrame {
 		FindAction findAction = new FindAction();
 		uriPrefixBox = new JComboBox();
 		uriPrefixBox.addActionListener(new ChangePrefixAction());
-		uriPrefixBox.setPreferredSize(new Dimension(boxWidth, boxHeight));
-		uriPrefixBox.setMinimumSize(new Dimension(boxWidth, boxHeight));
+		initComponent(uriPrefixBox, "Prefix", boxWidth, boxHeight);
 
-		findField = new JTextField(28);
+		findField = new JTextField(15);
+		initComponent(findField, "ID", boxWidth, fieldHeight);
 		findField.addActionListener(findAction);
 		findButton = new JButton("Find");
 		findButton.addActionListener(findAction);
@@ -139,8 +150,6 @@ public class FindResourceDialog extends JInternalFrame {
 		prefixNSInfoSet = gmanager.getPrefixNSInfoSet();
 		PrefixNSUtil.setPrefixNSInfoSet(prefixNSInfoSet);
 		uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
-		uriPrefixBox.insertItemAt("", 0);
-		uriPrefixBox.setSelectedIndex(0);
 	}
 
 	public void setVisible(boolean aFlag) {
@@ -172,7 +181,7 @@ public class FindResourceDialog extends JInternalFrame {
 		public void actionPerformed(ActionEvent e) {
 			resourceList.removeAll();
 			// はじめの部分だけマッチしていれば，検索対象にするようにする
-			String key = findField.getText() + ".*";
+			String key = nsLabel.getText()+findField.getText() + ".*";
 			Set resourceSet = null;
 			if (findArea == GraphType.RDF) {
 				resourceSet = gmanager.getFindRDFResult(key);

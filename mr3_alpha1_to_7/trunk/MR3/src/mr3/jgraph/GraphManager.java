@@ -324,34 +324,68 @@ public class GraphManager {
 		return nameSpaces;
 	}
 
-	private GraphCell getCell(Resource res, GraphType type) {
+	private GraphCell getCell(Resource res, RDFGraph graph) {
 		GraphCell cell = null;
-		if (type == GraphType.RDF) {
+		if (isRDFGraph(graph)) {
 			cell = (GraphCell) getRDFResourceCell(res);
-		} else if (type == GraphType.CLASS) {
-			cell = (GraphCell) getClassCell(res, false);
-		} else if (type == GraphType.PROPERTY) {
-			cell = (GraphCell) getPropertyCell(res, false);
+		} else if (isClassGraph(graph)) {
+			if (rdfsInfoMap.isClassCell(res)) {
+				cell = (GraphCell) getClassCell(res, false);
+			}
+		} else if (isPropertyGraph(graph)) {
+			if (rdfsInfoMap.isPropertyCell(res)) {
+				cell = (GraphCell) getPropertyCell(res, false);
+			}
 		}
 		return cell;
 	}
 
-	public void setPosition_X(Resource subject, RDFNode object, GraphType type) {
-		GraphCell cell = getCell(subject, type);
-		Map map = cell.getAttributes();
-		Rectangle rec = GraphConstants.getBounds(map);
-		rec.x = Integer.parseInt(object.toString());
-		GraphConstants.setBounds(map, rec);
-		cell.changeAttributes(map);
+	private void editCell(GraphCell cell, Map map, RDFGraph graph) {
+		Map nested = new HashMap();
+		nested.put(cell, GraphConstants.cloneMap(map));
+		graph.getModel().edit(nested, null, null, null);
 	}
 
-	public void setPosition_Y(Resource subject, RDFNode object, GraphType type) {
-		GraphCell cell = getCell(subject, type);
+	public void setPositionX(Resource subject, RDFNode object, RDFGraph graph) {
+		GraphCell cell = getCell(subject, graph);
+		if (cell == null) {
+			return;
+		}
+		if (isRDFGraph(graph)) {
+			RDFResourceInfo info = resInfoMap.getCellInfo(cell);
+			GraphCell typeCell = (GraphCell) info.getTypeViewCell();
+			Map map = typeCell.getAttributes();
+			Rectangle rec = GraphConstants.getBounds(map);
+			rec.x = (int) Float.parseFloat(object.toString());
+			GraphConstants.setBounds(map, rec);
+			editCell(typeCell, map, graph);
+		}
 		Map map = cell.getAttributes();
 		Rectangle rec = GraphConstants.getBounds(map);
-		rec.y = Integer.parseInt(object.toString());
+		rec.x = (int) Float.parseFloat(object.toString());
 		GraphConstants.setBounds(map, rec);
-		cell.changeAttributes(map);
+		editCell(cell, map, graph);
+	}
+
+	public void setPositionY(Resource subject, RDFNode object, RDFGraph graph) {
+		GraphCell cell = getCell(subject, graph);
+		if (cell == null) {
+			return;
+		}
+		if (isRDFGraph(graph)) {
+			RDFResourceInfo info = resInfoMap.getCellInfo(cell);
+			GraphCell typeCell = (GraphCell) info.getTypeViewCell();
+			Map map = typeCell.getAttributes();
+			Rectangle rec = GraphConstants.getBounds(map);
+			rec.y = (int) Float.parseFloat(object.toString()) + 25;
+			GraphConstants.setBounds(map, rec);
+			editCell(typeCell, map, graph);
+		}
+		Map map = cell.getAttributes();
+		Rectangle rec = GraphConstants.getBounds(map);
+		rec.y = (int) Float.parseFloat(object.toString());
+		GraphConstants.setBounds(map, rec);
+		editCell(cell, map, graph);
 	}
 
 	public void setCellValue(GraphCell cell, String value) {
@@ -638,6 +672,9 @@ public class GraphManager {
 	}
 
 	public Set getSupRDFS(RDFGraph graph, String title) {
+		if (graph.getAllCells().length == 0) {
+			return new HashSet();
+		}
 		SelectRDFSDialog selectSupRDFSDialog = new SelectRDFSDialog(title, this);
 		selectSupRDFSDialog.replaceGraph(graph);
 		selectSupRDFSDialog.setVisible(true);
@@ -1054,13 +1091,41 @@ public class GraphManager {
 			if (isRDFGraph(graph) && arc == 'r' && graph.isRDFResourceCell(data.getCell())) {
 				RDFResourceInfo info = resInfoMap.getCellInfo(data.getCell());
 				GraphCell typeCell = (GraphCell) info.getTypeViewCell();
-				//		System.out.print(typeCell.getClass());
-				//		System.out.println(typeCell);
-				if (typeCell != null)
+				if (typeCell != null) {
 					data.setRealTypePosition(typeCell);
+				}
 			}
 		}
+		centerCellsInGraph(graph);
 		changeCellView();
+	}
+
+	private void centerCellsInGraph(RDFGraph graph) {
+		int margine = 100;
+		Rectangle rec = graph.getCellBounds(graph.getRoots());
+		Object[] cells = graph.getAllCells();
+
+		for (int i = 0; i < cells.length; i++) {
+			if (graph.isRDFsCell(cells[i]) || graph.isTypeCell(cells[i])) {
+				GraphCell cell = (GraphCell) cells[i];
+				Map map = cell.getAttributes();
+				Rectangle cellRec = GraphConstants.getBounds(map);
+				if (rec.y <= 0) {
+					cellRec.y += (-rec.y) + margine;
+				} 
+				if (rec.x <= 0) {
+					cellRec.x += (-rec.x) + margine;
+				} 
+				if (margine < rec.y) {
+					cellRec.y -= (rec.y - margine);
+				}						
+				if (margine < rec.x) {
+					cellRec.x -= (rec.x - margine);
+				}
+				GraphConstants.setBounds(map, cellRec);
+				editCell(cell, map, graph);
+			}
+		}
 	}
 
 	class AbstractLevelInfo {

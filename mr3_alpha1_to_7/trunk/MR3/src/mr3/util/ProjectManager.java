@@ -42,7 +42,7 @@ public class ProjectManager {
 				Rectangle rec = GraphConstants.getBounds(cell.getAttributes());
 				RDFResourceInfo info = resInfoMap.getCellInfo(cell);
 				projectModel.add(info.getURI(), MR3Resource.Point_x, rec.getX());
-				projectModel.add(info.getURI(), MR3Resource.Point_y, rec.getX());
+				projectModel.add(info.getURI(), MR3Resource.Point_y, rec.getY());
 			}
 		}
 	}
@@ -55,7 +55,7 @@ public class ProjectManager {
 				Rectangle rec = GraphConstants.getBounds(cell.getAttributes());
 				RDFSInfo info = rdfsInfoMap.getCellInfo(cell);
 				projectModel.add(info.getURI(), MR3Resource.Point_x, rec.getX());
-				projectModel.add(info.getURI(), MR3Resource.Point_y, rec.getX());
+				projectModel.add(info.getURI(), MR3Resource.Point_y, rec.getY());
 			}
 		}
 	}
@@ -100,7 +100,6 @@ public class ProjectManager {
 		for (StmtIterator i = model.listStatements(); i.hasNext();) {
 			Statement stmt = i.next();
 			if (hasProjectPredicate(stmt)) {
-				System.out.println(stmt);
 				extractModel.add(stmt);
 			}
 		}
@@ -125,17 +124,17 @@ public class ProjectManager {
 		}
 	}
 
-	public void loadProject(Model model, GraphType graphType) throws RDFException {
+	public void loadProject(Model model, RDFGraph graph) throws RDFException {
 		for (StmtIterator i = model.listStatements(); i.hasNext();) {
 			Statement stmt = i.next();
 			if (stmt.getPredicate().equals(MR3Resource.Point_x)) {
-				gmanager.setPosition_X(stmt.getSubject(), stmt.getObject(), graphType);
+				gmanager.setPositionX(stmt.getSubject(), stmt.getObject(), graph);
 			} else if (stmt.getPredicate().equals(MR3Resource.Point_y)) {
-				gmanager.setPosition_Y(stmt.getSubject(), stmt.getObject(), graphType);
+				gmanager.setPositionY(stmt.getSubject(), stmt.getObject(), graph);
 			} else if (stmt.getPredicate().equals(MR3Resource.Prefix)) {
-				changeNSModel(stmt.getSubject(), stmt.getObject(), PREFIX_COLUMN);
+//				changeNSModel(stmt.getSubject(), stmt.getObject(), PREFIX_COLUMN);
 			} else if (stmt.getPredicate().equals(MR3Resource.Is_prefix_available)) {
-				changeNSModel(stmt.getSubject(), stmt.getObject(), IS_AVAILABLE_COLUMN);
+//				changeNSModel(stmt.getSubject(), stmt.getObject(), IS_AVAILABLE_COLUMN);
 			}
 		}
 	}

@@ -41,7 +41,7 @@ public class InsertRDFResDialog extends JDialog implements ActionListener, ItemL
 		resTypeBox.addItemListener(this);
 
 		idField = new JTextField(10);
-		initComponent(idField, "LocalName", 150, 40);
+		initComponent(idField, "ID", 150, 40);
 
 		isAnonBox = new JCheckBox("isAnon");
 		isAnonBox.addActionListener(new IsAnonAction());

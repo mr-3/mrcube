@@ -430,7 +430,6 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 		ImageIcon fitWindowIcon = new ImageIcon(fitWindowUrl);
 		toolbar.add(new AbstractAction("", fitWindowIcon) {
 			public void actionPerformed(ActionEvent e) {
-				//				fitWindow(graph);
 				fitWindow();
 			}
 		});

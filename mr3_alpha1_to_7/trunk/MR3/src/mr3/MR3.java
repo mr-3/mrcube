@@ -175,6 +175,8 @@ public class MR3 extends JFrame {
 		internalFrames[2].setFrameIcon(new ImageIcon(propertyEditorUrl));
 
 		srcFrame = createInternalFrame(new JScrollPane(srcArea), "Source Window", DEMO_FRAME_LAYER);
+		URL srcAreaUrl = this.getClass().getClassLoader().getResource("mr3/resources/source_window.gif");
+		srcFrame.setFrameIcon(new ImageIcon(srcAreaUrl));
 		srcFrame.setClosable(true);
 		srcFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		srcFrame.addInternalFrameListener(new CloseInternalFrameAction());
@@ -332,6 +334,9 @@ public class MR3 extends JFrame {
 		menu.add(mi);
 		menu.addSeparator();
 		JMenu importRDF = new JMenu("Import");
+		//		mi = new JMenuItem(PROJECT);
+		//		mi.addActionListener(new ImportProjectAction());
+		//		importRDF.add(mi);
 		JMenu replace = new JMenu("Replace");
 
 		mi = new JMenuItem("RDF/XML (File)");
@@ -358,9 +363,9 @@ public class MR3 extends JFrame {
 
 		JMenu exportMenu = new JMenu("Export");
 		menu.add(exportMenu);
-		mi = new JMenuItem(PROJECT);
-		mi.addActionListener(new ExportProjectAction());
-		exportMenu.add(mi);
+		//		mi = new JMenuItem(PROJECT);
+		//		mi.addActionListener(new ExportProjectAction());
+		//		exportMenu.add(mi);
 		mi = new JMenuItem(RDFS_XML);
 		mi.addActionListener(new ExportRDFSAction());
 		exportMenu.add(mi);
@@ -714,7 +719,7 @@ public class MR3 extends JFrame {
 	//		return model;
 	//	}
 
-	private Reader getReader(String uri, String ext) {
+	private Reader getReader(String uri) {
 		if (uri == null) {
 			return null;
 		}
@@ -735,13 +740,15 @@ public class MR3 extends JFrame {
 		return null;
 	}
 
-	private Reader getReader(String ext) {
+	private Reader getReader(String ext, String encoding) {
 		File file = getFile(true, ext);
 		if (file == null) {
 			return null;
 		}
 		try {
-			String encoding = userPrefs.get(PrefConstants.InputEncoding, "SJIS");
+			if (encoding == null) {
+				encoding = userPrefs.get(PrefConstants.InputEncoding, "SJIS");
+			}
 			Reader reader = new InputStreamReader(new FileInputStream(file), encoding);
 			return reader;
 		} catch (IOException ex) {
@@ -771,7 +778,7 @@ public class MR3 extends JFrame {
 
 	class ReplaceRDFFileAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
-			Model model = readModel(getReader("rdf"), gmanager.getBaseURI());
+			Model model = readModel(getReader("rdf", null), gmanager.getBaseURI());
 			gmanager.setIsImporting(true);
 			mr3Reader.replaceRDF(model);
 			rdfEditor.fitWindow();
@@ -783,7 +790,7 @@ public class MR3 extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			gmanager.setIsImporting(true);
 			String uri = JOptionPane.showInternalInputDialog(desktop, "Open URI");
-			Model model = readModel(getReader(uri, "rdf"), gmanager.getBaseURI());
+			Model model = readModel(getReader(uri), gmanager.getBaseURI());
 			mr3Reader.replaceRDF(model);
 			rdfEditor.fitWindow();
 			gmanager.setIsImporting(false);
@@ -801,7 +808,7 @@ public class MR3 extends JFrame {
 	class MergeRDFSFileAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
 			gmanager.setIsImporting(true);
-			Model model = readModel(getReader("rdfs"), gmanager.getBaseURI());
+			Model model = readModel(getReader("rdfs", null), gmanager.getBaseURI());
 			mr3Reader.mergeRDFS(model);
 			nsTableDialog.setCurrentNSPrefix();
 			gmanager.setIsImporting(false);
@@ -812,7 +819,7 @@ public class MR3 extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			gmanager.setIsImporting(true);
 			String uri = JOptionPane.showInternalInputDialog(desktop, "Open URI");
-			Model model = readModel(getReader(uri, "rdfs"), gmanager.getBaseURI());
+			Model model = readModel(getReader(uri), gmanager.getBaseURI());
 			mr3Reader.mergeRDFS(model);
 			gmanager.setIsImporting(false);
 		}
@@ -820,16 +827,23 @@ public class MR3 extends JFrame {
 
 	class ImportProjectAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
-			File file = getFile(true, "mr3");
-			if (file == null) {
-				return;
+			try {
+				ProjectManager pm = new ProjectManager(gmanager, nsTableDialog);
+				gmanager.setIsImporting(true);
+				Model model = readModel(getReader("mr3", "UTF8"), gmanager.getBaseURI());
+				if (model == null) {
+					return;
+				}
+				Model projectModel = pm.extractProjectModel(model);
+				mr3Reader.mergeRDFS(model);
+				nsTableDialog.setCurrentNSPrefix();
+				pm.loadProject(projectModel, gmanager.getRDFGraph());
+				pm.loadProject(projectModel, gmanager.getClassGraph());
+				pm.loadProject(projectModel, gmanager.getPropertyGraph());
+				gmanager.setIsImporting(false);
+			} catch (RDFException e1) {
+				e1.printStackTrace();
 			}
-			// ここで，インポートについて書く．
-			gmanager.setIsImporting(true);
-			Model model = readModel(getReader("mr3"), gmanager.getBaseURI());
-			mr3Reader.mergeRDFS(model);
-			nsTableDialog.setCurrentNSPrefix();
-			gmanager.setIsImporting(false);
 		}
 	}
 
@@ -923,10 +937,11 @@ public class MR3 extends JFrame {
 		JMenu menu = new JMenu("View");
 		ChangeCellViewAction changeCellViewAction = new ChangeCellViewAction();
 		uriView = new JRadioButton("URI View");
+		uriView.setSelected(true);
+		gmanager.setCellViewType(CellViewType.URI);
 		uriView.addItemListener(changeCellViewAction);
 		idView = new JRadioButton("ID View");
 		idView.addItemListener(changeCellViewAction);
-		idView.setSelected(true);
 		labelView = new JRadioButton("Label View");
 		labelView.addItemListener(changeCellViewAction);
 		ButtonGroup group = new ButtonGroup();
@@ -940,15 +955,15 @@ public class MR3 extends JFrame {
 		//		menu.add(getEditorViewMenu());
 		showSrcView = new JCheckBoxMenuItem("Show Source Window", false);
 		showSrcView.addActionListener(new ShowViewAction());
-		menu.add(showSrcView);
 		menu.add(attrDialog.getShowPropWindow());
 		menu.add(nsTableDialog.getShowNSTable());
+		menu.add(showSrcView);
 		//		showTypeCell = new JCheckBoxMenuItem("Show Type", true);
 		//		showTypeCell.addActionListener(new ShowTypeCellAction());
 		//		menu.add(showTypeCell);
-		showToolTips = new JCheckBoxMenuItem("Show ToolTips", false);
+		showToolTips = new JCheckBoxMenuItem("Show ToolTips", true);
 		showToolTips.addActionListener(new ShowToolTipsAction());
-		ToolTipManager.sharedInstance().setEnabled(false);
+		ToolTipManager.sharedInstance().setEnabled(true);
 		menu.add(showToolTips);
 		//		lightView = new JCheckBoxMenuItem("Color Mode", false);
 		//		lightView.addActionListener(new LightViewAction());
