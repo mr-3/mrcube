@@ -90,37 +90,31 @@ public abstract class RDFSPanel extends JPanel {
 		metaTab = new JTabbedPane();
 	}
 
-	protected void initComponent(JComponent component, String title, int width, int height) {
-		component.setPreferredSize(new Dimension(width, height));
-		component.setMinimumSize(new Dimension(width, height));
-		component.setBorder(BorderFactory.createTitledBorder(title));
-	}
-
 	protected void setBaseTab() {
 		metaClassBox = new JComboBox();
-		initComponent(metaClassBox, Translator.getString("ResourceType"), LIST_WIDTH, PREFIX_BOX_HEIGHT);
+		Utilities.initComponent(metaClassBox, Translator.getString("ResourceType"), LIST_WIDTH, PREFIX_BOX_HEIGHT);
 
 		uriPrefixBox = new JComboBox();
 		uriPrefixBox.addActionListener(new ChangePrefixAction());
-		initComponent(uriPrefixBox, Translator.getString("Prefix"), PREFIX_BOX_WIDTH, PREFIX_BOX_HEIGHT);
+		Utilities.initComponent(uriPrefixBox, Translator.getString("Prefix"), PREFIX_BOX_WIDTH, PREFIX_BOX_HEIGHT);
 
 		idField = new JTextField();
-		initComponent(idField, "ID", ID_BOX_WIDTH, FIELD_HEIGHT);
+		Utilities.initComponent(idField, "ID", ID_BOX_WIDTH, FIELD_HEIGHT);
 
 		JPanel uriPanel = new JPanel();
 		uriPanel.add(uriPrefixBox);
 		uriPanel.add(idField);
 
 		nsLabel = new JLabel("");
-		initComponent(nsLabel, Translator.getString("NameSpace"), LIST_WIDTH, FIELD_HEIGHT);
+		Utilities.initComponent(nsLabel, Translator.getString("NameSpace"), LIST_WIDTH, FIELD_HEIGHT);
 
 		isDefinedBy = new JTextField();
-		initComponent(isDefinedBy, "isDefinedBy", LIST_WIDTH, FIELD_HEIGHT);
+		Utilities.initComponent(isDefinedBy, "isDefinedBy", LIST_WIDTH, FIELD_HEIGHT);
 
 		labelLangField = new JTextField(LANG_FIELD_LENGTH);
-		initComponent(labelLangField, Translator.getString("Lang"), BOX_WIDTH, FIELD_HEIGHT);
+		Utilities.initComponent(labelLangField, Translator.getString("Lang"), BOX_WIDTH, FIELD_HEIGHT);
 		labelField = new JTextField();
-		initComponent(labelField, Translator.getString("Label"), 300, FIELD_HEIGHT);
+		Utilities.initComponent(labelField, Translator.getString("Label"), 300, FIELD_HEIGHT);
 		JPanel labelGroup = new JPanel();
 		labelGroup.add(labelLangField);
 		labelGroup.add(labelField);
@@ -169,10 +163,10 @@ public abstract class RDFSPanel extends JPanel {
 
 	protected void setCommentTab() {
 		commentLangField = new JTextField(LANG_FIELD_LENGTH);
-		initComponent(commentLangField, Translator.getString("Lang"), BOX_WIDTH, FIELD_HEIGHT);
+		Utilities.initComponent(commentLangField, Translator.getString("Lang"), BOX_WIDTH, FIELD_HEIGHT);
 		commentArea = new JTextArea(5, 20); // èc,â°        
 		commentScroll = new JScrollPane(commentArea);
-		initComponent(commentScroll, Translator.getString("Comment"), 300, 150);
+		Utilities.initComponent(commentScroll, Translator.getString("Comment"), 300, 150);
 		JPanel commentPanel = new JPanel();
 		commentPanel.add(commentLangField);
 		commentPanel.add(commentScroll);

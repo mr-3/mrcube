@@ -34,7 +34,7 @@ public class SelectResourceTypePanel extends SelectClassPanel {
 	
 	protected void initEachDialogAttr() {
 		dspURI = new JLabel();
-		initComponent(dspURI, "URI", LIST_WIDTH, LIST_HEIGHT);
+		Utilities.initComponent(dspURI, "URI", LIST_WIDTH, LIST_HEIGHT);
 	}
 
 	protected void setEachDialogAttrLayout() {

@@ -28,21 +28,21 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
 	private GraphManager gmanager;
 
 	private JTabbedPane tabbedPane;
-	private JList prevClassList;
+	private JList currentClassList;
 	private DefaultListModel prevClassListModel;
 	private JList replaceClassList;
 	private DefaultListModel replaceClassListModel;
-	private JList prevPropertyList;
+	private JList currentPropertyList;
 	private DefaultListModel prevPropertyListModel;
 	private JList replacePropertyList;
 	private DefaultListModel replacePropertyListModel;
 
-	private JButton prevClassUpButton;
-	private JButton prevClassDownButton;
+	private JButton currentClassUpButton;
+	private JButton currentClassDownButton;
 	private JButton replaceClassUpButton;
 	private JButton replaceClassDownButton;
-	private JButton prevPropertyUpButton;
-	private JButton prevPropertyDownButton;
+	private JButton currentPropertyUpButton;
+	private JButton currentPropertyDownButton;
 	private JButton replacePropertyUpButton;
 	private JButton replacePropertyDownButton;
 
@@ -58,8 +58,11 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
 	private static final int LIST_HEIGHT = 200;
 	private static final String NULL = "NULL";
 
+	private static final ImageIcon UP_ICON = Utilities.getImageIcon(Translator.getString("ReplaceRDFSDialog.Icon.up"));
+	private static final ImageIcon DOWN_ICON = Utilities.getImageIcon(Translator.getString("ReplaceRDFSDialog.Icon.down"));
+
 	public ReplaceRDFSDialog(GraphManager gm, Model replaceModel) {
-		super(gm.getRoot(), "Replace RDFS Dialog", true);
+		super(gm.getRoot(), Translator.getString("ReplaceRDFSDialog.Title"), true);
 		gmanager = gm;
 		tabbedPane = new JTabbedPane();
 
@@ -69,24 +72,24 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
 
 		prevClassListModel = new DefaultListModel();
 		setListData(prevClassListModel, gm.getClassSet());
-		prevClassList = new JList(prevClassListModel);
-		prevClassList.addListSelectionListener(this);
-		JScrollPane prevClassListScroll = new JScrollPane(prevClassList);
-		initComponent(prevClassListScroll, "Prev Class List", LIST_WIDTH, LIST_HEIGHT);
+		currentClassList = new JList(prevClassListModel);
+		currentClassList.addListSelectionListener(this);
+		JScrollPane prevClassListScroll = new JScrollPane(currentClassList);
+		Utilities.initComponent(prevClassListScroll, Translator.getString("ReplaceRDFSDialog.CurrentClassList"), LIST_WIDTH, LIST_HEIGHT);
 
 		replaceClassListModel = new DefaultListModel();
 		setListData(replaceClassListModel, rdfsInfoMap.getClassSet(new HashSet(), RDFS.Resource));
 		replaceClassList = new JList(replaceClassListModel);
 		replaceClassList.addListSelectionListener(this);
 		JScrollPane replaceClassListScroll = new JScrollPane(replaceClassList);
-		initComponent(replaceClassListScroll, "Replace Class List", LIST_WIDTH, LIST_HEIGHT);
+		Utilities.initComponent(replaceClassListScroll, Translator.getString("ReplaceRDFSDialog.ReplaceClassList"), LIST_WIDTH, LIST_HEIGHT);
 
 		prevPropertyListModel = new DefaultListModel();
 		setListData(prevPropertyListModel, gm.getPropertySet());
-		prevPropertyList = new JList(prevPropertyListModel);
-		prevPropertyList.addListSelectionListener(this);
-		JScrollPane prevPropertyListScroll = new JScrollPane(prevPropertyList);
-		initComponent(prevPropertyListScroll, "Prev Property List", LIST_WIDTH, LIST_HEIGHT);
+		currentPropertyList = new JList(prevPropertyListModel);
+		currentPropertyList.addListSelectionListener(this);
+		JScrollPane prevPropertyListScroll = new JScrollPane(currentPropertyList);
+		Utilities.initComponent(prevPropertyListScroll, Translator.getString("ReplaceRDFSDialog.CurrentPropertyList"), LIST_WIDTH, LIST_HEIGHT);
 
 		replacePropertyListModel = new DefaultListModel();
 		Set replacePropertySet = new HashSet();
@@ -99,49 +102,49 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
 		replacePropertyList = new JList(replacePropertyListModel);
 		replacePropertyList.addListSelectionListener(this);
 		JScrollPane replacePropertyListScroll = new JScrollPane(replacePropertyList);
-		initComponent(replacePropertyListScroll, "Replace Property List", LIST_WIDTH, LIST_HEIGHT);
+		Utilities.initComponent(replacePropertyListScroll, Translator.getString("ReplaceRDFSDialog.ReplacePropertyList"), LIST_WIDTH, LIST_HEIGHT);
 
 		fixListData();
 
-		prevClassUpButton = new JButton(Utilities.getImageIcon("up.gif"));
-		prevClassUpButton.addActionListener(this);
-		prevClassDownButton = new JButton(Utilities.getImageIcon("down.gif"));
-		prevClassDownButton.addActionListener(this);
+		currentClassUpButton = new JButton(UP_ICON);
+		currentClassUpButton.addActionListener(this);
+		currentClassDownButton = new JButton(DOWN_ICON);
+		currentClassDownButton.addActionListener(this);
 		JPanel prevClassButtonPanel = new JPanel();
 		prevClassButtonPanel.setLayout(new BoxLayout(prevClassButtonPanel, BoxLayout.Y_AXIS));
-		prevClassButtonPanel.add(prevClassUpButton);
-		prevClassButtonPanel.add(prevClassDownButton);
+		prevClassButtonPanel.add(currentClassUpButton);
+		prevClassButtonPanel.add(currentClassDownButton);
 
-		replaceClassUpButton = new JButton(Utilities.getImageIcon("up.gif"));
+		replaceClassUpButton = new JButton(UP_ICON);
 		replaceClassUpButton.addActionListener(this);
-		replaceClassDownButton = new JButton(Utilities.getImageIcon("down.gif"));
+		replaceClassDownButton = new JButton(DOWN_ICON);
 		replaceClassDownButton.addActionListener(this);
 		JPanel replaceClassButtonPanel = new JPanel();
 		replaceClassButtonPanel.setLayout(new BoxLayout(replaceClassButtonPanel, BoxLayout.Y_AXIS));
 		replaceClassButtonPanel.add(replaceClassUpButton);
 		replaceClassButtonPanel.add(replaceClassDownButton);
 
-		prevPropertyUpButton = new JButton(Utilities.getImageIcon("up.gif"));
-		prevPropertyUpButton.addActionListener(this);
-		prevPropertyDownButton = new JButton(Utilities.getImageIcon("down.gif"));
-		prevPropertyDownButton.addActionListener(this);
+		currentPropertyUpButton = new JButton(UP_ICON);
+		currentPropertyUpButton.addActionListener(this);
+		currentPropertyDownButton = new JButton(DOWN_ICON);
+		currentPropertyDownButton.addActionListener(this);
 		JPanel prevPropertyButtonPanel = new JPanel();
 		prevPropertyButtonPanel.setLayout(new BoxLayout(prevPropertyButtonPanel, BoxLayout.Y_AXIS));
-		prevPropertyButtonPanel.add(prevPropertyUpButton);
-		prevPropertyButtonPanel.add(prevPropertyDownButton);
+		prevPropertyButtonPanel.add(currentPropertyUpButton);
+		prevPropertyButtonPanel.add(currentPropertyDownButton);
 
-		replacePropertyUpButton = new JButton(Utilities.getImageIcon("up.gif"));
+		replacePropertyUpButton = new JButton(UP_ICON);
 		replacePropertyUpButton.addActionListener(this);
-		replacePropertyDownButton = new JButton(Utilities.getImageIcon("down.gif"));
+		replacePropertyDownButton = new JButton(DOWN_ICON);
 		replacePropertyDownButton.addActionListener(this);
 		JPanel replacePropertyButtonPanel = new JPanel();
 		replacePropertyButtonPanel.setLayout(new BoxLayout(replacePropertyButtonPanel, BoxLayout.Y_AXIS));
 		replacePropertyButtonPanel.add(replacePropertyUpButton);
 		replacePropertyButtonPanel.add(replacePropertyDownButton);
 
-		applyButton = new JButton("Apply");
+		applyButton = new JButton(Translator.getString("Apply"));
 		applyButton.addActionListener(this);
-		cancelButton = new JButton("Cancel");
+		cancelButton = new JButton(Translator.getString("Cancel"));
 		cancelButton.addActionListener(this);
 
 		JPanel prevClassPanel = new JPanel();
@@ -172,8 +175,8 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
 		decisionPanel.add(applyButton);
 		decisionPanel.add(cancelButton);
 
-		tabbedPane.add(classPanel, "Class");
-		tabbedPane.add(propertyPanel, "Property");
+		tabbedPane.add(classPanel, Translator.getString("Class"));
+		tabbedPane.add(propertyPanel, Translator.getString("Property"));
 
 		Container contentPane = getContentPane();
 		contentPane.add(tabbedPane, BorderLayout.CENTER);
@@ -232,21 +235,15 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
 		}
 	}
 
-	private void initComponent(JComponent component, String title, int width, int height) {
-		component.setPreferredSize(new Dimension(width, height));
-		component.setMinimumSize(new Dimension(width, height));
-		component.setBorder(BorderFactory.createTitledBorder(title));
-	}
-
 	public void valueChanged(ListSelectionEvent e) {
-		if (e.getSource() == prevClassList) {
-			replaceClassList.setSelectedIndex(prevClassList.getSelectedIndex());
+		if (e.getSource() == currentClassList) {
+			replaceClassList.setSelectedIndex(currentClassList.getSelectedIndex());
 		} else if (e.getSource() == replaceClassList) {
-			prevClassList.setSelectedIndex(replaceClassList.getSelectedIndex());
-		} else if (e.getSource() == prevPropertyList) {
-			replacePropertyList.setSelectedIndex(prevPropertyList.getSelectedIndex());
+			currentClassList.setSelectedIndex(replaceClassList.getSelectedIndex());
+		} else if (e.getSource() == currentPropertyList) {
+			replacePropertyList.setSelectedIndex(currentPropertyList.getSelectedIndex());
 		} else if (e.getSource() == replacePropertyList) {
-			prevPropertyList.setSelectedIndex(replacePropertyList.getSelectedIndex());
+			currentPropertyList.setSelectedIndex(replacePropertyList.getSelectedIndex());
 		}
 	}
 
@@ -405,18 +402,18 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == prevClassUpButton) {
-			listUp(prevClassList);
-		} else if (e.getSource() == prevClassDownButton) {
-			listDown(prevClassList);
+		if (e.getSource() == currentClassUpButton) {
+			listUp(currentClassList);
+		} else if (e.getSource() == currentClassDownButton) {
+			listDown(currentClassList);
 		} else if (e.getSource() == replaceClassUpButton) {
 			listUp(replaceClassList);
 		} else if (e.getSource() == replaceClassDownButton) {
 			listDown(replaceClassList);
-		} else if (e.getSource() == prevPropertyUpButton) {
-			listUp(prevPropertyList);
-		} else if (e.getSource() == prevPropertyDownButton) {
-			listDown(prevPropertyList);
+		} else if (e.getSource() == currentPropertyUpButton) {
+			listUp(currentPropertyList);
+		} else if (e.getSource() == currentPropertyDownButton) {
+			listDown(currentPropertyList);
 		} else if (e.getSource() == replacePropertyUpButton) {
 			listUp(replacePropertyList);
 		} else if (e.getSource() == replacePropertyDownButton) {

@@ -36,7 +36,7 @@ public class SelectRDFSPanel extends SelectClassPanel {
 	protected void initEachDialogAttr() {
 		regionList = new JList();
 		regionListScroll = new JScrollPane(regionList);
-		initComponent(regionListScroll, Translator.getString("SelectedList"), 450, 100);
+		Utilities.initComponent(regionListScroll, Translator.getString("SelectedList"), 450, 100);
 	}
 
 	protected void setEachDialogAttrLayout() {

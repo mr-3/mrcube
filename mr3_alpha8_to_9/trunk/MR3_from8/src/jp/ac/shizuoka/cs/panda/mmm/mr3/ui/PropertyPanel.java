@@ -51,7 +51,7 @@ public class PropertyPanel extends RDFSPanel {
 	private void setReferenceTab() {
 		supProperties = new JList();
 		supPropertiesScroll = new JScrollPane(supProperties);
-		initComponent(supPropertiesScroll, Translator.getString("SuperProperties"), LIST_WIDTH, LIST_HEIGHT);
+		Utilities.initComponent(supPropertiesScroll, Translator.getString("SuperProperties"), LIST_WIDTH, LIST_HEIGHT);
 
 		JPanel inline = new JPanel();
 		GridBagLayout gridbag = new GridBagLayout();
@@ -79,11 +79,11 @@ public class PropertyPanel extends RDFSPanel {
 	private void setRegionTab() {
 		domainList = new JList();
 		domainScroll = new JScrollPane(domainList);
-		initComponent(domainScroll, Translator.getString("Domain"), LIST_WIDTH, LIST_HEIGHT);
+		Utilities.initComponent(domainScroll, Translator.getString("Domain"), LIST_WIDTH, LIST_HEIGHT);
 
 		rangeList = new JList();
 		rangeScroll = new JScrollPane(rangeList);
-		initComponent(rangeScroll, Translator.getString("Range"), LIST_WIDTH, LIST_HEIGHT);
+		Utilities.initComponent(rangeScroll, Translator.getString("Range"), LIST_WIDTH, LIST_HEIGHT);
 
 		AddDomainRange adr = new AddDomainRange(); //Ç‡Ç¡Ç∆ìKêÿÇ»ñºëOÇÇ¬ÇØÇÈ
 		addDomainButton = new JButton(Translator.getString("Add"));

@@ -57,26 +57,20 @@ public abstract class SelectClassPanel extends JPanel implements GraphSelectionL
 	protected static final int LIST_WIDTH = 450;
 	protected static final int LIST_HEIGHT = 40;
 
-	protected void initComponent(JComponent component, String title, int width, int height) {
-		component.setPreferredSize(new Dimension(width, height));
-		component.setMinimumSize(new Dimension(width, height));
-		component.setBorder(BorderFactory.createTitledBorder(title));
-	}
-
 	protected void initFindGroup() {
 		AbstractAction findAction = new FindAction();
 		uriPrefixBox = new JComboBox();
 		uriPrefixBox.addActionListener(new ChangePrefixAction());
 		PrefixNSUtil.setPrefixNSInfoSet(gmanager.getPrefixNSInfoSet());
 		uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
-		initComponent(uriPrefixBox, Translator.getString("Prefix"), PREFIX_BOX_WIDTH, PREFIX_BOX_HEIGHT);
+		Utilities.initComponent(uriPrefixBox, Translator.getString("Prefix"), PREFIX_BOX_WIDTH, PREFIX_BOX_HEIGHT);
 		findField = new JTextField(15);
-		initComponent(findField, "ID", PREFIX_BOX_WIDTH, LIST_HEIGHT);
+		Utilities.initComponent(findField, "ID", PREFIX_BOX_WIDTH, LIST_HEIGHT);
 		findField.addActionListener(findAction);
 		findButton = new JButton(Translator.getString("Find"));
 		findButton.addActionListener(findAction);
 		nsLabel = new JLabel("");
-		initComponent(nsLabel, Translator.getString("NameSpace"), LIST_WIDTH, LIST_HEIGHT);
+		Utilities.initComponent(nsLabel, Translator.getString("NameSpace"), LIST_WIDTH, LIST_HEIGHT);
 	}
 
 	class ChangePrefixAction extends AbstractAction {
@@ -124,7 +118,7 @@ public abstract class SelectClassPanel extends JPanel implements GraphSelectionL
 
 	protected void setGraphLayout() {
 		JScrollPane graphScroll = new JScrollPane(graph);
-		initComponent(graphScroll, "", 450, 250);
+		Utilities.initComponent(graphScroll, "", 450, 250);
 		add(graphScroll, BorderLayout.CENTER);
 	}
 
