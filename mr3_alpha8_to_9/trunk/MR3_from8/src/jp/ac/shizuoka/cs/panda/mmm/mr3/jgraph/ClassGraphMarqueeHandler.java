@@ -7,6 +7,7 @@ import javax.swing.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.actions.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.data.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.ui.*;
+import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 
 import org.jgraph.graph.*;
 
@@ -39,7 +40,7 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 	}
 
 	public GraphCell insertResourceCell(Point pt) {
-		InsertRDFSResDialog ird = new InsertRDFSResDialog("Input Class", gmanager);
+		InsertRDFSResDialog ird = new InsertRDFSResDialog(Translator.getString("InsertClassDialog"), gmanager);
 		if (!ird.isConfirm()) {
 			return null;
 		}
@@ -80,7 +81,7 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 	public JPopupMenu createPopupMenu(final Point pt, final Object cell) {
 		JPopupMenu menu = new JPopupMenu();
 
-		menu.add(new AbstractAction("Insert Class") {
+		menu.add(new AbstractAction(Translator.getString("InsertClassDialog.Title")) {
 			public void actionPerformed(ActionEvent ev) {
 				insertResourceCell(pt);
 			}

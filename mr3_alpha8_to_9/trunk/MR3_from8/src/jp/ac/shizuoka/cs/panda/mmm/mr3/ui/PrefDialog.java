@@ -79,14 +79,14 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 	private JButton cancelButton;
 
 	public PrefDialog(GraphManager manager, Preferences prefs) {
-		super("Preference", false, false, false);
+		super(Translator.getString("PreferenceDialog.Title"), false, false, false);
 		gmanager = manager;
 		userPrefs = prefs;
 
 		tab = new JTabbedPane();
-		tab.add("Base", getBasePanel());
-		tab.add("Meta Class List", getMetaClassListPanel());
-		tab.add("Rendering", getRenderingPanel());
+		tab.add(Translator.getString("PreferenceDialog.BaseTab"), getBasePanel());
+		tab.add(Translator.getString("PreferenceDialog.MetaClassListTab"), getMetaClassListPanel());
+		tab.add(Translator.getString("PreferenceDialog.RenderingTab"), getRenderingPanel());
 		getContentPane().add(tab);
 		getContentPane().add(getButtonGroupPanel(), BorderLayout.SOUTH);
 

@@ -5,12 +5,12 @@
 package jp.ac.shizuoka.cs.panda.mmm.mr3.ui;
 
 import java.awt.*;
-import java.awt.event.*;
 
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
 
+import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.util.Utilities;
 
 /**
@@ -20,23 +20,17 @@ import jp.ac.shizuoka.cs.panda.mmm.mr3.util.Utilities;
 public class SourceDialog extends JInternalFrame {
 
 	private JTextArea srcArea;
-//	private JCheckBoxMenuItem showSrcWindowBox;
 	private static final int FRAME_HEIGHT = 400;
 	private static final int FRAME_WIDTH = 600;
-	private static final String TITLE = "Source Dialog";
 
 	public SourceDialog() {
-		super(TITLE, true, true, true);
-//		URL srcAreaUrl = this.getClass().getClassLoader().getResource("mr3/resources/source_window.gif");
-		setFrameIcon(Utilities.getImageIcon("source_window.gif"));
+		super(Translator.getString("SourceDialog.Title"), true, true, true);
+		setFrameIcon(Utilities.getImageIcon(Translator.getString("SourceDialog.Icon")));
 		setIconifiable(true);
 
 		srcArea = new JTextArea();
 		srcArea.setEditable(false);
 		setContentPane(new JScrollPane(srcArea));
-
-//		showSrcWindowBox = new JCheckBoxMenuItem("Show Source Window", false);
-//		showSrcWindowBox.addActionListener(new ShowViewAction());
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addInternalFrameListener(new CloseInternalFrameAction());
@@ -46,22 +40,10 @@ public class SourceDialog extends JInternalFrame {
 
 	class CloseInternalFrameAction extends InternalFrameAdapter {
 		public void internalFrameClosing(InternalFrameEvent e) {
-//			showSrcWindowBox.setSelected(false);
 			setVisible(false);
 		}
 	}
 
-	class ShowViewAction extends AbstractAction {
-		public void actionPerformed(ActionEvent e) {
-//			setVisible(showSrcWindowBox.getState());
-			toFront();
-		}
-	}
-
-//	public JCheckBoxMenuItem getShowSrcWindowBox() {
-//		return showSrcWindowBox;
-//	}
-	
 	public JTextComponent getSourceArea() {
 		return srcArea;
 	}

@@ -7,6 +7,7 @@ import javax.swing.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.actions.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.data.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.ui.*;
+import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 
 import org.jgraph.graph.*;
 
@@ -42,7 +43,7 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 	}
 
 	public GraphCell insertResourceCell(Point pt) {
-		InsertRDFSResDialog ird = new InsertRDFSResDialog("Input Property", gmanager);
+		InsertRDFSResDialog ird = new InsertRDFSResDialog(Translator.getString("InsertPropertyDialog.Title"), gmanager);
 		if (!ird.isConfirm()) {
 			return null;
 		}
@@ -83,7 +84,7 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 	public JPopupMenu createPopupMenu(final Point pt, final Object cell) {
 		JPopupMenu menu = new JPopupMenu();
 
-		menu.add(new AbstractAction("Insert Property") {
+		menu.add(new AbstractAction(Translator.getString("InsertPropertyDialog.Title")) {
 			public void actionPerformed(ActionEvent ev) {
 				insertResourceCell(pt);
 			}

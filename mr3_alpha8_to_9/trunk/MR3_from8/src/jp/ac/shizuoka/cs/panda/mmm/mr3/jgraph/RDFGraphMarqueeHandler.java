@@ -199,7 +199,8 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 				list.add(cells[i]);
 			}
 		}
-		InsertRDFResDialog ird = new InsertRDFResDialog("Input Resource", list.toArray(), gmanager);
+		
+		InsertRDFResDialog ird = new InsertRDFResDialog(list.toArray(), gmanager);
 
 		if (!ird.isConfirm()) {
 			return null;
@@ -300,7 +301,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 	public JPopupMenu createPopupMenu(final Point pt, final Object cell) {
 		JPopupMenu menu = new JPopupMenu();
 
-		menu.add(new AbstractAction("Insert Resource") {
+		menu.add(new AbstractAction(Translator.getString("InsertResourceDialog.Title")) {
 			public void actionPerformed(ActionEvent ev) {
 				insertResourceCell(pt);
 			}
@@ -348,15 +349,13 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 
 	protected class ShowAttrDialog extends AbstractAction {
 
-		private static final String TITLE = "Show Attribute Dialog";
-
 		public ShowAttrDialog() {
-			super(TITLE, Utilities.getImageIcon("attrDialogIcon.gif"));
+			super(Translator.getString("Component.Window.AttrDialog.Text"), Utilities.getImageIcon(Translator.getString("AttributeDialog.Icon")));
 			setValues();
 		}
 
 		private void setValues() {
-			putValue(SHORT_DESCRIPTION, TITLE);
+			putValue(SHORT_DESCRIPTION, Translator.getString("Component.Window.AttrDialog.Text"));
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.ALT_MASK));
 		}
 

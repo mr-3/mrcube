@@ -16,8 +16,8 @@ import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
  */
 public class CutAction extends AbstractAction {
 	private RDFGraph graph;
-	private static final String TITLE = "Cut";
-	private static final ImageIcon ICON = Utilities.getImageIcon("cut.gif");
+	private static final String TITLE = Translator.getString("Action.Cut.Title");
+	private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("Action.Cut.Icon"));
 
 	public CutAction(RDFGraph g) {
 		super(TITLE, ICON);
