@@ -34,7 +34,7 @@ public class ReplaceRDF extends AbstractActionFile {
 		if (e.getActionCommand().equals(REPLACE_RDF_FILE)) {
 			model = readModel(getReader("rdf", null), gmanager.getBaseURI());
 		} else if (e.getActionCommand().equals(REPLACE_RDF_URI)) {
-			String uri = JOptionPane.showInternalInputDialog(desktop, "Open URI");
+			String uri = JOptionPane.showInternalInputDialog(desktop, "Open URI ( exp. http://slashdot.jp/slashdot.rdf )");
 			model = readModel(getReader(uri), gmanager.getBaseURI());
 		}
 		mr3.replaceRDFModel(model);		
