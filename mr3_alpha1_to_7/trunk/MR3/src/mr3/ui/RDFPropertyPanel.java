@@ -18,6 +18,7 @@ import com.jgraph.graph.*;
 
 public class RDFPropertyPanel extends JPanel implements ActionListener, ListSelectionListener {
 
+	private JCheckBox propOnlyCheck;
 	private JComboBox uriPrefixBox;
 	private JTextField idField;
 	private JLabel nsLabel;
@@ -46,6 +47,9 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		gmanager = manager;
 		setBorder(BorderFactory.createTitledBorder("RDF Property Attributes"));
 
+		propOnlyCheck = new JCheckBox("show property prefix only");
+		propOnlyCheck.addActionListener(this);
+		propOnlyCheck.setSelected(true);
 		uriPrefixBox = new JComboBox();
 		uriPrefixBox.addActionListener(new ChangePrefixAction());
 		initComponent(uriPrefixBox, "Prefix", boxWidth, boxHeight);
@@ -78,6 +82,9 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		setLayout(gridbag);
 		c.weighty = 3;
 		c.gridwidth = GridBagConstraints.REMAINDER;
+		c.anchor = GridBagConstraints.WEST;
+		gridbag.setConstraints(propOnlyCheck, c);
+		add(propOnlyCheck);
 		c.anchor = GridBagConstraints.CENTER;
 		gridbag.setConstraints(uriPanel, c);
 		add(uriPanel);
@@ -98,7 +105,6 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 
 	class ChangePrefixAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
-			PrefixNSUtil.replacePrefix((String) uriPrefixBox.getSelectedItem(), nsLabel);
 			selectNameSpaceList();
 		}
 	}
@@ -129,7 +135,11 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 
 	private void setPrefix() {
 		PrefixNSUtil.setPrefixNSInfoSet(gmanager.getPrefixNSInfoSet());
-		uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
+		if (propList != null && propOnlyCheck.isSelected()) {
+			uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPropPrefixes(propList).toArray()));
+		} else {
+			uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
+		}
 		for (Iterator i = gmanager.getPrefixNSInfoSet().iterator(); i.hasNext();) {
 			PrefixNSInfo prefNSInfo = (PrefixNSInfo) i.next();
 			if (prefNSInfo.getNameSpace().equals(nsLabel.getText())) {
@@ -140,7 +150,8 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 	}
 
 	private void selectNameSpaceList() {
-
+		PrefixNSUtil.replacePrefix((String) uriPrefixBox.getSelectedItem(), nsLabel);
+		
 		if (propMap == null) {
 			return;
 		}
@@ -317,6 +328,13 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 				changeProperty();
 				gmanager.getRDFGraph().setSelectionCell(edge); // jumpÇæÇ∆Ç§Ç‹Ç≠Ç¢Ç©Ç»Ç©Ç¡ÇΩÅD
 			}
+		} else if (e.getSource() == propOnlyCheck) {
+			if (propOnlyCheck.isSelected()) {
+				uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPropPrefixes(propList).toArray()));				
+			} else {
+				uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
+			}			
+			selectNameSpaceList();
 		} else if (e.getSource() == jumpRDFSProp) {
 			jumpRDFSProperty();
 		} else if (e.getSource() == close) {
