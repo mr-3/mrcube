@@ -10,6 +10,7 @@ import java.util.*;
 import java.util.zip.*;
 
 import jp.ac.shizuoka.cs.panda.mmm.mr3.*;
+import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 
 /**
  * @author takeshi morita
@@ -17,7 +18,7 @@ import jp.ac.shizuoka.cs.panda.mmm.mr3.*;
  */
 public class ExportJavaObject extends AbstractActionFile {
 	
-	private static final String PROJECT = "Project (Java Object)";
+	private static final String PROJECT = Translator.getString("Component.File.Export.Project.Text");
 
 	public ExportJavaObject(MR3 mr3) {
 		super(mr3, PROJECT);

@@ -11,6 +11,7 @@ import java.beans.*;
 import javax.swing.*;
 
 import jp.ac.shizuoka.cs.panda.mmm.mr3.*;
+import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 
 /**
  * @author takeshi morita
@@ -19,7 +20,7 @@ import jp.ac.shizuoka.cs.panda.mmm.mr3.*;
 public class DeployWindows extends MR3AbstractAction {
 
 	public DeployWindows(MR3 mr3) {
-		super(mr3, "Deploy Windows");
+		super(mr3, Translator.getString("Component.Window.DeployWindows.Text"));
 	}
 
 	public void actionPerformed(ActionEvent e) {

@@ -14,10 +14,6 @@ import jp.ac.shizuoka.cs.panda.mmm.mr3.jgraph.*;
  */
 public class SelectNodes extends MR3AbstractAction {
 
-	private static final String SELECT_ALL_RDF_NODES = "Select All RDF Nodes";
-	private static final String SELECT_ALL_CLASS_NODES = "Select All Class Nodes";
-	private static final String SELECT_ALL_PROPERTY_NODES = "Select All Property Nodes";
-
 	private RDFGraph graph;
 
 	public SelectNodes(RDFGraph g, String name) {

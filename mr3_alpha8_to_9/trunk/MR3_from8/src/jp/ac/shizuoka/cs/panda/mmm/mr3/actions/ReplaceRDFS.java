@@ -11,6 +11,7 @@ import javax.swing.*;
 
 import jp.ac.shizuoka.cs.panda.mmm.mr3.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.jgraph.*;
+import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 
 import com.hp.hpl.jena.rdf.model.*;
 
@@ -19,8 +20,8 @@ import com.hp.hpl.jena.rdf.model.*;
  */
 public class ReplaceRDFS extends AbstractActionFile {
 
-	private static final String REPLACE_RDFS_FILE = "RDFS/XML (File)";
-	private static final String REPLACE_RDFS_URI = "RDFS/XML (URI)";
+	private static final String REPLACE_RDFS_FILE = Translator.getString("Component.File.Import.Replace.RDFS/XML(File).Text");
+	private static final String REPLACE_RDFS_URI = Translator.getString("Component.File.Import.Replace.RDFS/XML(URI).Text");
 
 	public ReplaceRDFS(MR3 mr3, String title) {
 		super(mr3, title);

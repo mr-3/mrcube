@@ -19,7 +19,7 @@ public class FindResAction extends AbstractAction {
 
 	private RDFGraph graph;
 	private FindResourceDialog findResDialog;
-	private static final String TITLE = "Find Resource";
+	private static final String TITLE = Translator.getString("Component.Edit.FindResource.Text");
 	private static final ImageIcon ICON = Utilities.getImageIcon("find.gif"); 
 	
 	public FindResAction(RDFGraph g, FindResourceDialog frd) {

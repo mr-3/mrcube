@@ -13,6 +13,8 @@ import javax.swing.*;
  */
 public class Utilities {
 
+	private static final String RESOURCE_DIR = "jp/ac/shizuoka/cs/panda/mmm/mr3/resources/"; 
+
 	public static void center(Window frame) {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		Dimension frameSize = frame.getSize();
@@ -20,8 +22,6 @@ public class Utilities {
 	}
 
 	public static ImageIcon getImageIcon(String image) {
-		String resourceDir = "jp/ac/shizuoka/cs/panda/mmm/mr3/resources/";
-		return new ImageIcon(Utilities.class.getClassLoader().getResource(resourceDir + image));
+		return new ImageIcon(Utilities.class.getClassLoader().getResource(RESOURCE_DIR + image));
 	}
-
 }

@@ -21,7 +21,7 @@ import com.hp.hpl.jena.rdf.model.*;
  */
 public class OpenProject extends AbstractActionFile {
 
-	private static final String TITLE = "Open Project";
+	private static final String TITLE = Translator.getString("Component.File.OpenProject.Text");
 	private static final ImageIcon ICON = Utilities.getImageIcon("open.gif");
 
 	public OpenProject(MR3 mr3) {
