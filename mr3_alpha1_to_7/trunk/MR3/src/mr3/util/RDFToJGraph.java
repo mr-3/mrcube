@@ -110,17 +110,17 @@ public class RDFToJGraph {
 		return edge;
 	}
 
-	private void setResourceInfo(Object cell, Resource uri, GraphCell typeCell) {
+	private void setResourceInfo(Object cell, Resource uri, GraphCell typeCell) throws RDFException {
 		RDFResourceInfo resInfo = null;
-		if (uri.isAnon() || uri.getURI().length() == 0) {
-			resInfo = new RDFResourceInfo(URIType.ANONYMOUS, "", typeCell);
+		if (uri.isAnon()) {
+			resInfo = new RDFResourceInfo(URIType.ANONYMOUS, uri.getId().toString(), typeCell);
 		} else {
-			resInfo = new RDFResourceInfo(URIType.URI, uri.getURI(), typeCell);
+			resInfo = new RDFResourceInfo(URIType.URI, uri.toString(), typeCell);
 		}
 		resInfoMap.putCellInfo(cell, resInfo);
 	}
 
-	//	TypeCellÇ™çÏÇÁÇÍÇΩå„Ç…åƒÇ—èoÇ∑
+	// TypeCellÇ™çÏÇÁÇÍÇΩå„Ç…åƒÇ—èoÇ∑
 	private boolean isTypeProperty(Statement stmt, Object subjectCell) {
 		Property predicate = stmt.getPredicate(); // get the predicate
 		RDFNode object = stmt.getObject(); // get the object

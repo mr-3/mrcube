@@ -1034,7 +1034,7 @@ public class GraphManager {
 
 		Map attributes = new HashMap();
 		attributes.put(rootCell, cellMaker.getResourceMap(new Point(50, 50)));
-		resInfoMap.putCellInfo(rootCell, new RDFResourceInfo(URIType.ANONYMOUS, "", null));
+		resInfoMap.putCellInfo(rootCell, new RDFResourceInfo(URIType.ANONYMOUS, new AnonId().toString(), null));
 		rdfGraph.getModel().insert(new Object[] { rootCell }, attributes, null, null, null);
 		GraphLayoutData rootData = new GraphLayoutData(rootCell, rdfGraph);
 		rootData.setHasParent(false);

@@ -2,6 +2,7 @@ package mr3.data;
 import java.io.*;
 import java.util.*;
 
+import com.hp.hpl.mesa.rdf.jena.model.*;
 import com.jgraph.graph.*;
 
 /**
@@ -22,7 +23,12 @@ public class RDFResourceInfoMap {
 	}
 
 	public RDFResourceInfo cloneRDFResourceInfo(RDFResourceInfo orgInfo, GraphCell typeCell) {
-		RDFResourceInfo newInfo = new RDFResourceInfo(orgInfo.getURIType(), orgInfo.getURI().getURI(), typeCell);
+		RDFResourceInfo newInfo = null;
+		if (orgInfo.getURIType() == URIType.ANONYMOUS) {
+			newInfo = new RDFResourceInfo(orgInfo.getURIType(), new AnonId().toString(), typeCell); 
+		} else {
+			newInfo = new RDFResourceInfo(orgInfo.getURIType(), orgInfo.getURIStr(), typeCell);
+		}
 		newInfo.setTypeCell(orgInfo.getTypeCell());
 		return newInfo;
 	}
