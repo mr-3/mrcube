@@ -231,7 +231,6 @@ public class MR3 extends JFrame {
 		mi.addActionListener(new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
 				prefDialog.setVisible(true);
-				//				new PrefDialog(gmanager, userPrefs);
 			}
 		});
 		menu.add(mi);
@@ -524,8 +523,8 @@ public class MR3 extends JFrame {
 		URL rdfURI = null;
 		boolean isProxy = userPrefs.getBoolean("Proxy", false);
 		if (isProxy) {
-			String proxyURL = userPrefs.get("ProxyHost", "http://localhost");
-			int proxyPort = userPrefs.getInt("ProxyPort", 8080);
+			String proxyURL = userPrefs.get(PrefConstants.ProxyHost, "http://localhost");
+			int proxyPort = userPrefs.getInt(PrefConstants.ProxyPort, 8080);
 			rdfURI = new URL("http", proxyURL, proxyPort, uri);
 		} else {
 			rdfURI = new URL(uri);

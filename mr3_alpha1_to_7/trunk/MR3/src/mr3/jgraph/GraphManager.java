@@ -53,7 +53,7 @@ public class GraphManager {
 		refDialog = new ReferenceListDialog("Referenced Resource List", this);
 		abstractLevelInfo = new AbstractLevelInfo();
 		prefixNSInfoSet = new HashSet();
-		baseURI = userPrefs.get("BaseURI", "http://mr3");
+		baseURI = userPrefs.get(PrefConstants.BaseURI, "http://mr3");
 	}
 
 	public RDFGraph getRDFGraph() {
@@ -149,7 +149,7 @@ public class GraphManager {
 	}
 
 	public void setAntialias() {
-		boolean isAntialias = userPrefs.getBoolean("Antialias", true);
+		boolean isAntialias = userPrefs.getBoolean(PrefConstants.Antialias, true);
 		rdfGraph.setAntiAliased(isAntialias);
 		propGraph.setAntiAliased(isAntialias);
 		classGraph.setAntiAliased(isAntialias);
