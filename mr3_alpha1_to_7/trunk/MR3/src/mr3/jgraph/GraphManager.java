@@ -25,7 +25,7 @@ public class GraphManager {
 	private RDFGraph propGraph;
 
 	private boolean isImporting;
-	
+
 	private RDFCellMaker cellMaker;
 
 	private RDFResourceInfoMap resInfoMap = RDFResourceInfoMap.getInstance();
@@ -61,7 +61,7 @@ public class GraphManager {
 	public void setDesktop(JDesktopPane jdp) {
 		desktop = jdp;
 	}
-	
+
 	public JDesktopPane getDesktop() {
 		return desktop;
 	}
@@ -69,7 +69,7 @@ public class GraphManager {
 	public boolean isImporting() {
 		return isImporting;
 	}
-	
+
 	public void setIsImporting(boolean t) {
 		isImporting = t;
 	}
@@ -181,6 +181,10 @@ public class GraphManager {
 		rdfGraph.setAntiAliased(isAntialias);
 		propGraph.setAntiAliased(isAntialias);
 		classGraph.setAntiAliased(isAntialias);
+	}
+
+	public String getBaseURIPrefix() {
+		return userPrefs.get(PrefConstants.BaseURIPrefix, "");
 	}
 
 	public String getBaseURI() {

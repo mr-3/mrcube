@@ -17,7 +17,9 @@ import mr3.jgraph.*;
 public class PrefDialog extends JInternalFrame {
 
 	private JCheckBox isAntialiasBox;
+	private JLabel baseURIPrefixLabel;
 	private JLabel baseURILabel;
+	private JTextField baseURIPrefixField;
 	private JTextField baseURIField;
 
 	private JLabel workDirectoryLabel;
@@ -27,6 +29,10 @@ public class PrefDialog extends JInternalFrame {
 	private JCheckBox isProxy;
 	private JTextField proxyHost;
 	private JTextField proxyPort;
+
+	private JLabel encodingLabel;
+	private ComboBoxModel encodingBoxModel;
+	private JComboBox encodingBox;
 
 	private GraphManager gmanager;
 	private Preferences userPrefs;
@@ -39,29 +45,10 @@ public class PrefDialog extends JInternalFrame {
 		gmanager = manager;
 		userPrefs = prefs;
 
-		baseURILabel = new JLabel("Base URI:   ");
-		baseURIField = new JTextField(20);
-		baseURIField.setPreferredSize(new Dimension(300, 20));
-		baseURIField.setMinimumSize(new Dimension(300, 20));
-
-		workDirectoryLabel = new JLabel("Work Directory:   ");
-		workDirectoryField = new JTextField(20);
-		workDirectoryField.setEditable(false);
-		workDirectoryField.setPreferredSize(new Dimension(300, 20));
-		workDirectoryField.setMinimumSize(new Dimension(300, 20));
-		browseWorkDirectoryButton = new JButton("Browse");
-		browseWorkDirectoryButton.addActionListener(new BrowseDirectory());
-
-		isProxy = new JCheckBox("Proxy");
-		isProxy.addActionListener(new CheckProxy());
-		proxyHost = new JTextField(20);
-		proxyHost.setPreferredSize(new Dimension(250, 40));
-		proxyHost.setMinimumSize(new Dimension(250, 40));
-		proxyHost.setBorder(BorderFactory.createTitledBorder("Host"));
-		proxyPort = new JTextField(5);
-		proxyPort.setPreferredSize(new Dimension(50, 40));
-		proxyPort.setMinimumSize(new Dimension(50, 40));
-		proxyPort.setBorder(BorderFactory.createTitledBorder("Port"));
+		initEncodingBox();
+		initBaseURIField();
+		initWorkDirectoryField();
+		initProxyField();
 
 		isAntialiasBox = new JCheckBox("Antialias");
 
@@ -82,6 +69,21 @@ public class PrefDialog extends JInternalFrame {
 
 		c.weighty = 5;
 		c.anchor = GridBagConstraints.WEST;
+
+		c.gridwidth = GridBagConstraints.RELATIVE;
+		gridbag.setConstraints(encodingLabel, c);
+		innerPanel.add(encodingLabel);
+		c.gridwidth = GridBagConstraints.REMAINDER;
+		gridbag.setConstraints(encodingBox, c);
+		innerPanel.add(encodingBox);
+
+		c.gridwidth = GridBagConstraints.RELATIVE;
+		gridbag.setConstraints(baseURIPrefixLabel, c);
+		innerPanel.add(baseURIPrefixLabel);
+		c.gridwidth = GridBagConstraints.REMAINDER;
+		gridbag.setConstraints(baseURIPrefixField, c);
+		innerPanel.add(baseURIPrefixField);
+
 		c.gridwidth = GridBagConstraints.RELATIVE;
 		gridbag.setConstraints(baseURILabel, c);
 		innerPanel.add(baseURILabel);
@@ -122,6 +124,50 @@ public class PrefDialog extends JInternalFrame {
 		setVisible(true);
 	}
 
+	private void initEncodingBox() {
+		encodingLabel = new JLabel("Output Encoding:   ");
+		Object[] encodingList = new Object[] { "EUC_JP", "SJIS", "ISO2022JP", "UTF-8", "UTF-16" };
+		encodingBoxModel = new DefaultComboBoxModel(encodingList);
+		encodingBox = new JComboBox(encodingBoxModel);
+		encodingBox.setPreferredSize(new Dimension(100, 20));
+		encodingBox.setMinimumSize(new Dimension(100, 20));
+	}
+
+	private void initBaseURIField() {
+		baseURIPrefixLabel = new JLabel("Base URI Prefix:   ");
+		baseURIPrefixField = new JTextField(5);
+		baseURIPrefixField.setPreferredSize(new Dimension(100, 20));
+		baseURIPrefixField.setMinimumSize(new Dimension(100, 20));
+
+		baseURILabel = new JLabel("Base URI:   ");
+		baseURIField = new JTextField(20);
+		baseURIField.setPreferredSize(new Dimension(300, 20));
+		baseURIField.setMinimumSize(new Dimension(300, 20));
+	}
+
+	private void initWorkDirectoryField() {
+		workDirectoryLabel = new JLabel("Work Directory:   ");
+		workDirectoryField = new JTextField(20);
+		workDirectoryField.setEditable(false);
+		workDirectoryField.setPreferredSize(new Dimension(300, 20));
+		workDirectoryField.setMinimumSize(new Dimension(300, 20));
+		browseWorkDirectoryButton = new JButton("Browse");
+		browseWorkDirectoryButton.addActionListener(new BrowseDirectory());
+	}
+
+	private void initProxyField() {
+		isProxy = new JCheckBox("Proxy");
+		isProxy.addActionListener(new CheckProxy());
+		proxyHost = new JTextField(20);
+		proxyHost.setPreferredSize(new Dimension(250, 40));
+		proxyHost.setMinimumSize(new Dimension(250, 40));
+		proxyHost.setBorder(BorderFactory.createTitledBorder("Host"));
+		proxyPort = new JTextField(5);
+		proxyPort.setPreferredSize(new Dimension(50, 40));
+		proxyPort.setMinimumSize(new Dimension(50, 40));
+		proxyPort.setBorder(BorderFactory.createTitledBorder("Port"));
+	}
+
 	private String getDirectoryName() {
 		File currentDirectory = new File(userPrefs.get(PrefConstants.DefaultWorkDirectory, ""));
 		JFileChooser jfc = new JFileChooser(currentDirectory);
@@ -151,6 +197,8 @@ public class PrefDialog extends JInternalFrame {
 	}
 
 	private void initParameter() {
+		baseURIPrefixField.setText(userPrefs.get(PrefConstants.BaseURIPrefix, ""));
+		encodingBox.setSelectedItem(userPrefs.get(PrefConstants.OutputEncoding, "EUC_JP"));
 		isAntialiasBox.setSelected(userPrefs.getBoolean(PrefConstants.Antialias, true));
 		baseURIField.setText(userPrefs.get(PrefConstants.BaseURI, "http://mr3"));
 		workDirectoryField.setText(userPrefs.get(PrefConstants.DefaultWorkDirectory, ""));
@@ -165,6 +213,8 @@ public class PrefDialog extends JInternalFrame {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == applyButton) {
 				try {
+					userPrefs.put(PrefConstants.BaseURIPrefix, baseURIPrefixField.getText());
+					userPrefs.put(PrefConstants.OutputEncoding, (String) encodingBox.getSelectedItem());
 					userPrefs.putBoolean(PrefConstants.Antialias, isAntialiasBox.isSelected());
 					gmanager.setAntialias();
 					userPrefs.put(PrefConstants.BaseURI, baseURIField.getText());
@@ -181,4 +231,5 @@ public class PrefDialog extends JInternalFrame {
 			setVisible(false);
 		}
 	}
+
 }

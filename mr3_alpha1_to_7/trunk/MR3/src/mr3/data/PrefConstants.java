@@ -29,6 +29,9 @@ public class PrefConstants {
 	public static final String PropertyEditorPositionY = "Property Editor Position Y";
 
 	public static final String Antialias = "Antialias";
+	
+	public static final String OutputEncoding = "Output Encoding";
+	public static final String BaseURIPrefix = "Base URI Prefix";
 	public static final String BaseURI = "Base URI";
 	public static final String Proxy = "Proxy";
 	public static final String ProxyHost = "Proxy Host";
