@@ -59,16 +59,15 @@ public class MR3Parser {
 		for (Iterator i = propertySet.iterator(); i.hasNext();) {
 			Resource property = (Resource) i.next();
 
+			//_1.._numは ， グラフに描画しない 
+			if (property.getURI().matches(RDF.getURI() + "_\\d*")) {
+				continue;
+			}
+
 			PropertyInfo info = (PropertyInfo) rdfsInfoMap.getResourceInfo(property);
 			DefaultGraphCell pCell = (DefaultGraphCell) gmanager.getPropertyCell(property, false);
 			Port pPort = (Port) pCell.getChildAt(0);
-
 			rdfsInfoMap.putCellInfo(pCell, info);
-
-			// _1.._numは，グラフに描画しない
-//			if (property.getURI().matches(RDF.getURI() + "_\\d*")) {
-//				continue;
-//			}
 
 			Edge edge = getEdge(attributes, "");
 			ConnectionSet cs = new ConnectionSet(edge, rootPort, pPort);
