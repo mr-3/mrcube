@@ -7,7 +7,7 @@ import mr3.ui.*;
 import com.jgraph.event.*;
 
 /**
- * @author take
+ * @author takeshi morita
  *
  */
 public class RealRDFEditor extends Editor {
