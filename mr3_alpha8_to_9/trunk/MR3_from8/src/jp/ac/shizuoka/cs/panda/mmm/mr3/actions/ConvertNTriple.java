@@ -19,6 +19,9 @@ import com.hp.hpl.jena.rdf.model.impl.*;
  */
 public class ConvertNTriple extends AbstractActionFile {
 
+	public static final String RDF = Translator.getString("Component.Convert.RDF/N-Triple.RDF.Text");
+	public static final String SELECTED_RDF = Translator.getString("Component.Convert.RDF/N-Triple.SelectedRDF.Text");
+
 	public ConvertNTriple(MR3 mr3, String name) {
 		super(mr3, name);
 	}
@@ -37,7 +40,7 @@ public class ConvertNTriple extends AbstractActionFile {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals(Translator.getString("Component.Convert.RDF/N-Triple.RDF.Text"))) {
+		if (e.getActionCommand().equals(RDF)) {
 			convertNTripleSRC(false);
 		} else {
 			convertNTripleSRC(true);

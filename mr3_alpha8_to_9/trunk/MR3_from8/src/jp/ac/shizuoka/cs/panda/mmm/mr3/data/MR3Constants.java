@@ -19,7 +19,7 @@ public class MR3Constants {
 	public static String CANCEL;
 	public static String PREFIX;
 	public static String NAME_SPACE;
-	public static ImageIcon LOGO;
+	public static ImageIcon LOGO = Utilities.getImageIcon(Translator.getString("Logo"));
 
 	public static void initConstants() {
 		APPLY = Translator.getString("Apply");
@@ -28,7 +28,6 @@ public class MR3Constants {
 		CANCEL = Translator.getString("Cancel");
 		PREFIX = Translator.getString("Prefix");
 		NAME_SPACE = Translator.getString("NameSpace");
-		LOGO = Utilities.getImageIcon(Translator.getString("Logo"));
 	}
 
 }

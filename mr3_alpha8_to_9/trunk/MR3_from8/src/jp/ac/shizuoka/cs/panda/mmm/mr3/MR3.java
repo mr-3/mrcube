@@ -35,6 +35,7 @@ public class MR3 extends JFrame {
 	private static final int FRAME_WIDTH = 600;
 	private static final Integer DEMO_FRAME_LAYER = new Integer(0);
 
+	private GraphManager gmanager;
 	private RDFEditor rdfEditor;
 	private OverviewDialog rdfEditorOverview;
 	private ClassEditor classEditor;
@@ -55,11 +56,6 @@ public class MR3 extends JFrame {
 	private PrefDialog prefDialog;
 	private MR3LogConsole logger;
 
-	private GraphManager gmanager;
-	private RDFResourceInfoMap resInfoMap = RDFResourceInfoMap.getInstance();
-	private RDFLiteralInfoMap litInfoMap = RDFLiteralInfoMap.getInstance();
-	private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
-
 	private JRadioButton uriView;
 	private JRadioButton idView;
 	private JRadioButton labelView;
@@ -75,9 +71,13 @@ public class MR3 extends JFrame {
 	private JCheckBoxMenuItem propertyEditorView;
 	private JInternalFrame[] iFrames = new JInternalFrame[3];
 
+	private RDFResourceInfoMap resInfoMap = RDFResourceInfoMap.getInstance();
+	private RDFLiteralInfoMap litInfoMap = RDFLiteralInfoMap.getInstance();
+	private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
+
 	private static final Color DESKTOP_BACK_COLOR = new Color(245, 245, 245);
 
-	MR3() {	
+	MR3() {
 		userPrefs = Preferences.userNodeForPackage(this.getClass());
 		Translator.loadResourceBundle(userPrefs.get(PrefConstants.UILang, getDefaultLocaleStr()));
 		MR3Constants.initConstants();
@@ -95,18 +95,17 @@ public class MR3 extends JFrame {
 		gmanager.setRoot(this);
 
 		rdfEditor = new RDFEditor(nsTableDialog, findResDialog, gmanager);
-		rdfEditorOverview = new OverviewDialog(Translator.getString("RDFEditorOverview.Title"), rdfEditor.getGraph(), rdfEditor.getJViewport());
-		rdfEditorOverview.setFrameIcon(Utilities.getImageIcon(Translator.getString("RDFEditor.Icon")));
+		rdfEditorOverview = new OverviewDialog(OverviewDialog.RDF_EDITOR_OVERVIEW, rdfEditor.getGraph(), rdfEditor.getJViewport());
+		rdfEditorOverview.setFrameIcon(OverviewDialog.RDF_EDITOR_ICON);
 		desktop.add(rdfEditorOverview, JLayeredPane.MODAL_LAYER);
 		classEditor = new ClassEditor(nsTableDialog, findResDialog, gmanager);
-		classEditorOverview =
-			new OverviewDialog(Translator.getString("ClassEditorOverview.Title"), classEditor.getGraph(), classEditor.getJViewport());
-		classEditorOverview.setFrameIcon(Utilities.getImageIcon(Translator.getString("ClassEditor.Icon")));
+		classEditorOverview = new OverviewDialog(OverviewDialog.CLASS_EDITOR_OVERVIEW, classEditor.getGraph(), classEditor.getJViewport());
+		classEditorOverview.setFrameIcon(OverviewDialog.CLASS_EDITOR_ICON);
 		desktop.add(classEditorOverview, JLayeredPane.MODAL_LAYER);
 		propertyEditor = new PropertyEditor(nsTableDialog, findResDialog, gmanager);
 		propertyEditorOverview =
-			new OverviewDialog(Translator.getString("PropertyEditorOverview.Title"), propertyEditor.getGraph(), propertyEditor.getJViewport());
-		propertyEditorOverview.setFrameIcon(Utilities.getImageIcon(Translator.getString("PropertyEditor.Icon")));
+			new OverviewDialog(OverviewDialog.PROPERTY_EDITOR_OVERVIEW, propertyEditor.getGraph(), propertyEditor.getJViewport());
+		propertyEditorOverview.setFrameIcon(OverviewDialog.PROPERTY_EDITOR_ICON);
 		desktop.add(propertyEditorOverview, JLayeredPane.MODAL_LAYER);
 
 		mr3Reader = new MR3Reader(gmanager, nsTableDialog);
@@ -494,9 +493,9 @@ public class MR3 extends JFrame {
 
 	private JMenu getWindowMenu() {
 		JMenu menu = new JMenu(Translator.getString("Component.Window.Text"));
-		menu.add(new ShowOverview(this, rdfEditorOverview, Translator.getString("Component.Window.RDFEditorOverview.Text")));
-		menu.add(new ShowOverview(this, classEditorOverview, Translator.getString("Component.Window.ClassEditorOverview.Text")));
-		menu.add(new ShowOverview(this, propertyEditorOverview, Translator.getString("Component.Window.PropertyEditorOverview.Text")));
+		menu.add(new ShowOverview(this, rdfEditorOverview, ShowOverview.RDF_EDITOR_OVERVIEW));
+		menu.add(new ShowOverview(this, classEditorOverview, ShowOverview.CLASS_EDITOR_OVERVIEW));
+		menu.add(new ShowOverview(this, propertyEditorOverview, ShowOverview.PROPERTY_EDITOR_OVERVIEW));
 		menu.addSeparator();
 		menu.add(toFrontRDFEditorAction);
 		menu.add(toFrontClassEditorAction);
@@ -517,23 +516,23 @@ public class MR3 extends JFrame {
 
 		JMenu rdfView = new JMenu(Translator.getString("Component.Convert.RDF/XML.Text"));
 		menu.add(rdfView);
-		rdfView.add(new ConvertRDFDoc(this, Translator.getString("Component.Convert.RDF/XML.RDF.Text")));
-		rdfView.add(new ConvertRDFDoc(this, Translator.getString("Component.Convert.RDF/XML.SelectedRDF.Text")));
+		rdfView.add(new ConvertRDFDoc(this, ConvertRDFDoc.RDF));
+		rdfView.add(new ConvertRDFDoc(this, ConvertRDFDoc.SELECTED_RDF));
 
 		JMenu rdfsView = new JMenu(Translator.getString("Component.Convert.RDFS/XML.Text"));
 		menu.add(rdfsView);
-		rdfsView.add(new ConvertRDFSDoc(this, Translator.getString("Component.Convert.RDFS/XML.RDFS(Class/Property).Text")));
-		rdfsView.add(new ConvertClassDoc(this, Translator.getString("Component.Convert.RDFS/XML.RDFS(Class).Text")));
-		rdfsView.add(new ConvertPropertyDoc(this, Translator.getString("Component.Convert.RDFS/XML.RDFS(Property).Text")));
+		rdfsView.add(new ConvertRDFSDoc(this, ConvertRDFSDoc.RDFS));
+		rdfsView.add(new ConvertClassDoc(this, ConvertClassDoc.CLASS));
+		rdfsView.add(new ConvertPropertyDoc(this, ConvertPropertyDoc.PROPERTY));
 		rdfsView.addSeparator();
-		rdfsView.add(new ConvertRDFSDoc(this, Translator.getString("Component.Convert.RDFS/XML.SelectedRDFS(Class/Property).Text")));
-		rdfsView.add(new ConvertClassDoc(this, Translator.getString("Component.Convert.RDFS/XML.SelectedRDFS(Class).Text")));
-		rdfsView.add(new ConvertPropertyDoc(this, Translator.getString("Component.Convert.RDFS/XML.SelectedRDFS(Property).Text")));
+		rdfsView.add(new ConvertRDFSDoc(this, ConvertRDFSDoc.SELECTED_RDFS));
+		rdfsView.add(new ConvertClassDoc(this, ConvertClassDoc.SELECTED_CLASS));
+		rdfsView.add(new ConvertPropertyDoc(this, ConvertPropertyDoc.SELECTED_PROPERTY));
 
 		JMenu nTripleView = new JMenu(Translator.getString("Component.Convert.RDF/N-Triple.Text"));
 		menu.add(nTripleView);
-		nTripleView.add(new ConvertNTriple(this, Translator.getString("Component.Convert.RDF/N-Triple.RDF.Text")));
-		nTripleView.add(new ConvertNTriple(this, Translator.getString("Component.Convert.RDF/N-Triple.SelectedRDF.Text")));
+		nTripleView.add(new ConvertNTriple(this, ConvertNTriple.RDF));
+		nTripleView.add(new ConvertNTriple(this, ConvertNTriple.SELECTED_RDF));
 
 		return menu;
 	}
