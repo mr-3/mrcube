@@ -9,6 +9,7 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
+import jp.ac.shizuoka.cs.panda.mmm.mr3.data.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.jgraph.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 
@@ -48,7 +49,7 @@ public class InsertRDFResDialog extends JDialog implements ActionListener, ItemL
 		isAnonBox.addActionListener(new IsAnonAction());
 
 		uriPrefixBox = new JComboBox();
-		Utilities.initComponent(uriPrefixBox, Translator.getString("Prefix"), BOX_WIDTH, BOX_HEIGHT);
+		Utilities.initComponent(uriPrefixBox, MR3Constants.PREFIX, BOX_WIDTH, BOX_HEIGHT);
 		uriPrefixBox.addActionListener(new ChangePrefixAction());
 		uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
 
@@ -58,7 +59,7 @@ public class InsertRDFResDialog extends JDialog implements ActionListener, ItemL
 		uriPanel.add(isAnonBox);
 
 		nsLabel = new JLabel("");
-		Utilities.initComponent(nsLabel, Translator.getString("NameSpace"), 350, 40);
+		Utilities.initComponent(nsLabel, MR3Constants.NAME_SPACE, 350, 40);
 
 		JPanel centerPanel = new JPanel();
 		centerPanel.setLayout(new BorderLayout());
@@ -68,9 +69,9 @@ public class InsertRDFResDialog extends JDialog implements ActionListener, ItemL
 		uriPrefixBox.setSelectedItem(PrefixNSUtil.getBaseURIPrefix(gmanager.getBaseURI()));
 		PrefixNSUtil.replacePrefix((String) uriPrefixBox.getSelectedItem(), nsLabel);
 
-		confirm = new JButton(Translator.getString("OK"));
+		confirm = new JButton(MR3Constants.OK);
 		confirm.addActionListener(this);
-		cancel = new JButton(Translator.getString("Cancel"));
+		cancel = new JButton(MR3Constants.CANCEL);
 		cancel.addActionListener(this);
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.add(confirm);

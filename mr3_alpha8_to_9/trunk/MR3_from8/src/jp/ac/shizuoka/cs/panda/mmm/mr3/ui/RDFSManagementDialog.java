@@ -65,9 +65,9 @@ public class RDFSManagementDialog extends JDialog implements ActionListener {
 	}
 
 	private void initButton() {
-		confirmButton = new JButton(Translator.getString("OK"));
+		confirmButton = new JButton(MR3Constants.OK);
 		confirmButton.addActionListener(this);
-		cancelButton = new JButton(Translator.getString("Cancel"));
+		cancelButton = new JButton(MR3Constants.CANCEL);
 		cancelButton.addActionListener(this);
 	}
 

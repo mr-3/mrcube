@@ -1,5 +1,4 @@
 package jp.ac.shizuoka.cs.panda.mmm.mr3.ui;
-import java.awt.*;
 import java.util.*;
 
 import javax.swing.*;
@@ -8,6 +7,7 @@ import javax.swing.tree.*;
 
 import jp.ac.shizuoka.cs.panda.mmm.mr3.data.*;
 import jp.ac.shizuoka.cs.panda.mmm.mr3.jgraph.*;
+import jp.ac.shizuoka.cs.panda.mmm.mr3.util.*;
 
 import org.jgraph.graph.*;
 
@@ -26,8 +26,7 @@ public class RDFSTreePanel extends JPanel implements TreeSelectionListener {
 
 		rdfsTree.addTreeSelectionListener(this);
 		JScrollPane classTreeScroll = new JScrollPane(rdfsTree);
-		classTreeScroll.setPreferredSize(new Dimension(200, 500));
-		classTreeScroll.setMinimumSize(new Dimension(200, 500));
+		Utilities.initComponent(classTreeScroll, "", 200, 500);
 		add(classTreeScroll);
 	}
 

@@ -63,14 +63,14 @@ public abstract class SelectClassPanel extends JPanel implements GraphSelectionL
 		uriPrefixBox.addActionListener(new ChangePrefixAction());
 		PrefixNSUtil.setPrefixNSInfoSet(gmanager.getPrefixNSInfoSet());
 		uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
-		Utilities.initComponent(uriPrefixBox, Translator.getString("Prefix"), PREFIX_BOX_WIDTH, PREFIX_BOX_HEIGHT);
+		Utilities.initComponent(uriPrefixBox, MR3Constants.PREFIX, PREFIX_BOX_WIDTH, PREFIX_BOX_HEIGHT);
 		findField = new JTextField(15);
 		Utilities.initComponent(findField, "ID", PREFIX_BOX_WIDTH, LIST_HEIGHT);
 		findField.addActionListener(findAction);
 		findButton = new JButton(Translator.getString("Find"));
 		findButton.addActionListener(findAction);
 		nsLabel = new JLabel("");
-		Utilities.initComponent(nsLabel, Translator.getString("NameSpace"), LIST_WIDTH, LIST_HEIGHT);
+		Utilities.initComponent(nsLabel, MR3Constants.NAME_SPACE, LIST_WIDTH, LIST_HEIGHT);
 	}
 
 	class ChangePrefixAction extends AbstractAction {
