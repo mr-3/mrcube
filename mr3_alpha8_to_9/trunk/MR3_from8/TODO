@@ -1,4 +1,4 @@
 == TODO
-* Property EditorのRegionの定義を継承できるようにする．
+* RDFSプロパティのdomainとrangeの定義をサブプロパティで継承できるようにする．
 * Statementの展開をできるようにする．
 * ドキュメントを作成する．
