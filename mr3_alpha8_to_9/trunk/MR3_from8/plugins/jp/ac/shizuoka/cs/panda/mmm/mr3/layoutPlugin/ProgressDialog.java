@@ -1,4 +1,4 @@
-package jp.ac.shizuoka.cs.panda.mmm.mr3.layout;
+package jp.ac.shizuoka.cs.panda.mmm.mr3.layoutPlugin;
 /*
  * @(#)ProgressDialog.java	1.0 01/20/03
  *

@@ -11,3 +11,8 @@ menu-name: ReplaceProjectPlugin
 
 Name: jp.ac.shizuoka.cs.panda.mmm.mr3.rssPlugin.RSSPlugin.class
 menu-name: RSSPlugin
+
+Name: jp.ac.shizuoka.cs.panda.mmm.mr3.layoutPlugin.SugiyamaLayoutPlugin.class
+menu-name: SugiyamaLayout
+
+

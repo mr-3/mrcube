@@ -160,13 +160,13 @@ public class MR3 extends JFrame {
 				RDFGraph graph = null;
 				Object selectionCell = null;
 				if (iFrames[0].isSelected()) {
-					graph = gmanager.getRDFGraph();
+					graph = getRDFGraph();
 					selectionCell = graph.getSelectionCell();
 				} else if (iFrames[1].isSelected()) {
-					graph = gmanager.getClassGraph();
+					graph = getClassGraph();
 					selectionCell = graph.getSelectionCell();
 				} else if (iFrames[2].isSelected()) {
-					graph = gmanager.getPropertyGraph();
+					graph = getPropertyGraph();
 					selectionCell = graph.getSelectionCell();
 				}
 
@@ -249,7 +249,7 @@ public class MR3 extends JFrame {
 
 	private JMenu getEditMenu() {
 		JMenu menu = new JMenu("Edit");
-		menu.add(new FindResAction(gmanager.getRDFGraph(), findResDialog, "Find Resource"));
+		menu.add(new FindResAction(getRDFGraph(), findResDialog, "Find Resource"));
 		menu.addSeparator();
 		//		selectAbstractLevelMode = new JCheckBoxMenuItem("Change Abstract Level", false);
 		//		selectAbstractLevelMode.addActionListener(new SelectAbstractLevelAction());
@@ -261,9 +261,9 @@ public class MR3 extends JFrame {
 
 	private JMenu getSelectMenu() {
 		JMenu selectMenu = new JMenu("Select");
-		selectMenu.add(new SelectNodes(gmanager.getRDFGraph(), SELECT_ALL_RDF_NODES));
-		selectMenu.add(new SelectNodes(gmanager.getClassGraph(), SELECT_ALL_CLASS_NODES));
-		selectMenu.add(new SelectNodes(gmanager.getPropertyGraph(), SELECT_ALL_PROPERTY_NODES));
+		selectMenu.add(new SelectNodes(getRDFGraph(), SELECT_ALL_RDF_NODES));
+		selectMenu.add(new SelectNodes(getClassGraph(), SELECT_ALL_CLASS_NODES));
+		selectMenu.add(new SelectNodes(getPropertyGraph(), SELECT_ALL_PROPERTY_NODES));
 
 		return selectMenu;
 	}
@@ -508,7 +508,7 @@ public class MR3 extends JFrame {
 
 	class IsGroupAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
-			gmanager.getRDFGraph().getSelectionModel().setChildrenSelectable(!isGroup.isSelected());
+			getRDFGraph().getSelectionModel().setChildrenSelectable(!isGroup.isSelected());
 		}
 	}
 
@@ -681,6 +681,18 @@ public class MR3 extends JFrame {
 
 	public void replaceProjectModel(Model model) {
 		mr3Reader.replaceProjectModel(model, this);
+	}
+
+	public RDFGraph getRDFGraph() {
+		return gmanager.getRDFGraph();
+	}
+
+	public RDFGraph getClassGraph() {
+		return gmanager.getClassGraph();
+	}
+
+	public RDFGraph getPropertyGraph() {
+		return gmanager.getPropertyGraph();
 	}
 
 	public String getBaseURI() {

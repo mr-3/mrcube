@@ -9,6 +9,8 @@ import javax.swing.*;
 
 import jp.ac.shizuoka.cs.panda.mmm.mr3.*;
 
+import org.jgraph.*;
+
 import com.hp.hpl.jena.rdf.model.*;
 
 /**
@@ -94,6 +96,18 @@ public abstract class MR3Plugin {
 
 	protected Model getProjectModel() {
 		return mr3.getProjectModel();
+	}
+
+	protected JGraph getRDFGraph() {
+		return mr3.getRDFGraph();
+	}
+
+	protected JGraph getClassGraph() {
+		return mr3.getClassGraph();
+	}
+
+	protected JGraph getPropertyGraph(){
+		return mr3.getPropertyGraph();
 	}
 
 	protected String getBaseURI() {
