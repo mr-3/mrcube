@@ -173,7 +173,7 @@ public class ProjectManager {
 		return extractModel;
 	}
 
-	public void changeNSModel(Map uriPrefixMap, Map uriIsAvailableMap) {
+	private void changeNSModel(Map uriPrefixMap, Map uriIsAvailableMap) {
 		Set existNSSet = new HashSet();
 		for (int i = 0; i < nsTableModel.getRowCount(); i++) {
 			String nameSpace = (String) nsTableModel.getValueAt(i, NS_COLUMN);
