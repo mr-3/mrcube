@@ -43,14 +43,17 @@ public abstract class MR3Plugin {
 
 	protected void replaceRDFModel(Model model) {
 		mr3.replaceRDFModel(model);
+		mr3.getGraphManager().applyTreeLayout();
 	}
 
 	protected void mergeRDFModel(Model model) {
 		mr3.mergeRDFModel(model);
+		mr3.getGraphManager().applyTreeLayout();
 	}
 
 	protected void mergeRDFSModel(Model model) {
 		mr3.mergeRDFSModel(model);
+		mr3.getGraphManager().applyTreeLayout();
 	}
 
 	protected Model getRDFModel() {

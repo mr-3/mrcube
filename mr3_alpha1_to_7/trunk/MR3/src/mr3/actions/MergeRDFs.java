@@ -38,7 +38,8 @@ public class MergeRDFs extends AbstractActionFile {
 			String uri = JOptionPane.showInternalInputDialog(desktop, "Open URI ( exp. http://www.w3.org/TR/rdf-schema/rdfs-namespace.xml )");
 			model = readModel(getReader(uri), gmanager.getBaseURI());
 		}
-		mr3.mergeRDFSModel(model);		
+		mr3.mergeRDFSModel(model);	
+		gmanager.applyTreeLayout();	
 		gmanager.setIsImporting(false);
 	}
 
