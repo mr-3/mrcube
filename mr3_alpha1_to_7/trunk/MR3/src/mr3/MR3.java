@@ -42,6 +42,8 @@ public class MR3 extends JFrame {
 	private static final int FRAME_WIDTH = 600;
 	private static final Integer DEMO_FRAME_LAYER = new Integer(0);
 
+	private File currentProject;
+
 	private RDFEditor rdfEditor;
 	private RealRDFEditor realRDFEditor;
 	private ClassEditor classEditor;
@@ -322,6 +324,9 @@ public class MR3 extends JFrame {
 		mi = new JMenuItem("Save Project");
 		mi.addActionListener(new SaveProjectAction());
 		menu.add(mi);
+		mi = new JMenuItem("Save Project As");
+		mi.addActionListener(new SaveProjectAction());
+		menu.add(mi);
 		menu.addSeparator();
 		JMenu importRDF = new JMenu("Import");
 		JMenu replace = new JMenu("Replace");
@@ -463,7 +468,7 @@ public class MR3 extends JFrame {
 				JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.INFORMATION_MESSAGE);
 		if (messageType == JOptionPane.YES_OPTION) {
-			saveProject();
+			saveProjectAs();
 		}
 		return messageType;
 	}
@@ -541,6 +546,7 @@ public class MR3 extends JFrame {
 		gmanager.removeAllCells();
 		nsTableDialog.setDefaultNSPrefix();
 		setTitle("MR^3 - New Project");
+		currentProject = null;
 	}
 
 	class NewProjectAction extends AbstractAction {
@@ -596,11 +602,7 @@ public class MR3 extends JFrame {
 		return new ObjectOutputStream(fo);
 	}
 
-	private void saveProject() {
-		File file = getFile(false, "mr3");
-		if (file == null) {
-			return;
-		}
+	private void saveProject(File file) {
 		try {
 			ObjectOutputStream oo = createOutputStream(file);
 			ArrayList list = gmanager.storeState();
@@ -616,9 +618,26 @@ public class MR3 extends JFrame {
 		}
 	}
 
+	private void saveProjectAs() {
+		File file = getFile(false, "mr3");
+		if (file == null) {
+			return;
+		}
+		saveProject(file);
+		currentProject = file;
+	}
+
 	class SaveProjectAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
-			saveProject();
+			if (e.getActionCommand().equals("Save Project")) {
+				if (currentProject == null) {
+					saveProjectAs();
+				} else {
+					saveProject(currentProject);
+				}
+			} else {
+				saveProjectAs();
+			}
 		}
 	}
 

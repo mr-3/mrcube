@@ -128,6 +128,14 @@ public abstract class RDFSInfo implements Serializable {
 		return uri;
 	}
 
+	public String getURIStr(String baseURI) {
+		if (uriType == URIType.ID) {
+			return baseURI+uri;		
+		} else {
+			return uri;
+		}
+	}
+
 	public void setLabel(MR3Literal label) {
 		this.label = label;
 	}
