@@ -1,5 +1,6 @@
 package mr3.jgraph;
 import java.awt.*;
+import java.awt.datatransfer.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
@@ -15,6 +16,7 @@ import com.hp.hpl.mesa.rdf.jena.model.*;
 import com.jgraph.*;
 import com.jgraph.event.*;
 import com.jgraph.graph.*;
+import com.jgraph.plaf.basic.*;
 
 public class RDFGraph extends JGraph {
 
@@ -24,6 +26,8 @@ public class RDFGraph extends JGraph {
 	private RDFResourceInfoMap resInfoMap = RDFResourceInfoMap.getInstance();
 	private RDFLiteralInfoMap litInfoMap = RDFLiteralInfoMap.getInstance();
 	private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
+
+	private GraphCopyBuffer copyBuffer;
 
 	public RDFGraph(GraphManager manager, AttributeDialog attrD, GraphType type) {
 		super(new RDFGraphModel());
@@ -130,27 +134,27 @@ public class RDFGraph extends JGraph {
 		return (getSelectionCount() == 1 && graphModel.getChildCount(cell) <= 1);
 	}
 
-// 以下のメソッドで，グループ化したRDFリソースを選択したときに，AttributeDialogに
-//　RDFリソースの情報を表示できると考えたが，うまくいかなかった．
-//
-//	public GraphCell isOneRDFCellSelected(Object[] cells) {
-//		int count = 0;
-//		GraphCell rdfCell = null;
-//		for (int i = 0; i < cells.length; i++) {
-//			if (isRDFCell(cells[i])) {
-//				count++;
-//				rdfCell = (GraphCell) cells[i];
-//			}
-//		}
-//		
-//		if (count == 1) {
-//			System.out.println(rdfCell.getClass());
-//			return rdfCell;
-//		} else {
-//			System.out.println(count);
-//			return null;
-//		}
-//	}
+	// 以下のメソッドで，グループ化したRDFリソースを選択したときに，AttributeDialogに
+	//　RDFリソースの情報を表示できると考えたが，うまくいかなかった．
+	//
+	//	public GraphCell isOneRDFCellSelected(Object[] cells) {
+	//		int count = 0;
+	//		GraphCell rdfCell = null;
+	//		for (int i = 0; i < cells.length; i++) {
+	//			if (isRDFCell(cells[i])) {
+	//				count++;
+	//				rdfCell = (GraphCell) cells[i];
+	//			}
+	//		}
+	//		
+	//		if (count == 1) {
+	//			System.out.println(rdfCell.getClass());
+	//			return rdfCell;
+	//		} else {
+	//			System.out.println(count);
+	//			return null;
+	//		}
+	//	}
 
 	public boolean isEdge(Object object) {
 		return (object instanceof Edge);
@@ -382,5 +386,176 @@ public class RDFGraph extends JGraph {
 			}
 		}
 		return null;
+	}
+
+	private boolean isContain(Object[] cells, Object cell) {
+		for (int i = 0; i < cells.length; i++) {
+			if (cells[i] == cell) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private Object[] getValidCopyList() {
+		List copyList = new ArrayList();
+		Object[] cells = getSelectionCells();
+		for (int i = 0; i < cells.length; i++) {
+			if (isEdge(cells[i])) {
+				Edge edge = (Edge) cells[i];
+				if (isContain(cells, getSourceVertex(edge)) && isContain(cells, getTargetVertex(edge))) {
+					copyList.add(cells[i]);
+				}
+			} else {
+				copyList.add(cells[i]);
+			}
+		}
+		return copyList.toArray();
+	}
+
+	class GraphCopyBuffer {
+		private Object[] copyList;
+		private GraphTransferable graphTransferable;
+		private Point copyPoint; // コピーを行った位置
+		private ConnectionSet csClone; // cloneのConnectionSet
+		private Map cloneAttributes; // cloneのAttributes
+		private Map cloneInfoMap;
+
+		GraphCopyBuffer(Point pt, Object[] list, GraphTransferable gt) {
+			copyPoint = pt;
+			copyList = list;
+			graphTransferable = gt;
+		}
+
+		public ConnectionSet getCloneConnectionSet() {
+			return csClone;
+		}
+
+		public Map getCloneAttributes() {
+			return cloneAttributes;
+		}
+
+		public Object get(Object clone) {
+			return cloneInfoMap.get(clone);
+		}
+
+		public Point getCopyPoint() {
+			return copyPoint;
+		}
+
+		public Set keySet() {
+			return cloneInfoMap.keySet();
+		}
+
+		public void createClones() {
+			Map cloneMap = cloneCells(copyList);
+			Map nested = graphTransferable.getAttributeMap();
+			nested = GraphConstants.replaceKeys(cloneMap, nested);
+			cloneAttributes = nested;
+			ConnectionSet cs = graphTransferable.getConnectionSet();
+			csClone = cs.clone(cloneMap);
+
+			cloneInfoMap = new HashMap();
+			for (Iterator i = cloneMap.keySet().iterator(); i.hasNext();) {
+				Object cell = i.next();
+				if (isRDFSClassCell(cell)) {
+					ClassInfo orgInfo = (ClassInfo) rdfsInfoMap.getCellInfo(cell);
+					ClassInfo newInfo = rdfsInfoMap.cloneClassInfo(orgInfo);
+					cloneInfoMap.put(cloneMap.get(cell), newInfo);
+				}
+			}
+		}
+	}
+
+	private void copyClass(Point copyPoint) {
+		Object[] copyList = getValidCopyList();
+		
+		TransferHandler th = getTransferHandler();		
+		GraphTransferable gt = null;
+		if (th instanceof BasicGraphUI.GraphTransferHandler) {
+			BasicGraphUI.GraphTransferHandler gth = (BasicGraphUI.GraphTransferHandler) th;
+			Transferable t = gth.createTransferable();
+			if (t instanceof GraphTransferable) {
+				gt = (GraphTransferable) t;
+			}
+		}
+		if (gt == null) {
+			return;
+		}
+		copyBuffer = new GraphCopyBuffer(copyPoint, copyList, gt);
+	}
+
+	private void copyProperty(Point pt) {
+	}
+
+	private void copyRDF(Point pt) {
+	}
+
+	public void copy(Point pt) {
+		if (type == GraphType.CLASS) {
+			copyClass(pt);
+		} else if (type == GraphType.PROPERTY) {
+			copyProperty(pt);
+		} else if (type == GraphType.RDF) {
+			copyRDF(pt);
+		}
+	}
+
+	private void setPastePosition(GraphCell cell, String value, Point pastePoint, Point copyPoint) {
+		Map map = cell.getAttributes();
+		Rectangle rec = GraphConstants.getBounds(map);
+		int x = Math.abs(copyPoint.x - rec.x);
+		int y = Math.abs(copyPoint.y - rec.y);
+		rec.x = 10;
+		rec.y = 10;
+		GraphConstants.setBounds(map, rec);
+		GraphConstants.setValue(map, value);
+		Map nested = new HashMap();
+		nested.put(cell, GraphConstants.cloneMap(map));
+		getGraphLayoutCache().edit(nested, null, null, null);
+	}
+
+	private void pasteClass(Point pastePoint) {
+		if (copyBuffer == null) {
+			return;
+		}
+		copyBuffer.createClones();
+		// URIの重複を防ぐ
+		for (Iterator i = copyBuffer.keySet().iterator(); i.hasNext();) {
+			GraphCell cell = (GraphCell) i.next();
+			if (isRDFSClassCell(cell)) {
+				ClassInfo info = (ClassInfo) copyBuffer.get(cell);
+				if (gmanager.isDuplicated(info.getURIStr(), null, GraphType.CLASS)) {
+					for (int j = 1; true; j++) {
+						String copyURI = info.getURIStr() + "-copy" + j;
+						if (!gmanager.isDuplicated(copyURI, null, GraphType.CLASS)) {
+							info.setURI(copyURI);
+							break;
+						}
+					}
+				}
+				rdfsInfoMap.putCellInfo(cell, info);
+				setPastePosition(cell, info.getURIStr(), pastePoint, copyBuffer.getCopyPoint());
+			}
+		}
+		getGraphLayoutCache().insert(copyBuffer.keySet().toArray(), copyBuffer.getCloneAttributes(), copyBuffer.getCloneConnectionSet(), null, null);
+		gmanager.changeCellView();
+	}
+
+	private void pasteProperty(Point pt) {
+	}
+
+	private void pasteRDF(Point pt) {
+
+	}
+
+	public void paste(Point pt) {
+		if (type == GraphType.CLASS) {
+			pasteClass(pt);
+		} else if (type == GraphType.PROPERTY) {
+			pasteProperty(pt);
+		} else if (type == GraphType.RDF) {
+			pasteRDF(pt);
+		}
 	}
 }

@@ -87,12 +87,8 @@ public class GraphLayoutData {
 	private void setRealPosition(GraphCell localCell) {
 		Map map = localCell.getAttributes();
 		GraphConstants.setBounds(map, rec);
-
-		map = GraphConstants.cloneMap(map);
-
 		Map nested = new HashMap();
 		nested.put(localCell, GraphConstants.cloneMap(map));
-//		graph.getGraphLayoutCache().edit(nested, null, null, null);
 		graph.getModel().edit(nested, null, null, null);
 	}
 

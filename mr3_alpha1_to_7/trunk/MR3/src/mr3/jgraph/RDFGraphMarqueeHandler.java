@@ -233,6 +233,8 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 			});
 		}
 
+		menu.addSeparator();
+		
 		// Remove
 		if (!graph.isSelectionEmpty()) {
 			menu.add(new AbstractAction("Remove") {
@@ -241,6 +243,12 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 				}
 			});
 		}
+
+		menu.add(new AbstractAction("copy") {
+			public void actionPerformed(ActionEvent e) {
+				graph.copy(pt);
+			}
+		});
 
 		menu.addSeparator();
 		menu.add(new AbstractAction("Attribute Dialog") {

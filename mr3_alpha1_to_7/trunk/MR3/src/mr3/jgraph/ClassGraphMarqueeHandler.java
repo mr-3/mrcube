@@ -58,7 +58,7 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 			pt.y += 100;
 			cellMaker.insertClass(pt, uri);
 			DefaultGraphCell cell = (DefaultGraphCell) graph.getSelectionCell();
-			Port sourcePort = (Port)cell.getChildAt(0);
+			Port sourcePort = (Port) cell.getChildAt(0);
 			connectSubToSups(sourcePort, supCells);
 			if (graph.isOneCellSelected(cell)) {
 				classPanel.displayRDFSInfo(cell);
@@ -89,7 +89,8 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 					}
 				}
 			});
-
+			
+			menu.addSeparator();
 			//Remove	
 			menu.add(new AbstractAction("Remove") {
 				public void actionPerformed(ActionEvent e) {
@@ -102,15 +103,25 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 			});
 		}
 
+		menu.add(new AbstractAction("Copy") {
+			public void actionPerformed(ActionEvent e) {
+				graph.copy(pt);
+			}
+		});
+		
+		menu.add(new AbstractAction("Paste") {
+			public void actionPerformed(ActionEvent e) {
+				graph.paste(pt);
+			}
+		});
+		
 		menu.addSeparator();
-
 		menu.add(new AbstractAction("Connect mode") {
 			public void actionPerformed(ActionEvent e) {
 				connectAction();
 			}
 		});
-
-		menu.addSeparator();
+		
 		menu.add(new AbstractAction("Attribute Dialog") {
 			public void actionPerformed(ActionEvent e) {
 				gmanager.setVisibleAttrDialog(true);

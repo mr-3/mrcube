@@ -119,16 +119,16 @@ public class RDFSInfoMap {
 					// 今から作ろうとしてるRDFCellの場合，resInfoは存在しない．
 					// 名前を変更しようとしているCellの場合は，resInfoが存在する
 					if (resInfo == null || resInfo.getTypeCell() == null) {
-//						System.out.println("1 duplicated rdfs");
+						//						System.out.println("1 duplicated rdfs");
 						return true;
 					}
 					RDFSInfo typeInfo = rdfsInfoMap.getCellInfo(resInfo.getTypeCell());
 					if (!((typeInfo.getURI().equals(RDFS.Class)) || typeInfo.getURI().equals(RDF.Property))) {
-//						System.out.println("2 duplicated rdfs");
+						//						System.out.println("2 duplicated rdfs");
 						return true;
 					}
 				} else {
-//					System.out.println("3 duplicated rdfs");
+					//					System.out.println("3 duplicated rdfs");
 					return true;
 				}
 			}
@@ -241,6 +241,30 @@ public class RDFSInfoMap {
 			}
 			node.add(subNode);
 		}
+	}
+
+	private void cloneRDFSInfo(RDFSInfo orgInfo, RDFSInfo newInfo) {
+		newInfo.setURI(orgInfo.getURIStr());
+		// Labelをコピーする
+		for (Iterator i = orgInfo.getLabelList().iterator(); i.hasNext();) {
+			Literal lit = (Literal) i.next();
+			newInfo.addLabel(lit);
+		}
+		// コメントをコピーする
+		for (Iterator i = orgInfo.getCommentList().iterator(); i.hasNext();) {
+			Literal comment = (Literal) i.next();
+			newInfo.addComment(comment);
+		}
+		newInfo.setLabel(orgInfo.getLabel());
+		newInfo.setComment(orgInfo.getComment());
+		newInfo.setIsDefinedby(orgInfo.getIsDefinedBy().toString());
+		newInfo.setInnerModel(orgInfo.getInnerModel());
+	}
+
+	public ClassInfo cloneClassInfo(ClassInfo orgInfo) {
+		ClassInfo newInfo = new ClassInfo("");
+		cloneRDFSInfo(orgInfo, newInfo);
+		return newInfo;
 	}
 
 	public String toString() {
