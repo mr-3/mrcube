@@ -317,8 +317,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 
 		menu.add(new AbstractAction("Cut") {
 			public void actionPerformed(ActionEvent e) {
-				graph.copy(pt);
-				gmanager.removeAction(graph);
+				graph.cut(pt);
 			}
 		});
 

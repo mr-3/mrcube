@@ -7,7 +7,9 @@ import java.util.*;
 import java.util.List;
 
 import javax.swing.*;
+import javax.swing.plaf.*;
 
+import mr3.actions.*;
 import mr3.data.*;
 import mr3.ui.*;
 import mr3.util.*;
@@ -34,6 +36,9 @@ public class RDFGraph extends JGraph {
 		gmanager = manager;
 		attrDialog = gmanager.getAttrDialog();
 		this.type = type;
+
+		//		addKeyListener(new KeyHandler());
+		SwingUtilities.replaceUIActionMap(this, createActionMap());
 	}
 
 	public RDFGraph() {
@@ -197,8 +202,10 @@ public class RDFGraph extends JGraph {
 	}
 
 	public void selectAllNodes() {
+		ChangeCellAttributes.isChangedSelectedColor = false;
 		clearSelection();
 		addSelectionCells(getRoots()); // DescendantsÇ‹Ç≈Ç‚ÇÈÇ∆ÇŒÇÁÇŒÇÁÅD
+		ChangeCellAttributes.isChangedSelectedColor = true;
 	}
 
 	public Object getSourceVertex(Object edge) {
@@ -581,6 +588,11 @@ public class RDFGraph extends JGraph {
 		copyBuffer = new GraphCopyBuffer(pt, getValidCopyList(bufferGraph), gt, getCopyInfoMap(clones));
 	}
 
+	public void cut(Point pt) {
+		copy(pt);
+		gmanager.removeAction(this);
+	}
+
 	private void setPastePosition(GraphCell cell, String value, Point pastePoint) {
 		Map map = cell.getAttributes();
 		Rectangle rec = GraphConstants.getBounds(map);
@@ -625,6 +637,9 @@ public class RDFGraph extends JGraph {
 			null,
 			null);
 		gmanager.changeCellView();
+		Object cell = getSelectionCell();
+		clearSelection();
+		setSelectionCell(cell);
 	}
 
 	private String getCopyRDFSURI(RDFSInfo info, GraphType graphType) {
@@ -711,4 +726,15 @@ public class RDFGraph extends JGraph {
 			setPastePosition(cell, uri, pastePoint);
 		}
 	}
+
+	public ActionMap createActionMap() {
+		ActionMap map = new ActionMapUIResource();
+		map.put(TransferHandler.getCutAction().getValue(Action.NAME), new CutAction(this, "cut"));
+		map.put(TransferHandler.getCopyAction().getValue(Action.NAME), new CopyAction(this, "copy"));
+		map.put(TransferHandler.getPasteAction().getValue(Action.NAME), new PasteAction(this, "paste"));
+		map.put("selectAll", new SelectNodes(this, "selectAll"));
+
+		return map;
+	}
+
 }
