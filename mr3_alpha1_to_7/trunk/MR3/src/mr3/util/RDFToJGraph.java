@@ -82,7 +82,7 @@ public class RDFToJGraph {
 
 			if (subRes.getURI().charAt(0) == '#') {
 				subInfo.setURIType(URIType.ID);
-			} 
+			}
 
 			DefaultGraphCell subCell = null;
 			if (supInfo instanceof ClassInfo) {
@@ -116,11 +116,10 @@ public class RDFToJGraph {
 
 	private void setResourceInfo(Object cell, Resource uri, GraphCell typeCell) {
 		RDFResourceInfo resInfo = null;
-		//		System.out.println(uri.getURI());
 		if (uri.isAnon() || uri.getURI().length() == 0) {
 			resInfo = new RDFResourceInfo(URIType.ANONYMOUS, "", typeCell);
-		} else if (uri.getURI().charAt(0) == '#') { // Žè”²‚«
-			resInfo = new RDFResourceInfo(URIType.ID, uri.getURI(), typeCell);
+		} else if (uri.getNameSpace().equals(gmanager.getBaseURI()+"#")) { // Žè”²‚«
+			resInfo = new RDFResourceInfo(URIType.ID, '#'+uri.getLocalName(), typeCell);
 		} else {
 			resInfo = new RDFResourceInfo(URIType.URI, uri.getURI(), typeCell);
 		}
