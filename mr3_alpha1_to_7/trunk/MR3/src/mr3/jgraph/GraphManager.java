@@ -366,17 +366,25 @@ public class GraphManager {
 	public void setNodeBounds(Map uriNodeInfoMap) {
 		for (Iterator i = uriNodeInfoMap.keySet().iterator(); i.hasNext();) {
 			Resource uri = (Resource) i.next();
-			Rectangle rec = (Rectangle) uriNodeInfoMap.get(uri);
+			MR3Literal rec = (MR3Literal) uriNodeInfoMap.get(uri);
 
 			GraphCell cell = (GraphCell) getRDFResourceCell(uri);
 			if (cell != null) {
-				setCellBounds(rdfGraph, cell, rec);
+				setCellBounds(rdfGraph, cell, rec.getRectangle());
 			} else if (rdfsInfoMap.isClassCell(uri)) {
 				cell = (GraphCell) getClassCell(uri, false);
-				setCellBounds(classGraph, cell, rec);
+				setCellBounds(classGraph, cell, rec.getRectangle());
 			} else if (rdfsInfoMap.isPropertyCell(uri)) {
 				cell = (GraphCell) getPropertyCell(uri, false);
-				setCellBounds(propGraph, cell, rec);
+				setCellBounds(propGraph, cell, rec.getRectangle());
+			} else if (uri.getURI().matches(MR3Resource.Literal.getURI()+".*")){
+				DefaultGraphCell litCell = (DefaultGraphCell) cellMaker.insertRDFLiteral(rec.getLocation());
+				litInfoMap.putCellInfo(litCell, new LiteralImpl(rec.getString(), rec.getLanguage()));
+				setCellBounds(rdfGraph, litCell, rec.getRectangle());
+				DefaultGraphCell source = (DefaultGraphCell) getRDFResourceCell(rec.getResource());
+
+				Edge edge = (Edge) getRDFResourceCell(rec.getProperty());
+				//				cellMaker.connect((Port)source.getChildAt(0), (Port)litCell.getChildAt(0), "test", rdfGraph);
 			}
 		}
 	}
@@ -658,6 +666,23 @@ public class GraphManager {
 		for (int i = 0; i < cells.length; i++) {
 			if (rdfGraph.isRDFResourceCell(cells[i])) {
 				RDFResourceInfo info = resInfoMap.getCellInfo(cells[i]);
+				if (info.getURI().equals(uri)) {
+					return cells[i];
+				}
+			}
+		}
+		return null;
+	}
+
+	public Object getRDFPropertyCell(Resource uri) {
+		Object[] cells = rdfGraph.getAllCells();
+		for (int i = 0; i < cells.length; i++) {
+			if (rdfGraph.isRDFPropertyCell(cells[i])) {
+				Object propCell = rdfsInfoMap.getEdgeInfo(cells[i]);
+				RDFSInfo info = rdfsInfoMap.getCellInfo(propCell);
+				if (info == null) {
+					return null;
+				}
 				if (info.getURI().equals(uri)) {
 					return cells[i];
 				}

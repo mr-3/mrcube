@@ -851,10 +851,14 @@ public class MR3 extends JFrame {
 				if (file == null) {
 					return;
 				}
+				// 順番に注意．リテラルのモデルを抽出して，プロジェクトモデルを抽出してから
+				// リテラルモデルを削除する
 				ProjectManager pm = new ProjectManager(gmanager, nsTableDialog);
 				Model exportModel = getRDFModel();
 				exportModel.add(getRDFSModel());
+				Model literalModel = pm.getLiteralModel(exportModel);
 				exportModel.add(pm.getProjectModel());
+				exportModel.remove(literalModel);
 				Writer output = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
 				RDFWriter writer = new RDFWriterFImpl().getWriter("RDF/XML-ABBREV");
 				rdfEditor.writeModel(exportModel, output, writer);
