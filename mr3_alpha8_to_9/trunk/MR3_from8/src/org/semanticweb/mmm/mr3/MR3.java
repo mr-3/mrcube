@@ -16,6 +16,7 @@ import org.semanticweb.mmm.mr3.data.*;
 import org.semanticweb.mmm.mr3.editor.*;
 import org.semanticweb.mmm.mr3.io.*;
 import org.semanticweb.mmm.mr3.jgraph.*;
+import org.semanticweb.mmm.mr3.layout.*;
 import org.semanticweb.mmm.mr3.ui.*;
 import org.semanticweb.mmm.mr3.util.*;
 import org.semanticweb.mmm.mr3.util.Utilities;
@@ -23,8 +24,8 @@ import org.semanticweb.mmm.mr3.util.Utilities;
 import com.hp.hpl.jena.rdf.model.*;
 
 /**
-  *   {MR} ^3 Meta-Model Management founded on RDF-baed Revision Reflection  
-  */
+ * {MR} ^3 Meta-Model Management founded on RDF-baed Revision Reflection
+ */
 public class MR3 extends JFrame {
 
 	private File currentProject;
@@ -38,6 +39,7 @@ public class MR3 extends JFrame {
 	private static final Integer DEMO_FRAME_LAYER = new Integer(0);
 
 	private GraphManager gmanager;
+	private MR3TreeLayout vgjTreeLayout;
 	private RDFEditor rdfEditor;
 	private OverviewDialog rdfEditorOverview;
 	private ClassEditor classEditor;
@@ -90,6 +92,7 @@ public class MR3 extends JFrame {
 		logger = new MR3LogConsole(Translator.getString("LogConsole.Title"), null);
 		attrDialog = new AttributeDialog();
 		gmanager = new GraphManager(attrDialog, userPrefs);
+		vgjTreeLayout = new MR3TreeLayout(gmanager);
 		initAction();
 		getContentPane().add(createToolBar(), BorderLayout.NORTH);
 		createDesktop();
@@ -129,14 +132,17 @@ public class MR3 extends JFrame {
 	}
 
 	//	private void setTreeLayout() {
-	//		classTreePanel = new RDFSTreePanel(gmanager, rdfsInfoMap.getClassTreeModel(), new ClassTreeCellRenderer());
-	//		propTreePanel = new RDFSTreePanel(gmanager, rdfsInfoMap.getPropTreeModel(), new PropertyTreeCellRenderer());
+	//		classTreePanel = new RDFSTreePanel(gmanager,
+	// rdfsInfoMap.getClassTreeModel(), new ClassTreeCellRenderer());
+	//		propTreePanel = new RDFSTreePanel(gmanager,
+	// rdfsInfoMap.getPropTreeModel(), new PropertyTreeCellRenderer());
 	//		JTabbedPane treeTab = new JTabbedPane();
 	//		treeTab.add("Class", classTreePanel);
 	//		treeTab.add("Property", propTreePanel);
-	//		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, treeTab, desktop);
+	//		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+	// treeTab, desktop);
 	//		splitPane.setOneTouchExpandable(true);
-	//		getContentPane().add(splitPane);		
+	//		getContentPane().add(splitPane);
 	//	}
 
 	private AbstractAction newProjectAction;
@@ -227,8 +233,10 @@ public class MR3 extends JFrame {
 		JMenu menu = new JMenu(Translator.getString("Component.Edit.Text"));
 		menu.add(new FindResAction(getRDFGraph(), findResDialog));
 		menu.addSeparator();
-		//		selectAbstractLevelMode = new JCheckBoxMenuItem("Change Abstract Level", false);
-		//		selectAbstractLevelMode.addActionListener(new SelectAbstractLevelAction());
+		//		selectAbstractLevelMode = new JCheckBoxMenuItem("Change Abstract
+		// Level", false);
+		//		selectAbstractLevelMode.addActionListener(new
+		// SelectAbstractLevelAction());
 		//		menu.add(selectAbstractLevelMode);
 		menu.add(new PreferenceAction());
 
@@ -266,6 +274,28 @@ public class MR3 extends JFrame {
 
 	public GraphManager getGraphManager() {
 		return gmanager;
+	}
+
+	/**
+	 *
+	 * グラフのレイアウトを行う 
+	 * vgjTreeLayout.performVGJTreeLayoutの場合はGPL
+	 * vgjTreeLayout.performJGraphTreeLayoutの場合はLGPL
+	 */
+	public void performTreeLayout() {
+		vgjTreeLayout.performVGJTreeLayout();
+		//vgjTreeLayout.performJGraphTreeLayout();
+	}
+
+	/**
+	 *
+	 * グラフのレイアウトを行う 
+	 * vgjTreeLayout.performVGJRDFSTreeLayoutの場合はGPL
+	 * vgjTreeLayout.performJGraphRDFSTreeLayoutの場合はLGPL
+	 */
+	public void performRDFSTreeLayout() {
+		vgjTreeLayout.performVGJRDFSTreeLayout();
+		//vgjTreeLayout.performJGraphRDFSTreeLayout();
 	}
 
 	public NameSpaceTableDialog getNSTableDialog() {
@@ -645,7 +675,7 @@ public class MR3 extends JFrame {
 		ReplaceRDFSDialog replaceRDFSDialog = new ReplaceRDFSDialog(gmanager, model.union(model));
 		if (replaceRDFSDialog.isApply()) {
 			mr3Reader.replaceRDFS(model);
-			gmanager.applyRDFSTreeLayout();
+			performRDFSTreeLayout();
 		}
 	}
 

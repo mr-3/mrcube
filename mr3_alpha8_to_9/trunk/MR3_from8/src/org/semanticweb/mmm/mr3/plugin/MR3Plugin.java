@@ -20,7 +20,7 @@ public abstract class MR3Plugin {
 	private String menuName;
 
 	protected MR3Plugin(String mn) {
-		menuName = mn;
+		menuName = mn;		
 	}
 
 	protected MR3Plugin() {
@@ -49,7 +49,7 @@ public abstract class MR3Plugin {
 	 */
 	protected void replaceRDFModel(Model model) {
 		mr3.replaceRDFModel(model);
-		mr3.getGraphManager().applyTreeLayout();
+		mr3.performTreeLayout();
 	}
 
 	/**
@@ -57,7 +57,6 @@ public abstract class MR3Plugin {
 	 */
 	protected void mergeRDFModel(Model model) {
 		mr3.mergeRDFModel(model);
-		mr3.getGraphManager().applyTreeLayout();
 	}
 
 	/**
@@ -65,7 +64,7 @@ public abstract class MR3Plugin {
 	 */
 	protected void mergeRDFSModel(Model model) {
 		mr3.mergeRDFSModel(model);
-		mr3.getGraphManager().applyTreeLayout();
+		mr3.performTreeLayout();
 	}
 
 	/**

@@ -1,4 +1,4 @@
-package org.semanticweb.mmm.mr3.layoutPlugin;
+package org.semanticweb.mmm.mr3.layout;
 
 import java.awt.*;
 import java.util.*;
@@ -27,7 +27,7 @@ public class TreeLayoutAlgorithm {
 	public static final int UP_TO_DOWN = 1;
 	public static final int DEFAULT_ORIENTATION = LEFT_TO_RIGHT;
 
-	public ProgressDialog dlgProgress = new ProgressDialog((Frame) null, "Progress:", false);
+//	public ProgressDialog dlgProgress = new ProgressDialog((Frame) null, "Progress:", false);
 
 	private JGraph jgraph;
 	protected int orientation;
@@ -256,7 +256,7 @@ public class TreeLayoutAlgorithm {
 		this.jgraph = jgraph;
 		CellView[] selectedCellViews = jgraph.getGraphLayoutCache().getMapping(selectedCells);
 
-		dlgProgress.setVisible(true);
+//		dlgProgress.setVisible(true);
 
 		List roots = Arrays.asList(selectedCellViews);
 
@@ -277,7 +277,7 @@ public class TreeLayoutAlgorithm {
 		layoutTrees(roots);
 		display(roots);
 
-		dlgProgress.setVisible(false);
+//		dlgProgress.setVisible(false);
 	}
 
 	protected List getChildren(VertexView node) {

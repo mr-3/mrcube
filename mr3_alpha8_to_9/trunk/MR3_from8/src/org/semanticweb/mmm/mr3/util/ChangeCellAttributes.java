@@ -114,5 +114,10 @@ public class ChangeCellAttributes {
 		}
 		return cells;
 	}
-
+	
+	public static void editCell(GraphCell cell, Map map, RDFGraph graph) {
+		Map nested = new HashMap();
+		nested.put(cell, GraphConstants.cloneMap(map));
+		graph.getModel().edit(nested, null, null, null);
+	}
 }

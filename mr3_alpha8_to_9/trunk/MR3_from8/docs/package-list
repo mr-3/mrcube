@@ -5,7 +5,10 @@ org.semanticweb.mmm.mr3.editor
 org.semanticweb.mmm.mr3.io
 org.semanticweb.mmm.mr3.jgraph
 org.semanticweb.mmm.mr3.layout
+org.semanticweb.mmm.mr3.layoutPlugin
+org.semanticweb.mmm.mr3.owlPlugin
 org.semanticweb.mmm.mr3.plugin
+org.semanticweb.mmm.mr3.rssPlugin
 org.semanticweb.mmm.mr3.sample
 org.semanticweb.mmm.mr3.ui
 org.semanticweb.mmm.mr3.util

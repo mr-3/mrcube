@@ -51,7 +51,7 @@ public class MergeRDFs extends AbstractActionFile {
 			return;
 		}
 		mr3.mergeRDFSModel(model);
-		gmanager.applyTreeLayout();
+		mr3.performTreeLayout();
 		gmanager.setIsImporting(false);
 	}
 
