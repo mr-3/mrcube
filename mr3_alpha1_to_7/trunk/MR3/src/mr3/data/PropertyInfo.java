@@ -70,6 +70,15 @@ public class PropertyInfo extends RDFSInfo {
 		domain.addAll(set);
 	}
 
+	public void removeNullDomain() {
+		for (Iterator i = domain.iterator(); i.hasNext();) {
+			Object cell = i.next();
+			if (rdfsInfoMap.getCellInfo(cell) == null) {
+				domain.remove(cell);
+			}
+		}
+	}
+
 	public void removeDomain(Object obj) {
 		domain.remove(obj);
 	}
@@ -84,6 +93,15 @@ public class PropertyInfo extends RDFSInfo {
 
 	public void addAllRange(Set set) {
 		range.addAll(set);
+	}
+
+	public void removeNullRange() {
+		for (Iterator i = range.iterator(); i.hasNext();) {
+			Object cell = i.next();
+			if (rdfsInfoMap.getCellInfo(cell) == null) {
+				range.remove(cell);
+			}
+		}
 	}
 
 	public void removeRange(Object obj) {

@@ -1,16 +1,20 @@
 == 更新履歴
 
-=== ■ α3 (2003/6/11)
+=== ■ α3 (2003/6/12)
+* プロジェクト単位で保存できるようになった．
 * Windowメニューから，各エディタを選択することによって，選択したEditorを手前に表示可能になった．
 * 各エディタのツールバーに，各エディタとAttributeDialogを手前に表示するためのボタンと，検索ボタンを追加した．
 * デフォルトの作業ディレクトリが設定できるようになった．
 * ファイル出力するときファイル名に拡張子を自動でつけるようになった．
-  (RDF/XML -> rdf, RDFS/XML -> rdfs, N-Triple -> n3)
+  (RDF/XML -> rdf, RDFS/XML -> rdfs, N-Triple -> n3, Project File -> mr3)
 * RDFリソースのタイプ，RDFリソースのプロパティのコピー，カットが可能となった．
+* RDFSプロパティのdomainとrangeのコピー，カットが可能となった．
 * ViewメニューにID表示を追加した．(URIの#以下を表示する)
-* Select Resource Typeダイアログ及びSelect Region Dialogでクラス名で検索が可能になった．
+* Select Resource Typeダイアログ及びSelect Region Dialogで，クラスの検索が可能になった．
+* RDF EditorでInsert Resourceを実行したときの入力ダイアログで，
+  プルダウンメニューから，リソースのタイプを選択できるようになった．
 
-==== Bug Fix
+==== Bug Fixes
 * RDF Editorでコピーしたリソースのタイプが設定できなくなっていたのを修正．
 * RDFリソースのURITypeがANONYMOUSの時，コピー，カットができなかったのを修正．
 * Attribute DialogでRDF Editorのプロパティを選んでいるとき、NameSpaceを
@@ -20,6 +24,8 @@
   Applyボタンを押したときに，RDFリソースのグループ化が解除されていたのを修正．
   (その他にも，RDF Editorのリソースのグループ化が解除される可能性あり）
 * すべてのEditorでノードを追加したとき、Attribute Dialogに表示が反映されていなかったのを修正．
+* RDFSクラスを削除した際に，RDFSプロパティのdomain, rangeとRDFSクラスの一貫性が保持
+   できていなかったのを修正．
 
 === ■ α2 (2003/6/2)
 * RDF Editorのリソースを選んだ時、Class EditorやProperty Editorの
@@ -37,7 +43,7 @@
   RDFSプロパティのdomainとrange，RDFリソースのタイプ，RDFプロパティ
   のdomain, rangeのコピー，カットは行うことができない．
 * Proxyの設定が可能となった．
-====Bug Fix
+====Bug Fixes
 * JDK1.4.2 BetaでAttributeDialogの表示がくずれていたバグを修正した．
 * RDF Editorでリソースを編集しているとき、Attribute Dialogを使って
   URI TypeをURI,ID,ANONYMOUSとあるラジオボックスを順にクリックすると

@@ -487,6 +487,7 @@ public class MR3 extends JFrame {
 	private boolean newProject() {
 		int messageType = JOptionPane.showInternalConfirmDialog(desktop, "Are you sure you want to continue?", "Warning", JOptionPane.YES_NO_OPTION);
 		if (messageType == JOptionPane.YES_OPTION) {
+			nsTableDialog.resetNSTable();
 			attrDialog.setNullPanel();
 			resInfoMap.clear();
 			litInfoMap.clear();
@@ -515,7 +516,12 @@ public class MR3 extends JFrame {
 			try {
 				if (file != null) {
 					ObjectInputStream oi = createInputStream(file);
-					gmanager.loadState(oi.readObject());
+					Object obj = oi.readObject();
+					if (obj instanceof ArrayList) {
+						ArrayList list = (ArrayList) obj;
+						int index = gmanager.loadState(list);
+						nsTableDialog.loadState((List) list.get(index));
+					}
 					oi.close();
 				}
 			} catch (IOException ex) {
@@ -547,7 +553,9 @@ public class MR3 extends JFrame {
 		private void saveProject(File file) {
 			try {
 				ObjectOutputStream oo = createOutputStream(file);
-				oo.writeObject(gmanager.storeState());
+				ArrayList list = gmanager.storeState();
+				list.add(nsTableDialog.getState());
+				oo.writeObject(list);
 				oo.flush();
 				oo.close();
 			} catch (FileNotFoundException fne) {
@@ -566,30 +574,47 @@ public class MR3 extends JFrame {
 		}
 	}
 
+	private static MR3FileFilter mr3FileFilter = new MR3FileFilter();
 	private static RDFsFileFilter rdfsFileFilter = new RDFsFileFilter();
 
 	private File getFile(boolean isOpenFile, String extension) {
 		JFileChooser jfc = new JFileChooser(userPrefs.get(PrefConstants.DefaultWorkDirectory, ""));
-		jfc.setFileFilter(rdfsFileFilter);
+		if (extension.equals("mr3")) {
+			jfc.setFileFilter(mr3FileFilter);
+		} else {
+			jfc.setFileFilter(rdfsFileFilter);
+		}
 
 		if (isOpenFile) {
 			jfc.showOpenDialog(desktop);
 		} else {
 			jfc.showSaveDialog(desktop);
 			if (jfc.getSelectedFile() != null) {
-				String tmp = jfc.getSelectedFile().getAbsolutePath();
-				String ext = (extension != null) ? "." + extension.toLowerCase() : "";
-				if (extension != null
-					&& !tmp.toLowerCase().endsWith(".rdf")
-					&& !tmp.toLowerCase().endsWith(".rdfs")
-					&& !tmp.toLowerCase().endsWith(".n3")) {
-					tmp += ext;
+				String defaultPath = jfc.getSelectedFile().getAbsolutePath();
+				if (extension.equals("mr3")) {
+					return new File(complementMR3Extension(defaultPath, extension));
+				} else {
+					return new File(complementRDFsExtension(defaultPath, extension));
 				}
-				return new File(tmp);
 			}
 		}
-
 		return jfc.getSelectedFile();
+	}
+
+	private String complementMR3Extension(String tmp, String extension) {
+		String ext = (extension != null) ? "." + extension.toLowerCase() : "";
+		if (extension != null && !tmp.toLowerCase().endsWith(".mr3")) {
+			tmp += ext;
+		}
+		return tmp;
+	}
+
+	private String complementRDFsExtension(String tmp, String extension) {
+		String ext = (extension != null) ? "." + extension.toLowerCase() : "";
+		if (extension != null && !tmp.toLowerCase().endsWith(".rdf") && !tmp.toLowerCase().endsWith(".rdfs") && !tmp.toLowerCase().endsWith(".n3")) {
+			tmp += ext;
+		}
+		return tmp;
 	}
 
 	private URL getURI(String uri) throws MalformedURLException, UnknownHostException {

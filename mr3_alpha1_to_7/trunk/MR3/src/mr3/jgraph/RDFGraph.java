@@ -640,6 +640,8 @@ public class RDFGraph extends JGraph {
 				}
 			}
 		}
+		info.removeNullDomain();
+		info.removeNullRange();
 		rdfsInfoMap.putCellInfo(cell, info);
 		setPastePosition(cell, info.getURIStr(), pastePoint);
 	}

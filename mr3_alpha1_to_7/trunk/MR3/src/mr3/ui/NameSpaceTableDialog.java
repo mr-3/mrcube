@@ -1,7 +1,9 @@
 package mr3.ui;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 import java.util.*;
+import java.util.List;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -26,27 +28,26 @@ import mr3.jgraph.*;
  * @auther takeshi morita
  */
 
-public class NameSpaceTableDialog extends JInternalFrame implements ActionListener, TableModelListener {
+public class NameSpaceTableDialog extends JInternalFrame implements ActionListener, TableModelListener, Serializable {
 
 	private Map prefixNSMap;
-
 	private JTable nsTable;
-	private RDFTableModel nsTableModel;
+	private NSTableModel nsTableModel;
 
-	private JButton addNSButton;
-	private JButton removeNSButton;
-	private JButton getNSButton;
-	private JButton closeButton;
-	private JTextField prefixField;
-	private JLabel nsLabel;
+	transient private JButton addNSButton;
+	transient private JButton removeNSButton;
+	transient private JButton getNSButton;
+	transient private JButton closeButton;
+	transient private JTextField prefixField;
+	transient private JLabel nsLabel;
 
-	private GridBagLayout gbLayout;
-	private GridBagConstraints gbc;
-	private JPanel inlinePanel;
+	transient private GridBagLayout gbLayout;
+	transient private GridBagConstraints gbc;
+	transient private JPanel inlinePanel;
 
-	private GraphManager gmanager;
-	private SelectNameSpaceDialog nsDialog;
-	private JCheckBoxMenuItem showNSTable;
+	transient private GraphManager gmanager;
+	transient private SelectNameSpaceDialog nsDialog;
+	transient private JCheckBoxMenuItem showNSTable;
 
 	public NameSpaceTableDialog(GraphManager manager) {
 		super("NameSpace Table", false, true, false);
@@ -76,6 +77,23 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		setVisible(false);
 	}
 
+	public Serializable getState() {
+		ArrayList list = new ArrayList();
+		list.add(prefixNSMap);
+		list.add(nsTableModel);
+		return list;
+	}
+
+	public void loadState(List list) {
+		Map map = (Map) list.get(0);
+		NSTableModel model = (NSTableModel) list.get(1);
+		for (int i = 0; i < model.getRowCount(); i++) {
+			addNameSpaceTable((String)model.getValueAt(i, 1), (String)model.getValueAt(i, 2));
+		}
+		// ここでprefixNSMapを設定しないと，上の内容を元に戻すことができない．(non validとなる）
+		prefixNSMap.putAll(map);
+	}
+
 	class CloseNSTableAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
 			setVisible(showNSTable.getState());
@@ -93,9 +111,18 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		return showNSTable;
 	}
 
+	public void resetNSTable() {
+		prefixNSMap = new HashMap();
+		// 一気にすべて削除する方法がわからない．
+		while (nsTableModel.getRowCount() != 0) {
+			nsTableModel.removeRow(nsTableModel.getRowCount()-1);
+		}
+		gmanager.setPrefixNSInfoSet(new HashSet());		
+	}
+	
 	private void initTable() {
 		Object[] columnNames = new Object[] { "available", "prefix", "URI" };
-		nsTableModel = new RDFTableModel(columnNames, 0);
+		nsTableModel = new NSTableModel(columnNames, 0);
 		nsTableModel.addTableModelListener(this);
 		nsTable = new JTable(nsTableModel);
 		nsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -156,7 +183,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == addNSButton) {
-			addNameSpaceTable();
+			addNameSpaceTable(prefixField.getText(), nsLabel.getText());
 		} else if (e.getSource() == removeNSButton) {
 			removeNameSpaceTable();
 		} else if (e.getSource() == getNSButton) {
@@ -177,10 +204,7 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		return (ns != null && !ns.equals(""));
 	}
 
-	private void addNameSpaceTable() {
-		String prefix = prefixField.getText();
-		String ns = nsLabel.getText();
-
+	private void addNameSpaceTable(String prefix, String ns) {
 		if (isValidPrefix(prefix) && isValidNS(ns)) {
 			prefixNSMap.put(prefix, ns);
 			Object[] list = new Object[] { new Boolean(false), prefix, ns };
@@ -195,8 +219,9 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		int length = removeList.length;
 		// どうやったら，複数のrowを消すせるのかがよくわからない．
 		// modelから消した時点でrow番号が変わってしまうのが原因
-		if (length == 0)
+		if (length == 0) {
 			return;
+		}
 		int row = removeList[0];
 		prefixNSMap.remove(nsTableModel.getValueAt(row, 1));
 		nsTableModel.removeRow(row);
@@ -247,9 +272,9 @@ public class NameSpaceTableDialog extends JInternalFrame implements ActionListen
 		return infoSet;
 	}
 
-	class RDFTableModel extends DefaultTableModel {
+	class NSTableModel extends DefaultTableModel implements Serializable {
 
-		public RDFTableModel(Object[] columnNames, int rowCount) {
+		public NSTableModel(Object[] columnNames, int rowCount) {
 			super(columnNames, rowCount);
 		}
 

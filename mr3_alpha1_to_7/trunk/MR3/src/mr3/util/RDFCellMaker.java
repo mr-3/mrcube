@@ -103,7 +103,7 @@ public class RDFCellMaker {
 		return vertex;
 	}
 
-	public void insertRDFResource(Point point, String uri, URIType type) {
+	public void insertRDFResource(Point point, String uri, Object resTypeCell, URIType type) {
 		JGraph graph = gmanager.getRDFGraph();
 		HashMap attributes = new HashMap();
 		point = graph.snap(new Point(point));
@@ -127,6 +127,7 @@ public class RDFCellMaker {
 		graph.getModel().insert(cells, attributes, null, parentMap, null);
 
 		RDFResourceInfo info = new RDFResourceInfo(type, uri, typeCell);
+		info.setTypeCell(resTypeCell);
 		resInfoMap.putCellInfo(resourceCell, info);
 		gmanager.changeCellView();
 		gmanager.jumpRDFArea(resourceCell);
