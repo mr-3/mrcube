@@ -92,22 +92,39 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 					}
 				}
 			});
-			
-			// Remove
+		}
+
+		menu.addSeparator();
+
+		menu.add(new AbstractAction("Copy") {
+			public void actionPerformed(ActionEvent e) {
+				graph.copy(pt);
+			}
+		});
+
+		menu.add(new AbstractAction("Cut") {
+			public void actionPerformed(ActionEvent e) {
+				graph.copy(pt);
+				gmanager.removeAction(graph);
+			}
+		});
+
+		menu.add(new AbstractAction("Paste") {
+			public void actionPerformed(ActionEvent e) {
+				graph.paste(pt);
+			}
+		});
+
+		if (!graph.isSelectionEmpty()) {
 			menu.add(new AbstractAction("Remove") {
 				public void actionPerformed(ActionEvent e) {
-					if (!graph.isSelectionEmpty()) {
-						Object[] cells = graph.getSelectionCells();
-						cells = graph.getDescendants(cells);
-						gmanager.removeCells(cells, graph);
-					}
+					gmanager.removeAction(graph);
 				}
 			});
 		}
 
 		menu.addSeparator();
 
-		// connect mode
 		menu.add(new AbstractAction("Connect mode") {
 			public void actionPerformed(ActionEvent e) {
 				connectAction();

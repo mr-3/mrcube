@@ -326,8 +326,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 			});
 		}
 
-		//
-		//		toolbar.addSeparator();
+		// toolbar.addSeparator();
 		URL undoUrl = getImageIcon("undo.gif");
 		ImageIcon undoIcon = new ImageIcon(undoUrl);
 		undo = new AbstractAction("", undoIcon) {
@@ -359,53 +358,37 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 		// Copy
 		URL copyUrl = getImageIcon("copy.gif");
 		ImageIcon copyIcon = new ImageIcon(copyUrl);
-		if (gmanager.isRDFGraph(graph)) {
-			toolbar.add(new AbstractAction("", copyIcon) {
-				public void actionPerformed(ActionEvent e) {
-					graph.copy(new Point(10, 10));
-				}
-			});
-		}
+		toolbar.add(new AbstractAction("", copyIcon) {
+			public void actionPerformed(ActionEvent e) {
+				graph.copy(new Point(10, 10));
+			}
+		});
+
+		// Cut
+		URL cutUrl = getImageIcon("cut.gif");
+		ImageIcon cutIcon = new ImageIcon(cutUrl);
+		toolbar.add(new AbstractAction("", cutIcon) {
+			public void actionPerformed(ActionEvent e) {
+				graph.copy(new Point(10, 10));
+				gmanager.removeAction(graph);
+			}
+		});
 
 		// Paste
 		URL pasteUrl = getImageIcon("paste.gif");
 		ImageIcon pasteIcon = new ImageIcon(pasteUrl);
-		if (gmanager.isRDFGraph(graph)) {
-			toolbar.add(new AbstractAction("", pasteIcon) {
-				public void actionPerformed(ActionEvent e) {
-					graph.copy(new Point(10, 10));
-				}
-			});
-		}
+		toolbar.add(new AbstractAction("", pasteIcon) {
+			public void actionPerformed(ActionEvent e) {
+				graph.paste(new Point(30, 30));
+			}
+		});
 
-		//		action = graph.getTransferHandler().getCopyAction();
-		//		url = getClass().getClassLoader().getResource("img/copy.gif");
-		//		action.putValue(Action.SMALL_ICON, new ImageIcon(url));
-		//		toolbar.add(copy = new EventRedirector(action));
-
-		//
-		//		// Paste
-		//		action = graph.getTransferHandler().getPasteAction();
-		//		url = getClass().getClassLoader().getResource("img/paste.gif");
-		//		action.putValue(Action.SMALL_ICON, new ImageIcon(url));
-		//		toolbar.add(paste = new EventRedirector(action));
-		//
-		//		// Cut
-		//		action = graph.getTransferHandler().getCutAction();
-		//		url = getClass().getClassLoader().getResource("img/cut.gif");
-		//		action.putValue(Action.SMALL_ICON, new ImageIcon(url));
-		//		toolbar.add(cut = new EventRedirector(action));
-		//
 		// Remove
 		URL removeUrl = getImageIcon("delete.gif");
 		ImageIcon removeIcon = new ImageIcon(removeUrl);
 		remove = new AbstractAction("", removeIcon) {
 			public void actionPerformed(ActionEvent e) {
-				if (!graph.isSelectionEmpty()) {
-					Object[] cells = graph.getSelectionCells();
-					cells = graph.getDescendants(cells);
-					gmanager.removeCells(cells, graph);
-				}
+				gmanager.removeAction(graph);
 			}
 		};
 		remove.setEnabled(false);
@@ -413,13 +396,14 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 
 		// Zoom Std
 		toolbar.addSeparator();
-		URL zoomUrl = getImageIcon("zoom.gif");
+		URL zoomUrl = getImageIcon("zoom100.gif");
 		ImageIcon zoomIcon = new ImageIcon(zoomUrl);
 		toolbar.add(new AbstractAction("", zoomIcon) {
 			public void actionPerformed(ActionEvent e) {
 				graph.setScale(1.0);
 			}
 		});
+		
 		// Zoom In
 		URL zoomInUrl = getImageIcon("zoomin.gif");
 		ImageIcon zoomInIcon = new ImageIcon(zoomInUrl);
@@ -428,6 +412,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 				graph.setScale(1.5 * graph.getScale());
 			}
 		});
+		
 		// Zoom Out
 		URL zoomOutUrl = getImageIcon("zoomout.gif");
 		ImageIcon zoomOutIcon = new ImageIcon(zoomOutUrl);
@@ -437,7 +422,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 			}
 		});
 
-		URL fitWindowUrl = getImageIcon("zoomout.gif");
+		URL fitWindowUrl = getImageIcon("zoom.gif");
 		ImageIcon fitWindowIcon = new ImageIcon(fitWindowUrl);
 		toolbar.add(new AbstractAction("", fitWindowIcon) {
 			public void actionPerformed(ActionEvent e) {

@@ -771,7 +771,15 @@ public class GraphManager {
 		removeCells(removeCells, removeGraph);
 	}
 
-	public void removeCells(Object[] cells, RDFGraph graph) {
+	public void removeAction(RDFGraph graph) {
+		if (!graph.isSelectionEmpty()) {
+			Object[] cells = graph.getSelectionCells();
+			cells = graph.getDescendants(cells);
+			removeCells(cells, graph);
+		}
+	}
+
+	private void removeCells(Object[] cells, RDFGraph graph) {
 		removeCells = cells;
 		removeGraph = graph;
 
