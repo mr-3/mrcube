@@ -30,8 +30,8 @@ public class NewProject extends AbstractActionFile {
 
 	private void setValues() {
 		putValue(SHORT_DESCRIPTION, "New Project");
-		//		putValue(MNEMONIC_KEY, Event.CTRL_MASK);
-		//		putValue(ACTION_COMMAND_KEY, KeyEvent.VK_N);
+		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_MASK));
+//		putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_N));
 	}
 
 	public void actionPerformed(ActionEvent e) {

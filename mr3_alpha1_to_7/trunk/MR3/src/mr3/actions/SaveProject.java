@@ -21,17 +21,20 @@ public class SaveProject extends AbstractActionFile {
 		super(mr3, name);
 		setValues(name);
 	}
-	
+
 	public SaveProject(MR3 mr3, String name, ImageIcon icon) {
 		super(mr3, name, icon);
-		setValues(name); 
+		setValues(name);
 	}
-	
+
 	private void setValues(String shortDescription) {
-			putValue(SHORT_DESCRIPTION, shortDescription);
-//			putValue(MNEMONIC_KEY, Event.CTRL_MASK);
-//			putValue(ACTION_COMMAND_KEY, KeyEvent.VK_N);
-		}	
+		putValue(SHORT_DESCRIPTION, shortDescription);
+		if (shortDescription.equals("Save Project")) {
+			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_MASK));
+		} else if (shortDescription.equals("Save Project As")) {
+			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_MASK+KeyEvent.SHIFT_MASK));
+		}
+	}
 
 	public void actionPerformed(ActionEvent e) {
 		if (getName().equals("Save Project")) {
