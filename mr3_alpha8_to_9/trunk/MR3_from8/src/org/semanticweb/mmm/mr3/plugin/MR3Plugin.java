@@ -1,14 +1,13 @@
 /*
  * MR^3のプラグインを作成するためのクラス
- *
+ *  
  */
 package org.semanticweb.mmm.mr3.plugin;
 
 import javax.swing.*;
 
-import org.semanticweb.mmm.mr3.*;
-
 import org.jgraph.*;
+import org.semanticweb.mmm.mr3.*;
 
 import com.hp.hpl.jena.rdf.model.*;
 
@@ -37,8 +36,7 @@ public abstract class MR3Plugin {
 	}
 
 	/**
-	 * MR3Pluginクラスのサブクラスで実装する．
-	 * File->pluginsに追加されるメニューを実行すると，execメソッドが実行される．
+	 * MR3Pluginクラスのサブクラスで実装する． File->pluginsに追加されるメニューを実行すると，execメソッドが実行される．
 	 */
 	public abstract void exec();
 
@@ -46,27 +44,24 @@ public abstract class MR3Plugin {
 		return menuName;
 	}
 
-	/** 
-	 *  Jenaが提供するModelを，MR3のRDFグラフへ変換する．
-	 *  変換したRDFグラフを編集中のRDFグラフと置換する．
+	/**
+	 * Jenaが提供するModelを，MR3のRDFグラフへ変換する． 変換したRDFグラフを編集中のRDFグラフと置換する．
 	 */
 	protected void replaceRDFModel(Model model) {
 		mr3.replaceRDFModel(model);
 		mr3.getGraphManager().applyTreeLayout();
 	}
 
-	/** 
-	 *  Jenaが提供するModelを，MR3のRDFグラフへ変換する．
-	 *  変換したRDFグラフを編集中のRDFグラフにマージする．
+	/**
+	 * Jenaが提供するModelを，MR3のRDFグラフへ変換する． 変換したRDFグラフを編集中のRDFグラフにマージする．
 	 */
 	protected void mergeRDFModel(Model model) {
 		mr3.mergeRDFModel(model);
 		mr3.getGraphManager().applyTreeLayout();
 	}
 
-	/** 
-	 *  Jenaが提供するModelを，MR3のRDFSグラフへ変換する．
-	 *  変換したRDFSグラフを編集中のRDFSグラフにマージする．
+	/**
+	 * Jenaが提供するModelを，MR3のRDFSグラフへ変換する． 変換したRDFSグラフを編集中のRDFSグラフにマージする．
 	 */
 	protected void mergeRDFSModel(Model model) {
 		mr3.mergeRDFSModel(model);
@@ -75,7 +70,9 @@ public abstract class MR3Plugin {
 
 	/**
 	 * Jenaが提供するModelを，MR^3のプロジェクトへ変換する．
-	 * @param model MR^3のプロジェクトファイル． 
+	 * 
+	 * @param model
+	 *                MR^3のプロジェクトファイル．
 	 */
 	protected void replaceProjectModel(Model model) {
 		mr3.replaceProjectModel(model);
@@ -111,6 +108,7 @@ public abstract class MR3Plugin {
 
 	/**
 	 * MR3のクラスグラフをJenaのModelに変換する．
+	 * 
 	 * @return Model
 	 */
 	protected Model getClassModel() {
@@ -119,6 +117,7 @@ public abstract class MR3Plugin {
 
 	/**
 	 * 選択されているMR3のクラスグラフをJenaのModelに変換する．
+	 * 
 	 * @return Model
 	 */
 	protected Model getSelectedClassModel() {
@@ -127,6 +126,7 @@ public abstract class MR3Plugin {
 
 	/**
 	 * MR3のプロパティグラフをJenaのModelに変換する．
+	 * 
 	 * @return Model
 	 */
 	protected Model getPropertyModel() {
@@ -135,6 +135,7 @@ public abstract class MR3Plugin {
 
 	/**
 	 * 選択されているMR3のプロパティグラフをJenaのModelに変換する．
+	 * 
 	 * @return Model
 	 */
 	protected Model getSelectedPropertyModel() {
@@ -143,6 +144,7 @@ public abstract class MR3Plugin {
 
 	/**
 	 * プロジェクトをJenaのModelに変換する．
+	 * 
 	 * @return Model
 	 */
 	protected Model getProjectModel() {
@@ -151,6 +153,7 @@ public abstract class MR3Plugin {
 
 	/**
 	 * RDFグラフ(org.jgraph.JGraph)を得る．
+	 * 
 	 * @return org.jgraph.JGraph
 	 */
 	protected JGraph getRDFGraph() {
@@ -159,6 +162,7 @@ public abstract class MR3Plugin {
 
 	/**
 	 * クラスグラフ(org.jgraph.JGraph)を得る．
+	 * 
 	 * @return org.jgraph.JGraph
 	 */
 	protected JGraph getClassGraph() {
@@ -167,6 +171,7 @@ public abstract class MR3Plugin {
 
 	/**
 	 * プロパティグラフ(org.jgraph.JGraph)を得る．
+	 * 
 	 * @return org.jgraph.JGraph
 	 */
 	protected JGraph getPropertyGraph() {
@@ -175,6 +180,7 @@ public abstract class MR3Plugin {
 
 	/**
 	 * BaseURIを得る．
+	 * 
 	 * @return String
 	 */
 	protected String getBaseURI() {
@@ -183,6 +189,7 @@ public abstract class MR3Plugin {
 
 	/**
 	 * JDesktopPaneを得る．内部ウィンドウを作成する際に用いる．
+	 * 
 	 * @return JDesktopPane
 	 */
 	protected JDesktopPane getDesktopPane() {
