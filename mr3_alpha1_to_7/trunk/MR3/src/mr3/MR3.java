@@ -542,7 +542,7 @@ public class MR3 extends JFrame {
 		litInfoMap.clear();
 		rdfsInfoMap.clear();
 		gmanager.removeAllCells();
-		nsTableDialog.setDefaultNSPrefix();
+		nsTableDialog.setDefaultNSPrefix();		
 		setTitle("MR^3 - New Project");
 		currentProject = null;
 	}
@@ -798,6 +798,7 @@ public class MR3 extends JFrame {
 			gmanager.setIsImporting(true);
 			Model model = readModel(getReader("rdfs"), gmanager.getBaseURI());
 			mr3Reader.mergeRDFS(model);
+			nsTableDialog.setCurrentNSPrefix();
 			gmanager.setIsImporting(false);
 		}
 	}

@@ -71,7 +71,7 @@ public class RDFEditor extends Editor {
 		Object source = graph.getSourceVertex(edge);
 		RDFResourceInfo sourceInfo = resInfoMap.getCellInfo(source);
 		if (sourceInfo == null || sourceInfo.getTypeCell() == null) {
-			return gmanager.getClassCell(RDFS.Resource, URIType.URI, true);
+			return gmanager.getClassCell(RDFS.Resource, true);
 		} else {
 			return sourceInfo.getTypeCell();
 		}
@@ -82,9 +82,9 @@ public class RDFEditor extends Editor {
 		RDFResourceInfo resInfo = resInfoMap.getCellInfo(target);
 		Literal litInfo = litInfoMap.getCellInfo(target);
 		if (litInfo != null) { // infoÇ™LiteralÇ»ÇÁÇŒ
-			return gmanager.getClassCell(RDFS.Literal, URIType.URI, true);
+			return gmanager.getClassCell(RDFS.Literal, true);
 		} else if (litInfo == null || resInfo.getTypeCell() == null) { // TypeCellÇ™Ç»ÇØÇÍÇŒçÏÇÈÅD
-			return gmanager.getClassCell(RDFS.Resource, URIType.URI, true);
+			return gmanager.getClassCell(RDFS.Resource, true);
 		} else {
 			return resInfo.getTypeCell();
 		}

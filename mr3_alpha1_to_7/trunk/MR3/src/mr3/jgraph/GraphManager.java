@@ -261,6 +261,15 @@ public class GraphManager {
 		return new HashSet();
 	}
 
+	public Set getAllNameSpaceSet() {
+		Set allNSSet = new HashSet();
+		allNSSet.addAll(getRDFNameSpaceSet());
+		allNSSet.addAll(getClassNameSpaceSet());
+		allNSSet.addAll(getPropertyNameSpaceSet());
+
+		return allNSSet;
+	}
+
 	public void registerComponent() {
 		ToolTipManager.sharedInstance().registerComponent(rdfGraph);
 		ToolTipManager.sharedInstance().registerComponent(classGraph);
@@ -294,9 +303,6 @@ public class GraphManager {
 			if (classGraph.isRDFSClassCell(cell)) {
 				RDFSInfo info = rdfsInfoMap.getCellInfo(cell);
 				Resource uri = info.getURI();
-				if (info.getURIType() == URIType.ID) {
-					uri = new ResourceImpl(getBaseURI() + uri.getURI());
-				}
 				nameSpaces.add(uri.getNameSpace());
 			}
 		}
@@ -312,9 +318,6 @@ public class GraphManager {
 			if (propGraph.isRDFSPropertyCell(cell)) {
 				RDFSInfo info = rdfsInfoMap.getCellInfo(cell);
 				Resource uri = info.getURI();
-				if (info.getURIType() == URIType.ID) {
-					uri = new ResourceImpl(getBaseURI() + uri.getURI());
-				}
 				nameSpaces.add(uri.getNameSpace());
 			}
 		}
@@ -347,8 +350,8 @@ public class GraphManager {
 			Set region = new HashSet();
 			Object cell = i.next();
 			addSubRegion(classGraph, getDefaultPort(cell), region);
-			if (cell.equals(getClassCell(RDFS.Resource, URIType.URI, true))) {
-				cell = getClassCell(RDFS.Resource, URIType.URI, true);
+			if (cell.equals(getClassCell(RDFS.Resource, true))) {
+				cell = getClassCell(RDFS.Resource, true);
 				resInfo.setTypeCellValue((GraphCell) cell);
 			} else if (region.contains(resInfo.getTypeCell())) {
 				resInfo.setTypeCellValue((GraphCell) cell);
@@ -464,9 +467,6 @@ public class GraphManager {
 				RDFSInfo info = rdfsInfoMap.getCellInfo(cell);
 				Resource uri = info.getURI();
 				if (cellViewType == CellViewType.URI) {
-					if (info.getURIType() == URIType.ID) {
-						uri = new ResourceImpl(baseURI + uri);
-					}
 					setNSPrefix(uri, cell);
 				} else if (cellViewType == CellViewType.ID) {
 					if (uri.getLocalName().length() != 0) {
@@ -511,7 +511,7 @@ public class GraphManager {
 	// domainとrangeのサブクラスも含めたSetを返す
 	private Set getSubRegion(RDFGraph graph, Set set) {
 		Set region = new HashSet(set);
-		Object rdfsResourceCell = getClassCell(RDFS.Resource, URIType.URI, false);
+		Object rdfsResourceCell = getClassCell(RDFS.Resource, false);
 
 		if (region.isEmpty()) {
 			region.add(rdfsResourceCell);
@@ -581,7 +581,7 @@ public class GraphManager {
 		return list;
 	}
 
-	public Object getClassCell(Resource uri, URIType uriType, boolean isCheck) {
+	public Object getClassCell(Resource uri, boolean isCheck) {
 		Object cell = rdfsInfoMap.getClassCell(uri);
 		if (cell != null) {
 			return cell;
@@ -589,7 +589,7 @@ public class GraphManager {
 			if (isCheck && isDuplicated(uri.getURI(), null, classGraph.getType())) {
 				return null;
 			} else {
-				return cellMaker.insertClass(new Point(50, 50), uri.getURI(), uriType);
+				return cellMaker.insertClass(new Point(50, 50), uri.getURI());
 			}
 		}
 	}
@@ -602,13 +602,13 @@ public class GraphManager {
 		return (Set) selectSupRDFSDialog.getValue();
 	}
 
-	public Object insertSubRDFS(Resource uri, URIType uriType, Set supRDFS, RDFGraph graph) {
+	public Object insertSubRDFS(Resource uri, Set supRDFS, RDFGraph graph) {
 		Point point = cellMaker.calcInsertPoint(supRDFS);
 		DefaultGraphCell cell = null;
 		if (isClassGraph(graph)) {
-			cell = (DefaultGraphCell) cellMaker.insertClass(point, uri.getURI(), uriType);
+			cell = (DefaultGraphCell) cellMaker.insertClass(point, uri.getURI());
 		} else if (isPropertyGraph(graph)) {
-			cell = (DefaultGraphCell) cellMaker.insertProperty(point, uri.getURI(), uriType);
+			cell = (DefaultGraphCell) cellMaker.insertProperty(point, uri.getURI());
 		}
 		Port sourcePort = (Port) cell.getChildAt(0);
 		Object[] supCells = graph.getDescendants(supRDFS.toArray());
@@ -616,7 +616,7 @@ public class GraphManager {
 		return cell;
 	}
 
-	public Object getPropertyCell(Resource uri, URIType uriType, boolean isCheck) {
+	public Object getPropertyCell(Resource uri, boolean isCheck) {
 		Object cell = rdfsInfoMap.getPropertyCell(uri);
 		if (cell != null) {
 			return cell;
@@ -624,7 +624,7 @@ public class GraphManager {
 			if (isCheck && isDuplicated(uri.getURI(), null, propGraph.getType())) {
 				return null;
 			} else {
-				return cellMaker.insertProperty(new Point(50, 50), uri.getURI(), uriType);
+				return cellMaker.insertProperty(new Point(50, 50), uri.getURI());
 			}
 		}
 	}

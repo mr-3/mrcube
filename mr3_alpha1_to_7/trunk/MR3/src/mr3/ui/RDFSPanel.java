@@ -23,13 +23,9 @@ public abstract class RDFSPanel extends JPanel {
 	protected JButton apply;
 	protected JButton close;
 
-	protected JRadioButton uriButton;
-	protected JRadioButton idButton;
-
-	protected URIType uriType;
-
-	protected JTextField uriField;
 	protected JComboBox uriPrefixBox;
+	protected JTextField idField;
+	protected JLabel nsLabel;
 	protected Set prefixNSInfoSet;
 
 	protected JTextField labelField;
@@ -84,48 +80,25 @@ public abstract class RDFSPanel extends JPanel {
 		component.setBorder(BorderFactory.createTitledBorder(title));
 	}
 
-	class RadioAction implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			String type = (String) e.getActionCommand();
-			uriType = URIType.getURIType(type);
-
-			if (uriType == URIType.ID) {
-				uriField.setEditable(true);
-				if (uriField.getText().length() == 0 || uriField.getText().charAt(0) != '#') {
-					uriField.setText('#' + uriField.getText());
-				}
-			} else if (uriType == URIType.URI) {
-				uriField.setEditable(true);
-			}
-		}
-	}
-
+	private static final int prefixBoxWidth = 120;
+	private static final int prefixBoxHeight = 50;
 	private static final int boxWidth = 70;
 	private static final int boxHeight = 30;
 
 	protected void setBaseTab() {
 		uriPrefixBox = new JComboBox();
 		uriPrefixBox.addActionListener(new ChangePrefixAction());
-		uriPrefixBox.setPreferredSize(new Dimension(boxWidth, boxHeight));
-		uriPrefixBox.setMinimumSize(new Dimension(boxWidth, boxHeight));
+		initComponent(uriPrefixBox, "Prefix", prefixBoxWidth, prefixBoxHeight);
 
-		uriButton = new JRadioButton("URI");
-		idButton = new JRadioButton("ID");
-		RadioAction ra = new RadioAction();
-		uriButton.addActionListener(ra);
-		idButton.addActionListener(ra);
-		ButtonGroup group = new ButtonGroup();
-		group.add(uriButton);
-		group.add(idButton);
-		JPanel uriTypeGroupPanel = new JPanel();
-		uriTypeGroupPanel.setBorder(BorderFactory.createTitledBorder("URI Type"));
-		uriTypeGroupPanel.setPreferredSize(new Dimension(130, 55));
-		uriTypeGroupPanel.setMinimumSize(new Dimension(130, 55));
-		uriTypeGroupPanel.add(uriButton);
-		uriTypeGroupPanel.add(idButton);
+		idField = new JTextField();
+		initComponent(idField, "Local Name", 150, fieldHeight);
 
-		uriField = new JTextField();
-		initComponent(uriField, "URI", 290, fieldHeight);
+		JPanel uriPanel = new JPanel();
+		uriPanel.add(uriPrefixBox);
+		uriPanel.add(idField);
+
+		nsLabel = new JLabel("");
+		initComponent(nsLabel, "NameSpace", 300, fieldHeight);
 
 		isDefinedBy = new JTextField();
 		initComponent(isDefinedBy, "isDefinedBy", listWidth, fieldHeight);
@@ -181,19 +154,14 @@ public abstract class RDFSPanel extends JPanel {
 		inline.setLayout(gridbag);
 		c.weightx = 3;
 		c.weighty = 3;
-		c.anchor = GridBagConstraints.WEST;
-		c.gridwidth = GridBagConstraints.REMAINDER;
-
-		gridbag.setConstraints(uriTypeGroupPanel, c);
-		inline.add(uriTypeGroupPanel);
 
 		c.anchor = GridBagConstraints.CENTER;
-		c.gridwidth = GridBagConstraints.RELATIVE;
-		gridbag.setConstraints(uriPrefixBox, c);
-		inline.add(uriPrefixBox);
 		c.gridwidth = GridBagConstraints.REMAINDER;
-		gridbag.setConstraints(uriField, c);
-		inline.add(uriField);
+
+		gridbag.setConstraints(uriPanel, c);
+		inline.add(uriPanel);
+		gridbag.setConstraints(nsLabel, c);
+		inline.add(nsLabel);
 		//		gridbag.setConstraints(isDefinedBy, c);
 		//		inline.add(isDefinedBy);
 
@@ -216,10 +184,10 @@ public abstract class RDFSPanel extends JPanel {
 
 		metaTab.addTab("Base", inline);
 	}
-	
+
 	class ChangePrefixAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
-			PrefixNSUtil.replacePrefix((String) uriPrefixBox.getSelectedItem(), uriField);
+			PrefixNSUtil.replacePrefix((String) uriPrefixBox.getSelectedItem(), nsLabel);
 		}
 	}
 
@@ -244,15 +212,8 @@ public abstract class RDFSPanel extends JPanel {
 	}
 
 	public void setValue() {
-		uriField.setText(rdfsInfo.getURIStr());
-		uriType = rdfsInfo.getURIType();
-		if (uriType == URIType.URI) {
-			uriButton.setSelected(true);
-		} else {
-			idButton.setSelected(true);
-		}
-
-		isDefinedBy.setText(rdfsInfo.getIsDefinedBy().getURI());
+		idField.setText(rdfsInfo.getLocalName());
+		//		isDefinedBy.setText(rdfsInfo.getIsDefinedBy().getURI());
 		clearField();
 
 		ComboBoxModel model = getLabelComboBoxModel(rdfsInfo.getLabelList());
@@ -419,19 +380,13 @@ public abstract class RDFSPanel extends JPanel {
 	abstract public void setValue(Set supCellSet);
 
 	public void changeInfo() {
-		String uri = uriField.getText();
-		String tmpURI = "";
-		if (uriType == URIType.ID) {
-			tmpURI = gmanager.getBaseURI(); // チェックする時は，フルパスで．
-		}
-		tmpURI = tmpURI + uri;
-		if (gmanager.isEmptyURI(tmpURI) || gmanager.isDuplicatedWithDialog(tmpURI, cell, graph.getType())) {
+		String uri = nsLabel.getText() + idField.getText();
+		if (gmanager.isEmptyURI(uri) || gmanager.isDuplicatedWithDialog(uri, cell, graph.getType())) {
 			return;
 		} else {
 			rdfsInfoMap.removeURICellMap(rdfsInfo); // ここで，URIとセルのマッピングを削除する
-			rdfsInfo.setURI(uriField.getText());
-			rdfsInfo.setURIType(uriType);
-			rdfsInfo.setIsDefinedby(isDefinedBy.getText());
+			rdfsInfo.setURI(uri);
+			//			rdfsInfo.setIsDefinedby(isDefinedBy.getText());
 			rdfsInfoMap.putURICellMap(rdfsInfo, cell);
 			gmanager.setCellValue(cell, rdfsInfo.getURIStr());
 		}
@@ -467,15 +422,12 @@ public abstract class RDFSPanel extends JPanel {
 		}
 	}
 
-	private void setPrefix() {
-		uriPrefixBox.setSelectedIndex(0);
-		if (rdfsInfo.getURIType() != URIType.URI) {
-			return;
-		}
+	private void setPrefix() {		
 		for (Iterator i = prefixNSInfoSet.iterator(); i.hasNext();) {
 			PrefixNSInfo prefNSInfo = (PrefixNSInfo) i.next();
 			if (prefNSInfo.getNameSpace().equals(rdfsInfo.getURI().getNameSpace())) {
 				uriPrefixBox.setSelectedItem(prefNSInfo.getPrefix());
+				nsLabel.setText(prefNSInfo.getNameSpace());
 				break;
 			}
 		}
@@ -489,7 +441,6 @@ public abstract class RDFSPanel extends JPanel {
 				prefixNSInfoSet = gmanager.getPrefixNSInfoSet();
 				PrefixNSUtil.setPrefixNSInfoSet(prefixNSInfoSet);
 				uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
-				uriPrefixBox.insertItemAt("", 0);
 				setPrefix();
 				setInstanceList();
 				Set targetCells = graph.getTargetCells(cell);

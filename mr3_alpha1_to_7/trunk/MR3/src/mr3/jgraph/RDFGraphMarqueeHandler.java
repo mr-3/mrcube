@@ -185,22 +185,20 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 				list.add(cells[i]);
 			}
 		}
-		InsertRDFResDialog ird = new InsertRDFResDialog("Input Resource", list.toArray(), gmanager.getPrefixNSInfoSet());
+		InsertRDFResDialog ird = new InsertRDFResDialog("Input Resource", list.toArray(), gmanager.getPrefixNSInfoSet(), gmanager.getBaseURI());
 
 		if (!ird.isConfirm()) {
 			return null;
 		}
 		String uri = ird.getURI();
 		Object resTypeCell = ird.getResourceType();
-		URIType uriType = ird.getURIType();
 
-		String tmpURI = getAddedBaseURI(uri, uriType);
-		if (uri == null || gmanager.isDuplicatedWithDialog(tmpURI, null, GraphType.RDF)) {
+		if (uri == null || gmanager.isDuplicatedWithDialog(uri, null, GraphType.RDF)) {
 			return null;
-		} else if (uri.length() == 0) {
+		} else if (ird.isAnonymous()) {
 			return cellMaker.insertRDFResource(pt, uri, resTypeCell, URIType.ANONYMOUS);
 		} else {
-			return cellMaker.insertRDFResource(pt, uri, resTypeCell, uriType);
+			return cellMaker.insertRDFResource(pt, uri, resTypeCell, URIType.URI);
 		}
 	}
 

@@ -95,10 +95,8 @@ public class RDFSModelExtraction {
 
 		if (metaResource.getNameSpace().equals(gmanager.getBaseURI()+'#')) {
 			info.setURI('#'+metaResource.getLocalName());
-			info.setURIType(URIType.ID);			
 		} else {
 			info.setURI(metaResource.toString());
-			info.setURIType(URIType.URI);						
 		}
 		rdfsInfoMap.putResourceInfo(metaResource, info);
 	}
@@ -147,10 +145,10 @@ public class RDFSModelExtraction {
 		}
 
 		if (predicate.equals(RDFS.domain)) { // rdfs:domain
-			Object cell = gmanager.getClassCell((Resource) object, info.getURIType(), false);
+			Object cell = gmanager.getClassCell((Resource) object, false);
 			info.addDomain(cell);
 		} else if (predicate.equals(RDFS.range)) { // rdfs:range
-			Object cell = gmanager.getClassCell((Resource) object, info.getURIType(), false);
+			Object cell = gmanager.getClassCell((Resource) object, false);
 			info.addRange(cell);
 		} else if (predicate.equals(RDFS.subPropertyOf)) { //rdfs:subPropertyOf
 			// subject < object
@@ -202,14 +200,14 @@ public class RDFSModelExtraction {
 	private ClassInfo getClassResInfo(Resource resource) {
 		ClassInfo info = (ClassInfo) rdfsInfoMap.getResourceInfo(resource);
 		if (info == null)
-			info = new ClassInfo("", URIType.URI);
+			info = new ClassInfo("");
 		return info;
 	}
 
 	private PropertyInfo getPropertyResInfo(Resource resource) {
 		PropertyInfo info = (PropertyInfo) rdfsInfoMap.getResourceInfo(resource);
 		if (info == null)
-			info = new PropertyInfo("", URIType.URI);
+			info = new PropertyInfo("");
 		return info;
 	}
 }

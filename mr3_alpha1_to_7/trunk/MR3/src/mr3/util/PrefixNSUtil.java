@@ -24,6 +24,16 @@ public class PrefixNSUtil {
 		prefixNSInfoSet = set;
 	}
 
+	public static String getBaseURIPrefix(String baseURI) {
+		for (Iterator i = prefixNSInfoSet.iterator(); i.hasNext();) {
+			PrefixNSInfo info = (PrefixNSInfo) i.next();
+			if (info.getNameSpace().equals(baseURI)) {
+				return info.getPrefix();
+			}
+		}
+		return null;
+	}
+
 	public static Set getPrefixes() {
 		Set prefixes = new HashSet();
 		for (Iterator i = prefixNSInfoSet.iterator(); i.hasNext();) {
@@ -43,11 +53,16 @@ public class PrefixNSUtil {
 		return "#";
 	}
 
-	public static void replacePrefix(String prefix, JTextField field) {
+	public static void setNSLabel(JLabel nsLabel, String str) {
+		nsLabel.setText(str);
+		nsLabel.setToolTipText(str);
+	}
+
+	public static void replacePrefix(String prefix, JLabel field) {
 		Resource resource = new ResourceImpl(field.getText());
 		if (!resource.getNameSpace().equals("http://")) {
 			String localName = resource.getLocalName();
-			field.setText(getNameSpace(prefix) + localName);
+			setNSLabel(field, getNameSpace(prefix) + localName);
 		}
 	}
 

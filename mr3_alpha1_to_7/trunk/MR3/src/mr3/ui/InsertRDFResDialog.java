@@ -10,7 +10,6 @@ import java.util.*;
 
 import javax.swing.*;
 
-import mr3.data.*;
 import mr3.util.*;
 
 /**
@@ -20,68 +19,48 @@ public class InsertRDFResDialog extends JDialog implements ActionListener, ItemL
 
 	private boolean isConfirm;
 	private JComboBox resTypeBox;
-	private JTextField uriField;
-	private Set prefixNSInfoSet;
+	private JTextField idField;
+	private JLabel nsLabel;
 	private JComboBox uriPrefixBox;
 	private JButton confirm;
 	private JButton cancel;
 	private Object resourceType;
+	private JCheckBox isAnonBox;
 
-	private JRadioButton uriButton;
-	private JRadioButton anonymousButton;
-	private JRadioButton idButton;
+	private static final int boxWidth = 150;
+	private static final int boxHeight = 50;
 
-	private URIType uriType;
-
-	private static final int boxWidth = 70;
-	private static final int boxHeight = 30;
-
-	public InsertRDFResDialog(String title, Object[] cells, Set pnis) {
+	public InsertRDFResDialog(String title, Object[] cells, Set pnis, String baseURI) {
 		super((Frame) null, title, true);
 		Container contentPane = getContentPane();
+		PrefixNSUtil.setPrefixNSInfoSet(pnis);
 		resourceType = null;
 
-		uriButton = new JRadioButton("URI");
-		idButton = new JRadioButton("ID");
-		anonymousButton = new JRadioButton("ANONYMOUS");
-		RadioAction ra = new RadioAction();
-		uriButton.addActionListener(ra);
-		idButton.addActionListener(ra);
-		anonymousButton.addActionListener(ra);
-		idButton.setSelected(true);
-		uriType = URIType.ID;
-		ButtonGroup group = new ButtonGroup();
-		group.add(uriButton);
-		group.add(idButton);
-		group.add(anonymousButton);
-		JPanel uriTypeGroupPanel = new JPanel();
-		uriTypeGroupPanel.setBorder(BorderFactory.createTitledBorder("URI Type"));
-		uriTypeGroupPanel.setPreferredSize(new Dimension(350, 55));
-		uriTypeGroupPanel.add(uriButton);
-		uriTypeGroupPanel.add(idButton);
-		uriTypeGroupPanel.add(anonymousButton);
-
 		resTypeBox = new JComboBox(new DefaultComboBoxModel(cells));
-		resTypeBox.setBorder(BorderFactory.createTitledBorder("Resource Type"));
-		resTypeBox.setPreferredSize(new Dimension(350, 50));
+		initComponent(resTypeBox, "Resource Type", 350, 50);
 		resTypeBox.addItemListener(this);
 
-		uriField = new JTextField(27);
-		uriField.setText("#");
-		uriField.setBorder(BorderFactory.createTitledBorder("URI"));
-		uriField.setPreferredSize(new Dimension(220, 40));
-		uriField.setMinimumSize(new Dimension(220, 40));
+		idField = new JTextField(10);
+		initComponent(idField, "LocalName", 150, 40);
+
+		isAnonBox = new JCheckBox("isAnon");
+		isAnonBox.addActionListener(new IsAnonAction());
 
 		uriPrefixBox = new JComboBox();
+		initComponent(uriPrefixBox, "Prefix", boxWidth, boxHeight);
 		uriPrefixBox.addActionListener(new ChangePrefixAction());
-		uriPrefixBox.setPreferredSize(new Dimension(boxWidth, boxHeight));
-		uriPrefixBox.setMinimumSize(new Dimension(boxWidth, boxHeight));
-		uriPrefixBox.setEnabled(false);
-		prefixNSInfoSet = pnis;
-		PrefixNSUtil.setPrefixNSInfoSet(pnis);
 		uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
-		uriPrefixBox.insertItemAt("", 0);
-		uriPrefixBox.setSelectedIndex(0);
+
+		JPanel uriPanel = new JPanel();
+		uriPanel.add(uriPrefixBox);
+		uriPanel.add(idField);
+		uriPanel.add(isAnonBox);
+
+		nsLabel = new JLabel("");
+		initComponent(nsLabel, "NameSpace", 350, 40);
+
+		uriPrefixBox.setSelectedItem(PrefixNSUtil.getBaseURIPrefix(baseURI));
+		PrefixNSUtil.replacePrefix((String) uriPrefixBox.getSelectedItem(), nsLabel);
 
 		confirm = new JButton("OK");
 		confirm.addActionListener(this);
@@ -101,14 +80,10 @@ public class InsertRDFResDialog extends JDialog implements ActionListener, ItemL
 		c.gridwidth = GridBagConstraints.REMAINDER;
 		gridbag.setConstraints(resTypeBox, c);
 		panel.add(resTypeBox);
-		gridbag.setConstraints(uriTypeGroupPanel, c);
-		panel.add(uriTypeGroupPanel);
-		c.gridwidth = GridBagConstraints.RELATIVE;
-		gridbag.setConstraints(uriPrefixBox, c);
-		panel.add(uriPrefixBox);
-		c.gridwidth = GridBagConstraints.REMAINDER;
-		gridbag.setConstraints(uriField, c);
-		panel.add(uriField);
+		gridbag.setConstraints(uriPanel, c);
+		panel.add(uriPanel);
+		gridbag.setConstraints(nsLabel, c);
+		panel.add(nsLabel);
 		gridbag.setConstraints(buttonPanel, c);
 		panel.add(buttonPanel);
 		contentPane.add(panel);
@@ -119,9 +94,27 @@ public class InsertRDFResDialog extends JDialog implements ActionListener, ItemL
 		setVisible(true);
 	}
 
+	private void initComponent(JComponent component, String title, int width, int height) {
+		component.setPreferredSize(new Dimension(width, height));
+		component.setMinimumSize(new Dimension(width, height));
+		component.setBorder(BorderFactory.createTitledBorder(title));
+	}
+
 	class ChangePrefixAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
-			PrefixNSUtil.replacePrefix((String) uriPrefixBox.getSelectedItem(), uriField);
+			PrefixNSUtil.replacePrefix((String) uriPrefixBox.getSelectedItem(), nsLabel);
+		}
+	}
+
+	class IsAnonAction extends AbstractAction {
+		public void actionPerformed(ActionEvent e) {
+			if (isAnonBox.isSelected()) {
+				setIDField("", false);
+				uriPrefixBox.setEnabled(false);
+			} else {
+				setIDField("", true);
+				uriPrefixBox.setEnabled(true);
+			}
 		}
 	}
 
@@ -129,47 +122,26 @@ public class InsertRDFResDialog extends JDialog implements ActionListener, ItemL
 		return isConfirm;
 	}
 
+	public boolean isAnonymous() {
+		return isAnonBox.isSelected();
+	}
+
 	public Object getResourceType() {
 		return resourceType;
 	}
 
-	public URIType getURIType() {
-		return uriType;
-	}
-
 	public String getURI() {
-		return uriField.getText();
+		return nsLabel.getText()+idField.getText();
 	}
 
 	public void itemStateChanged(ItemEvent e) {
 		resourceType = resTypeBox.getSelectedItem();
 	}
 
-	class RadioAction implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			String type = (String) e.getActionCommand();
-			uriType = URIType.getURIType(type);
-
-			if (uriType == URIType.ANONYMOUS) {
-				setURIField("", false);
-				uriPrefixBox.setEnabled(false);
-			} else if (uriType == URIType.ID) {
-				uriField.setEditable(true);
-				if (uriField.getText().length() == 0 || uriField.getText().charAt(0) != '#') {
-					uriField.setText('#' + uriField.getText());
-				}
-				uriPrefixBox.setEnabled(false);
-			} else if (uriType == URIType.URI) {
-				uriField.setEditable(true);
-				uriPrefixBox.setEnabled(true);
-			}
-		}
-	}
-
-	private void setURIField(String str, boolean t) {
-		uriField.setText(str);
-		uriField.setToolTipText(str);
-		uriField.setEditable(t);
+	private void setIDField(String str, boolean t) {
+		idField.setText(str);
+		idField.setToolTipText(str);
+		idField.setEditable(t);
 	}
 
 	public void actionPerformed(ActionEvent e) {

@@ -192,7 +192,7 @@ public class RDFCellMaker {
 		graph.getModel().insert(new Object[] { edge }, attributes, cs, null, null);
 	}
 
-	public GraphCell insertClass(Point point, String uri, URIType uriType) {
+	public GraphCell insertClass(Point point, String uri) {
 		JGraph graph = gmanager.getClassGraph();
 		point = graph.snap(new Point(point)); // Snap the Point to the Grid
 		Map map = getClassMap(point);
@@ -200,21 +200,21 @@ public class RDFCellMaker {
 
 		setCell(graph, vertex, map);
 
-		RDFSInfo info = new ClassInfo(uri, uriType);
+		RDFSInfo info = new ClassInfo(uri);
 		rdfsInfoMap.putCellInfo(vertex, info);
 		gmanager.changeCellView();
 		gmanager.jumpClassArea(vertex);
 		return vertex;
 	}
 
-	public GraphCell insertProperty(Point point, String uri, URIType uriType) {
+	public GraphCell insertProperty(Point point, String uri) {
 		JGraph graph = gmanager.getPropertyGraph();
 		point = graph.snap(new Point(point)); // Snap the Point to the Grid
 		Map map = getPropertyMap(point);
 		RDFSPropertyCell vertex = new RDFSPropertyCell(uri);
 		setCell(graph, vertex, map);
 
-		RDFSInfo info = new PropertyInfo(uri, uriType);
+		RDFSInfo info = new PropertyInfo(uri);
 		rdfsInfoMap.putCellInfo(vertex, info);
 		gmanager.changeCellView();
 		gmanager.jumpPropertyArea(vertex);

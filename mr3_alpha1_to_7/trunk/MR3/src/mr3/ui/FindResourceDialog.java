@@ -17,6 +17,7 @@ import mr3.util.*;
 public class FindResourceDialog extends JInternalFrame {
 
 	private JTextField findField;
+	private JLabel nsLabel;
 	private Set prefixNSInfoSet;
 	private JComboBox uriPrefixBox;
 	private JButton findButton;
@@ -39,7 +40,7 @@ public class FindResourceDialog extends JInternalFrame {
 		Container contentPane = getContentPane();
 
 		gmanager = manager;
-
+		nsLabel = new JLabel("");
 		JComponent buttonGroupPanel = getButtonGroupPanel();
 		JComponent findAreaPanel = getFindAreaPanel();
 
@@ -150,7 +151,7 @@ public class FindResourceDialog extends JInternalFrame {
 	}
 	class ChangePrefixAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
-			PrefixNSUtil.replacePrefix((String) uriPrefixBox.getSelectedItem(), findField);
+			PrefixNSUtil.replacePrefix((String) uriPrefixBox.getSelectedItem(), nsLabel);
 		}
 	}
 

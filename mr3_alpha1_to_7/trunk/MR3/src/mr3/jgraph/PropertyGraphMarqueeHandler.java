@@ -41,32 +41,32 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 	}
 
 	public GraphCell insertResourceCell(Point pt) {
-		InsertRDFSResDialog ird = new InsertRDFSResDialog("Input Resource", gmanager.getPrefixNSInfoSet());
+		InsertRDFSResDialog ird = new InsertRDFSResDialog("Input Resource", gmanager.getPrefixNSInfoSet(), gmanager.getBaseURI());
 		if (!ird.isConfirm()) {
 			return null;
 		}
 		String uri = ird.getURI();
-		URIType uriType = ird.getURIType();
-		String tmpURI = getAddedBaseURI(uri, uriType);
-		if (tmpURI == null || gmanager.isEmptyURI(tmpURI) || gmanager.isDuplicatedWithDialog(tmpURI, null, GraphType.PROPERTY)) {
+//		URIType uriType = ird.getURIType();
+//		String tmpURI = getAddedBaseURI(uri, uriType);
+		if (uri == null || gmanager.isEmptyURI(uri) || gmanager.isDuplicatedWithDialog(uri, null, GraphType.PROPERTY)) {
 			return null;
 		} else {
-			return cellMaker.insertProperty(pt, uri, uriType);
+			return cellMaker.insertProperty(pt, uri);
 		}
 	}
 
 	public void insertSubProperty(Point pt, Object[] supCells) {
-		InsertRDFSResDialog ird = new InsertRDFSResDialog("Input Resource", gmanager.getPrefixNSInfoSet());
+		InsertRDFSResDialog ird = new InsertRDFSResDialog("Input Resource", gmanager.getPrefixNSInfoSet(), gmanager.getBaseURI());
 		if (!ird.isConfirm()) {
 			return;
 		}
 		String uri = ird.getURI();
-		URIType uriType = ird.getURIType();
-		String tmpURI = getAddedBaseURI(uri, uriType);
-		if (tmpURI == null || gmanager.isEmptyURI(tmpURI) || gmanager.isDuplicatedWithDialog(tmpURI, null, GraphType.CLASS)) {
+//		URIType uriType = ird.getURIType();
+//		String tmpURI = getAddedBaseURI(uri, uriType);
+		if (uri == null || gmanager.isEmptyURI(uri) || gmanager.isDuplicatedWithDialog(uri, null, GraphType.CLASS)) {
 			return;
 		} else {
-			cellMaker.insertProperty(pt, uri, uriType);
+			cellMaker.insertProperty(pt, uri);
 			DefaultGraphCell cell = (DefaultGraphCell) graph.getSelectionCell();
 			Port sourcePort = (Port) cell.getChildAt(0);
 			cellMaker.connectSubToSups(sourcePort, supCells, graph);
