@@ -82,8 +82,8 @@ public class ChangeCellAttrUtil {
 	 * 
 	 * @param graph
 	 * @param cell
-	 * @param backgroundcolor
-	 * @param bordercolor
+	 * @param backGroundColor
+	 * @param borderColor
 	 * @param lineWidth
 	 *  
 	 */
