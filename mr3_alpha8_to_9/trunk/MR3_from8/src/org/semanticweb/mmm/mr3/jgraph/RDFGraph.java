@@ -139,8 +139,7 @@ public class RDFGraph extends JGraph {
 		setDisconnectable(true);
 		setAntiAliased(true);
 		setEditable(false);
-		setUI(new RDFGraphUI(this, attrDialog));
-		selectionModel.setChildrenSelectable(false);
+		setUI(new RDFGraphUI(this, attrDialog));		
 	}
 
 	protected VertexView createVertexView(Object v, CellMapper cm) {

@@ -24,22 +24,19 @@ package org.semanticweb.mmm.mr3.editor;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.beans.*;
-import java.util.*;
 
 import javax.swing.*;
 import javax.swing.event.*;
 
+import org.jgraph.*;
+import org.jgraph.event.*;
+import org.jgraph.graph.*;
 import org.semanticweb.mmm.mr3.actions.*;
 import org.semanticweb.mmm.mr3.data.*;
 import org.semanticweb.mmm.mr3.io.*;
 import org.semanticweb.mmm.mr3.jgraph.*;
 import org.semanticweb.mmm.mr3.ui.*;
 import org.semanticweb.mmm.mr3.util.*;
-
-import org.jgraph.*;
-import org.jgraph.event.*;
-import org.jgraph.graph.*;
 
 /*
  * 
@@ -74,7 +71,7 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 		internalFrames = ifs;
 	}
 
-	Editor(String title) {
+	protected Editor(String title) {
 		super(title, true, false, true);
 		setIconifiable(true);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -134,28 +131,6 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 		}
 	}
 
-	// Undo the last Change to the Model or the View
-	public void undo() {
-		try {
-			undoManager.undo(graph.getGraphLayoutCache());
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		} finally {
-			updateHistoryButtons();
-		}
-	}
-
-	// Redo the last Change to the Model or the View
-	public void redo() {
-		try {
-			undoManager.redo(graph.getGraphLayoutCache());
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		} finally {
-			updateHistoryButtons();
-		}
-	}
-
 	// Update Undo/Redo Button State based on Undo Manager
 	protected void updateHistoryButtons() {
 		// The View Argument Defines the Context
@@ -165,57 +140,6 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 
 	protected void replaceGraph(RDFGraph newGraph) { // Object‚ð“Ç‚Ý‘‚«‚·‚é‚Ì‚ÆA“¯—l
 		graph.setRDFState(newGraph.getRDFState());
-	}
-
-	// Create a Group that Contains the Cells
-	public void group(Object[] cells) {
-		cells = graph.getGraphLayoutCache().order(cells);
-
-		if (cells != null && cells.length > 0) {
-			int count = getCellCount(graph);
-			DefaultGraphCell group = new DefaultGraphCell(new Integer(count - 1));
-			ParentMap map = new ParentMap();
-			for (int i = 0; i < cells.length; i++) {
-				map.addEntry(cells[i], group);
-			}
-			graph.getModel().insert(new Object[] { group }, null, null, map, null);
-		}
-	}
-
-	// Returns the total number of cells in a graph
-	protected int getCellCount(RDFGraph graph) {
-		Object[] cells = graph.getAllCells();
-		return cells.length;
-	}
-
-	// Ungroup the Groups in Cells and Select the Children
-	public void ungroup(Object[] cells) {
-		if (cells != null && cells.length > 0) {
-			ArrayList groups = new ArrayList();
-			ArrayList children = new ArrayList();
-			for (int i = 0; i < cells.length; i++) {
-				if (isGroup(cells[i])) {
-					groups.add(cells[i]);
-					for (int j = 0; j < graph.getModel().getChildCount(cells[i]); j++) {
-						Object child = graph.getModel().getChild(cells[i], j);
-						if (!graph.isPort(child)) {
-							children.add(child);
-						}
-					}
-				}
-			}
-			graph.getModel().remove(groups.toArray());
-			graph.setSelectionCells(children.toArray());
-		}
-	}
-
-	// Determines if a Cell is a Group
-	public boolean isGroup(Object cell) {
-		// Map the Cell to its View
-		CellView view = graph.getGraphLayoutCache().getMapping(cell, false);
-		if (view != null)
-			return !view.isLeaf();
-		return false;
 	}
 
 	// Brings the Specified Cells to Front
@@ -243,6 +167,8 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 		return graph;
 	}
 
+	private static final Point INSERT_POINT = new Point(10, 10);
+	
 	/** _Create ToolBar */
 	public JToolBar createToolBar() {
 		JToolBar toolbar = new JToolBar();
@@ -284,7 +210,7 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 			toolbar.add(new AbstractAction("", insertIcon) {
 				public void actionPerformed(ActionEvent e) {
 					RDFGraphMarqueeHandler mh = (RDFGraphMarqueeHandler) graph.getMarqueeHandler();
-					mh.insertResourceCell(new Point(10, 10));
+					mh.insertResourceCell(INSERT_POINT);
 				}
 			});
 		}
@@ -295,35 +221,27 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 				public void actionPerformed(ActionEvent e) {
 					RDFGraphMarqueeHandler mh = (RDFGraphMarqueeHandler) graph.getMarqueeHandler();
 					if (gmanager.isRDFGraph(graph)) {
-						mh.insertLiteralCell(new Point(10, 10));
+						mh.insertLiteralCell(INSERT_POINT);
 					} else if (gmanager.isClassGraph(graph)) {
-						mh.insertResourceCell(new Point(10, 10));
+						mh.insertResourceCell(INSERT_POINT);
 					}
 				}
 			});
 		}
 
 		// toolbar.addSeparator();
-		undo = new AbstractAction("", Utilities.getImageIcon("undo.gif")) {
-			public void actionPerformed(ActionEvent e) {
-				undo();
-			}
-		};
+		undo = new UndoAction();
 		undo.setEnabled(false);
-		//				toolbar.add(undo);
-
-		redo = new AbstractAction("", Utilities.getImageIcon("redo.gif")) {
-			public void actionPerformed(ActionEvent e) {
-				redo();
-			}
-		};
+		// toolbar.add(undo);
+		redo = new RedoAction();
 		redo.setEnabled(false);
-		//		toolbar.add(redo);
+		// toolbar.add(redo);
 
 		toolbar.addSeparator();
 		toolbar.add(new CopyAction(graph));
 		toolbar.add(new CutAction(graph));
 		toolbar.add(new PasteAction(graph));
+
 		toolbar.addSeparator();
 		remove = new RemoveAction(graph, gmanager);
 		remove.setEnabled(false);
@@ -331,29 +249,67 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 
 		toolbar.addSeparator();
 		toolbar.add(new FindResAction(graph, findResDialog));
-		toolbar.addSeparator();
 
+		toolbar.addSeparator();
 		toolbar.add(new ZoomAction(graph, this, ZoomAction.ZOOM_STD, ZoomAction.ZOOM_STD_ICON));
 		toolbar.add(new ZoomAction(graph, this, ZoomAction.ZOOM_IN, ZoomAction.ZOOM_IN_ICON));
 		toolbar.add(new ZoomAction(graph, this, ZoomAction.ZOOM_OUT, ZoomAction.ZOOM_OUT_ICON));
 		toolbar.add(new ZoomAction(graph, this, ZoomAction.ZOOM_SUITABLE, ZoomAction.ZOOM_SUITABLE_ICON));
+		
+		toolbar.addSeparator();
+		toolbar.add(new GroupAction(graph));
+		toolbar.add(new UnGroupAction(graph));
 
 		return toolbar;
+	}
+
+	class UndoAction extends AbstractAction {
+		UndoAction() {
+			super("undo", Utilities.getImageIcon("undo.gif"));
+		}
+
+		// Undo the last Change to the Model or the View
+		public void actionPerformed(ActionEvent e) {
+			try {
+				undoManager.undo(graph.getGraphLayoutCache());
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			} finally {
+				updateHistoryButtons();
+			}
+		}
+	}
+
+	class RedoAction extends AbstractAction {
+		RedoAction() {
+			super("redo", Utilities.getImageIcon("redo.gif"));
+		}
+
+		// Redo the last Change to the Model or the View
+		public void actionPerformed(ActionEvent e) {
+			try {
+				undoManager.redo(graph.getGraphLayoutCache());
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			} finally {
+				updateHistoryButtons();
+			}
+		}
 	}
 
 	public JScrollPane getJScrollPane() {
 		return graphScrollPane;
 	}
 
-	private void toFrontInternFrame(int i) {
-		try {
-			internalFrames[i].toFront();
-			internalFrames[i].setIcon(false);
-			internalFrames[i].setSelected(true);
-		} catch (PropertyVetoException pve) {
-			pve.printStackTrace();
-		}
-	}
+//	private void toFrontInternFrame(int i) {
+//		try {
+//			internalFrames[i].toFront();
+//			internalFrames[i].setIcon(false);
+//			internalFrames[i].setSelected(true);
+//		} catch (PropertyVetoException pve) {
+//			pve.printStackTrace();
+//		}
+//	}
 
 	// This will change the source of the actionevent to graph.
 	protected class EventRedirector extends AbstractAction {

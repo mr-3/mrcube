@@ -46,6 +46,7 @@ public class RDFEditor extends Editor {
 	public RDFEditor(NameSpaceTableDialog nsD, FindResourceDialog findResD, GraphManager gm) {
 		super(Translator.getString("RDFEditor.Title"));
 		graph = gm.getRDFGraph();
+		graph.getSelectionModel().setChildrenSelectable(false);
 		graph.setMarqueeHandler(new RDFGraphMarqueeHandler(gm, graph));
 		initEditor(gm.getRDFGraph(), gm, nsD, findResD);
 		setFrameIcon(Utilities.getImageIcon(Translator.getString("RDFEditor.Icon")));
