@@ -7,6 +7,7 @@ import java.lang.reflect.*;
 import java.net.*;
 import java.util.*;
 import java.util.List;
+import java.util.prefs.*;
 
 import javax.swing.*;
 
@@ -50,7 +51,7 @@ public class MR3 extends JFrame {
 
 	private NameSpaceTableDialog nsTableDialog;
 	private SearchResourceDialog searchResDialog;
-	private AttributeDialog propDialog;
+	private AttributeDialog attrDialog;
 
 	private GraphManager gmanager;
 	private RDFResourceInfoMap resInfoMap = RDFResourceInfoMap.getInstance();
@@ -72,23 +73,27 @@ public class MR3 extends JFrame {
 
 	private static final Color DESKTOP_BACK_COLOR = new Color(225, 225, 225);
 
+	private Preferences userPrefs; // ユーザの設定を保存(Windowサイズなど）
 	private static ResourceBundle resources;
 
 	private MR3 obj_for_plugin;
 
 	MR3(String title) {
 		super(title);
-		setSize(MAIN_FRAME_WIDTH, MAIN_FRAME_HEIGHT);
-		setLocation(50, 50);
+
+		userPrefs = Preferences.userNodeForPackage(this.getClass());
+
+		setSize(userPrefs.getInt(WindowWidth, MAIN_FRAME_WIDTH), userPrefs.getInt(WindowHeight, MAIN_FRAME_HEIGHT));
+		setLocation(userPrefs.getInt(WindowPositionX, 50), userPrefs.getInt(WindowPositionY, 50));
 		//		setLookAndFeel();
 
-		propDialog = new AttributeDialog();
-		gmanager = new GraphManager(propDialog);
+		attrDialog = new AttributeDialog();
+		gmanager = new GraphManager(attrDialog);
 
-		rdfEditor = new RDFEditor(propDialog, gmanager);
+		rdfEditor = new RDFEditor(attrDialog, gmanager);
 		//		realRDFEditor = new RealRDFEditor(propDialog, gmanager);
-		classEditor = new ClassEditor(propDialog, gmanager);
-		propertyEditor = new PropertyEditor(propDialog, gmanager);
+		classEditor = new ClassEditor(attrDialog, gmanager);
+		propertyEditor = new PropertyEditor(attrDialog, gmanager);
 		srcArea = new JTextArea();
 		srcArea.setEditable(false);
 
@@ -96,7 +101,7 @@ public class MR3 extends JFrame {
 		mr3Writer = new MR3Writer(gmanager);
 
 		desktop = new JDesktopPane();
-		desktop.add(propDialog, JLayeredPane.MODAL_LAYER);
+		desktop.add(attrDialog, JLayeredPane.MODAL_LAYER);
 		searchResDialog = new SearchResourceDialog("Search Resource", gmanager);
 		desktop.add(searchResDialog, JLayeredPane.MODAL_LAYER);
 		nsTableDialog = new NameSpaceTableDialog(gmanager);
@@ -127,11 +132,16 @@ public class MR3 extends JFrame {
 		obj_for_plugin = this; //一時しのぎ
 
 		setJMenuBar(createMenuBar());
-
 		setIcon();
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				saveWindows();
+				System.exit(0);
+			}
+		});
 		setVisible(true);
-		deployWindows();
+		loadWindows();
 	}
 
 	private void setLookAndFeel() {
@@ -285,14 +295,99 @@ public class MR3 extends JFrame {
 		//		menu.addSeparator();
 
 		mi = new JMenuItem("Exit");
-		mi.addActionListener(new AbstractAction() {
-			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
-			}
-		});
+		mi.addActionListener(new ExitAction());
 		menu.add(mi);
 
 		return menu;
+	}
+
+	private static final String WindowHeight = "Window Height";
+	private static final String WindowWidth = "Window Width";
+	private static final String WindowPositionX = "Window Position X";
+	private static final String WindowPositionY = "Window Position Y";
+
+	private static final String RDFEditorHeight = "RDF Editor Height";
+	private static final String RDFEditorWidth = "RDF Editor Width";
+	private static final String RDFEditorPositionX = "RDF Editor Position X";
+	private static final String RDFEditorPositionY = "RDF Editor Position Y";
+
+	private static final String ClassEditorHeight = "Class Editor Height";
+	private static final String ClassEditorWidth = "Class Editor Width";
+	private static final String ClassEditorPositionX = "Class Editor Position X";
+	private static final String ClassEditorPositionY = "Class Editor Position Y";
+
+	private static final String PropertyEditorHeight = "Property Editor Height";
+	private static final String PropertyEditorWidth = "Property Editor Width";
+	private static final String PropertyEditorPositionX = "Property Editor Position X";
+	private static final String PropertyEditorPositionY = "Property Editor Position Y";
+
+	private void saveWindowBounds() {
+		Rectangle windowRect = getBounds();
+		userPrefs.putInt(WindowHeight, (int) windowRect.getHeight());
+		userPrefs.putInt(WindowWidth, (int) windowRect.getWidth());
+		userPrefs.putInt(WindowPositionX, (int) windowRect.getX());
+		userPrefs.putInt(WindowPositionY, (int) windowRect.getY());
+	}
+
+	private void saveRDFEditorBounds() {
+		Rectangle rdfEditorRect = internalFrames[0].getBounds();
+		userPrefs.putInt(RDFEditorHeight, (int) rdfEditorRect.getHeight());
+		userPrefs.putInt(RDFEditorWidth, (int) rdfEditorRect.getWidth());
+		userPrefs.putInt(RDFEditorPositionX, (int) rdfEditorRect.getX());
+		userPrefs.putInt(RDFEditorPositionY, (int) rdfEditorRect.getY());
+	}
+
+	private void saveClassEditorBounds() {
+		Rectangle classEditorRect = internalFrames[1].getBounds();
+		userPrefs.putInt(ClassEditorHeight, (int) classEditorRect.getHeight());
+		userPrefs.putInt(ClassEditorWidth, (int) classEditorRect.getWidth());
+		userPrefs.putInt(ClassEditorPositionX, (int) classEditorRect.getX());
+		userPrefs.putInt(ClassEditorPositionY, (int) classEditorRect.getY());
+	}
+
+	private void savePropertyEditorBounds() {
+		Rectangle propertyEditorRect = internalFrames[2].getBounds();
+		userPrefs.putInt(PropertyEditorHeight, (int) propertyEditorRect.getHeight());
+		userPrefs.putInt(PropertyEditorWidth, (int) propertyEditorRect.getWidth());
+		userPrefs.putInt(PropertyEditorPositionX, (int) propertyEditorRect.getX());
+		userPrefs.putInt(PropertyEditorPositionY, (int) propertyEditorRect.getY());
+	}
+
+	private void loadWindows() {
+		int width = desktop.getWidth();
+		int height = desktop.getHeight();
+
+		int editorPositionX = userPrefs.getInt(RDFEditorPositionX, 0);
+		int editorPositionY = userPrefs.getInt(RDFEditorPositionY, height / 2);
+		int editorWidth = userPrefs.getInt(RDFEditorWidth, width);
+		int editorHeight = userPrefs.getInt(RDFEditorHeight, height / 2);
+		internalFrames[0].setBounds(new Rectangle(editorPositionX, editorPositionY, editorWidth, editorHeight)); // RDF
+
+		editorPositionX = userPrefs.getInt(ClassEditorPositionX, 0);
+		editorPositionY = userPrefs.getInt(ClassEditorPositionY, 0);
+		editorWidth = userPrefs.getInt(ClassEditorWidth, width / 2);
+		editorHeight = userPrefs.getInt(ClassEditorHeight, height / 2);
+		internalFrames[1].setBounds(new Rectangle(editorPositionX, editorPositionY, editorWidth, editorHeight)); // RDF
+
+		editorPositionX = userPrefs.getInt(PropertyEditorPositionX, width / 2);
+		editorPositionY = userPrefs.getInt(PropertyEditorPositionY, 0);
+		editorWidth = userPrefs.getInt(PropertyEditorWidth, width / 2);
+		editorHeight = userPrefs.getInt(PropertyEditorHeight, height / 2);
+		internalFrames[2].setBounds(new Rectangle(editorPositionX, editorPositionY, editorWidth, editorHeight)); // RDF
+	}
+
+	private void saveWindows() {
+		saveWindowBounds();
+		saveRDFEditorBounds();
+		saveClassEditorBounds();
+		savePropertyEditorBounds();
+	}
+
+	class ExitAction extends AbstractAction {
+		public void actionPerformed(ActionEvent e) {
+			saveWindows();
+			System.exit(0);
+		}
 	}
 
 	private JMenu getPluginMenus() {
@@ -348,7 +443,7 @@ public class MR3 extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			int messageType = JOptionPane.showConfirmDialog(null, "Are you sure you want to continue?", "Warning", JOptionPane.YES_NO_OPTION);
 			if (messageType == JOptionPane.YES_OPTION) {
-				propDialog.setNullPanel();
+				attrDialog.setNullPanel();
 				resInfoMap.clear();
 				litInfoMap.clear();
 				rdfsInfoMap.clear();
@@ -541,7 +636,7 @@ public class MR3 extends JFrame {
 		item.addActionListener(new DeployWindows());
 		menu.add(item);
 		menu.addSeparator();
-		menu.add(propDialog.getShowPropWindow());
+		menu.add(attrDialog.getShowPropWindow());
 		menu.add(nsTableDialog.getShowNSTable());
 		showTypeCell = new JCheckBoxMenuItem("Show Type", true);
 		showTypeCell.addActionListener(new ShowTypeCellAction());
@@ -674,7 +769,7 @@ public class MR3 extends JFrame {
 				GraphCell cell = (GraphCell) rdfCells[i];
 				if (rdfGraph.isTypeCell(cell)) {
 					typeList.add(cell);
-//					rdfGraph.getGraphLayoutCache().setVisible(cell, showTypeCell.getState());
+					//					rdfGraph.getGraphLayoutCache().setVisible(cell, showTypeCell.getState());
 				}
 			}
 			//			System.out.println(showTypeCell.getState());
