@@ -24,10 +24,10 @@ public class RDFEditor extends Editor {
 	private RDFPropertyPanel propPanel;
 	private RDFLiteralPanel litPanel;
 
-	public RDFEditor(AttributeDialog pw, GraphManager manager) {
+	public RDFEditor(AttributeDialog pw, FindResourceDialog findResD, GraphManager manager) {
 		graph = manager.getRDFGraph();
 		graph.setMarqueeHandler(new RDFGraphMarqueeHandler(manager, graph));
-		initEditor(manager.getRDFGraph(), manager, pw);
+		initEditor(manager.getRDFGraph(), manager, pw, findResD);
 	}
 
 	protected void initField(AttributeDialog pw, GraphManager manager) {

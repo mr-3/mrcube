@@ -21,10 +21,10 @@ public class PropertyEditor extends Editor {
 
 	private PropertyPanel propPanel;
 	
-	public PropertyEditor(AttributeDialog pw, GraphManager manager) {
+	public PropertyEditor(AttributeDialog pw, FindResourceDialog findResD, GraphManager manager) {
 		graph = manager.getPropertyGraph();
 		graph.setDisconnectable(false);
-		initEditor(manager.getPropertyGraph(), manager, pw);
+		initEditor(manager.getPropertyGraph(), manager, pw, findResD);
 	}
 
 	protected void initField(AttributeDialog pw, GraphManager manager) {
