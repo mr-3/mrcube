@@ -28,7 +28,7 @@ public class TransformElementAction extends AbstractAction {
 	private RDFResourceInfoMap resInfoMap = RDFResourceInfoMap.getInstance();
 
 	public TransformElementAction(RDFGraph g, GraphManager gm, GraphType fromType, GraphType toType) {
-		super("Transform from " + fromType + " to " + toType);
+		super(Translator.getString("Action.TransformElement."+fromType+"To"+toType+".Text"));
 		graph = g;
 		gmanager = gm;
 		fromGraphType = fromType;

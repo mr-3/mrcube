@@ -37,7 +37,7 @@ public class OpenProject extends AbstractActionFile {
 	public void actionPerformed(ActionEvent e) {
 		GraphManager gmanager = mr3.getGraphManager();
 		gmanager.setIsImporting(true);
-		Model model = readModel(getReader("mr3", "UTF8"), gmanager.getBaseURI());
+		Model model = readModel(getReader("mr3", "UTF8"), gmanager.getBaseURI(), "RDF/XML");
 
 		if (model != null) {
 			File tmp = mr3.getCurrentProject(); // New Project‚æ‚è‚à‘O‚Ì‚ð•Û‘¶

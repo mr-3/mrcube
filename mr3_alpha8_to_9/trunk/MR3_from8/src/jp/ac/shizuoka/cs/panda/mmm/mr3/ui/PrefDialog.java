@@ -25,6 +25,7 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 	private JTabbedPane tab;
 
 	private JTextField defaultLangField;
+	private JComboBox uiLangBox;
 
 	private JCheckBox isAntialiasBox;
 	private JComboBox uriPrefixBox;
@@ -101,9 +102,9 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 	private static final int URI_FIELD_HEIGHT = 40;
 
 	private JPanel getButtonGroupPanel() {
-		applyButton = new JButton("Apply");
+		applyButton = new JButton(Translator.getString("Apply"));
 		applyButton.addActionListener(new DesideAction());
-		cancelButton = new JButton("Cancel");
+		cancelButton = new JButton(Translator.getString("Cancel"));
 		cancelButton.addActionListener(new DesideAction());
 		JPanel buttonGroup = new JPanel();
 		buttonGroup.add(applyButton);
@@ -113,7 +114,7 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 	}
 
 	private JPanel getBasePanel() {
-		initDefaultLangField();
+		initLangField();
 		initEncodingBox();
 		initBaseURIField();
 		initWorkDirectoryField();
@@ -126,7 +127,7 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 		c.weighty = 5;
 		c.anchor = GridBagConstraints.WEST;
 
-		layoutDefaultLangField(basePanel, gridbag, c);
+		layoutLangField(basePanel, gridbag, c);
 		layoutEncodingBox(basePanel, gridbag, c);
 		layoutBaseURIField(basePanel, gridbag, c);
 		layoutWorkDirectory(basePanel, gridbag, c);
@@ -442,10 +443,13 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 		innerPanel.add(baseURIPanel);
 	}
 
-	private void layoutDefaultLangField(JPanel innerPanel, GridBagLayout gridbag, GridBagConstraints c) {
-		c.gridwidth = GridBagConstraints.REMAINDER;
+	private void layoutLangField(JPanel innerPanel, GridBagLayout gridbag, GridBagConstraints c) {
+		c.gridwidth = GridBagConstraints.RELATIVE;
 		gridbag.setConstraints(defaultLangField, c);
 		innerPanel.add(defaultLangField);
+		c.gridwidth = GridBagConstraints.REMAINDER;
+		gridbag.setConstraints(uiLangBox, c);
+		innerPanel.add(uiLangBox);
 	}
 
 	private void layoutEncodingBox(JPanel innerPanel, GridBagLayout gridbag, GridBagConstraints c) {
@@ -464,9 +468,11 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 		innerPanel.add(outputEncodingBox);
 	}
 
-	private void initDefaultLangField() {
+	private void initLangField() {
 		defaultLangField = new JTextField();
 		initComponent(defaultLangField, "Lang", PREFIX_BOX_WIDTH, URI_FIELD_HEIGHT);
+		uiLangBox = new JComboBox(new Object[]{"en", "ja"});
+		initComponent(uiLangBox, "UI Lang", PREFIX_BOX_WIDTH, PREFIX_BOX_HEIGHT);
 	}
 
 	private void initEncodingBox() {
@@ -570,6 +576,7 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 	}
 
 	private void initParameter() {
+		uiLangBox.setSelectedItem(userPrefs.get(PrefConstants.UILang, "en"));
 		defaultLangField.setText(userPrefs.get(PrefConstants.DefaultLang, "ja"));
 		inputEncodingBox.setSelectedItem(userPrefs.get(PrefConstants.InputEncoding, "SJIS"));
 		outputEncodingBox.setSelectedItem(userPrefs.get(PrefConstants.OutputEncoding, "SJIS"));
@@ -617,6 +624,7 @@ public class PrefDialog extends JInternalFrame implements ListSelectionListener 
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == applyButton) {
 				try {
+					userPrefs.put(PrefConstants.UILang, (String) uiLangBox.getSelectedItem());
 					userPrefs.put(PrefConstants.DefaultLang, (String) defaultLangField.getText());
 					userPrefs.put(PrefConstants.InputEncoding, (String) inputEncodingBox.getSelectedItem());
 					userPrefs.put(PrefConstants.OutputEncoding, (String) outputEncodingBox.getSelectedItem());

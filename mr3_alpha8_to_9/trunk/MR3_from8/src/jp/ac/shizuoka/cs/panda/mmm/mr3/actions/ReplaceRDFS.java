@@ -33,10 +33,10 @@ public class ReplaceRDFS extends AbstractActionFile {
 		GraphManager gmanager = mr3.getGraphManager();
 		gmanager.setIsImporting(true);
 		if (e.getActionCommand().equals(REPLACE_RDFS_FILE)) {
-			model = readModel(getReader("rdfs", null), gmanager.getBaseURI());
+			model = readModel(getReader("rdfs", null), gmanager.getBaseURI(), "RDF/XML");
 		} else if (e.getActionCommand().equals(REPLACE_RDFS_URI)) {
 			String uri = JOptionPane.showInternalInputDialog(desktop, "Open URI ( exp. http://slashdot.jp/slashdot.rdf )");
-			model = readModel(getReader(uri), gmanager.getBaseURI());
+			model = readModel(getReader(uri), gmanager.getBaseURI(), "RDF/XML");
 		}
 		if (model == null) {
 			gmanager.setIsImporting(false);

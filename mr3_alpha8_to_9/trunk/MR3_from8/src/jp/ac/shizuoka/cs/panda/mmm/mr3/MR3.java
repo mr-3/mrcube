@@ -81,10 +81,10 @@ public class MR3 extends JFrame {
 
 	MR3() {
 		userPrefs = Preferences.userNodeForPackage(this.getClass());	
-
+		Translator.loadResourceBundle(userPrefs.get(PrefConstants.UILang, "en"));
+		
 		setSize(userPrefs.getInt(PrefConstants.WindowWidth, MAIN_FRAME_WIDTH), userPrefs.getInt(PrefConstants.WindowHeight, MAIN_FRAME_HEIGHT));
 		setLocation(userPrefs.getInt(PrefConstants.WindowPositionX, 50), userPrefs.getInt(PrefConstants.WindowPositionY, 50));
-		//		setLookAndFeel();
 
 		logger = new MR3LogConsole(Translator.getString("LogConsole.Title"), null);
 		attrDialog = new AttributeDialog();
@@ -209,16 +209,6 @@ public class MR3 extends JFrame {
 		propertyEditor.setInternalFrames(iFrames);
 	}
 
-	private void setLookAndFeel() {
-		try {
-			//			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			SwingUtilities.updateComponentTreeUI(this);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-
 	private JMenuBar createMenuBar() {
 		JMenuBar mb = new JMenuBar();
 		mb.add(getFileMenu());
@@ -320,7 +310,7 @@ public class MR3 extends JFrame {
 		replaceMenu.add(new ReplaceRDF(this, Translator.getString("Component.File.Import.Replace.RDF/XML(File).Text")));
 		replaceMenu.add(new ReplaceRDF(this, Translator.getString("Component.File.Import.Replace.RDF/XML(URI).Text")));
 		replaceMenu.add(new ReplaceRDFS(this, Translator.getString("Component.File.Import.Replace.RDFS/XML(File).Text")));
-		replaceMenu.add(new ReplaceRDFS(this, Translator.getString("Component.File.Import.Replace.RDF/XML(URI).Text")));
+		replaceMenu.add(new ReplaceRDFS(this, Translator.getString("Component.File.Import.Replace.RDFS/XML(URI).Text")));
 		importMenu.add(replaceMenu);
 
 		JMenu mergeMenu = new JMenu(Translator.getString("Component.File.Import.Merge.Text"));
@@ -473,7 +463,12 @@ public class MR3 extends JFrame {
 		isGroup = new JCheckBoxMenuItem(Translator.getString("Component.View.Group.Text"), true);
 		isGroup.addActionListener(new IsGroupAction());
 		menu.add(isGroup);
-
+		JMenu lookAndFeel = new JMenu(Translator.getString("Component.View.LookAndFeel.Text"));
+		menu.add(lookAndFeel);
+		lookAndFeel.add(new ChangeLookAndFeelAction(this, Translator.getString("Component.View.LookAndFeel.Metal.Text")));
+		lookAndFeel.add(new ChangeLookAndFeelAction(this, Translator.getString("Component.View.LookAndFeel.Windows.Text")));
+		lookAndFeel.add(new ChangeLookAndFeelAction(this, Translator.getString("Component.View.LookAndFeel.Motif.Text")));
+		
 		return menu;
 	}
 
@@ -670,7 +665,7 @@ public class MR3 extends JFrame {
 	}
 
 	public static void main(String[] arg) {
-		Translator.loadResourceBundle();
+		Translator.loadResourceBundle("en");
 		ImageIcon icon = Utilities.getImageIcon(Translator.getString("Logo"));
 		JWindow splashWindow = new HelpWindow(null, icon);
 		try {

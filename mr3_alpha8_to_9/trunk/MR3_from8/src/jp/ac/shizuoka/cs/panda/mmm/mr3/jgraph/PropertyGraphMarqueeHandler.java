@@ -56,7 +56,7 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 	}
 
 	public void insertSubProperty(Point pt, Object[] supCells) {
-		InsertRDFSResDialog ird = new InsertRDFSResDialog("Input Sub Property", gmanager);
+		InsertRDFSResDialog ird = new InsertRDFSResDialog(Translator.getString("InsertSubPropertyDialog.Title"), gmanager);
 		if (!ird.isConfirm()) {
 			return;
 		}
@@ -91,7 +91,7 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 		});
 
 		if (isCellSelected(cell)) { // Insert Sub Property
-			menu.add(new AbstractAction("Insert Sub Property") {
+			menu.add(new AbstractAction(Translator.getString("InsertSubPropertyDialog.Title")) {
 				public void actionPerformed(ActionEvent e) {
 					if (!graph.isSelectionEmpty()) {
 						Object[] supCells = graph.getSelectionCells();
@@ -103,7 +103,7 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 		}
 
 		menu.addSeparator();
-		menu.add(new ConnectAction("Connect Mode"));
+		menu.add(new ConnectAction());
 		addTransformMenu(menu, cell);
 		addEditMenu(menu, cell);
 		menu.add(new ShowAttrDialog());

@@ -40,7 +40,7 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 	}
 
 	public GraphCell insertResourceCell(Point pt) {
-		InsertRDFSResDialog ird = new InsertRDFSResDialog(Translator.getString("InsertClassDialog"), gmanager);
+		InsertRDFSResDialog ird = new InsertRDFSResDialog(Translator.getString("InsertClassDialog.Title"), gmanager);
 		if (!ird.isConfirm()) {
 			return null;
 		}
@@ -53,7 +53,7 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 	}
 
 	public void insertSubClass(Point pt, Object[] supCells) {
-		InsertRDFSResDialog ird = new InsertRDFSResDialog("Input Sub Class", gmanager);
+		InsertRDFSResDialog ird = new InsertRDFSResDialog(Translator.getString("InsertSubClassDialog.Title"), gmanager);
 		if (!ird.isConfirm()) {
 			return;
 		}
@@ -88,7 +88,7 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 		});
 
 		if (isCellSelected(cell)) { // Insert Sub Class
-			menu.add(new AbstractAction("Insert Sub Class") {
+			menu.add(new AbstractAction(Translator.getString("InsertSubClassDialog.Title")) {
 				public void actionPerformed(ActionEvent e) {
 					if (!graph.isSelectionEmpty()) {
 						Object[] supCells = graph.getSelectionCells();
@@ -99,7 +99,7 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 			});
 		}
 		menu.addSeparator();
-		menu.add(new ConnectAction("Connect Mode"));
+		menu.add(new ConnectAction());
 		addTransformMenu(menu, cell);
 		addEditMenu(menu, cell);
 		menu.add(new ShowAttrDialog());

@@ -35,6 +35,7 @@ public class PrefConstants {
 	public static final String Color = "Color";
 	public static final String Antialias = "Antialias";
 	
+	public static final String UILang = "UI Lang";
 	public static final String DefaultLang = "Default Lang";
 	public static final String InputEncoding = "Input Encoding";
 	public static final String OutputEncoding = "Output Encoding";

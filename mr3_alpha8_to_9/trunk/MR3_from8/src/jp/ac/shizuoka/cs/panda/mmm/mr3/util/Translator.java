@@ -9,21 +9,20 @@ public class Translator {
 	private static final String RESOURCE_DIR = "jp/ac/shizuoka/cs/panda/mmm/mr3/resources/";
 
 	public static String getString(String sKey) {
-		return resourceBundle.getString(sKey);
+		try {
+			return resourceBundle.getString(sKey);
+		} catch(Exception e) {
+			e.printStackTrace();
+			return "Failed";
+		}
 	}
 
-	public static void loadResourceBundle() {
+	public static void loadResourceBundle(String lang) {
 		try {
-			InputStream is = Utilities.class.getClassLoader().getResourceAsStream(RESOURCE_DIR + "MR3_ja.properties");
-			resourceBundle = new PropertyResourceBundle(is);
-		} catch (FileNotFoundException fe) {
-			fe.printStackTrace();
+			InputStream ins = Utilities.class.getClassLoader().getResourceAsStream(RESOURCE_DIR + "MR3_"+lang+".properties");
+			resourceBundle = new PropertyResourceBundle(ins);
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
-		} 
-	}
-
-	public static void loadResourceBundle(String filename) {
-		resourceBundle = ResourceBundle.getBundle(filename);
+		}
 	}
 }
