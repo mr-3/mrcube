@@ -206,16 +206,23 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 					resTypeIDButton.setSelected(true);
 					resTypePrefixBox.setEnabled(false);
 				}
+			} else {
+				if (resTypeURIButton.isSelected()) {
+					resTypePrefixBox.setEnabled(true);
+				} else {
+					resTypePrefixBox.setEnabled(false);
+				}
 			}
 			setResourceTypeField(resInfo.getType().getURI());
 		} else {
 			setResourceTypeField("");
+			resTypePrefixBox.setEnabled(false);
 		}
 		resTypeURIButton.setEnabled(t);
 		resTypeIDButton.setEnabled(t);
-		resTypePrefixBox.setEnabled(t);
 		resTypeField.setEditable(t);
 		selectTypeButton.setEnabled(t);
+		jumpRDFSClassButton.setEnabled(t);
 	}
 
 	class IsTypeCellAction extends AbstractAction {
@@ -244,11 +251,13 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 			if (tmpURIType == URIType.ANONYMOUS) {
 				setURIField("", false);
 			} else if (tmpURIType == URIType.ID) {
+				resPrefixBox.setEnabled(false);
 				uriField.setEditable(true);
 				if (uriField.getText().length() == 0 || uriField.getText().charAt(0) != '#') {
 					uriField.setText('#' + uriField.getText());
-				}
+				}				
 			} else if (tmpURIType == URIType.URI) {
+				resPrefixBox.setEnabled(true);
 				uriField.setEditable(true);
 			}
 		}
@@ -260,10 +269,13 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 			tmpResTypeURIType = URIType.getURIType(type);
 
 			if (tmpResTypeURIType == URIType.ID) {
+				resTypePrefixBox.setEnabled(false);
 				uriField.setEditable(true);
 				if (resTypeField.getText().length() == 0 || resTypeField.getText().charAt(0) != '#') {
 					resTypeField.setText('#' + resTypeField.getText());
 				}
+			} else {
+				resTypePrefixBox.setEnabled(true);
 			}
 		}
 	}
@@ -287,9 +299,11 @@ public class RDFResourcePanel extends JPanel implements ActionListener {
 	public void setURI(Resource resURI) {
 		tmpURIType = resInfo.getURIType();
 		if (tmpURIType == URIType.URI) {
+			resPrefixBox.setEnabled(true);
 			rdfURIButton.setSelected(true);
 			setURIField(resURI.getURI(), true);
 		} else if (tmpURIType == URIType.ID) {
+			resPrefixBox.setEnabled(false);
 			rdfIDButton.setSelected(true);
 			setURIField(resURI.getURI(), true);
 		} else if (tmpURIType == URIType.ANONYMOUS) {
