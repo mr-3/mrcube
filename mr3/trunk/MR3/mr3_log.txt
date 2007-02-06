@@ -1,0 +1,510 @@
+2005-9-21 16:45:14 [---][NEW_PROJECT]
+2005-9-21 16:46:36 [---][NEW_PROJECT]
+2005-10-29 16:12:49 [---][NEW_PROJECT]
+2005-10-29 16:12:54 [Meta Model][INSERT_CLASS]
+ONT Class: http://mmm.semanticweb.org/mr3#a
+ONT Class Type: http://www.w3.org/2000/01/rdf-schema#Class
+2005-10-29 16:13:06 [Meta Model][ADD_CLASS_LABEL]
+Before Label: 
+After Label: Language: ja	String: ƒeƒXƒg
+2005-10-29 16:13:16 [Meta Model][INSERT_ONT_PROPERTY]
+ONT Property: http://mmm.semanticweb.org/mr3#bc
+ONT Property Type: http://www.w3.org/1999/02/22-rdf-syntax-ns#Property
+2005-10-29 16:13:25 [Meta Model][ADD_ONT_PROPERTY_LABEL]
+Before Label: 
+After Label: Language: en	String: tewst
+2005-10-29 16:13:38 [Meta Model][EDIT_ONT_PROPERTY_WITH_DIAGLOG]
+Before ONT Property: http://mmm.semanticweb.org/mr3#bc
+Before ONT Property Type: http://www.w3.org/1999/02/22-rdf-syntax-ns#Property
+After ONT Property: http://mmm.semanticweb.org/mr3#bc
+After ONT Property Type: http://www.w3.org/2002/07/owl#ObjectProperty
+2005-10-29 16:13:57 [---][NEW_PROJECT]
+2005-10-29 16:13:59 [Meta Model][INSERT_CLASS]
+ONT Class: http://mmm.semanticweb.org/mr3#ab
+ONT Class Type: http://www.w3.org/2000/01/rdf-schema#Class
+2005-10-29 16:14:14 [---][NEW_PROJECT]
+2005-10-29 16:14:17 [Model][INSERT_CONNECTED_RESOURCE]
+RDF Resource URI Type: URI
+RDF Resource: http://mmm.semanticweb.org/mr3#bf
+RDF Resource Type: 
+2005-10-29 16:14:19 [Model][EDIT_RESOURCE_WITH_DIALOG]
+Before RDF Resource URI Type: URI
+Before RDF Resource: http://mmm.semanticweb.org/mr3#bf
+Before RDF Resource Type: 
+After RDF Resource URI Type: URI
+After RDF Resource: http://mmm.semanticweb.org/mr3#bf
+After RDF Resource Type: 
+2005-10-29 16:14:22 [Model][EDIT_RESOURCE_WITH_DIALOG]
+Before RDF Resource URI Type: URI
+Before RDF Resource: http://mmm.semanticweb.org/mr3#bf
+Before RDF Resource Type: 
+After RDF Resource URI Type: URI
+After RDF Resource: http://mmm.semanticweb.org/mr3#bf
+After RDF Resource Type: 
+2005-10-29 16:17:23 [---][NEW_PROJECT]
+2005-10-29 16:17:28 [Model][INSERT_CONNECTED_RESOURCE]
+RDF Resource URI Type: URI
+RDF Resource: http://mmm.semanticweb.org/mr3#a
+RDF Resource Type: 
+2005-10-29 16:17:39 [Model][META_MODEL_MANAGEMNET_REPLACE_RESOURCE_TYPE_WITH_CREATE_CLASS]
+2005-10-29 16:17:39 [Model][EDIT_RESOURCE_WITH_DIALOG]
+Before RDF Resource URI Type: URI
+Before RDF Resource: http://mmm.semanticweb.org/mr3#a
+Before RDF Resource Type: 
+After RDF Resource URI Type: URI
+After RDF Resource: http://mmm.semanticweb.org/mr3#a
+After RDF Resource Type: http://mmm.semanticweb.org/mr3#dog
+2005-10-29 16:17:52 [Model][EDIT_RESOURCE_WITH_DIALOG]
+Before RDF Resource URI Type: URI
+Before RDF Resource: http://mmm.semanticweb.org/mr3#a
+Before RDF Resource Type: http://mmm.semanticweb.org/mr3#dog
+After RDF Resource URI Type: ANONYMOUS
+After RDF Resource: -c0e0e4c:1073b3d4da9:-8000
+After RDF Resource Type: http://mmm.semanticweb.org/mr3#dog
+2005-10-29 16:18:00 [Model][EDIT_RESOURCE_WITH_DIALOG]
+Before RDF Resource URI Type: ANONYMOUS
+Before RDF Resource: -c0e0e4c:1073b3d4da9:-7fff
+Before RDF Resource Type: http://mmm.semanticweb.org/mr3#dog
+After RDF Resource URI Type: URI
+After RDF Resource: http://mmm.semanticweb.org/mr3#abc
+After RDF Resource Type: http://mmm.semanticweb.org/mr3#dog
+2005-10-29 16:18:06 [Model][EDIT_RESOURCE_WITH_DIALOG]
+Before RDF Resource URI Type: URI
+Before RDF Resource: http://mmm.semanticweb.org/mr3#abc
+Before RDF Resource Type: http://mmm.semanticweb.org/mr3#dog
+After RDF Resource URI Type: URI
+After RDF Resource: http://mmm.semanticweb.org/mr3#abc
+After RDF Resource Type: 
+2005-10-29 16:18:13 [Model][ADD_RESOURCE_LABEL]
+Before Label: 
+After Label: 
+Language: ja	String: test
+2005-10-29 16:18:18 [Model][DELETE_RESOURCE_LABEL]
+Before Label: 
+Language: ja	String: test
+After Label: 
+2005-10-29 16:18:24 [Model][INSERT_PROPERTY]
+Insert Property: http://mmm.semanticweb.org/mr3#nil
+Source: RDF Resource: http://mmm.semanticweb.org/mr3#abc	RDF Resource Type: 
+Target: RDF Resource: http://mmm.semanticweb.org/mr3#bcd	RDF Resource Type: http://mmm.semanticweb.org/mr3#dog
+2005-10-29 16:18:24 [Model][INSERT_CONNECTED_RESOURCE]
+RDF Resource URI Type: URI
+RDF Resource: http://mmm.semanticweb.org/mr3#bcd
+RDF Resource Type: http://mmm.semanticweb.org/mr3#dog
+2005-10-29 16:18:35 [Model][META_MODEL_MANAGEMNET_REPLACE_PROPERTY_WITH_REPLACE_ONT_PROPERTY]
+2005-10-29 16:18:35 [Model][EDIT_PROPERTY_WITH_DIAGLOG]
+Before Property: http://mmm.semanticweb.org/mr3#nil
+After Property: http://mmm.semanticweb.org/mr3#nil
+2005-10-29 16:18:51 [Model][EDIT_PROPERTY_WITH_DIAGLOG]
+Before Property: http://mmm.semanticweb.org/mr3#nil
+After Property: http://mmm.semanticweb.org/mr3#nil
+2005-10-29 16:18:56 [Model][EDIT_PROPERTY_WITH_DIAGLOG]
+Before Property: http://mmm.semanticweb.org/mr3#nil
+After Property: http://mmm.semanticweb.org/mr3#nil
+2005-10-29 16:18:57 [Model][EDIT_PROPERTY_WITH_DIAGLOG]
+Before Property: http://mmm.semanticweb.org/mr3#nil
+After Property: http://mmm.semanticweb.org/mr3#nil
+2005-10-29 16:18:57 [Model][EDIT_PROPERTY_WITH_DIAGLOG]
+Before Property: http://mmm.semanticweb.org/mr3#nil
+After Property: http://mmm.semanticweb.org/mr3#nil
+2005-10-29 16:20:05 [---][NEW_PROJECT]
+2005-10-29 16:20:07 [Model][INSERT_CONNECTED_RESOURCE]
+RDF Resource URI Type: URI
+RDF Resource: http://mmm.semanticweb.org/mr3#a
+RDF Resource Type: 
+2005-10-29 16:20:11 [Model][INSERT_PROPERTY]
+Insert Property: http://mmm.semanticweb.org/mr3#nil
+Source: RDF Resource: http://mmm.semanticweb.org/mr3#a	RDF Resource Type: 
+Target: Language: 	Datatype: null	String: test
+2005-10-29 16:20:11 [Model][INSERT_CONNECTED_LITERAL]
+Language: 
+String: test
+Data type: null
+2005-10-29 16:20:24 [Model][META_MODEL_MANAGEMNET_REPLACE_PROPERTY_WITH_CREATE_ONT_PROPERTY]
+2005-10-29 16:20:24 [Model][EDIT_PROPERTY_WITH_DIAGLOG]
+Before Property: http://mmm.semanticweb.org/mr3#nil
+After Property: http://mmm.semanticweb.org/mr3#get
+2005-10-29 16:20:35 [Model][META_MODEL_MANAGEMNET_REPLACE_PROPERTY_WITH_REPLACE_ONT_PROPERTY]
+2005-10-29 16:20:35 [Model][EDIT_PROPERTY_WITH_DIAGLOG]
+Before Property: http://mmm.semanticweb.org/mr3#get
+After Property: http://mmm.semanticweb.org/mr3#gets
+2005-10-29 16:20:52 [Model][META_MODEL_MANAGEMNET_REPLACE_PROPERTY_WITH_CREATE_ONT_PROPERTY]
+2005-10-29 16:20:52 [Model][EDIT_PROPERTY_WITH_DIAGLOG]
+Before Property: http://mmm.semanticweb.org/mr3#gets
+After Property: http://mmm.semanticweb.org/mr3#getCar
+2005-10-29 16:21:13 [Model][EDIT_LITERAL_WITH_DIAGLOG]
+Before Language: 
+Before String: test
+Before Data type: null
+After Language: 
+After String: test
+After Data type: null
+2005-10-29 16:21:15 [Model][EDIT_LITERAL_WITH_DIAGLOG]
+Before Language: 
+Before String: test
+Before Data type: null
+After Language: 
+After String: test
+After Data type: null
+2005-10-29 16:21:19 [Model][EDIT_LITERAL_WITH_DIAGLOG]
+Before Language: 
+Before String: test
+Before Data type: null
+After Language: 
+After String: testab
+After Data type: null
+2005-10-29 16:24:22 [---][NEW_PROJECT]
+2005-10-29 16:24:25 [Model][INSERT_CONNECTED_RESOURCE]
+RDF Resource URI Type: URI
+RDF Resource: http://mmm.semanticweb.org/mr3#ab
+RDF Resource Type: 
+2005-10-29 16:24:29 [Model][INSERT_PROPERTY]
+Insert Property: http://mmm.semanticweb.org/mr3#nil
+Source: RDF Resource: http://mmm.semanticweb.org/mr3#ab	RDF Resource Type: 
+Target: Language: 	Datatype: null	String: test
+2005-10-29 16:24:29 [Model][INSERT_CONNECTED_LITERAL]
+Language: 
+String: test
+Data type: null
+2005-10-29 16:25:18 [---][NEW_PROJECT]
+2005-10-29 16:25:34 [Model][INSERT_CONNECTED_RESOURCE]
+RDF Resource URI Type: URI
+RDF Resource: http://mmm.semanticweb.org/mr3#a
+RDF Resource Type: 
+2005-10-29 16:25:38 [Model][INSERT_PROPERTY]
+Insert Property: http://mmm.semanticweb.org/mr3#nil
+Source: RDF Resource: http://mmm.semanticweb.org/mr3#a	RDF Resource Type: 
+Target: Language: 	Datatype: null	String: tst
+
+2005-10-29 16:25:38 [Model][INSERT_CONNECTED_LITERAL]
+Language: 
+String: tst
+
+Data type: null
+2005-10-29 16:25:46 [Model][EDIT_LITERAL_WITH_DIAGLOG]
+Before Language: 
+Before String: tst
+
+Before Data type: null
+After Language: 
+After String: tst
+fefe
+After Data type: null
+2005-10-29 16:25:54 [Model][EDIT_LITERAL_WITH_DIAGLOG]
+Before Language: 
+Before String: tst
+fefe
+Before Data type: null
+After Language: ja
+After String: tst
+fefe
+After Data type: null
+2005-10-29 16:26:42 [Model][EDIT_LITERAL_WITH_DIAGLOG]
+Before Language: ja
+Before String: tst
+fefe
+Before Data type: Datatype[http://www.w3.org/2001/XMLSchema#ID]
+After Language: ja
+After String: tst
+fefe
+After Data type: Datatype[http://www.w3.org/2001/XMLSchema#ENTITY]
+2005-10-29 16:27:23 [---][NEW_PROJECT]
+2005-10-29 16:27:25 [Model][INSERT_CONNECTED_RESOURCE]
+RDF Resource URI Type: URI
+RDF Resource: http://mmm.semanticweb.org/mr3#a
+RDF Resource Type: 
+2005-10-29 16:27:28 [Model][INSERT_PROPERTY]
+Insert Property: http://mmm.semanticweb.org/mr3#nil
+Source: RDF Resource: http://mmm.semanticweb.org/mr3#a	RDF Resource Type: 
+Target: Language: 	Datatype: null	String: abc
+2005-10-29 16:27:28 [Model][INSERT_CONNECTED_LITERAL]
+Language: 
+String: abc
+Data type: null
+2005-10-29 16:27:32 [Model][EDIT_LITERAL_WITH_DIAGLOG]
+Before Language: 
+Before String: abc
+Before Data type: null
+After Language: 
+After String: abcd
+After Data type: null
+2005-10-29 16:27:35 [Model][EDIT_LITERAL_WITH_DIAGLOG]
+Before Language: 
+Before String: abcd
+Before Data type: null
+After Language: 
+After String: abcdf
+After Data type: null
+2005-10-29 16:27:40 [Model][EDIT_LITERAL_WITH_DIAGLOG]
+Before Language: 
+Before String: abcdf
+Before Data type: null
+After Language: ja
+After String: abcdf
+After Data type: null
+2005-10-29 16:27:59 [Model][EDIT_LITERAL_WITH_DIAGLOG]
+Before Language: ja
+Before String: abcdf
+Before Data type: null
+After Language: ja
+After String: abcdf
+After Data type: Datatype[http://www.w3.org/2001/XMLSchema#boolean -> class java.lang.Boolean]
+2005-10-29 16:28:05 [Model][EDIT_LITERAL_WITH_DIAGLOG]
+Before Language: ja
+Before String: abcdf
+Before Data type: Datatype[http://www.w3.org/2001/XMLSchema#boolean -> class java.lang.Boolean]
+After Language: ja
+After String: abcdf
+After Data type: Datatype[http://www.w3.org/2001/XMLSchema#dateTime -> class com.hp.hpl.jena.datatypes.xsd.XSDDateTime]
+2005-10-29 16:33:32 [---][NEW_PROJECT]
+2005-10-29 16:33:34 [Model][INSERT_CONNECTED_RESOURCE]
+RDF Resource URI Type: URI
+RDF Resource: http://mmm.semanticweb.org/mr3#a
+RDF Resource Type: 
+2005-10-29 16:33:45 [Model][INSERT_PROPERTY]
+Insert Property: http://mmm.semanticweb.org/mr3#nil
+Source: RDF Resource: http://mmm.semanticweb.org/mr3#a	RDF Resource Type: 
+Target: Language: 	Datatype: null	String: test
+2005-10-29 16:33:45 [Model][INSERT_CONNECTED_LITERAL]
+Language: 
+String: test
+Data type: null
+2005-10-29 16:33:48 [Model][EDIT_LITERAL_WITH_DIAGLOG]
+Before Language: 
+Before String: test
+Before Data type: null
+After Language: 
+After String: testa
+After Data type: null
+2005-10-29 16:33:55 [Model][EDIT_LITERAL_WITH_DIAGLOG]
+Before Language: 
+Before String: testa
+Before Data type: null
+After Language: ja
+After String: testa
+After Data type: null
+2005-10-29 16:34:00 [Model][EDIT_LITERAL_WITH_DIAGLOG]
+Before Language: ja
+Before String: testa
+Before Data type: null
+After Language: ja
+After String: testa
+After Data type: Datatype[http://www.w3.org/2001/XMLSchema#Name]
+2005-10-29 16:34:05 [Model][EDIT_LITERAL_WITH_DIAGLOG]
+Before Language: ja
+Before String: testa
+Before Data type: Datatype[http://www.w3.org/2001/XMLSchema#Name]
+After Language: ja
+After String: testa
+After Data type: Datatype[http://www.w3.org/2001/XMLSchema#ID]
+2005-10-29 16:34:08 [Model][EDIT_LITERAL_WITH_DIAGLOG]
+Before Language: ja
+Before String: testa
+Before Data type: Datatype[http://www.w3.org/2001/XMLSchema#ID]
+After Language: ja
+After String: testa
+After Data type: null
+2005-10-29 16:34:13 [Model][EDIT_LITERAL_WITH_DIAGLOG]
+Before Language: ja
+Before String: testa
+Before Data type: null
+After Language: en
+After String: testa
+After Data type: null
+2005-10-29 16:36:19 [---][NEW_PROJECT]
+2005-10-29 16:36:41 [Meta Model][INSERT_CLASS]
+ONT Class: http://mmm.semanticweb.org/mr3#a
+ONT Class Type: http://www.w3.org/2000/01/rdf-schema#Class
+2005-10-29 16:36:45 [Meta Model][INSERT_CLASS]
+ONT Class: http://mmm.semanticweb.org/mr3#b
+ONT Class Type: http://www.w3.org/2000/01/rdf-schema#Class
+2005-10-29 16:36:48 [Meta Model][INSERT_CLASS]
+ONT Class: http://mmm.semanticweb.org/mr3#c
+ONT Class Type: http://www.w3.org/2000/01/rdf-schema#Class
+2005-10-29 16:36:52 [Meta Model][CONNECT_SUP_SUB_CLASS]
+Sub Class: http://mmm.semanticweb.org/mr3#b	Meta Class: http://www.w3.org/2000/01/rdf-schema#Class
+Super Class: http://mmm.semanticweb.org/mr3#a	Meta Class: http://www.w3.org/2000/01/rdf-schema#Class
+2005-10-29 16:36:54 [Meta Model][CONNECT_SUP_SUB_CLASS]
+Sub Class: http://mmm.semanticweb.org/mr3#c	Meta Class: http://www.w3.org/2000/01/rdf-schema#Class
+Super Class: http://mmm.semanticweb.org/mr3#a	Meta Class: http://www.w3.org/2000/01/rdf-schema#Class
+2005-10-29 16:36:58 [Meta Model][INSERT_CLASS]
+ONT Class: http://mmm.semanticweb.org/mr3#f
+ONT Class Type: http://www.w3.org/2000/01/rdf-schema#Class
+2005-10-29 16:37:08 [Meta Model][CONNECT_SUP_SUB_CLASS]
+Sub Class: http://mmm.semanticweb.org/mr3#b	Meta Class: http://www.w3.org/2000/01/rdf-schema#Class
+Super Class: http://mmm.semanticweb.org/mr3#f	Meta Class: http://www.w3.org/2000/01/rdf-schema#Class
+2005-10-29 16:37:37 [Model][INSERT_CONNECTED_RESOURCE]
+RDF Resource URI Type: URI
+RDF Resource: http://mmm.semanticweb.org/mr3#ab
+RDF Resource Type: http://mmm.semanticweb.org/mr3#a
+2005-10-29 16:37:39 [Model][INSERT_PROPERTY]
+Insert Property: http://mmm.semanticweb.org/mr3#nil
+Source: RDF Resource: http://mmm.semanticweb.org/mr3#ab	RDF Resource Type: http://mmm.semanticweb.org/mr3#a
+Target: RDF Resource: http://mmm.semanticweb.org/mr3#bc	RDF Resource Type: http://mmm.semanticweb.org/mr3#a
+2005-10-29 16:37:39 [Model][INSERT_CONNECTED_RESOURCE]
+RDF Resource URI Type: URI
+RDF Resource: http://mmm.semanticweb.org/mr3#bc
+RDF Resource Type: http://mmm.semanticweb.org/mr3#a
+2005-10-29 16:37:42 [Model][DELETE_RDF]
+DELETE: 
+RDF Resource: http://mmm.semanticweb.org/mr3#bc	RDF Resource Type: http://mmm.semanticweb.org/mr3#a
+2005-10-29 16:37:45 [Model][DELETE_RDF]
+DELETE: 
+RDF Resource: http://mmm.semanticweb.org/mr3#ab	RDF Resource Type: http://mmm.semanticweb.org/mr3#a
+2005-10-29 16:37:50 [Model][INSERT_CONNECTED_LITERAL]
+Language: 
+String: abcd
+Data type: null
+2005-10-29 16:37:52 [Model][DELETE_RDF]
+DELETE: 
+RDF Literal: 
+Language: 	Datatype: null	String: abcd
+2005-10-29 16:40:15 [---][NEW_PROJECT]
+2005-10-29 16:40:18 [Model][INSERT_CONNECTED_RESOURCE]
+RDF Resource URI Type: URI
+RDF Resource: http://mmm.semanticweb.org/mr3#a
+RDF Resource Type: 
+2005-10-29 16:40:20 [Model][EDIT_RESOURCE_WITH_GRAPH]
+Before RDF Resource URI Type: URI
+Before RDF Resource: http://mmm.semanticweb.org/mr3#a
+Before RDF Resource Type: 
+After RDF Resource URI Type: URI
+After RDF Resource: http://mmm.semanticweb.org/mr3#ab
+After RDF Resource Type: 
+2005-10-29 16:40:23 [Model][EDIT_RESOURCE_WITH_GRAPH]
+Before RDF Resource URI Type: URI
+Before RDF Resource: http://mmm.semanticweb.org/mr3#ab
+Before RDF Resource Type: 
+After RDF Resource URI Type: URI
+After RDF Resource: http://mmm.semanticweb.org/mr3#a
+After RDF Resource Type: 
+2005-10-29 16:40:31 [Meta Model][INSERT_CLASS]
+ONT Class: http://mmm.semanticweb.org/mr3#b
+ONT Class Type: http://www.w3.org/2000/01/rdf-schema#Class
+2005-10-29 16:40:34 [Meta Model][EDIT_CLASS_WITH_GRAPH]
+Before ONT Class: http://mmm.semanticweb.org/mr3#b
+Before ONT Class Type: http://www.w3.org/2000/01/rdf-schema#Class
+After ONT Class: http://mmm.semanticweb.org/mr3#bc
+After ONT Class Type: http://www.w3.org/2000/01/rdf-schema#Class
+2005-10-29 16:45:55 [---][NEW_PROJECT]
+2005-10-29 16:45:57 [Meta Model][INSERT_CLASS]
+ONT Class: http://mmm.semanticweb.org/mr3#a
+ONT Class Type: http://www.w3.org/2000/01/rdf-schema#Class
+2005-10-29 16:45:59 [Meta Model][CONNECT_SUP_SUB_CLASS]
+Sub Class: http://mmm.semanticweb.org/mr3#b	Meta Class: http://www.w3.org/2000/01/rdf-schema#Class
+Super Class: http://mmm.semanticweb.org/mr3#a	Meta Class: http://www.w3.org/2000/01/rdf-schema#Class
+2005-10-29 16:45:59 [Meta Model][INSERT_CLASS]
+ONT Class: http://mmm.semanticweb.org/mr3#b
+ONT Class Type: http://www.w3.org/2000/01/rdf-schema#Class
+2005-10-29 16:46:01 [Meta Model][CONNECT_SUP_SUB_CLASS]
+Sub Class: http://mmm.semanticweb.org/mr3#c	Meta Class: http://www.w3.org/2000/01/rdf-schema#Class
+Super Class: http://mmm.semanticweb.org/mr3#a	Meta Class: http://www.w3.org/2000/01/rdf-schema#Class
+2005-10-29 16:46:01 [Meta Model][INSERT_CLASS]
+ONT Class: http://mmm.semanticweb.org/mr3#c
+ONT Class Type: http://www.w3.org/2000/01/rdf-schema#Class
+2005-10-29 16:46:03 [Meta Model][DELETE_CLASS]
+DELETE: 
+Ont Class: http://mmm.semanticweb.org/mr3#c	Meta Class: http://www.w3.org/2000/01/rdf-schema#Class
+2005-10-29 16:46:10 [Meta Model][DELETE_CLASS]
+DELETE: 
+Ont Class: http://mmm.semanticweb.org/mr3#a	Meta Class: http://www.w3.org/2000/01/rdf-schema#Class
+Ont Class: http://mmm.semanticweb.org/mr3#b	Meta Class: http://www.w3.org/2000/01/rdf-schema#Class
+2005-10-29 16:46:13 [Meta Model][INSERT_CLASS]
+ONT Class: http://mmm.semanticweb.org/mr3#a
+ONT Class Type: http://www.w3.org/2000/01/rdf-schema#Class
+2005-10-29 16:46:14 [Meta Model][CONNECT_SUP_SUB_CLASS]
+Sub Class: http://mmm.semanticweb.org/mr3#b	Meta Class: http://www.w3.org/2000/01/rdf-schema#Class
+Super Class: http://mmm.semanticweb.org/mr3#a	Meta Class: http://www.w3.org/2000/01/rdf-schema#Class
+2005-10-29 16:46:14 [Meta Model][INSERT_CLASS]
+ONT Class: http://mmm.semanticweb.org/mr3#b
+ONT Class Type: http://www.w3.org/2000/01/rdf-schema#Class
+2005-10-29 16:46:16 [Meta Model][CONNECT_SUP_SUB_CLASS]
+Sub Class: http://mmm.semanticweb.org/mr3#c	Meta Class: http://www.w3.org/2000/01/rdf-schema#Class
+Super Class: http://mmm.semanticweb.org/mr3#a	Meta Class: http://www.w3.org/2000/01/rdf-schema#Class
+2005-10-29 16:46:16 [Meta Model][INSERT_CLASS]
+ONT Class: http://mmm.semanticweb.org/mr3#c
+ONT Class Type: http://www.w3.org/2000/01/rdf-schema#Class
+2005-10-29 16:46:19 [Meta Model][DELETE_CLASS]
+DELETE: 
+2005-10-29 16:46:24 [Meta Model][DELETE_CLASS]
+DELETE: 
+2005-10-29 16:46:30 [Meta Model][INSERT_ONT_PROPERTY]
+ONT Property: http://mmm.semanticweb.org/mr3#ab
+ONT Property Type: http://www.w3.org/1999/02/22-rdf-syntax-ns#Property
+2005-10-29 16:46:32 [Meta Model][CONNECT_SUP_SUB_PROPERTY]
+Sub Property: http://mmm.semanticweb.org/mr3#ffc	Meta Class: http://www.w3.org/1999/02/22-rdf-syntax-ns#Property
+Super Property: http://mmm.semanticweb.org/mr3#ab	Meta Class: http://www.w3.org/1999/02/22-rdf-syntax-ns#Property
+2005-10-29 16:46:32 [Meta Model][INSERT_ONT_PROPERTY]
+ONT Property: http://mmm.semanticweb.org/mr3#ffc
+ONT Property Type: http://www.w3.org/1999/02/22-rdf-syntax-ns#Property
+2005-10-29 16:46:35 [Meta Model][DELETE_ONT_PROPERTY]
+DELETE: 
+2005-10-29 16:46:37 [Meta Model][DELETE_ONT_PROPERTY]
+DELETE: 
+Ont Property: http://mmm.semanticweb.org/mr3#ffc	Meta Property: http://www.w3.org/1999/02/22-rdf-syntax-ns#Property
+2005-10-29 16:46:39 [Meta Model][DELETE_ONT_PROPERTY]
+DELETE: 
+Ont Property: http://mmm.semanticweb.org/mr3#ab	Meta Property: http://www.w3.org/1999/02/22-rdf-syntax-ns#Property
+2005-10-29 16:46:45 [Model][INSERT_CONNECTED_LITERAL]
+Language: 
+String: lit
+Data type: null
+2005-10-29 16:46:47 [Model][DELETE_RDF]
+DELETE: 
+RDF Literal: 
+Language: 	Datatype: null	String: lit
+2005-10-29 17:14:08 [---][NEW_PROJECT]
+2005-10-29 17:15:08 [---][NEW_PROJECT]
+2005-10-29 17:15:09 [---][OPEN_PROJECT]
+Path: C:\t_morita_data\work\MR3_LogAnalyzer\kondo_exp_data\car(mmmon).mr3
+2005-10-29 17:24:22 [---][NEW_PROJECT]
+2005-10-29 17:25:05 [---][NEW_PROJECT]
+2005-10-30 11:42:33 [---][NEW_PROJECT]
+2005-10-30 11:48:06 [---][NEW_PROJECT]
+2005-10-30 12:38:32 [---][NEW_PROJECT]
+2005-10-31 11:19:48 [---][NEW_PROJECT]
+2005-10-31 11:19:52 [Model][INSERT_CONNECTED_RESOURCE]
+RDF Resource URI Type: URI
+RDF Resource: http://mmm.semanticweb.org/mr3#a
+RDF Resource Type: 
+2005-10-31 11:22:02 [---][NEW_PROJECT]
+2005-10-31 11:22:52 [---][NEW_PROJECT]
+2005-10-31 11:24:20 [---][NEW_PROJECT]
+2005-10-31 11:24:24 [Model][INSERT_CONNECTED_RESOURCE]
+RDF Resource URI Type: URI
+RDF Resource: http://mmm.semanticweb.org/mr3#a
+RDF Resource Type: 
+2005-10-31 11:28:50 [---][NEW_PROJECT]
+2005-10-31 11:28:52 [Meta Model][INSERT_ONT_PROPERTY]
+ONT Property: http://mmm.semanticweb.org/mr3#a
+ONT Property Type: http://www.w3.org/1999/02/22-rdf-syntax-ns#Property
+2005-10-31 11:29:07 [Meta Model][INSERT_ONT_PROPERTY]
+ONT Property: http://mmm.semanticweb.org/mr3#b
+ONT Property Type: http://www.w3.org/1999/02/22-rdf-syntax-ns#Property
+2005-10-31 11:32:35 [Model][INSERT_PROPERTY]
+Insert Property: http://mmm.semanticweb.org/mr3#nil
+Source: RDF Resource: http://mmm.semanticweb.org/mr3#c	RDF Resource Type: 
+Target: RDF Resource: http://mmm.semanticweb.org/mr3#ef	RDF Resource Type: 
+2005-10-31 11:32:35 [Model][INSERT_CONNECTED_RESOURCE]
+RDF Resource URI Type: URI
+RDF Resource: http://mmm.semanticweb.org/mr3#ef
+RDF Resource Type: 
+2005-10-31 11:32:56 [Model][INSERT_CONNECTED_RESOURCE]
+RDF Resource URI Type: URI
+RDF Resource: http://mmm.semanticweb.org/mr3#ff
+RDF Resource Type: 
+2005-10-31 11:33:03 [Meta Model][INSERT_CLASS]
+ONT Class: http://mmm.semanticweb.org/mr3#test
+ONT Class Type: http://www.w3.org/2000/01/rdf-schema#Class
+2005-10-31 11:33:15 [Meta Model][INSERT_ONT_PROPERTY]
+ONT Property: http://mmm.semanticweb.org/mr3#tesa
+ONT Property Type: http://www.w3.org/1999/02/22-rdf-syntax-ns#Property
+2005-10-31 11:33:51 [Model][INSERT_PROPERTY]
+Insert Property: http://mmm.semanticweb.org/mr3#testb
+Source: RDF Resource: http://mmm.semanticweb.org/mr3#ffac	RDF Resource Type: http://mmm.semanticweb.org/mr3#testc
+Target: RDF Resource: http://mmm.semanticweb.org/mr3#bba	RDF Resource Type: http://mmm.semanticweb.org/mr3#testc
+2005-10-31 11:33:51 [Model][INSERT_CONNECTED_RESOURCE]
+RDF Resource URI Type: URI
+RDF Resource: http://mmm.semanticweb.org/mr3#bba
+RDF Resource Type: http://mmm.semanticweb.org/mr3#testc
+2005-10-31 11:35:47 [---][NEW_PROJECT]

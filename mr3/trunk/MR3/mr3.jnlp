@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- JNLP File for mr3 Application -->
+<jnlp spec="1.0+" codebase="http://panda.cs.inf.shizuoka.ac.jp/mmm/mr3/" href="mr3.jnlp">
+   <information>
+     <title>MR3</title>
+     <vendor>Yamaguchi Lab</vendor>
+     <homepage href="http://mmm.semanticweb.org/mr3/index.html"/>
+     <description>MR3 Meta-Model Management based on RDFs Revision Reflection</description>
+     <description kind="short">MR3</description>
+	 <icon href="img/mr3_logo.jpg"/> 
+     <offline-allowed/>
+   </information>
+   <security>
+       <all-permissions/>
+   </security>
+   <resources>
+     <j2se version="1.5+"/>
+	<jar href="./download/mr3.jar"/>
+	<jar href="./download/lib/antlr-2.7.5.jar"/>
+	<jar href="./download/lib/arq.jar"/>
+	<jar href="./download/lib/commons-logging.jar"/>
+	<jar href="./download/lib/concurrent.jar"/>
+	<jar href="./download/lib/icu4j_3_4.jar"/>
+	<jar href="./download/lib/jakarta-oro-2.0.8.jar"/>
+  	<jar href="./download/lib/jena.jar"/>	
+  	<jar href="./download/lib/jenatest.jar"/>		
+	<jar href="./download/lib/JFontChooser.jar"/>
+	<jar href="./download/lib/jgraph.jar"/>
+	<jar href="./download/lib/jgraphaddons.jar"/>
+	<jar href="./download/lib/JPager.jar"/>
+	<jar href="./download/lib/junit.jar"/>	
+	<jar href="./download/lib/log4j-1.2.12.jar"/>
+	<jar href="./download/lib/stax-1.1.1-dev.jar"/>
+	<jar href="./download/lib/stax-api-1.0.jar"/>
+	<jar href="./download/lib/vowlidator.jar"/>
+	<jar href="./download/lib/xercesImpl.jar"/>
+	<jar href="./download/lib/xml-apis.jar"/>	
+	<jar href="./download/lib/xml-datatype-validator-20011001.jar"/>
+	<jar href="./download/lib/xmlparserv2.jar"/>
+	<jar href="./download/lib/xschema.jar"/>	
+	<jar href="./download/lib/javaws.jar"/>				
+   </resources>   
+   <application-desc main-class="org.semanticweb.mmm.mr3.webstart.MR3WebStart"/>
+</jnlp>

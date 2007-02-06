@@ -1,0 +1,1 @@
+java -jar mr3.jar

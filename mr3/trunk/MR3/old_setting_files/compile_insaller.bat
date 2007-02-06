@@ -1,0 +1,1 @@
+"C:/Program Files/IzPack/bin/compile.bat" install.xml
