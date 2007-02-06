@@ -1,0 +1,100 @@
+<project name="MR3" default="compile" basedir=".">
+	<property name="app.name" value="mr3" />
+	<property name="app.version" value="1_0RC5" />
+	<property name="pkg.name" value="org.semanticweb.mmm.mr3.*" />
+	<property name="pkg.dir" value="MR3_${app.version}" />
+	<property name="javadoc.dir" value="./docs" />
+	<property name="src.dir" value="src/org/semanticweb/mmm/mr3" />
+	<property name="build.dir" value="build/classes" />
+	<property name="resource.dir" value="${build.dir}/org/semanticweb/mmm/mr3/resources" />
+	<property name="lib.dir" value="build/lib" />
+	<property name="jarfile" value="${name}.jar" />
+
+	<path id="classpath">
+		<fileset dir="${lib.dir}" includes="*.jar" excludes="${jarfile}" />
+	</path>
+
+	<target name="javadoc">
+		<mkdir dir="${javadoc.dir}" />
+		<javadoc sourcepath="./src" packagenames="${pkg.name}" destdir="${javadoc.dir}" windowtitle="MR3 v${app.version} API Specification" doctitle="MR3 v${app.version} API Specification">
+			<header>MR3 ${app.version}</header>
+			<bottom>Copyright (C) 2003-2005 MR3 Project All rights reserved.</bottom>
+		</javadoc>
+		<zip destfile="./docs.zip" basedir="${javadoc.dir}" />
+		<delete dir="${javadoc.dir}" />
+	</target>
+
+	<target name="makepkg">
+		<mkdir dir="${pkg.dir}" />
+		<copy todir="${pkg.dir}">
+			<fileset dir=".">
+				<include name="src.zip" />
+				<include name="docs.zip" />
+				<include name="ChangeLog.txt" />
+				<include name="BUGS.txt" />
+				<include name="run.sh" />
+				<include name="run.bat" />
+				<include name="mr3_logo.ico" />
+				<include name="mr3.jar" />
+				<include name="mr3.jnlp" />
+				<include name="MR3.exe" />
+				<include name="build.xml" />
+			</fileset>
+		</copy>
+		<mkdir dir="${pkg.dir}/build" />
+		<mkdir dir="${pkg.dir}/licenses" />
+		<mkdir dir="${pkg.dir}/resources" />
+		<mkdir dir="${pkg.dir}/plugins" />
+		<copydir dest="${pkg.dir}/build" src="./build" />
+		<copydir dest="${pkg.dir}/licenses" src="./licenses" />
+		<copydir dest="${pkg.dir}/resources" src="./resources" />
+		<copydir dest="${pkg.dir}/plugins" src="./plugins" />
+		<zip destfile="${pkg.dir}.zip" basedir="${pkg.dir}" />
+	</target>
+
+	<target name="compile">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${resource.dir}" />
+
+		<javac encoding="sjis" srcdir="${src.dir}" source="1.5" target="1.5" optimize="true" destdir="${build.dir}">
+			<include name="**/*.java" />
+			<classpath refid="classpath" />
+		</javac>
+		<zip destfile="./src.zip" basedir="./src" />
+		<copy todir="${resource.dir}">
+			<fileset dir="${src.dir}/resources">
+				<include name="**" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="jar" depends="compile">
+		<mkdir dir="${lib.dir}" />
+		<jar jarfile="${app.name}.jar" basedir="${build.dir}" includes="**" manifest="./mr3.mf" />
+		<property file="SignInfo.properties" />
+		<signjar keystore="${keystore}" alias="${alias}" storepass="${storepass}">
+			<fileset dir="." includes="mr3.jar" />
+		</signjar>
+	</target>
+
+	<target name="signjar">
+		<property file="SignInfo.properties" />
+		<signjar lazy="true" maxmemory="256m" keystore="${keystore}" alias="${alias}" storepass="${storepass}">
+			<fileset dir="." includes="**/*.jar" excludes="mr3.jar" />
+		</signjar>
+	</target>
+
+	<target name="indexjar">
+		<exec executable="jar.exe" dir=".">
+			<arg value="-i" />
+			<arg value="mr3.jar" />
+		</exec>
+	</target>
+
+	<target name="run" depends="jar">
+		<java classname="org.semanticweb.mmm.mr3.MR3" fork="yes">
+			<classpath refid="classpath" />
+		</java>
+		<echo message="Ant appears to be successfully installed" />
+	</target>
+</project>

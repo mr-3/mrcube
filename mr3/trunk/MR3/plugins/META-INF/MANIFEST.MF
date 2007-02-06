@@ -1,0 +1,37 @@
+Manifest-Version: 1.0
+
+Name: org.semanticweb.mmm.mr3.sample.ReplaceRDFModelSample.class
+menu-name: ReplaceRDFModelSample
+creator: Takeshi Morita
+date: 2004-01-24
+description: Replace RDF Model Sample Program. 
+
+Name: org.semanticweb.mmm.mr3.sample.GetRDFModelSample.class
+plugin-name: GetRDFModelSample
+creator: Takeshi Morita
+date: 2004-01-24
+description: Get RDF Model Sample Program.
+
+Name: org.semanticweb.mmm.mr3.sample.OpenProjectSample.class
+plugin-name: OpenProjectSample
+creator: Takeshi Morita
+date: 2004-01-24
+description: Open Project File Sample Program.
+
+Name: org.semanticweb.mmm.mr3.sample.SelectNodesSample.class
+plugin-name: SelectNodesSample
+creator: Takeshi Morita
+date: 2004-01-24
+description: This plugin select mr3:a, mr3:b and mr3:c nodes.
+
+Name: org.semanticweb.mmm.mr3.sample.GroupNodesSample.class
+plugin-name: GroupNodesSample
+creator: Takeshi Morita
+date: 2003-12-23
+description: This plugin group mr3:a, mr3:b and mr3:c nodes.
+
+Name: org.semanticweb.mmm.mr3.owlPlugin.OWLImportPlugin.class
+menu-name: OWLImportPlugin
+creator: Takeshi Morita
+date: 2004-01-24
+description: This is owl import plugin.

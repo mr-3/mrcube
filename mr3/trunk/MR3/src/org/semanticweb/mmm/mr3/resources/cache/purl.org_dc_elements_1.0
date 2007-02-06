@@ -1,0 +1,13 @@
+<!-- placeholder for dublin core -->
+
+<!-- original: http://purl.org/dc/elements/1.0/ -->
+
+<rdf:RDF
+  xmlns:rdf ="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+>
+
+<!-- The original does not contain any rdf definitions.
+If you know where I can find rdf for dc, please let me
+know.  drager@bbn.com -->
+
+</rdf:RDF>
