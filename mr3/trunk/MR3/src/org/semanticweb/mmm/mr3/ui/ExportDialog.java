@@ -1,22 +1,24 @@
 /*
- * @(#) ExportDialog.java
+ * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
+ * Project Website: http://mr3.sourceforge.net/
  * 
- * Copyright (C) 2003-2005 The MMM Project
+ * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
  * 
- * This library is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation; either version 2.1 of the License, or (at your
- * option) any later version.
+ * This file is part of MR^3.
  * 
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
- * for more details.
+ * MR^3 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation,
- * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *  
+ * MR^3 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
+ * 
  */
 
 package org.semanticweb.mmm.mr3.ui;
@@ -25,7 +27,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.io.*;
-import java.net.*;
 import java.util.*;
 
 import javax.imageio.*;
@@ -241,7 +242,7 @@ public class ExportDialog extends JDialog implements ActionListener {
             jfc.setFileFilter(pngFileFilter);
         }
 
-        if (jfc.showSaveDialog(gmanager.getDesktop()) == JFileChooser.APPROVE_OPTION) {
+        if (jfc.showSaveDialog(gmanager.getDesktopTabbedPane()) == JFileChooser.APPROVE_OPTION) {
             String defaultPath = jfc.getSelectedFile().getAbsolutePath();
             if (jfc.getFileFilter() instanceof MR3FileFilter) {
                 MR3FileFilter filter = (MR3FileFilter) jfc.getFileFilter();
@@ -352,7 +353,7 @@ public class ExportDialog extends JDialog implements ActionListener {
     class ExportImgEvent implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             if (getSelectedCount() != 1) {
-                JOptionPane.showMessageDialog(gmanager.getDesktop(), "Check (RDF or Class or Property)", "",
+                JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), "Check (RDF or Class or Property)", "",
                         JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -361,12 +362,12 @@ public class ExportDialog extends JDialog implements ActionListener {
             if (file == null) { return; }
             try {
                 BufferedImage img = null;
-                if (rdfConvertBox.isSelected() && gmanager.getRDFGraph().getModel().getRootCount() > 0) {
-                    img = GPConverter.toImage(gmanager.getRDFGraph());
-                } else if (classConvertBox.isSelected() && gmanager.getClassGraph().getModel().getRootCount() > 0) {
-                    img = GPConverter.toImage(gmanager.getClassGraph());
-                } else if (propertyConvertBox.isSelected() && gmanager.getPropertyGraph().getModel().getRootCount() > 0) {
-                    img = GPConverter.toImage(gmanager.getPropertyGraph());
+                if (rdfConvertBox.isSelected() && gmanager.getCurrentRDFGraph().getModel().getRootCount() > 0) {
+                    img = GPConverter.toImage(gmanager.getCurrentRDFGraph());
+                } else if (classConvertBox.isSelected() && gmanager.getCurrentClassGraph().getModel().getRootCount() > 0) {
+                    img = GPConverter.toImage(gmanager.getCurrentClassGraph());
+                } else if (propertyConvertBox.isSelected() && gmanager.getCurrentPropertyGraph().getModel().getRootCount() > 0) {
+                    img = GPConverter.toImage(gmanager.getCurrentPropertyGraph());
                 }
                 if (img != null) {
                     ImageIO.write(img, fileType, file);
@@ -380,7 +381,7 @@ public class ExportDialog extends JDialog implements ActionListener {
     private void setRDFTreeRoot() {
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
         Map<Resource, Set<GraphCell>> map = new HashMap<Resource, Set<GraphCell>>();
-        RDFGraph graph = gmanager.getRDFGraph();
+        RDFGraph graph = gmanager.getCurrentRDFGraph();
         Object[] cells = graph.getAllCells();
         for (int i = 0; i < cells.length; i++) {
             GraphCell cell = (GraphCell) cells[i];
@@ -438,7 +439,7 @@ public class ExportDialog extends JDialog implements ActionListener {
             rdfWriter.write(model, writer, gmanager.getBaseURI());
         } catch (Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(gmanager.getDesktop(), "Export Error", "", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), "Export Error", "", JOptionPane.ERROR_MESSAGE);
         }
     }
 

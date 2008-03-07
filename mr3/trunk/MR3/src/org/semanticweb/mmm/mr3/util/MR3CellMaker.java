@@ -1,22 +1,24 @@
 /*
- * @(#) MR3CellMaker.java
+ * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
+ * Project Website: http://mr3.sourceforge.net/
  * 
- * Copyright (C) 2003 The MMM Project
+ * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
  * 
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * This file is part of MR^3.
  * 
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * MR^3 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation, Inc.,
- * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *  
+ * MR^3 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
+ * 
  */
 
 package org.semanticweb.mmm.mr3.util;
@@ -36,7 +38,7 @@ import org.semanticweb.mmm.mr3.ui.*;
 import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.vocabulary.*;
 
-/*
+/**
  * 
  * @author takeshi morita
  * 
@@ -44,7 +46,6 @@ import com.hp.hpl.jena.vocabulary.*;
 public class MR3CellMaker {
 
     private GraphManager gmanager;
-    private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
 
     public static final int CELL_MARGIN = 10;
     public static int CELL_WIDTH = 100;
@@ -60,7 +61,8 @@ public class MR3CellMaker {
 
     public Map getEdgeMap(Object info, Edge edge) {
         Map map = new AttributeMap();
-        //GraphConstants.setRouting(map, JGraphParallelEdgeRouter.getSharedInstance());
+        // GraphConstants.setRouting(map,
+        // JGraphParallelEdgeRouter.getSharedInstance());
         GraphConstants.setRouting(map, JGParallelEdgeRouter.getSharedInstance());
         GraphConstants.setLineStyle(map, GraphConstants.STYLE_BEZIER);
         GraphConstants.setLineEnd(map, GraphConstants.ARROW_TECHNICAL);
@@ -147,7 +149,7 @@ public class MR3CellMaker {
     }
 
     public GraphCell insertRDFLiteral(Rectangle2D rect, MR3Literal literal) {
-        JGraph graph = gmanager.getRDFGraph();
+        JGraph graph = gmanager.getCurrentRDFGraph();
         Map map = getResourceMap(rect, RDFLiteralCell.literalColor);
 
         DefaultGraphCell vertex = new RDFLiteralCell(literal);
@@ -162,7 +164,7 @@ public class MR3CellMaker {
     }
 
     public void addTypeCell(GraphCell rdfCell, Map attributes) {
-        RDFGraph graph = gmanager.getRDFGraph();
+        RDFGraph graph = gmanager.getCurrentRDFGraph();
         GraphCell typeViewCell = null;
         RDFResourceInfo resInfo = (RDFResourceInfo) GraphConstants.getValue(rdfCell.getAttributes());
         if (gmanager.isShowTypeCell()) {
@@ -182,7 +184,7 @@ public class MR3CellMaker {
     }
 
     public GraphCell insertRDFResource(Point2D point, String uri, Object resTypeCell, URIType type) {
-        JGraph graph = gmanager.getRDFGraph();
+        JGraph graph = gmanager.getCurrentRDFGraph();
         HashMap attributes = new HashMap();
         point = graph.snap(new Point2D.Double(point.getX(), point.getY()));
 
@@ -272,9 +274,9 @@ public class MR3CellMaker {
         DefaultEdge edge = new RDFPropertyCell(edgeName);
         ConnectionSet cs = new ConnectionSet(edge, port, port);
         HashMap attributes = new HashMap();
-        
+
         GraphCell rdfsPropCell = null;
-        Object[] rdfsPropertyCells = gmanager.getPropertyGraph().getSelectionCells();
+        Object[] rdfsPropertyCells = gmanager.getCurrentPropertyGraph().getSelectionCells();
         RDFSInfo info = null;
         if (rdfsPropertyCells.length == 1 && RDFGraph.isRDFSPropertyCell(rdfsPropertyCells[0])) {
             rdfsPropCell = (GraphCell) rdfsPropertyCells[0];
@@ -299,7 +301,7 @@ public class MR3CellMaker {
     }
 
     public DefaultGraphCell insertClass(Rectangle2D rectangle, String uri) {
-        JGraph graph = gmanager.getClassGraph();
+        JGraph graph = gmanager.getCurrentClassGraph();
         rectangle.getBounds().setLocation((Point) graph.snap(rectangle.getBounds().getLocation()));
         Map map = getResourceMap(rectangle, OntClassCell.classColor);
         RDFSInfo info = new ClassInfo(uri);
@@ -308,6 +310,7 @@ public class MR3CellMaker {
         setCell(graph, vertex, map);
         GraphConstants.setValue(vertex.getAttributes(), info);
         GraphUtilities.resizeRDFSResourceCell(gmanager, info, vertex);
+        RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
         rdfsInfoMap.putURICellMap(info, vertex);
 
         return vertex;
@@ -318,7 +321,7 @@ public class MR3CellMaker {
     }
 
     public DefaultGraphCell insertProperty(Rectangle2D rectangle, String uri) {
-        JGraph graph = gmanager.getPropertyGraph();
+        JGraph graph = gmanager.getCurrentPropertyGraph();
         rectangle.getBounds().setLocation((Point) graph.snap(rectangle.getBounds().getLocation()));
         Map map = getResourceMap(rectangle, OntPropertyCell.propertyColor);
 
@@ -333,6 +336,7 @@ public class MR3CellMaker {
         }
         GraphConstants.setValue(vertex.getAttributes(), info);
         GraphUtilities.resizeRDFSResourceCell(gmanager, info, vertex);
+        RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
         rdfsInfoMap.putURICellMap(info, vertex);
 
         return vertex;

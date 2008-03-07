@@ -1,22 +1,24 @@
 /*
- * @(#) GraphLayoutUtilities.java
+ * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
+ * Project Website: http://mr3.sourceforge.net/
  * 
- * Copyright (C) 2003-2005 The MMM Project
+ * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
  * 
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * This file is part of MR^3.
  * 
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * MR^3 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation, Inc.,
- * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *  
+ * MR^3 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
+ * 
  */
 
 package org.semanticweb.mmm.mr3.layout;
@@ -41,7 +43,6 @@ import com.hp.hpl.jena.vocabulary.*;
 public class GraphLayoutUtilities {
 
     private static GraphManager gmanager;
-    private static RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
 
     public static final String UP_TO_DOWN = Translator.getString("PreferenceDialog.LayoutTab.UP_TO_DOWN");
     public static final String LEFT_TO_RIGHT = Translator.getString("PreferenceDialog.LayoutTab.LEFT_TO_RIGHT");
@@ -168,6 +169,7 @@ public class GraphLayoutUtilities {
         GraphLayoutData rootData = new GraphLayoutData(MR3Resource.Property, dim);
         rootData.setHasParent(false);
         cellLayoutMap.put(MR3Resource.Property, rootData);
+        RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
         for (Resource property : rdfsInfoMap.getRootProperties()) {
             if (!isNumProperty(property)) {
                 GraphLayoutData childData = cellLayoutMap.get(property);
@@ -190,6 +192,7 @@ public class GraphLayoutUtilities {
 
     public static void initClassGraphLayoutData(Map<RDFNode, GraphLayoutData> cellLayoutMap) {
         duplicateResourceSet = new HashSet<Resource>();
+        RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
         RDFSInfo rootInfo = rdfsInfoMap.getResourceInfo(RDFS.Resource);
         if (rootInfo != null && rootInfo.getRDFSSubList().size() > 0) {
             Dimension dim = GraphUtilities.getAutoNodeDimension(gmanager, gmanager
@@ -204,6 +207,7 @@ public class GraphLayoutUtilities {
     public static void initRDFSGraphLayoutData(Map<RDFNode, GraphLayoutData> cellLayoutMap, RDFSInfo supInfo,
             GraphLayoutData parentData) {
         for (Resource resource : supInfo.getRDFSSubList()) {
+            RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
             if (!isNumProperty(resource)) {
                 GraphLayoutData childData = cellLayoutMap.get(resource);
                 if (childData == null) {

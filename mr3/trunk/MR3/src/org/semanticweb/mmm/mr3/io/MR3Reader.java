@@ -1,23 +1,24 @@
 /*
- * @(#) MR3Reader.java
+ * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
+ * Project Website: http://mr3.sourceforge.net/
  * 
+ * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
  * 
- * Copyright (C) 2003-2005 The MMM Project
+ * This file is part of MR^3.
  * 
- * This library is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation; either version 2.1 of the License, or (at your
- * option) any later version.
+ * MR^3 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  * 
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
- * for more details.
+ * MR^3 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation,
- * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *  
+ * You should have received a copy of the GNU General Public License
+ * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
+ * 
  */
 
 package org.semanticweb.mmm.mr3.io;
@@ -50,8 +51,6 @@ public class MR3Reader {
     private JGraphTreeLayout jgraphTreeLayout;
 
     private WeakReference<ReplaceRDFSDialog> replaceRDFSDialogRef;
-
-    private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
 
     public MR3Reader(GraphManager gm) {
         gmanager = gm;
@@ -93,7 +92,7 @@ public class MR3Reader {
             Model rdfModel = mr3Generator.getRDFModel(false);
             rdfModel.add(newModel);
             nsTableDialog.setCurrentNSPrefix(rdfModel);
-            gmanager.getRDFGraph().removeAllCells();
+            gmanager.getCurrentRDFGraph().removeAllCells();
             if (ProjectManager.getLayoutMap() != null) {
                 mr3Parser.replaceProjectRDFGraph(rdfModel);
             } else {
@@ -107,7 +106,7 @@ public class MR3Reader {
     }
 
     private void resetPropertyInfo() {
-        RDFGraph rdfGraph = gmanager.getRDFGraph();
+        RDFGraph rdfGraph = gmanager.getCurrentRDFGraph();
         Object[] cells = rdfGraph.getAllCells();
         for (int i = 0; i < cells.length; i++) {
             GraphCell cell = (GraphCell) cells[i];
@@ -178,6 +177,7 @@ public class MR3Reader {
         GraphCell targetCell = (GraphCell) graph.getTargetVertex(edge);
         RDFSInfo targetInfo = (RDFSInfo) GraphConstants.getValue(targetCell.getAttributes());
         Resource targetRes = targetInfo.getURI();
+        RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
         Model model = rdfsInfoMap.getPropertyLabelModel();
         for (StmtIterator i = model.listStatements(); i.hasNext();) {
             Statement stmt = i.nextStatement();
@@ -192,7 +192,7 @@ public class MR3Reader {
     }
 
     private void setPropertyLabels() {
-        RDFGraph classGraph = gmanager.getClassGraph();
+        RDFGraph classGraph = gmanager.getCurrentClassGraph();
         Object[] cells = classGraph.getAllCells();
         for (int i = 0; i < cells.length; i++) {
             if (RDFGraph.isEdge(cells[i])) {
@@ -212,8 +212,9 @@ public class MR3Reader {
             } else {
                 mr3Parser.createClassGraph(VGJTreeLayout.getVGJClassCellLayoutMap());
             }
+            RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
             rdfsInfoMap.clearTemporaryObject();
-            gmanager.getClassGraph().clearSelection();
+            gmanager.getCurrentClassGraph().clearSelection();
         } catch (RDFException e) {
             e.printStackTrace();
         }
@@ -230,8 +231,9 @@ public class MR3Reader {
             } else {
                 mr3Parser.createPropertyGraph(VGJTreeLayout.getVGJPropertyCellLayoutMap());
             }
+            RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
             rdfsInfoMap.clearTemporaryObject();
-            gmanager.getPropertyGraph().clearSelection();
+            gmanager.getCurrentPropertyGraph().clearSelection();
         } catch (RDFException e) {
             e.printStackTrace();
         }
@@ -240,7 +242,7 @@ public class MR3Reader {
     public void replaceRDF(Model model) {
         if (model != null) {
             nsTableDialog.setCurrentNSPrefix(model);
-            gmanager.getRDFGraph().removeAllCells();
+            gmanager.getCurrentRDFGraph().removeAllCells();
             // replaceGraph(mr3Parser.createRDFGraph(model,
             // VGJTreeLayout.getVGJRDFCellLayoutMap(model)));
             mr3Parser.replaceDefaultRDFGraph(model);
@@ -259,9 +261,9 @@ public class MR3Reader {
         if (model == null) { return; }
         new Thread() {
             public void run() {
-                if (gmanager.getRDFGraph().getAllCells().length == 0) {
-                    gmanager.getClassGraph().removeAllCells();
-                    gmanager.getPropertyGraph().removeAllCells();
+                if (gmanager.getCurrentRDFGraph().getAllCells().length == 0) {
+                    gmanager.getCurrentClassGraph().removeAllCells();
+                    gmanager.getCurrentPropertyGraph().removeAllCells();
                     gmanager.importing(true);
                     replaceRDFS(model);
                     performRDFSTreeLayout();
@@ -358,7 +360,7 @@ public class MR3Reader {
         if (model == null) { return; }
         new Thread() {
             public void run() {
-                File currentProject = MR3.getCurrentProject(); // NewProject‚æ‚è‚à‘O‚Ì‚ð•Û‘¶
+                File currentProject = mr3.getCurrentProject().getCurrentProjectFile(); // NewProject‚æ‚è‚à‘O‚Ì‚ð•Û‘¶
                 mr3.newProject(null);
                 gmanager.importing(true);
                 ProjectManager projectManager = new ProjectManager(gmanager);
@@ -371,8 +373,9 @@ public class MR3Reader {
                 gmanager.importing(false);
                 if (currentProject != null) {
                     MR3.setCurrentProject(currentProject);
-                    mr3.setTitle("MR3 - " + MR3.getCurrentProject().getAbsolutePath());
-                    HistoryManager.saveHistory(HistoryType.OPEN_PROJECT, MR3.getCurrentProject().getAbsolutePath());
+                    String path = mr3.getCurrentProject().getCurrentProjectFile().getAbsolutePath();
+                    mr3.setTitle("MR^3 - " + path);
+                    HistoryManager.saveHistory(HistoryType.OPEN_PROJECT, path);
                 }
             }
         }.start();

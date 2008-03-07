@@ -1,22 +1,24 @@
 /*
- * @(#) RDFGraphMarqueeHandler.java
+ * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
+ * Project Website: http://mr3.sourceforge.net/
  * 
- * Copyright (C) 2003 The MMM Project
+ * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
  * 
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * This file is part of MR^3.
  * 
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * MR^3 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation, Inc.,
- * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *  
+ * MR^3 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
+ * 
  */
 
 package org.semanticweb.mmm.mr3.jgraph;
@@ -30,7 +32,6 @@ import java.util.List;
 
 import javax.swing.*;
 
-import org.jgraph.cellview.*;
 import org.jgraph.graph.*;
 import org.semanticweb.mmm.mr3.*;
 import org.semanticweb.mmm.mr3.actions.*;
@@ -39,7 +40,7 @@ import org.semanticweb.mmm.mr3.data.MR3Constants.*;
 import org.semanticweb.mmm.mr3.ui.*;
 import org.semanticweb.mmm.mr3.util.*;
 
-/*
+/**
  * 
  * @author takeshi morita
  * 
@@ -72,7 +73,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     private static String INSERT_RESOURCE_TITLE = Translator.getString("InsertResourceDialog.Title");
     private static String INSERT_LITERAL_TITLE = Translator.getString("InsertLiteralDialog.Title");
     protected static Icon ELLIPSE_ICON = Utilities.getImageIcon("ellipse.gif");
-    protected static Icon RECTANGLE_ICON = Utilities.getImageIcon("rectangle.gif");
+    public static Icon RECTANGLE_ICON = Utilities.getImageIcon("shape_square.png");
 
     public RDFGraphMarqueeHandler(GraphManager manager, RDFGraph graph) {
         gmanager = manager;
@@ -297,7 +298,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     }
 
     public GraphCell insertResourceCell(Point pt) {
-        Object[] cells = gmanager.getClassGraph().getAllCells();
+        Object[] cells = gmanager.getCurrentClassGraph().getAllCells();
         List<Object> list = new ArrayList<Object>();
         list.add(null); // リソースのタイプが空の場合
         for (int i = 0; i < cells.length; i++) {
@@ -366,7 +367,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
         for (Iterator i = selectedResourcePorts.iterator(); i.hasNext();) {
             Port sourcePort = (Port) i.next();
             GraphCell rdfsPropCell = null;
-            Object[] rdfsPropertyCells = gmanager.getPropertyGraph().getSelectionCells();
+            Object[] rdfsPropertyCells = gmanager.getCurrentPropertyGraph().getSelectionCells();
 
             RDFSInfo info = null;
             if (rdfsPropertyCells.length == 1 && RDFGraph.isRDFSPropertyCell(rdfsPropertyCells[0])) {
@@ -474,7 +475,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     }
 
     private Object[] getSelectedRDFResourceCells() {
-        RDFGraph rdfGraph = gmanager.getRDFGraph();
+        RDFGraph rdfGraph = gmanager.getCurrentRDFGraph();
         Set<Object> resourceCells = new HashSet<Object>();
         Object[] rdfCells = rdfGraph.getDescendants(rdfGraph.getSelectionCells());
         for (int i = 0; i < rdfCells.length; i++) {
@@ -486,7 +487,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     }
 
     private Object[] getSelectedRDFPropertyCells() {
-        RDFGraph rdfGraph = gmanager.getRDFGraph();
+        RDFGraph rdfGraph = gmanager.getCurrentRDFGraph();
         Set<Object> rdfPropCells = new HashSet<Object>();
         Object[] rdfCells = rdfGraph.getDescendants(rdfGraph.getSelectionCells());
         for (int i = 0; i < rdfCells.length; i++) {
@@ -498,12 +499,12 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     }
 
     private void addChangeResourceTypeMenu(JPopupMenu menu) {
-        Object[] classCells = gmanager.getClassGraph().getSelectionCells();
+        Object[] classCells = gmanager.getCurrentClassGraph().getSelectionCells();
         Object[] resCells = getSelectedRDFResourceCells();
         if (resCells.length != 0 && classCells.length == 1) {
             menu.add(new AbstractAction(Translator.getString("Action.ChangeResourceType.Text")) {
                 public void actionPerformed(ActionEvent ev) {
-                    GraphCell typeCell = (GraphCell) gmanager.getClassGraph().getSelectionCell();
+                    GraphCell typeCell = (GraphCell) gmanager.getCurrentClassGraph().getSelectionCell();
                     Object[] resCells = getSelectedRDFResourceCells();
                     for (int i = 0; i < resCells.length; i++) {
                         RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(((GraphCell) resCells[i])
@@ -518,12 +519,12 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     }
 
     private void addChangePropertyMenu(JPopupMenu menu) {
-        Object[] rdfsPropCells = gmanager.getPropertyGraph().getSelectionCells();
+        Object[] rdfsPropCells = gmanager.getCurrentPropertyGraph().getSelectionCells();
         Object[] rdfPropCells = getSelectedRDFPropertyCells();
         if (rdfPropCells.length != 0 && rdfsPropCells.length == 1) {
             menu.add(new AbstractAction(Translator.getString("Action.ChangeProperty.Text")) {
                 public void actionPerformed(ActionEvent ev) {
-                    GraphCell rdfsPropCell = (GraphCell) gmanager.getPropertyGraph().getSelectionCell();
+                    GraphCell rdfsPropCell = (GraphCell) gmanager.getCurrentPropertyGraph().getSelectionCell();
                     Object[] rdfPropCells = getSelectedRDFPropertyCells();
                     for (int i = 0; i < rdfPropCells.length; i++) {
                         RDFSInfo rdfsInfo = (RDFSInfo) GraphConstants.getValue(rdfsPropCell.getAttributes());

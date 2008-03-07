@@ -1,23 +1,24 @@
 /*
- * @(#) RDFSModelExtraction.java
- *
- *
- * Copyright (C) 2003 The MMM Project
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
+ * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
+ * Project Website: http://mr3.sourceforge.net/
+ * 
+ * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
+ * 
+ * This file is part of MR^3.
+ * 
+ * MR^3 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * MR^3 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
+ * 
  */
 
 package org.semanticweb.mmm.mr3.io;
@@ -38,7 +39,6 @@ import com.hp.hpl.jena.vocabulary.*;
 public class RDFSModelExtraction {
 
     private GraphManager gmanager;
-    private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
 
     public RDFSModelExtraction(GraphManager gm) {
         gmanager = gm;
@@ -71,6 +71,7 @@ public class RDFSModelExtraction {
     // subPropertyOfが省略されたプロパティは，Propertyクラスのサブクラスとみなす、
     public void setDefaultSubPropertyOf(Resource property) throws RDFException {
         if (!property.hasProperty(RDFS.subPropertyOf)) {
+            RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
             rdfsInfoMap.addRootProperties(property);
         }
     }
@@ -147,6 +148,7 @@ public class RDFSModelExtraction {
         }
 
         info.setURI(metaResource.toString());
+        RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
         rdfsInfoMap.putResourceInfo(metaResource, info);
 
         return removeModel;
@@ -159,6 +161,7 @@ public class RDFSModelExtraction {
             ClassInfo supResInfo = getClassResInfo(RDFS.Resource);
             supResInfo.addSubClass(rdfsResource);
             info.addSupClass(RDFS.Resource);
+            RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
             rdfsInfoMap.putResourceInfo(RDFS.Resource, supResInfo);
         }
     }
@@ -176,6 +179,7 @@ public class RDFSModelExtraction {
             ClassInfo supResInfo = getClassResInfo((Resource) object);
             supResInfo.addSubClass(subject);
             info.addSupClass((Resource) object);
+            RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
             rdfsInfoMap.putResourceInfo((Resource) object, supResInfo);
         } else {
             return false;
@@ -203,6 +207,7 @@ public class RDFSModelExtraction {
             PropertyInfo supResInfo = getPropertyResInfo((Resource) object);
             // rdfsInfoMap.addRootProperties((Resource)object); //一時しのぎ
             supResInfo.addSubProperty(subject);
+            RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
             rdfsInfoMap.putResourceInfo((Resource) object, supResInfo);
             info.addSupProperty(object);
         } else {
@@ -225,6 +230,7 @@ public class RDFSModelExtraction {
             info.setMetaClass(object.toString());
         } else if (predicate.getURI().matches(MR3Resource.conceptLabel.getURI() + ".*")) {
             // subClassOfやsubPropertyOfと同時に使った場合にのみ有効
+            RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
             rdfsInfoMap.addPropertyLabelModel(stmt);
         } else {
             return false;
@@ -243,12 +249,14 @@ public class RDFSModelExtraction {
     }
 
     public ClassInfo getClassResInfo(Resource resource) {
+        RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
         ClassInfo info = (ClassInfo) rdfsInfoMap.getResourceInfo(resource);
         if (info == null) info = new ClassInfo("");
         return info;
     }
 
     public PropertyInfo getPropertyResInfo(Resource resource) {
+        RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
         PropertyInfo info = (PropertyInfo) rdfsInfoMap.getResourceInfo(resource);
         if (info == null) info = new PropertyInfo("");
         return info;

@@ -1,23 +1,24 @@
 /*
- * @(#) Editor.java
+ * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
+ * Project Website: http://mr3.sourceforge.net/
  * 
+ * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
  * 
- * Copyright (C) 2003-2005 The MMM Project
+ * This file is part of MR^3.
  * 
- * This library is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation; either version 2.1 of the License, or (at your
- * option) any later version.
+ * MR^3 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  * 
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
- * for more details.
+ * MR^3 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation,
- * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *  
+ * You should have received a copy of the GNU General Public License
+ * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
+ * 
  */
 
 package org.semanticweb.mmm.mr3.editor;
@@ -45,7 +46,7 @@ import org.semanticweb.mmm.mr3.util.*;
  * @author takeshi morita
  * 
  */
-public abstract class Editor extends JInternalFrame implements GraphSelectionListener {
+public abstract class Editor extends JPanel implements GraphSelectionListener {
 
     protected RDFGraph graph;
     protected GraphManager gmanager;
@@ -59,21 +60,14 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
     protected MR3Parser mr3Parser;
 
     protected Action undo, redo, remove;
-    private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
 
-    protected Editor(String title) {
-        super(title, true, false, true);
-        setIconifiable(true);
-        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        try {
-            setSelected(true);
-        } catch (java.beans.PropertyVetoException e) {
-            e.printStackTrace();
-        }
-        setVisible(true);
+    protected Font graphFont;
+
+    protected Editor() {
     }
 
     protected void initEditor(RDFGraph g, GraphManager gm) {
+        graphFont = new Font("SansSerif", Font.PLAIN, 11); // デフォルト．
         graph = g;
         lastSelectionCells = new Object[0];
         initField(gm);
@@ -96,11 +90,15 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
     }
 
     protected void initLayout() {
-        Container container = getContentPane();
-        container.setLayout(new BorderLayout());
-        container.add(createToolBar(), BorderLayout.NORTH);
+        // Container container = getContentPane();
+        // container.setLayout(new BorderLayout());
+        // container.add(createToolBar(), BorderLayout.NORTH);
+        // graphScrollPane = new JScrollPane(graph);
+        // container.add(graphScrollPane, BorderLayout.CENTER);
+        setLayout(new BorderLayout());
+        add(createToolBar(), BorderLayout.NORTH);
         graphScrollPane = new JScrollPane(graph);
-        container.add(graphScrollPane, BorderLayout.CENTER);
+        add(graphScrollPane, BorderLayout.CENTER);
     }
 
     class EditorKeyEvent extends KeyAdapter {
@@ -135,7 +133,11 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
     }
 
     private static final Point INSERT_POINT = new Point(10, 10);
-    protected static JToggleButton editModeButton = new JToggleButton();
+    protected JToggleButton editModeButton = new JToggleButton();
+
+    public boolean isEditMode() {
+        return editModeButton.isSelected();
+    }
 
     class InsertEllipseResourceAction extends AbstractAction {
 
@@ -160,7 +162,7 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
     class InsertRectangleResourceAction extends AbstractAction {
 
         InsertRectangleResourceAction() {
-            super("", Utilities.getImageIcon("rectangle.gif"));
+            super("", RDFGraphMarqueeHandler.RECTANGLE_ICON);
             putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.CTRL_MASK));
         }
 
@@ -200,9 +202,18 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
             mh.connectButton.setIcon(connectIcon);
             toolbar.add(mh.connectButton);
 
-            if (gmanager.isRDFGraph(graph)) {
+            if (graph.getType() == GraphType.RDF) {
                 toolbar.addSeparator();
-                editModeButton.setIcon(Utilities.getImageIcon("editMode.gif"));
+                editModeButton.setIcon(Utilities.getImageIcon("link.png"));
+                editModeButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        if (editModeButton.isSelected()) {
+                            editModeButton.setIcon(Utilities.getImageIcon("link_break.png"));
+                        } else {
+                            editModeButton.setIcon(Utilities.getImageIcon("link.png"));
+                        }
+                    }
+                });
                 toolbar.add(editModeButton);
                 // toolbar.add(new AbstractAction("", connectIcon) {
                 // public void actionPerformed(ActionEvent e) {
@@ -219,11 +230,11 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 
         toolbar.addSeparator();
 
-        if (gmanager.isRDFGraph(graph) || gmanager.isPropertyGraph(graph)) {
+        if (graph.getType() == GraphType.RDF || graph.getType() == GraphType.PROPERTY) {
             toolbar.add(new InsertEllipseResourceAction());
         }
 
-        if (!gmanager.isPropertyGraph(graph)) {
+        if (graph.getType() != GraphType.PROPERTY) {
             toolbar.add(new InsertRectangleResourceAction());
         }
 
@@ -262,7 +273,6 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 
         return toolbar;
     }
-
     // Update Undo/Redo Button State based on Undo Manager
     protected void updateHistoryButtons() {
         // The View Argument Defines the Context
@@ -272,6 +282,7 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 
     private void uriConsistencyCheck(Object[] orgAllCells) {
         if (graph.getType() == GraphType.RDF) { return; }
+        RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
         Object[] newAllCells = graph.getAllCells();
         Set<GraphCell> newRDFSCellSet = new HashSet<GraphCell>();
         for (int i = 0; i < newAllCells.length; i++) { // undo/redo前よりもセル数が増えた場合
@@ -296,7 +307,8 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 
     class UndoAction extends AbstractAction {
         UndoAction() {
-            super("undo", Utilities.getImageIcon("undo.gif"));
+            super(Translator.getString("Action.Undo.Text"), Utilities.getImageIcon(Translator
+                    .getString("Action.Undo.Icon")));
         }
         // Undo the last Change to the Model or the View
         public void actionPerformed(ActionEvent e) {
@@ -321,7 +333,8 @@ public abstract class Editor extends JInternalFrame implements GraphSelectionLis
 
     class RedoAction extends AbstractAction {
         RedoAction() {
-            super("redo", Utilities.getImageIcon("redo.gif"));
+            super(Translator.getString("Action.Redo.Text"), Utilities.getImageIcon(Translator
+                    .getString("Action.Redo.Icon")));
         }
         // Redo the last Change to the Model or the View
         public void actionPerformed(ActionEvent e) {

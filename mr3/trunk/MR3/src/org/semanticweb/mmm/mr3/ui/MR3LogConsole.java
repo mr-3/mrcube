@@ -28,8 +28,6 @@ import java.io.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-import org.jgraph.util.*;
-
 /**
  * Shows the System.in and System.out in a nice JFrame.
  * 

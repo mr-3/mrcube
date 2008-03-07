@@ -1,22 +1,24 @@
 /*
- * @(#) ReplaceRDFSDialog.java
+ * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
+ * Project Website: http://mr3.sourceforge.net/
  * 
- * Copyright (C) 2003 The MMM Project
+ * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
  * 
- * This library is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation; either version 2.1 of the License, or (at your
- * option) any later version.
+ * This file is part of MR^3.
  * 
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
- * for more details.
+ * MR^3 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation,
- * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *  
+ * MR^3 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
+ * 
  */
 
 package org.semanticweb.mmm.mr3.ui;
@@ -69,8 +71,6 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
     private boolean isApply;
 
     private static final String NULL = "NULL";
-
-    private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
 
     private static final ImageIcon UP_ICON = Utilities.getImageIcon(Translator.getString("ReplaceRDFSDialog.Icon.up"));
     private static final ImageIcon DOWN_ICON = Utilities.getImageIcon(Translator
@@ -177,6 +177,7 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
         rdfsModelExtraction.extractPropertyModel(replaceModel);
 
         setListData(currentClassListModel, gmanager.getClassSet());
+        RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
         setListData(replaceClassListModel, rdfsInfoMap.getClassSet(new HashSet<String>(), RDFS.Resource));
         setListData(currentPropertyListModel, gmanager.getPropertySet());
         Set replacePropertySet = new HashSet();
@@ -311,7 +312,7 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
     }
     private void replaceClassList() {
         Map currentReplaceMap = getCurrentReplaceMap(currentClassListModel, replaceClassListModel);
-        RDFGraph graph = gmanager.getRDFGraph();
+        RDFGraph graph = gmanager.getCurrentRDFGraph();
         Object[] cells = graph.getAllCells();
         for (int i = 0; i < cells.length; i++) {
             Object cell = cells[i];
@@ -323,7 +324,7 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
 
     private void replacePropertyList() {
         Map currentReplaceMap = getCurrentReplaceMap(currentPropertyListModel, replacePropertyListModel);
-        RDFGraph graph = gmanager.getRDFGraph();
+        RDFGraph graph = gmanager.getCurrentRDFGraph();
         Object[] cells = graph.getAllCells();
         for (int i = 0; i < cells.length; i++) {
             GraphCell cell = (GraphCell) cells[i];
@@ -338,7 +339,7 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
     }
 
     private void removeCurrentClass() {
-        RDFGraph graph = gmanager.getClassGraph();
+        RDFGraph graph = gmanager.getCurrentClassGraph();
         Object[] cells = graph.getAllCells();
         graph.clearSelection();
         for (int i = 0; i < cells.length; i++) {
@@ -359,7 +360,7 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
     }
 
     private void removeCurrentProperty() {
-        RDFGraph graph = gmanager.getPropertyGraph();
+        RDFGraph graph = gmanager.getCurrentPropertyGraph();
         Object[] cells = graph.getAllCells();
         graph.clearSelection();
         for (int i = 0; i < cells.length; i++) {
@@ -401,6 +402,7 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
     public void setVisible(boolean flag) {
         super.setVisible(flag);
         if (!flag) {
+            RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
             rdfsInfoMap.clearTemporaryObject();
         }
     }

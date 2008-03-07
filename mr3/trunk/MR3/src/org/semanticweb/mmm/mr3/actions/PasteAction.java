@@ -1,23 +1,24 @@
 /*
- * @(#) PasteAction.java
- *
- *
- * Copyright (C) 2003 The MMM Project
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
+ * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
+ * Project Website: http://mr3.sourceforge.net/
+ * 
+ * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
+ * 
+ * This file is part of MR^3.
+ * 
+ * MR^3 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * MR^3 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
+ * 
  */
 
 package org.semanticweb.mmm.mr3.actions;
@@ -45,8 +46,6 @@ public class PasteAction extends AbstractAction {
     private GraphManager gmanager;
     private static final String TITLE = Translator.getString("Action.Paste.Text");
     private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("Action.Paste.Icon"));
-
-    private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
 
     public PasteAction(RDFGraph g, GraphManager gm) {
         super(TITLE, ICON);
@@ -154,6 +153,7 @@ public class PasteAction extends AbstractAction {
         PropertyInfo orgInfo = (PropertyInfo) GraphConstants.getValue(cell.getAttributes());
         PropertyInfo newInfo = new PropertyInfo(orgInfo);
         newInfo.setURI(cloneRDFSURI(newInfo, GraphType.PROPERTY));
+        RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
         rdfsInfoMap.putURICellMap(newInfo, cell);
         GraphConstants.setValue(cell.getAttributes(), newInfo);
         GraphUtilities.resizeRDFSResourceCell(gmanager, newInfo, cell);
@@ -166,6 +166,7 @@ public class PasteAction extends AbstractAction {
         ClassInfo orgInfo = (ClassInfo) GraphConstants.getValue(cell.getAttributes());
         ClassInfo newInfo = new ClassInfo(orgInfo);
         newInfo.setURI(cloneRDFSURI(newInfo, GraphType.CLASS));
+        RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
         rdfsInfoMap.putURICellMap(newInfo, cell);
         GraphConstants.setValue(cell.getAttributes(), newInfo);
         GraphUtilities.resizeRDFSResourceCell(gmanager, newInfo, cell);

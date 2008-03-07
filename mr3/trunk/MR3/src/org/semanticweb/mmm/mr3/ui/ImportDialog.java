@@ -1,24 +1,26 @@
 /*
- * @(#) ImportDialog 2004/02/11
+ * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
+ * Project Website: http://mr3.sourceforge.net/
  * 
+ * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
  * 
- * Copyright (C) 2003 The MMM Project
+ * This file is part of MR^3.
  * 
- * This library is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation; either version 2.1 of the License, or (at your
- * option) any later version.
+ * MR^3 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  * 
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
- * for more details.
+ * MR^3 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation,
- * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *  
+ * You should have received a copy of the GNU General Public License
+ * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
+ * 
  */
+
 package org.semanticweb.mmm.mr3.ui;
 
 import java.awt.*;
@@ -275,7 +277,7 @@ public class ImportDialog extends JDialog implements ActionListener {
             JFileChooser jfc = new JFileChooser(userPrefs.get(PrefConstants.WorkDirectory, ""));
             jfc.setFileHidingEnabled(false);
             jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            if (jfc.showOpenDialog(gmanager.getDesktop()) == JFileChooser.APPROVE_OPTION) { return jfc
+            if (jfc.showOpenDialog(gmanager.getDesktopTabbedPane()) == JFileChooser.APPROVE_OPTION) { return jfc
                     .getSelectedFile(); }
             return null;
         }
@@ -464,12 +466,12 @@ public class ImportDialog extends JDialog implements ActionListener {
             try {
                 inputStreamSet.add(new BufferedInputStream(getURI(uri).openStream()));
             } catch (UnknownHostException uhe) {
-                JOptionPane.showMessageDialog(gmanager.getDesktop(), "Unknown Host(Proxy)", "Warning",
+                JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), "Unknown Host(Proxy)", "Warning",
                         JOptionPane.ERROR_MESSAGE);
             } catch (MalformedURLException uriex) {
                 uriex.printStackTrace();
             } catch (IOException ioe) {
-                JOptionPane.showMessageDialog(gmanager.getDesktop(), "File Not Found.", "Warning",
+                JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), "File Not Found.", "Warning",
                         JOptionPane.ERROR_MESSAGE);
             }
         }

@@ -1,22 +1,24 @@
 /*
- * @(#) NameSpaceTableDialog.java
+ * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
+ * Project Website: http://mr3.sourceforge.net/
  * 
- * Copyright (C) 2003-2005 The MMM Project
+ * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
  * 
- * This library is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation; either version 2.1 of the License, or (at your
- * option) any later version.
+ * This file is part of MR^3.
  * 
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
- * for more details.
+ * MR^3 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation,
- * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *  
+ * MR^3 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
+ * 
  */
 
 package org.semanticweb.mmm.mr3.ui;
@@ -31,7 +33,6 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
 
-import org.apache.xerces.util.*;
 import org.semanticweb.mmm.mr3.data.*;
 import org.semanticweb.mmm.mr3.jgraph.*;
 import org.semanticweb.mmm.mr3.util.*;
@@ -277,7 +278,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
     /** prefix Ç™ãÛÇ≈Ç»Ç≠Ç©Ç¬ÅCÇ∑Ç≈Ç…ìoò^Ç≥ÇÍÇƒÇ¢Ç»Ç¢èÍçátrue */
     private boolean isValidPrefixWithWarning(String prefix) {
         if (isValidPrefix(prefix)) { return true; }
-        JOptionPane.showMessageDialog(gmanager.getDesktop(), Translator.getString("Warning.Message5"), WARNING,
+        JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), Translator.getString("Warning.Message5"), WARNING,
                 JOptionPane.ERROR_MESSAGE);
         return false;
     }
@@ -285,7 +286,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
     /** nsÇ™ãÛÇ≈Ç‡nullÇ≈Ç‡Ç»Ç≠ÅCÇ∑Ç≈Ç…ìoò^Ç≥ÇÍÇƒÇ»Ç¢èÍçá true */
     private boolean isValidNSWithWarning(String ns) {
         if (isValidNS(ns)) { return true; }
-        JOptionPane.showMessageDialog(gmanager.getDesktop(), Translator.getString("Warning.Message6"), WARNING,
+        JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), Translator.getString("Warning.Message6"), WARNING,
                 JOptionPane.ERROR_MESSAGE);
         return false;
     }
@@ -310,12 +311,12 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
         String rmPrefix = (String) nsTableModel.getValueAt(row, 1);
         String rmNS = (String) nsTableModel.getValueAt(row, 2);
         if (rmNS.equals(gmanager.getBaseURI())) {
-            JOptionPane.showMessageDialog(gmanager.getDesktop(), Translator.getString("Warning.Message7"), WARNING,
+            JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), Translator.getString("Warning.Message7"), WARNING,
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
         if (rmNS.equals(MR3Resource.DefaultURI.getNameSpace())) {
-            JOptionPane.showMessageDialog(gmanager.getDesktop(), Translator.getString("Warning.Message8"), WARNING,
+            JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), Translator.getString("Warning.Message8"), WARNING,
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -324,7 +325,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
             nsTableModel.removeRow(row);
             setPrefixNSInfoSet();
         } else {
-            JOptionPane.showMessageDialog(gmanager.getDesktop(), Translator.getString("Warning.Message9"), WARNING,
+            JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), Translator.getString("Warning.Message9"), WARNING,
                     JOptionPane.ERROR_MESSAGE);
         }
     }

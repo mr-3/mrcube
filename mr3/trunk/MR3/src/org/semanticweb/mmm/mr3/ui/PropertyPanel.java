@@ -1,22 +1,24 @@
 /*
- * @(#) PropertyPanel.java
+ * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
+ * Project Website: http://mr3.sourceforge.net/
  * 
- * Copyright (C) 2003 The MMM Project
+ * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
  * 
- * This library is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation; either version 2.1 of the License, or (at your
- * option) any later version.
+ * This file is part of MR^3.
  * 
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
- * for more details.
+ * MR^3 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation,
- * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *  
+ * MR^3 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
+ * 
  */
 
 package org.semanticweb.mmm.mr3.ui;
@@ -45,7 +47,7 @@ public class PropertyPanel extends OntologyPanel {
     private WeakReference selectRDFSDialogRef;
 
     public PropertyPanel(GraphManager manager) {
-        super(manager.getPropertyGraph(), manager);
+        super(manager.getCurrentPropertyGraph(), manager);
         labelPanel.setGraphType(GraphType.PROPERTY);
         commentPanel.setGraphType(GraphType.PROPERTY);
         // setBorder(BorderFactory.createTitledBorder(Translator.getString("AttributeDialog.OntPropertyAttribute.Text")));
@@ -185,10 +187,11 @@ public class PropertyPanel extends OntologyPanel {
                     for (int i = 0; i < rlist.length; i++) {
                         info.removeDomain(rlist[i]);
                     }
+                    RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
                     rdfsInfoMap.putURICellMap(info, cell);
                     domainList.setListData(info.getDomain().toArray());
-                    HistoryManager.saveHistory(HistoryType.DELETE_ONT_PROPERTY_DOMAIN, beforeDomainSet, info.getDomain(),
-                            info.getURIStr());
+                    HistoryManager.saveHistory(HistoryType.DELETE_ONT_PROPERTY_DOMAIN, beforeDomainSet, info
+                            .getDomain(), info.getURIStr());
                 }
                 if (!rangeList.isSelectionEmpty()) {
                     Set beforeRangeSet = new HashSet(info.getRange());
@@ -196,10 +199,11 @@ public class PropertyPanel extends OntologyPanel {
                     for (int i = 0; i < rlist.length; i++) {
                         info.removeRange(rlist[i]);
                     }
+                    RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
                     rdfsInfoMap.putURICellMap(info, cell);
                     rangeList.setListData(info.getRange().toArray());
-                    HistoryManager.saveHistory(HistoryType.DELETE_ONT_PROPERTY_RANGE, beforeRangeSet, info.getRange(), info
-                            .getURIStr());
+                    HistoryManager.saveHistory(HistoryType.DELETE_ONT_PROPERTY_RANGE, beforeRangeSet, info.getRange(),
+                            info.getURIStr());
                 }
             }
         }
@@ -223,8 +227,8 @@ public class PropertyPanel extends OntologyPanel {
                     Set beforeDomainSet = new HashSet(info.getDomain());
                     info.addAllDomain(set);
                     domainList.setListData(info.getDomain().toArray());
-                    HistoryManager.saveHistory(HistoryType.ADD_ONT_PROPERTY_DOMAIN, beforeDomainSet, info.getDomain(), info
-                            .getURIStr());
+                    HistoryManager.saveHistory(HistoryType.ADD_ONT_PROPERTY_DOMAIN, beforeDomainSet, info.getDomain(),
+                            info.getURIStr());
                 }
             }
 
@@ -234,8 +238,8 @@ public class PropertyPanel extends OntologyPanel {
                     Set beforeRangeSet = new HashSet(info.getRange());
                     info.addAllRange(set);
                     rangeList.setListData(info.getRange().toArray());
-                    HistoryManager.saveHistory(HistoryType.ADD_ONT_PROPERTY_RANGE, beforeRangeSet, info.getRange(), info
-                            .getURIStr());
+                    HistoryManager.saveHistory(HistoryType.ADD_ONT_PROPERTY_RANGE, beforeRangeSet, info.getRange(),
+                            info.getURIStr());
                 }
             }
         }
@@ -247,7 +251,7 @@ public class PropertyPanel extends OntologyPanel {
             result = new SelectRDFSDialog(Translator.getString("SelectRegionDialog.Title"), gmanager);
             selectRDFSDialogRef = new WeakReference<SelectRDFSDialog>(result);
         }
-        result.replaceGraph(gmanager.getClassGraph());
+        result.replaceGraph(gmanager.getCurrentClassGraph());
         result.setRegionSet(regionSet);
         result.setVisible(true);
         return result;
@@ -257,6 +261,7 @@ public class PropertyPanel extends OntologyPanel {
         PropertyInfo propInfo = (PropertyInfo) rdfsInfo;
         super.setValue();
         basePanel.setMetaClassList(gmanager.getPropertyClassList());
+        RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
         if (rdfsInfoMap.isPropertyCell(MR3Resource.Property)) {
             supCellSet.remove(gmanager.getPropertyCell(MR3Resource.Property, false));
         }

@@ -1,6 +1,7 @@
 package org.semanticweb.mmm.mr3.util;
 
 /*
+
  * @(#)GPConverter.java 1.2 11/11/02
  * 
  * Copyright (C) 2001 Gaudenz Alder

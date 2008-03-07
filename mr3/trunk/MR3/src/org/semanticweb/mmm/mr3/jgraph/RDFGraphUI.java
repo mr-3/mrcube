@@ -1,22 +1,24 @@
 /*
- * @(#) RDFGraphUI.java
+ * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
+ * Project Website: http://mr3.sourceforge.net/
  * 
- * Copyright (C) 2003-2005 The MMM Project
+ * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
  * 
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * This file is part of MR^3.
  * 
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * MR^3 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation, Inc.,
- * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *  
+ * MR^3 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
+ * 
  */
 
 package org.semanticweb.mmm.mr3.jgraph;
@@ -34,10 +36,6 @@ import org.jgraph.graph.*;
 import org.jgraph.plaf.basic.*;
 import org.semanticweb.mmm.mr3.data.*;
 import org.semanticweb.mmm.mr3.data.MR3Constants.*;
-
-import static org.semanticweb.mmm.mr3.data.MR3Constants.CellViewType.ID;
-import static org.semanticweb.mmm.mr3.data.MR3Constants.CellViewType.LABEL;
-import static org.semanticweb.mmm.mr3.data.MR3Constants.CellViewType.URI;
 import org.semanticweb.mmm.mr3.io.*;
 import org.semanticweb.mmm.mr3.ui.*;
 import org.semanticweb.mmm.mr3.util.*;
@@ -52,7 +50,6 @@ public class RDFGraphUI extends BasicGraphUI {
     private RDFGraph graph;
     private GraphManager gmanager;
     private MR3Reader mr3Reader;
-    private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
     private static final String WARNING = Translator.getString("Warning");
 
     RDFGraphUI(RDFGraph g, GraphManager gm) {
@@ -151,6 +148,7 @@ public class RDFGraphUI extends BasicGraphUI {
     }
 
     private void changeURI(GraphCell cell, Object info) {
+        RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
         if (cell.toString() == null) { return; }
         Resource resource = getResource(cell.toString());
         if (resource == null) { return; }
@@ -197,6 +195,7 @@ public class RDFGraphUI extends BasicGraphUI {
     }
 
     private void changeID(GraphCell cell, Object info) {
+        RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
         if (RDFGraph.isRDFResourceCell(cell)) {
             RDFResourceInfo resInfo = (RDFResourceInfo) info;
             String uri = resInfo.getURI().getNameSpace() + cell.toString();
