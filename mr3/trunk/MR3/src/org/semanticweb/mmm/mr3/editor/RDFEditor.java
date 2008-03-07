@@ -1,28 +1,28 @@
 /*
- * @(#) RDFEditor.java
+ * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
+ * Project Website: http://mr3.sourceforge.net/
  * 
+ * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
  * 
- * Copyright (C) 2003-2005 The MMM Project
+ * This file is part of MR^3.
  * 
- * This library is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation; either version 2.1 of the License, or (at your
- * option) any later version.
+ * MR^3 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  * 
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
- * for more details.
+ * MR^3 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation,
- * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *  
+ * You should have received a copy of the GNU General Public License
+ * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
+ * 
  */
 
 package org.semanticweb.mmm.mr3.editor;
 
-import java.awt.*;
 import java.lang.ref.*;
 
 import javax.swing.*;
@@ -31,12 +31,10 @@ import org.jgraph.event.*;
 import org.jgraph.graph.*;
 import org.semanticweb.mmm.mr3.*;
 import org.semanticweb.mmm.mr3.data.*;
+import org.semanticweb.mmm.mr3.data.MR3Constants.*;
 import org.semanticweb.mmm.mr3.jgraph.*;
 import org.semanticweb.mmm.mr3.ui.*;
 import org.semanticweb.mmm.mr3.util.*;
-
-import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.vocabulary.*;
 
 /**
  * @author takeshi morita
@@ -49,12 +47,11 @@ public class RDFEditor extends Editor {
     private static WeakReference litPanelRef;
 
     public RDFEditor(GraphManager gm) {
-        super(Translator.getString("RDFEditor.Title"));
-        graph = gm.getRDFGraph();
+        graph = new RDFGraph(gm, new RDFGraphModel(), GraphType.RDF);
+        graph.setFont(graphFont);
         graph.getSelectionModel().setChildrenSelectable(false);
         graph.setMarqueeHandler(new RDFGraphMarqueeHandler(gm, graph));
-        initEditor(gm.getRDFGraph(), gm);
-        setFrameIcon(Utilities.getImageIcon(Translator.getString("RDFEditor.Icon")));
+        initEditor(graph, gm);
     }
 
     public static void updateComponents() {
@@ -79,7 +76,7 @@ public class RDFEditor extends Editor {
     private void selectResource(GraphCell cell) {
         RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(cell.getAttributes());
         if (info != null) {
-            if (!RDFEditor.isEditMode()) {
+            if (!isEditMode()) {
                 gmanager.selectClassCell(info.getTypeCell());
             }
             if (gmanager.getAttrDialog().isVisible()) {
@@ -96,11 +93,12 @@ public class RDFEditor extends Editor {
     }
 
     private void selectProperty(GraphCell cell) {
-        //PropertyInfo propertyInfo = (PropertyInfo) graph.getModel().getValue(cell.getAttributes());
+        // PropertyInfo propertyInfo = (PropertyInfo)
+        // graph.getModel().getValue(cell.getAttributes());
         PropertyInfo propertyInfo = (PropertyInfo) GraphConstants.getValue(cell.getAttributes());
         if (!propertyInfo.getURI().equals(MR3Resource.Nil)) {
             Object propCell = gmanager.getPropertyCell(propertyInfo.getURI(), false);
-            if (propCell != null && !RDFEditor.isEditMode()) {
+            if (propCell != null && !isEditMode()) {
                 gmanager.selectPropertyCell(propCell); // 対応するRDFSプロパティを選択
             }
         }
@@ -121,10 +119,6 @@ public class RDFEditor extends Editor {
             litPanel.setValue(cell);
             gmanager.getAttrDialog().setContentPane(litPanel);
         }
-    }
-
-    public static boolean isEditMode() {
-        return editModeButton.isSelected();
     }
 
     // From GraphSelectionListener Interface

@@ -1,22 +1,24 @@
 /*
- * @(#) ChangeCellAttributes.java
+ * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
+ * Project Website: http://mr3.sourceforge.net/
  * 
- * Copyright (C) 2003-2005 The MMM Project
+ * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
  * 
- * This library is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation; either version 2.1 of the License, or (at your
- * option) any later version.
+ * This file is part of MR^3.
  * 
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
- * for more details.
+ * MR^3 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation,
- * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *  
+ * MR^3 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
+ * 
  */
 
 package org.semanticweb.mmm.mr3.util;
@@ -56,9 +58,9 @@ public class GraphUtilities {
     }
 
     public static void changeAllCellColor(GraphManager gmanager) {
-        RDFGraph rdfGraph = gmanager.getRDFGraph();
-        RDFGraph classGraph = gmanager.getClassGraph();
-        RDFGraph propertyGraph = gmanager.getPropertyGraph();
+        RDFGraph rdfGraph = gmanager.getCurrentRDFGraph();
+        RDFGraph classGraph = gmanager.getCurrentClassGraph();
+        RDFGraph propertyGraph = gmanager.getCurrentPropertyGraph();
 
         Object[] cells = rdfGraph.getAllCells();
         for (int i = 0; i < cells.length; i++) {
@@ -163,7 +165,7 @@ public class GraphUtilities {
     public static final int ANON_NODE_WIDTH = 50;
 
     public static void resizeAllRDFResourceCell(GraphManager gm) {
-        RDFGraph graph = gm.getRDFGraph();
+        RDFGraph graph = gm.getCurrentRDFGraph();
         Object[] cells = graph.getAllCells();
         for (int i = 0; i < cells.length; i++) {
             GraphCell cell = (GraphCell) cells[i];
@@ -175,7 +177,7 @@ public class GraphUtilities {
     }
 
     public static void resizeAllRDFSResourceCell(GraphManager gm) {
-        Object[] cells = gm.getClassGraph().getAllCells();
+        Object[] cells = gm.getCurrentClassGraph().getAllCells();
         for (int i = 0; i < cells.length; i++) {
             GraphCell cell = (GraphCell) cells[i];
             if (RDFGraph.isRDFSCell(cell)) {
@@ -183,7 +185,7 @@ public class GraphUtilities {
                 resizeRDFSResourceCell(gm, info, cell);
             }
         }
-        cells = gm.getPropertyGraph().getAllCells();
+        cells = gm.getCurrentPropertyGraph().getAllCells();
         for (int i = 0; i < cells.length; i++) {
             GraphCell cell = (GraphCell) cells[i];
             if (RDFGraph.isRDFSCell(cell)) {
@@ -197,16 +199,16 @@ public class GraphUtilities {
         String value = gm.getRDFSNodeValue(rdfsInfo.getURI(), rdfsInfo);
         Dimension size = GraphUtilities.getAutoNodeDimension(gm, value);
         if (rdfsInfo instanceof ClassInfo) {
-            GraphUtilities.resizeCell(size, gm.getClassGraph(), cell);
+            GraphUtilities.resizeCell(size, gm.getCurrentClassGraph(), cell);
         } else {
-            GraphUtilities.resizeCell(size, gm.getPropertyGraph(), cell);
+            GraphUtilities.resizeCell(size, gm.getCurrentPropertyGraph(), cell);
         }
     }
 
     public static void resizeRDFResourceCell(GraphManager gm, RDFResourceInfo resInfo, GraphCell cell) {
         String value = gm.getRDFNodeValue(resInfo.getURI(), resInfo);
         Dimension size = GraphUtilities.getAutoNodeDimension(gm, value);
-        GraphUtilities.resizeCell(size, gm.getRDFGraph(), cell);
+        GraphUtilities.resizeCell(size, gm.getCurrentRDFGraph(), cell);
     }
 
     public static void resizeCell(Dimension size, RDFGraph graph, GraphCell cell) {
@@ -221,12 +223,12 @@ public class GraphUtilities {
     public static Dimension getAutoLiteralNodeDimention(GraphManager gmanager, String value) {
         if (!gmanager.isAutoNodeSize()) { return new Dimension(MR3CellMaker.CELL_WIDTH, MR3CellMaker.CELL_HEIGHT); }
         if (defaultFont == null) {
-            defaultFont = gmanager.getRDFGraph().getFont();
+            defaultFont = gmanager.getCurrentRDFGraph().getFont();
         }
         StringTokenizer tokenizer = new StringTokenizer(value, "\n");
         int width = MR3CellMaker.DEFAULT_CELL_WIDTH / 3;
         int height = MR3CellMaker.CELL_MARGIN;
-        FontMetrics fm = gmanager.getRDFGraph().getFontMetrics(defaultFont);
+        FontMetrics fm = gmanager.getCurrentRDFGraph().getFontMetrics(defaultFont);
         while (tokenizer.hasMoreTokens()) {
             String token = tokenizer.nextToken();
             if (width < fm.stringWidth(token)) {
@@ -266,9 +268,9 @@ public class GraphUtilities {
     public static Dimension getAutoNodeDimension(GraphManager gmanager, String value) {
         if (!gmanager.isAutoNodeSize()) { return new Dimension(MR3CellMaker.CELL_WIDTH, MR3CellMaker.CELL_HEIGHT); }
         if (defaultFont == null) {
-            defaultFont = gmanager.getRDFGraph().getFont();
+            defaultFont = gmanager.getCurrentRDFGraph().getFont();
         }
-        FontMetrics fm = gmanager.getRDFGraph().getFontMetrics(defaultFont);
+        FontMetrics fm = gmanager.getCurrentRDFGraph().getFontMetrics(defaultFont);
         int width = fm.stringWidth(value) + MR3CellMaker.CELL_MARGIN;
         if (value.length() == 0) {
             width = ANON_NODE_WIDTH;

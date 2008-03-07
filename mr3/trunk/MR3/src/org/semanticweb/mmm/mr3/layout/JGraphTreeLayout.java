@@ -1,32 +1,31 @@
 /*
- * @(#) JGraphTreeLayout.java
+ * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
+ * Project Website: http://mr3.sourceforge.net/
  * 
- * Copyright (C) 2003 The MMM Project
+ * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
  * 
- * This library is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation; either version 2.1 of the License, or (at your
- * option) any later version.
+ * This file is part of MR^3.
  * 
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
- * for more details.
+ * MR^3 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation,
- * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *  
+ * MR^3 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
+ * 
  */
 
 package org.semanticweb.mmm.mr3.layout;
 
 import java.util.*;
 
-import javax.swing.*;
-
 import org.jgraph.graph.*;
-import org.jgraph.layout.*;
 import org.semanticweb.mmm.mr3.jgraph.*;
 import org.semanticweb.mmm.mr3.util.*;
 
@@ -37,26 +36,23 @@ public class JGraphTreeLayout {
 
     private GraphManager gmanager;
     private MR3CellMaker cellMaker;
-    private RDFGraph rdfGraph;
-    private RDFGraph classGraph;
-    private RDFGraph propGraph;
 
     public JGraphTreeLayout(GraphManager gm) {
         gmanager = gm;
         cellMaker = new MR3CellMaker(gmanager);
-        rdfGraph = gmanager.getRDFGraph();
-        classGraph = gmanager.getClassGraph();
-        propGraph = gmanager.getPropertyGraph();
     }
 
     public void performJGraphTreeLayout() {
         gmanager.removeTypeCells();
-        performJGraphTreeLayout(rdfGraph, GraphLayoutUtilities.getJGraphRDFLayoutDirection(), 200, 20);
+        performJGraphTreeLayout(gmanager.getCurrentRDFGraph(), GraphLayoutUtilities.getJGraphRDFLayoutDirection(), 200,
+                20);
         gmanager.addTypeCells();
         performJGraphRDFSTreeLayout();
     }
 
     public void performJGraphRDFSTreeLayout() {
+        RDFGraph classGraph = gmanager.getCurrentClassGraph();
+        RDFGraph propGraph = gmanager.getCurrentPropertyGraph();
         GraphLayoutUtilities.reverseArc(cellMaker, classGraph);
         GraphLayoutUtilities.reverseArc(cellMaker, propGraph);
         performJGraphTreeLayout(classGraph, GraphLayoutUtilities.getJGraphClassLayoutDirection(), 30, 50);
@@ -78,6 +74,7 @@ public class JGraphTreeLayout {
                 rootCells.add(cell);
             }
         }
+        RDFGraph rdfGraph = gmanager.getCurrentRDFGraph();
 
         Object tmpRoot = null;
         if (rootCells.size() != 1) {

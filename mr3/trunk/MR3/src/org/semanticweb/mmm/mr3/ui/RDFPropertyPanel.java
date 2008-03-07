@@ -1,22 +1,24 @@
 /*
- * @(#) RDFPropertyPanel.java
+ * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
+ * Project Website: http://mr3.sourceforge.net/
  * 
- * Copyright (C) 2003 The MMM Project
+ * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
  * 
- * This library is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation; either version 2.1 of the License, or (at your
- * option) any later version.
+ * This file is part of MR^3.
  * 
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
- * for more details.
+ * MR^3 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation,
- * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *  
+ * MR^3 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
+ * 
  */
 
 package org.semanticweb.mmm.mr3.ui;
@@ -40,7 +42,7 @@ import org.semanticweb.mmm.mr3.util.*;
 import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.vocabulary.*;
 
-/*
+/**
  * 
  * @author takeshi morita
  * 
@@ -68,7 +70,6 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 
     private List<GraphCell> propList;
     private GraphManager gmanager;
-    private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
 
     private static final int FIELD_WIDTH = 50;
     private static final int FIELD_HEIGHT = 20;
@@ -358,7 +359,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
     private void changeProperty() {
         GraphCell propertyCell = null;
         Resource uri = ResourceFactory.createResource(getURI());
-
+        RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
         if (rdfsInfoMap.isPropertyCell(uri) || uri.equals(MR3Resource.Nil)) {
             propertyCell = gmanager.getPropertyCell(uri, false);
         } else {
@@ -367,10 +368,10 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 
             RDFSInfo propInfo = (RDFSInfo) GraphConstants.getValue(edge.getAttributes());
             if (propInfo.getURI().equals(MR3Resource.Nil)) {
-                int ans = JOptionPane.showConfirmDialog(gmanager.getDesktop(), Translator
+                int ans = JOptionPane.showConfirmDialog(gmanager.getDesktopTabbedPane(), Translator
                         .getString("Warning.Message10"), WARNING, JOptionPane.YES_NO_OPTION);
                 if (ans == JOptionPane.YES_OPTION) {
-                    propertyCell = (GraphCell) gmanager.insertSubRDFS(uri, null, gmanager.getPropertyGraph());
+                    propertyCell = (GraphCell) gmanager.insertSubRDFS(uri, null, gmanager.getCurrentPropertyGraph());
                     HistoryManager
                             .saveHistory(HistoryType.META_MODEL_MANAGEMNET_REPLACE_PROPERTY_WITH_CREATE_ONT_PROPERTY);
                 }
@@ -387,7 +388,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
                     // Set supProps = dialog.getSupRDFSSet();
                     // propertyCell = (GraphCell) gmanager.insertSubRDFS(uri,
                     // supProps, gmanager.getPropertyGraph());
-                    propertyCell = (GraphCell) gmanager.insertSubRDFS(uri, null, gmanager.getPropertyGraph());
+                    propertyCell = (GraphCell) gmanager.insertSubRDFS(uri, null, gmanager.getCurrentPropertyGraph());
                     HistoryManager
                             .saveHistory(HistoryType.META_MODEL_MANAGEMNET_REPLACE_PROPERTY_WITH_CREATE_ONT_PROPERTY);
                 } else if (createType == CreateRDFSType.RENAME) {
@@ -403,26 +404,27 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
             }
         }
 
-        if (!RDFEditor.isEditMode() && propertyCell != null) {
+        if (!gmanager.getCurrentRDFEditor().isEditMode() && propertyCell != null) {
             gmanager.selectPropertyCell(propertyCell); // 対応するRDFSプロパティを選択する
         }
 
-        PropertyInfo propInfo = (PropertyInfo)GraphConstants.getValue(propertyCell.getAttributes());
+        PropertyInfo propInfo = (PropertyInfo) GraphConstants.getValue(propertyCell.getAttributes());
         if (MR3.OFF_META_MODEL_MANAGEMENT) {
             propInfo = new PropertyInfo(propInfo.getURIStr());
         }
         GraphConstants.setValue(edge.getAttributes(), propInfo);
-        GraphUtilities.editCell(edge, edge.getAttributes(), gmanager.getRDFGraph());
+        GraphUtilities.editCell(edge, edge.getAttributes(), gmanager.getCurrentRDFGraph());
     }
 
     private void jumpRDFSProperty() {
         Resource uri = ResourceFactory.createResource(nsLabel.getText() + idField.getText());
         if (gmanager.isEmptyURI(uri.getURI())) { return; }
+        RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
         if (rdfsInfoMap.isPropertyCell(uri)) {
             Object propertyCell = (GraphCell) rdfsInfoMap.getPropertyCell(uri);
             gmanager.selectPropertyCell(propertyCell);
         } else {
-            JOptionPane.showMessageDialog(gmanager.getDesktop(), Translator.getString("Warning.Message3"), Translator
+            JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), Translator.getString("Warning.Message3"), Translator
                     .getString("Warning"), JOptionPane.ERROR_MESSAGE);
         }
     }

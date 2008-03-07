@@ -1,23 +1,24 @@
 /*
- * @(#) MR3Parser.java
+ * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
+ * Project Website: http://mr3.sourceforge.net/
  * 
+ * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
  * 
- * Copyright (C) 2003-2005 The MMM Project
+ * This file is part of MR^3.
  * 
- * This library is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation; either version 2.1 of the License, or (at your
- * option) any later version.
+ * MR^3 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  * 
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
- * for more details.
+ * MR^3 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation,
- * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *  
+ * You should have received a copy of the GNU General Public License
+ * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
+ * 
  */
 
 package org.semanticweb.mmm.mr3.io;
@@ -46,7 +47,6 @@ public class MR3Parser {
 
     private MR3CellMaker cellMaker;
     private GraphManager gmanager;
-    private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
 
     public MR3Parser(GraphManager manager) {
         gmanager = manager;
@@ -57,11 +57,12 @@ public class MR3Parser {
 
     public void createClassGraph(Map cellLayoutMap) throws RDFException {
         duplicateSubInfo = new HashSet<RDFSInfo>();
-        RDFGraph graph = gmanager.getClassGraph();
+        RDFGraph graph = gmanager.getCurrentClassGraph();
         graph.removeEdges();
         DefaultGraphCell rootCell = (DefaultGraphCell) gmanager.getClassCell(RDFS.Resource, cellLayoutMap);
         Port rootPort = (Port) rootCell.getChildAt(0);
-
+        
+        RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
         ClassInfo rootInfo = (ClassInfo) rdfsInfoMap.getResourceInfo(RDFS.Resource);
         if (rootInfo != null) {
             GraphConstants.setValue(rootCell.getAttributes(), rootInfo);
@@ -74,8 +75,9 @@ public class MR3Parser {
     }
 
     public void createPropertyGraph(Map cellLayoutMap) throws RDFException {
+        RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
         duplicateSubInfo = new HashSet<RDFSInfo>();
-        RDFGraph graph = gmanager.getPropertyGraph();
+        RDFGraph graph = gmanager.getCurrentPropertyGraph();
         graph.removeEdges();
 
         DefaultGraphCell rootCell = (DefaultGraphCell) gmanager.getPropertyCell(MR3Resource.Property, cellLayoutMap);
@@ -111,6 +113,7 @@ public class MR3Parser {
     private void createRDFSGraph(GraphLayoutCache graphLayoutCache, RDFSInfo supInfo, GraphCell supCell, Port supPort,
             Map cellLayoutMap) throws RDFException {
         Map<Object, Map> attributes = new HashMap<Object, Map>();
+        RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
         for (Resource subRes : supInfo.getRDFSSubList()) {
             RDFSInfo subInfo = rdfsInfoMap.getResourceInfo(subRes);
 
@@ -220,7 +223,7 @@ public class MR3Parser {
     }
 
     private void replaceGraph(RDFGraph newGraph) {
-        gmanager.getRDFGraph().setModel(newGraph.getModel());
+        gmanager.getCurrentRDFGraph().setModel(newGraph.getModel());
     }
 
     public void replaceDefaultRDFGraph(Model model) {
@@ -350,7 +353,7 @@ public class MR3Parser {
         try {
             model.read(reader, gmanager.getBaseURI());
             model.add(currentModel);
-            gmanager.getRDFGraph().removeAllCells();
+            gmanager.getCurrentRDFGraph().removeAllCells();
             replaceDefaultRDFGraph(model);
         } catch (RDFException e) {
             e.printStackTrace();

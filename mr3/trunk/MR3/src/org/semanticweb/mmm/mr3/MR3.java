@@ -1,22 +1,24 @@
 /*
- * @(#) MR3.java
+ * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
+ * Project Website: http://mr3.sourceforge.net/
  * 
- * Copyright (C) 2003-2005 The MMM Project
+ * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
  * 
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * This file is part of MR^3.
  * 
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * MR^3 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation, Inc.,
- * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *  
+ * DODDLE-OWL is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
+ * 
  */
 
 package org.semanticweb.mmm.mr3;
@@ -43,7 +45,7 @@ import org.semanticweb.mmm.mr3.ui.*;
 import org.semanticweb.mmm.mr3.util.*;
 
 /**
- * MR3 Meta-Model Management founded on RDF-baed Revision Reflection
+ * @author Takeshi Morita
  */
 public class MR3 extends JFrame {
 
@@ -51,7 +53,7 @@ public class MR3 extends JFrame {
 
     private static File currentProject;
     private static Preferences userPrefs;
-    private JDesktopPane desktop;
+    private static JTabbedPane desktopTabbedPane;
 
     private MR3Reader mr3Reader;
     private MR3Writer mr3Writer;
@@ -81,11 +83,6 @@ public class MR3 extends JFrame {
     private JCheckBoxMenuItem isGroup;
     private JCheckBoxMenuItem showRDFPropertyLabelBox;
 
-    // private JInternalFrame[] iFrames = new JInternalFrame[4];
-    private JInternalFrame[] iFrames = new JInternalFrame[3];
-
-    private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
-
     public static StatusBarPanel STATUS_BAR;
     private static final int MAIN_FRAME_HEIGHT = 600;
     private static final int MAIN_FRAME_WIDTH = 800;
@@ -96,16 +93,15 @@ public class MR3 extends JFrame {
         initWeakReferences();
         mr3LogConsole = new MR3LogConsole(this, Translator.getString("LogConsole.Title"), null);
 
-        desktop = new JDesktopPane();
-        gmanager = new GraphManager(desktop, userPrefs, this);
+        desktopTabbedPane = new JTabbedPane();
+        gmanager = new GraphManager(desktopTabbedPane, userPrefs, this);
         mr3Reader = new MR3Reader(gmanager);
         mr3Writer = new MR3Writer(gmanager);
         initActions();
         getContentPane().add(createToolBar(), BorderLayout.NORTH);
 
         STATUS_BAR = new StatusBarPanel();
-        desktop.setBackground(DESKTOP_BACK_COLOR);
-        getContentPane().add(desktop, BorderLayout.CENTER);
+        getContentPane().add(desktopTabbedPane, BorderLayout.CENTER);
         getContentPane().add(STATUS_BAR, BorderLayout.SOUTH);
 
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -307,23 +303,17 @@ public class MR3 extends JFrame {
         RDFEditor result = rdfEditorRef.get();
         if (result == null) {
             result = new RDFEditor(gmanager);
-            gmanager.setRDFEditor(result);
-            iFrames[0] = result;
-            setRDFEditorBounds();
-            desktop.add(iFrames[0], Cursor.DEFAULT_CURSOR);
             rdfEditorRef = new WeakReference<RDFEditor>(result);
         }
         return result;
     }
 
     public void showRDFEditorOverview() {
-        if (!isActiveFrames()) { return; }
         OverviewDialog result = rdfEditorOverviewRef.get();
         if (result == null) {
             RDFEditor editor = getRDFEditor();
             result = new OverviewDialog(OverviewDialog.RDF_EDITOR_OVERVIEW, editor.getGraph(), editor.getJViewport());
             result.setFrameIcon(OverviewDialog.RDF_EDITOR_ICON);
-            desktop.add(result, JLayeredPane.MODAL_LAYER);
             rdfEditorOverviewRef = new WeakReference<OverviewDialog>(result);
         }
         result.setVisible(true);
@@ -333,23 +323,17 @@ public class MR3 extends JFrame {
         ClassEditor result = classEditorRef.get();
         if (result == null) {
             result = new ClassEditor(gmanager);
-            gmanager.setClassEditor(result);
-            iFrames[1] = result;
-            setClassEditorBounds();
-            desktop.add(iFrames[1], Cursor.DEFAULT_CURSOR);
             classEditorRef = new WeakReference<ClassEditor>(result);
         }
         return result;
     }
 
     public void showClassEditorOverview() {
-        if (!isActiveFrames()) { return; }
         OverviewDialog result = classEditorOverviewRef.get();
         if (result == null) {
             ClassEditor editor = getClassEditor();
             result = new OverviewDialog(OverviewDialog.CLASS_EDITOR_OVERVIEW, editor.getGraph(), editor.getJViewport());
             result.setFrameIcon(OverviewDialog.CLASS_EDITOR_ICON);
-            desktop.add(result, JLayeredPane.MODAL_LAYER);
             classEditorOverviewRef = new WeakReference<OverviewDialog>(result);
         }
         result.setVisible(true);
@@ -359,10 +343,6 @@ public class MR3 extends JFrame {
         PropertyEditor result = propertyEditorRef.get();
         if (result == null) {
             result = new PropertyEditor(gmanager);
-            gmanager.setPropertyEditor(result);
-            iFrames[2] = result;
-            setPropertyEditorBounds();
-            desktop.add(iFrames[2], Cursor.DEFAULT_CURSOR);
             propertyEditorRef = new WeakReference<PropertyEditor>(result);
         }
         return result;
@@ -382,14 +362,12 @@ public class MR3 extends JFrame {
     // }
 
     public void showPropertyEditorOverview() {
-        if (!isActiveFrames()) { return; }
         OverviewDialog result = propertyEditorOverviewRef.get();
         if (result == null) {
             PropertyEditor editor = getPropertyEditor();
             result = new OverviewDialog(OverviewDialog.PROPERTY_EDITOR_OVERVIEW, editor.getGraph(), editor
                     .getJViewport());
             result.setFrameIcon(OverviewDialog.PROPERTY_EDITOR_ICON);
-            desktop.add(result, JLayeredPane.MODAL_LAYER);
             propertyEditorOverviewRef = new WeakReference<OverviewDialog>(result);
         }
         result.setVisible(true);
@@ -406,7 +384,6 @@ public class MR3 extends JFrame {
     }
 
     public ImportDialog getImportDialog() {
-        if (!isActiveFrames()) { return null; }
         ImportDialog result = importDialogRef.get();
         if (result == null) {
             result = new ImportDialog(gmanager);
@@ -416,7 +393,6 @@ public class MR3 extends JFrame {
     }
 
     public ExportDialog getExportDialog() {
-        if (!isActiveFrames()) { return null; }
         ExportDialog result = exportDialogRef.get();
         if (result == null) {
             result = new ExportDialog(gmanager);
@@ -444,7 +420,6 @@ public class MR3 extends JFrame {
     }
 
     public ProjectInfoDialog getProjectInfoDialog() {
-        if (!isActiveFrames()) { return null; }
         ProjectInfoDialog result = projectInfoDialogRef.get();
         if (result == null) {
             result = new ProjectInfoDialog(gmanager, this);
@@ -485,24 +460,12 @@ public class MR3 extends JFrame {
 
     private JMenu getSelectMenu() {
         JMenu selectMenu = new JMenu(Translator.getString("Component.Select.Text"));
-        selectMenu.add(new SelectNodes(getRDFGraph(), Translator.getString("Component.Select.RDF.Text")));
-        selectMenu.add(new SelectNodes(getClassGraph(), Translator.getString("Component.Select.Class.Text")));
-        selectMenu.add(new SelectNodes(getPropertyGraph(), Translator.getString("Component.Select.Property.Text")));
+        selectMenu.add(new SelectNodes(gmanager, GraphType.RDF, Translator.getString("Component.Select.RDF.Text")));
+        selectMenu.add(new SelectNodes(gmanager, GraphType.CLASS, Translator.getString("Component.Select.Class.Text")));
+        selectMenu.add(new SelectNodes(gmanager, GraphType.PROPERTY, Translator
+                .getString("Component.Select.Property.Text")));
 
         return selectMenu;
-    }
-
-    public boolean isActiveFrames() {
-        for (int i = 0; i < iFrames.length; i++) {
-            if (iFrames[i] == null) { return false; }
-        }
-        return true;
-        // return iFrames[0] != null && iFrames[1] != null && iFrames[2] !=
-        // null;
-    }
-
-    public JInternalFrame[] getInternalFrames() {
-        return iFrames;
     }
 
     public GraphManager getGraphManager() {
@@ -536,7 +499,8 @@ public class MR3 extends JFrame {
         int editorPositionY = userPrefs.getInt(PrefConstants.RDFEditorPositionY, EDITOR_HEIGHT / 2);
         int editorWidth = userPrefs.getInt(PrefConstants.RDFEditorWidth, EDITOR_WIDTH);
         int editorHeight = userPrefs.getInt(PrefConstants.RDFEditorHeight, EDITOR_HEIGHT / 2);
-        iFrames[0].setBounds(new Rectangle(editorPositionX, editorPositionY, editorWidth, editorHeight)); // RDF
+        // iFrames[0].setBounds(new Rectangle(editorPositionX, editorPositionY,
+        // editorWidth, editorHeight)); // RDF
     }
 
     private void setClassEditorBounds() {
@@ -544,7 +508,8 @@ public class MR3 extends JFrame {
         int editorPositionY = userPrefs.getInt(PrefConstants.ClassEditorPositionY, 0);
         int editorWidth = userPrefs.getInt(PrefConstants.ClassEditorWidth, EDITOR_WIDTH / 2);
         int editorHeight = userPrefs.getInt(PrefConstants.ClassEditorHeight, EDITOR_HEIGHT / 2);
-        iFrames[1].setBounds(new Rectangle(editorPositionX, editorPositionY, editorWidth, editorHeight)); // Class
+        // iFrames[1].setBounds(new Rectangle(editorPositionX, editorPositionY,
+        // editorWidth, editorHeight)); // Class
     }
 
     private void setPropertyEditorBounds() {
@@ -552,7 +517,8 @@ public class MR3 extends JFrame {
         int editorPositionY = userPrefs.getInt(PrefConstants.PropertyEditorPositionY, 0);
         int editorWidth = userPrefs.getInt(PrefConstants.PropertyEditorWidth, EDITOR_WIDTH / 2);
         int editorHeight = userPrefs.getInt(PrefConstants.PropertyEditorHeight, EDITOR_HEIGHT / 2);
-        iFrames[2].setBounds(new Rectangle(editorPositionX, editorPositionY, editorWidth, editorHeight)); // Property
+        // iFrames[2].setBounds(new Rectangle(editorPositionX, editorPositionY,
+        // editorWidth, editorHeight)); // Property
     }
 
     private void setRDFSTreeEditorBounds() {
@@ -560,7 +526,8 @@ public class MR3 extends JFrame {
         int editorPositionY = userPrefs.getInt(PrefConstants.RDFSTreeEditorPositionY, 0);
         int editorWidth = userPrefs.getInt(PrefConstants.RDFSTreeEditorWidth, EDITOR_WIDTH / 3);
         int editorHeight = userPrefs.getInt(PrefConstants.RDFSTreeEditorHeight, EDITOR_HEIGHT);
-        iFrames[3].setBounds(new Rectangle(editorPositionX, editorPositionY, editorWidth, editorHeight)); // Property
+        // iFrames[3].setBounds(new Rectangle(editorPositionX, editorPositionY,
+        // editorWidth, editorHeight)); // Property
     }
 
     private void initOptions() {
@@ -607,8 +574,6 @@ public class MR3 extends JFrame {
                 GraphUtilities.selectedColor.getRGB()));
 
         GraphUtilities.isColor = userPrefs.getBoolean(PrefConstants.Color, true);
-        gmanager.setGraphBackground(new Color(userPrefs.getInt(PrefConstants.BackgroundColor, DESKTOP_BACK_COLOR
-                .getRGB())));
 
         setSize(userPrefs.getInt(PrefConstants.WindowWidth, MAIN_FRAME_WIDTH), userPrefs.getInt(
                 PrefConstants.WindowHeight, MAIN_FRAME_HEIGHT));
@@ -618,7 +583,7 @@ public class MR3 extends JFrame {
         HistoryManager.resetFileAppender(userPrefs.get(PrefConstants.logFile, System.getProperty("user.dir")
                 + "\\mr3.log"));
 
-        setTitle("MR3 - ");
+        setTitle("MR^3");
         setVisible(true);
     }
 
@@ -631,12 +596,8 @@ public class MR3 extends JFrame {
         return userPrefs.get(type, GraphLayoutUtilities.UP_TO_DOWN);
     }
 
-    public void clearMap() {
-        rdfsInfoMap.clear();
-    }
-
-    public static File getCurrentProject() {
-        return currentProject;
+    public static MR3Project getCurrentProject() {
+        return (MR3Project) desktopTabbedPane.getSelectedComponent();
     }
 
     public static void setCurrentProject(File file) {
@@ -835,23 +796,38 @@ public class MR3 extends JFrame {
     }
 
     public void newProject(String basePath) {
-        gmanager.getNSTableDialog().resetNSTable();
         gmanager.getAttrDialog().setNullPanel();
-        clearMap();
-        gmanager.removeAllCells();
         gmanager.getNSTableDialog().setDefaultNSPrefix();
-        setTitle("MR3 - " + Translator.getString("Component.File.NewProject.Text"));
-        setCurrentProject(new File(basePath, Translator.getString("Component.File.NewProject.Text")));
-        getRDFEditor().setVisible(true);
-        getClassEditor().setVisible(true);
-        getPropertyEditor().setVisible(true);
-        // getRDFSTreeEditor().setVisible(false);
+        Color backgroundColor = new Color(userPrefs.getInt(PrefConstants.BackgroundColor, DESKTOP_BACK_COLOR.getRGB()));
+        MR3Project project = new MR3Project(gmanager, basePath, backgroundColor);
+        desktopTabbedPane.addTab(null, project);
+        desktopTabbedPane.addTab(null, project);
+        desktopTabbedPane.setTabComponentAt(desktopTabbedPane.getTabCount() - 1, createTabComponent());
+
         HistoryManager.saveHistory(HistoryType.NEW_PROJECT);
     }
+    private JComponent createTabComponent() {
+        JPanel tabComp = new JPanel();
+        tabComp.setLayout(new BorderLayout());
+        ImageIcon icon = Utilities.getImageIcon(Translator.getString("Action.Remove.Icon"));
+        ExitProjectAction exitProjectAction = new ExitProjectAction(this, "", icon);
+        JButton tabButton = new JButton(exitProjectAction);
+        int width = icon.getIconWidth();
+        int height = icon.getIconHeight();
+        tabButton.setPreferredSize(new Dimension(width, height));
+        tabComp.add(new JLabel(Translator.getString("Component.File.NewProject.Text")), BorderLayout.CENTER);
+        tabComp.add(tabButton, BorderLayout.EAST);
 
-    public JDesktopPane getDesktopPane() {
-        return gmanager.getDesktop();
+        return tabComp;
     }
+
+    public void removeTab(MR3Project project) {
+        desktopTabbedPane.remove(project);
+    }
+
+    // public JDesktopPane getDesktopTabbedPane() {
+    // return gmanager.getDesktopTabbedPane();
+    // }
 
     public MR3Reader getMR3Reader() {
         return mr3Reader;
@@ -862,15 +838,15 @@ public class MR3 extends JFrame {
     }
 
     public RDFGraph getRDFGraph() {
-        return gmanager.getRDFGraph();
+        return gmanager.getCurrentRDFGraph();
     }
 
     public RDFGraph getClassGraph() {
-        return gmanager.getClassGraph();
+        return gmanager.getCurrentClassGraph();
     }
 
     public RDFGraph getPropertyGraph() {
-        return gmanager.getPropertyGraph();
+        return gmanager.getCurrentPropertyGraph();
     }
 
     public String getBaseURI() {
@@ -891,7 +867,7 @@ public class MR3 extends JFrame {
 
     public static void main(String[] arg) {
         initialize(MR3.class);
-        JWindow splashWindow = new HelpWindow(null, MR3Constants.LOGO);
+        JWindow splashWindow = new HelpWindow(null, MR3Constants.SPLASH_LOGO);
         try {
             if (arg.length == 1 && arg[0].equals("--off")) {
                 MR3.OFF_META_MODEL_MANAGEMENT = true;

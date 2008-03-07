@@ -1,22 +1,24 @@
 /*
- * @(#) RDFResourcePanel.java
+ * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
+ * Project Website: http://mr3.sourceforge.net/
  * 
- * Copyright (C) 2003-2005 The MMM Project
+ * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
  * 
- * This library is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation; either version 2.1 of the License, or (at your
- * option) any later version.
+ * This file is part of MR^3.
  * 
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
- * for more details.
+ * MR^3 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation,
- * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *  
+ * MR^3 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
+ * 
  */
 
 package org.semanticweb.mmm.mr3.ui;
@@ -39,7 +41,7 @@ import org.semanticweb.mmm.mr3.util.*;
 
 import com.hp.hpl.jena.rdf.model.*;
 
-/*
+/**
  * 
  * @author takeshi morita
  * 
@@ -68,7 +70,6 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
     private GraphCell cell;
     private RDFResourceInfo resInfo;
     private GraphManager gmanager;
-    private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
 
     private static final String WARNING = Translator.getString("Warning");
     private static final int MENU_WIDTH = 80;
@@ -243,12 +244,13 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
         private void jumpRDFSClass() {
             Resource uri = ResourceFactory.createResource(getResourceTypeURI());
             if (gmanager.isEmptyURI(uri.getURI())) { return; }
+            RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
             if (rdfsInfoMap.isClassCell(uri)) {
                 Object classCell = (GraphCell) rdfsInfoMap.getClassCell(uri);
                 gmanager.selectClassCell(classCell);
             } else {
-                JOptionPane.showMessageDialog(gmanager.getDesktop(), Translator.getString("Warning.Message3"), WARNING,
-                        JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(),
+                        Translator.getString("Warning.Message3"), WARNING, JOptionPane.ERROR_MESSAGE);
             }
         }
 
@@ -454,7 +456,7 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
             result = new SelectResourceTypeDialog(gmanager);
             selectResTypeDialogRef = new WeakReference<SelectResourceTypeDialog>(result);
         }
-        result.replaceGraph(gmanager.getClassGraph());
+        result.replaceGraph(gmanager.getCurrentClassGraph());
         result.setInitCell(resInfo.getTypeCell());
         result.setVisible(true);
         return result;
@@ -466,19 +468,20 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
             GraphCell typeCell = null;
             Resource uri = ResourceFactory.createResource(typePanel.getResourceTypeURI());
             if (gmanager.isEmptyURI(uri.getURI())) { return null; }
+            RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
             if (rdfsInfoMap.isClassCell(uri)) {
                 typeCell = (GraphCell) gmanager.getClassCell(uri, false);
             } else {
                 if (gmanager.isDuplicatedWithDialog(uri.getURI(), null, GraphType.CLASS)) { return null; }
                 if (MR3.OFF_META_MODEL_MANAGEMENT) { return null; }
                 if (resInfo.getTypeCell() == null) {
-                    int ans = JOptionPane.showConfirmDialog(gmanager.getDesktop(), Translator
+                    int ans = JOptionPane.showConfirmDialog(gmanager.getDesktopTabbedPane(), Translator
                             .getString("Warning.Message2"), WARNING, JOptionPane.YES_NO_OPTION);
                     if (ans == JOptionPane.YES_OPTION) {
-                        Set supClasses = gmanager.getSupRDFS(gmanager.getClassGraph(), Translator
+                        Set supClasses = gmanager.getSupRDFS(gmanager.getCurrentClassGraph(), Translator
                                 .getString("SelectSupClassesDialog.Title"));
                         if (supClasses == null) { return null; }
-                        typeCell = (GraphCell) gmanager.insertSubRDFS(uri, supClasses, gmanager.getClassGraph());
+                        typeCell = (GraphCell) gmanager.insertSubRDFS(uri, supClasses, gmanager.getCurrentClassGraph());
                         HistoryManager
                                 .saveHistory(HistoryType.META_MODEL_MANAGEMNET_REPLACE_RESOURCE_TYPE_WITH_CREATE_CLASS);
                     }
@@ -492,7 +495,7 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
                     CreateRDFSType createType = dialog.getType();
                     if (createType == CreateRDFSType.CREATE) {
                         // Set supClasses = dialog.getSupRDFSSet();
-                        typeCell = (GraphCell) gmanager.insertSubRDFS(uri, null, gmanager.getClassGraph());
+                        typeCell = (GraphCell) gmanager.insertSubRDFS(uri, null, gmanager.getCurrentClassGraph());
                         HistoryManager
                                 .saveHistory(HistoryType.META_MODEL_MANAGEMNET_REPLACE_RESOURCE_TYPE_WITH_CREATE_CLASS);
                     } else if (createType == CreateRDFSType.RENAME) {
@@ -519,7 +522,7 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
             if (e.getSource() == applyButton) {
                 apply();
             } else if (e.getSource() == resetButton) {
-                gmanager.getRDFGraph().setSelectionCell(cell);
+                gmanager.getCurrentRDFGraph().setSelectionCell(cell);
             } else if (e.getSource() == cancelButton) {
                 gmanager.setVisibleAttrDialog(false);
             }
@@ -532,7 +535,7 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
                 GraphCell resTypeCell = getResourceType();
                 if (resTypeCell != null) {
                     setResourceType(resTypeCell);
-                    if (!RDFEditor.isEditMode()) {
+                    if (!gmanager.getCurrentRDFEditor().isEditMode()) {
                         gmanager.selectClassCell(resTypeCell); // ‘Î‰ž‚·‚éƒNƒ‰ƒX‚ð‘I‘ð‚·‚é
                     }
                 }

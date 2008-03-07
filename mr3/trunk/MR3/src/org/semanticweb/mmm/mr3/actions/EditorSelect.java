@@ -1,23 +1,24 @@
 /*
- * @(#) EditorSelect.java
- *
- *
- * Copyright (C) 2003 The MMM Project
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
+ * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
+ * Project Website: http://mr3.sourceforge.net/
+ * 
+ * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
+ * 
+ * This file is part of MR^3.
+ * 
+ * MR^3 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * MR^3 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
+ * 
  */
 
 package org.semanticweb.mmm.mr3.actions;
@@ -28,6 +29,7 @@ import java.beans.*;
 import javax.swing.*;
 
 import org.semanticweb.mmm.mr3.*;
+import org.semanticweb.mmm.mr3.data.MR3Constants.*;
 import org.semanticweb.mmm.mr3.util.*;
 
 /**
@@ -71,26 +73,14 @@ public class EditorSelect extends MR3AbstractAction {
         }
     }
 
-    private void toFrontInternalFrame(JInternalFrame iFrame) {
-        if (iFrame == null) { return; }
-        try {
-            iFrame.toFront();
-            iFrame.setIcon(false);
-            iFrame.setSelected(true);
-        } catch (PropertyVetoException pve) {
-            pve.printStackTrace();
-        }
-    }
-
     public void actionPerformed(ActionEvent e) {
-        JInternalFrame[] iFrame = mr3.getInternalFrames();
+        MR3Project project = MR3.getCurrentProject();
         if (getName().equals(RDF_EDITOR)) {
-            toFrontInternalFrame(iFrame[0]);
+            project.frontEditor(GraphType.RDF);
         } else if (getName().equals(CLASS_EDITOR)) {
-            toFrontInternalFrame(iFrame[1]);
+            project.frontEditor(GraphType.CLASS);
         } else if (getName().equals(PROPERTY_EDITOR)) {
-            toFrontInternalFrame(iFrame[2]);
+            project.frontEditor(GraphType.PROPERTY);
         }
     }
-
 }

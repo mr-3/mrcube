@@ -1,23 +1,24 @@
 /*
- * @(#) RDFSInfoMap.java
+ * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
+ * Project Website: http://mr3.sourceforge.net/
  * 
+ * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
  * 
- * Copyright (C) 2003-2005 The MMM Project
+ * This file is part of MR^3.
  * 
- * This library is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation; either version 2.1 of the License, or (at your
- * option) any later version.
+ * MR^3 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  * 
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
- * for more details.
+ * MR^3 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation,
- * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *  
+ * You should have received a copy of the GNU General Public License
+ * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
+ * 
  */
 
 package org.semanticweb.mmm.mr3.data;
@@ -45,9 +46,8 @@ public class RDFSInfoMap {
     private DefaultTreeModel classTreeModel;
     private DefaultTreeModel propTreeModel;
     private Model propertyLabelModel;
-    private static RDFSInfoMap rdfsInfoMap = new RDFSInfoMap();
 
-    private RDFSInfoMap() {
+    public RDFSInfoMap() {
         resourceInfoMap = new HashMap<Resource, RDFSInfo>();
         classCellMap = new HashMap<String, Object>();
         propertyCellMap = new HashMap<String, Object>();
@@ -55,10 +55,6 @@ public class RDFSInfoMap {
         classTreeModel = new DefaultTreeModel(null);
         propTreeModel = new DefaultTreeModel(null);
         propertyLabelModel = ModelFactory.createDefaultModel();
-    }
-
-    public static RDFSInfoMap getInstance() {
-        return rdfsInfoMap;
     }
 
     public TreeModel getClassTreeModel() {
@@ -179,7 +175,7 @@ public class RDFSInfoMap {
         }
     }
 
-    public void putURICellMap(RDFSInfo info, Object cell) {        
+    public void putURICellMap(RDFSInfo info, Object cell) {
         if (info instanceof ClassInfo) {
             classCellMap.put(info.getURIStr(), cell);
         } else if (info instanceof PropertyInfo) {
@@ -233,7 +229,7 @@ public class RDFSInfoMap {
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
         for (Iterator i = rootProperties.iterator(); i.hasNext();) {
             Resource property = (Resource) i.next();
-            RDFSInfo info = rdfsInfoMap.getResourceInfo(property);
+            RDFSInfo info = getResourceInfo(property);
             DefaultMutableTreeNode node = new DefaultMutableTreeNode(getRDFSCell(property));
             if (info.getRDFSSubList().size() > 0) {
                 createRDFSNodes(property, node);

@@ -1,22 +1,24 @@
 /*
- * @(#) MR3Plugin.java
+ * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
+ * Project Website: http://mr3.sourceforge.net/
  * 
- * Copyright (C) 2003 The MMM Project
+ * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
  * 
- * This library is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation; either version 2.1 of the License, or (at your
- * option) any later version.
+ * This file is part of MR^3.
  * 
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
- * for more details.
+ * MR^3 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation,
- * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *  
+ * MR^3 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
+ * 
  */
 
 package org.semanticweb.mmm.mr3.plugin;
@@ -49,7 +51,6 @@ public abstract class MR3Plugin {
 
     private MR3 mr3;
     private String menuName;
-    private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
 
     protected MR3Plugin(String mn) {
         menuName = mn;
@@ -258,12 +259,11 @@ public abstract class MR3Plugin {
     }
 
     /**
-     * JDesktopPaneを得る．内部ウィンドウを作成する際に用いる．
      * 
-     * @return JDesktopPane
+     * @return JTabbedPane
      */
-    protected JDesktopPane getDesktopPane() {
-        return mr3.getDesktopPane();
+    protected JTabbedPane getDesktopPane() {
+        return mr3.getGraphManager().getDesktopTabbedPane();
     }
 
     /**
@@ -310,6 +310,7 @@ public abstract class MR3Plugin {
         Set selectionCells = new HashSet();
         RDFGraph graph = mr3.getClassGraph();
         graph.clearSelection();
+        RDFSInfoMap rdfsInfoMap = mr3.getGraphManager().getCurrentRDFSInfoMap();
         for (Iterator i = nodes.iterator(); i.hasNext();) {
             Object cell = rdfsInfoMap.getClassCell(ResourceFactory.createResource((String) i.next()));
             if (cell != null) {
@@ -328,6 +329,7 @@ public abstract class MR3Plugin {
         Set selectionCells = new HashSet();
         RDFGraph graph = mr3.getPropertyGraph();
         graph.clearSelection();
+        RDFSInfoMap rdfsInfoMap = mr3.getGraphManager().getCurrentRDFSInfoMap();
         for (Iterator i = nodes.iterator(); i.hasNext();) {
             Object cell = rdfsInfoMap.getPropertyCell(ResourceFactory.createResource((String) i.next()));
             if (cell != null) {

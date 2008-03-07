@@ -1,38 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry path="src" kind="src"/>
-	<classpathentry path="plugins/src" kind="src"/>
-	<classpathentry sourcepath="C:/usr/Jena-2.1/src" path="build/lib/jena.jar" kind="lib">
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="plugins/src"/>
+	<classpathentry kind="lib" path="build/lib/jena.jar" sourcepath="C:/usr/Jena-2.1/src">
 		<attributes>
 			<attribute name="javadoc_location" value="file:/E:/usr/Jena-2.1/doc/javadoc/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry path="build/lib/xercesImpl.jar" kind="lib"/>
-	<classpathentry path="build/lib/concurrent.jar" kind="lib"/>
-	<classpathentry path="build/lib/jgraph.jar" kind="lib">
+	<classpathentry kind="lib" path="build/lib/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="build/lib/concurrent.jar"/>
+	<classpathentry kind="lib" path="build/lib/jgraph.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="file:/C:/usr/jgraph-5.0/doc/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry path="build/lib/junit.jar" kind="lib"/>
-	<classpathentry path="build/lib/javaws.jar" kind="lib"/>
-	<classpathentry path="build/lib/commons-logging.jar" kind="lib"/>
-	<classpathentry path="build/lib/xml-apis.jar" kind="lib"/>
-	<classpathentry path="build/lib/JFontChooser.jar" kind="lib"/>
-	<classpathentry path="build/lib/JPager.jar" kind="lib"/>
-	<classpathentry path="build/lib/jgraphaddons.jar" kind="lib"/>
-	<classpathentry sourcepath="C:/usr/vowlidator_20050526/src" path="build/lib/vowlidator.jar" kind="lib"/>
-	<classpathentry path="build/lib/xml-datatype-validator-20011001.jar" kind="lib"/>
-	<classpathentry path="build/lib/xmlparserv2.jar" kind="lib"/>
-	<classpathentry path="build/lib/xschema.jar" kind="lib"/>
-	<classpathentry path="org.eclipse.jdt.launching.JRE_CONTAINER" kind="con"/>
-	<classpathentry path="build/lib/antlr-2.7.5.jar" kind="lib"/>
-	<classpathentry path="build/lib/arq.jar" kind="lib"/>
-	<classpathentry path="build/lib/icu4j_3_4.jar" kind="lib"/>
-	<classpathentry path="build/lib/jakarta-oro-2.0.8.jar" kind="lib"/>
-	<classpathentry path="build/lib/jenatest.jar" kind="lib"/>
-	<classpathentry path="build/lib/stax-1.1.1-dev.jar" kind="lib"/>
-	<classpathentry path="build/lib/stax-api-1.0.jar" kind="lib"/>
-	<classpathentry path="build/lib/log4j-1.2.12.jar" kind="lib"/>
-	<classpathentry path="build/classes" kind="output"/>
+	<classpathentry kind="lib" path="build/lib/junit.jar"/>
+	<classpathentry kind="lib" path="build/lib/javaws.jar"/>
+	<classpathentry kind="lib" path="build/lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="build/lib/xml-apis.jar"/>
+	<classpathentry kind="lib" path="build/lib/JFontChooser.jar"/>
+	<classpathentry kind="lib" path="build/lib/JPager.jar"/>
+	<classpathentry kind="lib" path="build/lib/jgraphaddons.jar"/>
+	<classpathentry kind="lib" path="build/lib/vowlidator.jar" sourcepath="C:/usr/vowlidator_20050526/src"/>
+	<classpathentry kind="lib" path="build/lib/xml-datatype-validator-20011001.jar"/>
+	<classpathentry kind="lib" path="build/lib/xmlparserv2.jar"/>
+	<classpathentry kind="lib" path="build/lib/xschema.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="build/lib/antlr-2.7.5.jar"/>
+	<classpathentry kind="lib" path="build/lib/arq.jar"/>
+	<classpathentry kind="lib" path="build/lib/icu4j_3_4.jar"/>
+	<classpathentry kind="lib" path="build/lib/jakarta-oro-2.0.8.jar"/>
+	<classpathentry kind="lib" path="build/lib/jenatest.jar"/>
+	<classpathentry kind="lib" path="build/lib/stax-1.1.1-dev.jar"/>
+	<classpathentry kind="lib" path="build/lib/stax-api-1.0.jar"/>
+	<classpathentry kind="lib" path="build/lib/log4j-1.2.12.jar"/>
+	<classpathentry kind="lib" path="build/lib/idw-gpl.jar"/>
+	<classpathentry kind="output" path="build/classes"/>
 </classpath>

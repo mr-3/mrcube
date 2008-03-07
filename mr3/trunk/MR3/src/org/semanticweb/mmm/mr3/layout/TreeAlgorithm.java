@@ -23,9 +23,6 @@ import java.util.*;
 
 import org.semanticweb.mmm.mr3.data.MR3Constants.*;
 
-/**
- * 
- */
 public class TreeAlgorithm {
 
     private char rootOrient_;
