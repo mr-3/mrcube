@@ -36,8 +36,8 @@ import com.hp.hpl.jena.vocabulary.*;
  */
 public class PropertyInfo extends RDFSInfo {
 
-    private Set<Object> domainSet;
-    private Set<Object> rangeSet;
+    private Set<GraphCell> domainSet;
+    private Set<GraphCell> rangeSet;
     private boolean isContainer;
     private int num;
     private transient Set<Resource> subProperties;
@@ -48,8 +48,8 @@ public class PropertyInfo extends RDFSInfo {
     public PropertyInfo(String uri) {
         super(uri);
         metaClass = RDF.Property.toString();
-        domainSet = new HashSet<Object>();
-        rangeSet = new HashSet<Object>();
+        domainSet = new HashSet<GraphCell>();
+        rangeSet = new HashSet<GraphCell>();
         isContainer = false;
         subProperties = new HashSet<Resource>();
         supProperties = new HashSet<RDFNode>();
@@ -57,8 +57,8 @@ public class PropertyInfo extends RDFSInfo {
 
     public PropertyInfo(PropertyInfo info) {
         super(info);
-        domainSet = new HashSet<Object>(info.getDomain());
-        rangeSet = new HashSet<Object>(info.getRange());
+        domainSet = new HashSet<GraphCell>(info.getDomain());
+        rangeSet = new HashSet<GraphCell>(info.getRange());
         isContainer = info.isContainer();
         num = info.getNum();
         subProperties = new HashSet<Resource>();
@@ -74,18 +74,18 @@ public class PropertyInfo extends RDFSInfo {
             Model tmpModel = super.getModel();
             Resource res = getURI();
             tmpModel.add(tmpModel.createStatement(res, RDF.type, ResourceFactory.createResource(metaClass)));
-            for (Iterator i = superRDFS.iterator(); i.hasNext();) {
-                RDFSInfo propInfo = (RDFSInfo) GraphConstants.getValue(((GraphCell) i.next()).getAttributes());
+            for (GraphCell supRDFSCell : superRDFS) {
+                RDFSInfo propInfo = (RDFSInfo) GraphConstants.getValue(supRDFSCell.getAttributes());
                 if (!propInfo.getURI().equals(MR3Resource.Property)) {
                     tmpModel.add(tmpModel.createStatement(res, RDFS.subPropertyOf, propInfo.getURI()));
                 }
             }
-            for (Iterator i = domainSet.iterator(); i.hasNext();) {
-                RDFSInfo classInfo = (RDFSInfo) GraphConstants.getValue(((GraphCell) i.next()).getAttributes());
+            for (GraphCell domainClassCell : domainSet) {
+                RDFSInfo classInfo = (RDFSInfo) GraphConstants.getValue(domainClassCell.getAttributes());
                 tmpModel.add(tmpModel.createStatement(res, RDFS.domain, classInfo.getURI()));
             }
-            for (Iterator i = rangeSet.iterator(); i.hasNext();) {
-                RDFSInfo classInfo = (RDFSInfo) GraphConstants.getValue(((GraphCell) i.next()).getAttributes());
+            for (GraphCell rangeClassCell : rangeSet) {
+                RDFSInfo classInfo = (RDFSInfo) GraphConstants.getValue(rangeClassCell.getAttributes());
                 tmpModel.add(tmpModel.createStatement(res, RDFS.range, classInfo.getURI()));
             }
             return tmpModel;
@@ -95,17 +95,16 @@ public class PropertyInfo extends RDFSInfo {
         return model;
     }
 
-    public void addDomain(Object resource) {
+    public void addDomain(GraphCell resource) {
         domainSet.add(resource);
     }
 
-    public void addAllDomain(Set<Object> set) {
+    public void addAllDomain(Set<GraphCell> set) {
         domainSet.addAll(set);
     }
 
     public void removeNullDomain() {
-        for (Iterator i = domainSet.iterator(); i.hasNext();) {
-            GraphCell cell = (GraphCell) i.next();
+        for (GraphCell cell : domainSet) {
             if (GraphConstants.getValue(cell.getAttributes()) == null) {
                 domainSet.remove(cell);
             }
@@ -117,24 +116,23 @@ public class PropertyInfo extends RDFSInfo {
     }
 
     public void clearDomain() {
-        domainSet = new HashSet<Object>();
+        domainSet = new HashSet<GraphCell>();
     }
 
-    public Set<Object> getDomain() {
+    public Set<GraphCell> getDomain() {
         return Collections.unmodifiableSet(domainSet);
     }
 
-    public void addRange(Object resource) {
+    public void addRange(GraphCell resource) {
         rangeSet.add(resource);
     }
 
-    public void addAllRange(Set<Object> set) {
+    public void addAllRange(Set<GraphCell> set) {
         rangeSet.addAll(set);
     }
 
     public void removeNullRange() {
-        for (Iterator i = rangeSet.iterator(); i.hasNext();) {
-            GraphCell cell = (GraphCell) i.next();
+        for (GraphCell cell : rangeSet) {
             // if (rdfsInfoMap.getCellInfo(cell) == null) {
             if (cell.getAttributes() == null) {
                 rangeSet.remove(cell);
@@ -147,10 +145,10 @@ public class PropertyInfo extends RDFSInfo {
     }
 
     public void clearRange() {
-        rangeSet = new HashSet<Object>();
+        rangeSet = new HashSet<GraphCell>();
     }
 
-    public Set<Object> getRange() {
+    public Set<GraphCell> getRange() {
         return Collections.unmodifiableSet(rangeSet);
     }
 

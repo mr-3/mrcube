@@ -35,7 +35,7 @@ import org.semanticweb.mmm.mr3.util.*;
  */
 public class RDFResourceCell extends DefaultGraphCell implements RDFCellStyleChanger {
 
-    public static Color rdfResourceColor = Color.pink;
+    public static Color rdfResourceColor = new Color(255, 204, 255);
 
     public void changeStyle(RDFGraph graph) {
         GraphUtilities.changeCellStyle(graph, this, GraphUtilities.selectedColor, GraphUtilities.selectedBorderColor);

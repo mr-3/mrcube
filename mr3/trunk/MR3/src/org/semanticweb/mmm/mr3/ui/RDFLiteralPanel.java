@@ -169,11 +169,11 @@ public class RDFLiteralPanel extends JPanel implements ActionListener {
             }
             MR3Literal beforeLiteral = (MR3Literal) GraphConstants.getValue(cell.getAttributes());
             String str = literalValueArea.getText();
-            MR3Literal literal = new MR3Literal(str, langField.getText(), typeMapper.getTypeByName(dataType));
-            GraphConstants.setValue(cell.getAttributes(), literal);
+            MR3Literal literal = new MR3Literal(str, langField.getText(), typeMapper.getTypeByName(dataType));            
+            GraphConstants.setValue(cell.getAttributes(), literal);            
             Dimension size = GraphUtilities.getAutoLiteralNodeDimention(gmanager, str);
-            GraphUtilities.resizeCell(size, gmanager.getCurrentRDFGraph(), cell);
-            gmanager.getCurrentRDFGraph().repaint();
+            RDFGraph graph = gmanager.getCurrentRDFGraph();
+            GraphUtilities.resizeCell(size, graph, cell);
             HistoryManager.saveHistory(HistoryType.EDIT_LITERAL_WITH_DIAGLOG, beforeLiteral, literal);
         }
     }

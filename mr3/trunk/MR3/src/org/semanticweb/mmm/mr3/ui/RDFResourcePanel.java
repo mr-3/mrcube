@@ -35,7 +35,6 @@ import org.jgraph.graph.*;
 import org.semanticweb.mmm.mr3.*;
 import org.semanticweb.mmm.mr3.data.*;
 import org.semanticweb.mmm.mr3.data.MR3Constants.*;
-import org.semanticweb.mmm.mr3.editor.*;
 import org.semanticweb.mmm.mr3.jgraph.*;
 import org.semanticweb.mmm.mr3.util.*;
 
@@ -470,7 +469,7 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
             if (gmanager.isEmptyURI(uri.getURI())) { return null; }
             RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
             if (rdfsInfoMap.isClassCell(uri)) {
-                typeCell = (GraphCell) gmanager.getClassCell(uri, false);
+                typeCell = gmanager.getClassCell(uri, false);
             } else {
                 if (gmanager.isDuplicatedWithDialog(uri.getURI(), null, GraphType.CLASS)) { return null; }
                 if (MR3.OFF_META_MODEL_MANAGEMENT) { return null; }

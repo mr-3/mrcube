@@ -54,8 +54,7 @@ public abstract class ResourceInfo {
     }
 
     public MR3Literal getDefaultLabel(String defaultLang) {
-        for (Iterator i = labelList.iterator(); i.hasNext();) {
-            MR3Literal literal = (MR3Literal) i.next();
+        for (MR3Literal literal : labelList) {
             if (literal.getLanguage().equals(defaultLang)) { return literal; }
         }
         return null;
@@ -75,8 +74,7 @@ public abstract class ResourceInfo {
     }
 
     public MR3Literal getDefaultComment(String defaultLang) {
-        for (Iterator i = commentList.iterator(); i.hasNext();) {
-            MR3Literal literal = (MR3Literal) i.next();
+        for (MR3Literal literal : commentList) {
             if (literal.getLanguage().equals(defaultLang)) { return literal; }
         }
         return null;
@@ -88,12 +86,10 @@ public abstract class ResourceInfo {
 
     public Model getModel(Resource res) throws RDFException {
         Model tmpModel = ModelFactory.createDefaultModel();
-        for (Iterator i = labelList.iterator(); i.hasNext();) {
-            MR3Literal literal = (MR3Literal) i.next();
+        for (MR3Literal literal : labelList) {
             tmpModel.add(tmpModel.createStatement(res, RDFS.label, literal.getLiteral()));
         }
-        for (Iterator i = commentList.iterator(); i.hasNext();) {
-            MR3Literal literal = (MR3Literal) i.next();
+        for (MR3Literal literal : commentList) {
             tmpModel.add(tmpModel.createStatement(res, RDFS.comment, literal.getLiteral()));
         }
         return tmpModel;

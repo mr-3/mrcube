@@ -156,9 +156,9 @@ public class LabelPanel extends JPanel implements ActionListener {
         while (labelTableModel.getRowCount() != 0) {
             labelTableModel.removeRow(0);
         }
-        List labelList = info.getLabelList();
+        List<MR3Literal> labelList = info.getLabelList();
         for (int i = 0; i < labelList.size(); i++) {
-            MR3Literal literal = (MR3Literal) labelList.get(i);
+            MR3Literal literal = labelList.get(i);
             labelTableModel.insertRow(i, new Object[] { literal.getLanguage(), literal.getString()});
         }
     }

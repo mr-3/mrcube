@@ -41,7 +41,7 @@ import org.semanticweb.mmm.mr3.util.*;
  */
 public class ClassEditor extends Editor {
 
-    private WeakReference classPanelRef;
+    private WeakReference<ClassPanel> classPanelRef;
 
     public ClassEditor(GraphManager gm) {
         graph = new RDFGraph(gm, new RDFGraphModel(), GraphType.CLASS);
@@ -85,7 +85,7 @@ public class ClassEditor extends Editor {
     }
 
     private ClassPanel getClassPanel() {
-        ClassPanel result = (ClassPanel) classPanelRef.get();
+        ClassPanel result = classPanelRef.get();
         if (result == null) {
             result = new ClassPanel(gmanager);
             classPanelRef = new WeakReference<ClassPanel>(result);

@@ -145,7 +145,7 @@ public abstract class OntologyPanel extends JPanel implements ListSelectionListe
             return Translator.getString("Base");
         }
 
-        public void setMetaClassList(Set metaClassList) {
+        public void setMetaClassList(Set<Resource> metaClassList) {
             setMetaClassBox(metaClassList);
         }
 
@@ -167,7 +167,7 @@ public abstract class OntologyPanel extends JPanel implements ListSelectionListe
             uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
         }
 
-        public void setMetaClassBox(Set metaClassList) {
+        public void setMetaClassBox(Set<Resource> metaClassList) {
             ComboBoxModel model = new DefaultComboBoxModel(metaClassList.toArray());
             metaClassBox.setModel(model);
             metaClassBox.setSelectedItem(ResourceFactory.createResource(rdfsInfo.getMetaClass()));

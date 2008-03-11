@@ -64,8 +64,8 @@ public class ClassInfo extends RDFSInfo {
             Resource res = getURI();
 
             tmpModel.add(tmpModel.createStatement(res, RDF.type, ResourceFactory.createResource(metaClass)));
-            for (Iterator i = superRDFS.iterator(); i.hasNext();) {
-                RDFSInfo classInfo = (RDFSInfo) GraphConstants.getValue(((GraphCell) i.next()).getAttributes());
+            for (GraphCell classGraphCell : superRDFS) {
+                RDFSInfo classInfo = (RDFSInfo) GraphConstants.getValue(classGraphCell.getAttributes());
                 tmpModel.add(tmpModel.createStatement(res, RDFS.subClassOf, classInfo.getURI()));
             }
             return tmpModel;
@@ -87,7 +87,7 @@ public class ClassInfo extends RDFSInfo {
         supClasses.add(supClass);
     }
 
-    public Set getSupClasses() {
+    public Set<Resource> getSupClasses() {
         return Collections.unmodifiableSet(supClasses);
     }
 

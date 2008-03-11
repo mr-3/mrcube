@@ -271,9 +271,9 @@ public class RDFGraphUI extends BasicGraphUI {
             if (super.importDataImpl(comp, t)) { return true; }
             try {
                 if (t.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-                    List importFileList = (List) t.getTransferData(DataFlavor.javaFileListFlavor);
+                    List<File> importFileList = (List<File>) t.getTransferData(DataFlavor.javaFileListFlavor);
                     if (importFileList.size() == 1) {
-                        File importFile = (File) importFileList.get(0);
+                        File importFile = importFileList.get(0);
                         // System.out.println(importFile.getAbsolutePath());
                         BufferedInputStream bis = new BufferedInputStream(new FileInputStream(importFile));
                         if (bis == null) { return false; }

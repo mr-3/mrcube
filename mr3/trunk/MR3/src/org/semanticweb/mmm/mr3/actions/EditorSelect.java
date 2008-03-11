@@ -24,7 +24,6 @@
 package org.semanticweb.mmm.mr3.actions;
 
 import java.awt.event.*;
-import java.beans.*;
 
 import javax.swing.*;
 

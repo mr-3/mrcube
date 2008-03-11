@@ -353,4 +353,10 @@ public class JGParallelEdgeRouter implements Edge.Routing {
         return points;
     }
 
+    @Override
+    public List route(GraphLayoutCache arg0, EdgeView arg1) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

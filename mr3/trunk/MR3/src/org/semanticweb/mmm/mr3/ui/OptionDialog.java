@@ -265,7 +265,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         }
 
         private Object[] getLanguages(File resourceDir) {
-            Set langSet = new TreeSet();
+            Set<String> langSet = new TreeSet<String>();
             try {
                 File[] resFiles = resourceDir.listFiles();
                 for (int i = 0; i < resFiles.length; i++) {
@@ -335,7 +335,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
 
         public class ChooseFontAction extends AbstractAction {
 
-            private WeakReference jfontChooserRef;
+            private WeakReference<JFontChooser> jfontChooserRef;
 
             public ChooseFontAction(String name) {
                 super(name);
@@ -343,7 +343,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             }
 
             private JFontChooser getJFontChooser() {
-                JFontChooser result = (JFontChooser) jfontChooserRef.get();
+                JFontChooser result = jfontChooserRef.get();
                 if (result == null) {
                     result = new JFontChooser();
                     jfontChooserRef = new WeakReference<JFontChooser>(result);

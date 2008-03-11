@@ -360,7 +360,7 @@ public class MR3Reader {
         if (model == null) { return; }
         new Thread() {
             public void run() {
-                File currentProject = mr3.getCurrentProject().getCurrentProjectFile(); // NewProject‚æ‚è‚à‘O‚Ì‚ð•Û‘¶
+                File currentProjectFile = MR3.getCurrentProject().getCurrentProjectFile(); // NewProject‚æ‚è‚à‘O‚Ì‚ð•Û‘¶
                 mr3.newProject(null);
                 gmanager.importing(true);
                 ProjectManager projectManager = new ProjectManager(gmanager);
@@ -371,11 +371,10 @@ public class MR3Reader {
                 nsTableDialog.setPrefixNSInfoSet();
                 gmanager.clearSelection();
                 gmanager.importing(false);
-                if (currentProject != null) {
-                    MR3.setCurrentProject(currentProject);
-                    String path = mr3.getCurrentProject().getCurrentProjectFile().getAbsolutePath();
-                    mr3.setTitle("MR^3 - " + path);
-                    HistoryManager.saveHistory(HistoryType.OPEN_PROJECT, path);
+                if (currentProjectFile != null) {
+                    MR3.getCurrentProject().setCurrentProjectFile(currentProjectFile);
+                    MR3.setCurrentProjectName();
+                    HistoryManager.saveHistory(HistoryType.OPEN_PROJECT, currentProjectFile.getAbsolutePath());
                 }
             }
         }.start();

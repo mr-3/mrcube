@@ -283,9 +283,9 @@ public class ProjectManager {
         return total;
     }
 
-    private static Map<Resource, GraphLayoutData> layoutMap;
+    private static Map<RDFNode, GraphLayoutData> layoutMap;
 
-    public static Map getLayoutMap() {
+    public static Map<RDFNode, GraphLayoutData> getLayoutMap() {
         return layoutMap;
     }
 
@@ -294,7 +294,7 @@ public class ProjectManager {
     }
 
     public void setCellLayoutMap(Model model) {
-        layoutMap = new HashMap<Resource, GraphLayoutData>();
+        layoutMap = new HashMap<RDFNode, GraphLayoutData>();
         try {
             for (StmtIterator i = model.listStatements(); i.hasNext();) {
                 Statement stmt = i.nextStatement();
