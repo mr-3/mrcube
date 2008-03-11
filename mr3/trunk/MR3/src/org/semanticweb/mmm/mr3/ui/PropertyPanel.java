@@ -221,10 +221,10 @@ public class PropertyPanel extends OntologyPanel {
                 }
             }
 
-            private void setDomainList(Set<Object> set) {
+            private void setDomainList(Set<GraphCell> set) {
                 if (set != null) {
                     PropertyInfo info = (PropertyInfo) GraphConstants.getValue(cell.getAttributes());
-                    Set beforeDomainSet = new HashSet(info.getDomain());
+                    Set<GraphCell> beforeDomainSet = new HashSet<GraphCell>(info.getDomain());
                     info.addAllDomain(set);
                     domainList.setListData(info.getDomain().toArray());
                     HistoryManager.saveHistory(HistoryType.ADD_ONT_PROPERTY_DOMAIN, beforeDomainSet, info.getDomain(),
@@ -232,10 +232,10 @@ public class PropertyPanel extends OntologyPanel {
                 }
             }
 
-            private void setRangeList(Set<Object> set) {
+            private void setRangeList(Set<GraphCell> set) {
                 if (set != null) {
                     PropertyInfo info = (PropertyInfo) GraphConstants.getValue(cell.getAttributes());
-                    Set beforeRangeSet = new HashSet(info.getRange());
+                    Set<GraphCell> beforeRangeSet = new HashSet<GraphCell>(info.getRange());
                     info.addAllRange(set);
                     rangeList.setListData(info.getRange().toArray());
                     HistoryManager.saveHistory(HistoryType.ADD_ONT_PROPERTY_RANGE, beforeRangeSet, info.getRange(),

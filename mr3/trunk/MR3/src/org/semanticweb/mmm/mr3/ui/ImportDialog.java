@@ -72,7 +72,7 @@ public class ImportDialog extends JDialog implements ActionListener {
 
     private JLabel findLabel;
     private JTextField findField;
-    private Set fileSet;
+    private Set<File> fileSet;
     private Set<String> uriSet;
     private JList fileListUI;
 
@@ -156,7 +156,7 @@ public class ImportDialog extends JDialog implements ActionListener {
         mainPanel.add(importMethodPanel);
         changeContainerAction = new ChangeContainerAction();
         containerListModel = new DefaultListModel();
-        Set containerSet = new TreeSet(Arrays.asList(gmanager.getResourceContainer()));
+        Set<String> containerSet = new TreeSet(Arrays.asList(gmanager.getResourceContainer()));
         if (!gmanager.getWorkDirectory().equals("")) {
             containerSet.add(gmanager.getWorkDirectory());
         }
@@ -341,7 +341,7 @@ public class ImportDialog extends JDialog implements ActionListener {
             Object[] selectedContainers = containerListUI.getSelectedValues();
             if (selectedContainers == null) { return; }
             uriSet = new TreeSet<String>();
-            fileSet = new TreeSet();
+            fileSet = new TreeSet<File>();
             for (int i = 0; i < selectedContainers.length; i++) {
                 File selectedDirectory = new File(selectedContainers[i].toString());
                 if (!selectedDirectory.isDirectory()) {
@@ -377,8 +377,7 @@ public class ImportDialog extends JDialog implements ActionListener {
     private void setFindList() {
         int[] lastSelectedIndices = fileListUI.getSelectedIndices();
         Set<String> fileNameSet = new TreeSet<String>();
-        for (Iterator i = fileSet.iterator(); i.hasNext();) {
-            File file = (File) i.next();
+        for (File file : fileSet) {
             String regex = ".*";
             if (findField.getText().length() != 0) {
                 regex = findField.getText();
@@ -460,8 +459,7 @@ public class ImportDialog extends JDialog implements ActionListener {
 
     private Set<InputStream> getURIInputStreamSet() {
         Set<InputStream> inputStreamSet = new HashSet<InputStream>();
-        for (Iterator i = uriSet.iterator(); i.hasNext();) {
-            String uri = (String) i.next();
+        for (String uri : uriSet) {
             if (uri == null) { return null; }
             try {
                 inputStreamSet.add(new BufferedInputStream(getURI(uri).openStream()));

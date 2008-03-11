@@ -25,6 +25,7 @@ package org.semanticweb.mmm.mr3.io;
 
 import java.util.*;
 
+import org.jgraph.graph.*;
 import org.semanticweb.mmm.mr3.data.*;
 import org.semanticweb.mmm.mr3.jgraph.*;
 
@@ -195,20 +196,25 @@ public class RDFSModelExtraction {
 
         if (setBaseInfo(stmt, info)) { return true; }
 
+        Resource objectResource = null;
+        if (object instanceof Resource) {
+            objectResource = (Resource) object;
+        }
+
         if (predicate.equals(RDFS.domain)) { // rdfs:domain
-            Object cell = gmanager.getClassCell((Resource) object, false);
+            GraphCell cell = gmanager.getClassCell(objectResource, false);
             info.addDomain(cell);
         } else if (predicate.equals(RDFS.range)) { // rdfs:range
-            Object cell = gmanager.getClassCell((Resource) object, false);
+            GraphCell cell = gmanager.getClassCell(objectResource, false);
             info.addRange(cell);
         } else if (predicate.equals(RDFS.subPropertyOf)) { // rdfs:subPropertyOf
             // subject < object
             // info -> subject info supInfo -> object info
-            PropertyInfo supResInfo = getPropertyResInfo((Resource) object);
+            PropertyInfo supResInfo = getPropertyResInfo(objectResource);
             // rdfsInfoMap.addRootProperties((Resource)object); //ˆêŽž‚µ‚Ì‚¬
             supResInfo.addSubProperty(subject);
             RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-            rdfsInfoMap.putResourceInfo((Resource) object, supResInfo);
+            rdfsInfoMap.putResourceInfo(objectResource, supResInfo);
             info.addSupProperty(object);
         } else {
             return false;

@@ -82,12 +82,10 @@ public class TransformElementAction extends AbstractAction {
         // System.out.println(uriSet);
     }
 
-    private void insertElements(Set uriSet) {
+    private void insertElements(Set<String> uriSet) {
         Point pt = new Point(100, 100);
         MR3CellMaker cellMaker = new MR3CellMaker(gmanager);
-        for (Iterator i = uriSet.iterator(); i.hasNext();) {
-            String uri = (String) i.next();
-
+        for (String uri : uriSet) {
             switch (toGraphType) {
             case RDF:
                 cellMaker.insertRDFResource(pt, uri, null, URIType.URI);

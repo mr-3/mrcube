@@ -40,8 +40,8 @@ import com.hp.hpl.jena.vocabulary.*;
 public class RDFSInfoMap {
 
     private Map<Resource, RDFSInfo> resourceInfoMap; // Resourceとメタ情報の関連づけ
-    private Map<String, Object> classCellMap; // uriとClassの関連づけ
-    private Map<String, Object> propertyCellMap; // uriとPropertyの関連づけ
+    private Map<String, GraphCell> classCellMap; // uriとClassの関連づけ
+    private Map<String, GraphCell> propertyCellMap; // uriとPropertyの関連づけ
     private Set<Resource> rootProperties; // subPropertyOf Propertyのセット
     private DefaultTreeModel classTreeModel;
     private DefaultTreeModel propTreeModel;
@@ -49,8 +49,8 @@ public class RDFSInfoMap {
 
     public RDFSInfoMap() {
         resourceInfoMap = new HashMap<Resource, RDFSInfo>();
-        classCellMap = new HashMap<String, Object>();
-        propertyCellMap = new HashMap<String, Object>();
+        classCellMap = new HashMap<String, GraphCell>();
+        propertyCellMap = new HashMap<String, GraphCell>();
         rootProperties = new HashSet<Resource>();
         classTreeModel = new DefaultTreeModel(null);
         propTreeModel = new DefaultTreeModel(null);
@@ -117,7 +117,7 @@ public class RDFSInfoMap {
      * 
      * RDFSModelExtraction#extractClassModelの後にクラスのセットを得る
      */
-    public Set getClassSet(Set<String> classSet, Resource resource) {
+    public Set<String> getClassSet(Set<String> classSet, Resource resource) {
         classSet.add(resource.getURI());
         RDFSInfo info = resourceInfoMap.get(resource);
         if (info == null) { return classSet; }
@@ -131,7 +131,7 @@ public class RDFSInfoMap {
      * 
      * RDFSModelExtraction#extractPropertyModelの後にプロパティのセットを得る
      */
-    public Set getPropertySet(Set<String> propertySet, Resource resource) {
+    public Set<String> getPropertySet(Set<String> propertySet, Resource resource) {
         propertySet.add(resource.getURI());
         RDFSInfo info = resourceInfoMap.get(resource);
         if (info == null) { return propertySet; }
@@ -162,8 +162,8 @@ public class RDFSInfoMap {
      * RDFSInfo#equalsでは，Resource(uri)の重複をチェックしている．
      */
     public boolean isDuplicated(String uri, Object cell, GraphType type) {
-        GraphCell classCell = (GraphCell) classCellMap.get(uri);
-        GraphCell propertyCell = (GraphCell) propertyCellMap.get(uri);
+        GraphCell classCell = classCellMap.get(uri);
+        GraphCell propertyCell = propertyCellMap.get(uri);
         if (classCell == null && propertyCell == null) {
             return false;
         } else if (classCell != null && classCell != cell) {
@@ -175,7 +175,7 @@ public class RDFSInfoMap {
         }
     }
 
-    public void putURICellMap(RDFSInfo info, Object cell) {
+    public void putURICellMap(RDFSInfo info, GraphCell cell) {
         if (info instanceof ClassInfo) {
             classCellMap.put(info.getURIStr(), cell);
         } else if (info instanceof PropertyInfo) {
@@ -202,7 +202,7 @@ public class RDFSInfoMap {
         return getClassCell(uri) != null;
     }
 
-    public Object getClassCell(Resource uri) {
+    public GraphCell getClassCell(Resource uri) {
         return classCellMap.get(uri.getURI());
     }
 
@@ -227,8 +227,7 @@ public class RDFSInfoMap {
 
     public DefaultMutableTreeNode getPropRootNode() {
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
-        for (Iterator i = rootProperties.iterator(); i.hasNext();) {
-            Resource property = (Resource) i.next();
+        for (Resource property : rootProperties) {
             RDFSInfo info = getResourceInfo(property);
             DefaultMutableTreeNode node = new DefaultMutableTreeNode(getRDFSCell(property));
             if (info.getRDFSSubList().size() > 0) {
@@ -243,9 +242,7 @@ public class RDFSInfoMap {
         RDFSInfo info = getResourceInfo(resource);
         if (info == null) return;
 
-        for (Iterator i = info.getRDFSSubList().iterator(); i.hasNext();) {
-            Resource subRDFS = (Resource) i.next();
-
+        for (Resource subRDFS : info.getRDFSSubList()) {
             DefaultMutableTreeNode subNode = new DefaultMutableTreeNode(getRDFSCell(subRDFS));
             RDFSInfo subInfo = getResourceInfo(subRDFS);
 

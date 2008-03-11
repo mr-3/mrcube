@@ -38,7 +38,7 @@ public class VGJTreeLayout {
     public char UP_TO_DOWN = 'u';
     private static TreeAlgorithm treeAlgorithm = new TreeAlgorithm(GraphLayoutUtilities.getVGJRDFLayoutDirection());
 
-    public static Map getVGJRDFCellLayoutMap(Model model) {
+    public static Map<RDFNode, GraphLayoutData> getVGJRDFCellLayoutMap(Model model) {
         if (!GraphLayoutUtilities.LAYOUT_TYPE.equals(GraphLayoutUtilities.VGJ_TREE_LAYOUT)) { return null; }
 
         Map<RDFNode, GraphLayoutData> cellLayoutMap = new HashMap<RDFNode, GraphLayoutData>();
@@ -65,7 +65,7 @@ public class VGJTreeLayout {
         return cellLayoutMap;
     }
 
-    public static Map getVGJPropertyCellLayoutMap() {
+    public static Map<RDFNode, GraphLayoutData> getVGJPropertyCellLayoutMap() {
         if (!GraphLayoutUtilities.LAYOUT_TYPE.equals(GraphLayoutUtilities.VGJ_TREE_LAYOUT)) { return null; }
         Map<RDFNode, GraphLayoutData> cellLayoutMap = new HashMap<RDFNode, GraphLayoutData>();
         GraphLayoutUtilities.initPropertyGraphLayoutData(cellLayoutMap);
@@ -73,14 +73,14 @@ public class VGJTreeLayout {
                 GraphType.PROPERTY);
     }
 
-    public static Map getVGJClassCellLayoutMap() {
+    public static Map<RDFNode, GraphLayoutData> getVGJClassCellLayoutMap() {
         if (!GraphLayoutUtilities.LAYOUT_TYPE.equals(GraphLayoutUtilities.VGJ_TREE_LAYOUT)) { return null; }
         Map<RDFNode, GraphLayoutData> cellLayoutMap = new HashMap<RDFNode, GraphLayoutData>();
         GraphLayoutUtilities.initClassGraphLayoutData(cellLayoutMap);
         return getVGJCellLayoutMap(cellLayoutMap, GraphLayoutUtilities.getVGJClassLayoutDirection(), GraphType.CLASS);
     }
 
-    private static Map getVGJCellLayoutMap(Map<RDFNode, GraphLayoutData> cellLayoutMap, char orientation, GraphType type) {
+    private static Map<RDFNode, GraphLayoutData> getVGJCellLayoutMap(Map<RDFNode, GraphLayoutData> cellLayoutMap, char orientation, GraphType type) {
         treeAlgorithm.setOrientation(orientation);
         treeAlgorithm.applyTreeAlgorithm(cellLayoutMap.values(), null, type);
         GraphLayoutUtilities.centralizeGraph(cellLayoutMap.values());

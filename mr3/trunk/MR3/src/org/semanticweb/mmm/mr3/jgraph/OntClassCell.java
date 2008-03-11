@@ -32,8 +32,8 @@ import org.semanticweb.mmm.mr3.util.*;
  * @author takeshi morita
  */
 public class OntClassCell extends DefaultGraphCell implements RDFCellStyleChanger {
-
-    public static Color classColor = Color.green;
+    
+    public static Color classColor = new Color(153, 255, 0);
 
     public OntClassCell() {
         this(null);

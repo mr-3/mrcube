@@ -34,7 +34,7 @@ import org.semanticweb.mmm.mr3.util.*;
  */
 public class RDFLiteralCell extends DefaultGraphCell implements RDFCellStyleChanger {
 
-    public static Color literalColor = Color.orange;
+    public static Color literalColor = new Color(255, 255, 204);
 
     public RDFLiteralCell() {
         this(null);

@@ -49,7 +49,7 @@ public class ShowImportDialog extends MR3AbstractAction {
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (mr3.getCurrentProject() == null) {
+        if (MR3.getCurrentProject() == null) {
             mr3.newProject(mr3.getGraphManager().getBaseURI());
         }
         ImportDialog importDialog = mr3.getImportDialog();

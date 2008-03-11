@@ -21,9 +21,8 @@ public class ExitProjectAction extends AbstractActionFile {
 
     @Override
     public void actionPerformed(ActionEvent arg0) {
-        System.out.println("Close");
-        MR3Project project = mr3.getCurrentProject();
-        int messageType = confirmExitProject(mr3.getGraphManager().getRootFrame(), project.getTitle());
+        MR3Project project = MR3.getCurrentProject();
+        int messageType = confirmExitProject(null, project.getTitle());
         if (messageType != JOptionPane.CANCEL_OPTION) {
             mr3.removeTab(project);
         }

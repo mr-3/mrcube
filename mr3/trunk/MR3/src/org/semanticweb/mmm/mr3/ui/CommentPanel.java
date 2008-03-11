@@ -45,7 +45,7 @@ public class CommentPanel extends JPanel implements ActionListener {
     private Frame rootFrame;
     private ResourceInfo resInfo;
 
-    private WeakReference editCommentDialogRef;
+    private WeakReference<EditCommentDialog> editCommentDialogRef;
 
     private JTable commentTable;
     private CommentTableModel commentTableModel;
@@ -87,7 +87,7 @@ public class CommentPanel extends JPanel implements ActionListener {
     }
 
     private EditCommentDialog getEditCommentDialog() {
-        EditCommentDialog result = (EditCommentDialog) editCommentDialogRef.get();
+        EditCommentDialog result = editCommentDialogRef.get();
         if (result == null) {
             result = new EditCommentDialog(rootFrame);
             editCommentDialogRef = new WeakReference<EditCommentDialog>(result);
@@ -179,9 +179,9 @@ public class CommentPanel extends JPanel implements ActionListener {
         while (commentTableModel.getRowCount() != 0) {
             commentTableModel.removeRow(0);
         }
-        List commentList = info.getCommentList();
+        List<MR3Literal> commentList = info.getCommentList();
         for (int i = 0; i < commentList.size(); i++) {
-            MR3Literal literal = (MR3Literal) commentList.get(i);
+            MR3Literal literal = commentList.get(i);
             commentTableModel.insertRow(i, new Object[] { literal.getLanguage(), literal.getString()});
         }
     }

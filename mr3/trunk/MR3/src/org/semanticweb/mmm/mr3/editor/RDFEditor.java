@@ -42,9 +42,9 @@ import org.semanticweb.mmm.mr3.util.*;
  */
 public class RDFEditor extends Editor {
 
-    private static WeakReference resPanelRef;
-    private static WeakReference propPanelRef;
-    private static WeakReference litPanelRef;
+    private static WeakReference<RDFResourcePanel> resPanelRef;
+    private static WeakReference<RDFPropertyPanel> propPanelRef;
+    private static WeakReference<RDFLiteralPanel> litPanelRef;
 
     public RDFEditor(GraphManager gm) {
         graph = new RDFGraph(gm, new RDFGraphModel(), GraphType.RDF);
@@ -57,11 +57,11 @@ public class RDFEditor extends Editor {
     public static void updateComponents() {
         if (resPanelRef != null && resPanelRef.get() != null) {
             RDFResourcePanel.loadResourceBundle();
-            SwingUtilities.updateComponentTreeUI((JComponent) resPanelRef.get());
+            SwingUtilities.updateComponentTreeUI(resPanelRef.get());
         } else if (propPanelRef != null && propPanelRef.get() != null) {
-            SwingUtilities.updateComponentTreeUI((JComponent) propPanelRef.get());
+            SwingUtilities.updateComponentTreeUI(propPanelRef.get());
         } else if (litPanelRef != null && litPanelRef.get() != null) {
-            SwingUtilities.updateComponentTreeUI((JComponent) litPanelRef.get());
+            SwingUtilities.updateComponentTreeUI(litPanelRef.get());
         }
     }
 
@@ -93,8 +93,6 @@ public class RDFEditor extends Editor {
     }
 
     private void selectProperty(GraphCell cell) {
-        // PropertyInfo propertyInfo = (PropertyInfo)
-        // graph.getModel().getValue(cell.getAttributes());
         PropertyInfo propertyInfo = (PropertyInfo) GraphConstants.getValue(cell.getAttributes());
         if (!propertyInfo.getURI().equals(MR3Resource.Nil)) {
             Object propCell = gmanager.getPropertyCell(propertyInfo.getURI(), false);
@@ -151,7 +149,7 @@ public class RDFEditor extends Editor {
     }
 
     private RDFResourcePanel getRDFResourcePanel() {
-        RDFResourcePanel result = (RDFResourcePanel) resPanelRef.get();
+        RDFResourcePanel result = resPanelRef.get();
         if (result == null) {
             result = new RDFResourcePanel(gmanager);
             resPanelRef = new WeakReference<RDFResourcePanel>(result);
@@ -160,7 +158,7 @@ public class RDFEditor extends Editor {
     }
 
     private RDFPropertyPanel getRDFPropertyPanel() {
-        RDFPropertyPanel result = (RDFPropertyPanel) propPanelRef.get();
+        RDFPropertyPanel result = propPanelRef.get();
         if (result == null) {
             result = new RDFPropertyPanel(gmanager);
             propPanelRef = new WeakReference<RDFPropertyPanel>(result);
@@ -169,7 +167,7 @@ public class RDFEditor extends Editor {
     }
 
     private RDFLiteralPanel getRDFLiteralPanel() {
-        RDFLiteralPanel result = (RDFLiteralPanel) litPanelRef.get();
+        RDFLiteralPanel result = litPanelRef.get();
         if (result == null) {
             result = new RDFLiteralPanel(gmanager);
             litPanelRef = new WeakReference<RDFLiteralPanel>(result);

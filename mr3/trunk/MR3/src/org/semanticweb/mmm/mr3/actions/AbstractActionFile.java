@@ -93,7 +93,7 @@ public abstract class AbstractActionFile extends MR3AbstractAction {
         File file = getFile(true, ext);
         if (file == null) { return null; }
         if (ext.equals("mr3")) {
-            MR3.setCurrentProject(file);
+            MR3.getCurrentProject().setCurrentProjectFile(file);
         }
         try {
             BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
@@ -162,8 +162,8 @@ public abstract class AbstractActionFile extends MR3AbstractAction {
             // RDF/XML-ABBREVÇ…Ç∑ÇÈÇ∆RDFAnonÇ™èoÇƒÅCimportéûÇ…AnonymousÇ™Ç§Ç‹Ç≠àµÇ¶Ç»Ç¢ÅD
             setNsPrefix(exportModel);
             exportModel.write(writer, "RDF/XML", getBaseURI());
-            mr3.setTitle("MR3 - " + file.getAbsolutePath());
-            MR3.setCurrentProject(file);
+            MR3.getCurrentProject().setCurrentProjectFile(file);
+            MR3.setCurrentProjectName();
         } catch (RDFException e1) {
             e1.printStackTrace();
         } catch (FileNotFoundException e2) {
@@ -178,7 +178,8 @@ public abstract class AbstractActionFile extends MR3AbstractAction {
         if (file == null) { return; }
         saveProject(file);
         HistoryManager.saveHistory(HistoryType.SAVE_PROJECT_AS, file.getAbsolutePath());
-        MR3.setCurrentProject(file);
+        MR3.getCurrentProject().setCurrentProjectFile(file);
+        MR3.setCurrentProjectName();
     }
 
     protected void exitProgram(Frame frame) {
@@ -195,33 +196,9 @@ public abstract class AbstractActionFile extends MR3AbstractAction {
         userPrefs.putInt(PrefConstants.WindowPositionY, (int) windowRect.getY());
     }
 
-    private void saveRDFEditorBounds(Preferences userPrefs, Rectangle rect) {
-        userPrefs.putInt(PrefConstants.RDFEditorHeight, (int) rect.getHeight());
-        userPrefs.putInt(PrefConstants.RDFEditorWidth, (int) rect.getWidth());
-        userPrefs.putInt(PrefConstants.RDFEditorPositionX, (int) rect.getX());
-        userPrefs.putInt(PrefConstants.RDFEditorPositionY, (int) rect.getY());
-    }
-
-    private void saveClassEditorBounds(Preferences userPrefs, Rectangle rect) {
-        userPrefs.putInt(PrefConstants.ClassEditorHeight, (int) rect.getHeight());
-        userPrefs.putInt(PrefConstants.ClassEditorWidth, (int) rect.getWidth());
-        userPrefs.putInt(PrefConstants.ClassEditorPositionX, (int) rect.getX());
-        userPrefs.putInt(PrefConstants.ClassEditorPositionY, (int) rect.getY());
-    }
-
-    private void savePropertyEditorBounds(Preferences userPrefs, Rectangle rect) {
-        userPrefs.putInt(PrefConstants.PropertyEditorHeight, (int) rect.getHeight());
-        userPrefs.putInt(PrefConstants.PropertyEditorWidth, (int) rect.getWidth());
-        userPrefs.putInt(PrefConstants.PropertyEditorPositionX, (int) rect.getX());
-        userPrefs.putInt(PrefConstants.PropertyEditorPositionY, (int) rect.getY());
-    }
-
     private void saveWindows() {
         Preferences userPrefs = mr3.getUserPrefs();
         saveWindowBounds(userPrefs);
-        saveRDFEditorBounds(userPrefs, mr3.getRDFEditor().getBounds());
-        saveClassEditorBounds(userPrefs, mr3.getClassEditor().getBounds());
-        savePropertyEditorBounds(userPrefs, mr3.getPropertyEditor().getBounds());
     }
 
     protected int confirmExitProject(Frame root, String title) {

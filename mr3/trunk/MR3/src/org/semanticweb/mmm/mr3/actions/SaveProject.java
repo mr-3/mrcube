@@ -68,7 +68,7 @@ public class SaveProject extends AbstractActionFile {
 
     public void actionPerformed(ActionEvent e) {
         if (getName().equals(SAVE_PROJECT)) {
-            File currentProject = mr3.getCurrentProject().getCurrentProjectFile();
+            File currentProject = MR3.getCurrentProject().getCurrentProjectFile();
             if (currentProject == null) {
                 saveProjectAs();
             } else {

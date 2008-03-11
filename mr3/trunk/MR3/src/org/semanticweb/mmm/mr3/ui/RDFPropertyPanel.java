@@ -421,7 +421,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
         if (gmanager.isEmptyURI(uri.getURI())) { return; }
         RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
         if (rdfsInfoMap.isPropertyCell(uri)) {
-            Object propertyCell = (GraphCell) rdfsInfoMap.getPropertyCell(uri);
+            Object propertyCell = rdfsInfoMap.getPropertyCell(uri);
             gmanager.selectPropertyCell(propertyCell);
         } else {
             JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), Translator.getString("Warning.Message3"), Translator

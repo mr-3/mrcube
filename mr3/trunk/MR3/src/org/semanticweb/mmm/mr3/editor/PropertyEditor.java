@@ -39,7 +39,7 @@ import org.semanticweb.mmm.mr3.util.*;
  */
 public class PropertyEditor extends Editor {
 
-    private WeakReference propPanelRef;
+    private WeakReference<PropertyPanel> propPanelRef;
 
     public PropertyEditor(GraphManager gm) {
         graph = new RDFGraph(gm, new RDFGraphModel(), GraphType.PROPERTY);
@@ -82,7 +82,7 @@ public class PropertyEditor extends Editor {
     }
 
     private PropertyPanel getPropertyPanel() {
-        PropertyPanel result = (PropertyPanel) propPanelRef.get();
+        PropertyPanel result = propPanelRef.get();
         if (result == null) {
             result = new PropertyPanel(gmanager);
             propPanelRef = new WeakReference<PropertyPanel>(result);

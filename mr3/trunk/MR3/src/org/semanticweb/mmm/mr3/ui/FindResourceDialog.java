@@ -31,6 +31,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
+import org.jgraph.graph.*;
 import org.semanticweb.mmm.mr3.data.*;
 import org.semanticweb.mmm.mr3.data.MR3Constants.*;
 import org.semanticweb.mmm.mr3.jgraph.*;
@@ -197,27 +198,23 @@ public class FindResourceDialog extends JDialog {
         Map<String, Object> resourceMap = new TreeMap<String, Object>();
         key = resolvePrefix(key);
         if (rdfCheckBox.isSelected()) {
-            Set set = gmanager.getFindRDFResult(key);
-            for (Iterator i = set.iterator(); i.hasNext();) {
-                Object cell = i.next();
-                resourceMap.put(cell.toString(), cell);
+            Set<GraphCell> rdfCellSet = gmanager.getFindRDFResult(key);
+            for (GraphCell rdfCell : rdfCellSet) {
+                resourceMap.put(rdfCell.toString(), rdfCell);
             }
         }
         if (classCheckBox.isSelected()) {
-            Set set = gmanager.getFindClassResult(key);
-            for (Iterator i = set.iterator(); i.hasNext();) {
-                Object cell = i.next();
-                resourceMap.put(cell.toString(), cell);
+            Set<GraphCell> classCellSet = gmanager.getFindClassResult(key);
+            for (GraphCell classCell : classCellSet) {
+                resourceMap.put(classCell.toString(), classCell);
             }
         }
         if (propertyCheckBox.isSelected()) {
-            Set set = gmanager.getFindPropertyResult(key);
-            for (Iterator i = set.iterator(); i.hasNext();) {
-                Object cell = i.next();
-                resourceMap.put(cell.toString(), cell);
+            Set<GraphCell> propertyCellSet = gmanager.getFindPropertyResult(key);
+            for (GraphCell propertyCell : propertyCellSet) {
+                resourceMap.put(propertyCell.toString(), propertyCell);
             }
         }
-
         return resourceMap.values().toArray();
     }
 

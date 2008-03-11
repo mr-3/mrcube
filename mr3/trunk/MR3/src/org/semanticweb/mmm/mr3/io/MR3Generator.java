@@ -122,7 +122,7 @@ public class MR3Generator {
     /**
      * Edgeのリストを得て，rdf:typeのStatementsを作成．
      */
-    private Object[] getEdges(Model rdfModel, RDFGraph graph, Object[] cells) {
+    private Object[] getEdges(Model rdfModel, Object[] cells) {
         if (cells != null) {
             List<GraphCell> result = new ArrayList<GraphCell>();
             for (int i = 0; i < cells.length; i++) {
@@ -144,10 +144,10 @@ public class MR3Generator {
         RDFGraph graph = gmanager.getCurrentRDFGraph();
         Model rdfModel = ModelFactory.createDefaultModel();
         if (isSelected) {
-            edges = getEdges(rdfModel, graph, graph.getAllSelectedCells());
+            edges = getEdges(rdfModel, graph.getAllSelectedCells());
             cells = graph.getAllSelectedCells();
         } else {
-            edges = getEdges(rdfModel, graph, graph.getAllCells());
+            edges = getEdges(rdfModel, graph.getAllCells());
             cells = graph.getAllCells();
         }
         createRDFModel(graph, rdfModel, edges);

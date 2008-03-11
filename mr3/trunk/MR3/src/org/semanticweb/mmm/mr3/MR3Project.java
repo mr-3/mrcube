@@ -19,17 +19,17 @@ import org.semanticweb.mmm.mr3.data.*;
 import org.semanticweb.mmm.mr3.data.MR3Constants.*;
 import org.semanticweb.mmm.mr3.editor.*;
 import org.semanticweb.mmm.mr3.jgraph.*;
+import org.semanticweb.mmm.mr3.ui.*;
 import org.semanticweb.mmm.mr3.util.*;
 
 /**
- * @author takeshi morita
+ * @author Takeshi Morita
  */
 public class MR3Project extends JPanel {
 
     private View[] mainViews;
     private RootWindow rootWindow;
 
-    private String title;
     private File currentProjectFile;
     private RDFSInfoMap rdfsInfoMap;
 
@@ -37,8 +37,11 @@ public class MR3Project extends JPanel {
     private ClassEditor classEditor;
     private PropertyEditor propertyEditor;
 
-    public MR3Project(GraphManager gmanager, String basePath, Color color) {
+    private TabComponent tabComponent;
+
+    public MR3Project(GraphManager gmanager, String basePath, Color color, TabComponent tabComp) {
         rdfsInfoMap = new RDFSInfoMap();
+        tabComponent = tabComp;
         currentProjectFile = new File(basePath, Translator.getString("Component.File.NewProject.Text"));
         mainViews = new View[3];
         ViewMap viewMap = new ViewMap();
@@ -65,6 +68,10 @@ public class MR3Project extends JPanel {
 
         setLayout(new BorderLayout());
         add(rootWindow, BorderLayout.CENTER);
+    }
+
+    public TabComponent getTabComponent() {
+        return tabComponent;
     }
 
     public void frontEditor(GraphType graphType) {
@@ -124,16 +131,17 @@ public class MR3Project extends JPanel {
         return currentProjectFile;
     }
 
+    public void setCurrentProjectFile(File file) {
+        currentProjectFile = file;
+    }
+
     public RDFSInfoMap getRDFSInfoMap() {
         return rdfsInfoMap;
     }
 
     public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
+        if (currentProjectFile == null) { return Translator.getString("Component.File.NewProject.Text"); }
+        return currentProjectFile.getAbsolutePath();
     }
 
     private static RootWindow createRootWindow(ViewMap viewMap) {

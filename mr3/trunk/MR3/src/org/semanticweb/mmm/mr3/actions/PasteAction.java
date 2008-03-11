@@ -56,8 +56,8 @@ public class PasteAction extends AbstractAction {
     }
 
     private Object[] removeWrongCopyCells(Object[] cells, RDFGraph graph) {
-        Set removeCells = new HashSet();
-        Set correctCells = new HashSet();
+        Set<Object> removeCells = new HashSet<Object>();
+        Set<Object> correctCells = new HashSet<Object>();
         for (int i = 0; i < cells.length; i++) {
             Object cell = cells[i];
             if (graph.getType() == GraphType.CLASS) {

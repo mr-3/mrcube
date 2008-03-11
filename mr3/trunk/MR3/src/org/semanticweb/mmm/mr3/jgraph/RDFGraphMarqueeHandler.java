@@ -345,6 +345,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
         } else {
             graph.setSelectionCell(targetCell);
         }
+        
         if (graph.getType() == GraphType.RDF) {
             HistoryManager.saveHistory(HistoryType.INSERT_CONNECTED_RESOURCE, targetCell);
         } else {

@@ -108,7 +108,7 @@ public class RDFResourceInfo extends ResourceInfo implements Serializable {
                 } else {
                     GraphConstants.setValue(typeViewCell.getAttributes(), "");
                 }
-                typeViewCell.changeAttributes(typeViewCell.getAttributes());
+                typeViewCell.getAttributes().applyMap(typeViewCell.getAttributes());
             }
             return;
         }
@@ -116,7 +116,7 @@ public class RDFResourceInfo extends ResourceInfo implements Serializable {
         typeCell = cell;
         if (typeViewCell != null) { // âºÉãÅ[ÉgÇçÏÇÈéûÅCtypeViewCellÇçÏÇÁÇ»Ç¢ÇΩÇﬂ
             GraphConstants.setValue(typeViewCell.getAttributes(), getTypeInfo());
-            typeViewCell.changeAttributes(typeViewCell.getAttributes());
+            typeViewCell.getAttributes().applyMap(typeViewCell.getAttributes());
         }
     }
 
@@ -136,7 +136,7 @@ public class RDFResourceInfo extends ResourceInfo implements Serializable {
         typeViewCell = cell;
         if (typeViewCell != null) {
             GraphConstants.setValue(typeViewCell.getAttributes(), getTypeInfo());
-            typeViewCell.changeAttributes(typeViewCell.getAttributes());
+            typeViewCell.getAttributes().applyMap(typeViewCell.getAttributes());
         }
     }
 

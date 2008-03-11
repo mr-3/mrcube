@@ -216,7 +216,8 @@ public class GraphUtilities {
         if (rect != null) {
             AttributeMap map = cell.getAttributes();
             GraphConstants.setBounds(map, map.createRect(rect.getX(), rect.getY(), size.getWidth(), size.getHeight()));
-            graph.getGraphLayoutCache().reload(); // サイズの自動調節をすぐに反映させる
+            graph.getGraphLayoutCache().editCell(cell, map);
+            //graph.getGraphLayoutCache().reload(); // サイズの自動調節をすぐに反映させる
         }
     }
 
@@ -258,7 +259,6 @@ public class GraphUtilities {
 
     public static Rectangle2D getTypeCellRectangle(GraphCell cell, RDFSInfo info, GraphManager gm) {
         Dimension typeDim = getAutoNodeDimension(gm, gm.getRDFSNodeValue(info.getURI(), info));
-        ResourceInfo resInfo = (ResourceInfo) GraphConstants.getValue(cell.getAttributes());
         Rectangle2D rect = GraphConstants.getBounds(cell.getAttributes());
         Rectangle2D.Double typeRect = new Rectangle2D.Double(rect.getX() + (rect.getWidth() / 3), rect.getY()
                 - rect.getHeight(), typeDim.getWidth() * 1.2, typeDim.getHeight());

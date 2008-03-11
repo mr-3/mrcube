@@ -26,7 +26,6 @@ package org.semanticweb.mmm.mr3;
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.event.*;
-import java.io.*;
 import java.lang.ref.*;
 import java.util.*;
 import java.util.prefs.*;
@@ -51,7 +50,6 @@ public class MR3 extends JFrame {
 
     public static boolean OFF_META_MODEL_MANAGEMENT;
 
-    private static File currentProject;
     private static Preferences userPrefs;
     private static JTabbedPane desktopTabbedPane;
 
@@ -59,11 +57,8 @@ public class MR3 extends JFrame {
     private MR3Writer mr3Writer;
     private GraphManager gmanager;
 
-    private WeakReference<RDFEditor> rdfEditorRef;
     private WeakReference<OverviewDialog> rdfEditorOverviewRef;
-    private WeakReference<ClassEditor> classEditorRef;
     private WeakReference<OverviewDialog> classEditorOverviewRef;
-    private WeakReference<PropertyEditor> propertyEditorRef;
     private WeakReference<OverviewDialog> propertyEditorOverviewRef;
     // private WeakReference<OntTreeEditor> ontTreeEditorRef;
     private WeakReference<OptionDialog> optionDialogRef;
@@ -116,11 +111,8 @@ public class MR3 extends JFrame {
     }
 
     private void initWeakReferences() {
-        rdfEditorRef = new WeakReference<RDFEditor>(null);
         rdfEditorOverviewRef = new WeakReference<OverviewDialog>(null);
-        classEditorRef = new WeakReference<ClassEditor>(null);
         classEditorOverviewRef = new WeakReference<OverviewDialog>(null);
-        propertyEditorRef = new WeakReference<PropertyEditor>(null);
         propertyEditorOverviewRef = new WeakReference<OverviewDialog>(null);
         // ontTreeEditorRef = new WeakReference<OntTreeEditor>(null);
         importDialogRef = new WeakReference<ImportDialog>(null);
@@ -136,9 +128,6 @@ public class MR3 extends JFrame {
     private AbstractAction saveProjectAction;
     private AbstractAction saveProjectAsAction;
     private AbstractAction openPluginManagerAction;
-    private AbstractAction toFrontRDFEditorAction;
-    private AbstractAction toFrontClassEditorAction;
-    private AbstractAction toFrontPropertyEditorAction;
     private AbstractAction deployWindowCPRAction;
     private AbstractAction deployWindowCRAction;
     private AbstractAction deployWindowPRAction;
@@ -159,10 +148,6 @@ public class MR3 extends JFrame {
         saveProjectAsAction = new SaveProject(this, SaveProject.SAVE_AS_PROJECT, SaveProject.SAVE_AS_PROJECT_ICON);
         openPluginManagerAction = new OpenPluginManagerAction(this, Translator
                 .getString("Component.Tools.Plugins.Text"));
-        toFrontRDFEditorAction = new EditorSelect(this, EditorSelect.RDF_EDITOR, EditorSelect.RDF_EDITOR_ICON);
-        toFrontClassEditorAction = new EditorSelect(this, EditorSelect.CLASS_EDITOR, EditorSelect.CLASS_EDITOR_ICON);
-        toFrontPropertyEditorAction = new EditorSelect(this, EditorSelect.PROPERTY_EDITOR,
-                EditorSelect.PROPERTY_EDITOR_ICON);
         deployWindowCPRAction = new DeployWindows(this, Translator.getString("Component.Window.DeployCPRWindows.Text"),
                 CPR_ICON, DeployType.CPR, "control alt R");
         deployWindowCRAction = new DeployWindows(this, Translator.getString("Component.Window.DeployCRWindows.Text"),
@@ -198,10 +183,6 @@ public class MR3 extends JFrame {
         toolbar.add(openPluginManagerAction);
         toolbar.addSeparator();
         toolbar.add(findResAction);
-        toolbar.addSeparator();
-        toolbar.add(toFrontRDFEditorAction);
-        toolbar.add(toFrontClassEditorAction);
-        toolbar.add(toFrontPropertyEditorAction);
         toolbar.addSeparator();
         toolbar.add(showAttrDialogAction);
         toolbar.add(showNSTableDialogAction);
@@ -299,19 +280,10 @@ public class MR3 extends JFrame {
         }
     }
 
-    public RDFEditor getRDFEditor() {
-        RDFEditor result = rdfEditorRef.get();
-        if (result == null) {
-            result = new RDFEditor(gmanager);
-            rdfEditorRef = new WeakReference<RDFEditor>(result);
-        }
-        return result;
-    }
-
     public void showRDFEditorOverview() {
         OverviewDialog result = rdfEditorOverviewRef.get();
         if (result == null) {
-            RDFEditor editor = getRDFEditor();
+            RDFEditor editor = getCurrentProject().getRDFEditor();
             result = new OverviewDialog(OverviewDialog.RDF_EDITOR_OVERVIEW, editor.getGraph(), editor.getJViewport());
             result.setFrameIcon(OverviewDialog.RDF_EDITOR_ICON);
             rdfEditorOverviewRef = new WeakReference<OverviewDialog>(result);
@@ -319,33 +291,15 @@ public class MR3 extends JFrame {
         result.setVisible(true);
     }
 
-    public ClassEditor getClassEditor() {
-        ClassEditor result = classEditorRef.get();
-        if (result == null) {
-            result = new ClassEditor(gmanager);
-            classEditorRef = new WeakReference<ClassEditor>(result);
-        }
-        return result;
-    }
-
     public void showClassEditorOverview() {
         OverviewDialog result = classEditorOverviewRef.get();
         if (result == null) {
-            ClassEditor editor = getClassEditor();
+            ClassEditor editor = getCurrentProject().getClassEditor();
             result = new OverviewDialog(OverviewDialog.CLASS_EDITOR_OVERVIEW, editor.getGraph(), editor.getJViewport());
             result.setFrameIcon(OverviewDialog.CLASS_EDITOR_ICON);
             classEditorOverviewRef = new WeakReference<OverviewDialog>(result);
         }
         result.setVisible(true);
-    }
-
-    public PropertyEditor getPropertyEditor() {
-        PropertyEditor result = propertyEditorRef.get();
-        if (result == null) {
-            result = new PropertyEditor(gmanager);
-            propertyEditorRef = new WeakReference<PropertyEditor>(result);
-        }
-        return result;
     }
 
     // public OntTreeEditor getRDFSTreeEditor() {
@@ -364,7 +318,7 @@ public class MR3 extends JFrame {
     public void showPropertyEditorOverview() {
         OverviewDialog result = propertyEditorOverviewRef.get();
         if (result == null) {
-            PropertyEditor editor = getPropertyEditor();
+            PropertyEditor editor = getCurrentProject().getPropertyEditor();
             result = new OverviewDialog(OverviewDialog.PROPERTY_EDITOR_OVERVIEW, editor.getGraph(), editor
                     .getJViewport());
             result.setFrameIcon(OverviewDialog.PROPERTY_EDITOR_ICON);
@@ -491,45 +445,6 @@ public class MR3 extends JFrame {
         return menu;
     }
 
-    private static final int EDITOR_WIDTH = 792;
-    private static final int EDITOR_HEIGHT = 518;
-
-    private void setRDFEditorBounds() {
-        int editorPositionX = userPrefs.getInt(PrefConstants.RDFEditorPositionX, 0);
-        int editorPositionY = userPrefs.getInt(PrefConstants.RDFEditorPositionY, EDITOR_HEIGHT / 2);
-        int editorWidth = userPrefs.getInt(PrefConstants.RDFEditorWidth, EDITOR_WIDTH);
-        int editorHeight = userPrefs.getInt(PrefConstants.RDFEditorHeight, EDITOR_HEIGHT / 2);
-        // iFrames[0].setBounds(new Rectangle(editorPositionX, editorPositionY,
-        // editorWidth, editorHeight)); // RDF
-    }
-
-    private void setClassEditorBounds() {
-        int editorPositionX = userPrefs.getInt(PrefConstants.ClassEditorPositionX, 0);
-        int editorPositionY = userPrefs.getInt(PrefConstants.ClassEditorPositionY, 0);
-        int editorWidth = userPrefs.getInt(PrefConstants.ClassEditorWidth, EDITOR_WIDTH / 2);
-        int editorHeight = userPrefs.getInt(PrefConstants.ClassEditorHeight, EDITOR_HEIGHT / 2);
-        // iFrames[1].setBounds(new Rectangle(editorPositionX, editorPositionY,
-        // editorWidth, editorHeight)); // Class
-    }
-
-    private void setPropertyEditorBounds() {
-        int editorPositionX = userPrefs.getInt(PrefConstants.PropertyEditorPositionX, EDITOR_WIDTH / 2);
-        int editorPositionY = userPrefs.getInt(PrefConstants.PropertyEditorPositionY, 0);
-        int editorWidth = userPrefs.getInt(PrefConstants.PropertyEditorWidth, EDITOR_WIDTH / 2);
-        int editorHeight = userPrefs.getInt(PrefConstants.PropertyEditorHeight, EDITOR_HEIGHT / 2);
-        // iFrames[2].setBounds(new Rectangle(editorPositionX, editorPositionY,
-        // editorWidth, editorHeight)); // Property
-    }
-
-    private void setRDFSTreeEditorBounds() {
-        int editorPositionX = userPrefs.getInt(PrefConstants.RDFSTreeEditorPositionX, 0);
-        int editorPositionY = userPrefs.getInt(PrefConstants.RDFSTreeEditorPositionY, 0);
-        int editorWidth = userPrefs.getInt(PrefConstants.RDFSTreeEditorWidth, EDITOR_WIDTH / 3);
-        int editorHeight = userPrefs.getInt(PrefConstants.RDFSTreeEditorHeight, EDITOR_HEIGHT);
-        // iFrames[3].setBounds(new Rectangle(editorPositionX, editorPositionY,
-        // editorWidth, editorHeight)); // Property
-    }
-
     private void initOptions() {
         GraphLayoutUtilities.LAYOUT_TYPE = userPrefs.get(PrefConstants.LAYOUT_TYPE, GraphLayoutUtilities.LAYOUT_TYPE);
         GraphLayoutUtilities.RDF_LAYOUT_DIRECTION = userPrefs.get(PrefConstants.RDF_LAYOUT_DIRECTION,
@@ -600,10 +515,9 @@ public class MR3 extends JFrame {
         return (MR3Project) desktopTabbedPane.getSelectedComponent();
     }
 
-    public static void setCurrentProject(File file) {
-        currentProject = file;
-        // HistoryManager.resetFileAppender(file.getAbsolutePath() +
-        // ".log.txt");
+    public static void setCurrentProjectName() {
+        String tabName = getCurrentProject().getCurrentProjectFile().getName().replaceAll(".mr3", "");
+        getCurrentProject().getTabComponent().setTabName(tabName);
     }
 
     public Preferences getUserPrefs() {
@@ -672,10 +586,6 @@ public class MR3 extends JFrame {
         menu.add(new ShowOverview(this, ShowOverview.RDF_EDITOR_OVERVIEW));
         menu.add(new ShowOverview(this, ShowOverview.CLASS_EDITOR_OVERVIEW));
         menu.add(new ShowOverview(this, ShowOverview.PROPERTY_EDITOR_OVERVIEW));
-        menu.addSeparator();
-        menu.add(toFrontRDFEditorAction);
-        menu.add(toFrontClassEditorAction);
-        menu.add(toFrontPropertyEditorAction);
         menu.addSeparator();
         menu.add(showAttrDialogAction);
         menu.add(showNSTableDialogAction);
@@ -799,35 +709,16 @@ public class MR3 extends JFrame {
         gmanager.getAttrDialog().setNullPanel();
         gmanager.getNSTableDialog().setDefaultNSPrefix();
         Color backgroundColor = new Color(userPrefs.getInt(PrefConstants.BackgroundColor, DESKTOP_BACK_COLOR.getRGB()));
-        MR3Project project = new MR3Project(gmanager, basePath, backgroundColor);
+        TabComponent tabComponent = new TabComponent(this, Translator.getString("Component.File.NewProject.Text"));
+        MR3Project project = new MR3Project(gmanager, basePath, backgroundColor, tabComponent);
         desktopTabbedPane.addTab(null, project);
-        desktopTabbedPane.addTab(null, project);
-        desktopTabbedPane.setTabComponentAt(desktopTabbedPane.getTabCount() - 1, createTabComponent());
-
+        desktopTabbedPane.setTabComponentAt(desktopTabbedPane.getTabCount() - 1, tabComponent);
         HistoryManager.saveHistory(HistoryType.NEW_PROJECT);
     }
-    private JComponent createTabComponent() {
-        JPanel tabComp = new JPanel();
-        tabComp.setLayout(new BorderLayout());
-        ImageIcon icon = Utilities.getImageIcon(Translator.getString("Action.Remove.Icon"));
-        ExitProjectAction exitProjectAction = new ExitProjectAction(this, "", icon);
-        JButton tabButton = new JButton(exitProjectAction);
-        int width = icon.getIconWidth();
-        int height = icon.getIconHeight();
-        tabButton.setPreferredSize(new Dimension(width, height));
-        tabComp.add(new JLabel(Translator.getString("Component.File.NewProject.Text")), BorderLayout.CENTER);
-        tabComp.add(tabButton, BorderLayout.EAST);
-
-        return tabComp;
-    }
-
+    
     public void removeTab(MR3Project project) {
         desktopTabbedPane.remove(project);
     }
-
-    // public JDesktopPane getDesktopTabbedPane() {
-    // return gmanager.getDesktopTabbedPane();
-    // }
 
     public MR3Reader getMR3Reader() {
         return mr3Reader;

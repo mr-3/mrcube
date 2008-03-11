@@ -36,37 +36,38 @@ import org.semanticweb.mmm.mr3.util.*;
 public class HelpWindow extends JWindow {
 
     private static final int FONT_SIZE = 14;
-    private static final String TOOL_NAME = "MR<sup>3</sup> (Meta-Model Management <br> based on RDFs Revision Reflection)";
-    private static final String VERSION = "   Version: 1.0 RC5 (2005-12-29)";
-    private static final String MR3_URL = "   http://mmm.semanticweb.org/mr3/";
-    private static final String COPY_RIGHT = "   Copyright (C) 2003-2005 MMM Project";
+    private static final String TOOL_NAME = "Project Name: MR<sup>3</sup> <br>";
+    private static final String VERSION = "   Version: 1.0 SP1<br>";
+    private static final String LAST_UPDATE = "Last Update: 2008-03-12<br>";
+    private static final String MR3_URL = " Project Website:   http://mr3.sourceforge.net/<br>";
+    private static final String COPY_RIGHT = "   Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University.<br>";
+    private static final String LICENSE = "License: GPL<br>";
     private static final Color HELP_BACK_COLOR = Color.WHITE;
-    private static final int WINDOW_WIDTH = 350;
-    private static final int WINDOW_HEIGHT = 180;
 
     public HelpWindow(Frame root, ImageIcon logo) {
         super(root);
-        JLabel logoLabel = new JLabel("<html>" + TOOL_NAME + "<br></html>", logo, SwingConstants.LEFT);
-        logoLabel.setFont(logoLabel.getFont().deriveFont(Font.PLAIN, 14));
-        JLabel urlLabel = new JLabel(MR3_URL);
-        urlLabel.setFont(urlLabel.getFont().deriveFont(Font.PLAIN, FONT_SIZE));
-        JLabel versionLabel = new JLabel(VERSION);
-        versionLabel.setFont(versionLabel.getFont().deriveFont(Font.PLAIN, FONT_SIZE));
-        JLabel copyrightLabel = new JLabel(COPY_RIGHT);
-        copyrightLabel.setFont(versionLabel.getFont().deriveFont(Font.PLAIN, FONT_SIZE));
+        JLabel logoLabel = new JLabel("", logo, SwingConstants.LEFT);
+        logoLabel.setFont(logoLabel.getFont().deriveFont(Font.PLAIN, FONT_SIZE));
 
-        JPanel messagePanel = new JPanel();
-        messagePanel.setBackground(HELP_BACK_COLOR);
-        messagePanel.setLayout(new BoxLayout(messagePanel, BoxLayout.Y_AXIS));
-        messagePanel.add(versionLabel);
-        messagePanel.add(copyrightLabel);
-        messagePanel.add(urlLabel);
+        JEditorPane editor = new JEditorPane("text/html", "");
+        editor.setEditable(false);
+        StringBuilder builder = new StringBuilder();
+        builder.append("<font face=TimesNewRoman>");
+        builder.append(TOOL_NAME);
+        builder.append(VERSION);
+        builder.append(LAST_UPDATE);
+        builder.append(COPY_RIGHT);
+        builder.append("Contact: t_morita@ae.keio.ac.jp<br>");
+        builder.append(LICENSE);
+        builder.append(MR3_URL);
+        builder.append("</font>");
+        editor.setText(builder.toString());
 
         JPanel helpPanel = new JPanel();
         helpPanel.setBackground(HELP_BACK_COLOR);
         helpPanel.setLayout(new BorderLayout());
-        helpPanel.add(logoLabel, BorderLayout.NORTH);
-        helpPanel.add(messagePanel, BorderLayout.CENTER);
+        helpPanel.add(logoLabel, BorderLayout.CENTER);
+        helpPanel.add(editor, BorderLayout.EAST);
         helpPanel.setBorder(BorderFactory.createEtchedBorder());
 
         Container contentPane = getContentPane();
@@ -78,7 +79,7 @@ public class HelpWindow extends JWindow {
                 dispose();
             }
         });
-        setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
+        pack();
         Utilities.center(this);
         setVisible(true);
     }
