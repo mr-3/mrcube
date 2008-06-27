@@ -50,8 +50,8 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 
     private void setAction(JComponent panel) {
         ActionMap actionMap = panel.getActionMap();
-        actionMap.put(insertPropertyAction.getValue(Action.NAME), insertPropertyAction);
-        InputMap inputMap = panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        actionMap.put(insertPropertyAction.getValue(Action.NAME), insertPropertyAction);        
+        InputMap inputMap = panel.getInputMap(JComponent.WHEN_FOCUSED);
         inputMap.put(KeyStroke.getKeyStroke("control R"), insertPropertyAction.getValue(Action.NAME));
     }
 
@@ -104,7 +104,6 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
     class InsertPropertyAction extends AbstractAction {
         InsertPropertyAction() {
             super(INSERT_PROPERTY_TITLE, ELLIPSE_ICON);
-            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_MASK));
         }
 
         public void actionPerformed(ActionEvent ev) {

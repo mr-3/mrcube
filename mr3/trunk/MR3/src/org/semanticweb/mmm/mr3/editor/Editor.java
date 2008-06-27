@@ -143,7 +143,6 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 
         InsertEllipseResourceAction() {
             super("", Utilities.getImageIcon("ellipse.gif"));
-            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_MASK));
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -163,7 +162,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 
         InsertRectangleResourceAction() {
             super("", RDFGraphMarqueeHandler.RECTANGLE_ICON);
-            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.CTRL_MASK));
+            //putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.CTRL_MASK));
         }
 
         public void actionPerformed(ActionEvent e) {

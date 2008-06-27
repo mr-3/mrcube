@@ -35,7 +35,6 @@ import org.jgraph.graph.*;
 import org.semanticweb.mmm.mr3.*;
 import org.semanticweb.mmm.mr3.data.*;
 import org.semanticweb.mmm.mr3.data.MR3Constants.*;
-import org.semanticweb.mmm.mr3.editor.*;
 import org.semanticweb.mmm.mr3.jgraph.*;
 import org.semanticweb.mmm.mr3.util.*;
 
@@ -250,23 +249,20 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 
     private void selectNameSpaceList() {
         PrefixNSUtil.replacePrefix((String) uriPrefixBox.getSelectedItem(), nsLabel);
-
         if (propMap == null) { return; }
 
         if (!localNameList.isSelectionEmpty()) {
             localNameList.clearSelection();
         }
-
         String nameSpace = nsLabel.getText();
         Set<String> localNames = propMap.get(nameSpace);
+        // System.out.println(localNames);
         if (localNames == null) {
             localNameList.setListData(NULL);
             return;
         }
         Set<String> modifyLocalNames = new TreeSet<String>();
         for (String localName : localNames) {
-            // for (Iterator i = localNames.iterator(); i.hasNext();) {
-            // String localName = (String) i.next();
             if (localName.length() == 0) { // localNameがない場合，Nullを表示
                 modifyLocalNames.add(NULL_LOCAL_NAME);
             } else {
@@ -316,7 +312,14 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
             } else {
                 // mr3:nilの場合には，名前空間はBaseURIとする
                 if (info.getURIStr().equals(MR3Resource.Nil.getURI())) {
-                    setNSLabel(gmanager.getBaseURI());
+                    if (0 < propList.size()) {
+                        GraphCell cell = propList.get(0);
+                        RDFSInfo propInfo = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
+                        setNSLabel(propInfo.getURI().getNameSpace());
+                    } else {
+                        setNSLabel(gmanager.getBaseURI());
+                    }
+                    idField.setText("");
                 } else {
                     setNSLabel(info.getNameSpace());
                     idField.setText(info.getLocalName());
@@ -424,8 +427,8 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
             Object propertyCell = rdfsInfoMap.getPropertyCell(uri);
             gmanager.selectPropertyCell(propertyCell);
         } else {
-            JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), Translator.getString("Warning.Message3"), Translator
-                    .getString("Warning"), JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), Translator.getString("Warning.Message3"),
+                    Translator.getString("Warning"), JOptionPane.ERROR_MESSAGE);
         }
     }
 

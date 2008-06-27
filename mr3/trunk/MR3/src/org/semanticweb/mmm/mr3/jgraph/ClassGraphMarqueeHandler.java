@@ -53,7 +53,7 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
     private void setAction(JComponent panel) {
         ActionMap actionMap = panel.getActionMap();
         actionMap.put(insertClassAction.getValue(Action.NAME), insertClassAction);
-        InputMap inputMap = panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        InputMap inputMap = panel.getInputMap(JComponent.WHEN_FOCUSED);
         inputMap.put(KeyStroke.getKeyStroke("control R"), insertClassAction.getValue(Action.NAME));
     }
 
@@ -107,7 +107,6 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
     class InsertClassAction extends AbstractAction {
         InsertClassAction() {
             super(INSERT_CLASS_TITLE, RECTANGLE_ICON);
-            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_MASK));
         }
         public void actionPerformed(ActionEvent ev) {
             Object[] supCells = graph.getSelectionCells();

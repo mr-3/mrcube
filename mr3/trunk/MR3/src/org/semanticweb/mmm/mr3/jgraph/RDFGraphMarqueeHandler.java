@@ -99,7 +99,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
         actionMap.put(insertLiteralAction.getValue(Action.NAME), insertLiteralAction);
         actionMap.put(moveAction.getValue(Action.NAME), moveAction);
         actionMap.put(connectAction.getValue(Action.NAME), connectAction);
-        InputMap inputMap = panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        InputMap inputMap = panel.getInputMap(JComponent.WHEN_FOCUSED);
         inputMap.put(KeyStroke.getKeyStroke("control R"), insertResourceAction.getValue(Action.NAME));
         inputMap.put(KeyStroke.getKeyStroke("control L"), insertLiteralAction.getValue(Action.NAME));
         inputMap.put(KeyStroke.getKeyStroke("control G"), moveAction.getValue(Action.NAME));
@@ -425,7 +425,6 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 
         InsertResourceAction() {
             super(INSERT_RESOURCE_TITLE, ELLIPSE_ICON);
-            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_MASK));
         }
 
         public void actionPerformed(ActionEvent ev) {
@@ -437,7 +436,6 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 
         InsertLiteralAction() {
             super(INSERT_LITERAL_TITLE, RECTANGLE_ICON);
-            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.CTRL_MASK));
         }
 
         public void actionPerformed(ActionEvent ev) {
