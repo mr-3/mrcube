@@ -46,6 +46,8 @@ import com.hp.hpl.jena.rdf.model.*;
 public class FindResourceDialog extends JDialog {
 
     private JTextField findField;
+    private JTextField findLabelField;
+    private JTextField findCommentField;
     private Set<PrefixNSInfo> prefixNSInfoSet;
     private JComboBox uriPrefixBox;
     private JList resourceList;
@@ -73,10 +75,21 @@ public class FindResourceDialog extends JDialog {
         gmanager = gm;
         JComponent buttonGroupPanel = getButtonGroupPanel();
         JComponent findAreaPanel = getFindAreaPanel();
+
+        findLabelField = new JTextField();
+        findLabelField.getDocument().addDocumentListener(new FindAction(FindActionType.LABEL));
+        JComponent findLabelFieldP = Utilities.createTitledPanel(findLabelField, "Label", LIST_WIDTH, FIELD_HEIGHT);
+        findCommentField = new JTextField();
+        findCommentField.getDocument().addDocumentListener(new FindAction(FindActionType.COMMENT));
+        JComponent findCommentFieldP = Utilities.createTitledPanel(findCommentField, "Comment", LIST_WIDTH,
+                FIELD_HEIGHT);
+
         JPanel northPanel = new JPanel();
         northPanel.setLayout(new BoxLayout(northPanel, BoxLayout.Y_AXIS));
         northPanel.add(buttonGroupPanel);
         northPanel.add(findAreaPanel);
+        northPanel.add(findLabelFieldP);
+        northPanel.add(findCommentFieldP);
 
         resourceList = new JList();
         resourceList.addListSelectionListener(new JumpAction());
@@ -131,7 +144,7 @@ public class FindResourceDialog extends JDialog {
                 .createTitledPanel(uriPrefixBox, MR3Constants.PREFIX, BOX_WIDTH, BOX_HEIGHT);
 
         findField = new JTextField();
-        findField.getDocument().addDocumentListener(new FindAction());
+        findField.getDocument().addDocumentListener(new FindAction(FindActionType.URI));
         JComponent findFieldP = Utilities.createTitledPanel(findField, "URI", LIST_WIDTH, FIELD_HEIGHT);
 
         JPanel inlinePanel = new JPanel();
@@ -183,34 +196,39 @@ public class FindResourceDialog extends JDialog {
                 String ns = PrefixNSUtil.getNameSpace((String) uriPrefixBox.getSelectedItem());
                 String id = ResourceFactory.createResource(findField.getText()).getLocalName();
                 findField.setText(ns + id);
-                setFindList();
+                setFindList(FindActionType.URI);
             }
         }
     }
 
     class FindAreaCheck implements ItemListener {
         public void itemStateChanged(ItemEvent e) {
-            setFindList();
+            setFindList(FindActionType.URI);
         }
     }
 
-    public Object[] getFindResources(String key) {
+    public Object[] getFindResources(String key, FindActionType type) {
         Map<String, Object> resourceMap = new TreeMap<String, Object>();
         key = resolvePrefix(key);
         if (rdfCheckBox.isSelected()) {
-            Set<GraphCell> rdfCellSet = gmanager.getFindRDFResult(key);
+            Set<GraphCell> rdfCellSet = null;
+            if (type == FindActionType.URI) {
+                rdfCellSet = gmanager.getFindRDFResult(key);
+            } else if (type == FindActionType.LABEL || type == FindActionType.COMMENT) {
+                rdfCellSet = gmanager.getFindRDFResult(key, type);
+            }
             for (GraphCell rdfCell : rdfCellSet) {
                 resourceMap.put(rdfCell.toString(), rdfCell);
             }
         }
         if (classCheckBox.isSelected()) {
-            Set<GraphCell> classCellSet = gmanager.getFindClassResult(key);
+            Set<GraphCell> classCellSet = gmanager.getFindClassResult(key, type);
             for (GraphCell classCell : classCellSet) {
                 resourceMap.put(classCell.toString(), classCell);
             }
         }
         if (propertyCheckBox.isSelected()) {
-            Set<GraphCell> propertyCellSet = gmanager.getFindPropertyResult(key);
+            Set<GraphCell> propertyCellSet = gmanager.getFindPropertyResult(key, type);
             for (GraphCell propertyCell : propertyCellSet) {
                 resourceMap.put(propertyCell.toString(), propertyCell);
             }
@@ -224,40 +242,64 @@ public class FindResourceDialog extends JDialog {
         String prefix = tokens[0];
         String id = tokens[1];
         if (prefix.equals("http")) { return key; }
-        // for (Iterator i = prefixNSInfoSet.iterator(); i.hasNext();) {
-        // PrefixNSInfo info = (PrefixNSInfo) i.next();
         for (PrefixNSInfo info : prefixNSInfoSet) {
             if (info.getPrefix().equals(prefix)) { return info.getNameSpace() + id; }
         }
         return key;
     }
 
-    private void setFindList() {
+    private void setFindList(FindActionType type) {
         resourceList.removeAll();
-        if (findField.getText().length() == 0) {
-            resourceList.setListData(NULL);
-            return;
+        Object[] findList = null;
+        if (type == FindActionType.URI) {
+            if (findField.getText().length() == 0) {
+                resourceList.setListData(NULL);
+                return;
+            }
+            String key = findField.getText();
+            findList = getFindResources(key, type);
+        } else if (type == FindActionType.LABEL) {
+            if (findLabelField.getText().length() == 0) {
+                resourceList.setListData(NULL);
+                return;
+            }
+            String key = findLabelField.getText();
+            findList = getFindResources(key, type);
+        } else if (type == FindActionType.COMMENT) {
+            if (findCommentField.getText().length() == 0) {
+                resourceList.setListData(NULL);
+                return;
+            }
+            String key = findCommentField.getText();
+            findList = getFindResources(key, type);
         }
-        String key = findField.getText() + ".*";
-        Object[] findList = getFindResources(key);
         resourceList.setListData(findList);
         if (0 < resourceList.getModel().getSize()) {
             resourceList.setSelectedIndex(0);
         }
     }
 
+    public enum FindActionType {
+        URI, LABEL, COMMENT
+    }
+
     class FindAction implements DocumentListener {
+        private FindActionType type;
+
+        public FindAction(FindActionType type) {
+            this.type = type;
+        }
 
         public void changedUpdate(DocumentEvent e) {
-            setFindList();
+            setFindList(type);
         }
 
         public void insertUpdate(DocumentEvent e) {
-            setFindList();
+            setFindList(type);
         }
 
         public void removeUpdate(DocumentEvent e) {
-            setFindList();
+            setFindList(type);
         }
     }
 

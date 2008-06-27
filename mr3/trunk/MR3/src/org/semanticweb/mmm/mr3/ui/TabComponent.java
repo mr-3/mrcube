@@ -22,7 +22,7 @@ public class TabComponent extends JPanel {
 
     public TabComponent(MR3 mr3, String tabName) {
         setLayout(new BorderLayout());
-        ImageIcon icon = Utilities.getImageIcon("cancel.png");
+        ImageIcon icon = Utilities.getImageIcon(Translator.getString("CloseTab.Icon"));
         ExitProjectAction exitProjectAction = new ExitProjectAction(mr3, "", icon);
         tabButton = new JButton(exitProjectAction);
         int width = icon.getIconWidth();

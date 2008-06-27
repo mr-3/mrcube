@@ -42,6 +42,7 @@ import org.semanticweb.mmm.mr3.editor.*;
 import org.semanticweb.mmm.mr3.io.*;
 import org.semanticweb.mmm.mr3.layout.*;
 import org.semanticweb.mmm.mr3.ui.*;
+import org.semanticweb.mmm.mr3.ui.FindResourceDialog.*;
 import org.semanticweb.mmm.mr3.util.*;
 
 import com.hp.hpl.jena.rdf.model.*;
@@ -800,7 +801,7 @@ public class GraphManager {
     }
 
     private boolean isMatches(String key, Resource uri) {
-        return uri.getURI() != null && uri.getURI().matches(key);
+        return uri.getURI() != null && uri.getURI().indexOf(key) != -1;
     }
 
     public Set getClassInstanceSet(Object type) {
@@ -894,6 +895,42 @@ public class GraphManager {
         return result;
     }
 
+    public Set<GraphCell> getFindRDFResult(String key, FindResourceDialog.FindActionType findActionType) {
+        Set<GraphCell> result = new HashSet<GraphCell>();
+        RDFGraph rdfGraph = getCurrentRDFGraph();
+        Object[] cells = rdfGraph.getAllCells();
+        for (int i = 0; i < cells.length; i++) {
+            GraphCell cell = (GraphCell) cells[i];
+            List<MR3Literal> list = null;
+            if (RDFGraph.isRDFResourceCell(cell)) {
+                RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(cell.getAttributes());
+                if (findActionType == FindResourceDialog.FindActionType.LABEL) {
+                    list = info.getLabelList();
+                } else if (findActionType == FindResourceDialog.FindActionType.COMMENT) {
+                    list = info.getCommentList();
+                }
+                for (MR3Literal lit : list) {
+                    if (lit.getString().indexOf(key) != -1) {
+                        result.add(cell);
+                    }
+                }
+            } else if (RDFGraph.isRDFPropertyCell(cell)) {
+                RDFSInfo info = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
+                if (findActionType == FindResourceDialog.FindActionType.LABEL) {
+                    list = info.getLabelList();
+                } else if (findActionType == FindResourceDialog.FindActionType.COMMENT) {
+                    list = info.getCommentList();
+                }
+                for (MR3Literal lit : list) {
+                    if (lit.getString().indexOf(key) != -1) {
+                        result.add(cell);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
     public Set<GraphCell> getFindRDFSResult(String key, RDFGraph graph) {
         Set<GraphCell> result = new HashSet<GraphCell>();
         Object[] cells = graph.getAllCells();
@@ -910,12 +947,39 @@ public class GraphManager {
         return result;
     }
 
-    public Set<GraphCell> getFindClassResult(String key) {
-        return getFindRDFSResult(key, getCurrentClassGraph());
+    public Set<GraphCell> getFindRDFSResult(String key, RDFGraph graph, FindActionType findActionType) {
+        Set<GraphCell> result = new HashSet<GraphCell>();
+        Object[] cells = graph.getAllCells();
+
+        for (int i = 0; i < cells.length; i++) {
+            if (RDFGraph.isRDFSCell(cells[i])) {
+                GraphCell cell = (GraphCell) cells[i];
+                RDFSInfo info = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
+                List<MR3Literal> list = null;
+                if (findActionType == FindResourceDialog.FindActionType.LABEL) {
+                    list = info.getLabelList();
+                } else if (findActionType == FindResourceDialog.FindActionType.COMMENT) {
+                    list = info.getCommentList();
+                }
+
+                for (MR3Literal lit : list) {
+                    if (lit.getString().indexOf(key) != -1) {
+                        result.add(cell);
+                    }
+                }
+            }
+        }
+        return result;
     }
 
-    public Set<GraphCell> getFindPropertyResult(String key) {
-        return getFindRDFSResult(key, getCurrentPropertyGraph());
+    public Set<GraphCell> getFindClassResult(String key, FindActionType findActionType) {
+        if (findActionType == FindActionType.URI) { return getFindRDFSResult(key, getCurrentClassGraph()); }
+        return getFindRDFSResult(key, getCurrentClassGraph(), findActionType);
+    }
+
+    public Set<GraphCell> getFindPropertyResult(String key, FindActionType findActionType) {
+        if (findActionType == FindActionType.URI) { return getFindRDFSResult(key, getCurrentPropertyGraph()); }
+        return getFindRDFSResult(key, getCurrentPropertyGraph(), findActionType);
     }
 
     public void selectCell(Object cell, JGraph graph) {

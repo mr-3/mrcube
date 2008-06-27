@@ -41,12 +41,13 @@ import org.semanticweb.mmm.mr3.io.*;
 import org.semanticweb.mmm.mr3.jgraph.*;
 import org.semanticweb.mmm.mr3.layout.*;
 import org.semanticweb.mmm.mr3.ui.*;
+import org.semanticweb.mmm.mr3.ui.FindResourceDialog.*;
 import org.semanticweb.mmm.mr3.util.*;
 
 /**
  * @author Takeshi Morita
  */
-public class MR3 extends JFrame {
+public class MR3 extends JFrame implements ChangeListener {
 
     public static boolean OFF_META_MODEL_MANAGEMENT;
 
@@ -89,6 +90,8 @@ public class MR3 extends JFrame {
         mr3LogConsole = new MR3LogConsole(this, Translator.getString("LogConsole.Title"), null);
 
         desktopTabbedPane = new JTabbedPane();
+        // desktopTabbedPane.addFocusListener(this);
+        desktopTabbedPane.addChangeListener(this);
         gmanager = new GraphManager(desktopTabbedPane, userPrefs, this);
         mr3Reader = new MR3Reader(gmanager);
         mr3Writer = new MR3Writer(gmanager);
@@ -251,7 +254,7 @@ public class MR3 extends JFrame {
         if (findField.getText().length() == 0) {
             findList = NULL;
         } else {
-            findList = gmanager.getFindResourceDialog().getFindResources(findField.getText() + ".*");
+            findList = gmanager.getFindResourceDialog().getFindResources(findField.getText(), FindActionType.URI);
         }
     }
 
@@ -544,8 +547,8 @@ public class MR3 extends JFrame {
         menu.add(idView);
         menu.add(labelView);
         menu.addSeparator();
-        showTypeCellBox = new JCheckBoxMenuItem(Translator.getString("Component.View.Type.Text"), false);
-        gmanager.setIsShowTypeCell(false);
+        showTypeCellBox = new JCheckBoxMenuItem(Translator.getString("Component.View.Type.Text"), true);
+        gmanager.setIsShowTypeCell(true);
         showTypeCellBox.addActionListener(new ShowTypeCellAction());
         menu.add(showTypeCellBox);
 
@@ -705,6 +708,25 @@ public class MR3 extends JFrame {
         }
     }
 
+    private JComponent createTabComponent(String title) {
+        JComponent comp = new JComponent() {
+        };
+        comp.setLayout(new BorderLayout(5, 5));
+
+        JLabel label = new JLabel(title, JLabel.LEFT);
+        comp.add(label, BorderLayout.CENTER);
+
+        ImageIcon icon = Utilities.getImageIcon(Translator.getString("CloseTab.Icon"));
+        ;
+        JButton button = new JButton(icon);
+        int width = icon.getIconWidth();
+        int height = icon.getIconHeight();
+        button.setPreferredSize(new Dimension(width, height));
+        comp.add(button, BorderLayout.EAST);
+
+        return comp;
+    }
+
     public void newProject(String basePath) {
         gmanager.getAttrDialog().setNullPanel();
         gmanager.getNSTableDialog().setDefaultNSPrefix();
@@ -715,7 +737,7 @@ public class MR3 extends JFrame {
         desktopTabbedPane.setTabComponentAt(desktopTabbedPane.getTabCount() - 1, tabComponent);
         HistoryManager.saveHistory(HistoryType.NEW_PROJECT);
     }
-    
+
     public void removeTab(MR3Project project) {
         desktopTabbedPane.remove(project);
     }
@@ -772,5 +794,17 @@ public class MR3 extends JFrame {
         } finally {
             splashWindow.dispose();
         }
+    }
+
+    @Override
+    public void stateChanged(ChangeEvent e) {
+        for (int i = 0; i < desktopTabbedPane.getTabCount(); i++) {
+            TabComponent tabComp = (TabComponent) desktopTabbedPane.getTabComponentAt(i);
+            if (tabComp != null) {
+                tabComp.setCloseButtonVisible(false);
+            }
+        }
+        MR3Project mr3Project = (MR3Project) desktopTabbedPane.getSelectedComponent();
+        mr3Project.getTabComponent().setCloseButtonVisible(true);
     }
 }
