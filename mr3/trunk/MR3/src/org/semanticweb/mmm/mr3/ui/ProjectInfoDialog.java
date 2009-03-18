@@ -228,10 +228,9 @@ public class ProjectInfoDialog extends JDialog {
     }
 
     private int calcOntCnt(RDFGraph graph) {
-        Object[] cells = graph.getAllCells();
         int ontCnt = 0;
-        for (int i = 0; i < cells.length; i++) {
-            if (RDFGraph.isRDFSCell(cells[i])) {
+        for (Object cell : graph.getAllCells()) {
+            if (RDFGraph.isRDFSCell(cell)) {
                 ontCnt++;
             }
         }

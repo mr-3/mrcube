@@ -401,6 +401,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
                     propInfo.setURI(uri.getURI());
                     GraphUtilities.resizeRDFSResourceCell(gmanager, propInfo, propertyCell);
                     rdfsInfoMap.putURICellMap(propInfo, propertyCell);
+                    gmanager.selectChangedRDFCells(propInfo);
                     HistoryManager
                             .saveHistory(HistoryType.META_MODEL_MANAGEMNET_REPLACE_PROPERTY_WITH_REPLACE_ONT_PROPERTY);
                 } else if (createType == null) { return; }

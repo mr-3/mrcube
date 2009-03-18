@@ -61,8 +61,7 @@ public class MR3Generator {
 
     private void createPropertyModel(RDFGraph graph, Object[] cells, Model propertyModel) {
         try {
-            for (int i = 0; i < cells.length; i++) {
-                Object cell = cells[i];
+            for (Object cell : cells) {
                 if (RDFGraph.isRDFSPropertyCell(cell)) {
                     PropertyInfo info = (PropertyInfo) GraphConstants.getValue(((GraphCell) cell).getAttributes());
                     Set<GraphCell> supProperties = graph.getTargetCells((DefaultGraphCell) cell);
@@ -92,8 +91,7 @@ public class MR3Generator {
 
     private void createClassModel(RDFGraph graph, Object[] cells, Model classModel) {
         try {
-            for (int i = 0; i < cells.length; i++) {
-                Object cell = cells[i];
+            for (Object cell : cells) {
                 if (RDFGraph.isRDFSClassCell(cell)) {
                     DefaultGraphCell classCell = (DefaultGraphCell) cell;
                     ClassInfo info = (ClassInfo) GraphConstants.getValue(classCell.getAttributes());
@@ -158,8 +156,7 @@ public class MR3Generator {
 
     private void addRDFModel(Object[] cells, Model rdfModel) {
         try {
-            for (int i = 0; i < cells.length; i++) {
-                Object cell = cells[i];
+            for (Object cell : cells) {
                 if (RDFGraph.isRDFResourceCell(cell)) {
                     RDFResourceInfo info = (RDFResourceInfo) GraphConstants
                             .getValue(((GraphCell) cell).getAttributes());

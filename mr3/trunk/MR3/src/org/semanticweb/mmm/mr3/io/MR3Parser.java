@@ -171,7 +171,7 @@ public class MR3Parser {
         RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(subjectCell.getAttributes());
         if (predicate.equals(RDF.type)) {
             GraphCell cell = gmanager.getClassCell((Resource) object, false);
-            info.setTypeCell(cell);
+            info.setTypeCell(cell, gmanager.getCurrentRDFGraph());
         } else if (predicate.equals(RDFS.label)) {
             MR3Literal literal = new MR3Literal((Literal) object);
             info.addLabel(literal);

@@ -217,6 +217,7 @@ public abstract class OntologyPanel extends JPanel implements ListSelectionListe
                 GraphUtilities.resizeRDFSResourceCell(gmanager, rdfsInfo, cell);
                 rdfsInfoMap.putURICellMap(rdfsInfo, cell);
                 rdfsInfo.setMetaClass(metaClassBox.getSelectedItem().toString());
+                gmanager.selectChangedRDFCells(rdfsInfo);
                 if (graph.getType() == GraphType.CLASS) {
                     HistoryManager.saveHistory(HistoryType.EDIT_CLASS_WITH_DIAGLOG, beforeRDFSInfo, rdfsInfo);
                 } else if (graph.getType() == GraphType.PROPERTY) {

@@ -198,7 +198,7 @@ public class MR3CellMaker {
         rdfCell.add(new DefaultPort());
         AttributeMap resMap = getResourceMap(getRDFNodeRectangle(point, uri), RDFResourceCell.rdfResourceColor);
         attributes.put(rdfCell, resMap);
-        info.setTypeCell((GraphCell) resTypeCell);
+        info.setTypeCell((GraphCell) resTypeCell, gmanager.getCurrentRDFGraph());
         GraphConstants.setValue(rdfCell.getAttributes(), info);
         // graph.getGraphLayoutCache().insert(new Object[] { rdfCell},
         // attributes, null, null, null);

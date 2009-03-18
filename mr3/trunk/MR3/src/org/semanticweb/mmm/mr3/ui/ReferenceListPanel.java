@@ -218,7 +218,7 @@ public class ReferenceListPanel extends JPanel {
                 GraphCell rdfCell = (GraphCell) tableModel.getValueAt(i, 1);
                 if (RDFGraph.isRDFResourceCell(rdfCell)) {
                     RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(rdfCell.getAttributes());
-                    info.setTypeCell(null); // TypeÇnullÇ…ïœçX
+                    info.setTypeCell(null, gmanager.getCurrentRDFGraph()); // TypeÇnullÇ…ïœçX
                 } else if (RDFGraph.isRDFPropertyCell(rdfCell)) {
                     GraphConstants.setValue(rdfCell.getAttributes(), new PropertyInfo(MR3Resource.Nil.getURI()));
                 }

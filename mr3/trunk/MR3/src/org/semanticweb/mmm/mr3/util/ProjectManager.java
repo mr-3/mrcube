@@ -261,7 +261,7 @@ public class ProjectManager {
             if (RDFGraph.isRDFResourceCell(cell)) {
                 RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(cell.getAttributes());
                 if (info.getType().equals(MR3Resource.Empty)) {
-                    info.setTypeCell(null);
+                    info.setTypeCell(null, gmanager.getCurrentRDFGraph());
                     GraphConstants.setValue(cell.getAttributes(), info);
                 }
             }

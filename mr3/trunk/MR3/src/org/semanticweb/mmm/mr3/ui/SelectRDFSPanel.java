@@ -59,10 +59,9 @@ public class SelectRDFSPanel extends SelectClassPanel {
 
     public void valueChanged(GraphSelectionEvent e) {
         newRegionSet.removeAll(newRegionSet);
-        Object[] cells = graph.getSelectionCells();
-        for (int i = 0; i < cells.length; i++) {
-            if (RDFGraph.isRDFSCell(cells[i])) {
-                newRegionSet.add(cells[i]);
+        for (Object cell : graph.getSelectionCells()) {
+            if (RDFGraph.isRDFSCell(cell)) {
+                newRegionSet.add(cell);
             }
         }
         if (orgRegionSet != null) {

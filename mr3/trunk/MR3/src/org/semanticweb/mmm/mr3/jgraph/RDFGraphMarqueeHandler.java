@@ -268,7 +268,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
             r = graph.toScreen(new Rectangle2D.Double(r.getX(), r.getY(), r.getWidth(), r.getHeight()));
             // r = graph.toScreen(GraphConstants.createRect(r));
             // r =
-            // graph.toScreen(graph.getModel().createAttributes().createRect(r));
+            //graph.toScreen(graph.getModel().createAttributes().createRect(r));
 
             int s = 3;
             r.getBounds().translate(-s, -s);
@@ -298,12 +298,11 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     }
 
     public GraphCell insertResourceCell(Point pt) {
-        Object[] cells = gmanager.getCurrentClassGraph().getAllCells();
         List<Object> list = new ArrayList<Object>();
         list.add(null); // リソースのタイプが空の場合
-        for (int i = 0; i < cells.length; i++) {
-            if (RDFGraph.isRDFSClassCell(cells[i])) {
-                list.add(cells[i]);
+        for (Object cell : gmanager.getCurrentClassGraph().getAllCells()) {
+            if (RDFGraph.isRDFSClassCell(cell)) {
+                list.add(cell);
             }
         }
         InsertRDFResDialog dialog = getInsertRDFResDialog(Utilities.getSortedCellSet(list.toArray()));
@@ -325,10 +324,10 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
         Object[] cells = graph.getSelectionCells();
         cells = graph.getDescendants(cells);
         Set<Object> selectedResourcePorts = new HashSet<Object>();
-        for (int i = 0; i < cells.length; i++) {
-            if (RDFGraph.isRDFResourceCell(cells[i])) {
-                DefaultGraphCell cell = (DefaultGraphCell) cells[i];
-                selectedResourcePorts.add(cell.getChildAt(0));
+        for (Object cell : cells) {
+            if (RDFGraph.isRDFResourceCell(cell)) {
+                DefaultGraphCell gcell = (DefaultGraphCell) cell;
+                selectedResourcePorts.add(gcell.getChildAt(0));
             }
         }
         return selectedResourcePorts;
@@ -345,7 +344,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
         } else {
             graph.setSelectionCell(targetCell);
         }
-        
+
         if (graph.getType() == GraphType.RDF) {
             HistoryManager.saveHistory(HistoryType.INSERT_CONNECTED_RESOURCE, targetCell);
         } else {
@@ -476,10 +475,9 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     private Object[] getSelectedRDFResourceCells() {
         RDFGraph rdfGraph = gmanager.getCurrentRDFGraph();
         Set<Object> resourceCells = new HashSet<Object>();
-        Object[] rdfCells = rdfGraph.getDescendants(rdfGraph.getSelectionCells());
-        for (int i = 0; i < rdfCells.length; i++) {
-            if (RDFGraph.isRDFResourceCell(rdfCells[i])) {
-                resourceCells.add(rdfCells[i]);
+        for (Object rdfCell : rdfGraph.getDescendants(rdfGraph.getSelectionCells())) {
+            if (RDFGraph.isRDFResourceCell(rdfCell)) {
+                resourceCells.add(rdfCell);
             }
         }
         return resourceCells.toArray();
@@ -488,10 +486,10 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     private Object[] getSelectedRDFPropertyCells() {
         RDFGraph rdfGraph = gmanager.getCurrentRDFGraph();
         Set<Object> rdfPropCells = new HashSet<Object>();
-        Object[] rdfCells = rdfGraph.getDescendants(rdfGraph.getSelectionCells());
-        for (int i = 0; i < rdfCells.length; i++) {
-            if (RDFGraph.isRDFPropertyCell(rdfCells[i])) {
-                rdfPropCells.add(rdfCells[i]);
+
+        for (Object rdfCell : rdfGraph.getDescendants(rdfGraph.getSelectionCells())) {
+            if (RDFGraph.isRDFPropertyCell(rdfCell)) {
+                rdfPropCells.add(rdfCell);
             }
         }
         return rdfPropCells.toArray();
@@ -508,7 +506,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
                     for (int i = 0; i < resCells.length; i++) {
                         RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(((GraphCell) resCells[i])
                                 .getAttributes());
-                        info.setTypeCell(typeCell);
+                        info.setTypeCell(typeCell, gmanager.getCurrentRDFGraph());
                     }
                     gmanager.repaintRDFGraph();
                 }

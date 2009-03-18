@@ -50,7 +50,8 @@ public class PropertyPanel extends OntologyPanel {
         super(manager.getCurrentPropertyGraph(), manager);
         labelPanel.setGraphType(GraphType.PROPERTY);
         commentPanel.setGraphType(GraphType.PROPERTY);
-        // setBorder(BorderFactory.createTitledBorder(Translator.getString("AttributeDialog.OntPropertyAttribute.Text")));
+        // setBorder(BorderFactory.createTitledBorder(Translator.getString(
+        // "AttributeDialog.OntPropertyAttribute.Text")));
         selectRDFSDialogRef = new WeakReference<SelectRDFSDialog>(null);
 
         regionPanel = new RegionPanel();
@@ -183,9 +184,8 @@ public class PropertyPanel extends OntologyPanel {
                 PropertyInfo info = (PropertyInfo) GraphConstants.getValue(cell.getAttributes());
                 if (!domainList.isSelectionEmpty()) {
                     Set beforeDomainSet = new HashSet(info.getDomain());
-                    Object[] rlist = domainList.getSelectedValues();
-                    for (int i = 0; i < rlist.length; i++) {
-                        info.removeDomain(rlist[i]);
+                    for (Object rd : domainList.getSelectedValues()) {
+                        info.removeDomain(rd);
                     }
                     RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
                     rdfsInfoMap.putURICellMap(info, cell);
@@ -195,9 +195,8 @@ public class PropertyPanel extends OntologyPanel {
                 }
                 if (!rangeList.isSelectionEmpty()) {
                     Set beforeRangeSet = new HashSet(info.getRange());
-                    Object[] rlist = rangeList.getSelectedValues();
-                    for (int i = 0; i < rlist.length; i++) {
-                        info.removeRange(rlist[i]);
+                    for (Object rr : rangeList.getSelectedValues()) {
+                        info.removeRange(rr);
                     }
                     RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
                     rdfsInfoMap.putURICellMap(info, cell);
