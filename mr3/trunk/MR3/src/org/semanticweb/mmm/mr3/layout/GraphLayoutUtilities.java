@@ -101,10 +101,9 @@ public class GraphLayoutUtilities {
 
     public static void reverseArc(MR3CellMaker cellMaker, RDFGraph graph) {
         Set<Edge> removeEdges = new HashSet<Edge>();
-        Object[] cells = graph.getAllCells();
-        for (int i = 0; i < cells.length; i++) {
-            if (RDFGraph.isEdge(cells[i])) {
-                Edge edge = (Edge) cells[i];
+        for (Object cell : graph.getAllCells()) {
+            if (RDFGraph.isEdge(cell)) {
+                Edge edge = (Edge) cell;
                 removeEdges.add(edge);
                 Object info = GraphConstants.getValue(edge.getAttributes());
                 cellMaker.connect((Port) graph.getModel().getTarget(edge), (Port) graph.getModel().getSource(edge),

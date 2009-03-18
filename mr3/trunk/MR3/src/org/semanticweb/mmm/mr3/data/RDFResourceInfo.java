@@ -94,7 +94,7 @@ public class RDFResourceInfo extends ResourceInfo implements Serializable {
 
     private static final ClassInfo NULL_INFO = new ClassInfo("");
 
-    public void setTypeCell(GraphCell cell) {
+    public void setTypeCell(GraphCell cell, RDFGraph graph) {
         if (MR3.OFF_META_MODEL_MANAGEMENT) {
             if (cell != null) {
                 RDFSInfo info = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
@@ -108,7 +108,7 @@ public class RDFResourceInfo extends ResourceInfo implements Serializable {
                 } else {
                     GraphConstants.setValue(typeViewCell.getAttributes(), "");
                 }
-                typeViewCell.getAttributes().applyMap(typeViewCell.getAttributes());
+                graph.getGraphLayoutCache().editCell(typeViewCell, typeViewCell.getAttributes());
             }
             return;
         }
@@ -116,7 +116,7 @@ public class RDFResourceInfo extends ResourceInfo implements Serializable {
         typeCell = cell;
         if (typeViewCell != null) { // âºÉãÅ[ÉgÇçÏÇÈéûÅCtypeViewCellÇçÏÇÁÇ»Ç¢ÇΩÇﬂ
             GraphConstants.setValue(typeViewCell.getAttributes(), getTypeInfo());
-            typeViewCell.getAttributes().applyMap(typeViewCell.getAttributes());
+            graph.getGraphLayoutCache().editCell(typeViewCell, typeViewCell.getAttributes());
         }
     }
 

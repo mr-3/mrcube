@@ -195,7 +195,7 @@ public class GraphUtilities {
         }
     }
 
-    public static void resizeRDFSResourceCell(GraphManager gm, RDFSInfo rdfsInfo, GraphCell cell) {
+    public static void resizeRDFSResourceCell(GraphManager gm, RDFSInfo rdfsInfo, GraphCell cell) {        
         String value = gm.getRDFSNodeValue(rdfsInfo.getURI(), rdfsInfo);
         Dimension size = GraphUtilities.getAutoNodeDimension(gm, value);
         if (rdfsInfo instanceof ClassInfo) {
@@ -217,7 +217,6 @@ public class GraphUtilities {
             AttributeMap map = cell.getAttributes();
             GraphConstants.setBounds(map, map.createRect(rect.getX(), rect.getY(), size.getWidth(), size.getHeight()));
             graph.getGraphLayoutCache().editCell(cell, map);
-            //graph.getGraphLayoutCache().reload(); // ÉTÉCÉYÇÃé©ìÆí≤êﬂÇÇ∑ÇÆÇ…îΩâfÇ≥ÇπÇÈ
         }
     }
 

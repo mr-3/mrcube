@@ -101,7 +101,8 @@ public class MR3Reader {
         } catch (RDFException e) {
             e.printStackTrace();
         }
-        mergeRDFSModel(ModelFactory.createDefaultModel()); // RDFからRDFSへ反映されたクラス，プロパティの処理
+        mergeRDFSModel(ModelFactory.createDefaultModel()); //RDFからRDFSへ反映されたクラス，
+                                                           // プロパティの処理
         resetPropertyInfo();
     }
 
@@ -193,10 +194,9 @@ public class MR3Reader {
 
     private void setPropertyLabels() {
         RDFGraph classGraph = gmanager.getCurrentClassGraph();
-        Object[] cells = classGraph.getAllCells();
-        for (int i = 0; i < cells.length; i++) {
-            if (RDFGraph.isEdge(cells[i])) {
-                setPropertyLabel(classGraph, cells[i]);
+        for (Object cell : classGraph.getAllCells()) {
+            if (RDFGraph.isEdge(cell)) {
+                setPropertyLabel(classGraph, cell);
             }
         }
     }
@@ -246,7 +246,8 @@ public class MR3Reader {
             // replaceGraph(mr3Parser.createRDFGraph(model,
             // VGJTreeLayout.getVGJRDFCellLayoutMap(model)));
             mr3Parser.replaceDefaultRDFGraph(model);
-            mergeRDFSModel(ModelFactory.createDefaultModel()); // RDFからRDFSへ反映されたクラス，プロパティの処理
+            mergeRDFSModel(ModelFactory.createDefaultModel()); // RDFからRDFSへ反映されたクラス
+                                                               // ，プロパティの処理
         }
     }
 

@@ -504,6 +504,7 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
                         rdfsInfo.setURI(uri.getURI());
                         GraphUtilities.resizeRDFSResourceCell(gmanager, rdfsInfo, typeCell);
                         rdfsInfoMap.putURICellMap(rdfsInfo, typeCell);
+                        gmanager.selectChangedRDFCells(rdfsInfo); // RDFグラフの表示内容を更新
                         HistoryManager
                                 .saveHistory(HistoryType.META_MODEL_MANAGEMNET_REPLACE_RESOURCE_TYPE_WITH_REPLACE_CLASS);
                     } else if (createType == null) { return null; }
@@ -513,7 +514,7 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
         }
 
         private void setResourceType(GraphCell typeCell) {
-            resInfo.setTypeCell(typeCell);
+            resInfo.setTypeCell(typeCell, gmanager.getCurrentRDFGraph());
             typePanel.setResourceTypeField(resInfo.getType().getURI());
         }
 

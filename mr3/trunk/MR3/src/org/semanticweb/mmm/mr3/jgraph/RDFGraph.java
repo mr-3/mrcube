@@ -93,9 +93,9 @@ public class RDFGraph extends JGraph {
     }
 
     /**
-     * Returns true if <code>object</code> is a vertex, that is, if it is not
-     * an instance of Port or Edge, and all of its children are ports, or it has
-     * no children.
+     * Returns true if <code>object</code> is a vertex, that is, if it is not an
+     * instance of Port or Edge, and all of its children are ports, or it has no
+     * children.
      */
     public boolean isGroup(Object cell) {
         // Map the Cell to its View
@@ -105,9 +105,9 @@ public class RDFGraph extends JGraph {
     }
 
     /**
-     * Returns true if <code>object</code> is a vertex, that is, if it is not
-     * an instance of Port or Edge, and all of its children are ports, or it has
-     * no children.
+     * Returns true if <code>object</code> is a vertex, that is, if it is not an
+     * instance of Port or Edge, and all of its children are ports, or it has no
+     * children.
      */
     public boolean isVertex(Object object) {
         if (!(object instanceof Port) && !(object instanceof Edge)) return !isGroup(object) && object != null;
@@ -126,10 +126,9 @@ public class RDFGraph extends JGraph {
         setUI(new RDFGraphUI(this, gmanager));
     }
 
-    public boolean isContains(Object cell) {
-        Object[] cells = getAllCells();
-        for (int i = 0; i < cells.length; i++) {
-            if (cells[i] == cell) { return true; }
+    public boolean isContains(Object c) {
+        for (Object cell : getAllCells()) {
+            if (cell == c) { return true; }
         }
         return false;
     }
@@ -141,10 +140,10 @@ public class RDFGraph extends JGraph {
     public GraphCell isOneRDFCellSelected(Object[] cells) {
         int count = 0;
         GraphCell rdfCell = null;
-        for (int i = 0; i < cells.length; i++) {
-            if (isRDFCell(cells[i])) {
+        for (Object cell : cells) {
+            if (isRDFCell(cell)) {
                 count++;
-                rdfCell = (GraphCell) cells[i];
+                rdfCell = (GraphCell) cell;
             }
         }
         if (count == 1) { return rdfCell; }
@@ -258,11 +257,10 @@ public class RDFGraph extends JGraph {
      * ‘I‘ð‚³‚ê‚½Cell‚ÉÚ‘±‚³‚ê‚Ä‚¢‚éEdge‚ðíœ
      */
     public void removeEdges() {
-        Object[] cells = getAllCells();
         Set removeCells = new HashSet();
-        for (int i = 0; i < cells.length; i++) {
-            if (isEdge(cells[i])) {
-                removeCells.add(cells[i]);
+        for (Object cell : getAllCells()) {
+            if (isEdge(cell)) {
+                removeCells.add(cell);
             }
         }
         graphLayoutCache.remove(removeCells.toArray());

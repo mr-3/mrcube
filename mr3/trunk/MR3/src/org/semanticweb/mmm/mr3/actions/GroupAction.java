@@ -62,8 +62,8 @@ public class GroupAction extends AbstractAction {
             int count = getCellCount(graph);
             DefaultGraphCell group = new DefaultGraphCell(new Integer(count - 1));
             ParentMap map = new ParentMap();
-            for (int i = 0; i < cells.length; i++) {
-                map.addEntry(cells[i], group);
+            for (Object cell : cells) {
+                map.addEntry(cell, group);
             }
             // graph.getGraphLayoutCache().insert(new Object[] { group }, null,
             // null, map, null);

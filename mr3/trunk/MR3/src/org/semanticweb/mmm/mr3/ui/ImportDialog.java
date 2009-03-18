@@ -252,12 +252,11 @@ public class ImportDialog extends JDialog implements ActionListener {
 
     class RemoveContainerListAction implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            Object[] selectedValues = containerListUI.getSelectedValues();
-            for (int i = 0; i < selectedValues.length; i++) {
-                if (selectedValues[i].equals(gmanager.getWorkDirectory())) {
+            for (Object selectedValue : containerListUI.getSelectedValues()) {
+                if (selectedValue.equals(gmanager.getWorkDirectory())) {
                     continue;
                 }
-                containerListModel.removeElement(selectedValues[i]);
+                containerListModel.removeElement(selectedValue);
             }
             gmanager.setResourceContainer(containerListModel);
         }
@@ -342,10 +341,10 @@ public class ImportDialog extends JDialog implements ActionListener {
             if (selectedContainers == null) { return; }
             uriSet = new TreeSet<String>();
             fileSet = new TreeSet<File>();
-            for (int i = 0; i < selectedContainers.length; i++) {
-                File selectedDirectory = new File(selectedContainers[i].toString());
+            for (Object selectedContainer : selectedContainers) {
+                File selectedDirectory = new File(selectedContainer.toString());
                 if (!selectedDirectory.isDirectory()) {
-                    uriSet.add(selectedContainers[i].toString());
+                    uriSet.add(selectedContainer.toString());
                 } else {
                     if (filterBox.getSelectedItem() instanceof java.io.FileFilter) {
                         fileSet.addAll(Arrays.asList(selectedDirectory.listFiles((java.io.FileFilter) filterBox
@@ -442,9 +441,8 @@ public class ImportDialog extends JDialog implements ActionListener {
     private Set<InputStream> getFileInputStreamSet() {
         Set<InputStream> inputStreamSet = new HashSet<InputStream>();
         if (fileListUI.isSelectionEmpty()) { return inputStreamSet; }
-        Object[] files = fileListUI.getSelectedValues();
-        for (int i = 0; i < files.length; i++) {
-            File file = getFile(files[i].toString());
+        for (Object fileObj : fileListUI.getSelectedValues()) {
+            File file = getFile(fileObj.toString());
             if (file == null || file.isDirectory()) {
                 continue;
             }

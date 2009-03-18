@@ -234,7 +234,8 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             uiLangBox.setModel(new DefaultComboBoxModel(getUILanguages()));
             uiLangBox.setSelectedItem(userPrefs.get(PrefConstants.UILang, "en"));
             defaultLangField.setText(userPrefs.get(PrefConstants.DefaultLang, "ja"));
-            // inputEncodingBox.setSelectedItem(userPrefs.get(PrefConstants.InputEncoding,
+            // inputEncodingBox.setSelectedItem(userPrefs.get(PrefConstants.
+            // InputEncoding,
             // "SJIS"));
             outputEncodingBox.setSelectedItem(userPrefs.get(PrefConstants.OutputEncoding, "SJIS"));
             baseURILabel.setText(userPrefs.get(PrefConstants.BaseURI, MR3Resource.DefaultURI.getURI()));
@@ -267,9 +268,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         private Object[] getLanguages(File resourceDir) {
             Set<String> langSet = new TreeSet<String>();
             try {
-                File[] resFiles = resourceDir.listFiles();
-                for (int i = 0; i < resFiles.length; i++) {
-                    File resFile = resFiles[i];
+                for (File resFile : resourceDir.listFiles()) {
                     if (resFile.getName().matches("MR3_.*\\.properties")) {
                         String lang = resFile.getName().split("_")[1].split("\\.")[0];
                         langSet.add(lang);

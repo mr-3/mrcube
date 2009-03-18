@@ -62,11 +62,11 @@ public class UnGroupAction extends AbstractAction {
         if (cells != null && cells.length > 0) {
             List<Object> groups = new ArrayList<Object>();
             List<Object> children = new ArrayList<Object>();
-            for (int i = 0; i < cells.length; i++) {
-                if (isGroup(graph, cells[i])) {
-                    groups.add(cells[i]);
-                    for (int j = 0; j < graph.getModel().getChildCount(cells[i]); j++) {
-                        Object child = graph.getModel().getChild(cells[i], j);
+            for (Object cell : cells) {
+                if (isGroup(graph, cell)) {
+                    groups.add(cell);
+                    for (int j = 0; j < graph.getModel().getChildCount(cell); j++) {
+                        Object child = graph.getModel().getChild(cell, j);
                         if (!RDFGraph.isPort(child)) {
                             children.add(child);
                         }

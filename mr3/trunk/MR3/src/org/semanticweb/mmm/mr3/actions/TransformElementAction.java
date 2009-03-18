@@ -118,11 +118,10 @@ public class TransformElementAction extends AbstractAction {
     }
 
     private boolean isRmCellsRemoved() {
-        Object[] cells = gmanager.getRemoveCells();
-        for (int i = 0; i < cells.length; i++) {
-            if (gmanager.getCurrentRDFGraph().getModel().contains(cells[i])
-                    || gmanager.getCurrentClassGraph().getModel().contains(cells[i])
-                    || gmanager.getCurrentPropertyGraph().getModel().contains(cells[i])) { return false; }
+        for (Object cell : gmanager.getRemoveCells()) {
+            if (gmanager.getCurrentRDFGraph().getModel().contains(cell)
+                    || gmanager.getCurrentClassGraph().getModel().contains(cell)
+                    || gmanager.getCurrentPropertyGraph().getModel().contains(cell)) { return false; }
         }
         return true;
     }
