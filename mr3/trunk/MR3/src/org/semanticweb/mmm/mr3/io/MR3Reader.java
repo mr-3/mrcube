@@ -102,7 +102,7 @@ public class MR3Reader {
             e.printStackTrace();
         }
         mergeRDFSModel(ModelFactory.createDefaultModel()); //RDFからRDFSへ反映されたクラス，
-                                                           // プロパティの処理
+        // プロパティの処理
         resetPropertyInfo();
     }
 
@@ -247,7 +247,7 @@ public class MR3Reader {
             // VGJTreeLayout.getVGJRDFCellLayoutMap(model)));
             mr3Parser.replaceDefaultRDFGraph(model);
             mergeRDFSModel(ModelFactory.createDefaultModel()); // RDFからRDFSへ反映されたクラス
-                                                               // ，プロパティの処理
+            // ，プロパティの処理
         }
     }
 
@@ -352,17 +352,14 @@ public class MR3Reader {
     // model.add(innerModel);
     // }
 
-    private MR3 mr3;
     private Model model;
 
-    public void replaceProjectModel(Model projectModel, MR3 project) {
+    public void replaceProjectModel(Model projectModel) {
         model = projectModel;
-        mr3 = project;
         if (model == null) { return; }
         new Thread() {
             public void run() {
                 File currentProjectFile = MR3.getCurrentProject().getCurrentProjectFile(); // NewProjectよりも前のを保存
-                mr3.newProject(null);
                 gmanager.importing(true);
                 ProjectManager projectManager = new ProjectManager(gmanager);
                 Model projectModel = projectManager.extractProjectModel(model);

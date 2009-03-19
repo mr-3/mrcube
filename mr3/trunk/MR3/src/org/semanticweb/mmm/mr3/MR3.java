@@ -655,6 +655,13 @@ public class MR3 extends JFrame implements ChangeListener {
     }
 
     class ChangeCellViewAction implements ActionListener {
+        
+        private void selectCells(RDFGraph graph) {
+            Object[] selectedCells = graph.getSelectionCells();
+            graph.setSelectionCells(graph.getAllCells());
+            graph.setSelectionCells(selectedCells);
+        }
+        
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == uriView) {
                 GraphManager.cellViewType = CellViewType.URI;
@@ -665,6 +672,10 @@ public class MR3 extends JFrame implements ChangeListener {
             }
             GraphUtilities.resizeAllRDFResourceCell(gmanager);
             GraphUtilities.resizeAllRDFSResourceCell(gmanager);
+            // グラフが再描画されない場合があるため，一度セルを選択して，強制的に再描画する
+            selectCells(gmanager.getCurrentRDFGraph());
+            selectCells(gmanager.getCurrentClassGraph());
+            selectCells(gmanager.getCurrentPropertyGraph());
         }
     }
 
@@ -717,7 +728,6 @@ public class MR3 extends JFrame implements ChangeListener {
         comp.add(label, BorderLayout.CENTER);
 
         ImageIcon icon = Utilities.getImageIcon(Translator.getString("CloseTab.Icon"));
-        ;
         JButton button = new JButton(icon);
         int width = icon.getIconWidth();
         int height = icon.getIconHeight();

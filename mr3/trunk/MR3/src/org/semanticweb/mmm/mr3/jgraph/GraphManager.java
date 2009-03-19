@@ -1322,6 +1322,7 @@ public class GraphManager {
                 RDFPropertyCell rdfCell = (RDFPropertyCell) cell;
                 RDFSInfo info = (RDFSInfo) GraphConstants.getValue(rdfCell.getAttributes());
                 if (info.getURI().equals(rdfsInfo.getURI())) {
+                    rdfGraph.getGraphLayoutCache().editCell(rdfCell, rdfCell.getAttributes());
                     selectedCellSet.add(rdfCell);
                 }
             }

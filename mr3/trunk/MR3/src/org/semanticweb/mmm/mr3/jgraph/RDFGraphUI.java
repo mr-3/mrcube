@@ -120,12 +120,14 @@ public class RDFGraphUI extends BasicGraphUI {
             RDFSInfo beforeInfo = new ClassInfo((ClassInfo) info);
             changeResourceLabel((ResourceInfo) info, cell);
             GraphUtilities.resizeRDFSResourceCell(gmanager, (RDFSInfo) info, cell);
+            gmanager.selectChangedRDFCells((RDFSInfo) info);
             HistoryManager.saveHistory(HistoryType.EDIT_CLASS_LABEL_WITH_GRAPH, beforeInfo.getLabelList(),
                     ((RDFSInfo) info).getLabelList());
         } else if (RDFGraph.isRDFSPropertyCell(cell)) {
             RDFSInfo beforeInfo = new PropertyInfo((PropertyInfo) info);
             changeResourceLabel((ResourceInfo) info, cell);
             GraphUtilities.resizeRDFSResourceCell(gmanager, (RDFSInfo) info, cell);
+            gmanager.selectChangedRDFCells((RDFSInfo) info);
             HistoryManager.saveHistory(HistoryType.EDIT_ONT_PROPERTY_LABEL_WITH_GRAPH, beforeInfo.getLabelList(),
                     ((RDFSInfo) info).getLabelList());
         }
@@ -162,6 +164,8 @@ public class RDFGraphUI extends BasicGraphUI {
                 HistoryManager.saveHistory(HistoryType.EDIT_RESOURCE_WITH_GRAPH, beforeInfo, resInfo);
             }
         } else if (RDFGraph.isRDFPropertyCell(cell)) {
+            // 現状では，プロパティエディタで定義されているプロパティにのみ変更可能
+            // メタモデル管理機能を実行させる予定
             GraphCell propCell = (GraphCell) rdfsInfoMap.getPropertyCell(resource);
             if (propCell != null) {
                 RDFSInfo beforePropInfo = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
@@ -169,6 +173,8 @@ public class RDFGraphUI extends BasicGraphUI {
                 GraphConstants.setValue(cell.getAttributes(), propInfo);
                 HistoryManager.saveHistory(HistoryType.EDIT_PROPERTY_WITH_GRAPH, beforePropInfo.getURIStr(), propInfo
                         .getURIStr());
+            } else {
+                graph.getGraphLayoutCache().editCell(cell, cell.getAttributes());
             }
         } else if (RDFGraph.isRDFSCell(cell)) {
             RDFSInfo rdfsInfo = (RDFSInfo) info;
@@ -185,6 +191,7 @@ public class RDFGraphUI extends BasicGraphUI {
                 GraphConstants.setValue(cell.getAttributes(), rdfsInfo);
                 GraphUtilities.resizeRDFSResourceCell(gmanager, rdfsInfo, cell);
                 rdfsInfoMap.putURICellMap(rdfsInfo, cell);
+                gmanager.selectChangedRDFCells(rdfsInfo);
                 if (RDFGraph.isRDFSClassCell(cell)) {
                     HistoryManager.saveHistory(HistoryType.EDIT_CLASS_WITH_GRAPH, beforeInfo, rdfsInfo);
                 } else if (RDFGraph.isRDFSPropertyCell(cell)) {
@@ -222,6 +229,7 @@ public class RDFGraphUI extends BasicGraphUI {
                 rdfsInfo.setURI(uri);
                 GraphConstants.setValue(cell.getAttributes(), rdfsInfo);
                 rdfsInfoMap.putURICellMap(rdfsInfo, cell);
+                gmanager.selectChangedRDFCells(rdfsInfo);
                 if (RDFGraph.isRDFSClassCell(cell)) {
                     HistoryManager.saveHistory(HistoryType.EDIT_CLASS_WITH_GRAPH, beforeInfo, rdfsInfo);
                 } else if (RDFGraph.isRDFSPropertyCell(cell)) {

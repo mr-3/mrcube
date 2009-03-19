@@ -124,7 +124,7 @@ public abstract class MR3Plugin {
      * 
      */
     protected void replaceProjectModel(Model model) {
-        mr3.getMR3Reader().replaceProjectModel(model, mr3);
+        mr3.getMR3Reader().replaceProjectModel(model);
     }
 
     /**
