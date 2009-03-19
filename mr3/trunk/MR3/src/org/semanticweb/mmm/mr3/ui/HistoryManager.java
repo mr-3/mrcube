@@ -453,7 +453,7 @@ public class HistoryManager extends JDialog implements ActionListener {
             HistoryData data = dateHistoryDataMap.get(date);
             Model projectModel = ModelFactory.createDefaultModel();
             projectModel = projectModel.union(data.getProjectModel());
-            mr3Reader.replaceProjectModel(projectModel, mr3);
+            mr3Reader.replaceProjectModel(projectModel);
             saveHistory(HistoryType.LOAD_HISTORY);
         }
     }

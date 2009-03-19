@@ -148,7 +148,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
         public void actionPerformed(ActionEvent e) {
             RDFGraphMarqueeHandler mh = (RDFGraphMarqueeHandler) graph.getMarqueeHandler();
             GraphCell insertCell = mh.insertResourceCell(INSERT_POINT);
-            if (insertCell != null) {                
+            if (insertCell != null) {
                 if (graph.getType() == GraphType.RDF) {
                     HistoryManager.saveHistory(HistoryType.INSERT_RESOURCE, insertCell);
                 } else {
@@ -162,7 +162,8 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
 
         InsertRectangleResourceAction() {
             super("", RDFGraphMarqueeHandler.RECTANGLE_ICON);
-            //putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.CTRL_MASK));
+            // putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_L,
+            // KeyEvent.CTRL_MASK));
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -181,7 +182,10 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
         }
     }
 
-    /** _Create ToolBar */
+    /**
+     * Create ToolBar
+     * 
+     */
     public JToolBar createToolBar() {
         JToolBar toolbar = new JToolBar();
         toolbar.setFloatable(false);

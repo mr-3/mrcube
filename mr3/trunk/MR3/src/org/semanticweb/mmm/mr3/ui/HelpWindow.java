@@ -38,7 +38,7 @@ public class HelpWindow extends JWindow {
     private static final int FONT_SIZE = 14;
     private static final String TOOL_NAME = "Project Name: MR<sup>3</sup> <br>";
     private static final String VERSION = "   Version: 1.0 SP1<br>";
-    private static final String LAST_UPDATE = "Last Update: 2009-03-18<br>";
+    private static final String LAST_UPDATE = "Last Update: 2009-03-xx<br>";
     private static final String MR3_URL = " Project Website:   http://mr3.sourceforge.net/<br>";
     private static final String COPY_RIGHT = "   Copyright (C) 2003-2009 Yamaguchi Laboratory, Keio University.<br>";
     private static final String LICENSE = "License: GPL<br>";
