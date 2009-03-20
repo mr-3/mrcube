@@ -17,29 +17,28 @@ import org.semanticweb.mmm.mr3.util.*;
  */
 public class TabComponent extends JPanel {
 
+    private ImageIcon icon;
     private JLabel tabNameLabel;
     private JButton tabButton;
 
     public TabComponent(MR3 mr3, String tabName) {
         setLayout(new BorderLayout());
-        ImageIcon icon = Utilities.getImageIcon(Translator.getString("CloseTab.Icon"));
+        icon = Utilities.getImageIcon(Translator.getString("CloseTab.Icon"));
         ExitProjectAction exitProjectAction = new ExitProjectAction(mr3, "", icon);
         tabButton = new JButton(exitProjectAction);
+        tabButton.setAlignmentX(0);
+        tabButton.setAlignmentY(0);
         int width = icon.getIconWidth();
         int height = icon.getIconHeight();
         tabButton.setPreferredSize(new Dimension(width, height));
-        tabNameLabel = new JLabel(tabName);
+        tabNameLabel = new JLabel("Å@" + tabName + "Å@");
+        tabNameLabel.setBackground(Color.gray);
         add(tabNameLabel, BorderLayout.CENTER);
         add(tabButton, BorderLayout.EAST);
-        tabButton.setVisible(false);
     }
 
     public void setTabName(String name) {
         tabNameLabel.setText(name);
     }
-
-    public void setCloseButtonVisible(boolean t) {
-        tabButton.setVisible(t);
-    }
-
+    
 }
