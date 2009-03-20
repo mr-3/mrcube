@@ -26,18 +26,17 @@ package org.semanticweb.mmm.mr3.ui;
 import java.awt.*;
 
 import javax.swing.*;
-import javax.swing.event.*;
 
+import org.semanticweb.mmm.mr3.editor.*;
 import org.semanticweb.mmm.mr3.jgraph.*;
 import org.semanticweb.mmm.mr3.util.*;
-
-import org.jgraph.*;
 
 /**
  * @author takeshi morita
  */
-public class OverviewDialog extends JInternalFrame {
+public class OverviewDialog extends JDialog {
 
+    private MR3OverviewPanel overviewPanel;
     private static final int LENGH = 200;
 
     public static final String RDF_EDITOR_OVERVIEW = Translator.getString("RDFEditorOverview.Title");
@@ -49,18 +48,18 @@ public class OverviewDialog extends JInternalFrame {
     public static final ImageIcon PROPERTY_EDITOR_ICON = Utilities.getImageIcon(Translator
             .getString("PropertyEditor.Icon"));
 
-    public OverviewDialog(String title, JGraph graph, JViewport viewport) {
-        super(title, true, true);
-        JPanel panel = new MR3OverviewPanel(graph, viewport);
-        getContentPane().add(panel);
-        addInternalFrameListener(new InternalFrameAdapter() {
-            public void internalFrameClosing(InternalFrameEvent e) {
-                setVisible(false);
-            }
-        });
-        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+    public OverviewDialog(Frame owner, String title, Editor editor) {
+        super(owner, title);
+        overviewPanel = new MR3OverviewPanel(editor);
+        getContentPane().add(overviewPanel);
+        setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         setBounds(new Rectangle(100, 100, LENGH, LENGH));
+        setLocationRelativeTo(owner);
         setVisible(false);
+    }
+
+    public void setEditor(Editor editor) {
+        overviewPanel.setEditor(editor);
     }
 
 }
