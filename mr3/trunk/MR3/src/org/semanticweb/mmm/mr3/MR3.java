@@ -287,9 +287,11 @@ public class MR3 extends JFrame implements ChangeListener {
         OverviewDialog result = rdfEditorOverviewRef.get();
         if (result == null) {
             RDFEditor editor = getCurrentProject().getRDFEditor();
-            result = new OverviewDialog(OverviewDialog.RDF_EDITOR_OVERVIEW, editor.getGraph(), editor.getJViewport());
-            result.setFrameIcon(OverviewDialog.RDF_EDITOR_ICON);
+            result = new OverviewDialog(this, OverviewDialog.RDF_EDITOR_OVERVIEW, editor);
+            result.setIconImage(OverviewDialog.RDF_EDITOR_ICON.getImage());
             rdfEditorOverviewRef = new WeakReference<OverviewDialog>(result);
+        } else {
+            result.setEditor(getCurrentProject().getRDFEditor());
         }
         result.setVisible(true);
     }
@@ -298,9 +300,11 @@ public class MR3 extends JFrame implements ChangeListener {
         OverviewDialog result = classEditorOverviewRef.get();
         if (result == null) {
             ClassEditor editor = getCurrentProject().getClassEditor();
-            result = new OverviewDialog(OverviewDialog.CLASS_EDITOR_OVERVIEW, editor.getGraph(), editor.getJViewport());
-            result.setFrameIcon(OverviewDialog.CLASS_EDITOR_ICON);
+            result = new OverviewDialog(this, OverviewDialog.CLASS_EDITOR_OVERVIEW, editor);
+            result.setIconImage(OverviewDialog.CLASS_EDITOR_ICON.getImage());
             classEditorOverviewRef = new WeakReference<OverviewDialog>(result);
+        } else {
+            result.setEditor(getCurrentProject().getClassEditor());
         }
         result.setVisible(true);
     }
@@ -322,10 +326,11 @@ public class MR3 extends JFrame implements ChangeListener {
         OverviewDialog result = propertyEditorOverviewRef.get();
         if (result == null) {
             PropertyEditor editor = getCurrentProject().getPropertyEditor();
-            result = new OverviewDialog(OverviewDialog.PROPERTY_EDITOR_OVERVIEW, editor.getGraph(), editor
-                    .getJViewport());
-            result.setFrameIcon(OverviewDialog.PROPERTY_EDITOR_ICON);
+            result = new OverviewDialog(this, OverviewDialog.PROPERTY_EDITOR_OVERVIEW, editor);
+            result.setIconImage(OverviewDialog.PROPERTY_EDITOR_ICON.getImage());
             propertyEditorOverviewRef = new WeakReference<OverviewDialog>(result);
+        } else {
+            result.setEditor(getCurrentProject().getPropertyEditor());
         }
         result.setVisible(true);
     }
@@ -655,13 +660,13 @@ public class MR3 extends JFrame implements ChangeListener {
     }
 
     class ChangeCellViewAction implements ActionListener {
-        
+
         private void selectCells(RDFGraph graph) {
             Object[] selectedCells = graph.getSelectionCells();
             graph.setSelectionCells(graph.getAllCells());
             graph.setSelectionCells(selectedCells);
         }
-        
+
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == uriView) {
                 GraphManager.cellViewType = CellViewType.URI;

@@ -36,6 +36,7 @@ import javax.swing.event.*;
 import org.jgraph.*;
 import org.jgraph.event.*;
 import org.jgraph.graph.*;
+import org.semanticweb.mmm.mr3.editor.*;
 
 /**
  * modified by takeshi morita
@@ -48,29 +49,35 @@ public class MR3OverviewPanel extends JPanel implements ComponentListener, Graph
     protected Rectangle r;
     double graphWindowToPannerScale = 0.5;
 
-    public MR3OverviewPanel(JGraph g, JViewport viewPort) {
-        originalGraph = g;
-        v = new PannerViewfinder(this, viewPort);
-        GraphLayoutCache view = new ViewRedirector(g, g.getGraphLayoutCache());
-        graph = new JGraph(g.getModel(), view);
+    public MR3OverviewPanel(Editor editor) {
+        setEditor(editor);
         graph.setAntiAliased(true);
-        graph.getModel().addGraphModelListener(this);
         graph.setEnabled(false);
-        graph.addMouseListener(v);
-        graph.addMouseMotionListener(v);
-
-        g.addPropertyChangeListener(JGraph.SCALE_PROPERTY, this);
-
         addComponentListener(this);
-        g.getGraphLayoutCache().addGraphLayoutCacheListener(this);
         setLayout(new BorderLayout());
         add(graph, BorderLayout.CENTER);
+    }
+
+    public void setEditor(Editor editor) {
+        originalGraph = editor.getGraph();
+        v = new PannerViewfinder(this, editor.getJViewport());
+        GraphLayoutCache view = new ViewRedirector(originalGraph, originalGraph.getGraphLayoutCache());
+        if (graph == null) {
+            graph = new JGraph(originalGraph.getModel(), view);
+        } else {
+            graph.setModel(originalGraph.getModel());
+            graph.setGraphLayoutCache(view);
+        }
+        graph.getModel().addGraphModelListener(this);
+        graph.addMouseListener(v);
+        graph.addMouseMotionListener(v);
+        originalGraph.addPropertyChangeListener(JGraph.SCALE_PROPERTY, this);
+        originalGraph.getGraphLayoutCache().addGraphLayoutCacheListener(this);
     }
 
     //
     // Observer
     //
-
     public void update(Observable o, Object arg) {
         componentResized(null);
     }
