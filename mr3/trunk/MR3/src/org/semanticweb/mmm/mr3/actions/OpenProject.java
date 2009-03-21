@@ -58,5 +58,6 @@ public class OpenProject extends AbstractActionFile {
         }
         Model model = readModel(getInputStream("mr3"), mr3.getGraphManager().getBaseURI(), "RDF/XML");
         mr3.getMR3Reader().replaceProjectModel(model);
+        mr3.setTitle("MR^3: " + mr3.getCurrentProject().getTitle());
     }
 }

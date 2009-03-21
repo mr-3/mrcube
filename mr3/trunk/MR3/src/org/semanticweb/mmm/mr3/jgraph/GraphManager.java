@@ -1329,4 +1329,23 @@ public class GraphManager {
         }
         rdfGraph.setSelectionCells(selectedCellSet.toArray());
     }
+
+    private void selectCells(RDFGraph graph) {
+        if (graph != null) {
+            graph.getGraphLayoutCache().reload();
+            graph.getGraphLayoutCache().update();
+            Object[] selectedCells = graph.getSelectionCells();
+            graph.setSelectionCells(graph.getAllCells());
+            graph.setSelectionCells(selectedCells);
+        }
+    }
+
+    /**
+     * グラフが再描画されない場合があるため，一度セルを選択して，強制的に再描画する
+     */
+    public void refleshGraphs() {
+        selectCells(getCurrentRDFGraph());
+        selectCells(getCurrentClassGraph());
+        selectCells(getCurrentPropertyGraph());
+    }
 }
