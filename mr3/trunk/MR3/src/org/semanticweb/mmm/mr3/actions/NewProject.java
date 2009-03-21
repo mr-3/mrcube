@@ -51,6 +51,6 @@ public class NewProject extends AbstractActionFile {
     }
 
     public void actionPerformed(ActionEvent e) {
-        mr3.newProject(mr3.getGraphManager().getBaseURI());
+        mr3.newProject(null);
     }
 }

@@ -46,7 +46,7 @@ import org.semanticweb.mmm.mr3.util.*;
  * @author takeshi morita
  * 
  */
-public abstract class Editor extends JPanel implements GraphSelectionListener {
+public abstract class Editor extends JPanel implements GraphSelectionListener, MouseWheelListener {
 
     protected RDFGraph graph;
     protected GraphManager gmanager;
@@ -64,6 +64,18 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
     protected Font graphFont;
 
     protected Editor() {
+    }
+
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        int up = -1;
+        int down = 1;
+        if (e.getModifiers() == MouseWheelEvent.CTRL_MASK) {
+            if (e.getWheelRotation() == up) {
+                graph.setScale(1.05 * graph.getScale());
+            } else if (e.getWheelRotation() == down) {
+                graph.setScale(graph.getScale() / 1.05);
+            }
+        }
     }
 
     protected void initEditor(RDFGraph g, GraphManager gm) {
@@ -98,6 +110,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener {
         setLayout(new BorderLayout());
         add(createToolBar(), BorderLayout.NORTH);
         graphScrollPane = new JScrollPane(graph);
+        graphScrollPane.addMouseWheelListener(this);
         add(graphScrollPane, BorderLayout.CENTER);
     }
 

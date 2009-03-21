@@ -65,9 +65,9 @@ public class ZoomAction extends AbstractAction {
         if (title.equals(ZOOM_STD)) {
             graph.setScale(1.0);
         } else if (title.equals(ZOOM_IN)) {
-            graph.setScale(1.5 * graph.getScale());
+            graph.setScale(1.05 * graph.getScale());
         } else if (title.equals(ZOOM_OUT)) {
-            graph.setScale(graph.getScale() / 1.5);
+            graph.setScale(graph.getScale() / 1.05);
         } else if (title.equals(ZOOM_SUITABLE)) {
             fitWindow();
         }

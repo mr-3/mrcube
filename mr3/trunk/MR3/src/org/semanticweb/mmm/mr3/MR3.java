@@ -47,7 +47,7 @@ import org.semanticweb.mmm.mr3.util.*;
 /**
  * @author Takeshi Morita
  */
-public class MR3 extends JFrame {
+public class MR3 extends JFrame implements ChangeListener {
 
     public static boolean OFF_META_MODEL_MANAGEMENT;
 
@@ -90,6 +90,7 @@ public class MR3 extends JFrame {
         mr3LogConsole = new MR3LogConsole(this, Translator.getString("LogConsole.Title"), null);
 
         desktopTabbedPane = new JTabbedPane();
+        desktopTabbedPane.addChangeListener(this);
         gmanager = new GraphManager(desktopTabbedPane, userPrefs, this);
         mr3Reader = new MR3Reader(gmanager);
         mr3Writer = new MR3Writer(gmanager);
@@ -675,10 +676,7 @@ public class MR3 extends JFrame {
             }
             GraphUtilities.resizeAllRDFResourceCell(gmanager);
             GraphUtilities.resizeAllRDFSResourceCell(gmanager);
-            // グラフが再描画されない場合があるため，一度セルを選択して，強制的に再描画する
-            selectCells(gmanager.getCurrentRDFGraph());
-            selectCells(gmanager.getCurrentClassGraph());
-            selectCells(gmanager.getCurrentPropertyGraph());
+            gmanager.refleshGraphs();
         }
     }
 
@@ -789,5 +787,11 @@ public class MR3 extends JFrame {
         } finally {
             splashWindow.dispose();
         }
+    }
+
+    @Override
+    public void stateChanged(ChangeEvent e) {
+        MR3Project project = (MR3Project) desktopTabbedPane.getSelectedComponent();
+        setTitle("MR^3: " + project.getTitle());
     }
 }
