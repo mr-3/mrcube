@@ -56,10 +56,16 @@ public class MR3Project extends JPanel {
 
         mainViews[0] = new View(Translator.getString("ClassEditor.Title"), Utilities.getImageIcon(Translator
                 .getString("ClassEditor.Icon")), classEditor);
+        mainViews[0].getWindowProperties().setUndockEnabled(false);
+        mainViews[0].getWindowProperties().setCloseEnabled(false);
         mainViews[1] = new View(Translator.getString("PropertyEditor.Title"), Utilities.getImageIcon(Translator
                 .getString("PropertyEditor.Icon")), propertyEditor);
+        mainViews[1].getWindowProperties().setUndockEnabled(false);
+        mainViews[1].getWindowProperties().setCloseEnabled(false);
         mainViews[2] = new View(Translator.getString("RDFEditor.Title"), Utilities.getImageIcon(Translator
                 .getString("RDFEditor.Icon")), rdfEditor);
+        mainViews[2].getWindowProperties().setUndockEnabled(false);
+        mainViews[2].getWindowProperties().setCloseEnabled(false);
         for (int i = 0; i < mainViews.length; i++) {
             viewMap.addView(i, mainViews[i]);
         }
@@ -91,13 +97,13 @@ public class MR3Project extends JPanel {
     }
 
     public void deployCR() {
-        SplitWindow sw1 = new SplitWindow(false, 0.5f, mainViews[0], mainViews[2]);
-        rootWindow.setWindow(sw1);
+        deployCPR();
+        mainViews[1].minimize();
     }
 
     public void deployPR() {
-        SplitWindow sw1 = new SplitWindow(false, 0.5f, mainViews[1], mainViews[2]);
-        rootWindow.setWindow(sw1);
+        deployCPR();
+        mainViews[0].minimize();
     }
 
     public void registerComponent() {

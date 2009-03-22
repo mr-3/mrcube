@@ -569,9 +569,6 @@ public class GraphManager {
     private void setCellBounds(AttributeMap map, Dimension dim) {
         Rectangle2D rec = GraphConstants.getBounds(map);
         map.createRect(rec.getX(), rec.getY(), dim.getWidth(), dim.getHeight());
-        // GraphConstants.setBounds(map, GraphConstants
-        // .createRect(rec.getX(), rec.getY(), dim.getWidth(),
-        // dim.getHeight()));
     }
 
     public void setCellValue(GraphCell cell, String value) {
@@ -1343,7 +1340,7 @@ public class GraphManager {
     /**
      * グラフが再描画されない場合があるため，一度セルを選択して，強制的に再描画する
      */
-    public void refleshGraphs() {
+    public void refreshGraphs() {
         selectCells(getCurrentRDFGraph());
         selectCells(getCurrentClassGraph());
         selectCells(getCurrentPropertyGraph());

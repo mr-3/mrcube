@@ -130,6 +130,9 @@ public class MR3 extends JFrame implements ChangeListener {
     private AbstractAction saveProjectAction;
     private AbstractAction saveProjectAsAction;
     private AbstractAction openPluginManagerAction;
+    private AbstractAction toFrontRDFEditorAction;
+    private AbstractAction toFrontClassEditorAction;
+    private AbstractAction toFrontPropertyEditorAction;
     private AbstractAction deployWindowCPRAction;
     private AbstractAction deployWindowCRAction;
     private AbstractAction deployWindowPRAction;
@@ -150,6 +153,10 @@ public class MR3 extends JFrame implements ChangeListener {
         saveProjectAsAction = new SaveProject(this, SaveProject.SAVE_AS_PROJECT, SaveProject.SAVE_AS_PROJECT_ICON);
         openPluginManagerAction = new OpenPluginManagerAction(this, Translator
                 .getString("Component.Tools.Plugins.Text"));
+        toFrontRDFEditorAction = new EditorSelect(this, EditorSelect.RDF_EDITOR, EditorSelect.RDF_EDITOR_ICON);
+        toFrontClassEditorAction = new EditorSelect(this, EditorSelect.CLASS_EDITOR, EditorSelect.CLASS_EDITOR_ICON);
+        toFrontPropertyEditorAction = new EditorSelect(this, EditorSelect.PROPERTY_EDITOR,
+                EditorSelect.PROPERTY_EDITOR_ICON);
         deployWindowCPRAction = new DeployWindows(this, Translator.getString("Component.Window.DeployCPRWindows.Text"),
                 CPR_ICON, DeployType.CPR, "control alt R");
         deployWindowCRAction = new DeployWindows(this, Translator.getString("Component.Window.DeployCRWindows.Text"),
@@ -185,6 +192,10 @@ public class MR3 extends JFrame implements ChangeListener {
         toolbar.add(openPluginManagerAction);
         toolbar.addSeparator();
         toolbar.add(findResAction);
+        toolbar.addSeparator();
+        toolbar.add(toFrontRDFEditorAction);
+        toolbar.add(toFrontClassEditorAction);
+        toolbar.add(toFrontPropertyEditorAction);
         toolbar.addSeparator();
         toolbar.add(showAttrDialogAction);
         toolbar.add(showNSTableDialogAction);
@@ -594,6 +605,10 @@ public class MR3 extends JFrame implements ChangeListener {
         menu.add(new ShowOverview(this, ShowOverview.CLASS_EDITOR_OVERVIEW));
         menu.add(new ShowOverview(this, ShowOverview.PROPERTY_EDITOR_OVERVIEW));
         menu.addSeparator();
+        menu.add(toFrontRDFEditorAction);
+        menu.add(toFrontClassEditorAction);
+        menu.add(toFrontPropertyEditorAction);
+        menu.addSeparator();
         menu.add(showAttrDialogAction);
         menu.add(showNSTableDialogAction);
         menu.addSeparator();
@@ -676,7 +691,7 @@ public class MR3 extends JFrame implements ChangeListener {
             }
             GraphUtilities.resizeAllRDFResourceCell(gmanager);
             GraphUtilities.resizeAllRDFSResourceCell(gmanager);
-            gmanager.refleshGraphs();
+            gmanager.refreshGraphs();
         }
     }
 
