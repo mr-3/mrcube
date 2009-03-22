@@ -26,13 +26,12 @@ public class TabComponent extends JPanel {
         icon = Utilities.getImageIcon(Translator.getString("CloseTab.Icon"));
         ExitProjectAction exitProjectAction = new ExitProjectAction(mr3, "", icon);
         tabButton = new JButton(exitProjectAction);
-        tabButton.setAlignmentX(0);
-        tabButton.setAlignmentY(0);
+        tabButton.setOpaque(true);
+        tabButton.setContentAreaFilled(false);
         int width = icon.getIconWidth();
         int height = icon.getIconHeight();
         tabButton.setPreferredSize(new Dimension(width, height));
         tabNameLabel = new JLabel("Å@" + tabName + "Å@");
-        tabNameLabel.setBackground(Color.gray);
         add(tabNameLabel, BorderLayout.CENTER);
         add(tabButton, BorderLayout.EAST);
     }

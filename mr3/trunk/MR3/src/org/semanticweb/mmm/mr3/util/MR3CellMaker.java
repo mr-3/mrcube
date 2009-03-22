@@ -135,7 +135,7 @@ public class MR3CellMaker {
 
         GraphConstants.setBorderColor(map, Color.black);
         GraphConstants.setLineWidth(map, 1);
-
+        
         if (rectangle != null) {
             GraphConstants.setBounds(map, rectangle);
         } else {

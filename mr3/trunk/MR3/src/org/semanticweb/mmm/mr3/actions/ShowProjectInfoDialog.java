@@ -51,6 +51,7 @@ public class ShowProjectInfoDialog extends MR3AbstractAction {
     public void actionPerformed(ActionEvent e) {
         ProjectInfoDialog projectInfoDialog = mr3.getProjectInfoDialog();
         if (projectInfoDialog != null) {
+            mr3.getProjectInfoDialog().resetStatus();
             mr3.getProjectInfoDialog().setVisible(true);
         }
     }

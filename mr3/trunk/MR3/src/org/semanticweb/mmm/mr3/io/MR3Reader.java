@@ -368,7 +368,7 @@ public class MR3Reader {
                 projectManager.removeEmptyClass();
                 nsTableDialog.setPrefixNSInfoSet();
                 gmanager.clearSelection();
-                gmanager.refleshGraphs();
+                gmanager.refreshGraphs();
                 gmanager.importing(false);                
                 if (currentProjectFile != null) {
                     MR3.getCurrentProject().setCurrentProjectFile(currentProjectFile);
