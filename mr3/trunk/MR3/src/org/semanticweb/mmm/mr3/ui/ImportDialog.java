@@ -535,8 +535,9 @@ public class ImportDialog extends JDialog implements ActionListener {
         } finally {
             setVisible(false);
         }
+        
         if (importReplaceButton.isSelected()) {
-            if (dataTypeRDFButton.isSelected()) {
+            if (dataTypeRDFButton.isSelected()) {                
                 mr3Reader.replaceRDFModel(model);
             } else if (dataTypeRDFSButton.isSelected()) {
                 mr3Reader.replaceRDFSModel(model);

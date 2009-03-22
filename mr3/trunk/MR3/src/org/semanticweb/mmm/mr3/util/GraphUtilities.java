@@ -246,10 +246,7 @@ public class GraphUtilities {
     public static String getNSPrefix(Resource uri) {
         if (uri.isAnon()) { return ""; }
         for (PrefixNSInfo prefixNSInfo : prefixNSInfoSet) {
-            // if (uri.getNameSpace().equals(prefixNSInfo.getNameSpace())) {
             if (Utilities.getNameSpace(uri).equals(prefixNSInfo.getNameSpace())) {
-                // if (prefixNSInfo.isAvailable()) { return
-                // prefixNSInfo.getPrefix() + ":" + uri.getLocalName(); }
                 if (prefixNSInfo.isAvailable()) { return prefixNSInfo.getPrefix() + ":" + Utilities.getLocalName(uri); }
             }
         }

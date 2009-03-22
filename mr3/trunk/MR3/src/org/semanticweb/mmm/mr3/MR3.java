@@ -807,6 +807,10 @@ public class MR3 extends JFrame implements ChangeListener {
     @Override
     public void stateChanged(ChangeEvent e) {
         MR3Project project = (MR3Project) desktopTabbedPane.getSelectedComponent();
-        setTitle("MR^3: " + project.getTitle());
+        if (project != null) {
+            setTitle("MR^3: " + project.getTitle());
+        } else {
+            setTitle("MR^3");
+        }
     }
 }

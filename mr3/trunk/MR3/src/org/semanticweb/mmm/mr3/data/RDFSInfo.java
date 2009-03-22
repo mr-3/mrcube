@@ -166,16 +166,16 @@ public abstract class RDFSInfo extends ResourceInfo implements Serializable {
         Resource resource = ResourceFactory.createResource(uri);
         switch (GraphManager.cellViewType) {
         case URI:
-            return GraphUtilities.getNSPrefix(resource);
+            return "　" + GraphUtilities.getNSPrefix(resource) + "　";
         case ID:
-            if (resource.getLocalName().length() != 0) { return resource.getLocalName(); }
+            if (resource.getLocalName().length() != 0) { return "　" + resource.getLocalName() + "　"; }
             break;
         case LABEL:
             if (getDefaultLabel(GraphManager.getDefaultLang()) != null) {
-                return getDefaultLabel(GraphManager.getDefaultLang()).getString();
-            } else if (getFirstLabel() != null) { return getFirstLabel().getString(); }
+                return "　" + getDefaultLabel(GraphManager.getDefaultLang()).getString() + "　";
+            } else if (getFirstLabel() != null) { return "　" + getFirstLabel().getString() + "　"; }
             break;
         }
-        return GraphUtilities.getNSPrefix(resource);
+        return "　" + GraphUtilities.getNSPrefix(resource) + "　";
     }
 }

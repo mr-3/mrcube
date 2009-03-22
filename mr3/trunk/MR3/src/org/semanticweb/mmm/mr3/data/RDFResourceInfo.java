@@ -176,17 +176,17 @@ public class RDFResourceInfo extends ResourceInfo implements Serializable {
         if (uriType == URIType.ANONYMOUS) { return ""; }
         switch (GraphManager.cellViewType) {
         case URI:
-            return GraphUtilities.getNSPrefix(getURI());
+            return "　" + GraphUtilities.getNSPrefix(getURI()) + "　";
         case LABEL:
             if (getDefaultLabel(GraphManager.getDefaultLang()) != null) {
-                return getDefaultLabel(GraphManager.getDefaultLang()).getString();
-            } else if (getFirstLabel() != null) { return getFirstLabel().getString(); }
+                return "　" + getDefaultLabel(GraphManager.getDefaultLang()).getString() + "　";
+            } else if (getFirstLabel() != null) { return "　" + getFirstLabel().getString() + "　"; }
             break;
         case ID:
             Resource resource = getURI();
-            if (resource.getLocalName().length() != 0) { return resource.getLocalName(); }
+            if (resource.getLocalName().length() != 0) { return "　" + resource.getLocalName() + "　"; }
             break;
         }
-        return GraphUtilities.getNSPrefix(getURI());
+        return "　" + GraphUtilities.getNSPrefix(getURI()) + " ";
     }
 }

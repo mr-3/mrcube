@@ -107,10 +107,11 @@ public class MR3CellMaker {
         }
 
         GraphConstants.setOpaque(map, false);
-
         GraphConstants.setForeground(map, Color.blue);
-        // GraphConstants.setBorderColor(map, Color.black);
 
+        if (gmanager.isAutoNodeSize()) {
+            GraphConstants.setAutoSize(map, true);
+        }
         if (rectangle != null) {
             GraphConstants.setBounds(map, rectangle);
         } else {
@@ -135,7 +136,10 @@ public class MR3CellMaker {
 
         GraphConstants.setBorderColor(map, Color.black);
         GraphConstants.setLineWidth(map, 1);
-        
+
+        if (gmanager.isAutoNodeSize()) {
+            GraphConstants.setAutoSize(map, true);
+        }
         if (rectangle != null) {
             GraphConstants.setBounds(map, rectangle);
         } else {
@@ -169,15 +173,14 @@ public class MR3CellMaker {
         RDFResourceInfo resInfo = (RDFResourceInfo) GraphConstants.getValue(rdfCell.getAttributes());
         if (gmanager.isShowTypeCell()) {
             typeViewCell = new TypeViewCell(resInfo.getTypeInfo());
-            AttributeMap typeViewMap = getTypeMap(GraphUtilities.getTypeCellRectangle(rdfCell, resInfo.getTypeInfo(), gmanager));
+            AttributeMap typeViewMap = getTypeMap(GraphUtilities.getTypeCellRectangle(rdfCell, resInfo.getTypeInfo(),
+                    gmanager));
             attributes.put(typeViewCell, typeViewMap);
 
             ParentMap parentMap = new ParentMap();
-            DefaultGraphCell group = new DefaultGraphCell();
+            DefaultGraphCell group = new DefaultGraphCell();            
             parentMap.addEntry(rdfCell, group);
             parentMap.addEntry(typeViewCell, group);
-            // graph.getGraphLayoutCache().insert(new Object[] { group},
-            // attributes, null, parentMap, null);
             graph.getGraphLayoutCache().insert(new Object[] { group}, attributes, null, parentMap);
             resInfo.setTypeViewCell(typeViewCell);
         }
@@ -200,8 +203,6 @@ public class MR3CellMaker {
         attributes.put(rdfCell, resMap);
         info.setTypeCell((GraphCell) resTypeCell, gmanager.getCurrentRDFGraph());
         GraphConstants.setValue(rdfCell.getAttributes(), info);
-        // graph.getGraphLayoutCache().insert(new Object[] { rdfCell},
-        // attributes, null, null, null);
         graph.getGraphLayoutCache().insert(new Object[] { rdfCell}, attributes, null, null);
         GraphUtilities.resizeRDFResourceCell(gmanager, info, rdfCell);
         addTypeCell(rdfCell, attributes);
