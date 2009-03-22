@@ -393,6 +393,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
             }
             super.setValueAt(aValue, rowIndex, columnIndex);
             setPrefixNSInfoSet();
+            gmanager.refreshGraphs();
         }
     }
 }

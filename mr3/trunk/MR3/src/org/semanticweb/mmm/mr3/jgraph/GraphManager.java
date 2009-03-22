@@ -187,7 +187,8 @@ public class GraphManager {
                 } else {
                     GraphConstants.setFont(cell.getAttributes(), new Font("", 0, 0));
                 }
-            }
+                rdfGraph.getGraphLayoutCache().editCell(cell, cell.getAttributes());
+            }            
         }
     }
 
@@ -387,6 +388,20 @@ public class GraphManager {
             }
         }
         clearSelection();
+    }
+
+    public void setAutoSize(boolean t) {
+        for (Object p : desktopTabbedPane.getComponents()) {
+            if (p instanceof MR3Project) {
+                MR3Project mr3Project = (MR3Project) p;
+                RDFGraph rdfGraph = (RDFGraph) mr3Project.getRDFEditor().getGraph();
+                rdfGraph.setAutoSize(t);
+                RDFGraph classGraph = (RDFGraph) mr3Project.getClassEditor().getGraph();
+                classGraph.setAutoSize(t);
+                RDFGraph propertyGraph = (RDFGraph) mr3Project.getPropertyEditor().getGraph();
+                propertyGraph.setAutoSize(t);
+            }
+        }
     }
 
     public void removeTypeCells() {
@@ -637,8 +652,6 @@ public class GraphManager {
             }
             break;
         case ID:
-            // if (uri.getLocalName().length() != 0) { return
-            // uri.getLocalName(); }
             if (uri.getLocalName().length() != 0) { return Utilities.getLocalName(uri); }
             break;
         }
@@ -1329,11 +1342,10 @@ public class GraphManager {
 
     private void selectCells(RDFGraph graph) {
         if (graph != null) {
-            graph.getGraphLayoutCache().reload();
-            graph.getGraphLayoutCache().update();
-            Object[] selectedCells = graph.getSelectionCells();
-            graph.setSelectionCells(graph.getAllCells());
-            graph.setSelectionCells(selectedCells);
+            for (Object cell: graph.getAllCells()) {
+                GraphCell gCell = (GraphCell) cell;
+                graph.getGraphLayoutCache().editCell(gCell, gCell.getAttributes());
+            }
         }
     }
 

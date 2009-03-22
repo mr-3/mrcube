@@ -63,6 +63,13 @@ public class RDFGraph extends JGraph {
         SwingUtilities.replaceUIActionMap(this, createActionMap());
     }
 
+    public void setAutoSize(boolean t) {
+        for (Object cell: getAllCells()) {
+            GraphCell graphCell = (GraphCell) cell;
+            GraphConstants.setAutoSize(graphCell.getAttributes(), t);
+        }
+    }
+    
     public void setBackgroundImage(ImageIcon image) {
         background = image;
     }

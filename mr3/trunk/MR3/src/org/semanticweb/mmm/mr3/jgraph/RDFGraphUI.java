@@ -96,7 +96,7 @@ public class RDFGraphUI extends BasicGraphUI {
     }
 
     private void changeResourceLabel(ResourceInfo info, GraphCell cell) {
-        String label = cell.toString();
+        String label = cell.toString().replaceAll("　", "");
         MR3Literal literal = info.getDefaultLabel(GraphManager.getDefaultLang());
         if (literal == null) {
             literal = new MR3Literal(label, GraphManager.getDefaultLang(), null);
@@ -152,7 +152,7 @@ public class RDFGraphUI extends BasicGraphUI {
     private void changeURI(GraphCell cell, Object info) {
         RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
         if (cell.toString() == null) { return; }
-        Resource resource = getResource(cell.toString());
+        Resource resource = getResource(cell.toString().replaceAll("　", ""));
         if (resource == null) { return; }
         if (RDFGraph.isRDFResourceCell(cell)) {
             RDFResourceInfo resInfo = (RDFResourceInfo) info;
@@ -205,7 +205,7 @@ public class RDFGraphUI extends BasicGraphUI {
         RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
         if (RDFGraph.isRDFResourceCell(cell)) {
             RDFResourceInfo resInfo = (RDFResourceInfo) info;
-            String uri = resInfo.getURI().getNameSpace() + cell.toString();
+            String uri = resInfo.getURI().getNameSpace() + cell.toString().replaceAll("　", "");
             if (isValidResource(uri, resInfo.getURIStr())) {
                 RDFResourceInfo beforeInfo = new RDFResourceInfo(resInfo);
                 resInfo.setURI(uri);
@@ -217,7 +217,7 @@ public class RDFGraphUI extends BasicGraphUI {
             // IDだけでは判別は困難なので何もしない
         } else if (RDFGraph.isRDFSCell(cell)) {
             RDFSInfo rdfsInfo = (RDFSInfo) info;
-            String uri = gmanager.getBaseURI() + cell.toString();
+            String uri = gmanager.getBaseURI() + cell.toString().replaceAll("　", "");;
             if (isValidResource(uri, rdfsInfo.getURIStr())) {
                 RDFSInfo beforeInfo = null;
                 if (RDFGraph.isRDFSClassCell(cell)) {

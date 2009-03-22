@@ -167,6 +167,7 @@ public class MR3Parser {
 
         return edge;
     }
+    
     private boolean isExtractProperty(GraphCell subjectCell, Property predicate, RDFNode object) {
         RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(subjectCell.getAttributes());
         if (predicate.equals(RDF.type)) {
@@ -341,7 +342,7 @@ public class MR3Parser {
                 attributes.put(edge, map);
             }
             ConnectionSet cs = new ConnectionSet(edge, sp, tp);
-            graphLayoutCache.insert(new Object[] { edge}, attributes, cs, null);
+            graphLayoutCache.insert(new Edge[] { edge}, attributes, cs, null);
         }
         MR3.STATUS_BAR.hideProgressBar();
 

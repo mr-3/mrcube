@@ -67,10 +67,9 @@ public class MR3Reader {
         if (model == null) { return; }
         new Thread() {
             public void run() {
-                gmanager.importing(true);
+                gmanager.importing(true);                
                 replaceRDF(model);
-                performTreeLayout();
-                // gmanager.addTypeCells();
+                performTreeLayout();   
                 gmanager.importing(false);
             }
         }.start();
