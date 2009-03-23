@@ -4,9 +4,9 @@
 	<property name="pkg.name" value="org.semanticweb.mmm.mr3.*" />
 	<property name="pkg.dir" value="MR3_${app.version}" />
 	<property name="javadoc.dir" value="./docs" />
-	<property name="src.dir" value="src/org/semanticweb/mmm/mr3" />
+	<property name="src.dir" value="src" />
 	<property name="build.dir" value="build/classes" />
-	<property name="resource.dir" value="${build.dir}/org/semanticweb/mmm/mr3/resources" />
+	<property name="resource.dir" value="org/semanticweb/mmm/mr3/resources" />
 	<property name="lib.dir" value="build/lib" />
 	<property name="jarfile" value="${name}.jar" />
 
@@ -52,26 +52,40 @@
 		<zip destfile="${pkg.dir}.zip" basedir="${pkg.dir}" />
 	</target>
 
+	<target name="clean">
+		<delete>
+			<fileset dir="${build.dir}" includes="**/*.class" />
+		</delete>
+		<delete file="mr3.jar" />
+	</target>
+
+	<target name="distclean">
+		<delete dir="${build.dir}" />
+	</target>
+
 	<target name="compile">
 		<mkdir dir="${build.dir}" />
-		<mkdir dir="${resource.dir}" />
+		<mkdir dir="${build.dir}/${resource.dir}" />
 
-		<javac encoding="sjis" srcdir="${src.dir}" source="1.5" target="1.5" optimize="true" destdir="${build.dir}">
+		<javac encoding="sjis" srcdir="${src.dir}" source="1.6" target="1.6" optimize="true" destdir="${build.dir}">
 			<include name="**/*.java" />
 			<classpath refid="classpath" />
 		</javac>
 		<zip destfile="./src.zip" basedir="./src" />
-		<copy todir="${resource.dir}">
-			<fileset dir="${src.dir}/resources">
+		<copy todir="${build.dir}/${resource.dir}">
+			<fileset dir="${src.dir}/${resource.dir}">
 				<include name="**" />
 			</fileset>
 		</copy>
 	</target>
 
-	<target name="jar" depends="compile">
+	<target name="jaronly" depends="compile">
 		<mkdir dir="${lib.dir}" />
 		<jar jarfile="${app.name}.jar" basedir="${build.dir}" includes="**" manifest="./mr3.mf" />
 		<property file="SignInfo.properties" />
+	</target>
+
+	<target name="jar" depends="jaronly">
 		<signjar keystore="${keystore}" alias="${alias}" storepass="${storepass}">
 			<fileset dir="." includes="mr3.jar" />
 		</signjar>
