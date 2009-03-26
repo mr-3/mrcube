@@ -77,6 +77,7 @@ public abstract class MR3Plugin {
         return menuName;
     }
 
+
     /**
      * 
      * MR３で設定した出力エンコーディングの文字列を返す

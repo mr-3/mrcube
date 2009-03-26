@@ -93,6 +93,10 @@ public class GraphManager {
         mr3Writer = new MR3Writer(this);
     }
 
+    public MR3CellMaker getCellMaker() {
+        return cellMaker;
+    }
+
     public RDFSInfoMap getCurrentRDFSInfoMap() {
         MR3Project project = (MR3Project) desktopTabbedPane.getSelectedComponent();
         return project.getRDFSInfoMap();
@@ -154,24 +158,29 @@ public class GraphManager {
     // return rdfsTreeEditor;
     // }
 
-    public void importing(boolean t) {
-        isImporting = t;
+    private void setVisibleEditors(boolean t) {
         getCurrentRDFEditor().setVisible(!t);
         getCurrentClassEditor().setVisible(!t);
         getCurrentPropertyEditor().setVisible(!t);
         // rdfsTreeEditor.setVisible(!t);
-        // JInternalFrame[] iFrames = desktop.getAllFrames();
+    }
+
+    public void importing(boolean t) {
+        isImporting = t;
         if (t) {
+            setVisibleEditors(t);
             removeTypeCells();
             MR3.STATUS_BAR.startTime();
-        } else if (isShowTypeCell()) {
-            addTypeCells();
-        } else {
+        } else {            
+            if (isShowTypeCell()) {
+                addTypeCells();
+            }
             Object rootCell = getPropertyCell(MR3Resource.Property);
             if (rootCell != null) {
                 RDFGraph propGraph = getCurrentPropertyGraph();
                 propGraph.removeCellsWithEdges(propGraph.getDescendants(new Object[] { rootCell}));
-            }
+            }      
+            setVisibleEditors(t);
             MR3.STATUS_BAR.setCurrentTime();
         }
     }
@@ -188,7 +197,7 @@ public class GraphManager {
                     GraphConstants.setFont(cell.getAttributes(), new Font("", 0, 0));
                 }
                 rdfGraph.getGraphLayoutCache().editCell(cell, cell.getAttributes());
-            }            
+            }
         }
     }
 
@@ -1342,7 +1351,7 @@ public class GraphManager {
 
     private void selectCells(RDFGraph graph) {
         if (graph != null) {
-            for (Object cell: graph.getAllCells()) {
+            for (Object cell : graph.getAllCells()) {
                 GraphCell gCell = (GraphCell) cell;
                 graph.getGraphLayoutCache().editCell(gCell, gCell.getAttributes());
             }

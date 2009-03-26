@@ -65,9 +65,6 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     private ConnectAction connectAction;
     private InsertResourceAction insertResourceAction;
     private InsertLiteralAction insertLiteralAction;
-    protected CopyAction copyAction;
-    protected CutAction cutAction;
-    protected PasteAction pasteAction;
     protected RemoveAction removeAction;
 
     private static String INSERT_RESOURCE_TITLE = Translator.getString("InsertResourceDialog.Title");
@@ -86,9 +83,6 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
         insertLiteralAction = new InsertLiteralAction();
         moveAction = new ConnectAction(Translator.getString("Action.Move.Text"));
         connectAction = new ConnectAction(Translator.getString("Action.Connect.Text"));
-        copyAction = new CopyAction(graph);
-        cutAction = new CutAction(graph);
-        pasteAction = new PasteAction(graph, gmanager);
         removeAction = new RemoveAction(graph, gmanager);
         setAction(graph);
     }
@@ -409,9 +403,9 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 
     protected void addEditMenu(JPopupMenu menu, Object cell) {
         menu.addSeparator();
-        menu.add(copyAction);
-        menu.add(cutAction);
-        menu.add(pasteAction);
+        menu.add(graph.getCopyAction());
+        menu.add(graph.getCutAction());
+        menu.add(graph.getPasteAction());
 
         if (isCellSelected(cell)) {
             menu.addSeparator();

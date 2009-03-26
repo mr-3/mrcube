@@ -68,12 +68,14 @@ public class SaveProject extends AbstractActionFile {
 
     public void actionPerformed(ActionEvent e) {
         if (getName().equals(SAVE_PROJECT)) {
-            File currentProject = MR3.getCurrentProject().getCurrentProjectFile();
-            if (currentProject == null) {
+            File currentProjectFile = MR3.getCurrentProject().getCurrentProjectFile();
+            String basePath = null;
+            File newFile = new File(basePath, Translator.getString("Component.File.NewProject.Text"));
+            if (newFile.getAbsolutePath().equals(currentProjectFile.getAbsolutePath())) {
                 saveProjectAs();
             } else {
-                saveProject(currentProject);
-                HistoryManager.saveHistory(HistoryType.SAVE_PROJECT, currentProject.getAbsolutePath());
+                saveProject(currentProjectFile);
+                HistoryManager.saveHistory(HistoryType.SAVE_PROJECT, currentProjectFile.getAbsolutePath());
             }
         } else {
             saveProjectAs();

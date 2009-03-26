@@ -55,9 +55,11 @@ public class OpenProject extends AbstractActionFile {
     public void actionPerformed(ActionEvent e) {
         if (MR3.getCurrentProject() == null) {
             mr3.newProject(null);
+        } else if (!isNewProjectFile(MR3.getCurrentProject())) {
+            confirmExitProject(mr3.getGraphManager().getRootFrame(), MR3.getCurrentProject());
         }
         Model model = readModel(getInputStream("mr3"), mr3.getGraphManager().getBaseURI(), "RDF/XML");
         mr3.getMR3Reader().replaceProjectModel(model);
-        mr3.setTitle("MR^3: " + mr3.getCurrentProject().getTitle());
+        mr3.setTitle("MR^3: " + MR3.getCurrentProject().getTitle());
     }
 }

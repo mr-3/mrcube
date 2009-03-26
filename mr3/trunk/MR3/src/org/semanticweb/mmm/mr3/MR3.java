@@ -112,6 +112,10 @@ public class MR3 extends JFrame implements ChangeListener {
         HistoryManager.setGraphManager(gmanager);
     }
 
+    public JTabbedPane getDesktopTabbedPane() {
+        return desktopTabbedPane;
+    }
+
     private void initWeakReferences() {
         rdfEditorOverviewRef = new WeakReference<OverviewDialog>(null);
         classEditorOverviewRef = new WeakReference<OverviewDialog>(null);

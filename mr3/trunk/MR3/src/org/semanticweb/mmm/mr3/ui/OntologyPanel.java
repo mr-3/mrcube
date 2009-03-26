@@ -31,8 +31,8 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 import org.jgraph.graph.*;
+import org.semanticweb.mmm.mr3.actions.*;
 import org.semanticweb.mmm.mr3.data.*;
-import org.semanticweb.mmm.mr3.data.MR3Constants.*;
 import org.semanticweb.mmm.mr3.jgraph.*;
 import org.semanticweb.mmm.mr3.util.*;
 
@@ -42,6 +42,8 @@ import com.hp.hpl.jena.rdf.model.*;
  * @author takeshi morita
  */
 public abstract class OntologyPanel extends JPanel implements ListSelectionListener {
+
+    private EditConceptAction editConceptAction;
 
     protected JPanel menuPanel;
     protected JList menuList;
@@ -85,7 +87,8 @@ public abstract class OntologyPanel extends JPanel implements ListSelectionListe
 
         applyButton = new JButton(MR3Constants.APPLY);
         applyButton.setMnemonic('a');
-        applyButton.addActionListener(basePanel.getChangeInfoAction());
+        editConceptAction = new EditConceptAction(basePanel, graph, gmanager);
+        applyButton.addActionListener(editConceptAction);
         resetButton = new JButton(MR3Constants.RESET);
         resetButton.setMnemonic('s');
         resetButton.addActionListener(new AbstractAction() {
@@ -106,7 +109,7 @@ public abstract class OntologyPanel extends JPanel implements ListSelectionListe
         cardLayout.show(menuPanel, menuList.getSelectedValue().toString());
     }
 
-    protected class BasePanel extends JPanel {
+    public class BasePanel extends JPanel {
 
         protected JComboBox metaClassBox;
         protected JComboBox uriPrefixBox;
@@ -141,16 +144,20 @@ public abstract class OntologyPanel extends JPanel implements ListSelectionListe
             add(basePanel, BorderLayout.NORTH);
         }
 
+        public String getURIString() {
+            return nsLabel.getText() + idField.getText();
+        }
+
+        public String getMetaClassString() {
+            return metaClassBox.getSelectedItem().toString();
+        }
+
         public String toString() {
             return Translator.getString("Base");
         }
 
         public void setMetaClassList(Set<Resource> metaClassList) {
             setMetaClassBox(metaClassList);
-        }
-
-        public Action getChangeInfoAction() {
-            return new ChangeInfoAction();
         }
 
         public JTextField getIDField() {
@@ -180,48 +187,6 @@ public abstract class OntologyPanel extends JPanel implements ListSelectionListe
                     uriPrefixBox.setSelectedItem(prefNSInfo.getPrefix());
                     nsLabel.setText(prefNSInfo.getNameSpace());
                     break;
-                }
-            }
-        }
-
-        public class ChangeInfoAction extends AbstractAction {
-
-            ChangeInfoAction() {
-                // putValue(ACCELERATOR_KEY,
-                // KeyStroke.getKeyStroke(KeyEvent.VK_A,
-                // KeyEvent.ALT_MASK));
-            }
-
-            public void actionPerformed(ActionEvent e) {
-                if (cell != null) {
-                    changeInfo();
-                    graph.clearSelection();
-                    graph.setSelectionCell(cell);
-                }
-            }
-
-            private void changeInfo() {
-                String uri = nsLabel.getText() + idField.getText();
-                if (gmanager.isEmptyURI(uri) || gmanager.isDuplicatedWithDialog(uri, cell, graph.getType())) { return; }
-                RDFSInfo beforeRDFSInfo = null;
-                if (rdfsInfo instanceof ClassInfo) {
-                    beforeRDFSInfo = new ClassInfo((ClassInfo) rdfsInfo);
-                } else if (rdfsInfo instanceof PropertyInfo) {
-                    beforeRDFSInfo = new PropertyInfo((PropertyInfo) rdfsInfo);
-                }
-
-                // ここで，URIとセルのマッピングを削除する
-                RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-                rdfsInfoMap.removeURICellMap(rdfsInfo);
-                rdfsInfo.setURI(uri);
-                GraphUtilities.resizeRDFSResourceCell(gmanager, rdfsInfo, cell);
-                rdfsInfoMap.putURICellMap(rdfsInfo, cell);
-                rdfsInfo.setMetaClass(metaClassBox.getSelectedItem().toString());
-                gmanager.selectChangedRDFCells(rdfsInfo);
-                if (graph.getType() == GraphType.CLASS) {
-                    HistoryManager.saveHistory(HistoryType.EDIT_CLASS_WITH_DIAGLOG, beforeRDFSInfo, rdfsInfo);
-                } else if (graph.getType() == GraphType.PROPERTY) {
-                    HistoryManager.saveHistory(HistoryType.EDIT_ONT_PROPERTY_WITH_DIAGLOG, beforeRDFSInfo, rdfsInfo);
                 }
             }
         }
@@ -263,6 +228,8 @@ public abstract class OntologyPanel extends JPanel implements ListSelectionListe
         if (RDFGraph.isRDFSCell(cell)) {
             rdfsInfo = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
             if (rdfsInfo != null) {
+                editConceptAction.setGraphCell(cell);
+                editConceptAction.setRDFSInfo(rdfsInfo);
                 setCell(cell);
                 prefixNSInfoSet = GraphUtilities.getPrefixNSInfoSet();
                 PrefixNSUtil.setPrefixNSInfoSet(prefixNSInfoSet);

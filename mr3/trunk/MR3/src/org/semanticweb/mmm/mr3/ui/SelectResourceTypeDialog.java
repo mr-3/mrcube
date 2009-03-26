@@ -47,7 +47,7 @@ public class SelectResourceTypeDialog extends JDialog implements ActionListener 
         panel = new SelectResourceTypePanel(gm);
         getContentPane().add(panel, BorderLayout.CENTER);
         getContentPane().add(getButtonPanel(), BorderLayout.SOUTH);
-        setLocation(100, 100);
+        setLocationRelativeTo(gm.getRootFrame());
         setSize(new Dimension(500, 450));
         setVisible(false);
     }

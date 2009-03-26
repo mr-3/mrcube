@@ -47,10 +47,16 @@ import org.semanticweb.mmm.mr3.util.*;
  */
 public class RDFGraph extends JGraph {
 
+    private CopyAction copyAction;
+    private CutAction cutAction;
+    private PasteAction pasteAction;
+
     private boolean pagevisible = false;
     private transient PageFormat pageFormat = new PageFormat();
 
     private ImageIcon background;
+
+    private Object[] copyCells;
 
     private GraphType type;
     private GraphManager gmanager;
@@ -60,16 +66,27 @@ public class RDFGraph extends JGraph {
         this.type = type;
         gmanager = gm;
         initStatus();
+        cutAction = new CutAction(this);
+        copyAction = new CopyAction(this);
+        pasteAction = new PasteAction(this, gmanager);
         SwingUtilities.replaceUIActionMap(this, createActionMap());
     }
 
+    public void setCopyCells(Object[] cells) {
+        copyCells = cells;
+    }
+
+    public Object[] getCopyCells() {
+        return copyCells;
+    }
+
     public void setAutoSize(boolean t) {
-        for (Object cell: getAllCells()) {
+        for (Object cell : getAllCells()) {
             GraphCell graphCell = (GraphCell) cell;
             GraphConstants.setAutoSize(graphCell.getAttributes(), t);
         }
     }
-    
+
     public void setBackgroundImage(ImageIcon image) {
         background = image;
     }
@@ -130,7 +147,9 @@ public class RDFGraph extends JGraph {
         setDisconnectable(true);
         setAntiAliased(true);
         setEditable(true);
-        setUI(new RDFGraphUI(this, gmanager));
+        RDFGraphUI rgui = new RDFGraphUI(this, gmanager);
+        setUI(rgui);
+        setTransferHandler(rgui.createTransferHandler());
     }
 
     public boolean isContains(Object c) {
@@ -427,11 +446,23 @@ public class RDFGraph extends JGraph {
         return null;
     }
 
+    public CutAction getCutAction() {
+        return cutAction;
+    }
+
+    public CopyAction getCopyAction() {
+        return copyAction;
+    }
+
+    public PasteAction getPasteAction() {
+        return pasteAction;
+    }
+
     public ActionMap createActionMap() {
         ActionMap map = new ActionMapUIResource();
-        map.put(TransferHandler.getCutAction().getValue(Action.NAME), new CutAction(this));
-        map.put(TransferHandler.getCopyAction().getValue(Action.NAME), new CopyAction(this));
-        map.put(TransferHandler.getPasteAction().getValue(Action.NAME), new PasteAction(this, gmanager));
+        map.put(TransferHandler.getCutAction().getValue(Action.NAME), cutAction);
+        map.put(TransferHandler.getCopyAction().getValue(Action.NAME), copyAction);
+        map.put(TransferHandler.getPasteAction().getValue(Action.NAME), pasteAction);
         map.put("selectAll", new SelectNodes(gmanager, type, "selectAll"));
 
         return map;
