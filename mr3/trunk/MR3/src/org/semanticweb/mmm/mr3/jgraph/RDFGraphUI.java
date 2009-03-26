@@ -32,8 +32,10 @@ import java.util.List;
 
 import javax.swing.*;
 
+import org.jgraph.*;
 import org.jgraph.graph.*;
 import org.jgraph.plaf.basic.*;
+import org.semanticweb.mmm.mr3.actions.*;
 import org.semanticweb.mmm.mr3.data.*;
 import org.semanticweb.mmm.mr3.data.MR3Constants.*;
 import org.semanticweb.mmm.mr3.io.*;
@@ -50,12 +52,14 @@ public class RDFGraphUI extends BasicGraphUI {
     private RDFGraph graph;
     private GraphManager gmanager;
     private MR3Reader mr3Reader;
+    private EditConceptAction editConceptAction;
     private static final String WARNING = Translator.getString("Warning");
 
     RDFGraphUI(RDFGraph g, GraphManager gm) {
         graph = g;
         gmanager = gm;
         mr3Reader = new MR3Reader(gmanager);
+        editConceptAction = new EditConceptAction(graph, gmanager);
     }
 
     public RDFGraph getRDFGraph() {
@@ -74,13 +78,13 @@ public class RDFGraphUI extends BasicGraphUI {
         } else if (stopEditingInCompleteEditing) {
             switch (GraphManager.cellViewType) {
             case LABEL:
-                changeLabel(cell, info);
+                editLabel(cell, info);
                 break;
             case URI:
-                changeURI(cell, info);
+                editURI(cell, info);
                 break;
             case ID:
-                changeID(cell, info);
+                editID(cell, info);
                 break;
             }
         }
@@ -107,7 +111,7 @@ public class RDFGraphUI extends BasicGraphUI {
         GraphConstants.setValue(cell.getAttributes(), info);
     }
 
-    private void changeLabel(GraphCell cell, Object info) {
+    private void editLabel(GraphCell cell, Object info) {
         if (RDFGraph.isRDFResourceCell(cell)) {
             RDFResourceInfo beforeInfo = new RDFResourceInfo((RDFResourceInfo) info);
             changeResourceLabel((ResourceInfo) info, cell);
@@ -149,11 +153,20 @@ public class RDFGraphUI extends BasicGraphUI {
         return !newRes.equals(oldRes) && !gmanager.isDuplicatedWithDialog(newRes, null, graph.getType());
     }
 
-    private void changeURI(GraphCell cell, Object info) {
-        RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-        if (cell.toString() == null) { return; }
+    private void cancelAction(GraphCell cell) {
+        graph.getGraphLayoutCache().editCell(cell, cell.getAttributes());
+    }
+
+    private void editURI(GraphCell cell, Object info) {
+        if (cell.toString() == null) {
+            cancelAction(cell);
+            return;
+        }
         Resource resource = getResource(cell.toString().replaceAll("　", ""));
-        if (resource == null) { return; }
+        if (resource == null) {
+            cancelAction(cell);
+            return;
+        }
         if (RDFGraph.isRDFResourceCell(cell)) {
             RDFResourceInfo resInfo = (RDFResourceInfo) info;
             if (isValidResource(resource.getURI(), resInfo.getURIStr())) {
@@ -166,6 +179,7 @@ public class RDFGraphUI extends BasicGraphUI {
         } else if (RDFGraph.isRDFPropertyCell(cell)) {
             // 現状では，プロパティエディタで定義されているプロパティにのみ変更可能
             // メタモデル管理機能を実行させる予定
+            RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
             GraphCell propCell = (GraphCell) rdfsInfoMap.getPropertyCell(resource);
             if (propCell != null) {
                 RDFSInfo beforePropInfo = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
@@ -174,35 +188,14 @@ public class RDFGraphUI extends BasicGraphUI {
                 HistoryManager.saveHistory(HistoryType.EDIT_PROPERTY_WITH_GRAPH, beforePropInfo.getURIStr(), propInfo
                         .getURIStr());
             } else {
-                graph.getGraphLayoutCache().editCell(cell, cell.getAttributes());
+                cancelAction(cell);
             }
         } else if (RDFGraph.isRDFSCell(cell)) {
-            RDFSInfo rdfsInfo = (RDFSInfo) info;
-            GraphConstants.setValue(cell.getAttributes(), rdfsInfo);
-            if (isValidResource(resource.getURI(), rdfsInfo.getURIStr())) {
-                RDFSInfo beforeInfo = null;
-                if (RDFGraph.isRDFSClassCell(cell)) {
-                    beforeInfo = new ClassInfo((ClassInfo) info);
-                } else if (RDFGraph.isRDFSPropertyCell(cell)) {
-                    beforeInfo = new PropertyInfo((PropertyInfo) info);
-                }
-                rdfsInfoMap.removeURICellMap(rdfsInfo);
-                rdfsInfo.setURI(resource.getURI());
-                GraphConstants.setValue(cell.getAttributes(), rdfsInfo);
-                GraphUtilities.resizeRDFSResourceCell(gmanager, rdfsInfo, cell);
-                rdfsInfoMap.putURICellMap(rdfsInfo, cell);
-                gmanager.selectChangedRDFCells(rdfsInfo);
-                if (RDFGraph.isRDFSClassCell(cell)) {
-                    HistoryManager.saveHistory(HistoryType.EDIT_CLASS_WITH_GRAPH, beforeInfo, rdfsInfo);
-                } else if (RDFGraph.isRDFSPropertyCell(cell)) {
-                    HistoryManager.saveHistory(HistoryType.EDIT_ONT_PROPERTY_WITH_GRAPH, beforeInfo, rdfsInfo);
-                }
-            }
+            editConceptAction.editWithGraph(resource.getURI(), (RDFSInfo) info, cell);
         }
     }
 
-    private void changeID(GraphCell cell, Object info) {
-        RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
+    private void editID(GraphCell cell, Object info) {
         if (RDFGraph.isRDFResourceCell(cell)) {
             RDFResourceInfo resInfo = (RDFResourceInfo) info;
             String uri = resInfo.getURI().getNameSpace() + cell.toString().replaceAll("　", "");
@@ -216,26 +209,8 @@ public class RDFGraphUI extends BasicGraphUI {
         } else if (RDFGraph.isRDFPropertyCell(cell)) {
             // IDだけでは判別は困難なので何もしない
         } else if (RDFGraph.isRDFSCell(cell)) {
-            RDFSInfo rdfsInfo = (RDFSInfo) info;
-            String uri = gmanager.getBaseURI() + cell.toString().replaceAll("　", "");;
-            if (isValidResource(uri, rdfsInfo.getURIStr())) {
-                RDFSInfo beforeInfo = null;
-                if (RDFGraph.isRDFSClassCell(cell)) {
-                    beforeInfo = new ClassInfo((ClassInfo) info);
-                } else if (RDFGraph.isRDFSPropertyCell(cell)) {
-                    beforeInfo = new PropertyInfo((PropertyInfo) info);
-                }
-                rdfsInfoMap.removeURICellMap(rdfsInfo);
-                rdfsInfo.setURI(uri);
-                GraphConstants.setValue(cell.getAttributes(), rdfsInfo);
-                rdfsInfoMap.putURICellMap(rdfsInfo, cell);
-                gmanager.selectChangedRDFCells(rdfsInfo);
-                if (RDFGraph.isRDFSClassCell(cell)) {
-                    HistoryManager.saveHistory(HistoryType.EDIT_CLASS_WITH_GRAPH, beforeInfo, rdfsInfo);
-                } else if (RDFGraph.isRDFSPropertyCell(cell)) {
-                    HistoryManager.saveHistory(HistoryType.EDIT_ONT_PROPERTY_WITH_GRAPH, beforeInfo, rdfsInfo);
-                }
-            }
+            String uri = gmanager.getBaseURI() + cell.toString().replaceAll("　", "");
+            editConceptAction.editWithGraph(uri, (RDFSInfo) info, cell);
         }
     }
 
@@ -274,6 +249,20 @@ public class RDFGraphUI extends BasicGraphUI {
     }
 
     public class RDFTransferHandler extends GraphTransferHandler {
+
+        protected void handleExternalDrop(JGraph graph, Object[] cells, Map nested, ConnectionSet cs, ParentMap pm,
+                double dx, double dy) {
+            Iterator it = cs.connections();
+            while (it.hasNext()) {
+                ConnectionSet.Connection conn = (ConnectionSet.Connection) it.next();
+                if (!pm.getChangedNodes().contains(conn.getPort()) && !graph.getModel().contains(conn.getPort())) {
+                    it.remove();
+                }
+            }
+            Map clones = graph.cloneCells(cells);
+            graph.getGraphLayoutCache().insertClones(cells, clones, nested, cs, pm, dx, dy);
+            ((RDFGraph) graph).setCopyCells(clones.values().toArray());
+        }
 
         public boolean importDataImpl(JComponent comp, Transferable t) {
             if (super.importDataImpl(comp, t)) { return true; }

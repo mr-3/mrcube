@@ -67,9 +67,9 @@ public class MR3Reader {
         if (model == null) { return; }
         new Thread() {
             public void run() {
-                gmanager.importing(true);                
+                gmanager.importing(true);
                 replaceRDF(model);
-                performTreeLayout();   
+                performTreeLayout();
                 gmanager.importing(false);
             }
         }.start();
@@ -100,8 +100,8 @@ public class MR3Reader {
         } catch (RDFException e) {
             e.printStackTrace();
         }
-        mergeRDFSModel(ModelFactory.createDefaultModel()); //RDFからRDFSへ反映されたクラス，
-        // プロパティの処理
+        // RDFからRDFSへ反映されたクラス，プロパティの処理
+        mergeRDFSModel(ModelFactory.createDefaultModel());
         resetPropertyInfo();
     }
 
@@ -245,8 +245,8 @@ public class MR3Reader {
             // replaceGraph(mr3Parser.createRDFGraph(model,
             // VGJTreeLayout.getVGJRDFCellLayoutMap(model)));
             mr3Parser.replaceDefaultRDFGraph(model);
-            mergeRDFSModel(ModelFactory.createDefaultModel()); // RDFからRDFSへ反映されたクラス
-            // ，プロパティの処理
+            // RDFからRDFSへ反映されたクラス，プロパティの処理
+            mergeRDFSModel(ModelFactory.createDefaultModel());
         }
     }
 
@@ -311,22 +311,12 @@ public class MR3Reader {
         }.start();
     }
 
-    /**
-     * 
-     * グラフのレイアウトを行う vgjTreeLayout.performVGJTreeLayoutを使用する場合はGPL
-     * jgraphTreeLayout.performJGraphTreeLayoutの場合はLGPL
-     */
     public void performTreeLayout() {
         if (GraphLayoutUtilities.LAYOUT_TYPE.equals(GraphLayoutUtilities.JGRAPH_TREE_LAYOUT)) {
             jgraphTreeLayout.performJGraphTreeLayout();
         }
     }
 
-    /**
-     * 
-     * グラフのレイアウトを行う vgjTreeLayout.performVGJRDFSTreeLayoutを使用する場合はGPL
-     * jgraphTreeLayout.performJGraphRDFSTreeLayoutの場合はLGPL
-     */
     public void performRDFSTreeLayout() {
         if (GraphLayoutUtilities.LAYOUT_TYPE.equals(GraphLayoutUtilities.JGRAPH_TREE_LAYOUT)) {
             jgraphTreeLayout.performJGraphRDFSTreeLayout();
@@ -368,7 +358,7 @@ public class MR3Reader {
                 nsTableDialog.setPrefixNSInfoSet();
                 gmanager.clearSelection();
                 gmanager.refreshGraphs();
-                gmanager.importing(false);                
+                gmanager.importing(false);
                 if (currentProjectFile != null) {
                     MR3.getCurrentProject().setCurrentProjectFile(currentProjectFile);
                     MR3.setCurrentProjectName();

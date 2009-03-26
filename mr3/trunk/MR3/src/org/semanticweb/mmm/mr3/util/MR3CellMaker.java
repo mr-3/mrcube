@@ -176,13 +176,12 @@ public class MR3CellMaker {
             AttributeMap typeViewMap = getTypeMap(GraphUtilities.getTypeCellRectangle(rdfCell, resInfo.getTypeInfo(),
                     gmanager));
             attributes.put(typeViewCell, typeViewMap);
-
             ParentMap parentMap = new ParentMap();
-            DefaultGraphCell group = new DefaultGraphCell();            
+            DefaultGraphCell group = new DefaultGraphCell();
             parentMap.addEntry(rdfCell, group);
             parentMap.addEntry(typeViewCell, group);
+            resInfo.setTypeViewCell(typeViewCell);       
             graph.getGraphLayoutCache().insert(new Object[] { group}, attributes, null, parentMap);
-            resInfo.setTypeViewCell(typeViewCell);
         }
     }
 

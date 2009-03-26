@@ -39,7 +39,7 @@ public class GetRDFModelSample extends MR3Plugin {
     private JTree classTree;
     private JTree propertyTree;
     private JTextArea textArea;
-    private JInternalFrame srcFrame;
+    private JFrame srcFrame;
 
     public GetRDFModelSample() {
         classTree = new JTree();
@@ -48,18 +48,13 @@ public class GetRDFModelSample extends MR3Plugin {
         classTreeScroll.setBorder(BorderFactory.createTitledBorder("Class Tree"));
         propertyTree = new JTree();
         JScrollPane propertyTreeScroll = new JScrollPane(propertyTree);
-        //propertyTreeScroll.setPreferredSize(new Dimension(150, 200));
+        // propertyTreeScroll.setPreferredSize(new Dimension(150, 200));
         propertyTreeScroll.setBorder(BorderFactory.createTitledBorder("Property Tree"));
         textArea = new JTextArea(5, 10);
         JScrollPane textAreaScroll = new JScrollPane(textArea);
         textAreaScroll.setBorder(BorderFactory.createTitledBorder("RDF/XML"));
-        srcFrame = new JInternalFrame("Sample Plugin 2", true, true);
-        srcFrame.addInternalFrameListener(new InternalFrameAdapter() {
-            public void internalFrameClosing(InternalFrameEvent e) {
-                srcFrame.setVisible(false);
-            }
-        });
-        srcFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        srcFrame = new JFrame("Sample Plugin 2");
+        srcFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JSplitPane treeSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, classTreeScroll, propertyTreeScroll);
         treeSplitPane.setDividerLocation(0.5);
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, treeSplitPane, textAreaScroll);
@@ -69,7 +64,6 @@ public class GetRDFModelSample extends MR3Plugin {
     }
 
     public void exec() {
-        getDesktopPane().add(srcFrame);
         try {
             Model rdfModel = getRDFModel();
             Writer out = new StringWriter();

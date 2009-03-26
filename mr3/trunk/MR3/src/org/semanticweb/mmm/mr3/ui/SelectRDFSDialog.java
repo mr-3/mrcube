@@ -49,7 +49,7 @@ public class SelectRDFSDialog extends JDialog implements ActionListener {
         getContentPane().add(panel, BorderLayout.CENTER);
         getContentPane().add(getButtonPanel(), BorderLayout.SOUTH);
 
-        setLocation(100, 100);
+        setLocationRelativeTo(gm.getRootFrame());
         setSize(new Dimension(500, 500));
         setVisible(false);
     }

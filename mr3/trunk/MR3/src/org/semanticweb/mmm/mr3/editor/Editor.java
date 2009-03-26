@@ -263,9 +263,9 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
         toolbar.add(redo);
 
         toolbar.addSeparator();
-        toolbar.add(new CopyAction(graph));
-        toolbar.add(new CutAction(graph));
-        toolbar.add(new PasteAction(graph, gmanager));
+        toolbar.add(graph.getCopyAction());
+        toolbar.add(graph.getCutAction());
+        toolbar.add(graph.getPasteAction());
 
         toolbar.addSeparator();
         remove = new RemoveAction(graph, gmanager);

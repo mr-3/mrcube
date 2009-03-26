@@ -23,7 +23,6 @@
 
 package org.semanticweb.mmm.mr3.actions;
 
-import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 
@@ -55,40 +54,11 @@ public class PasteAction extends AbstractAction {
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_MASK));
     }
 
-    private Object[] removeWrongCopyCells(Object[] cells, RDFGraph graph) {
-        Set<Object> removeCells = new HashSet<Object>();
-        Set<Object> correctCells = new HashSet<Object>();
-        for (Object cell : cells) {
-            if (graph.getType() == GraphType.CLASS) {
-                if (RDFGraph.isRDFSClassCell(cell)) {
-                    correctCells.add(cell);
-                } else {
-                    removeCells.add(cell);
-                }
-            } else if (graph.getType() == GraphType.PROPERTY) {
-                if (RDFGraph.isRDFSPropertyCell(cell)) {
-                    correctCells.add(cell);
-                } else {
-                    removeCells.add(cell);
-                }
-            } else if (graph.getType() == GraphType.RDF) {
-                if (RDFGraph.isRDFCell(cell)) {
-                    correctCells.add(cell);
-                } else {
-                    removeCells.add(cell);
-                }
-            }
-        }
-        graph.getGraphLayoutCache().removeCells(removeCells.toArray());
-        return correctCells.toArray();
-    }
-
     public void actionPerformed(ActionEvent e) {
         TransferHandler.getPasteAction().actionPerformed(new ActionEvent(graph, e.getID(), e.getActionCommand()));
-        Object[] cells = graph.getDescendants(graph.getSelectionCells());
-        cells = removeWrongCopyCells(cells, graph);
-        for (int i = 0; i < cells.length; i++) {
-            GraphCell cell = (GraphCell) cells[i];
+        Object[] copyCells = graph.getCopyCells();
+        for (int i = 0; i < copyCells.length; i++) {
+            GraphCell cell = (GraphCell) copyCells[i];
             if (RDFGraph.isRDFSClassCell(cell)) {
                 cloneRDFSClassCell(cell);
             } else if (RDFGraph.isRDFSPropertyCell(cell)) {
@@ -96,15 +66,13 @@ public class PasteAction extends AbstractAction {
             } else if (RDFGraph.isRDFResourceCell(cell)) {
                 cloneRDFResourceCell(cell);
             } else if (RDFGraph.isRDFPropertyCell(cell)) {
-                System.out.println(GraphConstants.getValue(cell.getAttributes()));
+                //System.out.println(GraphConstants.getValue(cell.getAttributes(
+                // )));
                 // do nothing
             } else if (RDFGraph.isRDFLiteralCell(cell)) {
                 cloneRDFLiteralCell(cell);
             }
         }
-        graph.getGraphLayoutCache().reload(); // サイズの自動調節を反映させるため
-        graph.clearSelection(); // 一度選択を解除しないと，サイズが自動調節されないため．
-        graph.setSelectionCells(cells); // コピー後にセルを選択するため．
         if (graph.getType() == GraphType.RDF) {
             HistoryManager.saveHistory(HistoryType.PASTE_RDF_GRAPH);
         } else if (graph.getType() == GraphType.CLASS) {
@@ -121,8 +89,7 @@ public class PasteAction extends AbstractAction {
         MR3Literal orgLiteral = (MR3Literal) GraphConstants.getValue(cell.getAttributes());
         MR3Literal newLiteral = new MR3Literal(orgLiteral);
         GraphConstants.setValue(cell.getAttributes(), newLiteral);
-        Dimension dim = GraphUtilities.getAutoLiteralNodeDimention(gmanager, newLiteral.getString());
-        GraphUtilities.resizeCell(dim, graph, cell);
+        graph.getGraphLayoutCache().editCell(cell, cell.getAttributes());
     }
 
     /**
@@ -130,6 +97,7 @@ public class PasteAction extends AbstractAction {
      */
     private void cloneRDFResourceCell(GraphCell cell) {
         RDFResourceInfo orgInfo = (RDFResourceInfo) GraphConstants.getValue(cell.getAttributes());
+
         Object typeViewCell = orgInfo.getTypeViewCell();
         if (typeViewCell != null) {
             // RDFリソースのタイプを示す矩形セルのクローンを得る
@@ -137,12 +105,17 @@ public class PasteAction extends AbstractAction {
             typeViewCell = clones.get(typeViewCell);
         }
         RDFResourceInfo newInfo = new RDFResourceInfo(orgInfo);
-        if (orgInfo.getURIType() != URIType.ANONYMOUS) {
-            newInfo.setURI(cloneRDFURI(orgInfo));
-        }
         newInfo.setTypeViewCell((GraphCell) typeViewCell);
+        newInfo.setURI(cloneRDFURI(newInfo));
         GraphConstants.setValue(cell.getAttributes(), newInfo);
-        GraphUtilities.resizeRDFResourceCell(gmanager, newInfo, cell);
+        graph.getGraphLayoutCache().editCell(cell, cell.getAttributes());
+    }
+
+    private void cloneRDFSCell(GraphCell cell, RDFSInfo newInfo) {
+        RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
+        rdfsInfoMap.putURICellMap(newInfo, cell);
+        GraphConstants.setValue(cell.getAttributes(), newInfo);
+        graph.getGraphLayoutCache().editCell(cell, cell.getAttributes());
     }
 
     /**
@@ -152,10 +125,7 @@ public class PasteAction extends AbstractAction {
         PropertyInfo orgInfo = (PropertyInfo) GraphConstants.getValue(cell.getAttributes());
         PropertyInfo newInfo = new PropertyInfo(orgInfo);
         newInfo.setURI(cloneRDFSURI(newInfo, GraphType.PROPERTY));
-        RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-        rdfsInfoMap.putURICellMap(newInfo, cell);
-        GraphConstants.setValue(cell.getAttributes(), newInfo);
-        GraphUtilities.resizeRDFSResourceCell(gmanager, newInfo, cell);
+        cloneRDFSCell(cell, newInfo);
     }
 
     /**
@@ -165,10 +135,7 @@ public class PasteAction extends AbstractAction {
         ClassInfo orgInfo = (ClassInfo) GraphConstants.getValue(cell.getAttributes());
         ClassInfo newInfo = new ClassInfo(orgInfo);
         newInfo.setURI(cloneRDFSURI(newInfo, GraphType.CLASS));
-        RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-        rdfsInfoMap.putURICellMap(newInfo, cell);
-        GraphConstants.setValue(cell.getAttributes(), newInfo);
-        GraphUtilities.resizeRDFSResourceCell(gmanager, newInfo, cell);
+        cloneRDFSCell(cell, newInfo);
     }
 
     private String cloneRDFSURI(RDFSInfo info, GraphType graphType) {

@@ -58,7 +58,7 @@ public class OntManagementDialog extends JDialog implements ActionListener {
         inlinePanel.add(cancelButton);
         getContentPane().add(inlinePanel, BorderLayout.SOUTH);
 
-        setLocation(100, 100);
+        setLocationRelativeTo(gm.getRootFrame());
         setSize(new Dimension(500, 550));
         setVisible(false);
     }

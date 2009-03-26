@@ -183,11 +183,31 @@ public abstract class AbstractActionFile extends MR3AbstractAction {
     }
 
     protected void exitProgram(Frame frame) {
-        int messageType = confirmExitProject(frame, Translator.getString("ExitProgram"));
-        if (messageType == JOptionPane.CANCEL_OPTION) { return; }
-        saveWindows();
-        System.exit(0);
+        int messageType = JOptionPane.showConfirmDialog(frame, Translator.getString("SaveChanges"), "MR^3 - "
+                + Translator.getString("ExitProgram"), JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.INFORMATION_MESSAGE);
+        if (messageType == JOptionPane.YES_OPTION) {
+            confirmAllExitProject(frame);
+        } else if (messageType == JOptionPane.CANCEL_OPTION) {
+            return;
+        } else if (messageType == JOptionPane.NO_OPTION) {
+            saveWindows();
+            System.exit(0);
+        }
     }
+
+    protected void exitProject(MR3Project project) {
+        if (project == null) { return; }
+        File currentProjectFile = project.getCurrentProjectFile();
+        if (isNewProjectFile(project)) {
+            saveProjectAs();
+            HistoryManager.saveHistory(HistoryType.SAVE_PROJECT_AS, currentProjectFile.getAbsolutePath());
+        } else {
+            saveProject(currentProjectFile);
+            HistoryManager.saveHistory(HistoryType.SAVE_PROJECT, currentProjectFile.getAbsolutePath());
+        }        
+    }
+
     private void saveWindowBounds(Preferences userPrefs) {
         Rectangle windowRect = mr3.getBounds();
         userPrefs.putInt(PrefConstants.WindowHeight, (int) windowRect.getHeight());
@@ -201,12 +221,30 @@ public abstract class AbstractActionFile extends MR3AbstractAction {
         saveWindowBounds(userPrefs);
     }
 
-    protected int confirmExitProject(Frame root, String title) {
-        int messageType = JOptionPane.showConfirmDialog(root, Translator.getString("SaveChanges"), "MR^3 - " + title,
-                JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+    protected boolean isNewProjectFile(MR3Project currentProject) {
+        String basePath = null;
+        File newFile = new File(basePath, Translator.getString("Component.File.NewProject.Text"));
+        File currentProjectFile = currentProject.getCurrentProjectFile();
+        return newFile.getAbsolutePath().equals(currentProjectFile.getAbsolutePath());
+    }
+
+    protected int confirmExitProject(Frame root, MR3Project project) {
+        String title = project.getTitle();
+        int messageType = JOptionPane.showConfirmDialog(root, title + "\n" + Translator.getString("SaveChanges"),
+                "MR^3 - " + title, JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
         if (messageType == JOptionPane.YES_OPTION) {
-            saveProjectAs();
+            exitProject(project);
         }
         return messageType;
+    }
+
+    protected void confirmAllExitProject(Frame root) {
+        for (int i = 0; i < mr3.getDesktopTabbedPane().getTabCount(); i++) {
+            mr3.getDesktopTabbedPane().setSelectedIndex(i);
+            MR3Project project = (MR3Project) mr3.getDesktopTabbedPane().getSelectedComponent();
+            confirmExitProject(root, project);
+        }
+        saveWindows();
+        System.exit(0);
     }
 }
