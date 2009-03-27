@@ -54,6 +54,7 @@ public class ShowAttrDialog extends MR3AbstractAction {
         RDFGraph graph = null;
         Object selectionCell = null;
         MR3Project project = MR3.getCurrentProject();
+        if (project == null) { return; }
 
         if (project.getFocusedEditorType() == GraphType.RDF) {
             graph = mr3.getRDFGraph();

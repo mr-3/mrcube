@@ -81,6 +81,9 @@ public class ExportDialog extends JDialog implements ActionListener {
     private static final int FRAME_HEIGHT = 500;
     private static final int FRAME_WIDTH = 600;
     private static ImageIcon EXPORT_ICON = Utilities.getImageIcon(Translator.getString("Component.File.Export.Icon"));
+    private static ImageIcon FILE_ICON = Utilities.getImageIcon("page_white_text.png");
+    private static ImageIcon IMAGE_ICON = Utilities.getImageIcon("image.png");
+    
 
     public ExportDialog(GraphManager gm) {
         super(gm.getRootFrame(), Translator.getString("ExportDialog.Title"), true);
@@ -154,11 +157,11 @@ public class ExportDialog extends JDialog implements ActionListener {
         optionCheckPanel.add(abbrevCheckBox);
         optionCheckPanel.add(xmlbaseCheckBox);
 
-        exportFileButton = new JButton(Translator.getString("ExportDialog.File") + "(F)", EXPORT_ICON);
+        exportFileButton = new JButton(Translator.getString("ExportDialog.File") + "(F)", FILE_ICON);
         exportFileButton.setHorizontalAlignment(JButton.LEFT);
         exportFileButton.setMnemonic('f');
         exportFileButton.addActionListener(new ExportFileEvent());
-        exportImgButton = new JButton(Translator.getString("ExportDialog.Image") + "(I)", EXPORT_ICON);
+        exportImgButton = new JButton(Translator.getString("ExportDialog.Image") + "(I)", IMAGE_ICON);
         exportImgButton.setHorizontalAlignment(JButton.LEFT);
         exportImgButton.setMnemonic('i');
         exportImgButton.addActionListener(new ExportImgEvent());
