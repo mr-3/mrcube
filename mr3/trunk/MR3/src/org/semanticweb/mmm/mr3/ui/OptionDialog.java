@@ -78,6 +78,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
 
     public OptionDialog(GraphManager gm, Preferences prefs) {
         super(gm.getRootFrame(), Translator.getString("PreferenceDialog.Title"), true);
+        setIconImage(Utilities.getImageIcon("cog.png").getImage());
         gmanager = gm;
         userPrefs = prefs;
         loadResourceBundle();

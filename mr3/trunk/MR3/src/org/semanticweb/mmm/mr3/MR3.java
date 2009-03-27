@@ -87,7 +87,8 @@ public class MR3 extends JFrame implements ChangeListener {
     public MR3() {
         MR3Constants.loadResourceBundle();
         initWeakReferences();
-        mr3LogConsole = new MR3LogConsole(this, Translator.getString("LogConsole.Title"), null);
+        mr3LogConsole = new MR3LogConsole(this, Translator.getString("LogConsole.Title"), Utilities.getImageIcon(
+                "application_xp_terminal.png").getImage());
 
         desktopTabbedPane = new JTabbedPane();
         desktopTabbedPane.addChangeListener(this);

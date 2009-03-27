@@ -56,6 +56,7 @@ public class PluginManager extends JDialog implements ActionListener {
     public PluginManager(MR3 mr3) {
         super(mr3.getGraphManager().getRootFrame(), Translator.getString("Component.Tools.Plugins.PluginManager.Text"),
                 false);
+        setIconImage(Utilities.getImageIcon(Translator.getString("Component.Tools.Plugins.Icon")).getImage());
         this.mr3 = mr3;
         pluginDescriptionArea.setEditable(false);
         pluginDescriptionArea.setLineWrap(true);

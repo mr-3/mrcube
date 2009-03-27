@@ -37,13 +37,13 @@ import com.hp.hpl.jena.vocabulary.*;
 /**
  * @author takeshi morita
  */
-public class OntTreeEditor extends JInternalFrame {
+public class OntTreeEditor extends JDialog {
 
     private MR3TreePanel classTreePanel;
     private MR3TreePanel propertyTreePanel;
 
     public OntTreeEditor(GraphManager gm) {
-        super("OntTreeEditor", true, false, true, true);
+        super(gm.getRootFrame(), "OntTreeEditor");
         classTreePanel = new MR3TreePanel(gm);
         classTreePanel.setClassTreeCellRenderer();
         propertyTreePanel = new MR3TreePanel(gm);

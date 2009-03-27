@@ -94,7 +94,7 @@ public class ImportDialog extends JDialog implements ActionListener {
 
     public ImportDialog(GraphManager gm) {
         super(gm.getRootFrame(), Translator.getString("ImportDialog.Title"), true);
-        // setFrameIcon(IMPORT_ICON);
+        setIconImage(IMPORT_ICON.getImage());
         gmanager = gm;
         mr3Reader = new MR3Reader(gmanager);
 
