@@ -38,7 +38,7 @@ public class ShowValidator extends MR3AbstractAction {
     private static final String TITLE = Translator.getString("Component.Tools.Validator.Text");
 
     public ShowValidator(MR3 mr3) {
-        super(mr3, TITLE);
+        super(mr3, TITLE, Utilities.getImageIcon("accept.png"));
         setValues();
     }
 

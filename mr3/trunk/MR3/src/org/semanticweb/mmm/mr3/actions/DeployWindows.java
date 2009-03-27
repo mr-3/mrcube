@@ -47,6 +47,7 @@ public class DeployWindows extends MR3AbstractAction {
 
     public void actionPerformed(ActionEvent e) {
         MR3Project project = MR3.getCurrentProject();
+        if (project == null) { return; }
         switch (deployType) {
         case CPR:
             project.deployCPR();
