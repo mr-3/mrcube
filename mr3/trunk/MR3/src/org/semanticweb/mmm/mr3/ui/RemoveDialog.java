@@ -40,7 +40,7 @@ import org.jgraph.graph.*;
  * @author takeshi morita
  * 
  */
-public class RemoveDialog extends JInternalFrame implements ListSelectionListener, ActionListener {
+public class RemoveDialog extends JDialog implements ListSelectionListener, ActionListener {
 
     private JButton applyButton;
     private JButton cancelButton;
@@ -53,7 +53,7 @@ public class RemoveDialog extends JInternalFrame implements ListSelectionListene
     private static final int LIST_HEIGHT = 100;
 
     public RemoveDialog(GraphManager manager) {
-        super(Translator.getString("RemoveDialog.Title"), true, false);
+        super(manager.getRootFrame(), Translator.getString("RemoveDialog.Title"));
         gmanager = manager;
 
         removeRDFSList = new JList();
@@ -68,7 +68,7 @@ public class RemoveDialog extends JInternalFrame implements ListSelectionListene
         contentPane.add(refListPanel, BorderLayout.CENTER);
         contentPane.add(getButtonPanel(), BorderLayout.SOUTH);
 
-        setLocation(100, 100);
+        setLocationRelativeTo(gmanager.getRootFrame());
         setSize(new Dimension(500, 350));
         setVisible(false);
     }

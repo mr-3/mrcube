@@ -29,7 +29,6 @@ import java.lang.ref.*;
 
 import javax.swing.*;
 
-import org.semanticweb.mmm.mr3.data.*;
 import org.semanticweb.mmm.mr3.ui.*;
 import org.semanticweb.mmm.mr3.util.*;
 
@@ -37,17 +36,17 @@ import org.semanticweb.mmm.mr3.util.*;
  * @author takeshi morita
  * 
  */
-public class HelpAbout extends MR3AbstractAction {
+public class ShowVersionInfoAction extends MR3AbstractAction {
 
     private Frame rootFrame;
-    private WeakReference<HelpWindow> helpWindowRef;
+    private WeakReference<VersionInfoDialog> versionInfoDialogRef;
     private static final String TITLE = Translator.getString("Component.Help.About.Text");
     private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("Component.Help.About.Icon"));
 
-    public HelpAbout(Frame frame) {
+    public ShowVersionInfoAction(Frame frame) {
         super(TITLE, ICON);
         rootFrame = frame;
-        helpWindowRef = new WeakReference<HelpWindow>(null);
+        versionInfoDialogRef = new WeakReference<VersionInfoDialog>(null);
         setValues();
     }
 
@@ -56,17 +55,16 @@ public class HelpAbout extends MR3AbstractAction {
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("F1"));
     }
 
-    public HelpWindow getHelpWindow() {
-        HelpWindow result = helpWindowRef.get();
+    public VersionInfoDialog getVersionInfoDialog() {
+        VersionInfoDialog result = versionInfoDialogRef.get();
         if (result == null) {
-            result = new HelpWindow(rootFrame, MR3Constants.SPLASH_LOGO);
-            helpWindowRef = new WeakReference<HelpWindow>(result);
+            result = new VersionInfoDialog(rootFrame, TITLE, ICON);
+            versionInfoDialogRef = new WeakReference<VersionInfoDialog>(result);
         }
         return result;
     }
 
     public void actionPerformed(ActionEvent e) {
-        HelpWindow helpWindow = getHelpWindow();
-        helpWindow.setVisible(true);
+        getVersionInfoDialog().setVisible(true);
     }
 }

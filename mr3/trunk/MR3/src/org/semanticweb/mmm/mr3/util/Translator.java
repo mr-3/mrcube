@@ -32,7 +32,6 @@ import javax.swing.*;
 import org.semanticweb.mmm.mr3.actions.*;
 import org.semanticweb.mmm.mr3.data.*;
 import org.semanticweb.mmm.mr3.editor.*;
-import org.semanticweb.mmm.mr3.jgraph.*;
 import org.semanticweb.mmm.mr3.ui.*;
 
 /*
@@ -43,7 +42,7 @@ import org.semanticweb.mmm.mr3.ui.*;
 public class Translator {
 
     protected static ResourceBundle resourceBundle;
-    private static final String RESOURCE_DIR = "org/semanticweb/mmm/mr3/resources/";
+    public static final String RESOURCE_DIR = "org/semanticweb/mmm/mr3/resources/";
 
     public static String getString(String sKey) {
         try {

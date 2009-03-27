@@ -35,7 +35,7 @@ import org.semanticweb.mmm.mr3.ui.*;
 public class MR3WebStart {
     public static void main(String[] arg) {
         MR3.initialize(MR3WebStart.class);
-        JWindow splashWindow = new HelpWindow(null, MR3Constants.LOGO);
+        JWindow splashWindow = new SplashWindow(null, MR3Constants.LOGO);
         try {
             new MR3();
         } catch (Exception e) {

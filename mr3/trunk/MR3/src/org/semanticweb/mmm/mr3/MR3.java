@@ -107,8 +107,6 @@ public class MR3 extends JFrame implements ChangeListener {
         setJMenuBar(createMenuBar());
         initOptions();
 
-        getProjectInfoDialog(); // ê∂ê¨ÇµÇƒÇ®Ç©Ç»Ç¢Ç∆ÅCã@î\ÇµÇ»Ç¢ÇΩÇﬂ
-        // getHistoryManager();
         HistoryManager.setGraphManager(gmanager);
     }
 
@@ -349,9 +347,17 @@ public class MR3 extends JFrame implements ChangeListener {
         result.setVisible(true);
     }
 
+    private void checkCurrentProject() {
+        MR3Project project = getCurrentProject();
+        if (project == null) {
+            newProject(null);
+        }
+    }
+
     public void showOptionDialog() {
         OptionDialog result = optionDialogRef.get();
         if (result == null) {
+            checkCurrentProject();
             result = new OptionDialog(gmanager, userPrefs);
             optionDialogRef = new WeakReference<OptionDialog>(result);
         }
@@ -380,6 +386,7 @@ public class MR3 extends JFrame implements ChangeListener {
     public HistoryManager getHistoryManager() {
         HistoryManager result = historyManagerRef.get();
         if (result == null) {
+            checkCurrentProject();
             result = new HistoryManager(gmanager.getRootFrame(), this);
             historyManagerRef = new WeakReference<HistoryManager>(result);
         }
@@ -389,6 +396,7 @@ public class MR3 extends JFrame implements ChangeListener {
     public ValidatorDialog getValidator() {
         ValidatorDialog result = validatorRef.get();
         if (result == null) {
+            checkCurrentProject();
             result = new ValidatorDialog(gmanager.getRootFrame(), gmanager);
             validatorRef = new WeakReference<ValidatorDialog>(result);
         }
@@ -398,6 +406,7 @@ public class MR3 extends JFrame implements ChangeListener {
     public ProjectInfoDialog getProjectInfoDialog() {
         ProjectInfoDialog result = projectInfoDialogRef.get();
         if (result == null) {
+            checkCurrentProject();
             result = new ProjectInfoDialog(gmanager, this);
             projectInfoDialogRef = new WeakReference<ProjectInfoDialog>(result);
         }
@@ -517,8 +526,8 @@ public class MR3 extends JFrame implements ChangeListener {
         setLocation(userPrefs.getInt(PrefConstants.WindowPositionX, 50), userPrefs.getInt(
                 PrefConstants.WindowPositionY, 50));
 
-        HistoryManager.resetFileAppender(userPrefs.get(PrefConstants.logFile, System.getProperty("user.dir")
-                + "\\mr3.log"));
+        HistoryManager.resetFileAppender(userPrefs.get(PrefConstants.logFile, System.getProperty("user.dir") + "\\"
+                + HistoryManager.DEFAULT_LOG_FILE_NAME));
 
         setTitle("MR^3");
         setVisible(true);
@@ -642,34 +651,9 @@ public class MR3 extends JFrame implements ChangeListener {
     private JMenu getHelpMenu() {
         JMenu menu = new JMenu(Translator.getString("Component.Help.Text") + "(H)");
         menu.setMnemonic('h');
-        // menu.add(getShowHelpItem());
-        // Action gcAction = new AbstractAction() {
-        // public void actionPerformed(ActionEvent e) {
-        // System.gc();
-        // }
-        // };
-        // gcAction.putValue(Action.NAME, "GC");
-        // menu.add(gcAction);
-        menu.add(new HelpAbout(this));
+        menu.add(new ShowVersionInfoAction(this));
         return menu;
     }
-
-    // private JMenuItem getShowHelpItem() {
-    // HelpSet hs = null;
-    // try {
-    // hs = new HelpSet(null, Utilities.getURL("MR3Help/MR3Help.hs"));
-    // } catch (Exception ex) {
-    // ex.printStackTrace();
-    // }
-    // HelpBroker hb = hs.createHelpBroker("MR3Help");
-    // // hb.enableHelpKey(getRootPane(), "overview", hs); // for F1 Ç®ÇøÇÈ
-    // ActionListener helper = new CSH.DisplayHelpFromSource(hb);
-    // JMenuItem item = new
-    // JMenuItem(Translator.getString("Component.Help.ShowHelp.Text"));
-    // item.addActionListener(helper);
-    //
-    // return item;
-    // }
 
     class ShowToolTipsAction extends AbstractAction {
         public void actionPerformed(ActionEvent e) {
@@ -792,7 +776,7 @@ public class MR3 extends JFrame implements ChangeListener {
 
     public static void main(String[] arg) {
         initialize(MR3.class);
-        JWindow splashWindow = new HelpWindow(null, MR3Constants.SPLASH_LOGO);
+        JWindow splashWindow = new SplashWindow(null, MR3Constants.SPLASH_LOGO);
         try {
             if (arg.length == 1 && arg[0].equals("--off")) {
                 MR3.OFF_META_MODEL_MANAGEMENT = true;

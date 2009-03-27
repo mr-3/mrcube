@@ -34,8 +34,7 @@ public class RDFCellViewFactory extends DefaultCellViewFactory {
 
     public VertexView createVertexView(Object v) {
         if (v instanceof RDFResourceCell || v instanceof OntPropertyCell) { return new JGraphEllipseView(v); }
-        // if (v instanceof RDFLiteralCell) { return new JGraphMultilineView(v);
-        // }
+        if (v instanceof RDFLiteralCell) { return new JGraphMultilineView(v); }
         // if (v instanceof RDFLiteralCell) { return new JGraphRoundRectView(v);
         // }
         return super.createVertexView(v);
