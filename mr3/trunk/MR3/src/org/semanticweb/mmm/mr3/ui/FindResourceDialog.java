@@ -69,7 +69,7 @@ public class FindResourceDialog extends JDialog {
 
     public FindResourceDialog(GraphManager gm) {
         super(gm.getRootFrame(), Translator.getString("FindResourceDialog.Title"), false);
-        // setFrameIcon(Utilities.getImageIcon(Translator.getString("FindResourceDialog.Icon")));
+        setIconImage(Utilities.getImageIcon(Translator.getString("FindResourceDialog.Icon")).getImage());
         Container contentPane = getContentPane();
 
         gmanager = gm;
@@ -78,10 +78,11 @@ public class FindResourceDialog extends JDialog {
 
         findLabelField = new JTextField();
         findLabelField.getDocument().addDocumentListener(new FindAction(FindActionType.LABEL));
-        JComponent findLabelFieldP = Utilities.createTitledPanel(findLabelField, "Label", LIST_WIDTH, FIELD_HEIGHT);
+        JComponent findLabelFieldP = Utilities.createTitledPanel(findLabelField, MR3Constants.LABEL, LIST_WIDTH,
+                FIELD_HEIGHT);
         findCommentField = new JTextField();
         findCommentField.getDocument().addDocumentListener(new FindAction(FindActionType.COMMENT));
-        JComponent findCommentFieldP = Utilities.createTitledPanel(findCommentField, "Comment", LIST_WIDTH,
+        JComponent findCommentFieldP = Utilities.createTitledPanel(findCommentField, MR3Constants.COMMENT, LIST_WIDTH,
                 FIELD_HEIGHT);
 
         JPanel northPanel = new JPanel();

@@ -67,11 +67,9 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
 
     private static final String WARNING = Translator.getString("Warning");
 
-    // private static final ImageIcon ICON =
-    // Utilities.getImageIcon(Translator.getString("NameSpaceTable.Icon"));
-
     public NameSpaceTableDialog(GraphManager gm) {
         super(gm.getRootFrame(), Translator.getString("NameSpaceTable.Title"), false);
+        setIconImage(Utilities.getImageIcon(Translator.getString("NameSpaceTable.Icon")).getImage());
         gmanager = gm;
         prefixNSMap = new HashMap<String, String>();
         initTable();
@@ -278,16 +276,16 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
     /** prefix Ç™ãÛÇ≈Ç»Ç≠Ç©Ç¬ÅCÇ∑Ç≈Ç…ìoò^Ç≥ÇÍÇƒÇ¢Ç»Ç¢èÍçátrue */
     private boolean isValidPrefixWithWarning(String prefix) {
         if (isValidPrefix(prefix)) { return true; }
-        JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), Translator.getString("Warning.Message5"), WARNING,
-                JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), Translator.getString("Warning.Message5"),
+                WARNING, JOptionPane.ERROR_MESSAGE);
         return false;
     }
 
     /** nsÇ™ãÛÇ≈Ç‡nullÇ≈Ç‡Ç»Ç≠ÅCÇ∑Ç≈Ç…ìoò^Ç≥ÇÍÇƒÇ»Ç¢èÍçá true */
     private boolean isValidNSWithWarning(String ns) {
         if (isValidNS(ns)) { return true; }
-        JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), Translator.getString("Warning.Message6"), WARNING,
-                JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), Translator.getString("Warning.Message6"),
+                WARNING, JOptionPane.ERROR_MESSAGE);
         return false;
     }
 
@@ -311,13 +309,13 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
         String rmPrefix = (String) nsTableModel.getValueAt(row, 1);
         String rmNS = (String) nsTableModel.getValueAt(row, 2);
         if (rmNS.equals(gmanager.getBaseURI())) {
-            JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), Translator.getString("Warning.Message7"), WARNING,
-                    JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), Translator.getString("Warning.Message7"),
+                    WARNING, JOptionPane.ERROR_MESSAGE);
             return;
         }
         if (rmNS.equals(MR3Resource.DefaultURI.getNameSpace())) {
-            JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), Translator.getString("Warning.Message8"), WARNING,
-                    JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), Translator.getString("Warning.Message8"),
+                    WARNING, JOptionPane.ERROR_MESSAGE);
             return;
         }
         if (!gmanager.getAllNameSpaceSet().contains(rmNS)) {
@@ -325,8 +323,8 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
             nsTableModel.removeRow(row);
             setPrefixNSInfoSet();
         } else {
-            JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), Translator.getString("Warning.Message9"), WARNING,
-                    JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), Translator.getString("Warning.Message9"),
+                    WARNING, JOptionPane.ERROR_MESSAGE);
         }
     }
 

@@ -37,7 +37,7 @@ import javax.swing.event.*;
  * @author Thomas Genssler (FZI)
  * @author Sven Luzar
  * 
- * modified GPLogConsole -> MR3LogConsole
+ *         modified GPLogConsole -> MR3LogConsole
  * 
  */
 
@@ -140,9 +140,9 @@ public class MR3LogConsole extends JDialog {
         });
         this.setTitle(frameTitle);
         this.getContentPane().setLayout(cardLayout);
-        // if (myIcon != null) {
-        // this.setIconImage(myIcon);
-        // }
+        if (myIcon != null) {
+            this.setIconImage(myIcon);
+        }
 
         // re-direct stderr and stdout
         redirect();
@@ -182,7 +182,6 @@ public class MR3LogConsole extends JDialog {
 
     /*
      * Sets the new OutputStream for System.out and System.err
-     * 
      */
     private void redirect() {
 

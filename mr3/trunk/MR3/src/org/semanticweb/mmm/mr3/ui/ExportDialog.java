@@ -84,7 +84,7 @@ public class ExportDialog extends JDialog implements ActionListener {
 
     public ExportDialog(GraphManager gm) {
         super(gm.getRootFrame(), Translator.getString("ExportDialog.Title"), true);
-        // setFrameIcon(EXPORT_ICON);
+        setIconImage(EXPORT_ICON.getImage());
 
         gmanager = gm;
         mr3Writer = new MR3Writer(gmanager);
