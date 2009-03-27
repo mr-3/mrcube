@@ -63,13 +63,22 @@ public class HistoryManager extends JDialog implements ActionListener {
     private static final int WINDOW_WIDTH = 400;
     private static final int WINDOW_HEIGHT = 400;
 
+    public static final String DEFAULT_LOG_FILE_NAME = "mr3_log.txt";
+
     private static Logger logger;
 
     static {
+        if (GraphManager.isLogAvailable()) {
+            initLogger();
+        }
+    }
+
+    private static void initLogger() {
         try {
             logger = Logger.getLogger(HistoryManager.class);
             logger.setLevel(Level.INFO);
-            FileAppender appender = new FileAppender(new PatternLayout("%d{yyyy-MMM-dd HH:mm:ss} %m"), "./mr3_log.txt");
+            FileAppender appender = new FileAppender(new PatternLayout("%d{yyyy-MMM-dd HH:mm:ss} %m"), "./"
+                    + DEFAULT_LOG_FILE_NAME);
             appender.setName("LOG FILE");
             appender.setAppend(true);
             logger.addAppender(appender);
@@ -80,9 +89,14 @@ public class HistoryManager extends JDialog implements ActionListener {
 
     public static void resetFileAppender(String path) {
         if (!path.equals("")) {
-            FileAppender appender = (FileAppender) logger.getAppender("LOG FILE");
-            appender.setFile(path);
-            appender.activateOptions();
+            if (GraphManager.isLogAvailable()) {
+                if (logger == null) {
+                    initLogger();
+                }
+                FileAppender appender = (FileAppender) logger.getAppender("LOG FILE");
+                appender.setFile(path);
+                appender.activateOptions();
+            }
         }
     }
 

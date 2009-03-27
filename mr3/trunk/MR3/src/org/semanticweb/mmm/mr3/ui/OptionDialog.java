@@ -244,7 +244,8 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             } else {
                 isLogAvailableCheckBox.setSelected(false);
             }
-            setText(logFileField, userPrefs.get(PrefConstants.logFile, System.getProperty("user.dir") + "\\mr3.log"));
+            setText(logFileField, userPrefs.get(PrefConstants.logFile, System.getProperty("user.dir") + "\\"
+                    + HistoryManager.DEFAULT_LOG_FILE_NAME));
             HistoryManager.resetFileAppender(logFileField.getText());
         }
 

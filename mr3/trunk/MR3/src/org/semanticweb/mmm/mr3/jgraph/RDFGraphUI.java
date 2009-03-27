@@ -53,6 +53,7 @@ public class RDFGraphUI extends BasicGraphUI {
     private GraphManager gmanager;
     private MR3Reader mr3Reader;
     private EditConceptAction editConceptAction;
+    private EditRDFPropertyAction editRDFPropertyAction;
     private static final String WARNING = Translator.getString("Warning");
 
     RDFGraphUI(RDFGraph g, GraphManager gm) {
@@ -60,6 +61,7 @@ public class RDFGraphUI extends BasicGraphUI {
         gmanager = gm;
         mr3Reader = new MR3Reader(gmanager);
         editConceptAction = new EditConceptAction(graph, gmanager);
+        editRDFPropertyAction = new EditRDFPropertyAction(gmanager);
     }
 
     public RDFGraph getRDFGraph() {
@@ -177,18 +179,16 @@ public class RDFGraphUI extends BasicGraphUI {
                 HistoryManager.saveHistory(HistoryType.EDIT_RESOURCE_WITH_GRAPH, beforeInfo, resInfo);
             }
         } else if (RDFGraph.isRDFPropertyCell(cell)) {
-            // 現状では，プロパティエディタで定義されているプロパティにのみ変更可能
-            // メタモデル管理機能を実行させる予定
-            RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-            GraphCell propCell = (GraphCell) rdfsInfoMap.getPropertyCell(resource);
-            if (propCell != null) {
-                RDFSInfo beforePropInfo = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
-                RDFSInfo propInfo = (RDFSInfo) GraphConstants.getValue(propCell.getAttributes());
-                GraphConstants.setValue(cell.getAttributes(), propInfo);
-                HistoryManager.saveHistory(HistoryType.EDIT_PROPERTY_WITH_GRAPH, beforePropInfo.getURIStr(), propInfo
-                        .getURIStr());
-            } else {
+            RDFSInfo beforePropInfo = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
+            String beforePropURI = beforePropInfo.getURIStr();
+            editRDFPropertyAction.setURIString(resource.getURI());
+            editRDFPropertyAction.setEdge(cell);
+            if (!editRDFPropertyAction.editRDFProperty()) {
                 cancelAction(cell);
+            } else {
+                RDFSInfo afterPropInfo = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
+                HistoryManager.saveHistory(HistoryType.EDIT_PROPERTY_WITH_GRAPH, beforePropURI, afterPropInfo
+                        .getURIStr());
             }
         } else if (RDFGraph.isRDFSCell(cell)) {
             editConceptAction.editWithGraph(resource.getURI(), (RDFSInfo) info, cell);

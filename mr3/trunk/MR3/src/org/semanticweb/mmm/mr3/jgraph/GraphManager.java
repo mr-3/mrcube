@@ -171,7 +171,7 @@ public class GraphManager {
             setVisibleEditors(t);
             removeTypeCells();
             MR3.STATUS_BAR.startTime();
-        } else {            
+        } else {
             if (isShowTypeCell()) {
                 addTypeCells();
             }
@@ -179,7 +179,7 @@ public class GraphManager {
             if (rootCell != null) {
                 RDFGraph propGraph = getCurrentPropertyGraph();
                 propGraph.removeCellsWithEdges(propGraph.getDescendants(new Object[] { rootCell}));
-            }      
+            }
             setVisibleEditors(t);
             MR3.STATUS_BAR.setCurrentTime();
         }
@@ -1021,7 +1021,7 @@ public class GraphManager {
         selectCell(cell, getCurrentPropertyGraph());
     }
 
-    private Map checkNotRmablePropCells(Object[] cells, List notRmCells, Set notRmList, Object graph) {
+    private Map checkUnRemovablePropertyCells(Object[] cells, List notRmCells, Set notRmList, Object graph) {
         Map classPropMap = new HashMap();
         if (isPropertyGraph(graph)) { return classPropMap; }
 
@@ -1055,7 +1055,7 @@ public class GraphManager {
         return classPropMap;
     }
 
-    private Map checkNotRmableRDFCells(Object[] cells, List notRmCells, Set notRmList) {
+    private Map checkUnRemovableRDFCells(Object[] cells, List notRmCells, Set notRmList) {
         Map classRDFMap = new HashMap();
 
         for (Object cell : cells) {
@@ -1159,26 +1159,27 @@ public class GraphManager {
             return true;
         }
 
-        Set<Object> rmableCells = new HashSet<Object>();
-        List notRmableCells = new ArrayList();
-        Set notRmableResCells = new HashSet();
+        Set<Object> removableCells = new HashSet<Object>();
+        List unremovableCells = new ArrayList();
+        Set unremovableResourceCells = new HashSet();
 
-        Map rdfMap = checkNotRmableRDFCells(removeCells, notRmableCells, notRmableResCells);
-        Map propMap = checkNotRmablePropCells(removeCells, notRmableCells, notRmableResCells, removeGraph);
+        Map rdfMap = checkUnRemovableRDFCells(removeCells, unremovableCells, unremovableResourceCells);
+        Map propMap = checkUnRemovablePropertyCells(removeCells, unremovableCells, unremovableResourceCells,
+                removeGraph);
 
-        if (notRmableCells.isEmpty()) {
+        if (unremovableCells.isEmpty()) {
             removeGraph.removeCellsWithEdges(removeCells);
             saveRemoveLog();
             repaintAllGraphs();
         } else {
             for (Object removeCell : removeCells) {
-                if (!notRmableCells.contains(removeCell)) {
-                    rmableCells.add(removeCell);
+                if (!unremovableCells.contains(removeCell)) {
+                    removableCells.add(removeCell);
                 }
             }
-            removeGraph.removeCellsWithEdges(rmableCells.toArray());
+            removeGraph.removeCellsWithEdges(removableCells.toArray());
             saveRemoveLog();
-            getRemoveDialog().setRefListInfo(notRmableResCells, rdfMap, propMap);
+            getRemoveDialog().setRefListInfo(unremovableResourceCells, rdfMap, propMap);
             getRemoveDialog().setVisible(true);
         }
         return false;
@@ -1215,7 +1216,6 @@ public class GraphManager {
         RemoveDialog result = removeDialogRef.get();
         if (result == null) {
             result = new RemoveDialog(this);
-            // desktop.add(result, JLayeredPane.MODAL_LAYER);
             removeDialogRef = new WeakReference<RemoveDialog>(result);
         }
         return result;

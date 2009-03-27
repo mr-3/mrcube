@@ -167,7 +167,7 @@ public class MR3Parser {
 
         return edge;
     }
-    
+
     private boolean isExtractProperty(GraphCell subjectCell, Property predicate, RDFNode object) {
         RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(subjectCell.getAttributes());
         if (predicate.equals(RDF.type)) {
@@ -217,7 +217,7 @@ public class MR3Parser {
         if (data != null) {
             rectangle = data.getRectangle();
         }
-        attr.put(litCell, cellMaker.getResourceMap(rectangle, RDFLiteralCell.literalColor));
+        attr.put(litCell, cellMaker.getLiteralMap(rectangle, RDFLiteralCell.literalColor));
         GraphConstants.setValue(litCell.getAttributes(), literal);
 
         return litCell;
@@ -336,6 +336,7 @@ public class MR3Parser {
 
             Port sp = (Port) sourceCell.getChildAt(0);
             Port tp = (Port) targetCell.getChildAt(0);
+
             if (sp == tp) { // self connect
                 AttributeMap map = edge.getAttributes();
                 GraphConstants.setRouting(map, GraphConstants.ROUTING_SIMPLE);

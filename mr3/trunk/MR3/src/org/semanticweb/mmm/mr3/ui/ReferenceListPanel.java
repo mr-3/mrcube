@@ -221,6 +221,7 @@ public class ReferenceListPanel extends JPanel {
                     info.setTypeCell(null, gmanager.getCurrentRDFGraph()); // TypeÇnullÇ…ïœçX
                 } else if (RDFGraph.isRDFPropertyCell(rdfCell)) {
                     GraphConstants.setValue(rdfCell.getAttributes(), new PropertyInfo(MR3Resource.Nil.getURI()));
+                    gmanager.getCurrentRDFGraph().getGraphLayoutCache().editCell(rdfCell, rdfCell.getAttributes());
                 }
             }
         }

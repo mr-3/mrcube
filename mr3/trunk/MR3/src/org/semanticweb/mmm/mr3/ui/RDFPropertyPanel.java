@@ -32,7 +32,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 import org.jgraph.graph.*;
-import org.semanticweb.mmm.mr3.*;
+import org.semanticweb.mmm.mr3.actions.*;
 import org.semanticweb.mmm.mr3.data.*;
 import org.semanticweb.mmm.mr3.data.MR3Constants.*;
 import org.semanticweb.mmm.mr3.jgraph.*;
@@ -70,11 +70,14 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
     private List<GraphCell> propList;
     private GraphManager gmanager;
 
+    private EditRDFPropertyAction editRDFPropertyAction;
+
     private static final int FIELD_WIDTH = 50;
     private static final int FIELD_HEIGHT = 20;
 
     public RDFPropertyPanel(GraphManager manager) {
         gmanager = manager;
+        editRDFPropertyAction = new EditRDFPropertyAction(gmanager);
 
         isContainerBox = new JCheckBox(Translator.getString("IsContainer"));
         isContainerBox.addActionListener(new ContainerBoxAction());
@@ -303,7 +306,9 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
         if (info == null) {
             setNSLabel(MR3Resource.Nil.getNameSpace());
             idField.setText(MR3Resource.Nil.getLocalName());
-            changeProperty();
+            editRDFPropertyAction.setURIString(getURI());
+            editRDFPropertyAction.setEdge(edge);
+            editRDFPropertyAction.editRDFProperty();
         } else {
             isContainerBox.setSelected(info.isContainer());
             setContainer(info.isContainer());
@@ -357,69 +362,6 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
         return nsLabel.getText() + idField.getText();
     }
 
-    private static final String WARNING = Translator.getString("Warning");
-
-    private void changeProperty() {
-        GraphCell propertyCell = null;
-        Resource uri = ResourceFactory.createResource(getURI());
-        RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-        if (rdfsInfoMap.isPropertyCell(uri) || uri.equals(MR3Resource.Nil)) {
-            propertyCell = gmanager.getPropertyCell(uri, false);
-        } else {
-            if (gmanager.isDuplicatedWithDialog(uri.getURI(), null, GraphType.PROPERTY)) { return; }
-            if (MR3.OFF_META_MODEL_MANAGEMENT) { return; }
-
-            RDFSInfo propInfo = (RDFSInfo) GraphConstants.getValue(edge.getAttributes());
-            if (propInfo.getURI().equals(MR3Resource.Nil)) {
-                int ans = JOptionPane.showConfirmDialog(gmanager.getDesktopTabbedPane(), Translator
-                        .getString("Warning.Message10"), WARNING, JOptionPane.YES_NO_OPTION);
-                if (ans == JOptionPane.YES_OPTION) {
-                    propertyCell = (GraphCell) gmanager.insertSubRDFS(uri, null, gmanager.getCurrentPropertyGraph());
-                    HistoryManager
-                            .saveHistory(HistoryType.META_MODEL_MANAGEMNET_REPLACE_PROPERTY_WITH_CREATE_ONT_PROPERTY);
-                }
-            } else {
-                // OntManagementDialog dialog = new
-                // OntManagementDialog(gmanager);
-                MetaModelManagementDialog dialog = new MetaModelManagementDialog(gmanager);
-                // dialog.replaceGraph(gmanager.getPropertyGraph());
-                // dialog.setRegionSet(new HashSet());
-                dialog.setVisible(true);
-
-                CreateRDFSType createType = dialog.getType();
-                if (createType == CreateRDFSType.CREATE) {
-                    // Set supProps = dialog.getSupRDFSSet();
-                    // propertyCell = (GraphCell) gmanager.insertSubRDFS(uri,
-                    // supProps, gmanager.getPropertyGraph());
-                    propertyCell = (GraphCell) gmanager.insertSubRDFS(uri, null, gmanager.getCurrentPropertyGraph());
-                    HistoryManager
-                            .saveHistory(HistoryType.META_MODEL_MANAGEMNET_REPLACE_PROPERTY_WITH_CREATE_ONT_PROPERTY);
-                } else if (createType == CreateRDFSType.RENAME) {
-                    propInfo = (RDFSInfo) GraphConstants.getValue(edge.getAttributes());
-                    propertyCell = gmanager.getPropertyCell(propInfo.getURI(), false);
-                    rdfsInfoMap.removeURICellMap(propInfo);
-                    propInfo.setURI(uri.getURI());
-                    GraphUtilities.resizeRDFSResourceCell(gmanager, propInfo, propertyCell);
-                    rdfsInfoMap.putURICellMap(propInfo, propertyCell);
-                    gmanager.selectChangedRDFCells(propInfo);
-                    HistoryManager
-                            .saveHistory(HistoryType.META_MODEL_MANAGEMNET_REPLACE_PROPERTY_WITH_REPLACE_ONT_PROPERTY);
-                } else if (createType == null) { return; }
-            }
-        }
-
-        if (!gmanager.getCurrentRDFEditor().isEditMode() && propertyCell != null) {
-            gmanager.selectPropertyCell(propertyCell); // 対応するRDFSプロパティを選択する
-        }
-
-        PropertyInfo propInfo = (PropertyInfo) GraphConstants.getValue(propertyCell.getAttributes());
-        if (MR3.OFF_META_MODEL_MANAGEMENT) {
-            propInfo = new PropertyInfo(propInfo.getURIStr());
-        }
-        GraphConstants.setValue(edge.getAttributes(), propInfo);
-        GraphUtilities.editCell(edge, edge.getAttributes(), gmanager.getCurrentRDFGraph());
-    }
-
     private void jumpRDFSProperty() {
         Resource uri = ResourceFactory.createResource(nsLabel.getText() + idField.getText());
         if (gmanager.isEmptyURI(uri.getURI())) { return; }
@@ -433,19 +375,26 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
         }
     }
 
+    private void setContainerMemberProperty() {
+        Integer num = (Integer) numSpinner.getValue();
+        Resource resource = ResourceFactory.createResource(RDF.getURI() + "_" + num.intValue());
+        GraphCell propertyCell = gmanager.getPropertyCell(resource, false);
+        RDFSInfo rdfsInfo = (RDFSInfo) GraphConstants.getValue(propertyCell.getAttributes());
+        GraphConstants.setValue(edge.getAttributes(), rdfsInfo);
+        gmanager.getCurrentRDFGraph().getGraphLayoutCache().editCell(edge, edge.getAttributes());
+    }
+
     public void actionPerformed(ActionEvent e) {
         if (edge == null) { return; }
         if (e.getSource() == applyButton || e.getSource() == idField) {
             RDFSInfo beforeRDFSInfo = (RDFSInfo) GraphConstants.getValue(edge.getAttributes());
             String beforeProperty = beforeRDFSInfo.getURIStr();
             if (isContainer()) {
-                Integer num = (Integer) numSpinner.getValue();
-                Resource resource = ResourceFactory.createResource(RDF.getURI() + "_" + num.intValue());
-                GraphCell propertyCell = gmanager.getPropertyCell(resource, false);
-                RDFSInfo rdfsInfo = (RDFSInfo) GraphConstants.getValue(propertyCell.getAttributes());
-                GraphConstants.setValue(edge.getAttributes(), rdfsInfo);
+                setContainerMemberProperty();
             } else {
-                changeProperty();
+                editRDFPropertyAction.setURIString(getURI());
+                editRDFPropertyAction.setEdge(edge);
+                editRDFPropertyAction.editRDFProperty();
                 findIDField.setText("");
                 gmanager.selectRDFCell(edge);
             }
@@ -462,7 +411,9 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
         }
     }
 
-    /** イメージ付きリストを描画 */
+    /**
+     * イメージ付きリストを描画
+     */
     class IconCellRenderer extends JLabel implements ListCellRenderer {
 
         IconCellRenderer() {

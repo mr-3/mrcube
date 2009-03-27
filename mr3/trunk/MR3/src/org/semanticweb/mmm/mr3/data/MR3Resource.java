@@ -28,7 +28,7 @@ import com.hp.hpl.jena.rdf.model.*;
 /**
  * @author takeshi morita
  * 
- * MR3‚Å—p‚¢‚éProperty‚ÆResource
+ *         MR3‚Å—p‚¢‚éProperty‚ÆResource
  */
 public class MR3Resource {
 

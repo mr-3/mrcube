@@ -148,13 +148,19 @@ public class MR3CellMaker {
         return map;
     }
 
+    public AttributeMap getLiteralMap(Rectangle2D rectangle, Color cellColor) {
+        AttributeMap literalMap = getResourceMap(rectangle, cellColor);
+        GraphConstants.setAutoSize(literalMap, false);
+        return literalMap;
+    }
+
     public GraphCell insertRDFLiteral(Point pt, MR3Literal literal) {
         return insertRDFLiteral(getRectangle(pt, literal.getString()), literal);
     }
 
     public GraphCell insertRDFLiteral(Rectangle2D rect, MR3Literal literal) {
         JGraph graph = gmanager.getCurrentRDFGraph();
-        AttributeMap map = getResourceMap(rect, RDFLiteralCell.literalColor);
+        AttributeMap map = getLiteralMap(rect, RDFLiteralCell.literalColor);
 
         DefaultGraphCell vertex = new RDFLiteralCell(literal);
         setCell(graph, vertex, map);
@@ -180,7 +186,7 @@ public class MR3CellMaker {
             DefaultGraphCell group = new DefaultGraphCell();
             parentMap.addEntry(rdfCell, group);
             parentMap.addEntry(typeViewCell, group);
-            resInfo.setTypeViewCell(typeViewCell);       
+            resInfo.setTypeViewCell(typeViewCell);
             graph.getGraphLayoutCache().insert(new Object[] { group}, attributes, null, parentMap);
         }
     }
@@ -346,8 +352,6 @@ public class MR3CellMaker {
         cell.add(new DefaultPort());
         HashMap<Object, AttributeMap> attributes = new HashMap<Object, AttributeMap>();
         attributes.put(cell, map);
-        // graph.getGraphLayoutCache().insert(new Object[] { cell}, attributes,
-        // null, null, null);
         graph.getGraphLayoutCache().insert(new Object[] { cell}, attributes, null, null);
     }
 }

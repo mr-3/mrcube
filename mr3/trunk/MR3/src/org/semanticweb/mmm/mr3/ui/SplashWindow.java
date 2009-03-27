@@ -33,18 +33,17 @@ import org.semanticweb.mmm.mr3.util.*;
 /**
  * @author takeshi morita
  */
-public class HelpWindow extends JWindow {
+public class SplashWindow extends JWindow {
 
     private static final int FONT_SIZE = 14;
     private static final String TOOL_NAME = "Project Name: MR<sup>3</sup> <br>";
     private static final String VERSION = "   Version: 1.0 SP1<br>";
-    private static final String LAST_UPDATE = "Last Update: 2009-03-xx<br>";
     private static final String MR3_URL = " Project Website:   http://mr3.sourceforge.net/<br>";
     private static final String COPY_RIGHT = "   Copyright (C) 2003-2009 Yamaguchi Laboratory, Keio University.<br>";
     private static final String LICENSE = "License: GPL<br>";
     private static final Color HELP_BACK_COLOR = Color.WHITE;
 
-    public HelpWindow(Frame root, ImageIcon logo) {
+    public SplashWindow(Frame root, ImageIcon logo) {
         super(root);
         JLabel logoLabel = new JLabel("", logo, SwingConstants.LEFT);
         logoLabel.setFont(logoLabel.getFont().deriveFont(Font.PLAIN, FONT_SIZE));
@@ -55,11 +54,10 @@ public class HelpWindow extends JWindow {
         builder.append("<font face=TimesNewRoman>");
         builder.append(TOOL_NAME);
         builder.append(VERSION);
-        builder.append(LAST_UPDATE);
-        builder.append(COPY_RIGHT);
-        builder.append("Contact: t_morita@ae.keio.ac.jp<br>");
         builder.append(LICENSE);
         builder.append(MR3_URL);
+        builder.append("Contact: t_morita@ae.keio.ac.jp<br>");
+        builder.append(COPY_RIGHT);
         builder.append("</font>");
         editor.setText(builder.toString());
 
