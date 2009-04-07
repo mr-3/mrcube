@@ -49,9 +49,7 @@ import org.jgraph.graph.*;
  */
 public class JGraphMultilineView extends VertexView {
 
-    // protected static transient MultiLinedRenderer renderer = new
-    // MultiLinedRenderer();
-    protected static transient VertexRenderer renderer = new VertexRenderer();
+    protected static transient MultiLinedRenderer renderer = new MultiLinedRenderer();
     protected static transient MultiLinedEditor editor = new MultiLinedEditor();
 
     public JGraphMultilineView() {
@@ -68,6 +66,20 @@ public class JGraphMultilineView extends VertexView {
 
     public GraphCellEditor getEditor() {
         return editor;
+    }
+
+    /**
+     * Returns the intersection of the bounding rectangle and the straight line
+     * between the source and the specified point p. The specified point is
+     * expected not to intersect the bounds. Note: You must override this method
+     * if you use a different renderer. This is because this method relies on
+     * the VertexRenderer interface, which can not be safely assumed for
+     * subclassers.
+     */
+    public Point2D getPerimeterPoint(EdgeView edge, Point2D source, Point2D p) {
+        if (getRenderer() instanceof MultiLinedRenderer)
+            return ((MultiLinedRenderer) getRenderer()).getPerimeterPoint(this, source, p);
+        return super.getPerimeterPoint(edge, source, p);
     }
 
     public static class MultiLinedEditor extends DefaultGraphCellEditor {
@@ -250,6 +262,43 @@ public class JGraphMultilineView extends VertexView {
             }
         }
 
+        /**
+         * Returns the intersection of the bounding rectangle and the straight
+         * line between the source and the specified point p. The specified
+         * point is expected not to intersect the bounds.
+         */
+        public Point2D getPerimeterPoint(VertexView view, Point2D source, Point2D p) {
+            Rectangle2D bounds = view.getBounds();
+            double x = bounds.getX();
+            double y = bounds.getY();
+            double width = bounds.getWidth();
+            double height = bounds.getHeight();
+            double xCenter = x + width / 2;
+            double yCenter = y + height / 2;
+            double dx = p.getX() - xCenter; // Compute Angle
+            double dy = p.getY() - yCenter;
+            double alpha = Math.atan2(dy, dx);
+            double xout = 0, yout = 0;
+            double pi = Math.PI;
+            double pi2 = Math.PI / 2.0;
+            double beta = pi2 - alpha;
+            double t = Math.atan2(height, width);
+            if (alpha < -pi + t || alpha > pi - t) { // Left edge
+                xout = x;
+                yout = yCenter - width * Math.tan(alpha) / 2;
+            } else if (alpha < -t) { // Top Edge
+                yout = y;
+                xout = xCenter - height * Math.tan(beta) / 2;
+            } else if (alpha < t) { // Right Edge
+                xout = x + width;
+                yout = yCenter + width * Math.tan(alpha) / 2;
+            } else { // Bottom Edge
+                yout = y + height;
+                xout = xCenter + height * Math.tan(beta) / 2;
+            }
+            return new Point2D.Double(xout, yout);
+        }
+
         protected void installAttributes(JGraph graph, Map attributes) {
             setOpaque(GraphConstants.isOpaque(attributes));
             Color foreground = GraphConstants.getForeground(attributes);
@@ -268,5 +317,4 @@ public class JGraphMultilineView extends VertexView {
             gradientColor = GraphConstants.getGradientColor(attributes);
         }
     }
-
 }
