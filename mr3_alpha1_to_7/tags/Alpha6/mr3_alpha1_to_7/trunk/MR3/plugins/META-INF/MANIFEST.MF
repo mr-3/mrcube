@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+
+Name: SamplePlugin1.class
+menu-name: SamplePlugin1
+
+Name: SamplePlugin2.class
+menu-name: SamplePlugin2
+
