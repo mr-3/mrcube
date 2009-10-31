@@ -1,0 +1,13 @@
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:dc="http://purl.org/metadata/dublin_core#">
+
+    <rdf:Description about="http://www.dlib.org"
+      dc:Title="D-Lib Program - Research in Digital Libraries"
+      dc:Description="The D-Lib program supports the community of people
+       with research interests in digital libraries and electronic
+       publishing."
+      dc:Publisher="Corporation For National Research Initiatives"
+      dc:Date="1995-01-07"/>
+
+</rdf:RDF>

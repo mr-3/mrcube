@@ -1,0 +1,54 @@
+<project name="MR3" default="compile" basedir=".">
+  <property name="app.name"  value="mr3"/>
+  <property name="src.dir" value="src/mr3"/>
+  <property name="build.dir" value="build/classes"/>
+  <property name="resource.dir" value="${build.dir}/mr3/resources"/>
+  <property name="lib.dir"   value="build/lib"/>
+  <property name="jarfile"   value="${name}.jar"/>
+
+  <!--  <property name="build.compiler" value="jikes"/>	-->
+
+  <path id="classpath">
+    <fileset dir="${lib.dir}" includes="*.jar" excludes="${jarfile}"/>
+    <fileset dir="build" includes="*.jar" excludes="${jarfile}"/>
+  </path>
+
+  <target name="compile">
+    <mkdir dir="${build.dir}"/>
+    <mkdir dir="${resource.dir}"/>
+    
+    <javac encoding="sjis" srcdir="${src.dir}" 
+		source="1.4" 
+		destdir="${build.dir}"> 
+      <include name="**/*.java"/>
+      <classpath refid="classpath"/>
+    </javac>
+    <copy todir="${resource.dir}" >
+      <fileset dir="${src.dir}/resources" >
+        <include name="*.gif" />
+        <include name="*.png" />
+        <include name="*.ico" />
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="jar" depends="compile">
+    <mkdir dir="${lib.dir}"/>
+    <jar jarfile="build/${app.name}.jar"
+      basedir="${build.dir}" includes="**" manifest="src/mr3.mf"/>
+  </target>
+
+  <target name="jrun">
+    <java classname="mr3.MR3" fork="yes">
+      <classpath refid="classpath"/>
+    </java>
+    <echo message="Ant appears to be successfully installed" />
+  </target>
+
+  <target name="run" depends="jar">
+    <java classname="mr3.MR3" fork="yes">
+      <classpath refid="classpath"/>
+    </java>
+    <echo message="Ant appears to be successfully installed" />
+  </target>
+</project>
