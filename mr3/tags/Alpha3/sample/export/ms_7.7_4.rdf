@@ -1,0 +1,18 @@
+<html>
+  <head>
+    <rdf:RDF
+      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+      xmlns:dc="http://purl.org/metadata/dublin_core#"> 
+      <rdf:Description about=""> 
+        <dc:Creator>
+          <rdf:Seq ID="CreatorsAlphabeticalBySurname"
+            rdf:_1="Mary Andrew"
+            rdf:_2="Jacky Crystal"/>
+        </dc:Creator>
+      </rdf:Description> 
+    </rdf:RDF>
+  </head>
+  <body>
+  <P>This is a fine document.</P>
+  </body>
+</html>
