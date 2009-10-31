@@ -1,0 +1,30 @@
+<html>
+<head>
+ <title>プラグイン作成方法</title>
+ <link href="../MR3Help.css" type="text/css" rel="stylesheet">
+ <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+</head>
+
+<body>
+<h2>プラグイン作成方法</h2><!-- RDLabel: "プラグイン作成方法" -->
+<ol>
+<li>MR3Pluginクラスのサブクラスを作り，
+
+    public void exec()メソッドをオーバーライドする．</li>
+<li><p>マニフェストファイルに，プラグインクラス名とメニュー名を以下のように記述し，
+
+    プラグインクラスとマニフェストファイルをjarファイルでまとめる．</p>
+<pre>Name: プラグインクラス名
+
+menu-name: メニュー名</pre></li>
+<li>作成したjarファイルをMR3/pluginsディレクトリ(または，
+
+    クラスパスの通ったディレクトリ)に置く．</li>
+</ol>
+<p>MR<sup>3</sup>を起動するとファイル-&gt;プラグインにメニューが追加さ
+
+れる．メニューを実行すると，プラグインクラスで実装したexecメソッドが実
+
+行される．</p>
+</body>
+</html>
