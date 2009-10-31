@@ -1,2 +1,0 @@
-Main-Class: jp.ac.shizuoka.cs.panda.mmm.mr3.MR3
-Class-Path: ./lib/log4j-1.2.7.jar \ ./lib/icu4j.jar \ ./lib/jena.jar  \ ./lib/jgraph.jar \ ./lib/xercesImpl.jar \ ./lib/xmlParserAPIs.jar \ ./lib/jakarta-oro-2.0.5.jar
