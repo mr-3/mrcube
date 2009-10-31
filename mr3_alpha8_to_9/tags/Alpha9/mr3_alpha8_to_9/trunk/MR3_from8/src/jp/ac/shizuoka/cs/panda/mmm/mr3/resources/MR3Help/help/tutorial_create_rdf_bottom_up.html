@@ -1,0 +1,115 @@
+<html>
+<head>
+ <title>RDFコンテンツの作成 （ボトムアップ）</title>
+ <link href="../MR3Help.css" type="text/css" rel="stylesheet">
+ <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+</head>
+
+<body>
+<h2><a name="label-20" id="label-20">RDFコンテンツの作成 （ボトムアップ）</a></h2><!-- RDLabel: "RDFコンテンツの作成 （ボトムアップ）" -->
+<h3><a name="label-21" id="label-21">手順１: RDFsコンテンツ作成に利用する接頭辞と名前空間の登録</a></h3><!-- RDLabel: "手順１: RDFsコンテンツ作成に利用する接頭辞と名前空間の登録" -->
+<p>トップダウンの手順１と同様</p>
+<h3><a name="label-22" id="label-22">手順２: RDFリソースの挿入</a></h3><!-- RDLabel: "手順２: RDFリソースの挿入" -->
+<p>トップダウンの手順６，７と同様にRDFリソースを挿入する．</p>
+<h3><a name="label-23" id="label-23">手順３: RDFリソースの編集</a></h3><!-- RDLabel: "手順３: RDFリソースの編集" -->
+<p>"タイプチェックボックス"にチェックをつけてリソースのタイプを指定する．
+
+RDFSクラスに指定したいクラスが定義されている場合には，"タイプ選択ボタ
+
+ン" をクリックすれば，クラスエディタからクラスを選択することができる．
+
+今回は，ボトムアップにRDFコンテンツ作成しているので，RDFSクラスからリ
+
+ソースのタイプを選択しない．指定したいリソースのタイプcontact:Personを
+
+入力し，"適用するボタン"をクリックする．"定義されていません. クラスを
+
+作成しますか?"と尋ねるダイアログが表示されるので，"はい(Y)"ボタンをク
+
+リックする．</p>
+<p style="text-align: center">
+
+<a href="./tutorial/img/bottom_up_step1.png">
+
+ <img src="./tutorial/img/bottom_up_step1_s.png"></img>
+
+</a>
+
+</p> 
+
+
+<h3><a name="label-24" id="label-24">手順３: RDFSクラスの作成</a></h3><!-- RDLabel: "手順３: RDFSクラスの作成" -->
+<p>以下の図のように，クラスエディタにcontact:Person クラスが作成される．</p>
+<p style="text-align: center">
+
+<a href="./tutorial/img/bottom_up_step2.png">
+
+ <img src="./tutorial/img/bottom_up_step2_s.png"></img>
+
+</a>
+
+</p> 
+
+
+<h3><a name="label-25" id="label-25">手順４: RDFリテラルの挿入</a></h3><!-- RDLabel: "手順４: RDFリテラルの挿入" -->
+<p>トップダウンの手順８と同様に，リテラルを矢印（RDFプロパティ）付で
+
+挿入していく．</p>
+<h3><a name="label-26" id="label-26">手順５: RDFプロパティの編集1</a></h3><!-- RDLabel: "手順５: RDFプロパティの編集1" -->
+<p>"プロパティの接頭辞のみ表示"チェックボックスにチェックがされていると
+
+RDFSプロパティで定義されているプロパティのみを表示，選択することができ
+
+る．今回は，RDFSプロパティに指定したいプロパティが定義されていないので，
+
+このチェックをはずす．"接頭辞コンボボックス"から名前空間テーブルに登録
+
+したすべての接頭辞を選択できるようになるので，contactを選択する．"プロ
+
+パティ ID"リストには，RDFSプロパティで定義されているプロパティのID一覧
+
+が表示されるが，今回は定義されていないので，表示されない．"IDテキスト
+
+フィールド"には，fullName と入力し，"適用するボタン"をクリックする．</p>
+<p style="text-align: center">
+
+<a href="./tutorial/img/bottom_up_step3.png">
+
+ <img src="./tutorial/img/bottom_up_step3_s.png"></img>
+
+</a>
+
+</p> 
+
+
+<h3><a name="label-27" id="label-27">手順６: RDFプロパティの編集2</a></h3><!-- RDLabel: "手順６: RDFプロパティの編集2" -->
+<p>RDFS管理ダイアログが表示される．ここでは，現在指定されているプロパティ
+
+mr3:nilプロパティの名前を変更するか，新規にRDFS プロパティを作成するか
+
+選択する．ここでは，新規にRDFSプロパティを作成するため，新規作成の方を
+
+選択する．下図の中央には，プロパティエディタと同様のグラフが表示される
+
+が，ここでは，作成するプロパティをどのプロパティのサブプロパティにする
+
+かを選択する．プロパティを選択すると，図中の"選択されているリスト"に選
+
+択されたプロパティが表示される．今回は，他のプロパティのサブプロパティ
+
+にする必要はないので，何も選択せずに"了解ボタン"を押す．</p>
+<p style="text-align: center">
+
+<a href="./tutorial/img/bottom_up_step4.png">
+
+ <img src="./tutorial/img/bottom_up_step4_s.png"></img>
+
+</a>
+
+</p> 
+
+
+<h3><a name="label-28" id="label-28">手順７: 以上の手順を繰り返す</a></h3><!-- RDLabel: "手順７: 以上の手順を繰り返す" -->
+<p>後は，以上の手順を繰り返し行うことで，RDFコンテンツの作成を行うことができる．</p>
+</body>
+</html>

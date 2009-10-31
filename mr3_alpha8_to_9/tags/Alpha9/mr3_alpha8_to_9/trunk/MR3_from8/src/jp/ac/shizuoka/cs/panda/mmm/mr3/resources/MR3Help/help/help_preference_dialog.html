@@ -1,0 +1,62 @@
+<html>
+<head>
+ <title>設定ダイアログ</title>
+ <link href="../MR3Help.css" type="text/css" rel="stylesheet">
+ <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<head>
+
+<body>
+<h2>設定ダイアログ</h2>
+<h3>設定(基本タブ)</h3>
+<p>
+設定ダイアログの基本タブでは，デフォルトの言語，UI言語，入出力ファイ
+ルのエンコーディング，BaseURI，Work Directory，プロキシの設定ができる．
+デフォルトの言語は，ラベル表示を行う際に優先して表示する言語を指定できる．
+UI言語は，メニュー等の表示の言語を選択できる．現在のところ，"ja"(日本語)と
+"en"(英語)のどちらかを選択できる．UI言語の変更は，次回起動時から有効になる．
+BaseURIには，export時にIDとしたいURIの名前空間を指定する．Work
+Directoryには，importファイル選択時にはじめに開くフォルダを指定する．
+</p>
+<br>
+<center>
+<img src="./img/preference_base.png"></img><br>
+<div class="fig">図18: 設定 (基本タブ)</div>
+</center>
+
+<h3>設定(メタクラスリストタブ)</h3>
+<p>
+設定ダイアログのメタクラスリストタブでは，どのリソース(URI)をタイプと
+するリソースを，RDFSクラスまたは，RDFSプロパティとみなすかを設定する．
+デフォルトでは，http://www.w3.org/2000/01/rdf-schema#Classをタイプとす
+るリソースをRDFSクラスとみなしている．また，
+http://www.w3.org/1999/02/22-rdf-syntax-ns#Propertyをタイプとするリソー
+スをRDFSプロパティとみなしている．バージョンの異なるrdfs:Classや
+rdf:Property をタイプとするリソースをRDFSクラス，RDFSプロパティとみな
+したい場合や，rdfs:Classのサブクラスやrdf:Propertyのサブクラスをタイプ
+とするリソースをRDFSクラス，RDFSプロパティとみなしたい場合には，Meta
+Class Listタブで設定を行う．Class Class Listに追加したURIをタイプとす
+るリソースは，RDFSクラスとみなされる．Property Class Listに追加したURI 
+をタイプとするリソースは，RDFSプロパティとみなされる．
+</p>
+<br>
+<center>
+<img src="./img/preference_meta_class_list.png"></img>
+<div class="fig">図19: 設定 (メタクラスリストタブ)</div>
+</center>
+
+<h3>設定(レンダリングタブ)</h3>
+<p>
+設定ダイアログのレンダリングタブでは，RDFリソース，RDFリテラル，RDFSク
+ラス，RDFSプロパティ，選択時，エディタウィンドウの背景の，それぞれの色
+をカスタマイズすることができる．Colorチェックボックスのチェックをはず
+すと，すべて無色となる．AntialiasチェックボックスをチェックするとRDFリ
+ソースやRDFリテラル等の楕円，矩形の縁がなめらかになる．
+</p>
+<br>
+<center>
+<img src="./img/preference_rendering.png"></img>
+<div class="fig">図20: 設定 (レンダリングタブ)</div>
+</center>
+
+</body>
+</html>
