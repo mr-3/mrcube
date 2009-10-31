@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE map
+  PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp Map Version 1.0//EN"
+          "http://java.sun.com/products/javahelp/map_1_0.dtd">
+
+<map version="2.0">
+   <mapID target="help.window_list" url="help/help_window_list.html" />
+   <mapID target="help.rdf_editor" url="help/help_rdf_editor.html" />
+   <mapID target="help.rdf_editor_popup" url="help/help_rdf_editor_popup.html" />
+   <mapID target="help.rdf_editor_resource_attr" url="help/help_rdf_editor_resource_attr.html" />
+   <mapID target="help.rdf_editor_property_attr" url="help/help_rdf_editor_property_attr.html" />
+   <mapID target="help.rdf_editor_literal_attr" url="help/help_rdf_editor_literal_attr.html" />
+   <mapID target="help.class_editor" url="help/help_class_editor.html" />
+   <mapID target="help.class_editor_popup" url="help/help_class_editor_popup.html" />
+   <mapID target="help.property_editor" url="help/help_property_editor.html" />
+   <mapID target="help.property_editor_popup" url="help/help_property_editor_popup.html" />
+   <mapID target="help.namespace_table" url="help/help_namespace_table.html" />
+   <mapID target="help.source_dialog" url="help/help_source_dialog.html" />
+   <mapID target="help.remove_dialog" url="help/help_remove_dialog.html" />
+   <mapID target="help.find_resource_dialog" url="help/help_find_resource_dialog.html" />
+   <mapID target="help.preference_dialog" url="help/help_preference_dialog.html" />
+   <mapID target="help.menu_file" url="help/help_menu_file.html" />
+   <mapID target="help.menu_edit" url="help/help_menu_edit.html" />
+   <mapID target="help.menu_select" url="help/help_menu_select.html" />
+   <mapID target="help.menu_view" url="help/help_menu_view.html" />
+   <mapID target="help.menu_window" url="help/help_menu_window.html" />
+   <mapID target="help.menu_convert" url="help/help_menu_convert.html" />
+   <mapID target="help.menu_help" url="help/help_menu_help.html" />
+   <mapID target="help.toolbar" url="help/help_toolbar.html" />
+   <mapID target="help.shortcut" url="help/help_shortcut.html" />
+
+   <mapID target="tutorial.contents" url="help/tutorial_contents.html" />
+   <mapID target="tutorial.create_rdf_top_down" url="help/tutorial_create_rdf_top_down.html" />
+   <mapID target="tutorial.create_rdf_bottom_up" url="help/tutorial_create_rdf_bottom_up.html" />
+   <mapID target="tutorial.replace_rdfs" url="help/tutorial_replace_rdfs.html" />
+
+   <mapID target="plugin.mr3plugin" url="help/plugin_mr3plugin.html" />
+   <mapID target="plugin.how_to" url="help/plugin_how_to.html" />
+   <mapID target="plugin.sample" url="help/plugin_sample.html" />
+   <mapID target="plugin.sample1" url="help/plugin_sample1.html" />
+   <mapID target="plugin.sample2" url="help/plugin_sample2.html" />
+   <mapID target="plugin.sugiyama" url="help/plugin_sugiyama.html" />
+
+</map>
