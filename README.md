@@ -1,4 +1,4 @@
-MR^3
+MR<sup>3</sup>
 ==========
 
 ## Web Site
