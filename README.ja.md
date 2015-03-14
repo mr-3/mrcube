@@ -1,6 +1,9 @@
 MR^3
 ===
 
+## Webサイト
+* <http://mr3.sourceforge.net/>
+
 ## 概要
 MR3 (Meta-Model Management based on RDFs Revision Reflection) は，次世代Webの候補の1つであるセマンティックWebにおけるRDF (Resource Description Framework)及びRDFS (RDF Schema)の視覚的な編集とそれらの間の関係を管理する機能を持つエディタです．
 
@@ -31,4 +34,23 @@ MR3には主に以下の3つの特徴があります．
 * RDFSクラス及びプロパティの変更をRDFリソースのタイプ及びプロパティに反映させる機能
 
 ## ライセンス
-MR3はフリーソフトウェアです．Free Software Foundation による [GNU Generic Public License](http://www.gnu.org/copyleft/gpl.html) のバージョン2 （または，それ以降のバージョン）に従う限り自由に変更し再配布することができます．MR3は，セマンティックWebコンテンツ（RDF，RDFS，OWL，N-Tripleなど）を構築するために[Jena 2 Semantic Web Toolkit](http://jena.sourceforge.net/)を利用しています．Jena2のライセンスについては，以下のリンク（[Jena – License and Copyright](http://jena.sourceforge.net/license.html)）を参照してください．MR3は，グラフのレイアウトを行うためにVGJ（[GPL ライセンス](http://www.eng.auburn.edu/department/cse/research/graph_drawing/COPYING)）または，JGraphpad（[LGPL ライセンス](http://www.jgraph.com/license.html)）のコードを利用しています．
+MR3はフリーソフトウェアです．Free Software Foundation による [GNU Generic Public License](http://www.gnu.org/copyleft/gpl.html) のバージョン2 （または，それ以降のバージョン）に従う限り自由に変更し再配布することができます．
+
+## 利用ライブラリとライセンス
+* [JGraph and JGraphAddons](http://www.jgraph.com/)([License](https://github.com/jgraph/legacy-jgraph5/blob/master/LICENSE)]
+* [Apache Jena](https://jena.apache.org/)([License](http://www.apache.org/licenses/LICENSE-2.0))
+* [InfoNode Docking Windows](http://www.infonode.net/index.html?idw)([License](http://www.infonode.net/index.html?idwlicense))
+* [Drawing Graphs with VGJ](http://www.eng.auburn.edu/department/cse/research/graph_drawing/graph_drawing.html)([License](http://www.eng.auburn.edu/department/cse/research/graph_drawing/COPYING))
+* [JFontChooser](http://jfontchooser.sourceforge.jp/)([License](http://sourceforge.jp/softwaremap/trove_list.php?form_cat=188))
+* [Apache ORO](http://attic.apache.org/projects/jakarta-oro.html)([License](http://www.apache.org/licenses/LICENSE-2.0))
+* [Silk Icons](http://www.famfamfam.com)([License](http://creativecommons.org/licenses/by/2.5/))
+
+## プロジェクトメンバー
+* 森田 武史 (青山学院大学 社会情報学部)
+* 福田 直樹 (静岡大学 情報学部)
+* 和泉 憲明 (産業技術総合研究所)
+* 山口 高平 (慶應義塾大学 理工学部)
+
+## 連絡先
+* 森田 武史 (t_morita@si.aoyama.ac.jp)
+

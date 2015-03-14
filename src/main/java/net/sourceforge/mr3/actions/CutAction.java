@@ -21,13 +21,18 @@
  * 
  */
 
-
 package net.sourceforge.mr3.actions;
 
 import java.awt.event.*;
 
 import javax.swing.*;
 
+import org.jgraph.graph.GraphCell;
+import org.jgraph.graph.GraphConstants;
+
+import net.sourceforge.mr3.data.ClassInfo;
+import net.sourceforge.mr3.data.PropertyInfo;
+import net.sourceforge.mr3.data.RDFSInfoMap;
 import net.sourceforge.mr3.data.MR3Constants.*;
 import net.sourceforge.mr3.jgraph.*;
 import net.sourceforge.mr3.ui.*;
@@ -37,25 +42,48 @@ import net.sourceforge.mr3.util.*;
  * @author takeshi morita
  */
 public class CutAction extends AbstractAction {
-    private RDFGraph graph;
-    private static final String TITLE = Translator.getString("Action.Cut.Text");
-    private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("Action.Cut.Icon"));
+	private RDFGraph graph;
+	private GraphManager gmanager;
+	private static final String TITLE = Translator.getString("Action.Cut.Text");
+	private static final ImageIcon ICON = Utilities.getImageIcon(Translator
+			.getString("Action.Cut.Icon"));
 
-    public CutAction(RDFGraph g) {
-        super(TITLE, ICON);
-        graph = g;
-        putValue(SHORT_DESCRIPTION, TITLE);
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_MASK));
-    }
+	public CutAction(RDFGraph g, GraphManager gm) {
+		super(TITLE, ICON);
+		graph = g;
+		gmanager = gm;
+		putValue(SHORT_DESCRIPTION, TITLE);
+		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_MASK));
+	}
 
-    public void actionPerformed(ActionEvent e) {
-        TransferHandler.getCutAction().actionPerformed(new ActionEvent(graph, e.getID(), e.getActionCommand()));
-        if (graph.getType() == GraphType.RDF) {
-            HistoryManager.saveHistory(HistoryType.CUT_RDF_GRAPH);
-        } else if (graph.getType() == GraphType.CLASS) {
-            HistoryManager.saveHistory(HistoryType.CUT_CLASS_GRAPH);
-        } else if (graph.getType() == GraphType.PROPERTY) {
-            HistoryManager.saveHistory(HistoryType.CUT_PROPERTY_GRAPH);
-        }
-    }
+	public void actionPerformed(ActionEvent e) {
+		if (graph.getType() == GraphType.RDF) {
+			HistoryManager.saveHistory(HistoryType.CUT_RDF_GRAPH);
+		} else if (graph.getType() == GraphType.CLASS) {
+			RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
+			for (Object cell : graph.getSelectionCells()) {
+				GraphCell gcell = (GraphCell) cell;
+				if (RDFGraph.isRDFSClassCell(gcell)) {
+					ClassInfo orgInfo = (ClassInfo) GraphConstants.getValue(gcell.getAttributes());
+					rdfsInfoMap.removeURICellMap(orgInfo);
+					rdfsInfoMap.removeCellInfo(gcell);
+				}
+			}
+			HistoryManager.saveHistory(HistoryType.CUT_CLASS_GRAPH);
+		} else if (graph.getType() == GraphType.PROPERTY) {
+			RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
+			for (Object cell : graph.getSelectionCells()) {
+				GraphCell gcell = (GraphCell) cell;
+				if (RDFGraph.isRDFSPropertyCell(gcell)) {
+					PropertyInfo orgInfo = (PropertyInfo) GraphConstants.getValue(gcell
+							.getAttributes());
+					rdfsInfoMap.removeURICellMap(orgInfo);
+					rdfsInfoMap.removeCellInfo(gcell);
+				}
+			}
+			HistoryManager.saveHistory(HistoryType.CUT_PROPERTY_GRAPH);
+		}
+		TransferHandler.getCutAction().actionPerformed(
+				new ActionEvent(graph, e.getID(), e.getActionCommand()));
+	}
 }
