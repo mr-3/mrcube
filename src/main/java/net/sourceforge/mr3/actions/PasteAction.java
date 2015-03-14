@@ -23,18 +23,33 @@
 
 package net.sourceforge.mr3.actions;
 
-import java.awt.event.*;
-import java.util.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
-import javax.swing.*;
+import javax.swing.AbstractAction;
+import javax.swing.ImageIcon;
+import javax.swing.KeyStroke;
+import javax.swing.TransferHandler;
 
-import net.sourceforge.mr3.data.*;
-import net.sourceforge.mr3.data.MR3Constants.*;
-import net.sourceforge.mr3.jgraph.*;
-import net.sourceforge.mr3.ui.*;
-import net.sourceforge.mr3.util.*;
+import net.sourceforge.mr3.data.ClassInfo;
+import net.sourceforge.mr3.data.MR3Constants.GraphType;
+import net.sourceforge.mr3.data.MR3Constants.HistoryType;
+import net.sourceforge.mr3.data.MR3Literal;
+import net.sourceforge.mr3.data.PropertyInfo;
+import net.sourceforge.mr3.data.RDFResourceInfo;
+import net.sourceforge.mr3.data.RDFSInfo;
+import net.sourceforge.mr3.data.RDFSInfoMap;
+import net.sourceforge.mr3.jgraph.GraphManager;
+import net.sourceforge.mr3.jgraph.RDFGraph;
+import net.sourceforge.mr3.ui.HistoryManager;
+import net.sourceforge.mr3.util.Translator;
+import net.sourceforge.mr3.util.Utilities;
 
-import org.jgraph.graph.*;
+import org.jgraph.graph.GraphCell;
+import org.jgraph.graph.GraphConstants;
 
 /**
  * @author takeshi morita
@@ -42,123 +57,151 @@ import org.jgraph.graph.*;
 
 public class PasteAction extends AbstractAction {
 
-    private RDFGraph graph;
-    private GraphManager gmanager;
-    private static final String TITLE = Translator.getString("Action.Paste.Text");
-    private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("Action.Paste.Icon"));
+	private RDFGraph graph;
+	private GraphManager gmanager;
+	private static final String TITLE = Translator.getString("Action.Paste.Text");
+	private static final ImageIcon ICON = Utilities.getImageIcon(Translator
+			.getString("Action.Paste.Icon"));
 
-    public PasteAction(RDFGraph g, GraphManager gm) {
-        super(TITLE, ICON);
-        graph = g;
-        gmanager = gm;
-        putValue(SHORT_DESCRIPTION, TITLE);
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_MASK));
-    }
+	public PasteAction(RDFGraph g, GraphManager gm) {
+		super(TITLE, ICON);
+		graph = g;
+		gmanager = gm;
+		putValue(SHORT_DESCRIPTION, TITLE);
+		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_MASK));
+	}
 
-    public void actionPerformed(ActionEvent e) {
-        TransferHandler.getPasteAction().actionPerformed(new ActionEvent(graph, e.getID(), e.getActionCommand()));
-        Object[] copyCells = graph.getCopyCells();
-        for (int i = 0; i < copyCells.length; i++) {
-            GraphCell cell = (GraphCell) copyCells[i];
-            if (RDFGraph.isRDFSClassCell(cell)) {
-                cloneRDFSClassCell(cell);
-            } else if (RDFGraph.isRDFSPropertyCell(cell)) {
-                cloneRDFSPropertyCell(cell);
-            } else if (RDFGraph.isRDFResourceCell(cell)) {
-                cloneRDFResourceCell(cell);
-            } else if (RDFGraph.isRDFPropertyCell(cell)) {
-                //System.out.println(GraphConstants.getValue(cell.getAttributes(
-                // )));
-                // do nothing
-            } else if (RDFGraph.isRDFLiteralCell(cell)) {
-                cloneRDFLiteralCell(cell);
-            }
-        }
-        if (graph.getType() == GraphType.RDF) {
-            HistoryManager.saveHistory(HistoryType.PASTE_RDF_GRAPH);
-        } else if (graph.getType() == GraphType.CLASS) {
-            HistoryManager.saveHistory(HistoryType.PASTE_CLASS_GRAPH);
-        } else if (graph.getType() == GraphType.PROPERTY) {
-            HistoryManager.saveHistory(HistoryType.PASTE_PROPERTY_GRAPH);
-        }
-    }
+	public void actionPerformed(ActionEvent e) {
+		TransferHandler.getPasteAction().actionPerformed(
+				new ActionEvent(graph, e.getID(), e.getActionCommand()));
+		Object[] copyCells = graph.getCopyCells();
 
-    /**
-     * @param cell
-     */
-    private void cloneRDFLiteralCell(GraphCell cell) {
-        MR3Literal orgLiteral = (MR3Literal) GraphConstants.getValue(cell.getAttributes());
-        MR3Literal newLiteral = new MR3Literal(orgLiteral);
-        GraphConstants.setValue(cell.getAttributes(), newLiteral);
-        graph.getGraphLayoutCache().editCell(cell, cell.getAttributes());
-    }
+		Set<GraphCell> pasteGraphCellSet = new HashSet<GraphCell>();
+		Set<GraphCell> removeGraphCellSet = new HashSet<GraphCell>();
+		for (int i = 0; i < copyCells.length; i++) {
+			GraphCell cell = (GraphCell) copyCells[i];
+			if (graph.getType() == GraphType.CLASS && RDFGraph.isRDFSClassCell(cell)) {
+				pasteGraphCellSet.add(cell);
+				cloneRDFSClassCell(cell);
+			} else if (graph.getType() == GraphType.PROPERTY && RDFGraph.isRDFSPropertyCell(cell)) {
+				pasteGraphCellSet.add(cell);
+				cloneRDFSPropertyCell(cell);
+			} else if (graph.getType() == GraphType.RDF) {
+				if (RDFGraph.isRDFResourceCell(cell)) {
+					pasteGraphCellSet.add(cell);
+					cloneRDFResourceCell(cell);
+				} else if (RDFGraph.isRDFPropertyCell(cell)) {
+					pasteGraphCellSet.add(cell);
+				} else if (RDFGraph.isRDFLiteralCell(cell)) {
+					pasteGraphCellSet.add(cell);
+					cloneRDFLiteralCell(cell);
+				} else {
+					if (!(RDFGraph.isPort(cell) || RDFGraph.isEdge(cell))) {
+						removeGraphCellSet.add(cell);
+					} else {
+						pasteGraphCellSet.add(cell);
+					}
+				}
+			} else {
+				if (!(RDFGraph.isPort(cell) || RDFGraph.isEdge(cell))) {
+					removeGraphCellSet.add(cell);
+				} else {
+					pasteGraphCellSet.add(cell);
+				}
+			}
+		}
+		graph.getGraphLayoutCache().remove(removeGraphCellSet.toArray());
+		gmanager.resetTypeCells();
+		graph.setSelectionCells(pasteGraphCellSet.toArray());
+		if (graph.getType() == GraphType.RDF) {
+			HistoryManager.saveHistory(HistoryType.PASTE_RDF_GRAPH);
+		} else if (graph.getType() == GraphType.CLASS) {
+			HistoryManager.saveHistory(HistoryType.PASTE_CLASS_GRAPH);
+		} else if (graph.getType() == GraphType.PROPERTY) {
+			HistoryManager.saveHistory(HistoryType.PASTE_PROPERTY_GRAPH);
+		}
+	}
 
-    /**
-     * @param cell
-     */
-    private void cloneRDFResourceCell(GraphCell cell) {
-        RDFResourceInfo orgInfo = (RDFResourceInfo) GraphConstants.getValue(cell.getAttributes());
+	/**
+	 * @param cell
+	 */
+	private void cloneRDFLiteralCell(GraphCell cell) {
+		MR3Literal orgLiteral = (MR3Literal) GraphConstants.getValue(cell.getAttributes());
+		MR3Literal newLiteral = new MR3Literal(orgLiteral);
+		GraphConstants.setValue(cell.getAttributes(), newLiteral);
+		graph.getGraphLayoutCache().editCell(cell, cell.getAttributes());
+	}
 
-        Object typeViewCell = orgInfo.getTypeViewCell();
-        if (typeViewCell != null) {
-            // RDFリソースのタイプを示す矩形セルのクローンを得る
-            Map clones = graph.cloneCells(new Object[] { typeViewCell});
-            typeViewCell = clones.get(typeViewCell);
-        }
-        RDFResourceInfo newInfo = new RDFResourceInfo(orgInfo);
-        newInfo.setTypeViewCell((GraphCell) typeViewCell);
-        newInfo.setURI(cloneRDFURI(newInfo));
-        GraphConstants.setValue(cell.getAttributes(), newInfo);
-        graph.getGraphLayoutCache().editCell(cell, cell.getAttributes());
-    }
+	/**
+	 * @param cell
+	 */
+	private void cloneRDFResourceCell(GraphCell cell) {
+		RDFResourceInfo orgInfo = (RDFResourceInfo) GraphConstants.getValue(cell.getAttributes());
 
-    private void cloneRDFSCell(GraphCell cell, RDFSInfo newInfo) {
-        RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-        rdfsInfoMap.putURICellMap(newInfo, cell);
-        GraphConstants.setValue(cell.getAttributes(), newInfo);
-        graph.getGraphLayoutCache().editCell(cell, cell.getAttributes());
-    }
+		Object typeViewCell = orgInfo.getTypeViewCell();
+		if (typeViewCell != null) {
+			// RDFリソースのタイプを示す矩形セルのクローンを得る
+			Map clones = graph.cloneCells(new Object[] { typeViewCell });
+			typeViewCell = clones.get(typeViewCell);
+		}
+		RDFResourceInfo newInfo = new RDFResourceInfo(orgInfo);
+		newInfo.setTypeViewCell((GraphCell) typeViewCell);
+		newInfo.setURI(cloneRDFURI(newInfo));
+		GraphConstants.setValue(cell.getAttributes(), newInfo);
+		graph.getGraphLayoutCache().editCell(cell, cell.getAttributes());
+	}
 
-    /**
-     * @param cell
-     */
-    private void cloneRDFSPropertyCell(GraphCell cell) {
-        PropertyInfo orgInfo = (PropertyInfo) GraphConstants.getValue(cell.getAttributes());
-        PropertyInfo newInfo = new PropertyInfo(orgInfo);
-        newInfo.setURI(cloneRDFSURI(newInfo, GraphType.PROPERTY));
-        cloneRDFSCell(cell, newInfo);
-    }
+	private void cloneRDFSCell(GraphCell cell, RDFSInfo newInfo) {
+		RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
+		rdfsInfoMap.putURICellMap(newInfo, cell);
+		GraphConstants.setValue(cell.getAttributes(), newInfo);
+		graph.getGraphLayoutCache().editCell(cell, cell.getAttributes());
+	}
 
-    /**
-     * @param cell
-     */
-    private void cloneRDFSClassCell(GraphCell cell) {
-        ClassInfo orgInfo = (ClassInfo) GraphConstants.getValue(cell.getAttributes());
-        ClassInfo newInfo = new ClassInfo(orgInfo);
-        newInfo.setURI(cloneRDFSURI(newInfo, GraphType.CLASS));
-        cloneRDFSCell(cell, newInfo);
-    }
+	/**
+	 * @param cell
+	 */
+	private void cloneRDFSPropertyCell(GraphCell cell) {
+		PropertyInfo orgInfo = (PropertyInfo) GraphConstants.getValue(cell.getAttributes());
+		PropertyInfo newInfo = new PropertyInfo(orgInfo);
+		newInfo.setURI(cloneRDFSURI(newInfo, GraphType.PROPERTY));
+		cloneRDFSCell(cell, newInfo);
+	}
 
-    private String cloneRDFSURI(RDFSInfo info, GraphType graphType) {
-        if (gmanager.isDuplicated(info.getURIStr(), null, graphType)) {
-            for (int j = 1; true; j++) {
-                String compURI = info.getURIStr() + "-copy" + j;
-                if (!gmanager.isDuplicated(compURI, null, graphType)) { return info.getURIStr() + "-copy" + j; }
-            }
-        }
-        return info.getURIStr();
-    }
+	/**
+	 * @param cell
+	 */
+	private void cloneRDFSClassCell(GraphCell cell) {
+		ClassInfo orgInfo = (ClassInfo) GraphConstants.getValue(cell.getAttributes());
+		ClassInfo newInfo = new ClassInfo(orgInfo);
+		newInfo.setURI(cloneRDFSURI(newInfo, GraphType.CLASS));
+		cloneRDFSCell(cell, newInfo);
+	}
 
-    /*
-     * リソースが重複しないように，-copy番号をローカル名に追加する
-     */
-    private String cloneRDFURI(RDFResourceInfo info) {
-        if (gmanager.isDuplicated(info.getURIStr(), null, GraphType.RDF)) {
-            for (int j = 1; true; j++) {
-                String compURI = info.getURIStr() + "-copy" + j;
-                if (!gmanager.isDuplicated(compURI, null, GraphType.RDF)) { return info.getURIStr() + "-copy" + j; }
-            }
-        }
-        return info.getURIStr();
-    }
+	private String cloneRDFSURI(RDFSInfo info, GraphType graphType) {
+		if (gmanager.isDuplicated(info.getURIStr(), null, graphType)) {
+			for (int j = 1; true; j++) {
+				String compURI = info.getURIStr() + "-copy" + j;
+				if (!gmanager.isDuplicated(compURI, null, graphType)) {
+					return info.getURIStr() + "-copy" + j;
+				}
+			}
+		}
+		return info.getURIStr();
+	}
+
+	/*
+	 * リソースが重複しないように，-copy番号をローカル名に追加する
+	 */
+	private String cloneRDFURI(RDFResourceInfo info) {
+		if (gmanager.isDuplicated(info.getURIStr(), null, GraphType.RDF)) {
+			for (int j = 1; true; j++) {
+				String compURI = info.getURIStr() + "-copy" + j;
+				if (!gmanager.isDuplicated(compURI, null, GraphType.RDF)) {
+					return info.getURIStr() + "-copy" + j;
+				}
+			}
+		}
+		return info.getURIStr();
+	}
 }

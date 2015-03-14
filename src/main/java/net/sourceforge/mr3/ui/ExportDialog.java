@@ -175,10 +175,13 @@ public class ExportDialog extends JDialog implements ActionListener {
 		outputCheckPanel.add(n3TRIPLERadioButton);
 
 		rdfConvertBox = new JCheckBox("RDF");
+		rdfConvertBox.setSelected(true);
 		rdfConvertBox.addActionListener(this);
 		classConvertBox = new JCheckBox(Translator.getString("Class"));
+		classConvertBox.setSelected(true);
 		classConvertBox.addActionListener(this);
 		propertyConvertBox = new JCheckBox(Translator.getString("Property"));
+		propertyConvertBox.setSelected(true);
 		propertyConvertBox.addActionListener(this);
 		JPanel dataTypePanel = new JPanel();
 		dataTypePanel.setLayout(new GridLayout(1, 3));
