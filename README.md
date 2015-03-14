@@ -4,15 +4,15 @@ MR^3
 ## Web Site
 * <http://mr3.sourceforge.net/>
 
-## What is MR^3 ?
-MR^3 (Meta-Model Management based on RDFs Revision Reflection) is an editing tool of RDF-based contents developed for managing a relationship between RDF and RDFS contents.
+## What is MR<sup>3</sup> ?
+MR<sup>3</sup> (Meta-Model Management based on RDFs Revision Reflection) is an editing tool of RDF-based contents developed for managing a relationship between RDF and RDFS contents.
 
 ### Introduction
 The Semantic Web is one of the most promised candidates as the Web tomorrow, whose basis is on RDF and RDF Schema recommended by the World Wide Web Consortium. The purpose of the idea is to make the data on the Web available not only for displaying but also for automation, integration and reuse of data across various applications. At the moment, a number of supporting environment have been developed as the adopted tools of traditional knowledge engineering based ontologies. These products are mostly concentrating on creating ontologies and managing ontology-based semantic markup. From the standpoint of a significance of information lifecycle on the Semantic Web, in this work, an editing tool of RDF-based contents is developed for managing a relationship between RDF and RDFS contents.
 
 ### Features
 
-MR3 provides the three main functions to edit and to manage the several sorts of relationship among RDF and RDFS contents as follows.
+MR<sup>3</sup> provides the three main functions to edit and to manage the several sorts of relationship among RDF and RDFS contents as follows.
 
 #### Graphical Editing of RDF Descriptions
 Based on the semantics of RDF data model, the tool supports to edit the resource-property-value relation.
@@ -31,10 +31,10 @@ The above function consisted of the following sub-functions.
 * Reflecting the change of RDFS resources on the corresponding RDF resources, as the same time above.
 
 ## License
-MR^3 is Free Software; you may redistribute it and/or modify it under the terms of the [GNU Generic Public License](http://www.gnu.org/copyleft/gpl.html) as published by the Free Software Foundation; either version 2, or (at your option) any later version. 
+MR<sup>3</sup> is Free Software; you may redistribute it and/or modify it under the terms of the [GNU Generic Public License](http://www.gnu.org/copyleft/gpl.html) as published by the Free Software Foundation; either version 2, or (at your option) any later version. 
 
 ## Acknowledgements
-MR^3 uses the following libraries.
+MR<sup>3</sup> uses the following libraries.
 
 * [JGraph and JGraphAddons](http://www.jgraph.com/)([License](https://github.com/jgraph/legacy-jgraph5/blob/master/LICENSE)]
 * [Apache Jena](https://jena.apache.org/)([License](http://www.apache.org/licenses/LICENSE-2.0))
