@@ -1,2 +1,0 @@
-Main-Class: mr3.MR3
-Class-Path: ./icu4j.jar \ ./jena.jar  \ ./jgraph.jar \ ./xerces.jar \
