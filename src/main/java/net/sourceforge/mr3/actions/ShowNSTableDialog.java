@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mr3.sourceforge.net/
  * 
- * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
+ * Copyright (C) 2003-2015 Yamaguchi Laboratory, Keio University. All rights reserved. 
  * 
  * This file is part of MR^3.
  * 
@@ -31,24 +31,25 @@ import net.sourceforge.mr3.*;
 import net.sourceforge.mr3.util.*;
 
 /**
- * @author takeshi morita
+ * @author Takeshi Morita
  */
 public class ShowNSTableDialog extends MR3AbstractAction {
 
-    private static final String TITLE = Translator.getString("Component.Window.NSTable.Text");
-    private static final ImageIcon ICON = Utilities.getImageIcon("nameSpaceTableIcon.gif");
+	private static final String TITLE = Translator.getString("Component.Window.NSTable.Text");
+	private static final ImageIcon ICON = Utilities.getImageIcon(Translator
+			.getString("NameSpaceTable.Icon"));
 
-    public ShowNSTableDialog(MR3 mr3) {
-        super(mr3, TITLE, ICON);
-        setValues();
-    }
+	public ShowNSTableDialog(MR3 mr3) {
+		super(mr3, TITLE, ICON);
+		setValues();
+	}
 
-    private void setValues() {
-        putValue(SHORT_DESCRIPTION, getName());
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.ALT_MASK));
-    }
+	private void setValues() {
+		putValue(SHORT_DESCRIPTION, getName());
+		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.ALT_MASK));
+	}
 
-    public void actionPerformed(ActionEvent e) {
-        mr3.getGraphManager().getNSTableDialog().setVisible(true);
-    }
+	public void actionPerformed(ActionEvent e) {
+		mr3.getGraphManager().getNSTableDialog().setVisible(true);
+	}
 }

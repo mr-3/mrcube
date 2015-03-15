@@ -40,7 +40,7 @@ import org.jgraph.event.*;
 import org.jgraph.graph.*;
 
 /**
- * modified by takeshi morita
+ * modified by Takeshi Morita
  */
 public class MR3OverviewPanel extends JPanel implements ComponentListener, GraphModelListener,
         GraphLayoutCacheListener, PropertyChangeListener {

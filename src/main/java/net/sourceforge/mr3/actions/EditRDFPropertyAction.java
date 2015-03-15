@@ -37,7 +37,7 @@ import org.jgraph.graph.*;
 import com.hp.hpl.jena.rdf.model.*;
 
 /**
- * @author takeshi morita
+ * @author Takeshi Morita
  */
 public class EditRDFPropertyAction {
 

@@ -13,7 +13,7 @@ import net.sourceforge.mr3.actions.*;
 import net.sourceforge.mr3.util.*;
 
 /**
- * @author takeshi morita
+ * @author Takeshi Morita
  */
 public class TabComponent extends JPanel {
 

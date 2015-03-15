@@ -37,7 +37,7 @@ import net.sourceforge.mr3.util.*;
 import org.jgraph.graph.*;
 
 /**
- * @author takeshi morita
+ * @author Takeshi Morita
  */
 public class EditConceptAction extends AbstractAction {
 

@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mr3.sourceforge.net/
  * 
- * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
+ * Copyright (C) 2003-2015 Yamaguchi Laboratory, Keio University. All rights reserved. 
  * 
  * This file is part of MR^3.
  * 
@@ -11,7 +11,7 @@
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
- * DODDLE-OWL is distributed in the hope that it will be useful,
+ * MR^3 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -80,8 +80,8 @@ public class MR3 extends JFrame implements ChangeListener {
 	private JCheckBoxMenuItem showRDFPropertyLabelBox;
 
 	public static StatusBarPanel STATUS_BAR;
-	private static final int MAIN_FRAME_HEIGHT = 600;
-	private static final int MAIN_FRAME_WIDTH = 800;
+	private static final int MAIN_FRAME_WIDTH = 1024;
+	private static final int MAIN_FRAME_HEIGHT = 768;
 	private static final Color DESKTOP_BACK_COLOR = Color.WHITE;
 
 	public MR3() {
@@ -132,7 +132,8 @@ public class MR3 extends JFrame implements ChangeListener {
 	private AbstractAction openProjectAction;
 	private AbstractAction saveProjectAction;
 	private AbstractAction saveProjectAsAction;
-	private AbstractAction openPluginManagerAction;
+	private AbstractAction showPluginManagerAction;
+	private AbstractAction showValidatorAction;
 	private AbstractAction toFrontRDFEditorAction;
 	private AbstractAction toFrontClassEditorAction;
 	private AbstractAction toFrontPropertyEditorAction;
@@ -163,8 +164,9 @@ public class MR3 extends JFrame implements ChangeListener {
 				SaveProject.SAVE_PROJECT_ICON);
 		saveProjectAsAction = new SaveProject(this, SaveProject.SAVE_AS_PROJECT,
 				SaveProject.SAVE_AS_PROJECT_ICON);
-		openPluginManagerAction = new OpenPluginManagerAction(this,
+		showPluginManagerAction = new OpenPluginManagerAction(this,
 				Translator.getString("Component.Tools.Plugins.Text"));
+		showValidatorAction = new ShowValidator(this);
 		toFrontRDFEditorAction = new EditorSelect(this, EditorSelect.RDF_EDITOR,
 				EditorSelect.RDF_EDITOR_ICON);
 		toFrontClassEditorAction = new EditorSelect(this, EditorSelect.CLASS_EDITOR,
@@ -245,9 +247,12 @@ public class MR3 extends JFrame implements ChangeListener {
 		toolbar.add(findPrevButton);
 		toolbar.add(findNextButton);
 		toolbar.addSeparator();
+		toolbar.add(showValidatorAction);
+		toolbar.add(showPluginManagerAction);
 		toolbar.add(showProjectInfoAction);
 		toolbar.add(showLogConsoleAciton);
 		toolbar.add(showOptionDialogAction);
+		toolbar.addSeparator();
 		toolbar.add(showVersionInfoAction);
 
 		return toolbar;
@@ -560,7 +565,6 @@ public class MR3 extends JFrame implements ChangeListener {
 				GraphUtilities.selectedColor.getRGB()));
 
 		GraphUtilities.isColor = userPrefs.getBoolean(PrefConstants.Color, true);
-
 		setSize(userPrefs.getInt(PrefConstants.WindowWidth, MAIN_FRAME_WIDTH),
 				userPrefs.getInt(PrefConstants.WindowHeight, MAIN_FRAME_HEIGHT));
 		setLocation(userPrefs.getInt(PrefConstants.WindowPositionX, 50),
@@ -641,9 +645,13 @@ public class MR3 extends JFrame implements ChangeListener {
 		menu.addSeparator();
 		JMenu applyLayout = new JMenu(Translator.getString("Component.View.ApplyLayout.Text"));
 		menu.add(applyLayout);
-		applyLayout.add(new GraphLayoutAction(gmanager, GraphType.RDF));
-		applyLayout.add(new GraphLayoutAction(gmanager, GraphType.CLASS));
-		applyLayout.add(new GraphLayoutAction(gmanager, GraphType.PROPERTY));
+
+		applyLayout.add(new GraphLayoutAction(gmanager, GraphType.RDF,
+				GraphLayoutAction.layoutRDFGraphIcon));
+		applyLayout.add(new GraphLayoutAction(gmanager, GraphType.CLASS,
+				GraphLayoutAction.layoutClassGraphIcon));
+		applyLayout.add(new GraphLayoutAction(gmanager, GraphType.PROPERTY,
+				GraphLayoutAction.layoutPropertyGraphIcon));
 
 		return menu;
 	}
@@ -680,8 +688,8 @@ public class MR3 extends JFrame implements ChangeListener {
 	private JMenu getToolsMenu() {
 		JMenu menu = new JMenu(Translator.getString("Component.Tools.Text") + "(T)");
 		menu.setMnemonic('t');
-		menu.add(openPluginManagerAction);
-		menu.add(new ShowValidator(this));
+		menu.add(showPluginManagerAction);
+		menu.add(showValidatorAction);
 		menu.add(showProjectInfoAction);
 		// menu.add(new ShowHistoryManager(this));
 		menu.add(showLogConsoleAciton);

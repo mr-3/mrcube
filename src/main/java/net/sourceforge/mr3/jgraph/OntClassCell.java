@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mr3.sourceforge.net/
  * 
- * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
+ * Copyright (C) 2003-2015 Yamaguchi Laboratory, Keio University. All rights reserved. 
  * 
  * This file is part of MR^3.
  * 
@@ -30,25 +30,26 @@ import net.sourceforge.mr3.util.*;
 import org.jgraph.graph.*;
 
 /**
- * @author takeshi morita
+ * @author Takeshi Morita
  */
 public class OntClassCell extends DefaultGraphCell implements RDFCellStyleChanger {
-    
-    public static Color classColor = new Color(153, 255, 0);
 
-    public OntClassCell() {
-        this(null);
-    }
+	public static Color classColor = new Color(204, 255, 102);
 
-    public OntClassCell(Object userObject) {
-        super(userObject);
-    }
+	public OntClassCell() {
+		this(null);
+	}
 
-    public void changeStyle(RDFGraph graph) {
-        GraphUtilities.changeCellStyle(graph, this, GraphUtilities.selectedColor, GraphUtilities.selectedBorderColor);
-    }
+	public OntClassCell(Object userObject) {
+		super(userObject);
+	}
 
-    public void changeDefaultStyle(RDFGraph graph) {
-        GraphUtilities.changeDefaultCellStyle(graph, this, classColor);
-    }
+	public void changeStyle(RDFGraph graph) {
+		GraphUtilities.changeCellStyle(graph, this, GraphUtilities.selectedColor,
+				GraphUtilities.selectedBorderColor);
+	}
+
+	public void changeDefaultStyle(RDFGraph graph) {
+		GraphUtilities.changeDefaultCellStyle(graph, this, classColor);
+	}
 }

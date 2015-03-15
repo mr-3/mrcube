@@ -32,12 +32,12 @@ import javax.swing.event.*;
  * Shows the System.in and System.out in a nice JFrame.
  * 
  * The Frame looks like this: <br>
- * <img src="doc-files/GPLogConsole.jpg">
+ * <img src="doc-files/GPLogConsole.jpg" alt="">
  * 
  * @author Thomas Genssler (FZI)
  * @author Sven Luzar
  * 
- *         modified GPLogConsole -> MR3LogConsole
+ *         modified GPLogConsole to  MR3LogConsole
  * 
  */
 

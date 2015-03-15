@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mr3.sourceforge.net/
  * 
- * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
+ * Copyright (C) 2003-2015 Yamaguchi Laboratory, Keio University. All rights reserved. 
  * 
  * This file is part of MR^3.
  * 
@@ -43,7 +43,7 @@ import org.jgraph.graph.*;
 
 /**
  * 
- * @author takeshi morita
+ * @author Takeshi Morita
  * 
  */
 public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
@@ -71,8 +71,9 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 	private static String INSERT_RESOURCE_TITLE = Translator
 			.getString("InsertResourceDialog.Title");
 	private static String INSERT_LITERAL_TITLE = Translator.getString("InsertLiteralDialog.Title");
-	protected static Icon ELLIPSE_ICON = Utilities.getImageIcon("ellipse.gif");
-	public static Icon RECTANGLE_ICON = Utilities.getImageIcon("shape_square.png");
+	private static Icon RDF_RESOURCE_ELLIPSE_ICON = Utilities
+			.getImageIcon("rdf_resource_ellipse.png");
+	private static Icon LITERAL_RECTANGLE_ICON = Utilities.getImageIcon("literal_rectangle.png");
 
 	public RDFGraphMarqueeHandler(GraphManager manager, RDFGraph graph) {
 		gmanager = manager;
@@ -83,8 +84,11 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 		cellMaker = new MR3CellMaker(gmanager);
 		insertResourceAction = new InsertResourceAction();
 		insertLiteralAction = new InsertLiteralAction();
-		moveAction = new ConnectAction(Translator.getString("Action.Move.Text"));
-		connectAction = new ConnectAction(Translator.getString("Action.Connect.Text"));
+
+		moveAction = new ConnectAction(Translator.getString("Action.Move.Text"),
+				Utilities.getImageIcon(Translator.getString("Action.Move.Icon")));
+		connectAction = new ConnectAction(Translator.getString("Action.Connect.Text"),
+				Utilities.getImageIcon(Translator.getString("Action.Connect.Icon")));
 		removeAction = new RemoveAction(graph, gmanager);
 		setAction(graph);
 	}
@@ -262,8 +266,8 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 	}
 
 	protected class ConnectAction extends AbstractAction {
-		protected ConnectAction(String title) {
-			super(title, Utilities.getImageIcon(Translator.getString("Action.Connect.Icon")));
+		protected ConnectAction(String title, ImageIcon icon) {
+			super(title, icon);
 			setValues(title);
 		}
 
@@ -417,7 +421,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 	class InsertResourceAction extends AbstractAction {
 
 		InsertResourceAction() {
-			super(INSERT_RESOURCE_TITLE, ELLIPSE_ICON);
+			super(INSERT_RESOURCE_TITLE, RDF_RESOURCE_ELLIPSE_ICON);
 		}
 
 		public void actionPerformed(ActionEvent ev) {
@@ -428,7 +432,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 	class InsertLiteralAction extends AbstractAction {
 
 		InsertLiteralAction() {
-			super(INSERT_LITERAL_TITLE, RECTANGLE_ICON);
+			super(INSERT_LITERAL_TITLE, LITERAL_RECTANGLE_ICON);
 		}
 
 		public void actionPerformed(ActionEvent ev) {
@@ -535,9 +539,11 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 
 	protected void addConnectORMoveMenu(JPopupMenu menu) {
 		if (connectButton.isSelected()) {
-			menu.add(new ConnectAction(Translator.getString("Action.Move.Text")));
+			menu.add(new ConnectAction(Translator.getString("Action.Move.Text"), Utilities
+					.getImageIcon(Translator.getString("Action.Move.Icon"))));
 		} else {
-			menu.add(new ConnectAction(Translator.getString("Action.Connect.Text")));
+			menu.add(new ConnectAction(Translator.getString("Action.Connect.Text"), Utilities
+					.getImageIcon(Translator.getString("Action.Connect.Icon"))));
 		}
 	}
 

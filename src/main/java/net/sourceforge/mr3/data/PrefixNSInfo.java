@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mr3.sourceforge.net/
  * 
- * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
+ * Copyright (C) 2003-2015 Yamaguchi Laboratory, Keio University. All rights reserved. 
  * 
  * This file is part of MR^3.
  * 
@@ -28,7 +28,7 @@ package net.sourceforge.mr3.data;
  * 
  * 名前空間を接頭辞で置き換えるかどうかを決める時に使う isAvailableがtrueなら置き換える．
  * 
- * @author takeshi morita
+ * @author Takeshi Morita
  */
 public class PrefixNSInfo {
 

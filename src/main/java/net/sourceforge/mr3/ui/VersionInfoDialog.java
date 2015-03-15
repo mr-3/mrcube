@@ -43,7 +43,7 @@ import net.sourceforge.mr3.util.Translator;
 import net.sourceforge.mr3.util.Utilities;
 
 /**
- * @author takeshi morita
+ * @author Takeshi Morita
  */
 public class VersionInfoDialog extends JDialog implements HyperlinkListener {
 

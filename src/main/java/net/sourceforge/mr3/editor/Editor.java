@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mr3.sourceforge.net/
  * 
- * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
+ * Copyright (C) 2003-2015 Yamaguchi Laboratory, Keio University. All rights reserved. 
  * 
  * This file is part of MR^3.
  * 
@@ -44,7 +44,7 @@ import org.jgraph.graph.*;
 
 /*
  * 
- * @author takeshi morita
+ * @author Takeshi Morita
  * 
  */
 public abstract class Editor extends JPanel implements GraphSelectionListener, MouseWheelListener {
@@ -157,8 +157,8 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
 
 	class InsertEllipseResourceAction extends AbstractAction {
 
-		InsertEllipseResourceAction() {
-			super("", Utilities.getImageIcon("ellipse.gif"));
+		InsertEllipseResourceAction(ImageIcon icon) {
+			super("", icon);
 		}
 
 		public void actionPerformed(ActionEvent e) {
@@ -176,8 +176,8 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
 
 	class InsertRectangleResourceAction extends AbstractAction {
 
-		InsertRectangleResourceAction() {
-			super("", RDFGraphMarqueeHandler.RECTANGLE_ICON);
+		InsertRectangleResourceAction(ImageIcon icon) {
+			super("", icon);
 			// putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_L,
 			// KeyEvent.CTRL_MASK));
 		}
@@ -240,12 +240,20 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
 
 		toolbar.addSeparator();
 
-		if (graph.getType() == GraphType.RDF || graph.getType() == GraphType.PROPERTY) {
-			toolbar.add(new InsertEllipseResourceAction());
+		if (graph.getType() == GraphType.RDF) {
+			toolbar.add(new InsertEllipseResourceAction(Utilities
+					.getImageIcon("rdf_resource_ellipse.png")));
+		} else if (graph.getType() == GraphType.PROPERTY) {
+			toolbar.add(new InsertEllipseResourceAction(Utilities
+					.getImageIcon("property_ellipse.png")));
 		}
 
-		if (graph.getType() != GraphType.PROPERTY) {
-			toolbar.add(new InsertRectangleResourceAction());
+		if (graph.getType() == GraphType.RDF) {
+			toolbar.add(new InsertRectangleResourceAction(Utilities
+					.getImageIcon("literal_rectangle.png")));
+		} else if (graph.getType() == GraphType.CLASS) {
+			toolbar.add(new InsertRectangleResourceAction(Utilities
+					.getImageIcon("class_rectangle.png")));
 		}
 
 		toolbar.addSeparator();
@@ -280,7 +288,18 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
 		toolbar.add(new GroupAction(graph));
 		toolbar.add(new UnGroupAction(graph, gmanager));
 		toolbar.addSeparator();
-		toolbar.add(new GraphLayoutAction(gmanager, graph.getType()));
+		GraphLayoutAction graphLayoutAction = null;
+		if (graph.getType() == GraphType.RDF) {
+			graphLayoutAction = new GraphLayoutAction(gmanager, graph.getType(),
+					GraphLayoutAction.layoutRDFGraphIcon);
+		} else if (graph.getType() == GraphType.CLASS) {
+			graphLayoutAction = new GraphLayoutAction(gmanager, graph.getType(),
+					GraphLayoutAction.layoutClassGraphIcon);
+		} else if (graph.getType() == GraphType.PROPERTY) {
+			graphLayoutAction = new GraphLayoutAction(gmanager, graph.getType(),
+					GraphLayoutAction.layoutPropertyGraphIcon);
+		}
+		toolbar.add(graphLayoutAction);
 
 		return toolbar;
 	}

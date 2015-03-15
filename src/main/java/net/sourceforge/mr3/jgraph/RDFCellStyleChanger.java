@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mr3.sourceforge.net/
  * 
- * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
+ * Copyright (C) 2003-2015 Yamaguchi Laboratory, Keio University. All rights reserved. 
  * 
  * This file is part of MR^3.
  * 
@@ -24,7 +24,7 @@
 package net.sourceforge.mr3.jgraph;
 
 /**
- * @author takeshi morita
+ * @author Takeshi Morita
  */
 public interface RDFCellStyleChanger {
 

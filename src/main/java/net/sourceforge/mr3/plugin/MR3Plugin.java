@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mr3.sourceforge.net/
  * 
- * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
+ * Copyright (C) 2003-2015 Yamaguchi Laboratory, Keio University. All rights reserved. 
  * 
  * This file is part of MR^3.
  * 
@@ -46,7 +46,7 @@ import com.hp.hpl.jena.vocabulary.*;
 /**
  * MR3のプラグインを作成するためのクラス
  * 
- * @author takeshi morita
+ * @author Takeshi Morita
  */
 public abstract class MR3Plugin {
 
@@ -70,7 +70,7 @@ public abstract class MR3Plugin {
     }
 
     /**
-     * MR3Pluginクラスのサブクラスで実装する． File->pluginsに追加されるメニューを実行すると，execメソッドが実行される．
+     * MR3Pluginクラスのサブクラスで実装する． File -- pluginsに追加されるメニューを実行すると，execメソッドが実行される．
      */
     public abstract void exec();
 

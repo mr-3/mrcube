@@ -100,62 +100,6 @@
 							<addClasspath>true</addClasspath>
 							<mainClass>${mainClass}</mainClass>
 						</manifest>
-						<manifestSections>
-							<manifestSection>
-								<name>net.sourceforge.mr3.sample.ReplaceRDFModelSample</name>
-								<manifestEntries>
-									<menu-name>ReplaceRDFModelSample</menu-name>
-									<creator>Takeshi Morita</creator>
-									<Date>2004-01-24</Date>
-									<description>Replace RDF Model Sample Program.</description>
-								</manifestEntries>
-							</manifestSection>
-							<manifestSection>
-								<name>net.sourceforge.mr3.sample.GetRDFModelSample</name>
-								<manifestEntries>
-									<menu-name>GetRDFModelSample</menu-name>
-									<creator>Takeshi Morita</creator>
-									<Date>2004-01-24</Date>
-									<description>Get RDF Model Sample Program.</description>
-								</manifestEntries>
-							</manifestSection>
-							<manifestSection>
-								<name>net.sourceforge.mr3.sample.OpenProjectSample</name>
-								<manifestEntries>
-									<menu-name>OpenProjectSample</menu-name>
-									<creator>Takeshi Morita</creator>
-									<Date>2004-01-24</Date>
-									<description>Open Project File Sample Program.</description>
-								</manifestEntries>
-							</manifestSection>
-							<manifestSection>
-								<name>net.sourceforge.mr3.sample.SelectNodesSample</name>
-								<manifestEntries>
-									<menu-name>SelectNodesSample</menu-name>
-									<creator>Takeshi Morita</creator>
-									<Date>2004-01-24</Date>
-									<description>This plugin select mr3:a, mr3:b and mr3:c nodes.</description>
-								</manifestEntries>
-							</manifestSection>
-							<manifestSection>
-								<name>net.sourceforge.mr3.sample.GroupNodesSample</name>
-								<manifestEntries>
-									<menu-name>GroupNodesSample</menu-name>
-									<creator>Takeshi Morita</creator>
-									<Date>2004-01-24</Date>
-									<description>This plugin group mr3:a, mr3:b and mr3:c nodes.</description>
-								</manifestEntries>
-							</manifestSection>
-							<manifestSection>
-								<name>net.sourceforge.mr3.owlPlugin.OWLImportPlugin</name>
-								<manifestEntries>
-									<menu-name>OWLImportPlugin</menu-name>
-									<creator>Takeshi Morita</creator>
-									<Date>2004-01-24</Date>
-									<description>This is owl import plugin.</description>
-								</manifestEntries>
-							</manifestSection>
-						</manifestSections>
 					</archive>
 				</configuration>
 			</plugin>
@@ -204,6 +148,26 @@
 						<phase>package</phase>
 						<goals>
 							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<author>true</author>
+					<source>1.8</source>
+					<show>protected</show>
+					<encoding>UTF-8</encoding>
+					<charset>UTF-8</charset>
+					<docencoding>UTF-8</docencoding>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
 						</goals>
 					</execution>
 				</executions>

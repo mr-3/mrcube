@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mr3.sourceforge.net/
  * 
- * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
+ * Copyright (C) 2003-2015 Yamaguchi Laboratory, Keio University. All rights reserved. 
  * 
  * This file is part of MR^3.
  * 
@@ -45,7 +45,7 @@ import com.hp.hpl.jena.vocabulary.*;
  * 名前空間と接頭辞の対応付けをテーブルで行う チェックにより，Class, Property, Resourceの名前空間を接頭辞で置き換える
  * 接頭辞の名前変更はテーブルから行うことができる
  * 
- * @author takeshi morita
+ * @author Takeshi Morita
  */
 public class NameSpaceTableDialog extends JDialog implements ActionListener, TableModelListener, Serializable {
 
