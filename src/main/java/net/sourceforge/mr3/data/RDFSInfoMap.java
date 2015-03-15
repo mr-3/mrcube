@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mr3.sourceforge.net/
  * 
- * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
+ * Copyright (C) 2003-2015 Yamaguchi Laboratory, Keio University. All rights reserved. 
  * 
  * This file is part of MR^3.
  * 
@@ -35,231 +35,245 @@ import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.vocabulary.*;
 
 /**
- * @author takeshi morita
+ * @author Takeshi Morita
  * 
  */
 public class RDFSInfoMap {
 
-    private Map<Resource, RDFSInfo> resourceInfoMap; // Resourceとメタ情報の関連づけ
-    private Map<String, GraphCell> classCellMap; // uriとClassの関連づけ
-    private Map<String, GraphCell> propertyCellMap; // uriとPropertyの関連づけ
-    private Set<Resource> rootProperties; // subPropertyOf Propertyのセット
-    private DefaultTreeModel classTreeModel;
-    private DefaultTreeModel propTreeModel;
-    private Model propertyLabelModel;
+	private Map<Resource, RDFSInfo> resourceInfoMap; // Resourceとメタ情報の関連づけ
+	private Map<String, GraphCell> classCellMap; // uriとClassの関連づけ
+	private Map<String, GraphCell> propertyCellMap; // uriとPropertyの関連づけ
+	private Set<Resource> rootProperties; // subPropertyOf Propertyのセット
+	private DefaultTreeModel classTreeModel;
+	private DefaultTreeModel propTreeModel;
+	private Model propertyLabelModel;
 
-    public RDFSInfoMap() {
-        resourceInfoMap = new HashMap<Resource, RDFSInfo>();
-        classCellMap = new HashMap<String, GraphCell>();
-        propertyCellMap = new HashMap<String, GraphCell>();
-        rootProperties = new HashSet<Resource>();
-        classTreeModel = new DefaultTreeModel(null);
-        propTreeModel = new DefaultTreeModel(null);
-        propertyLabelModel = ModelFactory.createDefaultModel();
-    }
+	public RDFSInfoMap() {
+		resourceInfoMap = new HashMap<Resource, RDFSInfo>();
+		classCellMap = new HashMap<String, GraphCell>();
+		propertyCellMap = new HashMap<String, GraphCell>();
+		rootProperties = new HashSet<Resource>();
+		classTreeModel = new DefaultTreeModel(null);
+		propTreeModel = new DefaultTreeModel(null);
+		propertyLabelModel = ModelFactory.createDefaultModel();
+	}
 
-    public TreeModel getClassTreeModel() {
-        return classTreeModel;
-    }
+	public TreeModel getClassTreeModel() {
+		return classTreeModel;
+	}
 
-    public void setClassTreeModel() {
-        classTreeModel.setRoot(getRootNode());
-    }
+	public void setClassTreeModel() {
+		classTreeModel.setRoot(getRootNode());
+	}
 
-    public TreeModel getPropertyTreeModel() {
-        return propTreeModel;
-    }
+	public TreeModel getPropertyTreeModel() {
+		return propTreeModel;
+	}
 
-    public void setPropTreeModel() {
-        propTreeModel.setRoot(getPropRootNode());
-    }
+	public void setPropTreeModel() {
+		propTreeModel.setRoot(getPropRootNode());
+	}
 
-    public void clear() {
-        resourceInfoMap.clear();
-        classCellMap.clear();
-        propertyCellMap.clear();
-        rootProperties.clear();
-        classTreeModel.setRoot(null);
-    }
+	public void clear() {
+		resourceInfoMap.clear();
+		classCellMap.clear();
+		propertyCellMap.clear();
+		rootProperties.clear();
+		classTreeModel.setRoot(null);
+	}
 
-    public void addPropertyLabelModel(Statement stmt) {
-        propertyLabelModel.add(stmt);
-    }
+	public void addPropertyLabelModel(Statement stmt) {
+		propertyLabelModel.add(stmt);
+	}
 
-    public Model getPropertyLabelModel() {
-        return propertyLabelModel;
-    }
+	public Model getPropertyLabelModel() {
+		return propertyLabelModel;
+	}
 
-    public void clearTemporaryObject() {
-        resourceInfoMap.clear();
-        rootProperties.clear();
-    }
+	public void clearTemporaryObject() {
+		resourceInfoMap.clear();
+		rootProperties.clear();
+	}
 
-    public void addRootProperties(Resource resource) {
-        rootProperties.add(resource);
-    }
+	public void addRootProperties(Resource resource) {
+		rootProperties.add(resource);
+	}
 
-    public Set<Resource> getRootProperties() {
-        return Collections.unmodifiableSet(rootProperties);
-    }
+	public Set<Resource> getRootProperties() {
+		return Collections.unmodifiableSet(rootProperties);
+	}
 
-    public void putResourceInfo(Resource resource, RDFSInfo info) {
-        resourceInfoMap.put(resource, info);
-    }
+	public void putResourceInfo(Resource resource, RDFSInfo info) {
+		resourceInfoMap.put(resource, info);
+	}
 
-    /**
-     * resource -> info
-     */
-    public RDFSInfo getResourceInfo(Resource resource) {
-        return resourceInfoMap.get(resource);
-    }
+	/*
+	 * resource to info
+	 */
+	public RDFSInfo getResourceInfo(Resource resource) {
+		return resourceInfoMap.get(resource);
+	}
 
-    /**
-     * 
-     * RDFSModelExtraction#extractClassModelの後にクラスのセットを得る
-     */
-    public Set<String> getClassSet(Set<String> classSet, Resource resource) {
-        classSet.add(resource.getURI());
-        RDFSInfo info = resourceInfoMap.get(resource);
-        if (info == null) { return classSet; }
-        for (Resource res : info.getRDFSSubList()) {
-            getClassSet(classSet, res);
-        }
-        return classSet;
-    }
+	/**
+	 * 
+	 * RDFSModelExtraction#extractClassModelの後にクラスのセットを得る
+	 */
+	public Set<String> getClassSet(Set<String> classSet, Resource resource) {
+		classSet.add(resource.getURI());
+		RDFSInfo info = resourceInfoMap.get(resource);
+		if (info == null) {
+			return classSet;
+		}
+		for (Resource res : info.getRDFSSubList()) {
+			getClassSet(classSet, res);
+		}
+		return classSet;
+	}
 
-    /**
-     * 
-     * RDFSModelExtraction#extractPropertyModelの後にプロパティのセットを得る
-     */
-    public Set<String> getPropertySet(Set<String> propertySet, Resource resource) {
-        propertySet.add(resource.getURI());
-        RDFSInfo info = resourceInfoMap.get(resource);
-        if (info == null) { return propertySet; }
-        for (Resource res : info.getRDFSSubList()) {
-            getClassSet(propertySet, res);
-        }
-        return propertySet;
-    }
+	/**
+	 * 
+	 * RDFSModelExtraction#extractPropertyModelの後にプロパティのセットを得る
+	 */
+	public Set<String> getPropertySet(Set<String> propertySet, Resource resource) {
+		propertySet.add(resource.getURI());
+		RDFSInfo info = resourceInfoMap.get(resource);
+		if (info == null) {
+			return propertySet;
+		}
+		for (Resource res : info.getRDFSSubList()) {
+			getClassSet(propertySet, res);
+		}
+		return propertySet;
+	}
 
-    private boolean isRDFDucplicatedCheck(GraphType type, GraphCell cell) {
-        if (type == GraphType.RDF) {
-            if (cell == null) { return true; }
-            RDFResourceInfo resInfo = (RDFResourceInfo) GraphConstants.getValue(cell.getAttributes());
-            // 今から作ろうとしてるRDFCellの場合，resInfoは存在しない．
-            // 名前を変更しようとしているCellの場合は，resInfoが存在する
-            if (resInfo.getTypeCell() == null) { return true; }
-            RDFSInfo typeInfo = resInfo.getTypeInfo();
-            if (!((typeInfo.getURI().equals(RDFS.Class)) || typeInfo.getURI().equals(RDF.Property))) { return true; }
-        } else {
-            return true;
-        }
-        return false;
-    }
+	private boolean isRDFDucplicatedCheck(GraphType type, GraphCell cell) {
+		if (type == GraphType.RDF) {
+			if (cell == null) {
+				return true;
+			}
+			RDFResourceInfo resInfo = (RDFResourceInfo) GraphConstants.getValue(cell
+					.getAttributes());
+			// 今から作ろうとしてるRDFCellの場合，resInfoは存在しない．
+			// 名前を変更しようとしているCellの場合は，resInfoが存在する
+			if (resInfo.getTypeCell() == null) {
+				return true;
+			}
+			RDFSInfo typeInfo = resInfo.getTypeInfo();
+			if (!((typeInfo.getURI().equals(RDFS.Class)) || typeInfo.getURI().equals(RDF.Property))) {
+				return true;
+			}
+		} else {
+			return true;
+		}
+		return false;
+	}
 
-    /**
-     * 
-     * 登録しようとしているinfoのURIが重複していればtrue． 重複していなければfalse
-     * RDFSInfo#equalsでは，Resource(uri)の重複をチェックしている．
-     */
-    public boolean isDuplicated(String uri, Object cell, GraphType type) {
-        GraphCell classCell = classCellMap.get(uri);
-        GraphCell propertyCell = propertyCellMap.get(uri);
-        if (classCell == null && propertyCell == null) {
-            return false;
-        } else if (classCell != null && classCell != cell) {
-            return isRDFDucplicatedCheck(type, (GraphCell) cell);
-        } else if (propertyCell != null && propertyCell != cell) {
-            return isRDFDucplicatedCheck(type, (GraphCell) cell);
-        } else {
-            return false;
-        }
-    }
+	/**
+	 * 
+	 * 登録しようとしているinfoのURIが重複していればtrue． 重複していなければfalse
+	 * RDFSInfo#equalsでは，Resource(uri)の重複をチェックしている．
+	 */
+	public boolean isDuplicated(String uri, Object cell, GraphType type) {
+		GraphCell classCell = classCellMap.get(uri);
+		GraphCell propertyCell = propertyCellMap.get(uri);
+		if (classCell == null && propertyCell == null) {
+			return false;
+		} else if (classCell != null && classCell != cell) {
+			return isRDFDucplicatedCheck(type, (GraphCell) cell);
+		} else if (propertyCell != null && propertyCell != cell) {
+			return isRDFDucplicatedCheck(type, (GraphCell) cell);
+		} else {
+			return false;
+		}
+	}
 
-    public void putURICellMap(RDFSInfo info, GraphCell cell) {
-        if (info instanceof ClassInfo) {
-            classCellMap.put(info.getURIStr(), cell);
-        } else if (info instanceof PropertyInfo) {
-            propertyCellMap.put(info.getURIStr(), cell);
-        }
-    }
+	public void putURICellMap(RDFSInfo info, GraphCell cell) {
+		if (info instanceof ClassInfo) {
+			classCellMap.put(info.getURIStr(), cell);
+		} else if (info instanceof PropertyInfo) {
+			propertyCellMap.put(info.getURIStr(), cell);
+		}
+	}
 
-    public void removeURICellMap(RDFSInfo info) {
-        if (info instanceof ClassInfo) {
-            classCellMap.remove(info.getURIStr());
-        } else {
-            propertyCellMap.remove(info.getURIStr());
-        }
-    }
+	public void removeURICellMap(RDFSInfo info) {
+		if (info instanceof ClassInfo) {
+			classCellMap.remove(info.getURIStr());
+		} else {
+			propertyCellMap.remove(info.getURIStr());
+		}
+	}
 
-    public void removeCellInfo(GraphCell cell) {
-        RDFSInfo info = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
-        if (info != null) {
-            removeURICellMap(info);
-        }
-    }
+	public void removeCellInfo(GraphCell cell) {
+		RDFSInfo info = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
+		if (info != null) {
+			removeURICellMap(info);
+		}
+	}
 
-    public boolean isClassCell(Resource uri) {
-        return getClassCell(uri) != null;
-    }
+	public boolean isClassCell(Resource uri) {
+		return getClassCell(uri) != null;
+	}
 
-    public GraphCell getClassCell(Resource uri) {
-        return classCellMap.get(uri.getURI());
-    }
+	public GraphCell getClassCell(Resource uri) {
+		return classCellMap.get(uri.getURI());
+	}
 
-    public boolean isPropertyCell(Resource uri) {
-        return getPropertyCell(uri) != null;
-    }
+	public boolean isPropertyCell(Resource uri) {
+		return getPropertyCell(uri) != null;
+	}
 
-    public Object getPropertyCell(Resource uri) {
-        return propertyCellMap.get(uri.getURI());
-    }
+	public Object getPropertyCell(Resource uri) {
+		return propertyCellMap.get(uri.getURI());
+	}
 
-    public Object getRDFSCell(Resource uri) {
-        if (isClassCell(uri)) { return getClassCell(uri); }
-        return getPropertyCell(uri);
-    }
+	public Object getRDFSCell(Resource uri) {
+		if (isClassCell(uri)) {
+			return getClassCell(uri);
+		}
+		return getPropertyCell(uri);
+	}
 
-    public DefaultMutableTreeNode getRootNode() {
-        DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(getClassCell(RDFS.Resource));
-        createRDFSNodes(RDFS.Resource, rootNode);
-        return rootNode;
-    }
+	public DefaultMutableTreeNode getRootNode() {
+		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(getClassCell(RDFS.Resource));
+		createRDFSNodes(RDFS.Resource, rootNode);
+		return rootNode;
+	}
 
-    public DefaultMutableTreeNode getPropRootNode() {
-        DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
-        for (Resource property : rootProperties) {
-            RDFSInfo info = getResourceInfo(property);
-            DefaultMutableTreeNode node = new DefaultMutableTreeNode(getRDFSCell(property));
-            if (info.getRDFSSubList().size() > 0) {
-                createRDFSNodes(property, node);
-            }
-            rootNode.add(node);
-        }
-        return rootNode;
-    }
+	public DefaultMutableTreeNode getPropRootNode() {
+		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
+		for (Resource property : rootProperties) {
+			RDFSInfo info = getResourceInfo(property);
+			DefaultMutableTreeNode node = new DefaultMutableTreeNode(getRDFSCell(property));
+			if (info.getRDFSSubList().size() > 0) {
+				createRDFSNodes(property, node);
+			}
+			rootNode.add(node);
+		}
+		return rootNode;
+	}
 
-    private void createRDFSNodes(Resource resource, DefaultMutableTreeNode node) {
-        RDFSInfo info = getResourceInfo(resource);
-        if (info == null) return;
+	private void createRDFSNodes(Resource resource, DefaultMutableTreeNode node) {
+		RDFSInfo info = getResourceInfo(resource);
+		if (info == null)
+			return;
 
-        for (Resource subRDFS : info.getRDFSSubList()) {
-            DefaultMutableTreeNode subNode = new DefaultMutableTreeNode(getRDFSCell(subRDFS));
-            RDFSInfo subInfo = getResourceInfo(subRDFS);
+		for (Resource subRDFS : info.getRDFSSubList()) {
+			DefaultMutableTreeNode subNode = new DefaultMutableTreeNode(getRDFSCell(subRDFS));
+			RDFSInfo subInfo = getResourceInfo(subRDFS);
 
-            if (subInfo.getRDFSSubList().size() > 0) {
-                createRDFSNodes(subRDFS, subNode);
-            }
-            node.add(subNode);
-        }
-    }
+			if (subInfo.getRDFSSubList().size() > 0) {
+				createRDFSNodes(subRDFS, subNode);
+			}
+			node.add(subNode);
+		}
+	}
 
-    public String toString() {
-        String msg = "";
-        msg += "\n##### ResourceInfoMap #####\n";
-        if (resourceInfoMap != null) {
-            msg += resourceInfoMap;
-        }
-        return msg;
-    }
+	public String toString() {
+		String msg = "";
+		msg += "\n##### ResourceInfoMap #####\n";
+		if (resourceInfoMap != null) {
+			msg += resourceInfoMap;
+		}
+		return msg;
+	}
 }

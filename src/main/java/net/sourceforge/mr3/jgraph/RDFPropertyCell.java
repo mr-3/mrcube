@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mr3.sourceforge.net/
  * 
- * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
+ * Copyright (C) 2003-2015 Yamaguchi Laboratory, Keio University. All rights reserved. 
  * 
  * This file is part of MR^3.
  * 
@@ -30,26 +30,26 @@ import net.sourceforge.mr3.util.*;
 import org.jgraph.graph.*;
 
 /**
- * @author takeshi morita
+ * @author Takeshi Morita
  */
 public class RDFPropertyCell extends DefaultEdge implements RDFCellStyleChanger {
 
-    public static Color rdfPropertyColor = new Color(100, 100, 100);
+	public static Color rdfPropertyColor = new Color(0, 0, 0);
 
-    public void changeDefaultStyle(RDFGraph graph) {
-        GraphUtilities.changeDefaultCellStyle(graph, this, rdfPropertyColor);
-    }
+	public void changeDefaultStyle(RDFGraph graph) {
+		GraphUtilities.changeDefaultCellStyle(graph, this, rdfPropertyColor);
+	}
 
-    public void changeStyle(RDFGraph graph) {
-        GraphUtilities.changeCellStyle(graph, this, GraphUtilities.selectedBorderColor,
-                GraphUtilities.selectedBorderColor);
-    }
+	public void changeStyle(RDFGraph graph) {
+		GraphUtilities.changeCellStyle(graph, this, GraphUtilities.selectedBorderColor,
+				GraphUtilities.selectedBorderColor);
+	}
 
-    public RDFPropertyCell() {
-        this(null);
-    }
+	public RDFPropertyCell() {
+		this(null);
+	}
 
-    public RDFPropertyCell(Object userObject) {
-        super(userObject);
-    }
+	public RDFPropertyCell(Object userObject) {
+		super(userObject);
+	}
 }

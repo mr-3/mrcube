@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mr3.sourceforge.net/
  * 
- * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
+ * Copyright (C) 2003-2015 Yamaguchi Laboratory, Keio University. All rights reserved. 
  * 
  * This file is part of MR^3.
  * 
@@ -29,7 +29,7 @@ import net.sourceforge.mr3.util.*;
 import com.hp.hpl.jena.rdf.model.*;
 
 /**
- * @author takeshi morita
+ * @author Takeshi Morita
  */
 public class MR3Writer {
 
@@ -82,8 +82,10 @@ public class MR3Writer {
 	}
 
 	/**
-	 * 1. RDFモデルからリテラルを含むStatementの集合を得る -> literalModel 2. RDFSモデルを得る
-	 * 3.プロジェクトモデルを得る． 4. リテラルモデルを削除する．
+	 * 1. RDFモデルからリテラルを含むStatementの集合を得る 
+	 * 2. RDFSモデルを得る
+	 * 3.プロジェクトモデルを得る． 
+	 * 4.リテラルモデルを削除する．
 	 */
 	public Model getProjectModel() {
 		Model exportModel = getRDFModel();

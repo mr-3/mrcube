@@ -14,7 +14,7 @@ import net.sourceforge.mr3.MR3Project;
 import net.sourceforge.mr3.util.Translator;
 
 /**
- * @author takeshi morita
+ * @author Takeshi Morita
  */
 public class ExitProjectAction extends AbstractActionFile {
 

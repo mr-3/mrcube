@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mr3.sourceforge.net/
  * 
- * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
+ * Copyright (C) 2003-2015 Yamaguchi Laboratory, Keio University. All rights reserved. 
  * 
  * This file is part of MR^3.
  * 
@@ -37,100 +37,113 @@ import org.jgraph.graph.*;
 
 /*
  * 
- * @author takeshi morita
+ * @author Takeshi Morita
  * 
  */
 public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 
-    private InsertClassAction insertClassAction;
-    private static String INSERT_CLASS_TITLE = Translator.getString("InsertClassDialog.Title");
+	private InsertClassAction insertClassAction;
+	private static String INSERT_CLASS_TITLE = Translator.getString("InsertClassDialog.Title");
+	private static Icon CLASS_RECTANGLE_ICON = Utilities.getImageIcon("class_rectangle.png");
 
-    public ClassGraphMarqueeHandler(GraphManager gm, RDFGraph classGraph) {
-        super(gm, classGraph);
-        insertClassAction = new InsertClassAction();
-        setAction(graph);
-    }
+	public ClassGraphMarqueeHandler(GraphManager gm, RDFGraph classGraph) {
+		super(gm, classGraph);
+		insertClassAction = new InsertClassAction();
+		setAction(graph);
+	}
 
-    private void setAction(JComponent panel) {
-        ActionMap actionMap = panel.getActionMap();
-        actionMap.put(insertClassAction.getValue(Action.NAME), insertClassAction);
-        InputMap inputMap = panel.getInputMap(JComponent.WHEN_FOCUSED);
-        inputMap.put(KeyStroke.getKeyStroke("control R"), insertClassAction.getValue(Action.NAME));
-    }
+	private void setAction(JComponent panel) {
+		ActionMap actionMap = panel.getActionMap();
+		actionMap.put(insertClassAction.getValue(Action.NAME), insertClassAction);
+		InputMap inputMap = panel.getInputMap(JComponent.WHEN_FOCUSED);
+		inputMap.put(KeyStroke.getKeyStroke("control R"), insertClassAction.getValue(Action.NAME));
+	}
 
-    // connectするかどうかをここで制御
-    public void mouseReleased(MouseEvent e) {
-        if (e != null && !e.isConsumed() && port != null && firstPort != null && firstPort != port) {
-            Port source = (Port) firstPort.getCell();
-            DefaultPort target = (DefaultPort) port.getCell();
-            cellMaker.connect(source, target, null, graph);
-            // graph.setSelectionCell(graph.getModel().getParent(source));
-            e.consume();
-        } else {
-            graph.repaint();
-        }
+	// connectするかどうかをここで制御
+	public void mouseReleased(MouseEvent e) {
+		if (e != null && !e.isConsumed() && port != null && firstPort != null && firstPort != port) {
+			Port source = (Port) firstPort.getCell();
+			DefaultPort target = (DefaultPort) port.getCell();
+			cellMaker.connect(source, target, null, graph);
+			// graph.setSelectionCell(graph.getModel().getParent(source));
+			e.consume();
+		} else {
+			graph.repaint();
+		}
 
-        firstPort = port = null;
-        start = current = null;
+		firstPort = port = null;
+		start = current = null;
 
-        super.mouseReleased(e);
-    }
+		super.mouseReleased(e);
+	}
 
-    public GraphCell insertResourceCell(Point pt) {
-        InsertRDFSResDialog dialog = getInsertRDFSResDialog(INSERT_CLASS_TITLE);
-        if (!dialog.isConfirm()) { return null; }
-        String uri = dialog.getURI();
-        if (uri == null || gmanager.isEmptyURI(uri) || gmanager.isDuplicatedWithDialog(uri, null, GraphType.CLASS)) { return null; }
-        return cellMaker.insertClass(pt, uri);
-    }
+	public GraphCell insertResourceCell(Point pt) {
+		InsertRDFSResDialog dialog = getInsertRDFSResDialog(INSERT_CLASS_TITLE);
+		if (!dialog.isConfirm()) {
+			return null;
+		}
+		String uri = dialog.getURI();
+		if (uri == null || gmanager.isEmptyURI(uri)
+				|| gmanager.isDuplicatedWithDialog(uri, null, GraphType.CLASS)) {
+			return null;
+		}
+		return cellMaker.insertClass(pt, uri);
+	}
 
-    public GraphCell insertSubClass(Point pt, Object[] supCells) {
-        InsertRDFSResDialog dialog = getInsertRDFSResDialog(INSERT_CLASS_TITLE);
-        if (!dialog.isConfirm()) { return null; }
-        String uri = dialog.getURI();
-        if (uri == null || gmanager.isEmptyURI(uri) || gmanager.isDuplicatedWithDialog(uri, null, GraphType.CLASS)) { return null; }
-        DefaultGraphCell cell = cellMaker.insertClass(pt, uri);
-        Port subPort = (Port) cell.getChildAt(0);
-        cellMaker.connectSubToSups(subPort, supCells, graph);
-        graph.setSelectionCell(cell);
+	public GraphCell insertSubClass(Point pt, Object[] supCells) {
+		InsertRDFSResDialog dialog = getInsertRDFSResDialog(INSERT_CLASS_TITLE);
+		if (!dialog.isConfirm()) {
+			return null;
+		}
+		String uri = dialog.getURI();
+		if (uri == null || gmanager.isEmptyURI(uri)
+				|| gmanager.isDuplicatedWithDialog(uri, null, GraphType.CLASS)) {
+			return null;
+		}
+		DefaultGraphCell cell = cellMaker.insertClass(pt, uri);
+		Port subPort = (Port) cell.getChildAt(0);
+		cellMaker.connectSubToSups(subPort, supCells, graph);
+		graph.setSelectionCell(cell);
 
-        return cell;
-    }
+		return cell;
+	}
 
-    private void addTransformMenu(JPopupMenu menu, Object cell) {
-        if (isCellSelected(cell)) {
-            menu.addSeparator();
-            menu.add(new TransformElementAction(graph, gmanager, GraphType.CLASS, GraphType.RDF));
-            menu.add(new TransformElementAction(graph, gmanager, GraphType.CLASS, GraphType.PROPERTY));
-        }
-    }
+	private void addTransformMenu(JPopupMenu menu, Object cell) {
+		if (isCellSelected(cell)) {
+			menu.addSeparator();
+			menu.add(new TransformElementAction(graph, gmanager, GraphType.CLASS, GraphType.RDF));
+			menu.add(new TransformElementAction(graph, gmanager, GraphType.CLASS,
+					GraphType.PROPERTY));
+		}
+	}
 
-    class InsertClassAction extends AbstractAction {
-        InsertClassAction() {
-            super(INSERT_CLASS_TITLE, RECTANGLE_ICON);
-        }
-        public void actionPerformed(ActionEvent ev) {
-            Object[] supCells = graph.getSelectionCells();
-            supCells = graph.getDescendants(supCells);
-            GraphCell cell = insertSubClass(insertPoint, supCells);
-            if (cell != null) {
-                HistoryManager.saveHistory(HistoryType.INSERT_CLASS, cell);
-            }
-        }
-    }
+	class InsertClassAction extends AbstractAction {
+		InsertClassAction() {
+			super(INSERT_CLASS_TITLE, CLASS_RECTANGLE_ICON);
+		}
 
-    /** create PopupMenu */
-    public JPopupMenu createPopupMenu(final Point pt, final Object cell) {
-        JPopupMenu menu = new JPopupMenu();
+		public void actionPerformed(ActionEvent ev) {
+			Object[] supCells = graph.getSelectionCells();
+			supCells = graph.getDescendants(supCells);
+			GraphCell cell = insertSubClass(insertPoint, supCells);
+			if (cell != null) {
+				HistoryManager.saveHistory(HistoryType.INSERT_CLASS, cell);
+			}
+		}
+	}
 
-        menu.add(insertClassAction);
-        menu.addSeparator();
-        addConnectORMoveMenu(menu);
+	/** create PopupMenu */
+	public JPopupMenu createPopupMenu(final Point pt, final Object cell) {
+		JPopupMenu menu = new JPopupMenu();
 
-        addTransformMenu(menu, cell);
-        addEditMenu(menu, cell);
-        menu.add(new ShowAttrDialog());
+		menu.add(insertClassAction);
+		menu.addSeparator();
+		addConnectORMoveMenu(menu);
 
-        return menu;
-    }
+		addTransformMenu(menu, cell);
+		addEditMenu(menu, cell);
+		menu.add(new ShowAttrDialog());
+
+		return menu;
+	}
 }

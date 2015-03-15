@@ -20,7 +20,7 @@ package net.sourceforge.mr3.util;
  * along with this library; if not, write to the Free Software Foundation,
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * modified by takeshi morita
+ * modified by Takeshi Morita
  *  
  */
 

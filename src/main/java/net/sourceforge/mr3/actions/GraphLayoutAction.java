@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mr3.sourceforge.net/
  * 
- * Copyright (C) 2003-2008 Yamaguchi Laboratory, Keio University. All rights reserved. 
+ * Copyright (C) 2003-2015 Yamaguchi Laboratory, Keio University. All rights reserved. 
  * 
  * This file is part of MR^3.
  * 
@@ -32,33 +32,37 @@ import net.sourceforge.mr3.jgraph.*;
 import net.sourceforge.mr3.util.*;
 
 /**
- * @author takeshi morita
+ * @author Takeshi Morita
  */
 public class GraphLayoutAction extends AbstractAction {
 
-    private GraphType graphType;
-    private GraphManager gmanager;
-    private static final ImageIcon ICON = Utilities.getImageIcon(Translator
-            .getString("Component.View.ApplyLayout.Icon"));
+	private GraphType graphType;
+	private GraphManager gmanager;
+	public static final ImageIcon layoutRDFGraphIcon = Utilities
+			.getImageIcon("layout_rdf_graph.png");
+	public static final ImageIcon layoutClassGraphIcon = Utilities
+			.getImageIcon("layout_class_graph.png");
+	public static final ImageIcon layoutPropertyGraphIcon = Utilities
+			.getImageIcon("layout_property_graph.png");
 
-    public GraphLayoutAction(GraphManager gm, GraphType type) {
-        super(getString(type), ICON);
-        gmanager = gm;
-        graphType = type;
-        putValue(SHORT_DESCRIPTION, type.toString() + "Graph Layout");
-    }
+	public GraphLayoutAction(GraphManager gm, GraphType type, ImageIcon icon) {
+		super(getString(type), icon);
+		gmanager = gm;
+		graphType = type;
+		putValue(SHORT_DESCRIPTION, type.toString() + "Graph Layout");
+	}
 
-    private static String getString(GraphType type) {
-        if (type == GraphType.CLASS) {
-            return Translator.getString("Class");
-        } else if (type == GraphType.PROPERTY) {
-            return Translator.getString("Property");
-        } else {
-            return type.toString();
-        }
-    }
+	private static String getString(GraphType type) {
+		if (type == GraphType.CLASS) {
+			return Translator.getString("Class");
+		} else if (type == GraphType.PROPERTY) {
+			return Translator.getString("Property");
+		} else {
+			return type.toString();
+		}
+	}
 
-    public void actionPerformed(ActionEvent arg0) {
-        gmanager.applyLayout(graphType);
-    }
+	public void actionPerformed(ActionEvent arg0) {
+		gmanager.applyLayout(graphType);
+	}
 }
