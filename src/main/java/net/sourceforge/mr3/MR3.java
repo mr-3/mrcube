@@ -144,6 +144,10 @@ public class MR3 extends JFrame implements ChangeListener {
 	private AbstractAction showImportDialogAction;
 	private AbstractAction showExportDialogAction;
 	private AbstractAction findResAction;
+	private AbstractAction showProjectInfoAction;
+	private AbstractAction showLogConsoleAciton;
+	private AbstractAction showOptionDialogAction;
+	private AbstractAction showVersionInfoAction;
 
 	private ImageIcon CPR_ICON = Utilities.getImageIcon(Translator
 			.getString("Component.Window.DeployCPRWindows.Icon"));
@@ -183,6 +187,10 @@ public class MR3 extends JFrame implements ChangeListener {
 		showExportDialogAction = new ShowExportDialog(this,
 				Translator.getString("Component.Window.ExportDialog.Text"));
 		findResAction = new FindResAction(null, gmanager);
+		showProjectInfoAction = new ShowProjectInfoDialog(this);
+		showLogConsoleAciton = new ShowLogConsole(this);
+		showOptionDialogAction = new ShowOptionDialog(this);
+		showVersionInfoAction = new ShowVersionInfoAction(this);
 	}
 
 	private JLabel findLabel;
@@ -203,8 +211,6 @@ public class MR3 extends JFrame implements ChangeListener {
 		toolbar.addSeparator();
 		toolbar.add(showImportDialogAction);
 		toolbar.add(showExportDialogAction);
-		toolbar.addSeparator();
-		toolbar.add(openPluginManagerAction);
 		toolbar.addSeparator();
 		toolbar.add(findResAction);
 		toolbar.addSeparator();
@@ -238,6 +244,11 @@ public class MR3 extends JFrame implements ChangeListener {
 		findNextButton.addActionListener(new NextResourceAction());
 		toolbar.add(findPrevButton);
 		toolbar.add(findNextButton);
+		toolbar.addSeparator();
+		toolbar.add(showProjectInfoAction);
+		toolbar.add(showLogConsoleAciton);
+		toolbar.add(showOptionDialogAction);
+		toolbar.add(showVersionInfoAction);
 
 		return toolbar;
 	}
@@ -671,11 +682,11 @@ public class MR3 extends JFrame implements ChangeListener {
 		menu.setMnemonic('t');
 		menu.add(openPluginManagerAction);
 		menu.add(new ShowValidator(this));
-		menu.add(new ShowProjectInfoDialog(this));
+		menu.add(showProjectInfoAction);
 		// menu.add(new ShowHistoryManager(this));
-		menu.add(new ShowLogConsole(this));
+		menu.add(showLogConsoleAciton);
 		menu.addSeparator();
-		menu.add(new ShowOptionDialog(this));
+		menu.add(showOptionDialogAction);
 
 		return menu;
 	}
@@ -683,7 +694,7 @@ public class MR3 extends JFrame implements ChangeListener {
 	private JMenu getHelpMenu() {
 		JMenu menu = new JMenu(Translator.getString("Component.Help.Text") + "(H)");
 		menu.setMnemonic('h');
-		menu.add(new ShowVersionInfoAction(this));
+		menu.add(showVersionInfoAction);
 		return menu;
 	}
 
