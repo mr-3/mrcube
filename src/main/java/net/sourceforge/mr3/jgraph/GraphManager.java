@@ -64,6 +64,7 @@ import net.sourceforge.mr3.io.MR3Writer;
 import net.sourceforge.mr3.io.RDFSModelExtraction;
 import net.sourceforge.mr3.layout.GraphLayoutData;
 import net.sourceforge.mr3.layout.GraphLayoutUtilities;
+import net.sourceforge.mr3.layout.JGraphTreeLayout;
 import net.sourceforge.mr3.layout.VGJTreeLayout;
 import net.sourceforge.mr3.ui.AttributeDialog;
 import net.sourceforge.mr3.ui.FindResourceDialog;
@@ -112,6 +113,7 @@ public class GraphManager {
 	private boolean isShowTypeCell;
 
 	private MR3CellMaker cellMaker;
+	private JGraphTreeLayout treeLayout;
 
 	private WeakReference<AttributeDialog> attrDialogRef;
 	private WeakReference<FindResourceDialog> findResDialogRef;
@@ -134,6 +136,7 @@ public class GraphManager {
 		nsTableDialogRef = new WeakReference<NameSpaceTableDialog>(null);
 		removeDialogRef = new WeakReference<RemoveDialog>(null);
 		cellMaker = new MR3CellMaker(this);
+		treeLayout = new JGraphTreeLayout(this);
 		baseURI = userPrefs.get(PrefConstants.BaseURI, MR3Resource.getURI());
 		GraphLayoutUtilities.setGraphManager(this);
 		mr3Writer = new MR3Writer(this);
@@ -165,17 +168,29 @@ public class GraphManager {
 
 	public RDFGraph getCurrentRDFGraph() {
 		MR3Project project = (MR3Project) desktopTabbedPane.getSelectedComponent();
-		return (RDFGraph) project.getRDFEditor().getGraph();
+		if (project != null) {
+			return (RDFGraph) project.getRDFEditor().getGraph();
+		} else {
+			return null;
+		}
 	}
 
 	public RDFGraph getCurrentPropertyGraph() {
 		MR3Project project = (MR3Project) desktopTabbedPane.getSelectedComponent();
-		return (RDFGraph) project.getPropertyEditor().getGraph();
+		if (project != null) {
+			return (RDFGraph) project.getPropertyEditor().getGraph();
+		} else {
+			return null;
+		}
 	}
 
 	public RDFGraph getCurrentClassGraph() {
 		MR3Project project = (MR3Project) desktopTabbedPane.getSelectedComponent();
-		return (RDFGraph) project.getClassEditor().getGraph();
+		if (project != null) {
+			return (RDFGraph) project.getClassEditor().getGraph();
+		} else {
+			return null;
+		}
 	}
 
 	public JTabbedPane getDesktopTabbedPane() {
@@ -298,9 +313,18 @@ public class GraphManager {
 	}
 
 	public void setGraphBackground(Color color) {
-		getCurrentRDFGraph().setBackground(color);
-		getCurrentClassGraph().setBackground(color);
-		getCurrentPropertyGraph().setBackground(color);
+		RDFGraph currentRDFGraph = getCurrentRDFGraph();
+		if (currentRDFGraph != null) {
+			currentRDFGraph.setBackground(color);
+		}
+		RDFGraph currentClassGraph = getCurrentClassGraph();
+		if (currentClassGraph != null) {
+			currentClassGraph.setBackground(color);
+		}
+		RDFGraph currentPropertyGraph = getCurrentPropertyGraph();
+		if (currentPropertyGraph != null) {
+			currentPropertyGraph.setBackground(color);
+		}
 	}
 
 	private Set<Resource> getMetaClassList(String[] list) {
@@ -392,9 +416,11 @@ public class GraphManager {
 
 	public void setAntialias() {
 		boolean isAntialias = userPrefs.getBoolean(PrefConstants.Antialias, true);
-		getCurrentRDFGraph().setAntiAliased(isAntialias);
-		getCurrentClassGraph().setAntiAliased(isAntialias);
-		getCurrentPropertyGraph().setAntiAliased(isAntialias);
+		if (getCurrentRDFGraph() != null) {
+			getCurrentRDFGraph().setAntiAliased(isAntialias);
+			getCurrentClassGraph().setAntiAliased(isAntialias);
+			getCurrentPropertyGraph().setAntiAliased(isAntialias);
+		}
 	}
 
 	public String getBaseURI() {
@@ -1343,18 +1369,35 @@ public class GraphManager {
 	public void applyLayout(GraphType graphType) {
 		RDFSModelExtraction extractRDFS = new RDFSModelExtraction(this);
 		if (GraphType.RDF == graphType) {
-			applyRDFLayout(graphType);
+			if (GraphLayoutUtilities.LAYOUT_TYPE.equals(GraphLayoutUtilities.VGJ_TREE_LAYOUT)) {
+				System.out.println("VGJ");
+				applyVGJRDFLayout(graphType);
+			} else if (GraphLayoutUtilities.LAYOUT_TYPE
+					.equals(GraphLayoutUtilities.JGRAPH_TREE_LAYOUT)) {
+				System.out.println("JGraph");
+				applyJGraphRDFLayout();
+			}
 		} else if (GraphType.CLASS == graphType) {
-			applyClassLayout(extractRDFS);
+			if (GraphLayoutUtilities.LAYOUT_TYPE.equals(GraphLayoutUtilities.VGJ_TREE_LAYOUT)) {
+				applyVGJClassLayout(extractRDFS);
+			} else if (GraphLayoutUtilities.LAYOUT_TYPE
+					.equals(GraphLayoutUtilities.JGRAPH_TREE_LAYOUT)) {
+				applyJGraphClassLayout();
+			}
 		} else if (GraphType.PROPERTY == graphType) {
-			applyPropertyLayout(extractRDFS);
+			if (GraphLayoutUtilities.LAYOUT_TYPE.equals(GraphLayoutUtilities.VGJ_TREE_LAYOUT)) {
+				applyVGJPropertyLayout(extractRDFS);
+			} else if (GraphLayoutUtilities.LAYOUT_TYPE
+					.equals(GraphLayoutUtilities.JGRAPH_TREE_LAYOUT)) {
+				applyJGraphPropertyLayout();
+			}
 		}
 	}
 
 	/**
 	 * @param extractRDFS
 	 */
-	private void applyPropertyLayout(RDFSModelExtraction extractRDFS) {
+	private void applyVGJPropertyLayout(RDFSModelExtraction extractRDFS) {
 		extractRDFS.extractPropertyModel(mr3Writer.getPropertyModel());
 		Map<RDFNode, GraphLayoutData> cellLayoutMap = VGJTreeLayout.getVGJPropertyCellLayoutMap();
 		RDFGraph propGraph = getCurrentPropertyGraph();
@@ -1370,10 +1413,21 @@ public class GraphManager {
 		}
 	}
 
+	private void applyJGraphPropertyLayout() {
+		RDFGraph propGraph = getCurrentPropertyGraph();
+		GraphLayoutUtilities.reverseArc(cellMaker, propGraph);
+		treeLayout.performJGraphTreeLayout(propGraph,
+				GraphLayoutUtilities.getJGraphPropertyLayoutDirection(),
+				GraphLayoutUtilities.PROPERTY_VERTICAL_SPACE,
+				GraphLayoutUtilities.PROPERTY_HORIZONTAL_SPACE);
+		GraphLayoutUtilities.reverseArc(cellMaker, propGraph);
+		clearSelection();
+	}
+
 	/**
 	 * @param extractRDFS
 	 */
-	private void applyClassLayout(RDFSModelExtraction extractRDFS) {
+	private void applyVGJClassLayout(RDFSModelExtraction extractRDFS) {
 		extractRDFS.extractClassModel(mr3Writer.getClassModel());
 		Map<RDFNode, GraphLayoutData> cellLayoutMap = VGJTreeLayout.getVGJClassCellLayoutMap();
 		RDFGraph classGraph = getCurrentClassGraph();
@@ -1389,10 +1443,21 @@ public class GraphManager {
 		}
 	}
 
+	private void applyJGraphClassLayout() {
+		RDFGraph classGraph = getCurrentClassGraph();
+		GraphLayoutUtilities.reverseArc(cellMaker, classGraph);
+		treeLayout.performJGraphTreeLayout(classGraph,
+				GraphLayoutUtilities.getJGraphClassLayoutDirection(),
+				GraphLayoutUtilities.CLASS_VERTICAL_SPACE,
+				GraphLayoutUtilities.CLASS_HORIZONTAL_SPACE);
+		GraphLayoutUtilities.reverseArc(cellMaker, classGraph);
+		clearSelection();
+	}
+
 	/**
 	 * @param graphType
 	 */
-	private void applyRDFLayout(GraphType graphType) {
+	private void applyVGJRDFLayout(GraphType graphType) {
 		removeTypeCells();
 		Map<RDFNode, GraphLayoutData> cellLayoutMap = VGJTreeLayout
 				.getVGJRDFCellLayoutMap(mr3Writer.getRDFModel());
@@ -1431,6 +1496,14 @@ public class GraphManager {
 		if (graphType == GraphType.RDF && isShowTypeCell()) {
 			addTypeCells();
 		}
+	}
+
+	private void applyJGraphRDFLayout() {
+		removeTypeCells();
+		treeLayout.performJGraphTreeLayout(getCurrentRDFGraph(),
+				GraphLayoutUtilities.getJGraphRDFLayoutDirection(),
+				GraphLayoutUtilities.RDF_VERTICAL_SPACE, GraphLayoutUtilities.RDF_HORIZONTAL_SPACE);
+		addTypeCells();
 	}
 
 	private void moveCell(GraphCell cell, GraphLayoutData data, RDFGraph graph) {
