@@ -127,8 +127,7 @@ public class ExportDialog extends JDialog implements ActionListener {
 	private static JTextArea exportTextArea;
 	private static final int FRAME_HEIGHT = 500;
 	private static final int FRAME_WIDTH = 600;
-	private static ImageIcon EXPORT_ICON = Utilities.getImageIcon(Translator
-			.getString("Component.File.Export.Icon"));
+	private static ImageIcon EXPORT_ICON = Utilities.getImageIcon(Translator.getString("Component.File.Export.Icon"));
 	private static ImageIcon FILE_ICON = Utilities.getImageIcon("page_white_text.png");
 	private static ImageIcon IMAGE_ICON = Utilities.getImageIcon("image.png");
 
@@ -163,8 +162,7 @@ public class ExportDialog extends JDialog implements ActionListener {
 		group.add(n3TRIPLERadioButton);
 		JPanel outputCheckPanel = new JPanel();
 		outputCheckPanel.setLayout(new GridLayout(2, 4));
-		outputCheckPanel.setBorder(BorderFactory.createTitledBorder(Translator
-				.getString("ImportDialog.Syntax")));
+		outputCheckPanel.setBorder(BorderFactory.createTitledBorder(Translator.getString("ImportDialog.Syntax")));
 		outputCheckPanel.add(xmlRadioButton);
 		xmlRadioButton.setSelected(true);
 		outputCheckPanel.add(nTripleRadioButton);
@@ -185,8 +183,7 @@ public class ExportDialog extends JDialog implements ActionListener {
 		propertyConvertBox.addActionListener(this);
 		JPanel dataTypePanel = new JPanel();
 		dataTypePanel.setLayout(new GridLayout(1, 3));
-		dataTypePanel.setBorder(BorderFactory.createTitledBorder(Translator
-				.getString("ImportDialog.DataType")));
+		dataTypePanel.setBorder(BorderFactory.createTitledBorder(Translator.getString("ImportDialog.DataType")));
 		dataTypePanel.add(rdfConvertBox);
 		dataTypePanel.add(classConvertBox);
 		dataTypePanel.add(propertyConvertBox);
@@ -202,8 +199,7 @@ public class ExportDialog extends JDialog implements ActionListener {
 		xmlbaseCheckBox.setSelected(true);
 		xmlbaseCheckBox.addActionListener(this);
 		JPanel optionCheckPanel = new JPanel();
-		optionCheckPanel.setBorder(BorderFactory.createTitledBorder(Translator
-				.getString("ExportDialog.Option")));
+		optionCheckPanel.setBorder(BorderFactory.createTitledBorder(Translator.getString("ExportDialog.Option")));
 		optionCheckPanel.setLayout(new GridLayout(2, 2));
 		optionCheckPanel.add(encodeCheckBox);
 		optionCheckPanel.add(selectedCheckBox);
@@ -214,8 +210,7 @@ public class ExportDialog extends JDialog implements ActionListener {
 		exportFileButton.setHorizontalAlignment(JButton.LEFT);
 		exportFileButton.setMnemonic('f');
 		exportFileButton.addActionListener(new ExportFileEvent());
-		exportImgButton = new JButton(Translator.getString("ExportDialog.Image") + "(I)",
-				IMAGE_ICON);
+		exportImgButton = new JButton(Translator.getString("ExportDialog.Image") + "(I)", IMAGE_ICON);
 		exportImgButton.setHorizontalAlignment(JButton.LEFT);
 		exportImgButton.setMnemonic('i');
 		exportImgButton.addActionListener(new ExportImgEvent());
@@ -237,8 +232,8 @@ public class ExportDialog extends JDialog implements ActionListener {
 
 		JPanel exportButtonPanel = new JPanel();
 		exportButtonPanel.setLayout(new GridLayout(2, 1, 5, 5));
-		exportButtonPanel.setBorder(BorderFactory.createTitledBorder(Translator
-				.getString("Component.File.Export.Text")));
+		exportButtonPanel
+				.setBorder(BorderFactory.createTitledBorder(Translator.getString("Component.File.Export.Text")));
 		exportButtonPanel.add(exportFileButton);
 		exportButtonPanel.add(exportImgButton);
 
@@ -258,8 +253,8 @@ public class ExportDialog extends JDialog implements ActionListener {
 		settingPanel.add(buttonPanel, BorderLayout.EAST);
 
 		exportTextArea = new JTextArea();
-		JSplitPane sourcePane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-				Utilities.createWestPanel(settingPanel), new JScrollPane(exportTextArea));
+		JSplitPane sourcePane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, Utilities.createWestPanel(settingPanel),
+				new JScrollPane(exportTextArea));
 		sourcePane.setOneTouchExpandable(true);
 
 		setContentPane(sourcePane);
@@ -269,10 +264,10 @@ public class ExportDialog extends JDialog implements ActionListener {
 		setVisible(false);
 	}
 
-	private static RDFsFileFilter rdfsFileFilter = new RDFsFileFilter();
-	private static NTripleFileFilter n3FileFilter = new NTripleFileFilter();
-	private static TurtleFileFilter turtleFileFilter = new TurtleFileFilter();
-	private static OWLFileFilter owlFileFilter = new OWLFileFilter();
+	private static RDFsFileFilter rdfsFileFilter = new RDFsFileFilter(true);
+	private static NTripleFileFilter n3FileFilter = new NTripleFileFilter(true);
+	private static TurtleFileFilter turtleFileFilter = new TurtleFileFilter(true);
+	private static OWLFileFilter owlFileFilter = new OWLFileFilter(true);
 	private static PNGFileFilter pngFileFilter = new PNGFileFilter();
 
 	private File getFile() {
@@ -280,8 +275,7 @@ public class ExportDialog extends JDialog implements ActionListener {
 	}
 
 	private File getFile(String extension) {
-		JFileChooser jfc = new JFileChooser(gmanager.getUserPrefs().get(
-				PrefConstants.WorkDirectory, ""));
+		JFileChooser jfc = new JFileChooser(gmanager.getUserPrefs().get(PrefConstants.WorkDirectory, ""));
 		if (extension.equals("rdf")) {
 			jfc.addChoosableFileFilter(rdfsFileFilter);
 			jfc.addChoosableFileFilter(owlFileFilter);
@@ -306,9 +300,9 @@ public class ExportDialog extends JDialog implements ActionListener {
 
 	private String complementRDFsExtension(String tmp, String extension) {
 		String ext = (extension != null) ? "." + extension.toLowerCase() : "";
-		if (extension != null && !tmp.toLowerCase().endsWith(".rdf")
-				&& !tmp.toLowerCase().endsWith(".rdfs") && !tmp.toLowerCase().endsWith(".n3")
-				&& !tmp.toLowerCase().endsWith(".ttl") && !tmp.toLowerCase().endsWith(".owl")) {
+		if (extension != null && !tmp.toLowerCase().endsWith(".rdf") && !tmp.toLowerCase().endsWith(".rdfs")
+				&& !tmp.toLowerCase().endsWith(".n3") && !tmp.toLowerCase().endsWith(".ttl")
+				&& !tmp.toLowerCase().endsWith(".owl")) {
 			tmp += ext;
 		}
 		return tmp;
@@ -322,8 +316,7 @@ public class ExportDialog extends JDialog implements ActionListener {
 			}
 			try {
 				String encoding = gmanager.getUserPrefs().get(PrefConstants.OutputEncoding, "UTF8");
-				Writer writer = new OutputStreamWriter(new BufferedOutputStream(
-						new FileOutputStream(file)), encoding);
+				Writer writer = new OutputStreamWriter(new BufferedOutputStream(new FileOutputStream(file)), encoding);
 				writeModel(getModel(), writer);
 				writer.close();
 			} catch (Exception ex) {
@@ -349,8 +342,8 @@ public class ExportDialog extends JDialog implements ActionListener {
 	class ExportImgEvent implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (getSelectedCount() != 1) {
-				JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(),
-						"Check (RDF or Class or Property)", "", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), "Check (RDF or Class or Property)", "",
+						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			String fileType = "png";
@@ -360,8 +353,7 @@ public class ExportDialog extends JDialog implements ActionListener {
 			}
 			try {
 				BufferedImage img = null;
-				if (rdfConvertBox.isSelected()
-						&& gmanager.getCurrentRDFGraph().getModel().getRootCount() > 0) {
+				if (rdfConvertBox.isSelected() && gmanager.getCurrentRDFGraph().getModel().getRootCount() > 0) {
 					img = GPConverter.toImage(gmanager.getCurrentRDFGraph());
 				} else if (classConvertBox.isSelected()
 						&& gmanager.getCurrentClassGraph().getModel().getRootCount() > 0) {
@@ -387,8 +379,7 @@ public class ExportDialog extends JDialog implements ActionListener {
 		for (int i = 0; i < cells.length; i++) {
 			GraphCell cell = (GraphCell) cells[i];
 			if (RDFGraph.isRDFResourceCell(cell)) {
-				RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(cell
-						.getAttributes());
+				RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(cell.getAttributes());
 				Resource resType = info.getType();
 				if (resType.getURI().length() == 0) {
 					resType = RDFS.Resource;
@@ -418,8 +409,8 @@ public class ExportDialog extends JDialog implements ActionListener {
 	private String getExtension() {
 		if (xmlRadioButton.isSelected()) {
 			return "rdf";
-		} else if (n3RadioButton.isSelected() || n3PPRadioButton.isSelected()
-				|| n3PLAINRadioButton.isSelected() || n3TRIPLERadioButton.isSelected()) {
+		} else if (n3RadioButton.isSelected() || n3PPRadioButton.isSelected() || n3PLAINRadioButton.isSelected()
+				|| n3TRIPLERadioButton.isSelected()) {
 			return "n3";
 		} else if (nTripleRadioButton.isSelected()) {
 			return "n3";
@@ -537,12 +528,10 @@ public class ExportDialog extends JDialog implements ActionListener {
 			if (!subject.isAnon()) {
 				subject = ResourceFactory.createResource(URIref.encode(stmt.getSubject().getURI()));
 			}
-			Property predicate = ResourceFactory.createProperty(URIref.encode(stmt.getPredicate()
-					.getURI()));
+			Property predicate = ResourceFactory.createProperty(URIref.encode(stmt.getPredicate().getURI()));
 			RDFNode object = stmt.getObject();
 			if (object.isResource() && !object.isAnon()) {
-				object = ResourceFactory
-						.createResource(URIref.encode(((Resource) object).getURI()));
+				object = ResourceFactory.createResource(URIref.encode(((Resource) object).getURI()));
 			}
 			encodedModel.add(subject, predicate, object);
 		}

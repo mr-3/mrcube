@@ -181,6 +181,15 @@
 			<name>JFontChooser Repository</name>
 			<url>http://jfontchooser.sourceforge.jp/repository/</url>
 		</repository>
+		<repository>
+			<id>net.sourceforge.doddle-owl</id>
+			<url>http://doddle-owl.sourceforge.net/m2repository</url>
+		</repository>
+		<repository>
+			<id>repository.apache.org</id>
+			<name>Apache Jena Repository</name>
+			<url>https://repository.apache.org/content/repositories/releases/</url>
+		</repository>
 	</repositories>
 	<dependencies>
 		<dependency>
@@ -200,11 +209,6 @@
 			<version>1.0.2</version>
 		</dependency>
 		<dependency>
-			<groupId>net.infonode</groupId>
-			<artifactId>idw</artifactId>
-			<version>1.6.1_gpl</version>
-		</dependency>
-		<dependency>
 			<groupId>oro</groupId>
 			<artifactId>oro</artifactId>
 			<version>2.0.8</version>
@@ -214,6 +218,11 @@
 			<artifactId>apache-jena-libs</artifactId>
 			<version>2.12.1</version>
 			<type>pom</type>
+		</dependency>
+   	    <dependency>
+			<groupId>net.infonode</groupId>
+			<artifactId>idw</artifactId>
+			<version>1.6.1_gpl</version>
 		</dependency>
 		<dependency>
 			<groupId>say.swing</groupId>

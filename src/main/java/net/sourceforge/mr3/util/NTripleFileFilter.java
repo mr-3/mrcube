@@ -23,29 +23,39 @@
 
 package net.sourceforge.mr3.util;
 
-import java.io.*;
+import java.io.File;
 
 /**
  * @author Takeshi Morita
  */
 public class NTripleFileFilter extends MR3FileFilter implements java.io.FileFilter {
 
-    public String getExtension() {
-        return "n3";
-    }
+	private boolean isShowDirectories;
 
-    public boolean accept(File f) {
-        if (f.isDirectory()) { return false; }
-        String extension = getExtension(f);
-        if (extension != null && extension.equals("n3")) { return true; }
-        return false;
-    }
+	public NTripleFileFilter(boolean isShowDirectories) {
+		this.isShowDirectories = isShowDirectories;
+	}
 
-    public String getDescription() {
-        return "N-Triple File (*.n3)";
-    }
+	public String getExtension() {
+		return "n3";
+	}
 
-    public String toString() {
-        return getDescription();
-    }
+	public boolean accept(File f) {
+		if (f.isDirectory()) {
+			return isShowDirectories;
+		}
+		String extension = getExtension(f);
+		if (extension != null && extension.equals("n3")) {
+			return true;
+		}
+		return false;
+	}
+
+	public String getDescription() {
+		return "N-Triple File (*.n3)";
+	}
+
+	public String toString() {
+		return getDescription();
+	}
 }

@@ -83,15 +83,14 @@ public class ImportDialog extends JDialog implements ActionListener {
 
 	private ChangeContainerAction changeContainerAction;
 
-	private static FileFilter owlFileFilter = new OWLFileFilter();
-	private static FileFilter rdfsFileFilter = new RDFsFileFilter();
-	private static FileFilter n3FileFilter = new NTripleFileFilter();
-	private static FileFilter turtleFileFilter = new TurtleFileFilter();
+	private static FileFilter owlFileFilter = new OWLFileFilter(false);
+	private static FileFilter rdfsFileFilter = new RDFsFileFilter(false);
+	private static FileFilter n3FileFilter = new NTripleFileFilter(false);
+	private static FileFilter turtleFileFilter = new TurtleFileFilter(false);
 
 	private static final int FRAME_HEIGHT = 400;
 	private static final int FRAME_WIDTH = 600;
-	private static ImageIcon IMPORT_ICON = Utilities.getImageIcon(Translator
-			.getString("ImportDialog.Icon"));
+	private static ImageIcon IMPORT_ICON = Utilities.getImageIcon(Translator.getString("ImportDialog.Icon"));
 
 	public ImportDialog(GraphManager gm) {
 		super(gm.getRootFrame(), Translator.getString("ImportDialog.Title"), true);
@@ -116,23 +115,20 @@ public class ImportDialog extends JDialog implements ActionListener {
 		group.add(syntaxTurtleButton);
 		JPanel syntaxPanel = new JPanel();
 		syntaxPanel.setLayout(new GridLayout(2, 2));
-		syntaxPanel.setBorder(BorderFactory.createTitledBorder(Translator
-				.getString("ImportDialog.Syntax")));
+		syntaxPanel.setBorder(BorderFactory.createTitledBorder(Translator.getString("ImportDialog.Syntax")));
 		syntaxPanel.add(syntaxXMLButton);
 		syntaxPanel.add(syntaxN3Button);
 		syntaxPanel.add(syntaxNTripleButton);
 		syntaxPanel.add(syntaxTurtleButton);
-		importReplaceButton = new JRadioButton(
-				Translator.getString("ImportDialog.ImportMethod.Replace"));
-		importMergeButton = new JRadioButton(
-				Translator.getString("ImportDialog.ImportMethod.Merge"));
+		importReplaceButton = new JRadioButton(Translator.getString("ImportDialog.ImportMethod.Replace"));
+		importMergeButton = new JRadioButton(Translator.getString("ImportDialog.ImportMethod.Merge"));
 		importMergeButton.setSelected(true);
 		group = new ButtonGroup();
 		group.add(importReplaceButton);
 		group.add(importMergeButton);
 		JPanel importMethodPanel = new JPanel();
-		importMethodPanel.setBorder(BorderFactory.createTitledBorder(Translator
-				.getString("ImportDialog.ImportMethod")));
+		importMethodPanel
+				.setBorder(BorderFactory.createTitledBorder(Translator.getString("ImportDialog.ImportMethod")));
 		importMethodPanel.add(importMergeButton);
 		importMethodPanel.add(importReplaceButton);
 		ActionListener dataTypeManagementAction = new DataTypeManagementAction();
@@ -149,8 +145,7 @@ public class ImportDialog extends JDialog implements ActionListener {
 		group.add(dataTypeRDFSButton);
 		group.add(dataTypeOWLButton);
 		JPanel dataTypePanel = new JPanel();
-		dataTypePanel.setBorder(BorderFactory.createTitledBorder(Translator
-				.getString("ImportDialog.DataType")));
+		dataTypePanel.setBorder(BorderFactory.createTitledBorder(Translator.getString("ImportDialog.DataType")));
 		dataTypePanel.add(dataTypeRDFButton);
 		dataTypePanel.add(dataTypeRDFSButton);
 		dataTypePanel.add(dataTypeOWLButton);
@@ -210,10 +205,9 @@ public class ImportDialog extends JDialog implements ActionListener {
 		fileListUI = new JList();
 		fileListUI.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		JScrollPane fileListScroll = new JScrollPane(fileListUI);
-		fileListScroll.setBorder(BorderFactory.createTitledBorder(Translator
-				.getString("ImportDialog.ImportFileList")));
-		filterBox = new JComboBox(new Object[] { rdfsFileFilter, n3FileFilter, turtleFileFilter,
-				owlFileFilter, "All Files" });
+		fileListScroll.setBorder(BorderFactory.createTitledBorder(Translator.getString("ImportDialog.ImportFileList")));
+		filterBox = new JComboBox(new Object[] { rdfsFileFilter, n3FileFilter, turtleFileFilter, owlFileFilter,
+				"All Files" });
 		filterBox.addActionListener(changeContainerAction);
 		filterBox.setSelectedIndex(0);
 		JPanel fileListPanel = new JPanel();
@@ -229,8 +223,7 @@ public class ImportDialog extends JDialog implements ActionListener {
 		selectFilePanel.add(findPanel, BorderLayout.NORTH);
 		selectFilePanel.add(fileListPanel, BorderLayout.CENTER);
 		selectFilePanel.add(reloadButtonPanel, BorderLayout.SOUTH);
-		importButton = new JButton(Translator.getString("Component.File.Import.Text") + "(I)",
-				IMPORT_ICON);
+		importButton = new JButton(Translator.getString("Component.File.Import.Text") + "(I)", IMPORT_ICON);
 		importButton.setMnemonic('i');
 		importButton.addActionListener(this);
 		cancelButton = new JButton(MR3Constants.CANCEL);
@@ -246,10 +239,8 @@ public class ImportDialog extends JDialog implements ActionListener {
 		buttonPanel.add(cancelButton);
 
 		Container contentPane = getContentPane();
-		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, mainPanel,
-				selectFilePanel);
-		JSplitPane centerSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, containerListPanel,
-				splitPane);
+		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, mainPanel, selectFilePanel);
+		JSplitPane centerSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, containerListPanel, splitPane);
 		centerSplitPane.setDividerLocation(0.5);
 		contentPane.add(centerSplitPane, BorderLayout.CENTER);
 		contentPane.add(Utilities.createEastPanel(buttonPanel), BorderLayout.SOUTH);
@@ -283,7 +274,7 @@ public class ImportDialog extends JDialog implements ActionListener {
 		private File getDirectory() {
 			Preferences userPrefs = gmanager.getUserPrefs();
 			JFileChooser jfc = new JFileChooser(userPrefs.get(PrefConstants.WorkDirectory, ""));
-			jfc.setFileHidingEnabled(false);
+			jfc.setFileHidingEnabled(true);
 			jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			if (jfc.showOpenDialog(gmanager.getDesktopTabbedPane()) == JFileChooser.APPROVE_OPTION) {
 				return jfc.getSelectedFile();
@@ -324,7 +315,7 @@ public class ImportDialog extends JDialog implements ActionListener {
 			} else if (e.getSource() == addURIButton) {
 				try {
 					String uri = JOptionPane
-							.showInputDialog("Input URI ( exp. http://slashdot.jp/slashdot.rdf )");
+							.showInputDialog("Input URI ( exp. https://creativecommons.org/schema.rdf )");
 					if (uri == null) {
 						return;
 					}
@@ -366,8 +357,8 @@ public class ImportDialog extends JDialog implements ActionListener {
 					uriSet.add(selectedContainer.toString());
 				} else {
 					if (filterBox.getSelectedItem() instanceof java.io.FileFilter) {
-						fileSet.addAll(Arrays.asList(selectedDirectory
-								.listFiles((java.io.FileFilter) filterBox.getSelectedItem())));
+						fileSet.addAll(Arrays.asList(selectedDirectory.listFiles((java.io.FileFilter) filterBox
+								.getSelectedItem())));
 					} else {
 						fileSet.addAll(Arrays.asList(selectedDirectory.listFiles()));
 					}
@@ -455,8 +446,7 @@ public class ImportDialog extends JDialog implements ActionListener {
 		// System.out.println(tokens[0].substring(4));
 		// System.out.println(tokens[1]);
 		String fileName = tokens[1];
-		String dirPath = containerListModel.get(Integer.parseInt(tokens[0].substring(4)))
-				.toString();
+		String dirPath = containerListModel.get(Integer.parseInt(tokens[0].substring(4))).toString();
 		return new File(dirPath, fileName);
 	}
 
@@ -488,13 +478,13 @@ public class ImportDialog extends JDialog implements ActionListener {
 			try {
 				inputStreamSet.add(new BufferedInputStream(getURI(uri).openStream()));
 			} catch (UnknownHostException uhe) {
-				JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(),
-						"Unknown Host(Proxy)", "Warning", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), "Unknown Host(Proxy)", "Warning",
+						JOptionPane.ERROR_MESSAGE);
 			} catch (MalformedURLException uriex) {
 				uriex.printStackTrace();
 			} catch (IOException ioe) {
-				JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), "File Not Found.",
-						"Warning", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), "File Not Found.", "Warning",
+						JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		return inputStreamSet;
