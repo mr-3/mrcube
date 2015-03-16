@@ -23,25 +23,35 @@
 
 package net.sourceforge.mr3.util;
 
-import java.io.*;
+import java.io.File;
 
 /**
  * @author Takeshi Morita
  */
 public class TurtleFileFilter extends MR3FileFilter implements java.io.FileFilter {
 
-    public String getExtension() {
-        return "ttl";
-    }
+	private boolean isShowDirectories;
 
-    public boolean accept(File f) {
-        if (f.isDirectory()) { return true; }
-        String extension = getExtension(f);
-        if (extension != null && extension.equals("ttl")) { return true; }
-        return false;
-    }
+	public TurtleFileFilter(boolean isShowDirectories) {
+		this.isShowDirectories = isShowDirectories;
+	}
 
-    public String getDescription() {
-        return "Turtle (*.ttl)";
-    }
+	public String getExtension() {
+		return "ttl";
+	}
+
+	public boolean accept(File f) {
+		if (f.isDirectory()) {
+			return isShowDirectories;
+		}
+		String extension = getExtension(f);
+		if (extension != null && extension.equals("ttl")) {
+			return true;
+		}
+		return false;
+	}
+
+	public String getDescription() {
+		return "Turtle (*.ttl)";
+	}
 }

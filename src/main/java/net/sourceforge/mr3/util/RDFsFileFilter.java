@@ -23,27 +23,37 @@
 
 package net.sourceforge.mr3.util;
 
-import java.io.*;
+import java.io.File;
 
 /**
  * @author Takeshi Morita
  */
 public class RDFsFileFilter extends MR3FileFilter implements java.io.FileFilter {
 
-    public String getExtension() {
-        return "rdf";
-    }
+	private boolean isShowDirectories;
 
-    public boolean accept(File f) {
-        if (f.isDirectory()) { return true; }
-        String extension = getExtension(f);
-        if (extension != null) {
-            if (extension.equals("xml") || extension.equals("rdf") || extension.equals("rdfs")) { return true; }
-        }
-        return false;
-    }
+	public RDFsFileFilter(boolean isShowDirectories) {
+		this.isShowDirectories = isShowDirectories;
+	}
 
-    public String getDescription() {
-        return "RDF(S) (*.xml, *.rdf, *.rdfs)";
-    }
+	public String getExtension() {
+		return "rdf";
+	}
+
+	public boolean accept(File f) {
+		if (f.isDirectory()) {
+			return isShowDirectories;
+		}
+		String extension = getExtension(f);
+		if (extension != null) {
+			if (extension.equals("xml") || extension.equals("rdf") || extension.equals("rdfs")) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public String getDescription() {
+		return "RDF(S) (*.xml, *.rdf, *.rdfs)";
+	}
 }

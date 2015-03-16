@@ -359,28 +359,25 @@ public class GraphManager {
 		return userPrefs.get(PrefConstants.ResourceContainer, "").split(",");
 	}
 
-	public static final String CLASS_CLASS_LIST = RDFS.Class.toString() + " "
-			+ OWL.Class.toString();
+	public static final String CLASS_CLASS_LIST = RDFS.Class.toString() + " " + OWL.Class.toString();
 
 	public String getDefaultClassClass() {
 		return userPrefs.get(PrefConstants.DefaultClassClass, RDFS.Class.getURI());
 	}
 
 	public Set<Resource> getClassClassList() {
-		return getMetaClassList(userPrefs.get(PrefConstants.ClassClassList, CLASS_CLASS_LIST)
-				.split(" "));
+		return getMetaClassList(userPrefs.get(PrefConstants.ClassClassList, CLASS_CLASS_LIST).split(" "));
 	}
 
-	public static final String PROPERTY_CLASS_LIST = RDF.Property.toString() + " "
-			+ OWL.ObjectProperty.toString() + " " + OWL.DatatypeProperty.toString();
+	public static final String PROPERTY_CLASS_LIST = RDF.Property.toString() + " " + OWL.ObjectProperty.toString()
+			+ " " + OWL.DatatypeProperty.toString();
 
 	public String getDefaultPropertyClass() {
 		return userPrefs.get(PrefConstants.DefaultPropertyClass, RDF.Property.getURI());
 	}
 
 	public Set<Resource> getPropertyClassList() {
-		return getMetaClassList(userPrefs.get(PrefConstants.PropClassList, PROPERTY_CLASS_LIST)
-				.split(" "));
+		return getMetaClassList(userPrefs.get(PrefConstants.PropClassList, PROPERTY_CLASS_LIST).split(" "));
 	}
 
 	public Set<Resource> getMetaClassList() {
@@ -390,8 +387,7 @@ public class GraphManager {
 	}
 
 	public void findMetaClass(Model orgModel, Resource supClass, Set<Resource> set) {
-		for (ResIterator i = orgModel.listSubjectsWithProperty(RDFS.subClassOf, supClass); i
-				.hasNext();) {
+		for (ResIterator i = orgModel.listSubjectsWithProperty(RDFS.subClassOf, supClass); i.hasNext();) {
 			Resource subject = i.nextResource();
 			set.add(subject);
 			findMetaClass(orgModel, subject, set);
@@ -435,8 +431,7 @@ public class GraphManager {
 		Set<String> classSet = new HashSet<String>();
 		for (Object cell : getCurrentClassGraph().getAllCells()) {
 			if (RDFGraph.isRDFSClassCell(cell)) {
-				RDFSInfo info = (RDFSInfo) GraphConstants.getValue(((GraphCell) cell)
-						.getAttributes());
+				RDFSInfo info = (RDFSInfo) GraphConstants.getValue(((GraphCell) cell).getAttributes());
 				classSet.add(info.getURIStr());
 			}
 		}
@@ -447,8 +442,7 @@ public class GraphManager {
 		Set<String> propertySet = new HashSet<String>();
 		for (Object cell : getCurrentPropertyGraph().getAllCells()) {
 			if (RDFGraph.isRDFSPropertyCell(cell)) {
-				RDFSInfo info = (RDFSInfo) GraphConstants.getValue(((GraphCell) cell)
-						.getAttributes());
+				RDFSInfo info = (RDFSInfo) GraphConstants.getValue(((GraphCell) cell).getAttributes());
 				propertySet.add(info.getURIStr());
 			}
 		}
@@ -508,8 +502,7 @@ public class GraphManager {
 		for (int i = 0; i < rdfCells.length; i++) {
 			GraphCell rdfCell = (GraphCell) rdfCells[i];
 			if (rdfCell instanceof RDFResourceCell) {
-				RDFResourceInfo resInfo = (RDFResourceInfo) GraphConstants.getValue(rdfCell
-						.getAttributes());
+				RDFResourceInfo resInfo = (RDFResourceInfo) GraphConstants.getValue(rdfCell.getAttributes());
 				if (resInfo == null) {
 					resInfo = (RDFResourceInfo) GraphConstants.getValue(rdfCell.getAttributes());
 				}
@@ -553,8 +546,8 @@ public class GraphManager {
 
 	public boolean isEmptyURI(String uri) {
 		if (uri.equals("")) {
-			JOptionPane.showMessageDialog(desktopTabbedPane,
-					Translator.getString("Warning.Message4"), WARNING, JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(desktopTabbedPane, Translator.getString("Warning.Message4"), WARNING,
+					JOptionPane.ERROR_MESSAGE);
 			return true;
 		}
 		return false;
@@ -562,16 +555,15 @@ public class GraphManager {
 
 	public boolean isDuplicatedWithDialog(String uri, Object cell, GraphType type) {
 		if (isDuplicated(uri, cell, type)) {
-			JOptionPane.showMessageDialog(getGraph(type), Translator.getString("Warning.Message1"),
-					WARNING, JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(getGraph(type), Translator.getString("Warning.Message1"), WARNING,
+					JOptionPane.ERROR_MESSAGE);
 			return true;
 		}
 		return false;
 	}
 
 	public boolean isDuplicated(String uri, Object cell, GraphType type) {
-		return (getCurrentRDFSInfoMap().isDuplicated(uri, cell, type) || isRDFResourceDuplicated(
-				uri, cell, type));
+		return (getCurrentRDFSInfoMap().isDuplicated(uri, cell, type) || isRDFResourceDuplicated(uri, cell, type));
 	}
 
 	/**
@@ -604,8 +596,7 @@ public class GraphManager {
 		for (int i = 0; i < rdfCells.length; i++) {
 			GraphCell cell = (GraphCell) rdfCells[i];
 			if (RDFGraph.isRDFResourceCell(cell)) {
-				RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(cell
-						.getAttributes());
+				RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(cell.getAttributes());
 				Resource uri = info.getURI();
 				nameSpaces.add(uri.getNameSpace());
 			}
@@ -632,8 +623,7 @@ public class GraphManager {
 		Set<String> nameSpaces = new HashSet<String>();
 		for (Object cell : getCurrentPropertyGraph().getAllCells()) {
 			if (RDFGraph.isRDFSPropertyCell(cell)) {
-				RDFSInfo info = (RDFSInfo) GraphConstants.getValue(((GraphCell) cell)
-						.getAttributes());
+				RDFSInfo info = (RDFSInfo) GraphConstants.getValue(((GraphCell) cell).getAttributes());
 				Resource uri = info.getURI();
 				nameSpaces.add(uri.getNameSpace());
 			}
@@ -657,10 +647,8 @@ public class GraphManager {
 			} else if (rdfsInfoMap.isPropertyCell(uri)) {
 				continue;
 			} else if (uri.getURI().matches(MR3Resource.Literal.getURI() + ".*")) {
-				MR3Literal literal = new MR3Literal(rec.getString(), rec.getLanguage(),
-						rec.getDatatype());
-				DefaultGraphCell litCell = (DefaultGraphCell) cellMaker.insertRDFLiteral(
-						rec.getRectangle(), literal);
+				MR3Literal literal = new MR3Literal(rec.getString(), rec.getLanguage(), rec.getDatatype());
+				DefaultGraphCell litCell = (DefaultGraphCell) cellMaker.insertRDFLiteral(rec.getRectangle(), literal);
 				DefaultGraphCell source = (DefaultGraphCell) getRDFResourceCell(rec.getResource());
 				if (source == null) {
 					// System.out.println("s: " + source);
@@ -669,8 +657,8 @@ public class GraphManager {
 				GraphCell propCell = (GraphCell) rdfsInfoMap.getPropertyCell(rec.getProperty());
 				if (propCell != null) {
 					RDFSInfo info = (RDFSInfo) GraphConstants.getValue(propCell.getAttributes());
-					cellMaker.connect((Port) source.getChildAt(0), (Port) litCell.getChildAt(0),
-							info, getCurrentRDFGraph());
+					cellMaker.connect((Port) source.getChildAt(0), (Port) litCell.getChildAt(0), info,
+							getCurrentRDFGraph());
 				}
 			}
 			MR3.STATUS_BAR.addValue();
@@ -693,10 +681,8 @@ public class GraphManager {
 			} else if (RDFGraph.isRDFResourceCell(cell)) {
 				dim = GraphUtilities.getAutoNodeDimension(this, value);
 				if (isShowTypeCell) {
-					RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(cell
-							.getAttributes());
-					RDFSInfo typeInfo = (RDFSInfo) GraphConstants.getValue(info.getTypeCell()
-							.getAttributes());
+					RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(cell.getAttributes());
+					RDFSInfo typeInfo = (RDFSInfo) GraphConstants.getValue(info.getTypeCell().getAttributes());
 					Dimension typeDim = GraphUtilities.getAutoNodeDimension(this,
 							getRDFSNodeValue(info.getType(), typeInfo));
 
@@ -800,8 +786,7 @@ public class GraphManager {
 		for (int i = 0; i < cells.length; i++) {
 			if (RDFGraph.isRDFResourceCell(cells[i])) {
 				GraphCell cell = (GraphCell) cells[i];
-				RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(cell
-						.getAttributes());
+				RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(cell.getAttributes());
 				/*
 				 * Resourceクラスのインスタンスをequalsで比べるとisAnon()
 				 * によって，true,falseを決められる．文字列を保存しているuri
@@ -937,8 +922,7 @@ public class GraphManager {
 		for (int i = 0; i < cells.length; i++) {
 			if (RDFGraph.isRDFResourceCell(cells[i])) {
 				GraphCell cell = (GraphCell) cells[i];
-				RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(cell
-						.getAttributes());
+				RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(cell.getAttributes());
 				if (info.getTypeCell() == type) {
 					instanceSet.add(cell);
 				}
@@ -953,8 +937,7 @@ public class GraphManager {
 		for (int i = 0; i < cells.length; i++) {
 			if (RDFGraph.isRDFResourceCell(cells[i])) {
 				GraphCell cell = (GraphCell) cells[i];
-				RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(cell
-						.getAttributes());
+				RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(cell.getAttributes());
 				if (info.getType().getURI().equals(clsInfo.getURIStr())) {
 					instanceInfoSet.add(info);
 				}
@@ -1010,8 +993,7 @@ public class GraphManager {
 		for (int i = 0; i < cells.length; i++) {
 			GraphCell cell = (GraphCell) cells[i];
 			if (RDFGraph.isRDFResourceCell(cell)) {
-				RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(cell
-						.getAttributes());
+				RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(cell.getAttributes());
 				if (isMatches(key, info.getURI())) {
 					result.add(cell);
 				}
@@ -1025,8 +1007,7 @@ public class GraphManager {
 		return result;
 	}
 
-	public Set<GraphCell> getFindRDFResult(String key,
-			FindResourceDialog.FindActionType findActionType) {
+	public Set<GraphCell> getFindRDFResult(String key, FindResourceDialog.FindActionType findActionType) {
 		Set<GraphCell> result = new HashSet<GraphCell>();
 		RDFGraph rdfGraph = getCurrentRDFGraph();
 		Object[] cells = rdfGraph.getAllCells();
@@ -1034,8 +1015,7 @@ public class GraphManager {
 			GraphCell cell = (GraphCell) cells[i];
 			List<MR3Literal> list = null;
 			if (RDFGraph.isRDFResourceCell(cell)) {
-				RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(cell
-						.getAttributes());
+				RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(cell.getAttributes());
 				if (findActionType == FindResourceDialog.FindActionType.LABEL) {
 					list = info.getLabelList();
 				} else if (findActionType == FindResourceDialog.FindActionType.COMMENT) {
@@ -1079,8 +1059,7 @@ public class GraphManager {
 		return result;
 	}
 
-	public Set<GraphCell> getFindRDFSResult(String key, RDFGraph graph,
-			FindActionType findActionType) {
+	public Set<GraphCell> getFindRDFSResult(String key, RDFGraph graph, FindActionType findActionType) {
 		Set<GraphCell> result = new HashSet<GraphCell>();
 		Object[] cells = graph.getAllCells();
 
@@ -1148,8 +1127,7 @@ public class GraphManager {
 		selectCell(cell, getCurrentPropertyGraph());
 	}
 
-	private Map checkUnRemovablePropertyCells(Object[] cells, List notRmCells, Set notRmList,
-			Object graph) {
+	private Map checkUnRemovablePropertyCells(Object[] cells, List notRmCells, Set notRmList, Object graph) {
 		Map classPropMap = new HashMap();
 		if (isPropertyGraph(graph)) {
 			return classPropMap;
@@ -1165,8 +1143,7 @@ public class GraphManager {
 				for (int j = 0; j < propCells.length; j++) {
 					GraphCell propCell = (GraphCell) propCells[j];
 					if (RDFGraph.isRDFSPropertyCell(propCell)) {
-						PropertyInfo info = (PropertyInfo) GraphConstants.getValue(propCell
-								.getAttributes());
+						PropertyInfo info = (PropertyInfo) GraphConstants.getValue(propCell.getAttributes());
 						Set domain = info.getDomain();
 						Set range = info.getRange();
 						if (domain.contains(cell) || range.contains(cell)) {
@@ -1195,8 +1172,7 @@ public class GraphManager {
 			for (int j = 0; j < rdfCells.length; j++) {
 				GraphCell rdfCell = (GraphCell) rdfCells[j];
 				if (RDFGraph.isRDFResourceCell(rdfCell)) {
-					RDFResourceInfo rdfInfo = (RDFResourceInfo) GraphConstants.getValue(rdfCell
-							.getAttributes());
+					RDFResourceInfo rdfInfo = (RDFResourceInfo) GraphConstants.getValue(rdfCell.getAttributes());
 					if (rdfInfo.getTypeCell() == cell) {
 						rdfSet.add(rdfCell);
 					}
@@ -1297,10 +1273,9 @@ public class GraphManager {
 		List unremovableCells = new ArrayList();
 		Set unremovableResourceCells = new HashSet();
 
-		Map rdfMap = checkUnRemovableRDFCells(removeCells, unremovableCells,
-				unremovableResourceCells);
-		Map propMap = checkUnRemovablePropertyCells(removeCells, unremovableCells,
-				unremovableResourceCells, removeGraph);
+		Map rdfMap = checkUnRemovableRDFCells(removeCells, unremovableCells, unremovableResourceCells);
+		Map propMap = checkUnRemovablePropertyCells(removeCells, unremovableCells, unremovableResourceCells,
+				removeGraph);
 
 		if (unremovableCells.isEmpty()) {
 			removeGraph.removeCellsWithEdges(removeCells);
@@ -1361,8 +1336,7 @@ public class GraphManager {
 	}
 
 	private boolean isGraphEmpty() {
-		return getCurrentRDFGraph().getAllCells().length == 0
-				&& getCurrentClassGraph().getAllCells().length == 0
+		return getCurrentRDFGraph().getAllCells().length == 0 && getCurrentClassGraph().getAllCells().length == 0
 				&& getCurrentPropertyGraph().getAllCells().length == 0;
 	}
 
@@ -1371,22 +1345,19 @@ public class GraphManager {
 		if (GraphType.RDF == graphType) {
 			if (GraphLayoutUtilities.LAYOUT_TYPE.equals(GraphLayoutUtilities.VGJ_TREE_LAYOUT)) {
 				applyVGJRDFLayout(graphType);
-			} else if (GraphLayoutUtilities.LAYOUT_TYPE
-					.equals(GraphLayoutUtilities.JGRAPH_TREE_LAYOUT)) {
+			} else if (GraphLayoutUtilities.LAYOUT_TYPE.equals(GraphLayoutUtilities.JGRAPH_TREE_LAYOUT)) {
 				applyJGraphRDFLayout();
 			}
 		} else if (GraphType.CLASS == graphType) {
 			if (GraphLayoutUtilities.LAYOUT_TYPE.equals(GraphLayoutUtilities.VGJ_TREE_LAYOUT)) {
 				applyVGJClassLayout(extractRDFS);
-			} else if (GraphLayoutUtilities.LAYOUT_TYPE
-					.equals(GraphLayoutUtilities.JGRAPH_TREE_LAYOUT)) {
+			} else if (GraphLayoutUtilities.LAYOUT_TYPE.equals(GraphLayoutUtilities.JGRAPH_TREE_LAYOUT)) {
 				applyJGraphClassLayout();
 			}
 		} else if (GraphType.PROPERTY == graphType) {
 			if (GraphLayoutUtilities.LAYOUT_TYPE.equals(GraphLayoutUtilities.VGJ_TREE_LAYOUT)) {
 				applyVGJPropertyLayout(extractRDFS);
-			} else if (GraphLayoutUtilities.LAYOUT_TYPE
-					.equals(GraphLayoutUtilities.JGRAPH_TREE_LAYOUT)) {
+			} else if (GraphLayoutUtilities.LAYOUT_TYPE.equals(GraphLayoutUtilities.JGRAPH_TREE_LAYOUT)) {
 				applyJGraphPropertyLayout();
 			}
 		}
@@ -1414,10 +1385,8 @@ public class GraphManager {
 	private void applyJGraphPropertyLayout() {
 		RDFGraph propGraph = getCurrentPropertyGraph();
 		GraphLayoutUtilities.reverseArc(cellMaker, propGraph);
-		treeLayout.performJGraphTreeLayout(propGraph,
-				GraphLayoutUtilities.getJGraphPropertyLayoutDirection(),
-				GraphLayoutUtilities.PROPERTY_VERTICAL_SPACE,
-				GraphLayoutUtilities.PROPERTY_HORIZONTAL_SPACE);
+		treeLayout.performJGraphTreeLayout(propGraph, GraphLayoutUtilities.getJGraphPropertyLayoutDirection(),
+				GraphLayoutUtilities.PROPERTY_VERTICAL_SPACE, GraphLayoutUtilities.PROPERTY_HORIZONTAL_SPACE);
 		GraphLayoutUtilities.reverseArc(cellMaker, propGraph);
 		clearSelection();
 	}
@@ -1444,10 +1413,8 @@ public class GraphManager {
 	private void applyJGraphClassLayout() {
 		RDFGraph classGraph = getCurrentClassGraph();
 		GraphLayoutUtilities.reverseArc(cellMaker, classGraph);
-		treeLayout.performJGraphTreeLayout(classGraph,
-				GraphLayoutUtilities.getJGraphClassLayoutDirection(),
-				GraphLayoutUtilities.CLASS_VERTICAL_SPACE,
-				GraphLayoutUtilities.CLASS_HORIZONTAL_SPACE);
+		treeLayout.performJGraphTreeLayout(classGraph, GraphLayoutUtilities.getJGraphClassLayoutDirection(),
+				GraphLayoutUtilities.CLASS_VERTICAL_SPACE, GraphLayoutUtilities.CLASS_HORIZONTAL_SPACE);
 		GraphLayoutUtilities.reverseArc(cellMaker, classGraph);
 		clearSelection();
 	}
@@ -1457,8 +1424,7 @@ public class GraphManager {
 	 */
 	private void applyVGJRDFLayout(GraphType graphType) {
 		removeTypeCells();
-		Map<RDFNode, GraphLayoutData> cellLayoutMap = VGJTreeLayout
-				.getVGJRDFCellLayoutMap(mr3Writer.getRDFModel());
+		Map<RDFNode, GraphLayoutData> cellLayoutMap = VGJTreeLayout.getVGJRDFCellLayoutMap(mr3Writer.getRDFModel());
 		RDFGraph rdfGraph = getCurrentRDFGraph();
 		Object[] cells = rdfGraph.getAllCells();
 		for (int i = 0; i < cells.length; i++) {
@@ -1473,16 +1439,13 @@ public class GraphManager {
 			// }
 			if (RDFGraph.isEdge(cell)) {
 				GraphCell sourceCell = (GraphCell) rdfGraph.getSourceVertex(cell);
-				RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(sourceCell
-						.getAttributes());
+				RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(sourceCell.getAttributes());
 				data = cellLayoutMap.get(info.getURI());
 				moveCell(sourceCell, data, rdfGraph);
 				GraphCell targetCell = (GraphCell) rdfGraph.getTargetVertex(cell);
 				if (RDFGraph.isRDFLiteralCell(targetCell)) {
-					MR3Literal literal = (MR3Literal) GraphConstants.getValue(targetCell
-							.getAttributes());
-					Resource tmp = ResourceFactory.createResource(info.getURIStr()
-							+ literal.getLiteral().hashCode());
+					MR3Literal literal = (MR3Literal) GraphConstants.getValue(targetCell.getAttributes());
+					Resource tmp = ResourceFactory.createResource(info.getURIStr() + literal.getLiteral().hashCode());
 					data = cellLayoutMap.get(tmp);
 				} else {
 					info = (RDFResourceInfo) GraphConstants.getValue(targetCell.getAttributes());
@@ -1498,8 +1461,7 @@ public class GraphManager {
 
 	private void applyJGraphRDFLayout() {
 		removeTypeCells();
-		treeLayout.performJGraphTreeLayout(getCurrentRDFGraph(),
-				GraphLayoutUtilities.getJGraphRDFLayoutDirection(),
+		treeLayout.performJGraphTreeLayout(getCurrentRDFGraph(), GraphLayoutUtilities.getJGraphRDFLayoutDirection(),
 				GraphLayoutUtilities.RDF_VERTICAL_SPACE, GraphLayoutUtilities.RDF_HORIZONTAL_SPACE);
 		addTypeCells();
 	}
@@ -1518,8 +1480,7 @@ public class GraphManager {
 		for (Object cell : rdfGraph.getAllCells()) {
 			if (RDFGraph.isRDFResourceCell(cell)) {
 				RDFResourceCell rdfCell = (RDFResourceCell) cell;
-				RDFResourceInfo rdfInfo = (RDFResourceInfo) GraphConstants.getValue(rdfCell
-						.getAttributes());
+				RDFResourceInfo rdfInfo = (RDFResourceInfo) GraphConstants.getValue(rdfCell.getAttributes());
 				if (rdfInfo.getType().equals(rdfsInfo.getURI())) {
 					selectedCellSet.add(rdfCell);
 				}

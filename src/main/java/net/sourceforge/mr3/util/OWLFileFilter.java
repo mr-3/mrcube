@@ -23,25 +23,35 @@
 
 package net.sourceforge.mr3.util;
 
-import java.io.*;
+import java.io.File;
 
 /**
  * @author Takeshi Morita
  */
 public class OWLFileFilter extends MR3FileFilter implements java.io.FileFilter {
 
-    public String getExtension() {
-        return "owl";
-    }
+	private boolean isShowDirectories;
 
-    public boolean accept(File f) {
-        if (f.isDirectory()) { return true; }
-        String extension = getExtension(f);
-        if (extension != null && extension.equals("owl")) { return true; }
-        return false;
-    }
+	public OWLFileFilter(boolean isShowDirectories) {
+		this.isShowDirectories = isShowDirectories;
+	}
 
-    public String getDescription() {
-        return "OWL File (*.owl)";
-    }
+	public String getExtension() {
+		return "owl";
+	}
+
+	public boolean accept(File f) {
+		if (f.isDirectory()) {
+			return isShowDirectories;
+		}
+		String extension = getExtension(f);
+		if (extension != null && extension.equals("owl")) {
+			return true;
+		}
+		return false;
+	}
+
+	public String getDescription() {
+		return "OWL File (*.owl)";
+	}
 }

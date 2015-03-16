@@ -126,9 +126,9 @@ public abstract class AbstractActionFile extends MR3AbstractAction {
 	}
 
 	private static ProjectFileFilter mr3FileFilter = new ProjectFileFilter();
-	private static OWLFileFilter owlFileFilter = new OWLFileFilter();
-	private static RDFsFileFilter rdfsFileFilter = new RDFsFileFilter();
-	private static NTripleFileFilter n3FileFilter = new NTripleFileFilter();
+	private static OWLFileFilter owlFileFilter = new OWLFileFilter(true);
+	private static RDFsFileFilter rdfsFileFilter = new RDFsFileFilter(true);
+	private static NTripleFileFilter n3FileFilter = new NTripleFileFilter(true);
 	private static PNGFileFilter pngFileFilter = new PNGFileFilter();
 
 	protected File getFile(boolean isOpenFile, String extension) {
@@ -173,8 +173,8 @@ public abstract class AbstractActionFile extends MR3AbstractAction {
 
 	private String complementRDFsExtension(String tmp, String extension) {
 		String ext = (extension != null) ? "." + extension.toLowerCase() : "";
-		if (extension != null && !tmp.toLowerCase().endsWith(".rdf")
-				&& !tmp.toLowerCase().endsWith(".rdfs") && !tmp.toLowerCase().endsWith(".n3")) {
+		if (extension != null && !tmp.toLowerCase().endsWith(".rdf") && !tmp.toLowerCase().endsWith(".rdfs")
+				&& !tmp.toLowerCase().endsWith(".n3")) {
 			tmp += ext;
 		}
 		return tmp;
@@ -190,8 +190,7 @@ public abstract class AbstractActionFile extends MR3AbstractAction {
 			MR3.getCurrentProject().setCurrentProjectFile(file);
 			MR3.setCurrentProjectName();
 		} catch (FileNotFoundException e2) {
-			JOptionPane.showMessageDialog(null, "FileNotFound", "Warning",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "FileNotFound", "Warning", JOptionPane.ERROR_MESSAGE);
 		} catch (UnsupportedEncodingException e3) {
 			e3.printStackTrace();
 		}
@@ -209,8 +208,8 @@ public abstract class AbstractActionFile extends MR3AbstractAction {
 	}
 
 	protected void exitProgram(Frame frame) {
-		int messageType = JOptionPane.showConfirmDialog(frame, Translator.getString("SaveChanges"),
-				"MR^3 - " + Translator.getString("ExitProgram"), JOptionPane.YES_NO_CANCEL_OPTION,
+		int messageType = JOptionPane.showConfirmDialog(frame, Translator.getString("SaveChanges"), "MR^3 - "
+				+ Translator.getString("ExitProgram"), JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.INFORMATION_MESSAGE);
 		if (messageType == JOptionPane.YES_OPTION) {
 			confirmAllExitProject(frame);
@@ -229,12 +228,10 @@ public abstract class AbstractActionFile extends MR3AbstractAction {
 		File currentProjectFile = project.getCurrentProjectFile();
 		if (isNewProjectFile(project)) {
 			saveProjectAs();
-			HistoryManager.saveHistory(HistoryType.SAVE_PROJECT_AS,
-					currentProjectFile.getAbsolutePath());
+			HistoryManager.saveHistory(HistoryType.SAVE_PROJECT_AS, currentProjectFile.getAbsolutePath());
 		} else {
 			saveProject(currentProjectFile);
-			HistoryManager.saveHistory(HistoryType.SAVE_PROJECT,
-					currentProjectFile.getAbsolutePath());
+			HistoryManager.saveHistory(HistoryType.SAVE_PROJECT, currentProjectFile.getAbsolutePath());
 		}
 	}
 
@@ -260,9 +257,8 @@ public abstract class AbstractActionFile extends MR3AbstractAction {
 
 	protected int confirmExitProject(Frame root, MR3Project project) {
 		String title = project.getTitle();
-		int messageType = JOptionPane.showConfirmDialog(root,
-				title + "\n" + Translator.getString("SaveChanges"), "MR^3 - " + title,
-				JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+		int messageType = JOptionPane.showConfirmDialog(root, title + "\n" + Translator.getString("SaveChanges"),
+				"MR^3 - " + title, JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
 		if (messageType == JOptionPane.YES_OPTION) {
 			exitProject(project);
 		}

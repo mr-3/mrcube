@@ -43,6 +43,7 @@ MR<sup>3</sup> uses the following libraries.
 * [JFontChooser](http://jfontchooser.sourceforge.jp/)([License](http://sourceforge.jp/softwaremap/trove_list.php?form_cat=188))
 * [Apache ORO](http://attic.apache.org/projects/jakarta-oro.html)([License](http://www.apache.org/licenses/LICENSE-2.0))
 * [Silk Icons](http://www.famfamfam.com)([License](http://creativecommons.org/licenses/by/2.5/))
+* [exewrap](http://exewrap.sourceforge.jp/)([License](http://exewrap.sourceforge.jp/#license))
 
 ## Project Member
 * Takeshi Morita (School of Social Informatics, Aoyama Gakuin University, Japan)
@@ -51,5 +52,5 @@ MR<sup>3</sup> uses the following libraries.
 * Takahira Yamaguchi (Faculty of Science and Technology, Keio University, Japan)
 
 ## Contact
-* Takeshi Morita (t_morita@si.aoyama.ac.jp)
+* Takeshi Morita (t_morita@ae.keio.ac.jp)
 

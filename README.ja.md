@@ -44,6 +44,7 @@ MR<sup>3</sup>はフリーソフトウェアです．Free Software Foundation �
 * [JFontChooser](http://jfontchooser.sourceforge.jp/)([License](http://sourceforge.jp/softwaremap/trove_list.php?form_cat=188))
 * [Apache ORO](http://attic.apache.org/projects/jakarta-oro.html)([License](http://www.apache.org/licenses/LICENSE-2.0))
 * [Silk Icons](http://www.famfamfam.com)([License](http://creativecommons.org/licenses/by/2.5/))
+* [exewrap](http://exewrap.sourceforge.jp/)([License](http://exewrap.sourceforge.jp/#license))
 
 ## プロジェクトメンバー
 * 森田 武史 (青山学院大学 社会情報学部)
@@ -52,5 +53,5 @@ MR<sup>3</sup>はフリーソフトウェアです．Free Software Foundation �
 * 山口 高平 (慶應義塾大学 理工学部)
 
 ## 連絡先
-* 森田 武史 (t_morita@si.aoyama.ac.jp)
+* 森田 武史 (t_morita@ae.keio.ac.jp)
 

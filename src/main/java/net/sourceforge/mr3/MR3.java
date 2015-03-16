@@ -87,8 +87,8 @@ public class MR3 extends JFrame implements ChangeListener {
 	public MR3() {
 		MR3Constants.loadResourceBundle();
 		initWeakReferences();
-		mr3LogConsole = new MR3LogConsole(this, Translator.getString("LogConsole.Title"), Utilities
-				.getImageIcon("application_xp_terminal.png").getImage());
+		mr3LogConsole = new MR3LogConsole(this, Translator.getString("LogConsole.Title"), Utilities.getImageIcon(
+				"application_xp_terminal.png").getImage());
 
 		desktopTabbedPane = new JTabbedPane();
 		desktopTabbedPane.addChangeListener(this);
@@ -109,6 +109,9 @@ public class MR3 extends JFrame implements ChangeListener {
 		initOptions();
 
 		HistoryManager.setGraphManager(gmanager);
+		String logFilePath = userPrefs.get(PrefConstants.logFile, System.getProperty("user.dir") + "/"
+				+ HistoryManager.DEFAULT_LOG_FILE_NAME);
+		HistoryManager.initLogger(logFilePath);
 	}
 
 	public JTabbedPane getDesktopTabbedPane() {
@@ -150,44 +153,32 @@ public class MR3 extends JFrame implements ChangeListener {
 	private AbstractAction showOptionDialogAction;
 	private AbstractAction showVersionInfoAction;
 
-	private ImageIcon CPR_ICON = Utilities.getImageIcon(Translator
-			.getString("Component.Window.DeployCPRWindows.Icon"));
-	private ImageIcon CR_ICON = Utilities.getImageIcon(Translator
-			.getString("Component.Window.DeployCRWindows.Icon"));
-	private ImageIcon PR_ICON = Utilities.getImageIcon(Translator
-			.getString("Component.Window.DeployPRWindows.Icon"));
+	private ImageIcon CPR_ICON = Utilities.getImageIcon(Translator.getString("Component.Window.DeployCPRWindows.Icon"));
+	private ImageIcon CR_ICON = Utilities.getImageIcon(Translator.getString("Component.Window.DeployCRWindows.Icon"));
+	private ImageIcon PR_ICON = Utilities.getImageIcon(Translator.getString("Component.Window.DeployPRWindows.Icon"));
 
 	private void initActions() {
 		newProjectAction = new NewProject(this);
 		openProjectAction = new OpenProject(this);
-		saveProjectAction = new SaveProject(this, SaveProject.SAVE_PROJECT,
-				SaveProject.SAVE_PROJECT_ICON);
-		saveProjectAsAction = new SaveProject(this, SaveProject.SAVE_AS_PROJECT,
-				SaveProject.SAVE_AS_PROJECT_ICON);
+		saveProjectAction = new SaveProject(this, SaveProject.SAVE_PROJECT, SaveProject.SAVE_PROJECT_ICON);
+		saveProjectAsAction = new SaveProject(this, SaveProject.SAVE_AS_PROJECT, SaveProject.SAVE_AS_PROJECT_ICON);
 		showPluginManagerAction = new OpenPluginManagerAction(this,
 				Translator.getString("Component.Tools.Plugins.Text"));
 		showValidatorAction = new ShowValidator(this);
-		toFrontRDFEditorAction = new EditorSelect(this, EditorSelect.RDF_EDITOR,
-				EditorSelect.RDF_EDITOR_ICON);
-		toFrontClassEditorAction = new EditorSelect(this, EditorSelect.CLASS_EDITOR,
-				EditorSelect.CLASS_EDITOR_ICON);
+		toFrontRDFEditorAction = new EditorSelect(this, EditorSelect.RDF_EDITOR, EditorSelect.RDF_EDITOR_ICON);
+		toFrontClassEditorAction = new EditorSelect(this, EditorSelect.CLASS_EDITOR, EditorSelect.CLASS_EDITOR_ICON);
 		toFrontPropertyEditorAction = new EditorSelect(this, EditorSelect.PROPERTY_EDITOR,
 				EditorSelect.PROPERTY_EDITOR_ICON);
-		deployWindowCPRAction = new DeployWindows(this,
-				Translator.getString("Component.Window.DeployCPRWindows.Text"), CPR_ICON,
-				DeployType.CPR, "control alt R");
-		deployWindowCRAction = new DeployWindows(this,
-				Translator.getString("Component.Window.DeployCRWindows.Text"), CR_ICON,
-				DeployType.CR, "control alt C");
-		deployWindowPRAction = new DeployWindows(this,
-				Translator.getString("Component.Window.DeployPRWindows.Text"), PR_ICON,
-				DeployType.PR, "control alt P");
+		deployWindowCPRAction = new DeployWindows(this, Translator.getString("Component.Window.DeployCPRWindows.Text"),
+				CPR_ICON, DeployType.CPR, "control alt R");
+		deployWindowCRAction = new DeployWindows(this, Translator.getString("Component.Window.DeployCRWindows.Text"),
+				CR_ICON, DeployType.CR, "control alt C");
+		deployWindowPRAction = new DeployWindows(this, Translator.getString("Component.Window.DeployPRWindows.Text"),
+				PR_ICON, DeployType.PR, "control alt P");
 		showAttrDialogAction = new ShowAttrDialog(this);
 		showNSTableDialogAction = new ShowNSTableDialog(this);
-		showImportDialogAction = new ShowImportDialog(this,
-				Translator.getString("Component.Window.ImportDialog.Text"));
-		showExportDialogAction = new ShowExportDialog(this,
-				Translator.getString("Component.Window.ExportDialog.Text"));
+		showImportDialogAction = new ShowImportDialog(this, Translator.getString("Component.Window.ImportDialog.Text"));
+		showExportDialogAction = new ShowExportDialog(this, Translator.getString("Component.Window.ExportDialog.Text"));
 		findResAction = new FindResAction(null, gmanager);
 		showProjectInfoAction = new ShowProjectInfoDialog(this);
 		showLogConsoleAciton = new ShowLogConsole(this);
@@ -236,10 +227,8 @@ public class MR3 extends JFrame implements ChangeListener {
 		toolbar.add(findField);
 		findResNum = new JLabel("(0/0)");
 		toolbar.add(findResNum);
-		ImageIcon PREV_ICON = Utilities.getImageIcon(Translator
-				.getString("ToolBar.FindField.Icon.prev"));
-		ImageIcon NEXT_ICON = Utilities.getImageIcon(Translator
-				.getString("ToolBar.FindField.Icon.next"));
+		ImageIcon PREV_ICON = Utilities.getImageIcon(Translator.getString("ToolBar.FindField.Icon.prev"));
+		ImageIcon NEXT_ICON = Utilities.getImageIcon(Translator.getString("ToolBar.FindField.Icon.next"));
 		findPrevButton = new JButton(PREV_ICON);
 		findPrevButton.addActionListener(new PrevResourceAction());
 		findNextButton = new JButton(NEXT_ICON);
@@ -297,8 +286,7 @@ public class MR3 extends JFrame implements ChangeListener {
 		if (findField.getText().length() == 0) {
 			findList = NULL;
 		} else {
-			findList = gmanager.getFindResourceDialog().getFindResources(findField.getText(),
-					FindActionType.URI);
+			findList = gmanager.getFindResourceDialog().getFindResources(findField.getText(), FindActionType.URI);
 		}
 	}
 
@@ -477,10 +465,8 @@ public class MR3 extends JFrame implements ChangeListener {
 
 	private JMenu getSelectMenu() {
 		JMenu selectMenu = new JMenu(Translator.getString("Component.Select.Text"));
-		selectMenu.add(new SelectNodes(gmanager, GraphType.RDF, Translator
-				.getString("Component.Select.RDF.Text")));
-		selectMenu.add(new SelectNodes(gmanager, GraphType.CLASS, Translator
-				.getString("Component.Select.Class.Text")));
+		selectMenu.add(new SelectNodes(gmanager, GraphType.RDF, Translator.getString("Component.Select.RDF.Text")));
+		selectMenu.add(new SelectNodes(gmanager, GraphType.CLASS, Translator.getString("Component.Select.Class.Text")));
 		selectMenu.add(new SelectNodes(gmanager, GraphType.PROPERTY, Translator
 				.getString("Component.Select.Property.Text")));
 
@@ -511,54 +497,43 @@ public class MR3 extends JFrame implements ChangeListener {
 	}
 
 	private void initOptions() {
-		GraphLayoutUtilities.LAYOUT_TYPE = userPrefs.get(PrefConstants.LAYOUT_TYPE,
-				GraphLayoutUtilities.LAYOUT_TYPE);
-		GraphLayoutUtilities.RDF_LAYOUT_DIRECTION = userPrefs.get(
-				PrefConstants.RDF_LAYOUT_DIRECTION, GraphLayoutUtilities.RDF_LAYOUT_DIRECTION);
-		GraphLayoutUtilities.RDF_LAYOUT_DIRECTION = changeDirectionWithLanguage(
-				GraphLayoutUtilities.RDF_LAYOUT_DIRECTION,
+		GraphLayoutUtilities.LAYOUT_TYPE = userPrefs.get(PrefConstants.LAYOUT_TYPE, GraphLayoutUtilities.LAYOUT_TYPE);
+		GraphLayoutUtilities.RDF_LAYOUT_DIRECTION = userPrefs.get(PrefConstants.RDF_LAYOUT_DIRECTION,
 				GraphLayoutUtilities.RDF_LAYOUT_DIRECTION);
-		GraphLayoutUtilities.CLASS_LAYOUT_DIRECTION = userPrefs.get(
-				PrefConstants.CLASS_LAYOUT_DIRECTION, GraphLayoutUtilities.CLASS_LAYOUT_DIRECTION);
-		GraphLayoutUtilities.CLASS_LAYOUT_DIRECTION = changeDirectionWithLanguage(
-				GraphLayoutUtilities.CLASS_LAYOUT_DIRECTION,
+		GraphLayoutUtilities.RDF_LAYOUT_DIRECTION = changeDirectionWithLanguage(
+				GraphLayoutUtilities.RDF_LAYOUT_DIRECTION, GraphLayoutUtilities.RDF_LAYOUT_DIRECTION);
+		GraphLayoutUtilities.CLASS_LAYOUT_DIRECTION = userPrefs.get(PrefConstants.CLASS_LAYOUT_DIRECTION,
 				GraphLayoutUtilities.CLASS_LAYOUT_DIRECTION);
-		GraphLayoutUtilities.PROPERTY_LAYOUT_DIRECTION = userPrefs.get(
-				PrefConstants.PROPERTY_LAYOUT_DIRECTION,
+		GraphLayoutUtilities.CLASS_LAYOUT_DIRECTION = changeDirectionWithLanguage(
+				GraphLayoutUtilities.CLASS_LAYOUT_DIRECTION, GraphLayoutUtilities.CLASS_LAYOUT_DIRECTION);
+		GraphLayoutUtilities.PROPERTY_LAYOUT_DIRECTION = userPrefs.get(PrefConstants.PROPERTY_LAYOUT_DIRECTION,
 				GraphLayoutUtilities.PROPERTY_LAYOUT_DIRECTION);
 		GraphLayoutUtilities.PROPERTY_LAYOUT_DIRECTION = changeDirectionWithLanguage(
-				GraphLayoutUtilities.PROPERTY_LAYOUT_DIRECTION,
-				GraphLayoutUtilities.PROPERTY_LAYOUT_DIRECTION);
-		GraphLayoutUtilities.RDF_VERTICAL_SPACE = Integer.parseInt(userPrefs.get(
-				PrefConstants.RDF_VERTICAL_SPACE,
+				GraphLayoutUtilities.PROPERTY_LAYOUT_DIRECTION, GraphLayoutUtilities.PROPERTY_LAYOUT_DIRECTION);
+		GraphLayoutUtilities.RDF_VERTICAL_SPACE = Integer.parseInt(userPrefs.get(PrefConstants.RDF_VERTICAL_SPACE,
 				Integer.toString(GraphLayoutUtilities.VERTICAL_SPACE)));
-		GraphLayoutUtilities.RDF_HORIZONTAL_SPACE = Integer.parseInt(userPrefs.get(
-				PrefConstants.RDF_HORIZONTAL_SPACE,
+		GraphLayoutUtilities.RDF_HORIZONTAL_SPACE = Integer.parseInt(userPrefs.get(PrefConstants.RDF_HORIZONTAL_SPACE,
 				Integer.toString(GraphLayoutUtilities.HORIZONTAL_SPACE)));
-		GraphLayoutUtilities.CLASS_VERTICAL_SPACE = Integer.parseInt(userPrefs.get(
-				PrefConstants.CLASS_VERTICAL_SPACE,
+		GraphLayoutUtilities.CLASS_VERTICAL_SPACE = Integer.parseInt(userPrefs.get(PrefConstants.CLASS_VERTICAL_SPACE,
 				Integer.toString(GraphLayoutUtilities.VERTICAL_SPACE)));
 		GraphLayoutUtilities.CLASS_HORIZONTAL_SPACE = Integer.parseInt(userPrefs.get(
-				PrefConstants.CLASS_HORIZONTAL_SPACE,
-				Integer.toString(GraphLayoutUtilities.HORIZONTAL_SPACE)));
+				PrefConstants.CLASS_HORIZONTAL_SPACE, Integer.toString(GraphLayoutUtilities.HORIZONTAL_SPACE)));
 		GraphLayoutUtilities.PROPERTY_VERTICAL_SPACE = Integer.parseInt(userPrefs.get(
-				PrefConstants.PROPERTY_VERTICAL_SPACE,
-				Integer.toString(GraphLayoutUtilities.VERTICAL_SPACE)));
+				PrefConstants.PROPERTY_VERTICAL_SPACE, Integer.toString(GraphLayoutUtilities.VERTICAL_SPACE)));
 		GraphLayoutUtilities.PROPERTY_HORIZONTAL_SPACE = Integer.parseInt(userPrefs.get(
-				PrefConstants.PROPERTY_HORIZONTAL_SPACE,
-				Integer.toString(GraphLayoutUtilities.HORIZONTAL_SPACE)));
+				PrefConstants.PROPERTY_HORIZONTAL_SPACE, Integer.toString(GraphLayoutUtilities.HORIZONTAL_SPACE)));
 
 		MR3CellMaker.CELL_WIDTH = Integer.parseInt(userPrefs.get(PrefConstants.NODE_WIDTH,
 				Integer.toString(MR3CellMaker.CELL_WIDTH)));
 		MR3CellMaker.CELL_HEIGHT = Integer.parseInt(userPrefs.get(PrefConstants.NODE_HEIGHT,
 				Integer.toString(MR3CellMaker.CELL_HEIGHT)));
 
-		RDFResourceCell.rdfResourceColor = new Color(userPrefs.getInt(
-				PrefConstants.RDFResourceColor, RDFResourceCell.rdfResourceColor.getRGB()));
+		RDFResourceCell.rdfResourceColor = new Color(userPrefs.getInt(PrefConstants.RDFResourceColor,
+				RDFResourceCell.rdfResourceColor.getRGB()));
 		RDFLiteralCell.literalColor = new Color(userPrefs.getInt(PrefConstants.LiteralColor,
 				RDFLiteralCell.literalColor.getRGB()));
-		OntClassCell.classColor = new Color(userPrefs.getInt(PrefConstants.ClassColor,
-				OntClassCell.classColor.getRGB()));
+		OntClassCell.classColor = new Color(
+				userPrefs.getInt(PrefConstants.ClassColor, OntClassCell.classColor.getRGB()));
 		OntPropertyCell.propertyColor = new Color(userPrefs.getInt(PrefConstants.PropertyColor,
 				OntPropertyCell.propertyColor.getRGB()));
 		GraphUtilities.selectedColor = new Color(userPrefs.getInt(PrefConstants.SelectedColor,
@@ -570,8 +545,8 @@ public class MR3 extends JFrame implements ChangeListener {
 		setLocation(userPrefs.getInt(PrefConstants.WindowPositionX, 50),
 				userPrefs.getInt(PrefConstants.WindowPositionY, 50));
 
-		HistoryManager.resetFileAppender(userPrefs.get(PrefConstants.logFile,
-				System.getProperty("user.dir") + "\\" + HistoryManager.DEFAULT_LOG_FILE_NAME));
+		HistoryManager.resetFileAppender(userPrefs.get(PrefConstants.logFile, System.getProperty("user.dir") + "\\"
+				+ HistoryManager.DEFAULT_LOG_FILE_NAME));
 
 		setTitle("MR^3");
 		setVisible(true);
@@ -591,8 +566,7 @@ public class MR3 extends JFrame implements ChangeListener {
 	}
 
 	public static void setCurrentProjectName() {
-		String tabName = getCurrentProject().getCurrentProjectFile().getName()
-				.replaceAll(".mr3", "");
+		String tabName = getCurrentProject().getCurrentProjectFile().getName().replaceAll(".mr3", "");
 		getCurrentProject().getTabComponent().setTabName(tabName);
 	}
 
@@ -620,21 +594,19 @@ public class MR3 extends JFrame implements ChangeListener {
 		menu.add(idView);
 		menu.add(labelView);
 		menu.addSeparator();
-		showTypeCellBox = new JCheckBoxMenuItem(Translator.getString("Component.View.Type.Text"),
-				true);
+		showTypeCellBox = new JCheckBoxMenuItem(Translator.getString("Component.View.Type.Text"), true);
 		gmanager.setIsShowTypeCell(true);
 		showTypeCellBox.addActionListener(new ShowTypeCellAction());
 		menu.add(showTypeCellBox);
 
 		// menu.add(new ShowGraphNodeAction("Show Graph Node"));
 
-		showRDFPropertyLabelBox = new JCheckBoxMenuItem(
-				Translator.getString("Component.View.RDFPropertyLabel.Text"), true);
+		showRDFPropertyLabelBox = new JCheckBoxMenuItem(Translator.getString("Component.View.RDFPropertyLabel.Text"),
+				true);
 		showRDFPropertyLabelBox.addActionListener(new ShowRDFPropertyLabelAction());
 		menu.add(showRDFPropertyLabelBox);
 
-		showToolTips = new JCheckBoxMenuItem(Translator.getString("Component.View.ToolTips.Text"),
-				true);
+		showToolTips = new JCheckBoxMenuItem(Translator.getString("Component.View.ToolTips.Text"), true);
 		showToolTips.addActionListener(new ShowToolTipsAction());
 		ToolTipManager.sharedInstance().setEnabled(true);
 		menu.add(showToolTips);
@@ -646,12 +618,9 @@ public class MR3 extends JFrame implements ChangeListener {
 		JMenu applyLayout = new JMenu(Translator.getString("Component.View.ApplyLayout.Text"));
 		menu.add(applyLayout);
 
-		applyLayout.add(new GraphLayoutAction(gmanager, GraphType.RDF,
-				GraphLayoutAction.layoutRDFGraphIcon));
-		applyLayout.add(new GraphLayoutAction(gmanager, GraphType.CLASS,
-				GraphLayoutAction.layoutClassGraphIcon));
-		applyLayout.add(new GraphLayoutAction(gmanager, GraphType.PROPERTY,
-				GraphLayoutAction.layoutPropertyGraphIcon));
+		applyLayout.add(new GraphLayoutAction(gmanager, GraphType.RDF, GraphLayoutAction.layoutRDFGraphIcon));
+		applyLayout.add(new GraphLayoutAction(gmanager, GraphType.CLASS, GraphLayoutAction.layoutClassGraphIcon));
+		applyLayout.add(new GraphLayoutAction(gmanager, GraphType.PROPERTY, GraphLayoutAction.layoutPropertyGraphIcon));
 
 		return menu;
 	}
@@ -777,10 +746,8 @@ public class MR3 extends JFrame implements ChangeListener {
 	public void newProject(String basePath) {
 		gmanager.getAttrDialog().setNullPanel();
 		gmanager.getNSTableDialog().setDefaultNSPrefix();
-		Color backgroundColor = new Color(userPrefs.getInt(PrefConstants.BackgroundColor,
-				DESKTOP_BACK_COLOR.getRGB()));
-		TabComponent tabComponent = new TabComponent(this,
-				Translator.getString("Component.File.NewProject.Text"));
+		Color backgroundColor = new Color(userPrefs.getInt(PrefConstants.BackgroundColor, DESKTOP_BACK_COLOR.getRGB()));
+		TabComponent tabComponent = new TabComponent(this, Translator.getString("Component.File.NewProject.Text"));
 		MR3Project project = new MR3Project(gmanager, basePath, backgroundColor, tabComponent);
 		desktopTabbedPane.addTab(null, project);
 		desktopTabbedPane.setTabComponentAt(desktopTabbedPane.getTabCount() - 1, tabComponent);
@@ -822,8 +789,7 @@ public class MR3 extends JFrame implements ChangeListener {
 			System.setProperty("apple.laf.useScreenMenuBar", "true");
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			System.setProperty("swing.plaf.metal.controlFont", Translator.getString("ControlFont"));
-			System.setProperty("swing.plaf.windows.controlFont",
-					Translator.getString("ControlFont"));
+			System.setProperty("swing.plaf.windows.controlFont", Translator.getString("ControlFont"));
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
