@@ -23,26 +23,73 @@
 
 package net.sourceforge.mr3.ui;
 
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.event.*;
-import java.io.*;
-import java.net.*;
-import java.util.*;
-import java.util.prefs.*;
-import java.util.regex.*;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.net.UnknownHostException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.prefs.Preferences;
+import java.util.regex.PatternSyntaxException;
 
-import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
 
-import net.sourceforge.mr3.data.*;
-import net.sourceforge.mr3.io.*;
-import net.sourceforge.mr3.jgraph.*;
-import net.sourceforge.mr3.util.*;
+import net.sourceforge.mr3.data.MR3Constants;
+import net.sourceforge.mr3.data.PrefConstants;
+import net.sourceforge.mr3.io.MR3Reader;
+import net.sourceforge.mr3.jgraph.GraphManager;
+import net.sourceforge.mr3.util.NTripleFileFilter;
+import net.sourceforge.mr3.util.OWLFileFilter;
+import net.sourceforge.mr3.util.RDFsFileFilter;
+import net.sourceforge.mr3.util.Translator;
+import net.sourceforge.mr3.util.TurtleFileFilter;
+import net.sourceforge.mr3.util.Utilities;
 
-import com.hp.hpl.jena.ontology.*;
-import com.hp.hpl.jena.rdf.model.*;
+import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 /**
  * @author Takeshi Morita
@@ -127,8 +174,7 @@ public class ImportDialog extends JDialog implements ActionListener {
 		group.add(importReplaceButton);
 		group.add(importMergeButton);
 		JPanel importMethodPanel = new JPanel();
-		importMethodPanel
-				.setBorder(BorderFactory.createTitledBorder(Translator.getString("ImportDialog.ImportMethod")));
+		importMethodPanel.setBorder(BorderFactory.createTitledBorder(Translator.getString("ImportDialog.ImportMethod")));
 		importMethodPanel.add(importMergeButton);
 		importMethodPanel.add(importReplaceButton);
 		ActionListener dataTypeManagementAction = new DataTypeManagementAction();
@@ -188,8 +234,7 @@ public class ImportDialog extends JDialog implements ActionListener {
 		containerListUI.setSelectedIndex(0);
 		containerListUI.addListSelectionListener(changeContainerAction);
 		JScrollPane containerListUIScroll = new JScrollPane(containerListUI);
-		containerListUIScroll.setBorder(BorderFactory.createTitledBorder(Translator
-				.getString("ImportDialog.containerList")));
+		containerListUIScroll.setBorder(BorderFactory.createTitledBorder(Translator.getString("ImportDialog.containerList")));
 		JPanel containerListPanel = new JPanel();
 		containerListPanel.setMinimumSize(new Dimension(FRAME_WIDTH, 120));
 		containerListPanel.setLayout(new BorderLayout());
@@ -206,8 +251,7 @@ public class ImportDialog extends JDialog implements ActionListener {
 		fileListUI.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		JScrollPane fileListScroll = new JScrollPane(fileListUI);
 		fileListScroll.setBorder(BorderFactory.createTitledBorder(Translator.getString("ImportDialog.ImportFileList")));
-		filterBox = new JComboBox(new Object[] { rdfsFileFilter, n3FileFilter, turtleFileFilter, owlFileFilter,
-				"All Files" });
+		filterBox = new JComboBox(new Object[] { rdfsFileFilter, n3FileFilter, turtleFileFilter, owlFileFilter, "All Files" });
 		filterBox.addActionListener(changeContainerAction);
 		filterBox.setSelectedIndex(0);
 		JPanel fileListPanel = new JPanel();
@@ -314,8 +358,7 @@ public class ImportDialog extends JDialog implements ActionListener {
 				}
 			} else if (e.getSource() == addURIButton) {
 				try {
-					String uri = JOptionPane
-							.showInputDialog("Input URI ( exp. https://creativecommons.org/schema.rdf )");
+					String uri = JOptionPane.showInputDialog("Input URI ( exp. https://creativecommons.org/schema.rdf )");
 					if (uri == null) {
 						return;
 					}
@@ -345,7 +388,7 @@ public class ImportDialog extends JDialog implements ActionListener {
 	class ChangeContainerAction implements ActionListener, ListSelectionListener {
 
 		private void changeContainerList() {
-			Object[] selectedContainers = containerListUI.getSelectedValues();
+			List selectedContainers = containerListUI.getSelectedValuesList();
 			if (selectedContainers == null) {
 				return;
 			}
@@ -357,8 +400,7 @@ public class ImportDialog extends JDialog implements ActionListener {
 					uriSet.add(selectedContainer.toString());
 				} else {
 					if (filterBox.getSelectedItem() instanceof java.io.FileFilter) {
-						fileSet.addAll(Arrays.asList(selectedDirectory.listFiles((java.io.FileFilter) filterBox
-								.getSelectedItem())));
+						fileSet.addAll(Arrays.asList(selectedDirectory.listFiles((java.io.FileFilter) filterBox.getSelectedItem())));
 					} else {
 						fileSet.addAll(Arrays.asList(selectedDirectory.listFiles()));
 					}
@@ -455,7 +497,7 @@ public class ImportDialog extends JDialog implements ActionListener {
 		if (fileListUI.isSelectionEmpty()) {
 			return inputStreamSet;
 		}
-		for (Object fileObj : fileListUI.getSelectedValues()) {
+		for (Object fileObj : fileListUI.getSelectedValuesList()) {
 			File file = getFile(fileObj.toString());
 			if (file == null || file.isDirectory()) {
 				continue;
@@ -497,7 +539,24 @@ public class ImportDialog extends JDialog implements ActionListener {
 			return null;
 		}
 		for (InputStream is : inputStreamSet) {
-			model.read(is, gmanager.getBaseURI(), getSyntax());
+			BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+			StringBuilder builder = new StringBuilder();
+			String line = "";
+			try {
+				while ((line = reader.readLine()) != null) {
+					builder.append(line);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			String decodedText;
+			try {
+				decodedText = URLDecoder.decode(builder.toString(), "UTF-8");
+				StringReader r = new StringReader(decodedText);
+				model.read(r, gmanager.getBaseURI(), getSyntax());
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
 		}
 		return model;
 	}

@@ -36,10 +36,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -80,6 +81,8 @@ import net.sourceforge.mr3.util.Utilities;
 import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphConstants;
 
+import com.hp.hpl.jena.datatypes.RDFDatatype;
+import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Property;
@@ -88,7 +91,7 @@ import com.hp.hpl.jena.rdf.model.RDFWriter;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
 import com.hp.hpl.jena.rdf.model.Statement;
-import com.hp.hpl.jena.rdf.model.StmtIterator;
+import com.hp.hpl.jena.shared.InvalidPropertyURIException;
 import com.hp.hpl.jena.util.URIref;
 import com.hp.hpl.jena.vocabulary.RDFS;
 
@@ -232,8 +235,7 @@ public class ExportDialog extends JDialog implements ActionListener {
 
 		JPanel exportButtonPanel = new JPanel();
 		exportButtonPanel.setLayout(new GridLayout(2, 1, 5, 5));
-		exportButtonPanel
-				.setBorder(BorderFactory.createTitledBorder(Translator.getString("Component.File.Export.Text")));
+		exportButtonPanel.setBorder(BorderFactory.createTitledBorder(Translator.getString("Component.File.Export.Text")));
 		exportButtonPanel.add(exportFileButton);
 		exportButtonPanel.add(exportImgButton);
 
@@ -276,15 +278,20 @@ public class ExportDialog extends JDialog implements ActionListener {
 
 	private File getFile(String extension) {
 		JFileChooser jfc = new JFileChooser(gmanager.getUserPrefs().get(PrefConstants.WorkDirectory, ""));
-		if (extension.equals("rdf")) {
+		switch (extension) {
+		case "rdf":
 			jfc.addChoosableFileFilter(rdfsFileFilter);
 			jfc.addChoosableFileFilter(owlFileFilter);
-		} else if (extension.equals("n3")) {
+			break;
+		case "n3":
 			jfc.setFileFilter(n3FileFilter);
-		} else if (extension.equals("ttl")) {
+			break;
+		case "ttl":
 			jfc.setFileFilter(turtleFileFilter);
-		} else if (extension.equals("png")) {
+			break;
+		case "png":
 			jfc.setFileFilter(pngFileFilter);
+			break;
 		}
 
 		if (jfc.showSaveDialog(gmanager.getDesktopTabbedPane()) == JFileChooser.APPROVE_OPTION) {
@@ -317,7 +324,7 @@ public class ExportDialog extends JDialog implements ActionListener {
 			try {
 				String encoding = gmanager.getUserPrefs().get(PrefConstants.OutputEncoding, "UTF8");
 				Writer writer = new OutputStreamWriter(new BufferedOutputStream(new FileOutputStream(file)), encoding);
-				writeModel(getModel(), writer);
+				writer.write(getModelString(getModel()));
 				writer.close();
 			} catch (Exception ex) {
 				ex.printStackTrace();
@@ -355,11 +362,9 @@ public class ExportDialog extends JDialog implements ActionListener {
 				BufferedImage img = null;
 				if (rdfConvertBox.isSelected() && gmanager.getCurrentRDFGraph().getModel().getRootCount() > 0) {
 					img = GPConverter.toImage(gmanager.getCurrentRDFGraph());
-				} else if (classConvertBox.isSelected()
-						&& gmanager.getCurrentClassGraph().getModel().getRootCount() > 0) {
+				} else if (classConvertBox.isSelected() && gmanager.getCurrentClassGraph().getModel().getRootCount() > 0) {
 					img = GPConverter.toImage(gmanager.getCurrentClassGraph());
-				} else if (propertyConvertBox.isSelected()
-						&& gmanager.getCurrentPropertyGraph().getModel().getRootCount() > 0) {
+				} else if (propertyConvertBox.isSelected() && gmanager.getCurrentPropertyGraph().getModel().getRootCount() > 0) {
 					img = GPConverter.toImage(gmanager.getCurrentPropertyGraph());
 				}
 				if (img != null) {
@@ -392,12 +397,10 @@ public class ExportDialog extends JDialog implements ActionListener {
 				map.put(resType, instanceSet);
 			}
 		}
-		for (Iterator i = map.keySet().iterator(); i.hasNext();) {
-			Object typeRes = i.next();
+		for (Object typeRes : map.keySet()) {
 			Set instanceSet = map.get(typeRes);
 			DefaultMutableTreeNode typeNode = new DefaultMutableTreeNode(typeRes);
-			for (Iterator j = instanceSet.iterator(); j.hasNext();) {
-				Object instance = j.next();
+			for (Object instance : instanceSet) {
 				DefaultMutableTreeNode instanceNode = new DefaultMutableTreeNode(instance);
 				typeNode.add(instanceNode);
 			}
@@ -434,15 +437,21 @@ public class ExportDialog extends JDialog implements ActionListener {
 			rdfWriter.write(model, writer, gmanager.getBaseURI());
 		} catch (Exception e) {
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), "Export Error", "",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), "Export Error", "", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
-	private void writeModelToPager(Model model) {
+	private String getModelString(Model model) {
 		Writer writer = new StringWriter();
 		writeModel(model, writer);
-		exportTextArea.setText(writer.toString());
+		if (!encodeCheckBox.isSelected()) {
+			try {
+				return URLDecoder.decode(writer.toString(), "UTF-8");
+			} catch (UnsupportedEncodingException uee) {
+				uee.printStackTrace();
+			}
+		}
+		return writer.toString();
 	}
 
 	private String getConvertType() {
@@ -520,18 +529,32 @@ public class ExportDialog extends JDialog implements ActionListener {
 
 	private Model getEncodedModel(Model model) {
 		Model encodedModel = ModelFactory.createDefaultModel();
-		// String encoding =
-		// gmanager.getUserPrefs().get(PrefConstants.OutputEncoding, "UTF8");
-		for (StmtIterator i = model.listStatements(); i.hasNext();) {
-			Statement stmt = (Statement) i.next();
+		for (Statement stmt : model.listStatements().toList()) {
 			Resource subject = stmt.getSubject();
 			if (!subject.isAnon()) {
 				subject = ResourceFactory.createResource(URIref.encode(stmt.getSubject().getURI()));
 			}
-			Property predicate = ResourceFactory.createProperty(URIref.encode(stmt.getPredicate().getURI()));
+			Property predicate = stmt.getPredicate();
+			try {
+				predicate = ResourceFactory.createProperty(URIref.encode(stmt.getPredicate().getURI()));
+			} catch (InvalidPropertyURIException ipue) {
+				ipue.printStackTrace();
+			}
 			RDFNode object = stmt.getObject();
 			if (object.isResource() && !object.isAnon()) {
 				object = ResourceFactory.createResource(URIref.encode(((Resource) object).getURI()));
+			} else if (object.isLiteral()) {
+				Literal literal = object.asLiteral();
+				RDFDatatype dType = literal.getDatatype();
+				String lang = literal.getLanguage();
+				String text = URIref.encode(literal.getString());
+				if (dType != null) {
+					object = ResourceFactory.createTypedLiteral(text, dType);
+				} else if (0 < lang.length()) {
+					object = ResourceFactory.createLangLiteral(text, lang);
+				} else {
+					object = ResourceFactory.createPlainLiteral(text);
+				}
 			}
 			encodedModel.add(subject, predicate, object);
 		}
@@ -548,7 +571,7 @@ public class ExportDialog extends JDialog implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		writeModelToPager(getModel());
+		exportTextArea.setText(getModelString(getModel()));
 	}
 
 	public void setFont(Font font) {
@@ -562,7 +585,7 @@ public class ExportDialog extends JDialog implements ActionListener {
 
 	public void setVisible(boolean t) {
 		if (t) {
-			writeModelToPager(getModel());
+			exportTextArea.setText(getModelString(getModel()));
 			if (GraphUtilities.defaultFont != null) {
 				setFont(GraphUtilities.defaultFont);
 			}
