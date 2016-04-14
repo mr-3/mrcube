@@ -24,6 +24,7 @@
 			<directory>src/main/resources</directory>
 			<outputDirectory>./</outputDirectory>
 			<includes>
+				<include>*.bat</include>
 				<include>*.xml</include>
 				<include>*.jar</include>
 				<include>License.txt</include>

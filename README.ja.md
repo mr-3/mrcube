@@ -2,7 +2,7 @@ MR<sup>3</sup>
 ===
 
 ## Webサイト
-* <http://mr3.sourceforge.net/>
+* <http://mrcube.org/>
 
 ## 概要
 MR<sup>3</sup> (Meta-Model Management based on RDFs Revision Reflection) は，次世代Webの候補の1つであるセマンティックWebにおけるRDF (Resource Description Framework)及びRDFS (RDF Schema)の視覚的な編集とそれらの間の関係を管理する機能を持つエディタです．
