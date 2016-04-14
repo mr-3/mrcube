@@ -539,7 +539,12 @@ public class ImportDialog extends JDialog implements ActionListener {
 			return null;
 		}
 		for (InputStream is : inputStreamSet) {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+			BufferedReader reader = null;
+			try {
+				reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+			} catch (UnsupportedEncodingException e1) {
+				e1.printStackTrace();
+			}
 			StringBuilder builder = new StringBuilder();
 			String line = "";
 			try {
