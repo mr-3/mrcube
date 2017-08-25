@@ -2,7 +2,7 @@ MR<sup>3</sup>
 ==========
 
 ## Web Site
-* <http://mr-3.github.io/>
+* <http://mrcube.org/>
 
 ## What is MR<sup>3</sup> ?
 MR<sup>3</sup> (Meta-Model Management based on RDFs Revision Reflection) is an editing tool of RDF-based contents developed for managing a relationship between RDF and RDFS contents.
@@ -46,11 +46,11 @@ MR<sup>3</sup> uses the following libraries.
 * [exewrap](http://exewrap.sourceforge.jp/)([License](http://exewrap.sourceforge.jp/#license))
 
 ## Project Member
-* Takeshi Morita (School of Social Informatics, Aoyama Gakuin University, Japan)
+* Takeshi Morita (Faculty of Science and Technology, Keio University, Japan)
 * Naoki Fukuta (Department of Computer Science, Shizuoka University, Japan)
 * Noriaki Izumi (National Institute of Advanced Industrial Science and Technology, Japan)
 * Takahira Yamaguchi (Faculty of Science and Technology, Keio University, Japan)
 
 ## Contact
-* Takeshi Morita (t_morita@ae.keio.ac.jp)
+* Takeshi Morita (t_morita@keio.jp)
 
