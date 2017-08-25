@@ -2,7 +2,7 @@ MR<sup>3</sup>
 ===
 
 ## Webサイト
-* <http://mr-3.github.io/>
+* <http://mrcube.org/>
 
 ## 概要
 MR<sup>3</sup> (Meta-Model Management based on RDFs Revision Reflection) は，次世代Webの候補の1つであるセマンティックWebにおけるRDF (Resource Description Framework)及びRDFS (RDF Schema)の視覚的な編集とそれらの間の関係を管理する機能を持つエディタです．
@@ -47,11 +47,11 @@ MR<sup>3</sup>はフリーソフトウェアです．Free Software Foundation �
 * [exewrap](http://exewrap.sourceforge.jp/)([License](http://exewrap.sourceforge.jp/#license))
 
 ## プロジェクトメンバー
-* 森田 武史 (青山学院大学 社会情報学部)
+* 森田 武史 (慶應義塾大学 理工学部)
 * 福田 直樹 (静岡大学 情報学部)
 * 和泉 憲明 (産業技術総合研究所)
 * 山口 高平 (慶應義塾大学 理工学部)
 
 ## 連絡先
-* 森田 武史 (t_morita@ae.keio.ac.jp)
+* 森田 武史 (t_morita@keio.jp)
 
