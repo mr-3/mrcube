@@ -286,8 +286,6 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
 
     private void replaceRDFResourceType(GraphCell cell, Map currentReplaceMap) {
         RDFResourceInfo resInfo = (RDFResourceInfo) GraphConstants.getValue(cell.getAttributes());
-        // RDFSInfo rdfsInfo = (RDFSInfo)
-        // GraphConstants.getValue(resInfo.getTypeCell().getAttributes());
         RDFSInfo rdfsInfo = resInfo.getTypeInfo();
         String res = (String) currentReplaceMap.get(rdfsInfo.getURIStr());
         if (res.equals(NULL)) {

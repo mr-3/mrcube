@@ -631,6 +631,5 @@ public class ImportDialog extends JDialog implements ActionListener {
 				mr3Reader.mergeOntologyModel((OntModel) model);
 			}
 		}
-		gmanager.refreshGraphs();
 	}
 }
