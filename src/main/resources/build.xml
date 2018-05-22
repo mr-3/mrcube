@@ -6,7 +6,7 @@
 	<taskdef name="bundleapp" classname="com.oracle.appbundler.AppBundlerTask" classpath="./appbundler-1.0.jar" />
 
 	<target name="bundle-MR3">
-		<bundleapp outputdirectory="dist" name="MR3" displayname="MR3" shortversion="1.0.1" identifier="net.sourceforge.mr3" mainclassname="net.sourceforge.mr3.MR3" icon="./resources/mr3.icns">
+		<bundleapp outputdirectory="dist" name="MR3" displayname="MR3" shortversion="1.0.2" identifier="net.sourceforge.mr3" mainclassname="net.sourceforge.mr3.MR3" icon="./resources/mr3.icns">
 			<runtime dir="${env.JAVA_HOME}" />
 			<classpath file="./lib/*.jar" />
 			<option value="-Xmx756m" />

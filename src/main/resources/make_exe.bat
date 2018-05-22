@@ -1,1 +1,1 @@
-exewrap.exe -g -j mr3-1.0.1.jar -A x64 -t 1.8 -a "-Xmx756m" -v 1.0.1 -i resources/mr3.ico -L lib -o MR3.exe
+exewrap.exe -g -j mr3-1.0.2.jar -A x64 -t 1.8 -a "-Xmx756m" -v 1.0.2 -i resources/mr3.ico -L lib -o MR3.exe
