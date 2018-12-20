@@ -23,8 +23,8 @@
 
 package org.mrcube.utils;
 
-import com.hp.hpl.jena.datatypes.RDFDatatype;
-import com.hp.hpl.jena.rdf.model.*;
+import org.apache.jena.datatypes.RDFDatatype;
+import org.apache.jena.rdf.model.*;
 
 import javax.swing.*;
 import java.awt.Container;

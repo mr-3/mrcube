@@ -23,9 +23,9 @@
 
 package org.mrcube.io;
 
-import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.vocabulary.RDF;
-import com.hp.hpl.jena.vocabulary.RDFS;
+import org.apache.jena.rdf.model.*;
+import org.apache.jena.vocabulary.RDF;
+import org.apache.jena.vocabulary.RDFS;
 import org.jgraph.graph.*;
 import org.mrcube.MR3;
 import org.mrcube.jgraph.*;
@@ -61,7 +61,7 @@ public class MR3Parser {
 	private Set<RDFSInfo> duplicateSubInfo;
 
 	public void createClassGraph(Map<RDFNode, GraphLayoutData> cellLayoutMap) {
-		duplicateSubInfo = new HashSet<RDFSInfo>();
+		duplicateSubInfo = new HashSet<>();
 		RDFGraph graph = gmanager.getCurrentClassGraph();
 		graph.removeEdges();
 		DefaultGraphCell rootCell = (DefaultGraphCell) gmanager.getClassCell(RDFS.Resource,

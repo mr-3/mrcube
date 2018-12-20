@@ -23,12 +23,12 @@
 
 package org.mrcube.models;
 
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.Statement;
-import com.hp.hpl.jena.vocabulary.RDF;
-import com.hp.hpl.jena.vocabulary.RDFS;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.Statement;
+import org.apache.jena.vocabulary.RDF;
+import org.apache.jena.vocabulary.RDFS;
 import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphConstants;
 
@@ -52,10 +52,10 @@ public class RDFSInfoMap {
 	private Model propertyLabelModel;
 
 	public RDFSInfoMap() {
-		resourceInfoMap = new HashMap<Resource, RDFSInfo>();
-		classCellMap = new HashMap<String, GraphCell>();
-		propertyCellMap = new HashMap<String, GraphCell>();
-		rootProperties = new HashSet<Resource>();
+		resourceInfoMap = new HashMap<>();
+		classCellMap = new HashMap<>();
+		propertyCellMap = new HashMap<>();
+		rootProperties = new HashSet<>();
 		classTreeModel = new DefaultTreeModel(null);
 		propTreeModel = new DefaultTreeModel(null);
 		propertyLabelModel = ModelFactory.createDefaultModel();

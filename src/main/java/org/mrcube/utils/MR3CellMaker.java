@@ -23,8 +23,8 @@
 
 package org.mrcube.utils;
 
-import com.hp.hpl.jena.rdf.model.ResourceFactory;
-import com.hp.hpl.jena.vocabulary.RDF;
+import org.apache.jena.rdf.model.ResourceFactory;
+import org.apache.jena.vocabulary.RDF;
 import org.jgraph.JGraph;
 import org.jgraph.graph.*;
 import org.mrcube.MR3;

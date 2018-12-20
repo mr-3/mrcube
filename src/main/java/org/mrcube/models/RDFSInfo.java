@@ -23,7 +23,7 @@
 
 package org.mrcube.models;
 
-import com.hp.hpl.jena.rdf.model.*;
+import org.apache.jena.rdf.model.*;
 import org.jgraph.graph.GraphCell;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.utils.GraphUtilities;
@@ -55,18 +55,18 @@ public abstract class RDFSInfo extends ResourceInfo implements Serializable {
 
     RDFSInfo(String uri) {
         this.uri = uri;
-        superRDFS = new HashSet<GraphCell>();
-        labelList = new ArrayList<MR3Literal>();
-        commentList = new ArrayList<MR3Literal>();
+        superRDFS = new HashSet<>();
+        labelList = new ArrayList<>();
+        commentList = new ArrayList<>();
         model = ModelFactory.createDefaultModel();
     }
 
     RDFSInfo(RDFSInfo info) {
         uri = info.getURIStr();
         metaClass = info.getMetaClass();
-        superRDFS = new HashSet<GraphCell>();
-        labelList = new ArrayList<MR3Literal>(info.getLabelList());
-        commentList = new ArrayList<MR3Literal>(info.getCommentList());
+        superRDFS = new HashSet<>();
+        labelList = new ArrayList<>(info.getLabelList());
+        commentList = new ArrayList<>(info.getCommentList());
         model = info.getInnerModel();
     }
 

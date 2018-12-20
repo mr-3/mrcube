@@ -23,11 +23,11 @@
 
 package org.mrcube.models;
 
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.ResourceFactory;
-import com.hp.hpl.jena.vocabulary.RDF;
-import com.hp.hpl.jena.vocabulary.RDFS;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.ResourceFactory;
+import org.apache.jena.vocabulary.RDF;
+import org.apache.jena.vocabulary.RDFS;
 import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphConstants;
 
@@ -49,14 +49,14 @@ public class ClassInfo extends RDFSInfo {
 	public ClassInfo(String uri) {
 		super(uri);
 		metaClass = RDFS.Class.toString();
-		subClasses = new HashSet<Resource>();
-		supClasses = new HashSet<Resource>();
+		subClasses = new HashSet<>();
+		supClasses = new HashSet<>();
 	}
 
 	public ClassInfo(ClassInfo info) {
 		super(info);
-		subClasses = new HashSet<Resource>();
-		supClasses = new HashSet<Resource>();
+		subClasses = new HashSet<>();
+		supClasses = new HashSet<>();
 	}
 
 	public Set<Resource> getRDFSSubList() {
@@ -81,7 +81,7 @@ public class ClassInfo extends RDFSInfo {
 	}
 
 	public void clearSubClass() {
-		subClasses = new HashSet<Resource>();
+		subClasses = new HashSet<>();
 	}
 
 	public void addSupClass(Resource supClass) {
@@ -93,7 +93,7 @@ public class ClassInfo extends RDFSInfo {
 	}
 
 	public void clearSupClass() {
-		supClasses = new HashSet<Resource>();
+		supClasses = new HashSet<>();
 	}
 
 	public String getStatus() {

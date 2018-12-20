@@ -23,7 +23,7 @@
 
 package org.mrcube.models;
 
-import com.hp.hpl.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.Model;
 import org.mrcube.models.MR3Constants.HistoryType;
 
 import java.util.Calendar;

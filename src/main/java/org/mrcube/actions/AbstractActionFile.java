@@ -23,8 +23,8 @@
 
 package org.mrcube.actions;
 
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
 import org.mrcube.MR3;
 import org.mrcube.MR3Project;
 import org.mrcube.models.MR3Constants.HistoryType;

@@ -23,9 +23,9 @@
 
 package org.mrcube.views;
 
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
+import org.apache.jena.ontology.OntModel;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
 import org.mrcube.io.MR3Reader;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.models.MR3Constants;

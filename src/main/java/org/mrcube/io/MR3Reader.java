@@ -23,8 +23,8 @@
 
 package org.mrcube.io;
 
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.rdf.model.*;
+import org.apache.jena.ontology.OntModel;
+import org.apache.jena.rdf.model.*;
 import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphConstants;
 import org.mrcube.MR3;

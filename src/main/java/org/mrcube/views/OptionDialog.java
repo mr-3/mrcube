@@ -23,9 +23,9 @@
 
 package org.mrcube.views;
 
-import com.hp.hpl.jena.vocabulary.OWL;
-import com.hp.hpl.jena.vocabulary.RDF;
-import com.hp.hpl.jena.vocabulary.RDFS;
+import org.apache.jena.vocabulary.OWL;
+import org.apache.jena.vocabulary.RDF;
+import org.apache.jena.vocabulary.RDFS;
 import org.jgraph.graph.AttributeMap;
 import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphConstants;

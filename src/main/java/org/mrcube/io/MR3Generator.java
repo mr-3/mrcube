@@ -23,8 +23,8 @@
 
 package org.mrcube.io;
 
-import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.vocabulary.RDF;
+import org.apache.jena.rdf.model.*;
+import org.apache.jena.vocabulary.RDF;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.Edge;
 import org.jgraph.graph.GraphCell;
@@ -175,7 +175,7 @@ public class MR3Generator {
 	 * subjectとなるリソースごとにrdf:liの番号を割り振る
 	 */
 	private Property getRDFLIProperty(Resource subject, Property property,
-			Map<Resource, Integer> containerNumMap) {
+									  Map<Resource, Integer> containerNumMap) {
 		if (property.getURI().equals(RDF.getURI() + "li")) {
 			if (containerNumMap.get(subject) != null) {
 				Integer num = containerNumMap.get(subject);

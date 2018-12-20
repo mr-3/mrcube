@@ -23,7 +23,7 @@
 
 package org.mrcube.views;
 
-import com.hp.hpl.jena.rdf.model.ResourceFactory;
+import org.apache.jena.rdf.model.ResourceFactory;
 import org.jgraph.graph.GraphCell;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.models.MR3Constants;

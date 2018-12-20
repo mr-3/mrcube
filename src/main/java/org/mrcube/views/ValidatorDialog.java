@@ -23,8 +23,8 @@
 
 package org.mrcube.views;
 
-import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.reasoner.ValidityReport;
+import org.apache.jena.rdf.model.*;
+import org.apache.jena.reasoner.ValidityReport;
 import org.mrcube.io.MR3Writer;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.models.MR3Constants;

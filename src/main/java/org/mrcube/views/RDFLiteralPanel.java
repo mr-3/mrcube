@@ -23,8 +23,8 @@
 
 package org.mrcube.views;
 
-import com.hp.hpl.jena.datatypes.RDFDatatype;
-import com.hp.hpl.jena.datatypes.TypeMapper;
+import org.apache.jena.datatypes.RDFDatatype;
+import org.apache.jena.datatypes.TypeMapper;
 import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphConstants;
 import org.mrcube.jgraph.GraphManager;
@@ -142,7 +142,7 @@ public class RDFLiteralPanel extends JPanel implements ActionListener {
 		MR3Literal literal = (MR3Literal) GraphConstants.getValue(cell.getAttributes());
 		if (literal != null) {
 			DefaultComboBoxModel model = new DefaultComboBoxModel();
-			Set<String> sortedSet = new TreeSet<String>();
+			Set<String> sortedSet = new TreeSet<>();
 			for (Iterator i = typeMapper.listTypes(); i.hasNext();) {
 				sortedSet.add(((RDFDatatype) i.next()).getURI());
 			}

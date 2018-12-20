@@ -1,31 +1,31 @@
 /*
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
- * 
+ *
  * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
- * 
+ *
  * This file is part of MR^3.
- * 
+ *
  * MR^3 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * MR^3 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  */
 
 package org.mrcube.layout;
 
-import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.vocabulary.RDF;
-import com.hp.hpl.jena.vocabulary.RDFS;
+import org.apache.jena.rdf.model.*;
+import org.apache.jena.vocabulary.RDF;
+import org.apache.jena.vocabulary.RDFS;
 import org.jgraph.graph.*;
 import org.mrcube.MR3;
 import org.mrcube.jgraph.GraphManager;
@@ -79,32 +79,44 @@ public class GraphLayoutUtilities {
     }
 
     public static char getVGJRDFLayoutDirection() {
-        if (RDF_LAYOUT_DIRECTION.equals(UP_TO_DOWN)) { return 'u'; }
+        if (RDF_LAYOUT_DIRECTION.equals(UP_TO_DOWN)) {
+            return 'u';
+        }
         return 'r';
     }
 
     public static int getJGraphRDFLayoutDirection() {
-        if (RDF_LAYOUT_DIRECTION.equals(UP_TO_DOWN)) { return 1; }
+        if (RDF_LAYOUT_DIRECTION.equals(UP_TO_DOWN)) {
+            return 1;
+        }
         return 0;
     }
 
     public static char getVGJClassLayoutDirection() {
-        if (CLASS_LAYOUT_DIRECTION.equals(UP_TO_DOWN)) { return 'u'; }
+        if (CLASS_LAYOUT_DIRECTION.equals(UP_TO_DOWN)) {
+            return 'u';
+        }
         return 'r';
     }
 
     public static int getJGraphClassLayoutDirection() {
-        if (CLASS_LAYOUT_DIRECTION.equals(UP_TO_DOWN)) { return 1; }
+        if (CLASS_LAYOUT_DIRECTION.equals(UP_TO_DOWN)) {
+            return 1;
+        }
         return 0;
     }
 
     public static char getVGJPropertyLayoutDirection() {
-        if (PROPERTY_LAYOUT_DIRECTION.equals(UP_TO_DOWN)) { return 'u'; }
+        if (PROPERTY_LAYOUT_DIRECTION.equals(UP_TO_DOWN)) {
+            return 'u';
+        }
         return 'r';
     }
 
     public static int getJGraphPropertyLayoutDirection() {
-        if (PROPERTY_LAYOUT_DIRECTION.equals(UP_TO_DOWN)) { return 1; }
+        if (PROPERTY_LAYOUT_DIRECTION.equals(UP_TO_DOWN)) {
+            return 1;
+        }
         return 0;
     }
 
@@ -123,7 +135,7 @@ public class GraphLayoutUtilities {
     }
 
     public static void addChild(Model model, GraphLayoutData data, Map<RDFNode, GraphLayoutData> cellLayoutMap) {
-        for (StmtIterator i = model.listStatements(); i.hasNext();) {
+        for (StmtIterator i = model.listStatements(); i.hasNext(); ) {
             Statement stmt = i.nextStatement();
             RDFNode source = stmt.getSubject();
             RDFNode target = stmt.getObject();
@@ -148,10 +160,10 @@ public class GraphLayoutUtilities {
     }
 
     public static void addChild(RDFGraph graph, DefaultGraphCell cell, GraphLayoutData data,
-            Map<Object, GraphLayoutData> cellLayoutMap) {
+                                Map<Object, GraphLayoutData> cellLayoutMap) {
         Port port = (Port) cell.getChildAt(0);
 
-        for (Iterator i = port.edges(); i.hasNext();) {
+        for (Iterator i = port.edges(); i.hasNext(); ) {
             Edge edge = (Edge) i.next();
             GraphCell sourceCell = (GraphCell) graph.getSourceVertex(edge);
             GraphCell targetCell = (GraphCell) graph.getTargetVertex(edge);
@@ -213,7 +225,7 @@ public class GraphLayoutUtilities {
     }
 
     public static void initRDFSGraphLayoutData(Map<RDFNode, GraphLayoutData> cellLayoutMap, RDFSInfo supInfo,
-            GraphLayoutData parentData) {
+                                               GraphLayoutData parentData) {
         for (Resource resource : supInfo.getRDFSSubList()) {
             RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
             if (!isNumProperty(resource)) {
@@ -244,7 +256,7 @@ public class GraphLayoutUtilities {
         Set<RDFNode> nodeSet = new HashSet<RDFNode>();
         Set<GraphLayoutData> dataSet = new HashSet<GraphLayoutData>();
 
-        for (StmtIterator i = model.listStatements(); i.hasNext();) {
+        for (StmtIterator i = model.listStatements(); i.hasNext(); ) {
             Statement stmt = i.nextStatement();
 
             RDFNode rdfNode = stmt.getSubject();
@@ -287,7 +299,7 @@ public class GraphLayoutUtilities {
             GraphCell cell = (GraphCell) cells[i];
             if (!RDFGraph.isTypeCell(cell)
                     && (RDFGraph.isRDFSCell(cell) || RDFGraph.isRDFResourceCell(cell) || RDFGraph
-                            .isRDFLiteralCell(cell))) {
+                    .isRDFLiteralCell(cell))) {
                 GraphLayoutData data = new GraphLayoutData(cell, graph);
                 cellLayoutMap.put(cell, data);
                 dataSet.add(data);
@@ -297,7 +309,7 @@ public class GraphLayoutUtilities {
     }
 
     public static RDFNode collectRoot(Model model, Set<RDFNode> rootNodes, Set<GraphLayoutData> dataSet,
-            Map<RDFNode, GraphLayoutData> cellLayoutMap) {
+                                      Map<RDFNode, GraphLayoutData> cellLayoutMap) {
         Resource rootNode = ResourceFactory.createResource();
         GraphLayoutData rootData = new GraphLayoutData(rootNode);
         rootData.setHasParent(false);
@@ -317,7 +329,7 @@ public class GraphLayoutUtilities {
     private static final Point initPoint = new Point(-50, -50);
 
     public static Object collectRoot(RDFGraph graph, MR3CellMaker cellMaker, Set<DefaultGraphCell> rootCells,
-            Set<GraphLayoutData> dataSet, Map<Object, GraphLayoutData> cellLayoutMap) {
+                                     Set<GraphLayoutData> dataSet, Map<Object, GraphLayoutData> cellLayoutMap) {
         RDFResourceInfo rootInfo = new RDFResourceInfo(URIType.ANONYMOUS, new AnonId().toString());
         DefaultGraphCell rootCell = new RDFResourceCell(rootInfo);
         DefaultPort rootPort = new DefaultPort();
@@ -328,7 +340,7 @@ public class GraphLayoutUtilities {
                 RDFResourceCell.rdfResourceColor));
         // graph.getGraphLayoutCache().insert(new Object[] { rootCell},
         // attributes, null, null, null);
-        graph.getGraphLayoutCache().insert(new Object[] { rootCell}, attributes, null, null);
+        graph.getGraphLayoutCache().insert(new Object[]{rootCell}, attributes, null, null);
         GraphLayoutData rootData = new GraphLayoutData(rootCell, graph);
         rootData.setHasParent(false);
 
@@ -338,7 +350,7 @@ public class GraphLayoutUtilities {
             ConnectionSet cs = new ConnectionSet(edge, rootPort, port);
             // graph.getGraphLayoutCache().insert(new Object[] { edge}, null,
             // cs, null, null);
-            graph.getGraphLayoutCache().insert(new Object[] { edge}, null, cs, null);
+            graph.getGraphLayoutCache().insert(new Object[]{edge}, null, cs, null);
             GraphLayoutData data = cellLayoutMap.get(cell);
             data.setHasParent(true);
             rootData.addChild(data);
@@ -349,10 +361,13 @@ public class GraphLayoutUtilities {
 
         return rootCell;
     }
+
     public static void removeTemporaryRoot(Model model, RDFNode tmpRoot) {
-        if (tmpRoot == null) { return; }
+        if (tmpRoot == null) {
+            return;
+        }
         Model removeModel = ModelFactory.createDefaultModel();
-        for (StmtIterator i = model.listStatements(); i.hasNext();) {
+        for (StmtIterator i = model.listStatements(); i.hasNext(); ) {
             Statement stmt = i.nextStatement();
             RDFNode subject = stmt.getSubject();
             if (subject.equals(tmpRoot)) {
@@ -363,12 +378,14 @@ public class GraphLayoutUtilities {
     }
 
     public static void removeTemporaryRoot(RDFGraph graph, DefaultGraphCell tmpRoot) {
-        if (tmpRoot == null) { return; }
+        if (tmpRoot == null) {
+            return;
+        }
         Set<Object> removeCellsSet = new HashSet<Object>();
         Port port = (Port) tmpRoot.getChildAt(0);
         removeCellsSet.add(tmpRoot);
         removeCellsSet.add(port);
-        for (Iterator edges = graph.getModel().edges(port); edges.hasNext();) {
+        for (Iterator edges = graph.getModel().edges(port); edges.hasNext(); ) {
             removeCellsSet.add(edges.next());
         }
         graph.getModel().remove(removeCellsSet.toArray());
@@ -408,7 +425,9 @@ public class GraphLayoutUtilities {
     }
 
     public static void centralizeGraph(Collection<GraphLayoutData> dataSet) {
-        if (dataSet.size() == 0) { return; }
+        if (dataSet.size() == 0) {
+            return;
+        }
         Point2D.Double startPoint = getStartPoint(dataSet);
         Point2D.Double revisePoint = new Point2D.Double(0, 0);
         setRevisePoint(revisePoint, startPoint);
@@ -421,7 +440,9 @@ public class GraphLayoutUtilities {
     public static void centralizeGraph(RDFGraph graph) {
         int MARGIN = 50;
         Object[] cells = graph.getAllCells();
-        if (cells.length == 0) { return; }
+        if (cells.length == 0) {
+            return;
+        }
         Rectangle2D rec = graph.getCellBounds(cells);
 
         double reviseX = 0;

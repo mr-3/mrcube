@@ -23,9 +23,9 @@
 
 package org.mrcube.models;
 
-import com.hp.hpl.jena.rdf.model.Property;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.ResourceFactory;
+import org.apache.jena.rdf.model.Property;
+import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.ResourceFactory;
 
 /**
  * @author Takeshi Morita
@@ -54,7 +54,7 @@ public class MR3Resource {
 	private static final String CONCEPT_LABEL = "conceptLabel";
 
 	public static Resource DefaultURI;
-	public static Property DefaultLang;
+	public static org.apache.jena.rdf.model.Property DefaultLang;
 	public static Property Property;
 	public static Property Nil;
 	public static Resource Empty;

@@ -23,7 +23,7 @@
 
 package org.mrcube.utils;
 
-import com.hp.hpl.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.Resource;
 import org.jgraph.graph.AttributeMap;
 import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphConstants;

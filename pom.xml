@@ -175,13 +175,8 @@
 			<url>http://jfontchooser.sourceforge.jp/repository/</url>
 		</repository>
 		<repository>
-			<id>net.sourceforge.doddle-owl</id>
-			<url>http://doddle-owl.sourceforge.net/m2repository</url>
-		</repository>
-		<repository>
-			<id>repository.apache.org</id>
-			<name>Apache Jena Repository</name>
-			<url>https://repository.apache.org/content/repositories/releases/</url>
+			<id>mrcube.org</id>
+			<url>http://mrcube.org/mvn_repo</url>
 		</repository>
 	</repositories>
 	<dependencies>
@@ -209,7 +204,7 @@
 		<dependency>
 			<groupId>org.apache.jena</groupId>
 			<artifactId>apache-jena-libs</artifactId>
-			<version>2.12.1</version>
+			<version>3.9.0</version>
 			<type>pom</type>
 		</dependency>
    	    <dependency>

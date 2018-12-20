@@ -23,10 +23,10 @@
 
 package org.mrcube.plugin;
 
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ResourceFactory;
-import com.hp.hpl.jena.vocabulary.RDFS;
+import org.apache.jena.ontology.OntModel;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ResourceFactory;
+import org.apache.jena.vocabulary.RDFS;
 import org.jgraph.JGraph;
 import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphConstants;

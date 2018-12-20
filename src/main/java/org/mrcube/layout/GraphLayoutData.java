@@ -23,7 +23,7 @@
 
 package org.mrcube.layout;
 
-import com.hp.hpl.jena.rdf.model.RDFNode;
+import org.apache.jena.rdf.model.RDFNode;
 import org.jgraph.graph.AttributeMap;
 import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphConstants;
@@ -58,7 +58,7 @@ public class GraphLayoutData {
     public GraphLayoutData(RDFNode node, Dimension dim) {
         rdfNode = node;
         hasParent = false;
-        children = new HashSet<GraphLayoutData>();
+        children = new HashSet<>();
         point = new Point2D.Double(0, 0);
         dimension = dim;
     }
@@ -66,7 +66,7 @@ public class GraphLayoutData {
     public GraphLayoutData(RDFNode node) {
         rdfNode = node;
         hasParent = false;
-        children = new HashSet<GraphLayoutData>();
+        children = new HashSet<>();
         point = new Point2D.Double(0, 0);
         dimension = new Dimension(MR3CellMaker.CELL_WIDTH, MR3CellMaker.CELL_HEIGHT);
     }

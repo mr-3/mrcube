@@ -23,8 +23,8 @@
 
 package org.mrcube.io;
 
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.utils.ProjectManager;
 
