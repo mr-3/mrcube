@@ -256,7 +256,7 @@ public class ImportDialog extends JDialog implements ActionListener {
 
 	class RemoveContainerListAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			for (Object selectedValue : containerListUI.getSelectedValues()) {
+			for (Object selectedValue : containerListUI.getSelectedValuesList()) {
 				if (selectedValue.equals(gmanager.getWorkDirectory())) {
 					continue;
 				}

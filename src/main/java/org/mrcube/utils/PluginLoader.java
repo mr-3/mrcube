@@ -91,10 +91,10 @@ public class PluginLoader {
 	}
 
 	private static ClassLoader createClassLoader(Collection<File> files) {
-		Collection<URL> urls = new ArrayList<URL>();
+		Collection<URL> urls = new ArrayList<>();
 		for (File file : files) {
 			try {
-				urls.add(file.toURL());
+				urls.add(file.toURI().toURL());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

@@ -191,7 +191,7 @@ public class PropertyPanel extends OntologyPanel {
                 PropertyInfo info = (PropertyInfo) GraphConstants.getValue(cell.getAttributes());
                 if (!domainList.isSelectionEmpty()) {
                     Set beforeDomainSet = new HashSet(info.getDomain());
-                    for (Object rd : domainList.getSelectedValues()) {
+                    for (Object rd : domainList.getSelectedValuesList()) {
                         info.removeDomain(rd);
                     }
                     RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
@@ -202,7 +202,7 @@ public class PropertyPanel extends OntologyPanel {
                 }
                 if (!rangeList.isSelectionEmpty()) {
                     Set beforeRangeSet = new HashSet(info.getRange());
-                    for (Object rr : rangeList.getSelectedValues()) {
+                    for (Object rr : rangeList.getSelectedValuesList()) {
                         info.removeRange(rr);
                     }
                     RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
