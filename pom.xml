@@ -2,13 +2,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>net.sourceforge</groupId>
-	<artifactId>mr3</artifactId>
+	<groupId>org</groupId>
+	<artifactId>mrcube</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0.2</version>
+	<version>1.0.3</version>
 
 	<name>MR^3</name>
-	<url>http://mr3.sourceforge.net</url>
+	<url>http://mrcube.org</url>
 	<inceptionYear>2003</inceptionYear>
 	<developers>
 		<developer>
@@ -30,18 +30,12 @@
 		</license>
 	</licenses>
 	<organization>
-		<name>mr3.sourceforge.net</name>
+		<name>mrcube.org</name>
 		<url>${pom.url}</url>
 	</organization>
-	<scm>
-		<connection>scm:git://mr3.git.sourceforge.net/gitroot/mr3/mr3</connection>
-		<developerConnection>scm:ssh://mr3.git.sourceforge.net/gitroot/mr3/mr3
-        </developerConnection>
-		<url>http://mr3.git.sourceforge.net/git/gitweb-index.cgi</url>
-	</scm>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<mainClass>net.sourceforge.mr3.MR3</mainClass>
+		<mainClass>org.mrcube.MR3</mainClass>
 		<organization>Yamaguchi Laboratory, Keio University, Japan</organization>
 	</properties>
 	<build>
