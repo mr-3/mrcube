@@ -2,13 +2,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>net.sourceforge</groupId>
-	<artifactId>mr3</artifactId>
+	<groupId>org</groupId>
+	<artifactId>mrcube</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0.2</version>
+	<version>1.0.3</version>
 
 	<name>MR^3</name>
-	<url>http://mr3.sourceforge.net</url>
+	<url>http://mrcube.org</url>
 	<inceptionYear>2003</inceptionYear>
 	<developers>
 		<developer>
@@ -30,18 +30,12 @@
 		</license>
 	</licenses>
 	<organization>
-		<name>mr3.sourceforge.net</name>
+		<name>mrcube.org</name>
 		<url>${pom.url}</url>
 	</organization>
-	<scm>
-		<connection>scm:git://mr3.git.sourceforge.net/gitroot/mr3/mr3</connection>
-		<developerConnection>scm:ssh://mr3.git.sourceforge.net/gitroot/mr3/mr3
-        </developerConnection>
-		<url>http://mr3.git.sourceforge.net/git/gitweb-index.cgi</url>
-	</scm>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<mainClass>net.sourceforge.mr3.MR3</mainClass>
+		<mainClass>org.mrcube.MR3</mainClass>
 		<organization>Yamaguchi Laboratory, Keio University, Japan</organization>
 	</properties>
 	<build>
@@ -181,13 +175,8 @@
 			<url>http://jfontchooser.sourceforge.jp/repository/</url>
 		</repository>
 		<repository>
-			<id>net.sourceforge.doddle-owl</id>
-			<url>http://doddle-owl.sourceforge.net/m2repository</url>
-		</repository>
-		<repository>
-			<id>repository.apache.org</id>
-			<name>Apache Jena Repository</name>
-			<url>https://repository.apache.org/content/repositories/releases/</url>
+			<id>mrcube.org</id>
+			<url>http://mrcube.org/mvn_repo</url>
 		</repository>
 	</repositories>
 	<dependencies>
@@ -215,7 +204,7 @@
 		<dependency>
 			<groupId>org.apache.jena</groupId>
 			<artifactId>apache-jena-libs</artifactId>
-			<version>2.12.1</version>
+			<version>3.9.0</version>
 			<type>pom</type>
 		</dependency>
    	    <dependency>
