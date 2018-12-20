@@ -77,8 +77,8 @@ public class ProjectInfoDialog extends JDialog {
     private MR3Writer mr3Writer;
     private GraphManager gmanager;
 
-    private static final int WINDOW_HEIGHT = 350;
-    private static final int WINDOW_WIDTH = 380;
+    private static final int WINDOW_HEIGHT = 450;
+    private static final int WINDOW_WIDTH = 550;
 
     public ProjectInfoDialog(GraphManager gm, Frame frame) {
         super(frame, Translator.getString("Component.Tools.ProjectInfo.Text"));
@@ -119,8 +119,7 @@ public class ProjectInfoDialog extends JDialog {
         allStatementCntValue = new JLabel();
 
         JPanel cntPanel = new JPanel();
-        cntPanel.setBorder(BorderFactory.createTitledBorder(Translator
-                .getString("Component.Tools.ProjectInfo.NumberOfResources")));
+        cntPanel.setBorder(BorderFactory.createTitledBorder(Translator.getString("Component.Tools.ProjectInfo.OntologyMetrics")));
         cntPanel.setLayout(new GridLayout(8, 2, 60, 10));
         cntPanel.add(modelResourceCntLabel);
         cntPanel.add(modelResourceCntValue);
