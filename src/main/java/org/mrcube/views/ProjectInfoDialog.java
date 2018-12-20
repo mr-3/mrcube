@@ -1,24 +1,24 @@
 /*
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
- * 
- * Copyright (C) 2003-2015 Yamaguchi Laboratory, Keio University. All rights reserved. 
- * 
+ *
+ * Copyright (C) 2003-2015 Yamaguchi Laboratory, Keio University. All rights reserved.
+ *
  * This file is part of MR^3.
- * 
+ *
  * MR^3 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * MR^3 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  */
 
 package org.mrcube.views;
@@ -153,11 +153,11 @@ public class ProjectInfoDialog extends JDialog {
     }
 
     public void resetStatus() {
-        if (MR3.getCurrentProject() == null
-                || MR3.getCurrentProject().getTitle().equals(Translator.getString("Component.File.NewProject.Text"))) {
-            currentProjectValue.setText("NULL");
+        String newProjectText = Translator.getString("Component.File.NewProject.Text");
+        if (MR3.getCurrentProject() == null || MR3.getCurrentProject().getTitle().equals(newProjectText)) {
+            currentProjectValue.setText(newProjectText);
         } else {
-            currentProjectValue.setText(MR3.getCurrentProject().getName());
+            currentProjectValue.setText(MR3.getCurrentProject().getTitle());
         }
         lastImportTimeValue.setText(new Double(MR3.STATUS_BAR.getProgressTime()).toString());
 
@@ -211,7 +211,7 @@ public class ProjectInfoDialog extends JDialog {
         resourceSet.addAll(objectSet);
 
         int rdfResourceCnt = 0;
-        for (Iterator i = resourceSet.iterator(); i.hasNext();) {
+        for (Iterator i = resourceSet.iterator(); i.hasNext(); ) {
             if (i.next() instanceof Resource) {
                 rdfResourceCnt++;
             }
@@ -223,7 +223,7 @@ public class ProjectInfoDialog extends JDialog {
         Set objectSet = IteratorCollection.iteratorToSet(model.listObjects());
 
         int literalCnt = 0;
-        for (Iterator i = objectSet.iterator(); i.hasNext();) {
+        for (Iterator i = objectSet.iterator(); i.hasNext(); ) {
             if (i.next() instanceof Literal) {
                 literalCnt++;
             }

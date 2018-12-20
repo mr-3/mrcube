@@ -441,7 +441,7 @@ public class MR3 extends JFrame implements ChangeListener {
 		if (result == null) {
 			checkCurrentProject();
 			result = new ProjectInfoDialog(gmanager, this);
-			projectInfoDialogRef = new WeakReference<ProjectInfoDialog>(result);
+			projectInfoDialogRef = new WeakReference<>(result);
 		}
 		return result;
 	}

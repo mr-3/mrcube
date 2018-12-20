@@ -67,8 +67,7 @@ public class MR3Project extends JPanel {
 	public MR3Project(GraphManager gmanager, String basePath, Color color, TabComponent tabComp) {
 		rdfsInfoMap = new RDFSInfoMap();
 		tabComponent = tabComp;
-		currentProjectFile = new File(basePath,
-				Translator.getString("Component.File.NewProject.Text"));
+		currentProjectFile = new File(basePath, Translator.getString("Component.File.NewProject.Text"));
 		mainViews = new View[3];
 		ViewMap viewMap = new ViewMap();
 
@@ -177,7 +176,7 @@ public class MR3Project extends JPanel {
 		if (currentProjectFile == null) {
 			return Translator.getString("Component.File.NewProject.Text");
 		}
-		return currentProjectFile.getAbsolutePath();
+		return currentProjectFile.getName();
 	}
 
 	private static RootWindow createRootWindow(ViewMap viewMap) {
