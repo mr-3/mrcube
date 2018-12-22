@@ -233,7 +233,7 @@ public class LabelPanel extends JPanel implements ActionListener {
 	public static void main(String[] args) {
 		JFrame frame = new JFrame();
 		LabelPanel labelPanel = new LabelPanel();
-		ResourceInfo info = new ClassInfo("http://mr3.sourceforge.net#test");
+		ResourceInfo info = new ClassInfo("http://mrcube.org#test");
 		info.addLabel(new MR3Literal("てすと", "ja", null));
 		info.addLabel(new MR3Literal("test", "en", null));
 		labelPanel.setResourceInfo(info);
