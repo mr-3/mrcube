@@ -123,7 +123,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
         InsertRDFResDialog result = insertRDFResDialogRef.get();
         if (result == null) {
             result = new InsertRDFResDialog(gmanager);
-            insertRDFResDialogRef = new WeakReference<InsertRDFResDialog>(result);
+            insertRDFResDialogRef = new WeakReference<>(result);
         }
         result.initData(cells);
         return result;
@@ -306,8 +306,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
                 list.add(cell);
             }
         }
-        InsertRDFResDialog dialog = getInsertRDFResDialog(Utilities
-                .getSortedCellSet(list.toArray()));
+        InsertRDFResDialog dialog = getInsertRDFResDialog(Utilities.getSortedCellSet(list.toArray()));
         if (!dialog.isConfirm()) {
             return null;
         }

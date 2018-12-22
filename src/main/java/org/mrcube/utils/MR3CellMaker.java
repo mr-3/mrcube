@@ -199,20 +199,20 @@ public class MR3CellMaker {
         AttributeMap attributes = new AttributeMap();
         point = graph.snap(new Point2D.Double(point.getX(), point.getY()));
 
-        RDFResourceModel info = null;
+        RDFResourceModel model = null;
         if (type == URIType.ANONYMOUS) {
-            info = new RDFResourceModel(type, ResourceFactory.createResource().toString());
+            model = new RDFResourceModel(type, ResourceFactory.createResource().toString());
         } else {
-            info = new RDFResourceModel(type, uri);
+            model = new RDFResourceModel(type, uri);
         }
-        RDFResourceCell rdfCell = new RDFResourceCell(info);
+        RDFResourceCell rdfCell = new RDFResourceCell(model);
         rdfCell.add(new DefaultPort());
         AttributeMap resMap = getResourceMap(getRDFNodeRectangle(point, uri), RDFResourceCell.rdfResourceColor);
         attributes.put(rdfCell, resMap);
-        info.setTypeCell((GraphCell) resTypeCell, gmanager.getCurrentRDFGraph());
-        GraphConstants.setValue(rdfCell.getAttributes(), info);
+        model.setTypeCell((GraphCell) resTypeCell, gmanager.getCurrentRDFGraph());
+        GraphConstants.setValue(rdfCell.getAttributes(), model);
         graph.getGraphLayoutCache().insert(new Object[] { rdfCell}, attributes, null, null);
-        GraphUtilities.resizeRDFResourceCell(gmanager, info, rdfCell);
+        GraphUtilities.resizeRDFResourceCell(gmanager, model, rdfCell);
         addTypeCell(rdfCell, attributes);
 
         gmanager.selectRDFCell(rdfCell);
@@ -300,8 +300,6 @@ public class MR3CellMaker {
         AttributeMap map = getEdgeMap(info, edge);
         GraphConstants.setRouting(map, GraphConstants.ROUTING_SIMPLE);
         attributes.put(edge, map);
-        // graph.getGraphLayoutCache().insert(new Object[] { edge}, attributes,
-        // cs, null, null);
         graph.getGraphLayoutCache().insert(new Object[] { edge}, attributes, cs, null);
     }
 
