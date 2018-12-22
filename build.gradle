@@ -1,6 +1,7 @@
 plugins {
     id "com.github.johnrengelman.shadow" version "4.0.3"
     id 'application'
+    id 'maven-publish'
 }
 
 group 'org.mrcube'
@@ -68,6 +69,18 @@ task zipApp(type: Zip, dependsOn: startShadowScripts) {
 
     into('lib') {
         from('build/libs/mrcube.jar')
+    }
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'org.mrcube'
+            artifactId = 'mrcube'
+            version = '1.0.4'
+
+            from components.java
+        }
     }
 }
 
