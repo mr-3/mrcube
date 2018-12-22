@@ -292,13 +292,13 @@ public abstract class MR3Plugin {
     private void addRDFNode(RDFGraph graph, String uri, Set selectionCells) {
         for (Object cell : graph.getAllCells()) {
             if (RDFGraph.isRDFResourceCell(cell)) {
-                RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(((GraphCell) cell).getAttributes());
+                RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(((GraphCell) cell).getAttributes());
                 if (uri.equals(info.getURIStr())) {
                     selectionCells.add(cell);
                 }
             } else if (RDFGraph.isRDFPropertyCell(cell)) {
                 GraphCell propCell = (GraphCell) cell;
-                RDFSInfo info = (RDFSInfo) GraphConstants.getValue(propCell.getAttributes());
+                RDFSModel info = (RDFSModel) GraphConstants.getValue(propCell.getAttributes());
                 if (uri.equals(info.getURIStr())) {
                     selectionCells.add(cell);
                 }
@@ -315,9 +315,9 @@ public abstract class MR3Plugin {
         Set selectionCells = new HashSet();
         RDFGraph graph = mr3.getClassGraph();
         graph.clearSelection();
-        RDFSInfoMap rdfsInfoMap = mr3.getGraphManager().getCurrentRDFSInfoMap();
+        RDFSModelMap rdfsModelMap = mr3.getGraphManager().getCurrentRDFSInfoMap();
         for (Iterator i = nodes.iterator(); i.hasNext();) {
-            Object cell = rdfsInfoMap.getClassCell(ResourceFactory.createResource((String) i.next()));
+            Object cell = rdfsModelMap.getClassCell(ResourceFactory.createResource((String) i.next()));
             if (cell != null) {
                 selectionCells.add(cell);
             }
@@ -334,9 +334,9 @@ public abstract class MR3Plugin {
         Set selectionCells = new HashSet();
         RDFGraph graph = mr3.getPropertyGraph();
         graph.clearSelection();
-        RDFSInfoMap rdfsInfoMap = mr3.getGraphManager().getCurrentRDFSInfoMap();
+        RDFSModelMap rdfsModelMap = mr3.getGraphManager().getCurrentRDFSInfoMap();
         for (Iterator i = nodes.iterator(); i.hasNext();) {
-            Object cell = rdfsInfoMap.getPropertyCell(ResourceFactory.createResource((String) i.next()));
+            Object cell = rdfsModelMap.getPropertyCell(ResourceFactory.createResource((String) i.next()));
             if (cell != null) {
                 selectionCells.add(cell);
             }

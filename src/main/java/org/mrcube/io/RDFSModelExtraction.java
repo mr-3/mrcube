@@ -61,7 +61,7 @@ public class RDFSModelExtraction {
 		for (Resource clsClass : classClassList) {
 			for (ResIterator i = orgModel.listSubjectsWithProperty(RDF.type, clsClass); i.hasNext();) {
 				Resource classResource = i.nextResource();
-				ClassInfo info = getClassResInfo(classResource);
+				ClassModel info = getClassResInfo(classResource);
 				setDefaultSubClassOf(classResource, info);
 				removeModel.add(extractRDFSModel(classModel, classResource, info));
 			}
@@ -73,8 +73,8 @@ public class RDFSModelExtraction {
 	// subPropertyOfが省略されたプロパティは，Propertyクラスのサブクラスとみなす、
 	public void setDefaultSubPropertyOf(Resource property) {
 		if (!property.hasProperty(RDFS.subPropertyOf)) {
-			RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-			rdfsInfoMap.addRootProperties(property);
+			RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+			rdfsModelMap.addRootProperties(property);
 		}
 	}
 
@@ -131,7 +131,7 @@ public class RDFSModelExtraction {
 			for (ResIterator i = orgModel.listSubjectsWithProperty(RDF.type, propClass); i
 					.hasNext();) {
 				Resource propClassRes = i.nextResource();
-				PropertyInfo info = getPropertyResInfo(propClassRes);
+				PropertyModel info = getPropertyResInfo(propClassRes);
 				setDefaultSubPropertyOf(propClassRes);
 				removeModel.add(extractRDFSModel(propertyModel, propClassRes, info));
 				info.setMetaClass(propClass.toString());
@@ -142,7 +142,7 @@ public class RDFSModelExtraction {
 		return propertyModel;
 	}
 
-	public Model extractRDFSModel(Model rdfsModel, Resource metaResource, RDFSInfo info) {
+	public Model extractRDFSModel(Model rdfsModel, Resource metaResource, RDFSModel info) {
 		Model removeModel = ModelFactory.createDefaultModel();
 		for (StmtIterator i = metaResource.listProperties(); i.hasNext();) {
 			Statement stmt = i.nextStatement();
@@ -155,25 +155,25 @@ public class RDFSModelExtraction {
 		}
 
 		info.setURI(metaResource.toString());
-		RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-		rdfsInfoMap.putResourceInfo(metaResource, info);
+		RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+		rdfsModelMap.putResourceInfo(metaResource, info);
 
 		return removeModel;
 	}
 
 	// Resourceクラス以外のsubClassOfが省略されたクラスは，
 	// Resourceクラスのサブクラスとみなす
-	public void setDefaultSubClassOf(Resource rdfsResource, ClassInfo info) {
+	public void setDefaultSubClassOf(Resource rdfsResource, ClassModel info) {
 		if (!rdfsResource.equals(RDFS.Resource) && !rdfsResource.hasProperty(RDFS.subClassOf)) {
-			ClassInfo supResInfo = getClassResInfo(RDFS.Resource);
+			ClassModel supResInfo = getClassResInfo(RDFS.Resource);
 			supResInfo.addSubClass(rdfsResource);
 			info.addSupClass(RDFS.Resource);
-			RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-			rdfsInfoMap.putResourceInfo(RDFS.Resource, supResInfo);
+			RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+			rdfsModelMap.putResourceInfo(RDFS.Resource, supResInfo);
 		}
 	}
 
-	private boolean setClassInfo(Statement stmt, ClassInfo info) {
+	private boolean setClassInfo(Statement stmt, ClassModel info) {
 		Resource subject = stmt.getSubject();
 		Property predicate = stmt.getPredicate();
 		RDFNode object = stmt.getObject();
@@ -185,11 +185,11 @@ public class RDFSModelExtraction {
 		if (predicate.equals(RDFS.subClassOf)) { // rdfs:subClassOf
 			// subject < object
 			// info -> subject info supInfo -> object info
-			ClassInfo supResInfo = getClassResInfo((Resource) object);
+			ClassModel supResInfo = getClassResInfo((Resource) object);
 			supResInfo.addSubClass(subject);
 			info.addSupClass((Resource) object);
-			RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-			rdfsInfoMap.putResourceInfo((Resource) object, supResInfo);
+			RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+			rdfsModelMap.putResourceInfo((Resource) object, supResInfo);
 		} else {
 			return false;
 		}
@@ -197,7 +197,7 @@ public class RDFSModelExtraction {
 		return true;
 	}
 
-	private boolean setPropertyInfo(Statement stmt, PropertyInfo info) {
+	private boolean setPropertyInfo(Statement stmt, PropertyModel info) {
 		Resource subject = stmt.getSubject();
 		Property predicate = stmt.getPredicate();
 		RDFNode object = stmt.getObject();
@@ -220,11 +220,11 @@ public class RDFSModelExtraction {
 		} else if (predicate.equals(RDFS.subPropertyOf)) { // rdfs:subPropertyOf
 			// subject < object
 			// info -> subject info supInfo -> object info
-			PropertyInfo supResInfo = getPropertyResInfo(objectResource);
-			// rdfsInfoMap.addRootProperties((Resource)object); //一時しのぎ
+			PropertyModel supResInfo = getPropertyResInfo(objectResource);
+			// rdfsModelMap.addRootProperties((Resource)object); //一時しのぎ
 			supResInfo.addSubProperty(subject);
-			RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-			rdfsInfoMap.putResourceInfo(objectResource, supResInfo);
+			RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+			rdfsModelMap.putResourceInfo(objectResource, supResInfo);
 			info.addSupProperty(object);
 		} else {
 			return false;
@@ -232,7 +232,7 @@ public class RDFSModelExtraction {
 		return true;
 	}
 
-	private boolean setBaseInfo(Statement stmt, RDFSInfo info) {
+	private boolean setBaseInfo(Statement stmt, RDFSModel info) {
 		Property predicate = stmt.getPredicate();
 		RDFNode object = stmt.getObject();
 
@@ -246,37 +246,37 @@ public class RDFSModelExtraction {
 			info.setMetaClass(object.toString());
 		} else if (predicate.getURI().matches(MR3Resource.conceptLabel.getURI() + ".*")) {
 			// subClassOfやsubPropertyOfと同時に使った場合にのみ有効
-			RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-			rdfsInfoMap.addPropertyLabelModel(stmt);
+			RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+			rdfsModelMap.addPropertyLabelModel(stmt);
 		} else {
 			return false;
 		}
 		return true;
 	}
 
-	private boolean setRDFSInfo(Statement stmt, RDFSInfo info) {
-		if (info instanceof ClassInfo) {
-			return setClassInfo(stmt, (ClassInfo) info);
-		} else if (info instanceof PropertyInfo) {
-			return setPropertyInfo(stmt, (PropertyInfo) info);
+	private boolean setRDFSInfo(Statement stmt, RDFSModel info) {
+		if (info instanceof ClassModel) {
+			return setClassInfo(stmt, (ClassModel) info);
+		} else if (info instanceof PropertyModel) {
+			return setPropertyInfo(stmt, (PropertyModel) info);
 		} else {
 			return false;
 		}
 	}
 
-	public ClassInfo getClassResInfo(Resource resource) {
-		RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-		ClassInfo info = (ClassInfo) rdfsInfoMap.getResourceInfo(resource);
+	public ClassModel getClassResInfo(Resource resource) {
+		RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+		ClassModel info = (ClassModel) rdfsModelMap.getResourceInfo(resource);
 		if (info == null)
-			info = new ClassInfo("");
+			info = new ClassModel("");
 		return info;
 	}
 
-	public PropertyInfo getPropertyResInfo(Resource resource) {
-		RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-		PropertyInfo info = (PropertyInfo) rdfsInfoMap.getResourceInfo(resource);
+	public PropertyModel getPropertyResInfo(Resource resource) {
+		RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+		PropertyModel info = (PropertyModel) rdfsModelMap.getResourceInfo(resource);
 		if (info == null)
-			info = new PropertyInfo("");
+			info = new PropertyModel("");
 		return info;
 	}
 }

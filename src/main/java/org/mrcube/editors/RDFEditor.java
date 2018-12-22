@@ -1,24 +1,24 @@
 /*
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
- * 
+ *
  * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
- * 
+ *
  * This file is part of MR^3.
- * 
+ *
  * MR^3 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * MR^3 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  */
 
 package org.mrcube.editors;
@@ -34,8 +34,8 @@ import org.mrcube.jgraph.RDFGraphMarqueeHandler;
 import org.mrcube.jgraph.RDFGraphModel;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.MR3Resource;
-import org.mrcube.models.PropertyInfo;
-import org.mrcube.models.RDFResourceInfo;
+import org.mrcube.models.PropertyModel;
+import org.mrcube.models.RDFResourceModel;
 import org.mrcube.utils.GraphUtilities;
 import org.mrcube.utils.PrefixNSUtil;
 import org.mrcube.views.RDFLiteralPanel;
@@ -47,10 +47,10 @@ import java.lang.ref.WeakReference;
 
 /**
  * @author Takeshi Morita
- * 
  */
 public class RDFEditor extends Editor {
 
+    private RDFGraphMarqueeHandler rdfGraphMarqueeHandler;
     private static WeakReference<RDFResourcePanel> resPanelRef;
     private static WeakReference<RDFPropertyPanel> propPanelRef;
     private static WeakReference<RDFLiteralPanel> litPanelRef;
@@ -59,8 +59,13 @@ public class RDFEditor extends Editor {
         graph = new RDFGraph(gm, new RDFGraphModel(), GraphType.RDF);
         graph.setFont(graphFont);
         graph.getSelectionModel().setChildrenSelectable(false);
-        graph.setMarqueeHandler(new RDFGraphMarqueeHandler(gm, graph));
+        rdfGraphMarqueeHandler = new RDFGraphMarqueeHandler(gm, graph);
+        graph.setMarqueeHandler(rdfGraphMarqueeHandler);
         initEditor(graph, gm);
+    }
+
+    public RDFGraphMarqueeHandler getRdfGraphMarqueeHandler() {
+        return rdfGraphMarqueeHandler;
     }
 
     public static void updateComponents() {
@@ -83,7 +88,7 @@ public class RDFEditor extends Editor {
 
     // 対応するRDFSクラスを選択
     private void selectResource(GraphCell cell) {
-        RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(cell.getAttributes());
+        RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(cell.getAttributes());
         if (info != null) {
             if (!isEditMode()) {
                 gmanager.selectClassCell(info.getTypeCell());
@@ -102,7 +107,7 @@ public class RDFEditor extends Editor {
     }
 
     private void selectProperty(GraphCell cell) {
-        PropertyInfo propertyInfo = (PropertyInfo) GraphConstants.getValue(cell.getAttributes());
+        PropertyModel propertyInfo = (PropertyModel) GraphConstants.getValue(cell.getAttributes());
         if (!propertyInfo.getURI().equals(MR3Resource.Nil)) {
             Object propCell = gmanager.getPropertyCell(propertyInfo.getURI(), false);
             if (propCell != null && !isEditMode()) {
@@ -110,7 +115,7 @@ public class RDFEditor extends Editor {
             }
         }
         Edge edge = (Edge) cell;
-        PrefixNSUtil.setPrefixNSInfoSet(GraphUtilities.getPrefixNSInfoSet());
+        PrefixNSUtil.setNamespaceModelSet(GraphUtilities.getNamespaceModelSet());
         RDFPropertyPanel propPanel = getRDFPropertyPanel();
         propPanel.setPropertyList(gmanager.getPropertyList());
         propPanel.setValue(edge, propertyInfo);

@@ -34,9 +34,9 @@ import org.mrcube.io.MR3Writer;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.jgraph.RDFGraph;
 import org.mrcube.models.MR3Constants;
+import org.mrcube.models.NamespaceModel;
 import org.mrcube.models.PrefConstants;
-import org.mrcube.models.PrefixNSInfo;
-import org.mrcube.models.RDFResourceInfo;
+import org.mrcube.models.RDFResourceModel;
 import org.mrcube.utils.*;
 
 import javax.imageio.ImageIO;
@@ -341,7 +341,7 @@ public class ExportDialog extends JDialog implements ActionListener {
         for (int i = 0; i < cells.length; i++) {
             GraphCell cell = (GraphCell) cells[i];
             if (RDFGraph.isRDFResourceCell(cell)) {
-                RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(cell.getAttributes());
+                RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(cell.getAttributes());
                 Resource resType = info.getType();
                 if (resType.getURI().length() == 0) {
                     resType = RDFS.Resource;
@@ -475,7 +475,7 @@ public class ExportDialog extends JDialog implements ActionListener {
 
         if (getSelectedCount() == 1) {
             // treePanel.replaceNameSpace(treePanel.getRoot(),
-            // gmanager.getPrefixNSInfoSet());
+            // gmanager.getNamespaceModelSet());
         }
         if (encodeCheckBox.isSelected()) {
             model = getEncodedModel(model);
@@ -519,8 +519,8 @@ public class ExportDialog extends JDialog implements ActionListener {
     }
 
     private void setNsPrefix(Model model) {
-        Set<PrefixNSInfo> prefixNsInfoSet = GraphUtilities.getPrefixNSInfoSet();
-        for (PrefixNSInfo info : prefixNsInfoSet) {
+        Set<NamespaceModel> namespaceModelSet = GraphUtilities.getNamespaceModelSet();
+        for (NamespaceModel info : namespaceModelSet) {
             if (info.isAvailable()) {
                 model.setNsPrefix(info.getPrefix(), info.getNameSpace());
             }

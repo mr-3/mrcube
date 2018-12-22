@@ -31,7 +31,7 @@ import org.mrcube.jgraph.GraphManager;
 import org.mrcube.jgraph.OntClassCell;
 import org.mrcube.jgraph.RDFGraph;
 import org.mrcube.models.MR3Constants.URIType;
-import org.mrcube.models.RDFSInfo;
+import org.mrcube.models.RDFSModel;
 import org.mrcube.utils.GraphUtilities;
 import org.mrcube.utils.Utilities;
 
@@ -89,7 +89,7 @@ public class SelectResourceTypePanel extends SelectClassPanel {
                 GraphUtilities.changeDefaultCellStyle(graph, prevCell, OntClassCell.classColor);
                 GraphUtilities.changeCellStyle(graph, cell, GraphUtilities.selectedColor,
                         GraphUtilities.selectedBorderColor);
-                RDFSInfo info = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
+                RDFSModel info = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
                 if (info != null) {
                     dspURI.setText(info.getURIStr());
                     dspURI.setToolTipText(info.getURIStr());

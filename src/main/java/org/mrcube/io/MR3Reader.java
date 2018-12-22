@@ -35,8 +35,8 @@ import org.mrcube.layout.JGraphTreeLayout;
 import org.mrcube.layout.VGJTreeLayout;
 import org.mrcube.models.MR3Constants.HistoryType;
 import org.mrcube.models.MR3Resource;
-import org.mrcube.models.RDFSInfo;
-import org.mrcube.models.RDFSInfoMap;
+import org.mrcube.models.RDFSModel;
+import org.mrcube.models.RDFSModelMap;
 import org.mrcube.utils.ProjectManager;
 import org.mrcube.views.HistoryManager;
 import org.mrcube.views.NameSpaceTableDialog;
@@ -117,7 +117,7 @@ public class MR3Reader {
 		for (int i = 0; i < cells.length; i++) {
 			GraphCell cell = (GraphCell) cells[i];
 			if (RDFGraph.isRDFPropertyCell(cell)) {
-				RDFSInfo info = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
+				RDFSModel info = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
 				if (!info.getURI().equals(MR3Resource.Nil)) {
 					GraphCell propCell = gmanager.getPropertyCell(info.getURI(), false);
 					Object newInfo = GraphConstants.getValue(propCell.getAttributes());
@@ -180,13 +180,13 @@ public class MR3Reader {
 
 	private void setPropertyLabel(RDFGraph graph, Object edge) {
 		GraphCell sourceCell = (GraphCell) graph.getSourceVertex(edge);
-		RDFSInfo sourceInfo = (RDFSInfo) GraphConstants.getValue(sourceCell.getAttributes());
+		RDFSModel sourceInfo = (RDFSModel) GraphConstants.getValue(sourceCell.getAttributes());
 		Resource sourceRes = sourceInfo.getURI();
 		GraphCell targetCell = (GraphCell) graph.getTargetVertex(edge);
-		RDFSInfo targetInfo = (RDFSInfo) GraphConstants.getValue(targetCell.getAttributes());
+		RDFSModel targetInfo = (RDFSModel) GraphConstants.getValue(targetCell.getAttributes());
 		Resource targetRes = targetInfo.getURI();
-		RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-		Model model = rdfsInfoMap.getPropertyLabelModel();
+		RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+		Model model = rdfsModelMap.getPropertyLabelModel();
 		for (StmtIterator i = model.listStatements(); i.hasNext();) {
 			Statement stmt = i.nextStatement();
 			Resource subject = stmt.getSubject();
@@ -218,8 +218,8 @@ public class MR3Reader {
 		} else {
 			mr3Parser.createClassGraph(VGJTreeLayout.getVGJClassCellLayoutMap());
 		}
-		RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-		rdfsInfoMap.clearTemporaryObject();
+		RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+		rdfsModelMap.clearTemporaryObject();
 		gmanager.getCurrentClassGraph().clearSelection();
 	}
 
@@ -233,8 +233,8 @@ public class MR3Reader {
 		} else {
 			mr3Parser.createPropertyGraph(VGJTreeLayout.getVGJPropertyCellLayoutMap());
 		}
-		RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-		rdfsInfoMap.clearTemporaryObject();
+		RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+		rdfsModelMap.clearTemporaryObject();
 		gmanager.getCurrentPropertyGraph().clearSelection();
 	}
 

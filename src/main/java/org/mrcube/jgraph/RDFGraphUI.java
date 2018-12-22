@@ -115,7 +115,7 @@ public class RDFGraphUI extends BasicGraphUI {
 		HistoryManager.saveHistory(HistoryType.EDIT_LITERAL_WITH_GRAPH, beforeLiteral, newLiteral);
 	}
 
-	private void changeResourceLabel(ResourceInfo info, GraphCell cell) {
+	private void changeResourceLabel(ResourceModel info, GraphCell cell) {
 		String label = cell.toString().replaceAll("　", "");
 		MR3Literal literal = info.getDefaultLabel(GraphManager.getDefaultLang());
 		if (literal == null) {
@@ -129,27 +129,27 @@ public class RDFGraphUI extends BasicGraphUI {
 
 	private void editLabel(GraphCell cell, Object info) {
 		if (RDFGraph.isRDFResourceCell(cell)) {
-			RDFResourceInfo beforeInfo = new RDFResourceInfo((RDFResourceInfo) info);
-			changeResourceLabel((ResourceInfo) info, cell);
-			GraphUtilities.resizeRDFResourceCell(gmanager, (RDFResourceInfo) info, cell);
+			RDFResourceModel beforeInfo = new RDFResourceModel((RDFResourceModel) info);
+			changeResourceLabel((ResourceModel) info, cell);
+			GraphUtilities.resizeRDFResourceCell(gmanager, (RDFResourceModel) info, cell);
 			HistoryManager.saveHistory(HistoryType.EDIT_RESOURCE_LABEL_WITH_GRAPH,
-					beforeInfo.getLabelList(), ((RDFResourceInfo) info).getLabelList());
+					beforeInfo.getLabelList(), ((RDFResourceModel) info).getLabelList());
 		} else if (RDFGraph.isRDFPropertyCell(cell)) {
 			// ラベルだけでは判別は困難なので何もしない
 		} else if (RDFGraph.isRDFSClassCell(cell)) {
-			RDFSInfo beforeInfo = new ClassInfo((ClassInfo) info);
-			changeResourceLabel((ResourceInfo) info, cell);
-			GraphUtilities.resizeRDFSResourceCell(gmanager, (RDFSInfo) info, cell);
-			gmanager.selectChangedRDFCells((RDFSInfo) info);
+			RDFSModel beforeInfo = new ClassModel((ClassModel) info);
+			changeResourceLabel((ResourceModel) info, cell);
+			GraphUtilities.resizeRDFSResourceCell(gmanager, (RDFSModel) info, cell);
+			gmanager.selectChangedRDFCells((RDFSModel) info);
 			HistoryManager.saveHistory(HistoryType.EDIT_CLASS_LABEL_WITH_GRAPH,
-					beforeInfo.getLabelList(), ((RDFSInfo) info).getLabelList());
+					beforeInfo.getLabelList(), ((RDFSModel) info).getLabelList());
 		} else if (RDFGraph.isRDFSPropertyCell(cell)) {
-			RDFSInfo beforeInfo = new PropertyInfo((PropertyInfo) info);
-			changeResourceLabel((ResourceInfo) info, cell);
-			GraphUtilities.resizeRDFSResourceCell(gmanager, (RDFSInfo) info, cell);
-			gmanager.selectChangedRDFCells((RDFSInfo) info);
+			RDFSModel beforeInfo = new PropertyModel((PropertyModel) info);
+			changeResourceLabel((ResourceModel) info, cell);
+			GraphUtilities.resizeRDFSResourceCell(gmanager, (RDFSModel) info, cell);
+			gmanager.selectChangedRDFCells((RDFSModel) info);
 			HistoryManager.saveHistory(HistoryType.EDIT_ONT_PROPERTY_LABEL_WITH_GRAPH,
-					beforeInfo.getLabelList(), ((RDFSInfo) info).getLabelList());
+					beforeInfo.getLabelList(), ((RDFSModel) info).getLabelList());
 		}
 	}
 
@@ -160,8 +160,8 @@ public class RDFGraphUI extends BasicGraphUI {
 		}
 		String prefix = tokens[0];
 		String id = tokens[1];
-		Set<PrefixNSInfo> prefixNSInfoSet = GraphUtilities.getPrefixNSInfoSet();
-		for (PrefixNSInfo info : prefixNSInfoSet) {
+		Set<NamespaceModel> namespaceModelSet = GraphUtilities.getNamespaceModelSet();
+		for (NamespaceModel info : namespaceModelSet) {
 			if (prefix.equals(info.getPrefix())) {
 				return ResourceFactory.createResource(info.getNameSpace() + id);
 			}
@@ -189,9 +189,9 @@ public class RDFGraphUI extends BasicGraphUI {
 			return;
 		}
 		if (RDFGraph.isRDFResourceCell(cell)) {
-			RDFResourceInfo resInfo = (RDFResourceInfo) info;
+			RDFResourceModel resInfo = (RDFResourceModel) info;
 			if (isValidResource(resource.getURI(), resInfo.getURIStr())) {
-				RDFResourceInfo beforeInfo = new RDFResourceInfo(resInfo);
+				RDFResourceModel beforeInfo = new RDFResourceModel(resInfo);
 				resInfo.setURI(resource.getURI());
 				GraphConstants.setValue(cell.getAttributes(), resInfo);
 				GraphUtilities.resizeRDFResourceCell(gmanager, resInfo, cell);
@@ -201,28 +201,28 @@ public class RDFGraphUI extends BasicGraphUI {
 				cancelAction(cell);
 			}
 		} else if (RDFGraph.isRDFPropertyCell(cell)) {
-			RDFSInfo beforePropInfo = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
+			RDFSModel beforePropInfo = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
 			String beforePropURI = beforePropInfo.getURIStr();
 			editRDFPropertyAction.setURIString(resource.getURI());
 			editRDFPropertyAction.setEdge(cell);
 			if (!editRDFPropertyAction.editRDFProperty()) {
 				cancelAction(cell);
 			} else {
-				RDFSInfo afterPropInfo = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
+				RDFSModel afterPropInfo = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
 				HistoryManager.saveHistory(HistoryType.EDIT_PROPERTY_WITH_GRAPH, beforePropURI,
 						afterPropInfo.getURIStr());
 			}
 		} else if (RDFGraph.isRDFSCell(cell)) {
-			editConceptAction.editWithGraph(resource.getURI(), (RDFSInfo) info, cell);
+			editConceptAction.editWithGraph(resource.getURI(), (RDFSModel) info, cell);
 		}
 	}
 
 	private void editID(GraphCell cell, Object info) {
 		if (RDFGraph.isRDFResourceCell(cell)) {
-			RDFResourceInfo resInfo = (RDFResourceInfo) info;
+			RDFResourceModel resInfo = (RDFResourceModel) info;
 			String uri = resInfo.getURI().getNameSpace() + cell.toString().replaceAll("　", "");
 			if (isValidResource(uri, resInfo.getURIStr())) {
-				RDFResourceInfo beforeInfo = new RDFResourceInfo(resInfo);
+				RDFResourceModel beforeInfo = new RDFResourceModel(resInfo);
 				resInfo.setURI(uri);
 				HistoryManager.saveHistory(HistoryType.EDIT_RESOURCE_WITH_GRAPH, beforeInfo,
 						resInfo);
@@ -233,7 +233,7 @@ public class RDFGraphUI extends BasicGraphUI {
 			// IDだけでは判別は困難なので何もしない
 		} else if (RDFGraph.isRDFSCell(cell)) {
 			String uri = gmanager.getBaseURI() + cell.toString().replaceAll("　", "");
-			editConceptAction.editWithGraph(uri, (RDFSInfo) info, cell);
+			editConceptAction.editWithGraph(uri, (RDFSModel) info, cell);
 		}
 	}
 

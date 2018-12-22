@@ -40,7 +40,7 @@ import java.util.Set;
  * @author Takeshi Morita
  * 
  */
-public class PropertyInfo extends RDFSInfo {
+public class PropertyModel extends RDFSModel {
 
 	private Set<GraphCell> domainSet;
 	private Set<GraphCell> rangeSet;
@@ -51,7 +51,7 @@ public class PropertyInfo extends RDFSInfo {
 
 	private static final long serialVersionUID = -1326136347122640640L;
 
-	public PropertyInfo(String uri) {
+	public PropertyModel(String uri) {
 		super(uri);
 		metaClass = RDF.Property.toString();
 		domainSet = new HashSet<GraphCell>();
@@ -61,7 +61,7 @@ public class PropertyInfo extends RDFSInfo {
 		supProperties = new HashSet<RDFNode>();
 	}
 
-	public PropertyInfo(PropertyInfo info) {
+	public PropertyModel(PropertyModel info) {
 		super(info);
 		domainSet = new HashSet<GraphCell>(info.getDomain());
 		rangeSet = new HashSet<GraphCell>(info.getRange());
@@ -81,18 +81,18 @@ public class PropertyInfo extends RDFSInfo {
 		tmpModel.add(tmpModel.createStatement(res, RDF.type,
 				ResourceFactory.createResource(metaClass)));
 		for (GraphCell supRDFSCell : superRDFS) {
-			RDFSInfo propInfo = (RDFSInfo) GraphConstants.getValue(supRDFSCell.getAttributes());
+			RDFSModel propInfo = (RDFSModel) GraphConstants.getValue(supRDFSCell.getAttributes());
 			if (!propInfo.getURI().equals(MR3Resource.Property)) {
 				tmpModel.add(tmpModel.createStatement(res, RDFS.subPropertyOf, propInfo.getURI()));
 			}
 		}
 		for (GraphCell domainClassCell : domainSet) {
-			RDFSInfo classInfo = (RDFSInfo) GraphConstants
+			RDFSModel classInfo = (RDFSModel) GraphConstants
 					.getValue(domainClassCell.getAttributes());
 			tmpModel.add(tmpModel.createStatement(res, RDFS.domain, classInfo.getURI()));
 		}
 		for (GraphCell rangeClassCell : rangeSet) {
-			RDFSInfo classInfo = (RDFSInfo) GraphConstants.getValue(rangeClassCell.getAttributes());
+			RDFSModel classInfo = (RDFSModel) GraphConstants.getValue(rangeClassCell.getAttributes());
 			tmpModel.add(tmpModel.createStatement(res, RDFS.range, classInfo.getURI()));
 		}
 		return tmpModel;

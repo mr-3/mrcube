@@ -254,7 +254,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 
 	private void setPrefix() {
 		setURIPrefixBoxModel();
-		for (PrefixNSInfo prefNSInfo : GraphUtilities.getPrefixNSInfoSet()) {
+		for (NamespaceModel prefNSInfo : GraphUtilities.getNamespaceModelSet()) {
 			if (prefNSInfo.getNameSpace().equals(nsLabel.getText())) {
 				uriPrefixBox.setSelectedItem(prefNSInfo.getPrefix());
 				break;
@@ -315,7 +315,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		}
 	}
 
-	public void setValue(GraphCell c, PropertyInfo info) {
+	public void setValue(GraphCell c, PropertyModel info) {
 		edge = c;
 		if (info == null) {
 			setNSLabel(MR3Resource.Nil.getNameSpace());
@@ -333,7 +333,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 				if (info.getURIStr().equals(MR3Resource.Nil.getURI())) {
 					if (0 < propList.size()) {
 						GraphCell cell = propList.get(0);
-						RDFSInfo propInfo = (RDFSInfo) GraphConstants
+						RDFSModel propInfo = (RDFSModel) GraphConstants
 								.getValue(cell.getAttributes());
 						setNSLabel(propInfo.getURI().getNameSpace());
 					} else {
@@ -360,7 +360,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		propNameSpaceSet = new HashSet<String>();
 
 		for (GraphCell cell : propList) {
-			RDFSInfo info = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
+			RDFSModel info = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
 			Resource uri = info.getURI();
 			propNameSpaceSet.add(uri.getNameSpace());
 			Set<String> localNames = propMap.get(uri.getNameSpace());
@@ -382,9 +382,9 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		if (gmanager.isEmptyURI(uri.getURI())) {
 			return;
 		}
-		RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-		if (rdfsInfoMap.isPropertyCell(uri)) {
-			Object propertyCell = rdfsInfoMap.getPropertyCell(uri);
+		RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+		if (rdfsModelMap.isPropertyCell(uri)) {
+			Object propertyCell = rdfsModelMap.getPropertyCell(uri);
 			gmanager.selectPropertyCell(propertyCell);
 		} else {
 			JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(),
@@ -397,8 +397,8 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		Integer num = (Integer) numSpinner.getValue();
 		Resource resource = ResourceFactory.createResource(RDF.getURI() + "_" + num.intValue());
 		GraphCell propertyCell = gmanager.getPropertyCell(resource, false);
-		RDFSInfo rdfsInfo = (RDFSInfo) GraphConstants.getValue(propertyCell.getAttributes());
-		GraphConstants.setValue(edge.getAttributes(), rdfsInfo);
+		RDFSModel rdfsModel = (RDFSModel) GraphConstants.getValue(propertyCell.getAttributes());
+		GraphConstants.setValue(edge.getAttributes(), rdfsModel);
 		gmanager.getCurrentRDFGraph().getGraphLayoutCache().editCell(edge, edge.getAttributes());
 	}
 
@@ -407,8 +407,8 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 			return;
 		}
 		if (e.getSource() == applyButton || e.getSource() == idField) {
-			RDFSInfo beforeRDFSInfo = (RDFSInfo) GraphConstants.getValue(edge.getAttributes());
-			String beforeProperty = beforeRDFSInfo.getURIStr();
+			RDFSModel beforeRDFSModel = (RDFSModel) GraphConstants.getValue(edge.getAttributes());
+			String beforeProperty = beforeRDFSModel.getURIStr();
 			if (isContainer()) {
 				setContainerMemberProperty();
 			} else {
@@ -418,8 +418,8 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 				findIDField.setText("");
 				gmanager.selectRDFCell(edge);
 			}
-			RDFSInfo afterRDFSInfo = (RDFSInfo) GraphConstants.getValue(edge.getAttributes());
-			String afterProperty = afterRDFSInfo.getURIStr();
+			RDFSModel afterRDFSModel = (RDFSModel) GraphConstants.getValue(edge.getAttributes());
+			String afterProperty = afterRDFSModel.getURIStr();
 			HistoryManager.saveHistory(HistoryType.EDIT_PROPERTY_WITH_DIAGLOG, beforeProperty,
 					afterProperty);
 		} else if (e.getSource() == propOnlyCheck) {

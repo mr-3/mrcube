@@ -28,8 +28,8 @@ import org.jgraph.graph.GraphConstants;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.jgraph.RDFGraph;
 import org.mrcube.models.MR3Resource;
-import org.mrcube.models.PropertyInfo;
-import org.mrcube.models.RDFResourceInfo;
+import org.mrcube.models.PropertyModel;
+import org.mrcube.models.RDFResourceModel;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
 
@@ -223,10 +223,10 @@ public class ReferenceListPanel extends JPanel {
             if (isAvailable(tableModel, i, 0)) {
                 GraphCell rdfCell = (GraphCell) tableModel.getValueAt(i, 1);
                 if (RDFGraph.isRDFResourceCell(rdfCell)) {
-                    RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(rdfCell.getAttributes());
+                    RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(rdfCell.getAttributes());
                     info.setTypeCell(null, gmanager.getCurrentRDFGraph()); // Typeをnullに変更
                 } else if (RDFGraph.isRDFPropertyCell(rdfCell)) {
-                    GraphConstants.setValue(rdfCell.getAttributes(), new PropertyInfo(MR3Resource.Nil.getURI()));
+                    GraphConstants.setValue(rdfCell.getAttributes(), new PropertyModel(MR3Resource.Nil.getURI()));
                     gmanager.getCurrentRDFGraph().getGraphLayoutCache().editCell(rdfCell, rdfCell.getAttributes());
                 }
             }
@@ -239,7 +239,7 @@ public class ReferenceListPanel extends JPanel {
         for (int i = 0; i < tableModel.getRowCount(); i++) {
             if (isAvailable(tableModel, i, 0)) {
                 GraphCell propertyCell = (GraphCell) tableModel.getValueAt(i, 1);
-                PropertyInfo info = (PropertyInfo) GraphConstants.getValue(propertyCell.getAttributes());
+                PropertyModel info = (PropertyModel) GraphConstants.getValue(propertyCell.getAttributes());
                 info.removeDomain(cell);
                 info.removeRange(cell);
             }

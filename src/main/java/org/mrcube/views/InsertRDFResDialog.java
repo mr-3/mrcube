@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
  * 
- * Copyright (C) 2003-2015 Yamaguchi Laboratory, Keio University. All rights reserved. 
+ * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
  * 
  * This file is part of MR^3.
  * 
@@ -129,7 +129,7 @@ public class InsertRDFResDialog extends JDialog implements ItemListener {
     public void initData(Object[] cells) {
         resourceType = null;
         uriField.setText("");
-        PrefixNSUtil.setPrefixNSInfoSet(GraphUtilities.getPrefixNSInfoSet());
+        PrefixNSUtil.setNamespaceModelSet(GraphUtilities.getNamespaceModelSet());
         uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
         resTypeBox.setModel(new DefaultComboBoxModel(cells));
         Object[] typeCells = gmanager.getCurrentClassGraph().getSelectionCells();

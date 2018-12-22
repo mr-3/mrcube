@@ -1,6 +1,6 @@
 /*
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
- * Project Website: http://mr3.sourceforge.net/
+ * Project Website: http://mrcube.org/
  * 
  * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
  * 
@@ -34,7 +34,7 @@ import java.util.List;
 /**
  * @author Takeshi Morita
  */
-public abstract class ResourceInfo {
+public abstract class ResourceModel {
 
 	protected transient List<MR3Literal> labelList;
 	protected transient List<MR3Literal> commentList;

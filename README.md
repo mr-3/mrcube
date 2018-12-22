@@ -41,7 +41,6 @@ MR<sup>3</sup> uses the following libraries.
 * [InfoNode Docking Windows](http://www.infonode.net/index.html?idw)([License](http://www.infonode.net/index.html?idwlicense))
 * [Drawing Graphs with VGJ](http://www.eng.auburn.edu/department/cse/research/graph_drawing/graph_drawing.html)([License](http://www.eng.auburn.edu/department/cse/research/graph_drawing/COPYING))
 * [JFontChooser](http://jfontchooser.sourceforge.jp/)([License](http://sourceforge.jp/softwaremap/trove_list.php?form_cat=188))
-* [Apache ORO](http://attic.apache.org/projects/jakarta-oro.html)([License](http://www.apache.org/licenses/LICENSE-2.0))
 * [Silk Icons](http://www.famfamfam.com)([License](http://creativecommons.org/licenses/by/2.5/))
 * [exewrap](http://exewrap.sourceforge.jp/)([License](http://exewrap.sourceforge.jp/#license))
 

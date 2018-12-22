@@ -27,11 +27,11 @@ import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphConstants;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.jgraph.RDFGraph;
-import org.mrcube.models.ClassInfo;
+import org.mrcube.models.ClassModel;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.MR3Constants.HistoryType;
-import org.mrcube.models.PropertyInfo;
-import org.mrcube.models.RDFSInfoMap;
+import org.mrcube.models.PropertyModel;
+import org.mrcube.models.RDFSModelMap;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
 import org.mrcube.views.HistoryManager;
@@ -62,25 +62,25 @@ public class CutAction extends AbstractAction {
 		if (graph.getType() == GraphType.RDF) {
 			HistoryManager.saveHistory(HistoryType.CUT_RDF_GRAPH);
 		} else if (graph.getType() == GraphType.CLASS) {
-			RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
+			RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
 			for (Object cell : graph.getSelectionCells()) {
 				GraphCell gcell = (GraphCell) cell;
 				if (RDFGraph.isRDFSClassCell(gcell)) {
-					ClassInfo orgInfo = (ClassInfo) GraphConstants.getValue(gcell.getAttributes());
-					rdfsInfoMap.removeURICellMap(orgInfo);
-					rdfsInfoMap.removeCellInfo(gcell);
+					ClassModel orgInfo = (ClassModel) GraphConstants.getValue(gcell.getAttributes());
+					rdfsModelMap.removeURICellMap(orgInfo);
+					rdfsModelMap.removeCellInfo(gcell);
 				}
 			}
 			HistoryManager.saveHistory(HistoryType.CUT_CLASS_GRAPH);
 		} else if (graph.getType() == GraphType.PROPERTY) {
-			RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
+			RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
 			for (Object cell : graph.getSelectionCells()) {
 				GraphCell gcell = (GraphCell) cell;
 				if (RDFGraph.isRDFSPropertyCell(gcell)) {
-					PropertyInfo orgInfo = (PropertyInfo) GraphConstants.getValue(gcell
+					PropertyModel orgInfo = (PropertyModel) GraphConstants.getValue(gcell
 							.getAttributes());
-					rdfsInfoMap.removeURICellMap(orgInfo);
-					rdfsInfoMap.removeCellInfo(gcell);
+					rdfsModelMap.removeURICellMap(orgInfo);
+					rdfsModelMap.removeCellInfo(gcell);
 				}
 			}
 			HistoryManager.saveHistory(HistoryType.CUT_PROPERTY_GRAPH);

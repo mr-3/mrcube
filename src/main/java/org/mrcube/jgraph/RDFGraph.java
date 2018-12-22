@@ -312,7 +312,7 @@ public class RDFGraph extends JGraph {
      * @param cells
      */
     public void removeCellsWithEdges(Object[] cells) {
-        RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
+        RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
         Set removeCells = new HashSet();
         for (int i = 0; i < cells.length; i++) {
             GraphCell cell = (GraphCell) cells[i];
@@ -322,7 +322,7 @@ public class RDFGraph extends JGraph {
                     removeCells.add(edges.next());
                 }
             } else if (isRDFSCell(cell)) {
-                rdfsInfoMap.removeCellInfo(cell);
+                rdfsModelMap.removeCellInfo(cell);
             }
         }
         try {
@@ -333,7 +333,7 @@ public class RDFGraph extends JGraph {
         }
     }
 
-    private String getRDFSToolTipText(RDFSInfo info) {
+    private String getRDFSToolTipText(RDFSModel info) {
         String msg = "<dl><dt>URI: </dt><dd>" + info.getURI() + "</dd>";
         MR3Literal literal = info.getFirstLabel();
         if (literal != null) {
@@ -353,7 +353,7 @@ public class RDFGraph extends JGraph {
 
     private String getClassToolTipText(Object cell) {
         GraphCell gcell = (GraphCell) cell;
-        ClassInfo info = (ClassInfo) GraphConstants.getValue(gcell.getAttributes());
+        ClassModel info = (ClassModel) GraphConstants.getValue(gcell.getAttributes());
         String msg = "<center><strong>Class</strong></center>";
         msg += getRDFSToolTipText(info);
         msg += "<strong>SuperClasses: </strong>" + info.getSuperRDFS() + "<br>";
@@ -361,7 +361,7 @@ public class RDFGraph extends JGraph {
     }
 
     private String getPropertyToolTipText(GraphCell cell) {
-        PropertyInfo info = (PropertyInfo) GraphConstants.getValue(cell.getAttributes());
+        PropertyModel info = (PropertyModel) GraphConstants.getValue(cell.getAttributes());
         if (info == null) {
             return "";
         }
@@ -373,7 +373,7 @@ public class RDFGraph extends JGraph {
 
     private String getRDFResourceToolTipText(GraphCell cell) {
         String msg = "";
-        RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(cell.getAttributes());
+        RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(cell.getAttributes());
         if (info != null) {
             msg += "<h3>Resource</h3>";
             msg += "<strong>URI: </strong>" + info.getURI() + "<br>";

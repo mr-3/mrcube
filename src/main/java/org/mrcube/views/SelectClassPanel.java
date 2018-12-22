@@ -1,6 +1,6 @@
 /*
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
- * Project Website: http://mr3.sourceforge.net/
+ * Project Website: http://mrcube.org/
  * 
  * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
  * 
@@ -132,7 +132,7 @@ public abstract class SelectClassPanel extends JPanel implements GraphSelectionL
     private JComponent getFindGroupPanel() {
         uriPrefixBox = new JComboBox();
         uriPrefixBox.addActionListener(new ChangePrefixAction());
-        PrefixNSUtil.setPrefixNSInfoSet(GraphUtilities.getPrefixNSInfoSet());
+        PrefixNSUtil.setNamespaceModelSet(GraphUtilities.getNamespaceModelSet());
         uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
         JComponent uriPrefixBoxP = Utilities.createTitledPanel(uriPrefixBox, MR3Constants.PREFIX);
         findField = new JTextField(15);

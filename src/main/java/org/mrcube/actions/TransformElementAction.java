@@ -29,8 +29,8 @@ import org.mrcube.jgraph.GraphManager;
 import org.mrcube.jgraph.RDFGraph;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.MR3Constants.URIType;
-import org.mrcube.models.RDFResourceInfo;
-import org.mrcube.models.RDFSInfo;
+import org.mrcube.models.RDFResourceModel;
+import org.mrcube.models.RDFSModel;
 import org.mrcube.utils.MR3CellMaker;
 import org.mrcube.utils.Translator;
 
@@ -51,7 +51,7 @@ public class TransformElementAction extends AbstractAction {
     private GraphType toGraphType;
     private GraphManager gmanager;
 
-    // private RDFSInfoMap rdfsInfoMap = RDFSInfoMap.getInstance();
+    // private RDFSModelMap rdfsInfoMap = RDFSModelMap.getInstance();
 
     public TransformElementAction(RDFGraph g, GraphManager gm, GraphType fromType, GraphType toType) {
         super(Translator.getString("Action.TransformElement." + fromType + "To" + toType + ".Text"));
@@ -68,19 +68,19 @@ public class TransformElementAction extends AbstractAction {
             GraphCell cell = (GraphCell) cells[i];
 
             if (fromGraphType == GraphType.RDF && RDFGraph.isRDFResourceCell(cell)) {
-                RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(cell.getAttributes());
+                RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(cell.getAttributes());
                 uriSet.add(info.getURIStr());
             } else if (fromGraphType == GraphType.CLASS && RDFGraph.isRDFSClassCell(cell)) {
-                RDFSInfo info = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
+                RDFSModel info = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
                 uriSet.add(info.getURIStr());
             } else if (fromGraphType == GraphType.PROPERTY && RDFGraph.isRDFSPropertyCell(cell)) {
-                RDFSInfo info = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
+                RDFSModel info = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
                 uriSet.add(info.getURIStr());
             }
             // RDFSプロパティとクラスが重複してしまうため，複雑な処理が必要．
             // else if (graph.isRDFPropertyCell(cell)) {
             // Object propCell = rdfsInfoMap.getEdgeInfo(cell);
-            // RDFSInfo info = rdfsInfoMap.getCellInfo(propCell);
+            // RDFSModel info = rdfsInfoMap.getCellInfo(propCell);
             // resSet.add(info.getURI());
             // }
         }

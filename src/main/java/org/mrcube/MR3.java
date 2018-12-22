@@ -23,6 +23,7 @@
 
 package org.mrcube;
 
+import org.apache.jena.sys.JenaSystem;
 import org.mrcube.actions.*;
 import org.mrcube.editors.ClassEditor;
 import org.mrcube.editors.PropertyEditor;
@@ -796,6 +797,7 @@ public class MR3 extends JFrame implements ChangeListener {
 	}
 
 	public static void initialize(Class cls) {
+		JenaSystem.init();
 		userPrefs = Preferences.userNodeForPackage(cls);
 		Translator.loadResourceBundle(userPrefs);
 		try {

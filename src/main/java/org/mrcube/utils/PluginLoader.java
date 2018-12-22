@@ -1,8 +1,8 @@
 /*
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
- * Project Website: http://mr3.sourceforge.net/
+ * Project Website: http://mrcube.org/
  * 
- * Copyright (C) 2003-2015 Yamaguchi Laboratory, Keio University. All rights reserved. 
+ * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
  * 
  * This file is part of MR^3.
  * 
@@ -23,7 +23,6 @@
 
 package org.mrcube.utils;
 
-import org.apache.oro.text.perl.Perl5Util;
 import org.mrcube.MR3;
 import org.mrcube.models.PrefConstants;
 import org.mrcube.plugin.MR3Plugin;
@@ -104,12 +103,10 @@ public class PluginLoader {
 	}
 
 	private static void loadManifests() {
-		Perl5Util util = new Perl5Util();
 		try {
-			for (Enumeration e = classLoader.getResources("META-INF/MANIFEST.MF"); e
-					.hasMoreElements();) {
-				URL url = (URL) e.nextElement();
-				if (util.match("/" + pluginPath.replace('\\', '/') + "/", url.getFile())) {
+			List<URL> urlList = Collections.list(classLoader.getResources("META-INF/MANIFEST.MF"));
+			for (URL url: urlList) {
+			    if (url.getFile().matches("/" + pluginPath.replace('\\', '/') + "/")) {
 					InputStream inputStream = url.openStream();
 					manifests.add(new Manifest(inputStream));
 					inputStream.close();
