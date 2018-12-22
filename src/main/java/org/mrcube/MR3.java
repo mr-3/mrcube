@@ -23,7 +23,6 @@
 
 package org.mrcube;
 
-import org.apache.jena.query.ARQ;
 import org.apache.jena.sys.JenaSystem;
 import org.mrcube.actions.*;
 import org.mrcube.editors.ClassEditor;

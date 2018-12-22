@@ -44,7 +44,7 @@ sourceCompatibility = targetCompatibility = '1.8'
 dependencies {
     compile 'jgraph:jgraph:5.13.0.0'
     compile 'jgraph:jgraphaddons:1.0.2'
-    compile 'org.apache.jena:apache-jena-libs:3.9.0'
+    compile 'org.apache.jena:jena-core:3.9.0'
     compile 'net.infonode:idw:1.6.1_gpl'
     compile 'say.swing:jfontchooser:1.0.5'
     compile 'org.slf4j:slf4j-api:1.7.25'
