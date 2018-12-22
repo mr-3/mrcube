@@ -60,7 +60,7 @@ task zipApp(type: Zip, dependsOn: startShadowScripts) {
 
     from('./README.md')
     from('./README.ja.md')
-    from('./src/main/resources/License.txt')
+    from('./src/main/resources/gpl.md')
     into('bin') {
         from('build/scriptsShadow/mrcube')
         from('build/scriptsShadow/mrcube.bat')
