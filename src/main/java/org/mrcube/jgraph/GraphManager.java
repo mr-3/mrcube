@@ -91,19 +91,25 @@ public class GraphManager {
 
     private static final String WARNING = Translator.getString("Warning");
 
+    public static String CLASS_CLASS_LIST;
+    public static String PROPERTY_CLASS_LIST;
+
     public GraphManager(JTabbedPane desktop, Preferences prefs, Frame root) {
         desktopTabbedPane = desktop;
         rootFrame = root;
         userPrefs = prefs;
-        attrDialogRef = new WeakReference<AttributeDialog>(null);
-        findResDialogRef = new WeakReference<FindResourceDialog>(null);
-        nsTableDialogRef = new WeakReference<NameSpaceTableDialog>(null);
-        removeDialogRef = new WeakReference<RemoveDialog>(null);
+        attrDialogRef = new WeakReference<>(null);
+        findResDialogRef = new WeakReference<>(null);
+        nsTableDialogRef = new WeakReference<>(null);
+        removeDialogRef = new WeakReference<>(null);
         cellMaker = new MR3CellMaker(this);
         treeLayout = new JGraphTreeLayout(this);
         baseURI = userPrefs.get(PrefConstants.BaseURI, MR3Resource.getURI());
         GraphLayoutUtilities.setGraphManager(this);
         mr3Writer = new MR3Writer(this);
+        CLASS_CLASS_LIST = RDFS.Class.toString() + " " + OWL.Class.toString();
+        PROPERTY_CLASS_LIST = RDF.Property.toString() + " " + OWL.ObjectProperty.toString()
+                + " " + OWL.DatatypeProperty.toString();
     }
 
     public MR3CellMaker getCellMaker() {
@@ -323,7 +329,6 @@ public class GraphManager {
         return userPrefs.get(PrefConstants.ResourceContainer, "").split(",");
     }
 
-    public static final String CLASS_CLASS_LIST = RDFS.Class.toString() + " " + OWL.Class.toString();
 
     public String getDefaultClassClass() {
         return userPrefs.get(PrefConstants.DefaultClassClass, RDFS.Class.getURI());
@@ -333,8 +338,6 @@ public class GraphManager {
         return getMetaClassList(userPrefs.get(PrefConstants.ClassClassList, CLASS_CLASS_LIST).split(" "));
     }
 
-    public static final String PROPERTY_CLASS_LIST = RDF.Property.toString() + " " + OWL.ObjectProperty.toString()
-            + " " + OWL.DatatypeProperty.toString();
 
     public String getDefaultPropertyClass() {
         return userPrefs.get(PrefConstants.DefaultPropertyClass, RDF.Property.getURI());
