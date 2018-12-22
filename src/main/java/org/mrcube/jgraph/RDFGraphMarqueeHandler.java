@@ -31,9 +31,9 @@ import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.MR3Constants.HistoryType;
 import org.mrcube.models.MR3Constants.URIType;
 import org.mrcube.models.MR3Resource;
-import org.mrcube.models.PropertyInfo;
-import org.mrcube.models.RDFResourceInfo;
-import org.mrcube.models.RDFSInfo;
+import org.mrcube.models.PropertyModel;
+import org.mrcube.models.RDFResourceModel;
+import org.mrcube.models.RDFSModel;
 import org.mrcube.utils.MR3CellMaker;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
@@ -63,7 +63,6 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     public transient JToggleButton moveButton = new JToggleButton();
     public transient JToggleButton connectButton = new JToggleButton();
 
-    protected Rectangle bounds;
     protected Point2D start, current;
     protected PortView port, firstPort;
 
@@ -87,9 +86,9 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     public RDFGraphMarqueeHandler(GraphManager manager, RDFGraph graph) {
         gmanager = manager;
         this.graph = graph;
-        insertRDFResDialogRef = new WeakReference<InsertRDFResDialog>(null);
-        insertRDFLiteralDialogRef = new WeakReference<InsertRDFLiteralDialog>(null);
-        insertRDFSResDialogRef = new WeakReference<InsertRDFSResDialog>(null);
+        insertRDFResDialogRef = new WeakReference<>(null);
+        insertRDFLiteralDialogRef = new WeakReference<>(null);
+        insertRDFSResDialogRef = new WeakReference<>(null);
         cellMaker = new MR3CellMaker(gmanager);
         insertResourceAction = new InsertResourceAction();
         insertLiteralAction = new InsertLiteralAction();
@@ -199,8 +198,9 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
             current = graph.snap(event.getPoint());
             if (connectButton.isSelected()) {
                 port = getPortViewAt(event.getX(), event.getY(), !event.isShiftDown());
-                if (port != null)
+                if (port != null) {
                     current = graph.toScreen(port.getLocation(null));
+                }
             }
             g.setColor(bg);
             g.setXORMode(fg);
@@ -299,7 +299,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     }
 
     public GraphCell insertResourceCell(Point pt) {
-        List<Object> list = new ArrayList<Object>();
+        List<Object> list = new ArrayList<>();
         list.add(null); // リソースのタイプが空の場合
         for (Object cell : gmanager.getCurrentClassGraph().getAllCells()) {
             if (RDFGraph.isRDFSClassCell(cell)) {
@@ -377,16 +377,16 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
             GraphCell rdfsPropCell = null;
             Object[] rdfsPropertyCells = gmanager.getCurrentPropertyGraph().getSelectionCells();
 
-            RDFSInfo info = null;
+            RDFSModel info = null;
             if (rdfsPropertyCells.length == 1 && RDFGraph.isRDFSPropertyCell(rdfsPropertyCells[0])) {
                 rdfsPropCell = (GraphCell) rdfsPropertyCells[0];
-                info = (RDFSInfo) GraphConstants.getValue(rdfsPropCell.getAttributes());
+                info = (RDFSModel) GraphConstants.getValue(rdfsPropCell.getAttributes());
                 if (MR3.OFF_META_MODEL_MANAGEMENT) {
-                    PropertyInfo pInfo = (PropertyInfo) info;
-                    info = new PropertyInfo(pInfo.getURIStr());
+                    PropertyModel pInfo = (PropertyModel) info;
+                    info = new PropertyModel(pInfo.getURIStr());
                 }
             } else {
-                info = new PropertyInfo(MR3Resource.Nil.getURI());
+                info = new PropertyModel(MR3Resource.Nil.getURI());
             }
             cellMaker.connect(sourcePort, targetPort, info, graph);
             HistoryManager.saveHistory(HistoryType.INSERT_PROPERTY, info, (GraphCell) graph
@@ -518,7 +518,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
                             .getSelectionCell();
                     Object[] resCells = getSelectedRDFResourceCells();
                     for (int i = 0; i < resCells.length; i++) {
-                        RDFResourceInfo info = (RDFResourceInfo) GraphConstants
+                        RDFResourceModel info = (RDFResourceModel) GraphConstants
                                 .getValue(((GraphCell) resCells[i]).getAttributes());
                         info.setTypeCell(typeCell, gmanager.getCurrentRDFGraph());
                     }
@@ -540,9 +540,9 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
                     Object[] rdfPropCells = getSelectedRDFPropertyCells();
                     for (int i = 0; i < rdfPropCells.length; i++) {
                         GraphCell rdfPropCell = (GraphCell) rdfPropCells[i];
-                        RDFSInfo rdfsInfo = (RDFSInfo) GraphConstants.getValue(rdfsPropCell
+                        RDFSModel rdfsModel = (RDFSModel) GraphConstants.getValue(rdfsPropCell
                                 .getAttributes());
-                        GraphConstants.setValue(rdfPropCell.getAttributes(), rdfsInfo);
+                        GraphConstants.setValue(rdfPropCell.getAttributes(), rdfsModel);
                         graph.getGraphLayoutCache().editCell(rdfPropCell,
                                 rdfPropCell.getAttributes());
                     }

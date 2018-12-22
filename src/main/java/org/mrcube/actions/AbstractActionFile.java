@@ -29,7 +29,7 @@ import org.mrcube.MR3;
 import org.mrcube.MR3Project;
 import org.mrcube.models.MR3Constants.HistoryType;
 import org.mrcube.models.PrefConstants;
-import org.mrcube.models.PrefixNSInfo;
+import org.mrcube.models.NamespaceModel;
 import org.mrcube.utils.*;
 import org.mrcube.views.HistoryManager;
 
@@ -66,8 +66,8 @@ public abstract class AbstractActionFile extends MR3AbstractAction {
 	}
 
 	protected void setNsPrefix(Model model) {
-		Set<PrefixNSInfo> prefixNsInfoSet = GraphUtilities.getPrefixNSInfoSet();
-		for (PrefixNSInfo info : prefixNsInfoSet) {
+		Set<NamespaceModel> namespaceModelSet = GraphUtilities.getNamespaceModelSet();
+		for (NamespaceModel info : namespaceModelSet) {
 			if (info.isAvailable()) {
 				model.setNsPrefix(info.getPrefix(), info.getNameSpace());
 			}

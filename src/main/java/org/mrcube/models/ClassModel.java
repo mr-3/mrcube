@@ -39,21 +39,21 @@ import java.util.Set;
  * @author Takeshi Morita
  * 
  */
-public class ClassInfo extends RDFSInfo {
+public class ClassModel extends RDFSModel {
 
 	private static final long serialVersionUID = -3455137904632666118L;
 
 	private transient Set<Resource> subClasses;
 	private transient Set<Resource> supClasses;
 
-	public ClassInfo(String uri) {
+	public ClassModel(String uri) {
 		super(uri);
 		metaClass = RDFS.Class.toString();
 		subClasses = new HashSet<>();
 		supClasses = new HashSet<>();
 	}
 
-	public ClassInfo(ClassInfo info) {
+	public ClassModel(ClassModel info) {
 		super(info);
 		subClasses = new HashSet<>();
 		supClasses = new HashSet<>();
@@ -70,7 +70,7 @@ public class ClassInfo extends RDFSInfo {
 		tmpModel.add(tmpModel.createStatement(res, RDF.type,
 				ResourceFactory.createResource(metaClass)));
 		for (GraphCell classGraphCell : superRDFS) {
-			RDFSInfo classInfo = (RDFSInfo) GraphConstants.getValue(classGraphCell.getAttributes());
+			RDFSModel classInfo = (RDFSModel) GraphConstants.getValue(classGraphCell.getAttributes());
 			tmpModel.add(tmpModel.createStatement(res, RDFS.subClassOf, classInfo.getURI()));
 		}
 		return tmpModel;

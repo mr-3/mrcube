@@ -29,7 +29,7 @@ import org.jgraph.graph.GraphConstants;
 import org.mrcube.MR3;
 import org.mrcube.jgraph.*;
 import org.mrcube.models.MR3Constants.GraphType;
-import org.mrcube.models.RDFSInfo;
+import org.mrcube.models.RDFSModel;
 import org.mrcube.utils.GraphUtilities;
 import org.mrcube.views.PropertyPanel;
 
@@ -72,7 +72,7 @@ public class PropertyEditor extends Editor {
     private void changeAttrPanel() {
         DefaultGraphCell cell = (DefaultGraphCell) graph.getSelectionCell();
         if (graph.isOneCellSelected(cell) && cell instanceof OntPropertyCell) {
-            RDFSInfo info = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
+            RDFSModel info = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
             if (info != null) {
                 if (gmanager.getAttrDialog().isVisible()) {
                     PropertyPanel propPanel = getPropertyPanel();

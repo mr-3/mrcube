@@ -23,12 +23,12 @@
 
 package org.mrcube.views;
 
-import org.mrcube.models.ClassInfo;
+import org.mrcube.models.ClassModel;
 import org.mrcube.models.MR3Constants;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.MR3Constants.HistoryType;
 import org.mrcube.models.MR3Literal;
-import org.mrcube.models.ResourceInfo;
+import org.mrcube.models.ResourceModel;
 import org.mrcube.utils.Utilities;
 
 import javax.swing.*;
@@ -46,7 +46,7 @@ import java.util.List;
  */
 public class LabelPanel extends JPanel implements ActionListener {
 
-	private ResourceInfo resInfo;
+	private ResourceModel resInfo;
 
 	private JTable labelTable;
 	private LabelTableModel labelTableModel;
@@ -162,7 +162,7 @@ public class LabelPanel extends JPanel implements ActionListener {
 		return !label.equals("");
 	}
 
-	public void setResourceInfo(ResourceInfo info) {
+	public void setResourceInfo(ResourceModel info) {
 		resInfo = info;
 		while (labelTableModel.getRowCount() != 0) {
 			labelTableModel.removeRow(0);
@@ -233,7 +233,7 @@ public class LabelPanel extends JPanel implements ActionListener {
 	public static void main(String[] args) {
 		JFrame frame = new JFrame();
 		LabelPanel labelPanel = new LabelPanel();
-		ResourceInfo info = new ClassInfo("http://mrcube.org#test");
+		ResourceModel info = new ClassModel("http://mrcube.org#test");
 		info.addLabel(new MR3Literal("てすと", "ja", null));
 		info.addLabel(new MR3Literal("test", "en", null));
 		labelPanel.setResourceInfo(info);

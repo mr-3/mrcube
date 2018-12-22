@@ -56,7 +56,7 @@ public class HistoryManager extends JDialog implements ActionListener {
 	private static MR3 mr3;
 	private static MR3Reader mr3Reader;
 	private static MR3Writer mr3Writer;
-	private static Map<Date, HistoryData> dateHistoryDataMap;
+	private static Map<Date, HistoryModel> dateHistoryDataMap;
 	private static DefaultTableModel historyTableModel;
 	private static JTable historyTable;
 
@@ -139,7 +139,7 @@ public class HistoryManager extends JDialog implements ActionListener {
 		mr3 = m;
 		mr3Reader = mr3.getMR3Reader();
 		mr3Writer = mr3.getMR3Writer();
-		dateHistoryDataMap = new HashMap<Date, HistoryData>();
+		dateHistoryDataMap = new HashMap<Date, HistoryModel>();
 		historyTableModel = new DefaultTableModel(columnNames, 0);
 		historyTable = new JTable(historyTableModel);
 		TableColumnModel tcModel = historyTable.getColumnModel();
@@ -182,14 +182,14 @@ public class HistoryManager extends JDialog implements ActionListener {
 	private static final String MODEL = "[Model]";
 	private static final String META_MODEL = "[Meta Model]";
 
-	public synchronized static void saveHistory(HistoryType historyType, RDFSInfo info, GraphCell sourceCell,
-			GraphCell targetCell) {
+	public synchronized static void saveHistory(HistoryType historyType, RDFSModel info, GraphCell sourceCell,
+												GraphCell targetCell) {
 		if (!GraphManager.isLogAvailable()) {
 			return;
 		}
 		switch (historyType) {
 		case INSERT_PROPERTY:
-			RDFResourceInfo resInfo = (RDFResourceInfo) GraphConstants.getValue(sourceCell.getAttributes());
+			RDFResourceModel resInfo = (RDFResourceModel) GraphConstants.getValue(sourceCell.getAttributes());
 			String sourceStr = "Source: RDF Resource: " + resInfo.getURIStr() + "\tRDF Resource Type: "
 					+ resInfo.getType() + "\n";
 			String targetStr = "";
@@ -198,7 +198,7 @@ public class HistoryManager extends JDialog implements ActionListener {
 				targetStr = "Target: Language: " + literal.getLanguage() + "\tDatatype: " + literal.getDatatype()
 						+ "\tString: " + literal.getString() + "\n";
 			} else {
-				resInfo = (RDFResourceInfo) GraphConstants.getValue(targetCell.getAttributes());
+				resInfo = (RDFResourceModel) GraphConstants.getValue(targetCell.getAttributes());
 				targetStr = "Target: RDF Resource: " + resInfo.getURIStr() + "\tRDF Resource Type: "
 						+ resInfo.getType() + "\n";
 			}
@@ -206,16 +206,16 @@ public class HistoryManager extends JDialog implements ActionListener {
 					+ targetStr);
 			break;
 		case CONNECT_SUP_SUB_CLASS:
-			RDFSInfo subInfo = (RDFSInfo) GraphConstants.getValue(sourceCell.getAttributes());
+			RDFSModel subInfo = (RDFSModel) GraphConstants.getValue(sourceCell.getAttributes());
 			String subStr = "Sub Class: " + subInfo.getURIStr() + "\tMeta Class: " + subInfo.getMetaClass() + "\n";
-			RDFSInfo supInfo = (RDFSInfo) GraphConstants.getValue(targetCell.getAttributes());
+			RDFSModel supInfo = (RDFSModel) GraphConstants.getValue(targetCell.getAttributes());
 			String supStr = "Super Class: " + supInfo.getURIStr() + "\tMeta Class: " + supInfo.getMetaClass() + "\n";
 			logger.info(META_MODEL + "[" + historyType + "]\n" + subStr + supStr);
 			break;
 		case CONNECT_SUP_SUB_PROPERTY:
-			subInfo = (RDFSInfo) GraphConstants.getValue(sourceCell.getAttributes());
+			subInfo = (RDFSModel) GraphConstants.getValue(sourceCell.getAttributes());
 			subStr = "Sub Property: " + subInfo.getURIStr() + "\tMeta Class: " + subInfo.getMetaClass() + "\n";
-			supInfo = (RDFSInfo) GraphConstants.getValue(targetCell.getAttributes());
+			supInfo = (RDFSModel) GraphConstants.getValue(targetCell.getAttributes());
 			supStr = "Super Property: " + supInfo.getURIStr() + "\tMeta Class: " + supInfo.getMetaClass() + "\n";
 			logger.info(META_MODEL + "[" + historyType + "]\n" + subStr + supStr);
 			break;
@@ -230,12 +230,12 @@ public class HistoryManager extends JDialog implements ActionListener {
 		for (int i = 0; i < removeCells.length; i++) {
 			GraphCell cell = (GraphCell) removeCells[i];
 			if (RDFGraph.isRDFResourceCell(cell)) {
-				RDFResourceInfo resInfo = (RDFResourceInfo) GraphConstants.getValue(cell.getAttributes());
+				RDFResourceModel resInfo = (RDFResourceModel) GraphConstants.getValue(cell.getAttributes());
 				buf.append("RDF Resource: " + resInfo.getURIStr() + "\t");
 				buf.append("RDF Resource Type: " + resInfo.getType() + "\n");
 			} else if (historyType == HistoryType.DELETE_RDF && RDFGraph.isRDFPropertyCell(cell)) {
-				RDFSInfo rdfsInfo = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
-				buf.append("RDF Property: " + rdfsInfo.getURIStr() + "\n");
+				RDFSModel rdfsModel = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
+				buf.append("RDF Property: " + rdfsModel.getURIStr() + "\n");
 			} else if (RDFGraph.isRDFLiteralCell(cell)) {
 				MR3Literal literal = (MR3Literal) GraphConstants.getValue(cell.getAttributes());
 				buf.append("RDF Literal: \n");
@@ -243,13 +243,13 @@ public class HistoryManager extends JDialog implements ActionListener {
 				buf.append("Datatype: " + literal.getDatatype() + "\t");
 				buf.append("String: " + literal.getString() + "\n");
 			} else if (RDFGraph.isRDFSClassCell(cell)) {
-				RDFSInfo rdfsInfo = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
-				buf.append("Ont Class: " + rdfsInfo.getURIStr() + "\t");
-				buf.append("Meta Class: " + rdfsInfo.getMetaClass() + "\n");
+				RDFSModel rdfsModel = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
+				buf.append("Ont Class: " + rdfsModel.getURIStr() + "\t");
+				buf.append("Meta Class: " + rdfsModel.getMetaClass() + "\n");
 			} else if (RDFGraph.isRDFSPropertyCell(cell)) {
-				RDFSInfo rdfsInfo = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
-				buf.append("Ont Property: " + rdfsInfo.getURIStr() + "\t");
-				buf.append("Meta Property: " + rdfsInfo.getMetaClass() + "\n");
+				RDFSModel rdfsModel = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
+				buf.append("Ont Property: " + rdfsModel.getURIStr() + "\t");
+				buf.append("Meta Property: " + rdfsModel.getMetaClass() + "\n");
 			}
 		}
 
@@ -316,8 +316,8 @@ public class HistoryManager extends JDialog implements ActionListener {
 		}
 	}
 
-	public synchronized static void saveHistory(HistoryType historyType, RDFResourceInfo beforeInfo,
-			RDFResourceInfo afterInfo) {
+	public synchronized static void saveHistory(HistoryType historyType, RDFResourceModel beforeInfo,
+			RDFResourceModel afterInfo) {
 		if (!GraphManager.isLogAvailable()) {
 			return;
 		}
@@ -392,7 +392,7 @@ public class HistoryManager extends JDialog implements ActionListener {
 		}
 	}
 
-	public synchronized static void saveHistory(HistoryType historyType, RDFSInfo beforeInfo, RDFSInfo afterInfo) {
+	public synchronized static void saveHistory(HistoryType historyType, RDFSModel beforeInfo, RDFSModel afterInfo) {
 		if (!GraphManager.isLogAvailable()) {
 			return;
 		}
@@ -406,11 +406,11 @@ public class HistoryManager extends JDialog implements ActionListener {
 					+ "\nBefore ONT Class Type: " + beforeInfo.getMetaClass() + "\nAfter ONT Class: "
 					+ afterInfo.getURIStr() + "\nAfter ONT Class Type: " + afterInfo.getMetaClass() + "\n");
 			if (!MR3.OFF_META_MODEL_MANAGEMENT) {
-				ClassInfo clsInfo = (ClassInfo) afterInfo;
-				Set<RDFResourceInfo> instanceInfoSet = gmanager.getClassInstanceInfoSet(clsInfo);
+				ClassModel clsInfo = (ClassModel) afterInfo;
+				Set<RDFResourceModel> instanceInfoSet = gmanager.getClassInstanceInfoSet(clsInfo);
 				if (0 < instanceInfoSet.size()) {
 					StringBuffer instanceInfoStr = new StringBuffer("");
-					for (RDFResourceInfo resInfo : instanceInfoSet) {
+					for (RDFResourceModel resInfo : instanceInfoSet) {
 						instanceInfoStr.append("RDF Resource: " + resInfo.getURIStr() + "\n");
 					}
 					logger.info(META_MODEL + "[" + HistoryType.META_MODEL_MANAGEMNET_REPLACE_CLASS + "]\n"
@@ -424,12 +424,12 @@ public class HistoryManager extends JDialog implements ActionListener {
 					+ "\nBefore ONT Property Type: " + beforeInfo.getMetaClass() + "\nAfter ONT Property: "
 					+ afterInfo.getURIStr() + "\nAfter ONT Property Type: " + afterInfo.getMetaClass() + "\n");
 			if (!MR3.OFF_META_MODEL_MANAGEMENT) {
-				PropertyInfo propInfo = (PropertyInfo) afterInfo;
+				PropertyModel propInfo = (PropertyModel) afterInfo;
 				Set instanceSet = gmanager.getPropertyInstanceInfoSet(propInfo);
 				if (0 < instanceSet.size()) {
 					StringBuffer instanceInfoStr = new StringBuffer("");
 					for (Object cell : instanceSet) {
-						RDFResourceInfo resInfo = (RDFResourceInfo) GraphConstants.getValue(((GraphCell) cell)
+						RDFResourceModel resInfo = (RDFResourceModel) GraphConstants.getValue(((GraphCell) cell)
 								.getAttributes());
 						instanceInfoStr.append("Source RDF Resource: " + resInfo.getURIStr() + "\n");
 					}
@@ -451,7 +451,7 @@ public class HistoryManager extends JDialog implements ActionListener {
 		switch (historyType) {
 		case INSERT_RESOURCE:
 		case INSERT_CONNECTED_RESOURCE:
-			RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(insertCell.getAttributes());
+			RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(insertCell.getAttributes());
 			logger.info(MODEL + "[" + historyType + "]\n" + "RDF Resource URI Type: " + info.getURIType()
 					+ "\nRDF Resource: " + info.getURIStr() + "\nRDF Resource Type: " + info.getType() + "\n");
 			break;
@@ -463,14 +463,14 @@ public class HistoryManager extends JDialog implements ActionListener {
 			break;
 		case INSERT_ONT_PROPERTY:
 		case INSERT_CONNECTED_ONT_PROPERTY:
-			RDFSInfo rdfsInfo = (RDFSInfo) GraphConstants.getValue(insertCell.getAttributes());
-			logger.info(META_MODEL + "[" + historyType + "]\n" + "ONT Property: " + rdfsInfo.getURIStr()
-					+ "\nONT Property Type: " + rdfsInfo.getMetaClass() + "\n");
+			RDFSModel rdfsModel = (RDFSModel) GraphConstants.getValue(insertCell.getAttributes());
+			logger.info(META_MODEL + "[" + historyType + "]\n" + "ONT Property: " + rdfsModel.getURIStr()
+					+ "\nONT Property Type: " + rdfsModel.getMetaClass() + "\n");
 			break;
 		case INSERT_CLASS:
-			rdfsInfo = (RDFSInfo) GraphConstants.getValue(insertCell.getAttributes());
-			logger.info(META_MODEL + "[" + historyType + "]\n" + "ONT Class: " + rdfsInfo.getURIStr()
-					+ "\nONT Class Type: " + rdfsInfo.getMetaClass() + "\n");
+			rdfsModel = (RDFSModel) GraphConstants.getValue(insertCell.getAttributes());
+			logger.info(META_MODEL + "[" + historyType + "]\n" + "ONT Class: " + rdfsModel.getURIStr()
+					+ "\nONT Class Type: " + rdfsModel.getMetaClass() + "\n");
 			break;
 		}
 	}
@@ -516,7 +516,7 @@ public class HistoryManager extends JDialog implements ActionListener {
 			logger.info(MODEL + "[" + historyType + "]\n");
 			break;
 		}
-		// HistoryData data = new HistoryData(historyType,
+		// HistoryModel data = new HistoryModel(historyType,
 		// mr3Writer.getProjectModel());
 		// dateHistoryDataMap.put(data.getDate(), data);
 		// historyTableModel.insertRow(0, new Object[] { data.getDate(),
@@ -526,7 +526,7 @@ public class HistoryManager extends JDialog implements ActionListener {
 	public void loadHistory() {
 		if (historyTable.getSelectedRowCount() == 1) {
 			Date date = (Date) historyTableModel.getValueAt(historyTable.getSelectedRow(), 0);
-			HistoryData data = dateHistoryDataMap.get(date);
+			HistoryModel data = dateHistoryDataMap.get(date);
 			Model projectModel = ModelFactory.createDefaultModel();
 			projectModel = projectModel.union(data.getProjectModel());
 			mr3Reader.replaceProjectModel(projectModel);

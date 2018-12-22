@@ -132,7 +132,7 @@ public abstract class SelectClassPanel extends JPanel implements GraphSelectionL
     private JComponent getFindGroupPanel() {
         uriPrefixBox = new JComboBox();
         uriPrefixBox.addActionListener(new ChangePrefixAction());
-        PrefixNSUtil.setPrefixNSInfoSet(GraphUtilities.getPrefixNSInfoSet());
+        PrefixNSUtil.setNamespaceModelSet(GraphUtilities.getNamespaceModelSet());
         uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
         JComponent uriPrefixBoxP = Utilities.createTitledPanel(uriPrefixBox, MR3Constants.PREFIX);
         findField = new JTextField(15);

@@ -34,8 +34,8 @@ import org.mrcube.jgraph.RDFGraphMarqueeHandler;
 import org.mrcube.jgraph.RDFGraphModel;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.MR3Resource;
-import org.mrcube.models.PropertyInfo;
-import org.mrcube.models.RDFResourceInfo;
+import org.mrcube.models.PropertyModel;
+import org.mrcube.models.RDFResourceModel;
 import org.mrcube.utils.GraphUtilities;
 import org.mrcube.utils.PrefixNSUtil;
 import org.mrcube.views.RDFLiteralPanel;
@@ -88,7 +88,7 @@ public class RDFEditor extends Editor {
 
     // 対応するRDFSクラスを選択
     private void selectResource(GraphCell cell) {
-        RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(cell.getAttributes());
+        RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(cell.getAttributes());
         if (info != null) {
             if (!isEditMode()) {
                 gmanager.selectClassCell(info.getTypeCell());
@@ -107,7 +107,7 @@ public class RDFEditor extends Editor {
     }
 
     private void selectProperty(GraphCell cell) {
-        PropertyInfo propertyInfo = (PropertyInfo) GraphConstants.getValue(cell.getAttributes());
+        PropertyModel propertyInfo = (PropertyModel) GraphConstants.getValue(cell.getAttributes());
         if (!propertyInfo.getURI().equals(MR3Resource.Nil)) {
             Object propCell = gmanager.getPropertyCell(propertyInfo.getURI(), false);
             if (propCell != null && !isEditMode()) {
@@ -115,7 +115,7 @@ public class RDFEditor extends Editor {
             }
         }
         Edge edge = (Edge) cell;
-        PrefixNSUtil.setPrefixNSInfoSet(GraphUtilities.getPrefixNSInfoSet());
+        PrefixNSUtil.setNamespaceModelSet(GraphUtilities.getNamespaceModelSet());
         RDFPropertyPanel propPanel = getRDFPropertyPanel();
         propPanel.setPropertyList(gmanager.getPropertyList());
         propPanel.setValue(edge, propertyInfo);

@@ -25,8 +25,8 @@ package org.mrcube.utils;
 
 import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphConstants;
-import org.mrcube.models.PrefixNSInfo;
-import org.mrcube.models.RDFSInfo;
+import org.mrcube.models.NamespaceModel;
+import org.mrcube.models.RDFSModel;
 
 import javax.swing.*;
 import java.util.*;
@@ -36,15 +36,15 @@ import java.util.*;
  */
 public class PrefixNSUtil {
 
-    private static Set<PrefixNSInfo> prefixNSInfoSet;
+    private static Set<NamespaceModel> namespaceModelSet;
 
-    public static void setPrefixNSInfoSet(Set<PrefixNSInfo> set) {
-        prefixNSInfoSet = set;
+    public static void setNamespaceModelSet(Set<NamespaceModel> set) {
+        namespaceModelSet = set;
     }
 
     public static String getBaseURIPrefix(String baseURI) {
-        for (Iterator i = prefixNSInfoSet.iterator(); i.hasNext();) {
-            PrefixNSInfo info = (PrefixNSInfo) i.next();
+        for (Iterator i = namespaceModelSet.iterator(); i.hasNext();) {
+            NamespaceModel info = (NamespaceModel) i.next();
             if (info.getNameSpace().equals(baseURI)) { return info.getPrefix(); }
         }
         return null;
@@ -54,7 +54,7 @@ public class PrefixNSUtil {
         Set<String> propNSSet = new HashSet<String>();
         for (Iterator i = propList.iterator(); i.hasNext();) {
             GraphCell cell = (GraphCell) i.next();
-            RDFSInfo info = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
+            RDFSModel info = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
             propNSSet.add(info.getNameSpace());
         }
         return propNSSet;
@@ -63,8 +63,8 @@ public class PrefixNSUtil {
     public static Set getPropPrefixes(List propList) {
         Set<String> prefixSet = new TreeSet<String>();
         Set<String> propNSSet = getPropNSSet(propList);
-        for (Iterator i = prefixNSInfoSet.iterator(); i.hasNext();) {
-            PrefixNSInfo info = (PrefixNSInfo) i.next();
+        for (Iterator i = namespaceModelSet.iterator(); i.hasNext();) {
+            NamespaceModel info = (NamespaceModel) i.next();
             if (propNSSet.contains(info.getNameSpace())) {
                 prefixSet.add(info.getPrefix());
             }
@@ -74,16 +74,16 @@ public class PrefixNSUtil {
 
     public static Set getPrefixes() {
         Set<String> prefixes = new TreeSet<String>();
-        for (Iterator i = prefixNSInfoSet.iterator(); i.hasNext();) {
-            PrefixNSInfo info = (PrefixNSInfo) i.next();
+        for (Iterator i = namespaceModelSet.iterator(); i.hasNext();) {
+            NamespaceModel info = (NamespaceModel) i.next();
             prefixes.add(info.getPrefix());
         }
         return prefixes;
     }
 
     public static String getNameSpace(String prefix) {
-        for (Iterator i = prefixNSInfoSet.iterator(); i.hasNext();) {
-            PrefixNSInfo info = (PrefixNSInfo) i.next();
+        for (Iterator i = namespaceModelSet.iterator(); i.hasNext();) {
+            NamespaceModel info = (NamespaceModel) i.next();
             if (info.getPrefix().equals(prefix)) { return info.getNameSpace(); }
         }
         return "#";

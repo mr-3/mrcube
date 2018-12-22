@@ -23,12 +23,12 @@
 
 package org.mrcube.views;
 
-import org.mrcube.models.ClassInfo;
+import org.mrcube.models.ClassModel;
 import org.mrcube.models.MR3Constants;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.MR3Constants.HistoryType;
 import org.mrcube.models.MR3Literal;
-import org.mrcube.models.ResourceInfo;
+import org.mrcube.models.ResourceModel;
 import org.mrcube.utils.Utilities;
 
 import javax.swing.*;
@@ -48,7 +48,7 @@ import java.util.List;
 public class CommentPanel extends JPanel implements ActionListener {
 
 	private Frame rootFrame;
-	private ResourceInfo resInfo;
+	private ResourceModel resInfo;
 
 	private WeakReference<EditCommentDialog> editCommentDialogRef;
 
@@ -185,7 +185,7 @@ public class CommentPanel extends JPanel implements ActionListener {
 		}
 	}
 
-	public void setResourceInfo(ResourceInfo info) {
+	public void setResourceInfo(ResourceModel info) {
 		resInfo = info;
 		while (commentTableModel.getRowCount() != 0) {
 			commentTableModel.removeRow(0);
@@ -256,7 +256,7 @@ public class CommentPanel extends JPanel implements ActionListener {
 	public static void main(String[] args) {
 		JFrame frame = new JFrame();
 		CommentPanel commentPanel = new CommentPanel(new JFrame());
-		ResourceInfo info = new ClassInfo("http://mrcube.org#test");
+		ResourceModel info = new ClassModel("http://mrcube.org#test");
 		info.addLabel(new MR3Literal("日本語コメントのテスト", "ja", null));
 		info.addLabel(new MR3Literal("english comment test", "en", null));
 		commentPanel.setResourceInfo(info);

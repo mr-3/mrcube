@@ -23,41 +23,38 @@
 
 package org.mrcube.models;
 
-import org.apache.jena.rdf.model.Model;
-import org.mrcube.models.MR3Constants.HistoryType;
-
-import java.util.Calendar;
-import java.util.Date;
-
 /**
+ * PrefixNSSet
+ * 
+ * 名前空間を接頭辞で置き換えるかどうかを決める時に使う isAvailableがtrueなら置き換える．
+ * 
  * @author Takeshi Morita
  */
-public class HistoryData {
+public class NamespaceModel {
 
-    private Date savedTime;
-    private Model projectModel;
-    private HistoryType historyType;
+    private String prefix;
+    private String nameSpace;
+    private boolean isAvailable;
 
-    /*
-     * 上記の他に，どのリソースを追加したとか，何を削除したなどの情報も 保存できるようにすべきだが，とりあえずは，履歴のタイプのみで
-     * あと，メタモデル管理に関わる変更かどうかも区別したい．
-     */
-
-    public HistoryData(HistoryType type, Model model) {
-        savedTime = Calendar.getInstance().getTime();
-        projectModel = model;
-        historyType = type;
+    public NamespaceModel(String p, String ns, boolean t) {
+        prefix = p;
+        nameSpace = ns;
+        isAvailable = t;
     }
 
-    public Model getProjectModel() {
-        return projectModel;
+    public String getPrefix() {
+        return prefix;
     }
 
-    public Date getDate() {
-        return savedTime;
+    public String getNameSpace() {
+        return nameSpace;
     }
 
-    public HistoryType getHistoryType() {
-        return historyType;
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public String toString() {
+        return "prefix: " + prefix + " | NameSpace: " + nameSpace + " | available: " + isAvailable;
     }
 }

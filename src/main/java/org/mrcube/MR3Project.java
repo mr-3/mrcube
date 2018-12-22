@@ -38,7 +38,7 @@ import org.mrcube.editors.PropertyEditor;
 import org.mrcube.editors.RDFEditor;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.models.MR3Constants.GraphType;
-import org.mrcube.models.RDFSInfoMap;
+import org.mrcube.models.RDFSModelMap;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
 import org.mrcube.views.TabComponent;
@@ -56,7 +56,7 @@ public class MR3Project extends JPanel {
 	private RootWindow rootWindow;
 
 	private File currentProjectFile;
-	private RDFSInfoMap rdfsInfoMap;
+	private RDFSModelMap rdfsModelMap;
 
 	private RDFEditor rdfEditor;
 	private ClassEditor classEditor;
@@ -65,7 +65,7 @@ public class MR3Project extends JPanel {
 	private TabComponent tabComponent;
 
 	public MR3Project(GraphManager gmanager, String basePath, Color color, TabComponent tabComp) {
-		rdfsInfoMap = new RDFSInfoMap();
+		rdfsModelMap = new RDFSModelMap();
 		tabComponent = tabComp;
 		currentProjectFile = new File(basePath, Translator.getString("Component.File.NewProject.Text"));
 		mainViews = new View[3];
@@ -168,8 +168,8 @@ public class MR3Project extends JPanel {
 		currentProjectFile = file;
 	}
 
-	public RDFSInfoMap getRDFSInfoMap() {
-		return rdfsInfoMap;
+	public RDFSModelMap getRDFSInfoMap() {
+		return rdfsModelMap;
 	}
 
 	public String getTitle() {

@@ -28,7 +28,7 @@ import org.jgraph.graph.GraphCell;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.models.MR3Constants;
 import org.mrcube.models.MR3Constants.GraphType;
-import org.mrcube.models.PrefixNSInfo;
+import org.mrcube.models.NamespaceModel;
 import org.mrcube.utils.GraphUtilities;
 import org.mrcube.utils.PrefixNSUtil;
 import org.mrcube.utils.Translator;
@@ -57,7 +57,7 @@ public class FindResourceDialog extends JDialog {
     private JTextField findField;
     private JTextField findLabelField;
     private JTextField findCommentField;
-    private Set<PrefixNSInfo> prefixNSInfoSet;
+    private Set<NamespaceModel> namespaceModelSet;
     private JComboBox uriPrefixBox;
     private JList resourceList;
 
@@ -186,8 +186,8 @@ public class FindResourceDialog extends JDialog {
     }
 
     public void setURIPrefixBox() {
-        prefixNSInfoSet = GraphUtilities.getPrefixNSInfoSet();
-        PrefixNSUtil.setPrefixNSInfoSet(prefixNSInfoSet);
+        namespaceModelSet = GraphUtilities.getNamespaceModelSet();
+        PrefixNSUtil.setNamespaceModelSet(namespaceModelSet);
         uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
         // findField.setText(PrefixNSUtil.getNameSpace((String)
         // uriPrefixBox.getSelectedItem()));
@@ -252,7 +252,7 @@ public class FindResourceDialog extends JDialog {
         String prefix = tokens[0];
         String id = tokens[1];
         if (prefix.equals("http")) { return key; }
-        for (PrefixNSInfo info : prefixNSInfoSet) {
+        for (NamespaceModel info : namespaceModelSet) {
             if (info.getPrefix().equals(prefix)) { return info.getNameSpace() + id; }
         }
         return key;

@@ -32,7 +32,7 @@ import org.mrcube.jgraph.GraphManager;
 import org.mrcube.jgraph.RDFGraph;
 import org.mrcube.jgraph.RDFGraphModel;
 import org.mrcube.models.MR3Constants.GraphType;
-import org.mrcube.models.RDFSInfo;
+import org.mrcube.models.RDFSModel;
 import org.mrcube.utils.GraphUtilities;
 import org.mrcube.views.ClassPanel;
 
@@ -78,15 +78,15 @@ public class ClassEditor extends Editor {
         DefaultGraphCell cell = (DefaultGraphCell) graph.getSelectionCell();
         if (graph.isOneCellSelected(cell)) {
             Object info = GraphConstants.getValue(cell.getAttributes());
-            if (info instanceof RDFSInfo) {
+            if (info instanceof RDFSModel) {
                 if (gmanager.getAttrDialog().isVisible()) {
                     ClassPanel classPanel = getClassPanel();
                     classPanel.showRDFSInfo(cell);
                     gmanager.getAttrDialog().setContentPane(classPanel);
                     gmanager.getAttrDialog().validate();
                 }
-                MR3.STATUS_BAR.setText("URI: " + ((RDFSInfo) info).getURIStr() + "  TYPE: "
-                        + ((RDFSInfo) info).getMetaClass());
+                MR3.STATUS_BAR.setText("URI: " + ((RDFSModel) info).getURIStr() + "  TYPE: "
+                        + ((RDFSModel) info).getMetaClass());
             }
         } else {
             gmanager.getAttrDialog().setNullPanel();

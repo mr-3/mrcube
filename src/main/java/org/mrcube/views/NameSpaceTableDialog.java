@@ -30,7 +30,7 @@ import org.apache.jena.vocabulary.RDFS;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.models.MR3Constants;
 import org.mrcube.models.MR3Resource;
-import org.mrcube.models.PrefixNSInfo;
+import org.mrcube.models.NamespaceModel;
 import org.mrcube.utils.GraphUtilities;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
@@ -204,7 +204,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
         while (nsTableModel.getRowCount() != 0) {
             nsTableModel.removeRow(nsTableModel.getRowCount() - 1);
         }
-        GraphUtilities.setPrefixNSInfoSet(new HashSet<PrefixNSInfo>());
+        GraphUtilities.setNamespaceModelSet(new HashSet<NamespaceModel>());
     }
 
     private void initTable() {
@@ -336,7 +336,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
     }
 
     public void setPrefixNSInfoSet() {
-        GraphUtilities.setPrefixNSInfoSet(getPrefixNSInfoSet());
+        GraphUtilities.setNamespaceModelSet(getPrefixNSInfoSet());
     }
 
     private boolean isCheckBoxChanged(int type, int column) {
@@ -359,12 +359,12 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
         }
     }
 
-    private Set<PrefixNSInfo> getPrefixNSInfoSet() {
-        Set<PrefixNSInfo> infoSet = new HashSet<PrefixNSInfo>();
+    private Set<NamespaceModel> getPrefixNSInfoSet() {
+        Set<NamespaceModel> infoSet = new HashSet<NamespaceModel>();
         for (int i = 0; i < nsTableModel.getRowCount(); i++) {
             String prefix = (String) nsTableModel.getValueAt(i, 1);
             String ns = (String) nsTableModel.getValueAt(i, 2);
-            infoSet.add(new PrefixNSInfo(prefix, ns, isPrefixAvailable(i, 0)));
+            infoSet.add(new NamespaceModel(prefix, ns, isPrefixAvailable(i, 0)));
         }
         return infoSet;
     }

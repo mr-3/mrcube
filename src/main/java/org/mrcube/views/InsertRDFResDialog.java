@@ -129,7 +129,7 @@ public class InsertRDFResDialog extends JDialog implements ItemListener {
     public void initData(Object[] cells) {
         resourceType = null;
         uriField.setText("");
-        PrefixNSUtil.setPrefixNSInfoSet(GraphUtilities.getPrefixNSInfoSet());
+        PrefixNSUtil.setNamespaceModelSet(GraphUtilities.getNamespaceModelSet());
         uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
         resTypeBox.setModel(new DefaultComboBoxModel(cells));
         Object[] typeCells = gmanager.getCurrentClassGraph().getSelectionCells();

@@ -110,7 +110,7 @@ public class InsertRDFSResDialog extends JDialog {
     public void initData(String title) {
         setTitle(title);
         idField.setText("");
-        PrefixNSUtil.setPrefixNSInfoSet(GraphUtilities.getPrefixNSInfoSet());
+        PrefixNSUtil.setNamespaceModelSet(GraphUtilities.getNamespaceModelSet());
         uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
         uriPrefixBox.setSelectedItem(PrefixNSUtil.getBaseURIPrefix(gmanager.getBaseURI()));
         PrefixNSUtil.replacePrefix((String) uriPrefixBox.getSelectedItem(), nsLabel);

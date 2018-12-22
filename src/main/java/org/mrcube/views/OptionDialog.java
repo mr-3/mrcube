@@ -34,7 +34,7 @@ import org.mrcube.layout.GraphLayoutUtilities;
 import org.mrcube.models.MR3Constants;
 import org.mrcube.models.MR3Resource;
 import org.mrcube.models.PrefConstants;
-import org.mrcube.models.PrefixNSInfo;
+import org.mrcube.models.NamespaceModel;
 import org.mrcube.utils.*;
 import say.swing.JFontChooser;
 
@@ -462,13 +462,13 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         }
 
         private void initPrefixBox() {
-            PrefixNSUtil.setPrefixNSInfoSet(GraphUtilities.getPrefixNSInfoSet());
+            PrefixNSUtil.setNamespaceModelSet(GraphUtilities.getNamespaceModelSet());
             uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
             setPrefix();
         }
 
         private void setPrefix() {
-            for (PrefixNSInfo prefNSInfo : GraphUtilities.getPrefixNSInfoSet()) {
+            for (NamespaceModel prefNSInfo : GraphUtilities.getNamespaceModelSet()) {
                 if (prefNSInfo.getNameSpace().equals(gmanager.getBaseURI())) {
                     uriPrefixBox.setSelectedItem(prefNSInfo.getPrefix());
                     baseURILabel.setText(prefNSInfo.getNameSpace());

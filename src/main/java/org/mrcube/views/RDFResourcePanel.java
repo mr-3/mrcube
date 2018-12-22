@@ -72,10 +72,10 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
 	private JButton applyButton;
 	private JButton cancelButton;
 
-	private Set<PrefixNSInfo> prefixNSInfoSet;
+	private Set<NamespaceModel> namespaceModelSet;
 
 	private GraphCell cell;
-	private RDFResourceInfo resInfo;
+	private RDFResourceModel resInfo;
 	private GraphManager gmanager;
 
 	private static final String WARNING = Translator.getString("Warning");
@@ -253,9 +253,9 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
 			if (gmanager.isEmptyURI(uri.getURI())) {
 				return;
 			}
-			RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-			if (rdfsInfoMap.isClassCell(uri)) {
-				Object classCell = (GraphCell) rdfsInfoMap.getClassCell(uri);
+			RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+			if (rdfsModelMap.isClassCell(uri)) {
+				Object classCell = (GraphCell) rdfsModelMap.getClassCell(uri);
 				gmanager.selectClassCell(classCell);
 			} else {
 				JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(),
@@ -400,7 +400,7 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
 
 	private void setResPrefix() {
 		if (resInfo.getURIType() == URIType.URI) {
-			for (PrefixNSInfo prefNSInfo : prefixNSInfoSet) {
+			for (NamespaceModel prefNSInfo : namespaceModelSet) {
 				if (prefNSInfo.getNameSpace().equals(Utilities.getNameSpace(resInfo.getURI()))) {
 					uriPanel.getResPrefixBox().setSelectedItem(prefNSInfo.getPrefix());
 					break;
@@ -416,12 +416,12 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
 			PrefixNSUtil.setNSLabel(typePanel.getResTypeNSLabel(), gmanager.getBaseURI());
 			return;
 		}
-		RDFSInfo rdfsInfo = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
-		setResTypePrefix(rdfsInfo.getURI().getNameSpace());
+		RDFSModel rdfsModel = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
+		setResTypePrefix(rdfsModel.getURI().getNameSpace());
 	}
 
 	private void setResTypePrefix(String ns) {
-		for (PrefixNSInfo prefNSInfo : prefixNSInfoSet) {
+		for (NamespaceModel prefNSInfo : namespaceModelSet) {
 			if (prefNSInfo.getNameSpace().equals(ns)) {
 				typePanel.getResTypePrefixBox().setSelectedItem(prefNSInfo.getPrefix());
 				break;
@@ -431,12 +431,12 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
 
 	public void setValue(GraphCell c) {
 		cell = c;
-		resInfo = (RDFResourceInfo) GraphConstants.getValue(cell.getAttributes());
+		resInfo = (RDFResourceModel) GraphConstants.getValue(cell.getAttributes());
 		labelPanel.clearField();
 		labelPanel.setResourceInfo(resInfo);
 		commentPanel.setResourceInfo(resInfo);
-		prefixNSInfoSet = GraphUtilities.getPrefixNSInfoSet();
-		PrefixNSUtil.setPrefixNSInfoSet(prefixNSInfoSet);
+		namespaceModelSet = GraphUtilities.getNamespaceModelSet();
+		PrefixNSUtil.setNamespaceModelSet(namespaceModelSet);
 		uriPanel.setResPrefixBox();
 		typePanel.getResTypePrefixBox().setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
 		setResPrefix();
@@ -483,8 +483,8 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
 			if (gmanager.isEmptyURI(uri.getURI())) {
 				return null;
 			}
-			RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-			if (rdfsInfoMap.isClassCell(uri)) {
+			RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+			if (rdfsModelMap.isClassCell(uri)) {
 				typeCell = gmanager.getClassCell(uri, false);
 			} else {
 				if (gmanager.isDuplicatedWithDialog(uri.getURI(), null, GraphType.CLASS)) {
@@ -520,13 +520,13 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
 						HistoryManager
 								.saveHistory(HistoryType.META_MODEL_MANAGEMNET_REPLACE_RESOURCE_TYPE_WITH_CREATE_CLASS);
 					} else if (createType == CreateRDFSType.RENAME) {
-						RDFSInfo rdfsInfo = resInfo.getTypeInfo();
+						RDFSModel rdfsModel = resInfo.getTypeInfo();
 						typeCell = resInfo.getTypeCell();
-						rdfsInfoMap.removeURICellMap(rdfsInfo);
-						rdfsInfo.setURI(uri.getURI());
-						GraphUtilities.resizeRDFSResourceCell(gmanager, rdfsInfo, typeCell);
-						rdfsInfoMap.putURICellMap(rdfsInfo, typeCell);
-						gmanager.selectChangedRDFCells(rdfsInfo); // RDF�O���t�̕\�����e���X�V
+						rdfsModelMap.removeURICellMap(rdfsModel);
+						rdfsModel.setURI(uri.getURI());
+						GraphUtilities.resizeRDFSResourceCell(gmanager, rdfsModel, typeCell);
+						rdfsModelMap.putURICellMap(rdfsModel, typeCell);
+						gmanager.selectChangedRDFCells(rdfsModel); // RDF�O���t�̕\�����e���X�V
 						HistoryManager
 								.saveHistory(HistoryType.META_MODEL_MANAGEMNET_REPLACE_RESOURCE_TYPE_WITH_REPLACE_CLASS);
 					} else if (createType == null) {
@@ -556,7 +556,7 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
 			if (uriPanel.isErrorResource()) {
 				return;
 			}
-			RDFResourceInfo beforeInfo = new RDFResourceInfo(resInfo);
+			RDFResourceModel beforeInfo = new RDFResourceModel(resInfo);
 			if (typePanel.isType()) {
 				GraphCell resTypeCell = getResourceType();
 				if (resTypeCell != null) {

@@ -34,7 +34,7 @@ import java.util.List;
 /**
  * @author Takeshi Morita
  */
-public abstract class ResourceInfo {
+public abstract class ResourceModel {
 
 	protected transient List<MR3Literal> labelList;
 	protected transient List<MR3Literal> commentList;

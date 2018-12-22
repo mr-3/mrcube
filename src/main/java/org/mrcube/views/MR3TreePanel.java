@@ -27,7 +27,7 @@ import org.apache.jena.rdf.model.*;
 import org.apache.jena.vocabulary.RDF;
 import org.jgraph.graph.GraphModel;
 import org.mrcube.jgraph.GraphManager;
-import org.mrcube.models.PrefixNSInfo;
+import org.mrcube.models.NamespaceModel;
 import org.mrcube.utils.Utilities;
 
 import javax.swing.*;
@@ -84,7 +84,7 @@ public class MR3TreePanel extends JPanel {
             String ns = resource.getNameSpace();
             String id = resource.getLocalName();
             for (Iterator j = prefixNSInfoSet.iterator(); j.hasNext();) {
-                PrefixNSInfo info = (PrefixNSInfo) j.next();
+                NamespaceModel info = (NamespaceModel) j.next();
                 if (info.getNameSpace().equals(ns)) {
                     node.setUserObject(info.getPrefix() + ":" + id);
                     break;

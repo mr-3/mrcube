@@ -81,7 +81,7 @@ public class ProjectManager {
 	 */
 	private void addRDFResourceProjectModel(Model projectModel, GraphCell cell) {
 		Rectangle2D rec = GraphConstants.getBounds(cell.getAttributes());
-		RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(cell.getAttributes());
+		RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(cell.getAttributes());
 		Literal x = ResourceFactory.createPlainLiteral(String.valueOf(rec.getX()));
 		projectModel.add(info.getURI(), MR3Resource.PointX, x);
 		Literal y = ResourceFactory.createPlainLiteral(String.valueOf(rec.getY()));
@@ -104,9 +104,9 @@ public class ProjectManager {
 		GraphCell sourceCell = (GraphCell) graph.getSourceVertex(edge);
 		GraphCell targetCell = (GraphCell) graph.getTargetVertex(edge);
 		if (RDFGraph.isRDFLiteralCell(targetCell)) {
-			RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(sourceCell.getAttributes());
+			RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(sourceCell.getAttributes());
 
-			RDFSInfo propInfo = (RDFSInfo) GraphConstants.getValue(edge.getAttributes());
+			RDFSModel propInfo = (RDFSModel) GraphConstants.getValue(edge.getAttributes());
 			Resource litRes = ResourceFactory.createResource(MR3Resource.Literal + Integer.toString(literal_cnt++));
 			projectModel.add(litRes, MR3Resource.HasLiteralResource, info.getURI());
 			if (propInfo == null) {
@@ -141,7 +141,7 @@ public class ProjectManager {
 			if (RDFGraph.isRDFSCell(cells[i])) {
 				GraphCell cell = (GraphCell) cells[i];
 				Rectangle2D rec = GraphConstants.getBounds(cell.getAttributes());
-				RDFSInfo info = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
+				RDFSModel info = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
 				Literal x = ResourceFactory.createPlainLiteral(String.valueOf(rec.getX()));
 				projectModel.add(info.getURI(), MR3Resource.PointX, x);
 				Literal y = ResourceFactory.createPlainLiteral(String.valueOf(rec.getY()));
@@ -262,7 +262,7 @@ public class ProjectManager {
 		for (int i = 0; i < cells.length; i++) {
 			GraphCell cell = (GraphCell) cells[i];
 			if (RDFGraph.isRDFResourceCell(cell)) {
-				RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(cell.getAttributes());
+				RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(cell.getAttributes());
 				if (info.getType().equals(MR3Resource.Empty)) {
 					info.setTypeCell(null, gmanager.getCurrentRDFGraph());
 					GraphConstants.setValue(cell.getAttributes(), info);
@@ -270,8 +270,8 @@ public class ProjectManager {
 			}
 		}
 		graph = gmanager.getCurrentClassGraph();
-		RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-		Object cell = rdfsInfoMap.getClassCell(MR3Resource.Empty);
+		RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+		Object cell = rdfsModelMap.getClassCell(MR3Resource.Empty);
 		graph.clearSelection();
 		graph.setSelectionCell(cell);
 		gmanager.removeAction(graph);
