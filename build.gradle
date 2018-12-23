@@ -40,7 +40,7 @@ shadowJar {
 }
 
 mainClassName = 'org.mrcube.MR3'
-sourceCompatibility = targetCompatibility = '1.8'
+sourceCompatibility = targetCompatibility = '11'
 
 dependencies {
     compile 'jgraph:jgraph:5.13.0.0'
