@@ -1130,17 +1130,17 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
                 propertyLayoutDirectionBox.setSelectedItem(direction);
             }
 
-            rdfVerticalSpaceSpinner.setValue(new Integer(userPrefs.get(PrefConstants.RDF_VERTICAL_SPACE,
+            rdfVerticalSpaceSpinner.setValue(Integer.valueOf(userPrefs.get(PrefConstants.RDF_VERTICAL_SPACE,
                     Integer.toString(GraphLayoutUtilities.VERTICAL_SPACE))));
-            rdfHorizontalSpaceSpinner.setValue(new Integer(userPrefs.get(PrefConstants.RDF_HORIZONTAL_SPACE,
+            rdfHorizontalSpaceSpinner.setValue(Integer.valueOf(userPrefs.get(PrefConstants.RDF_HORIZONTAL_SPACE,
                     Integer.toString(GraphLayoutUtilities.HORIZONTAL_SPACE))));
-            classVerticalSpaceSpinner.setValue(new Integer(userPrefs.get(PrefConstants.CLASS_VERTICAL_SPACE,
+            classVerticalSpaceSpinner.setValue(Integer.valueOf(userPrefs.get(PrefConstants.CLASS_VERTICAL_SPACE,
                     Integer.toString(GraphLayoutUtilities.VERTICAL_SPACE))));
-            classHorizontalSpaceSpinner.setValue(new Integer(userPrefs.get(PrefConstants.CLASS_HORIZONTAL_SPACE,
+            classHorizontalSpaceSpinner.setValue(Integer.valueOf(userPrefs.get(PrefConstants.CLASS_HORIZONTAL_SPACE,
                     Integer.toString(GraphLayoutUtilities.HORIZONTAL_SPACE))));
-            propertyVerticalSpaceSpinner.setValue(new Integer(userPrefs.get(PrefConstants.PROPERTY_VERTICAL_SPACE,
+            propertyVerticalSpaceSpinner.setValue(Integer.valueOf(userPrefs.get(PrefConstants.PROPERTY_VERTICAL_SPACE,
                     Integer.toString(GraphLayoutUtilities.VERTICAL_SPACE))));
-            propertyHorizontalSpaceSpinner.setValue(new Integer(userPrefs.get(PrefConstants.PROPERTY_HORIZONTAL_SPACE,
+            propertyHorizontalSpaceSpinner.setValue(Integer.valueOf(userPrefs.get(PrefConstants.PROPERTY_HORIZONTAL_SPACE,
                     Integer.toString(GraphLayoutUtilities.HORIZONTAL_SPACE))));
 
             String nodeSize = userPrefs.get(PrefConstants.NODE_SIZE, PrefConstants.NODE_SIZE_AUTO);
@@ -1149,9 +1149,9 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             } else {
                 fixSizeButton.setSelected(true);
             }
-            nodeWidthSpinner.setValue(new Integer(userPrefs.get(PrefConstants.NODE_WIDTH,
+            nodeWidthSpinner.setValue(Integer.valueOf(userPrefs.get(PrefConstants.NODE_WIDTH,
                     Integer.toString(MR3CellMaker.CELL_WIDTH))));
-            nodeHeightSpinner.setValue(new Integer(userPrefs.get(PrefConstants.NODE_HEIGHT,
+            nodeHeightSpinner.setValue(Integer.valueOf(userPrefs.get(PrefConstants.NODE_HEIGHT,
                     Integer.toString(MR3CellMaker.CELL_HEIGHT))));
             nodeWidthSpinner.setEnabled(fixSizeButton.isSelected());
             nodeHeightSpinner.setEnabled(fixSizeButton.isSelected());

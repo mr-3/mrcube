@@ -179,12 +179,12 @@ public class MR3Generator {
 		if (property.getURI().equals(RDF.getURI() + "li")) {
 			if (containerNumMap.get(subject) != null) {
 				Integer num = containerNumMap.get(subject);
-				num = new Integer(num.intValue() + 1);
+				num = num.intValue() + 1;
 				// System.out.println(num);
 				property = RDF.li(num.intValue());
 				containerNumMap.put(subject, num);
 			} else {
-				containerNumMap.put(subject, new Integer(1));
+				containerNumMap.put(subject, 1);
 				property = RDF.li(1);
 			}
 		}

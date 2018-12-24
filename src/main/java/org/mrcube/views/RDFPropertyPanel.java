@@ -327,7 +327,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 			isContainerBox.setSelected(info.isContainer());
 			setContainer(info.isContainer());
 			if (info.isContainer()) {
-				numSpinner.setValue(new Integer(info.getNum()));
+				numSpinner.setValue(info.getNum());
 			} else {
 				// mr3:nilの場合には，名前空間はBaseURIとする
 				if (info.getURIStr().equals(MR3Resource.Nil.getURI())) {

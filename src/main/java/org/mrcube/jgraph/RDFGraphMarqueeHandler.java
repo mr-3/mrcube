@@ -286,7 +286,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 
         private void setValues(String title) {
             putValue(SHORT_DESCRIPTION, title);
-            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_G, KeyEvent.CTRL_MASK));
+            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_G, KeyEvent.CTRL_DOWN_MASK));
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -571,7 +571,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 
         private void setValues() {
             putValue(SHORT_DESCRIPTION, Translator.getString("Component.Window.AttrDialog.Text"));
-            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.ALT_MASK));
+            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.ALT_DOWN_MASK));
         }
 
         public void actionPerformed(ActionEvent e) {

@@ -56,7 +56,7 @@ public class StatusBarPanel extends Panel {
 
     public void setCurrentTime() {
         progressTime = (double) (Calendar.getInstance().getTimeInMillis() - startTime) / 1000;
-        statusField.setText("Time: " + new Double(progressTime).toString());
+        statusField.setText("Time: " + Double.toString(progressTime));
     }
 
     public void startTime() {

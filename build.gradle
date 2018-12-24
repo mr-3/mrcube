@@ -1,11 +1,15 @@
 plugins {
     id "com.github.johnrengelman.shadow" version "4.0.3"
+    id 'org.beryx.jlink' version '2.2.1'
     id 'application'
     id 'maven-publish'
+    id 'idea'
 }
 
 group 'org.mrcube'
 version = '1.0.4'
+mainClassName = 'org.mrcube.MR3'
+sourceCompatibility = targetCompatibility = '11'
 
 project.ext {
     artifactId = 'mrcube'
@@ -23,7 +27,15 @@ repositories {
 }
 
 wrapper {
-    gradleVersion = '4.10.2'
+    gradleVersion = '5.0'
+}
+
+idea{
+    module{
+        inheritOutputDirs = false
+        outputDir = compileJava.destinationDir
+        testOutputDir = compileTestJava.destinationDir
+    }
 }
 
 jar {
@@ -39,12 +51,19 @@ shadowJar {
     archiveName = "mrcube.jar"
 }
 
-mainClassName = 'org.mrcube.MR3'
-sourceCompatibility = targetCompatibility = '11'
+jlink {
+    mergedModule {
+        requires 'java.desktop'
+    }
+    options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
+    launcher {
+        name = 'mrcube'
+    }
+}
+
 
 dependencies {
     compile 'jgraph:jgraph:5.13.0.0'
-    compile 'jgraph:jgraphaddons:1.0.2'
     compile 'org.apache.jena:jena-core:3.9.0'
     compile 'net.infonode:idw:1.6.1_gpl'
     compile 'say.swing:jfontchooser:1.0.5'

@@ -55,7 +55,7 @@ public class CutAction extends AbstractAction {
 		graph = g;
 		gmanager = gm;
 		putValue(SHORT_DESCRIPTION, TITLE);
-		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_MASK));
+		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_DOWN_MASK));
 	}
 
 	public void actionPerformed(ActionEvent e) {

@@ -369,9 +369,9 @@ public class ProjectManager {
 				uriNodeInfoMap.put(stmt.getSubject(), rec);
 			} else if (stmt.getPredicate().equals(MR3Resource.IsPrefixAvailable)) {
 				if (stmt.getObject().toString().equals("true")) {
-					uriIsAvailableMap.put(stmt.getSubject().getURI(), new Boolean(true));
+					uriIsAvailableMap.put(stmt.getSubject().getURI(), Boolean.TRUE);
 				} else {
-					uriIsAvailableMap.put(stmt.getSubject().getURI(), new Boolean(false));
+					uriIsAvailableMap.put(stmt.getSubject().getURI(), Boolean.FALSE);
 				}
 			}
 			MR3.STATUS_BAR.addValue();

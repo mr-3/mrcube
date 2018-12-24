@@ -118,7 +118,7 @@ public class ReferenceListPanel extends JPanel {
     private void setCheck(TableModel tableModel, boolean t) {
         if (tableModel.getRowCount() <= 0) { return; }
         for (int i = 0; i < tableModel.getRowCount(); i++) {
-            tableModel.setValueAt(new Boolean(t), i, 0);
+            tableModel.setValueAt(t, i, 0);
         }
     }
 
@@ -136,7 +136,7 @@ public class ReferenceListPanel extends JPanel {
         if (tableModel.getRowCount() <= 0) { return; }
         for (int i = 0; i < tableModel.getRowCount(); i++) {
             Boolean t = (Boolean) tableModel.getValueAt(i, 0);
-            tableModel.setValueAt(new Boolean(!t.booleanValue()), i, 0);
+            tableModel.setValueAt(!t.booleanValue(), i, 0);
         }
     }
 
@@ -257,7 +257,7 @@ public class ReferenceListPanel extends JPanel {
         Set set = (Set) map.get(cell);
         if (set == null) { return null; }
         for (Iterator i = set.iterator(); i.hasNext();) {
-            Object[] list = new Object[] { new Boolean(true), i.next()};
+            Object[] list = new Object[] {Boolean.TRUE, i.next()};
             tableModel.addRow(list);
         }
         return tableModel;

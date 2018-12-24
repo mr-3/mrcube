@@ -42,7 +42,7 @@ public class ExitAction extends AbstractActionFile {
 
     public ExitAction(MR3 mr3) {
         super(mr3, TITLE, ICON);
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Q, KeyEvent.CTRL_MASK));
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Q, KeyEvent.CTRL_DOWN_MASK));
     }
 
     public void actionPerformed(ActionEvent e) {

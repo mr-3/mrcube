@@ -106,7 +106,6 @@ public class Translator {
                     ins = Utilities.class.getClassLoader().getResourceAsStream("MR3_" + getSystemLanguage() + ".properties");
                 }
             }
-
             resourceBundle = new PropertyResourceBundle(ins);
             loadResourceBundle();
             ins.close();
@@ -117,7 +116,6 @@ public class Translator {
 
     private static void loadResourceBundle() {
         OptionDialog.loadResourceBundle();
-        // MR3Constants.loadResourceBundle();
         EditorSelect.loadResourceBundle();
 
         RDFEditor.updateComponents();

@@ -24,7 +24,7 @@ public class TreeLayoutAlgorithm {
      * 
      * modified by
      * 
-     * @author Takeshi Morita *
+     * @author Takeshi Morita
      **************************************************************************/
 
     public static final Object CELL_WRAPPER = new Object();

@@ -158,16 +158,16 @@ public class ProjectInfoDialog extends JDialog {
         } else {
             currentProjectValue.setText(MR3.getCurrentProject().getTitle());
         }
-        lastImportTimeValue.setText(new Double(MR3.STATUS_BAR.getProgressTime()).toString());
+        lastImportTimeValue.setText(Double.toString(MR3.STATUS_BAR.getProgressTime()));
 
-        modelResourceCntValue.setText(new Integer(calcResourceCnt(mr3Writer.getRDFModel())).toString());
-        modelLiteralCntValue.setText(new Integer(calcLiteralCnt(mr3Writer.getRDFModel())).toString());
-        modelStatementCntValue.setText(new Integer(calcStatementCnt(mr3Writer.getRDFModel())).toString());
-        ontClassCntValue.setText(new Integer(calcOntCnt(gmanager.getCurrentClassGraph())).toString());
-        ontPropertyCntValue.setText(new Integer(calcOntCnt(gmanager.getCurrentPropertyGraph())).toString());
-        allResourceCntValue.setText(new Integer(calcAllResourceCnt()).toString());
-        allLiteralCntValue.setText(new Integer(calcAllLiteralCnt()).toString());
-        allStatementCntValue.setText(new Integer(calcAllStatementCnt()).toString());
+        modelResourceCntValue.setText(Integer.toString(calcResourceCnt(mr3Writer.getRDFModel())));
+        modelLiteralCntValue.setText(Integer.toString(calcLiteralCnt(mr3Writer.getRDFModel())));
+        modelStatementCntValue.setText(Integer.toString(calcStatementCnt(mr3Writer.getRDFModel())));
+        ontClassCntValue.setText(Integer.toString(calcOntCnt(gmanager.getCurrentClassGraph())));
+        ontPropertyCntValue.setText(Integer.toString(calcOntCnt(gmanager.getCurrentPropertyGraph())));
+        allResourceCntValue.setText(Integer.toString(calcAllResourceCnt()));
+        allLiteralCntValue.setText(Integer.toString(calcAllLiteralCnt()));
+        allStatementCntValue.setText(Integer.toString(calcAllStatementCnt()));
     }
 
     private JComponent getButtonPanel() {

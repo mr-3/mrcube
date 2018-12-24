@@ -39,7 +39,7 @@ public class ShowOptionDialog extends MR3AbstractAction {
     public ShowOptionDialog(MR3 mr3) {
         super(mr3, Translator.getString("Component.Tools.Options.Text"), Utilities.getImageIcon("cog.png"));
         putValue(SHORT_DESCRIPTION, getName());
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.ALT_MASK));
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.ALT_DOWN_MASK));
     }
 
     public void actionPerformed(ActionEvent e) {

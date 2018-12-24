@@ -79,7 +79,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		int up = -1;
 		int down = 1;
-		if (e.getModifiers() == MouseWheelEvent.CTRL_MASK) {
+		if (e.getModifiersEx() == MouseWheelEvent.CTRL_DOWN_MASK) {
 			if (e.getWheelRotation() == up) {
 				graph.setScale(1.05 * graph.getScale());
 			} else if (e.getWheelRotation() == down) {

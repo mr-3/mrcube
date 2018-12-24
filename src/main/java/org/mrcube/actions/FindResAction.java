@@ -57,7 +57,7 @@ public class FindResAction extends AbstractAction {
 
     private void setValues() {
         putValue(SHORT_DESCRIPTION, TITLE);
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_MASK));
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK));
     }
 
     public void actionPerformed(ActionEvent e) {

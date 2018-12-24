@@ -107,7 +107,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
             prefix = getMR3Prefix(addNS);
         }
         if (isValidNS(addNS)) {
-            addNameSpaceTable(new Boolean(true), prefix, addNS);
+            addNameSpaceTable(Boolean.TRUE, prefix, addNS);
         }
     }
 
@@ -170,9 +170,9 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
             if (isValidNS(ns)) {
                 String knownPrefix = getKnownPrefix(model, ns);
                 if (isValidPrefix(knownPrefix) && (!knownPrefix.equals(PREFIX))) {
-                    addNameSpaceTable(new Boolean(true), knownPrefix, ns);
+                    addNameSpaceTable(Boolean.TRUE, knownPrefix, ns);
                 } else {
-                    addNameSpaceTable(new Boolean(true), getMR3Prefix(getKnownPrefix(ns)), ns);
+                    addNameSpaceTable(Boolean.TRUE, getMR3Prefix(getKnownPrefix(ns)), ns);
                 }
             }
         }
@@ -261,7 +261,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == addNSButton) {
-            addNameSpaceTable(new Boolean(true), prefixField.getText(), nsField.getText());
+            addNameSpaceTable(Boolean.TRUE, prefixField.getText(), nsField.getText());
             setPrefixNSInfoSet();
         } else if (e.getSource() == removeNSButton) {
             removeNameSpaceTable();

@@ -155,7 +155,7 @@ public class GPConverter {
 
         // Create external keys for nodes
         for (int i = 0; i < cells.length; i++)
-            if (graph.isVertex(cells[i])) hash.put(cells[i], new Integer(hash.size()));
+            if (graph.isVertex(cells[i])) hash.put(cells[i], hash.size());
 
         // Convert Nodes
         Iterator it = hash.keySet().iterator();
@@ -167,7 +167,7 @@ public class GPConverter {
         // Convert Edges
         int edges = 0;
         for (int i = 0; i < cells.length; i++)
-            if (RDFGraph.isEdge(cells[i])) gxl += edgeGXL(graph, new Integer(edges++), cells[i]);
+            if (RDFGraph.isEdge(cells[i])) gxl += edgeGXL(graph, edges++, cells[i]);
 
         // Close main tags
         gxl += "\n</graph></gxl>";
@@ -219,7 +219,7 @@ public class GPConverter {
 
         // Create external keys for nodes
         for (int i = 0; i < cells.length; i++)
-            if (graph.isVertex(cells[i])) hash.put(cells[i], new Integer(hash.size()));
+            if (graph.isVertex(cells[i])) hash.put(cells[i], hash.size());
 
         // Process Nodes
         Iterator it = hash.keySet().iterator();
@@ -231,7 +231,7 @@ public class GPConverter {
         // Process Edges
         int edges = 0;
         for (int i = 0; i < cells.length; i++)
-            if (RDFGraph.isEdge(cells[i])) gv.append(edgeGraphviz(graph, new Integer(edges++), cells[i]));
+            if (RDFGraph.isEdge(cells[i])) gv.append(edgeGraphviz(graph, edges++, cells[i]));
 
         // Close main tags
         gv.append("\n}");
