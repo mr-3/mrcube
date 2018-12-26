@@ -383,7 +383,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
         }
 
         public Class getColumnClass(int column) {
-            Vector v = dataVector.elementAt(0);
+            Vector v = (Vector) dataVector.elementAt(0);
             return v.elementAt(column).getClass();
         }
 

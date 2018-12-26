@@ -399,7 +399,11 @@ public class ExportDialog extends JDialog implements ActionListener {
         Writer writer = new StringWriter();
         writeModel(model, writer);
         if (!encodeCheckBox.isSelected()) {
-            return URLDecoder.decode(writer.toString(), StandardCharsets.UTF_8);
+            try {
+                return URLDecoder.decode(writer.toString(), "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         }
         return writer.toString();
     }

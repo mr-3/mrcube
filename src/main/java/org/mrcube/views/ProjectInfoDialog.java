@@ -39,7 +39,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 /**

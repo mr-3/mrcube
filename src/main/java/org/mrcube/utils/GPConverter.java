@@ -33,7 +33,6 @@ import java.awt.image.BufferedImage;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Hashtable;
-import java.util.Iterator;
 
 public class GPConverter {
 

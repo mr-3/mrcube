@@ -45,7 +45,6 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 /**
