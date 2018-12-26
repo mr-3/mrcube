@@ -226,8 +226,8 @@ public class MR3CellMaker {
         double right = 50;
         double bottom = 0;
         if (supCells == null) { return new Point2D.Double((left + right) / 2, bottom + 100); }
-        for (Iterator i = supCells.iterator(); i.hasNext();) {
-            GraphCell cell = (GraphCell) i.next();
+        for (Object supCell : supCells) {
+            GraphCell cell = (GraphCell) supCell;
             AttributeMap map = cell.getAttributes();
             Rectangle2D rec = GraphConstants.getBounds(map);
             if (isFirst) {
@@ -251,9 +251,9 @@ public class MR3CellMaker {
     }
 
     public void connectSubToSups(Port subPort, Object[] supCells, RDFGraph graph) {
-        for (int i = 0; i < supCells.length; i++) {
-            if (RDFGraph.isPort(supCells[i])) {
-                Port supPort = (Port) supCells[i];
+        for (Object supCell : supCells) {
+            if (RDFGraph.isPort(supCell)) {
+                Port supPort = (Port) supCell;
                 connect(subPort, supPort, null, graph);
             }
         }
@@ -351,7 +351,7 @@ public class MR3CellMaker {
 
     private void setCell(JGraph graph, DefaultGraphCell cell, AttributeMap map) {
         cell.add(new DefaultPort());
-        HashMap<Object, AttributeMap> attributes = new HashMap<Object, AttributeMap>();
+        HashMap<Object, AttributeMap> attributes = new HashMap<>();
         attributes.put(cell, map);
         graph.getGraphLayoutCache().insert(new Object[] { cell}, attributes, null, null);
     }

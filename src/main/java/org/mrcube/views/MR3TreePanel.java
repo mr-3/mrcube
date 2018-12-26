@@ -83,8 +83,8 @@ public class MR3TreePanel extends JPanel {
             Resource resource = ResourceFactory.createResource(node.getUserObject().toString());
             String ns = resource.getNameSpace();
             String id = resource.getLocalName();
-            for (Iterator j = prefixNSInfoSet.iterator(); j.hasNext();) {
-                NamespaceModel info = (NamespaceModel) j.next();
+            for (Object o : prefixNSInfoSet) {
+                NamespaceModel info = (NamespaceModel) o;
                 if (info.getNameSpace().equals(ns)) {
                     node.setUserObject(info.getPrefix() + ":" + id);
                     break;
@@ -167,8 +167,8 @@ public class MR3TreePanel extends JPanel {
 
     private static void createRDFSNodes(Resource resource, DefaultMutableTreeNode node) {
         Set subRDFSSet = (Set) resSubResSetMap.get(resource);
-        for (Iterator i = subRDFSSet.iterator(); i.hasNext();) {
-            Resource subRDFS = (Resource) i.next();
+        for (Object o : subRDFSSet) {
+            Resource subRDFS = (Resource) o;
             DefaultMutableTreeNode subNode = new DefaultMutableTreeNode(subRDFS);
             if (resSubResSetMap.get(subRDFS) != null) {
                 createRDFSNodes(subRDFS, subNode);

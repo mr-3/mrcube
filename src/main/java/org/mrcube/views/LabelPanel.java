@@ -123,7 +123,7 @@ public class LabelPanel extends JPanel implements ActionListener {
 	private void addLabel(String lang, String label) {
 		if (isValidLabel(lang, label)) {
 			labelTableModel.insertRow(labelTableModel.getRowCount(), new Object[] { lang, label });
-			List<MR3Literal> beforeMR3LabelList = new ArrayList<MR3Literal>(resInfo.getLabelList());
+			List<MR3Literal> beforeMR3LabelList = new ArrayList<>(resInfo.getLabelList());
 			setLabelList();
 			List<MR3Literal> afterMR3LabelList = resInfo.getLabelList();
 			if (graphType == GraphType.RDF) {
@@ -142,7 +142,7 @@ public class LabelPanel extends JPanel implements ActionListener {
 	private void removeLabel() {
 		if (labelTable.getSelectedRowCount() == 1) {
 			labelTableModel.removeRow(labelTable.getSelectedRow());
-			List<MR3Literal> beforeMR3LabelList = new ArrayList<MR3Literal>(resInfo.getLabelList());
+			List<MR3Literal> beforeMR3LabelList = new ArrayList<>(resInfo.getLabelList());
 			setLabelList();
 			List<MR3Literal> afterMR3LabelList = resInfo.getLabelList();
 			if (graphType == GraphType.RDF) {
@@ -186,7 +186,7 @@ public class LabelPanel extends JPanel implements ActionListener {
 	}
 
 	private void setLabelList() {
-		List<MR3Literal> labelList = new ArrayList<MR3Literal>();
+		List<MR3Literal> labelList = new ArrayList<>();
 		for (int i = 0; i < labelTable.getRowCount(); i++) {
 			String lang = labelTable.getValueAt(i, 0).toString();
 			String label = labelTable.getValueAt(i, 1).toString();
@@ -211,7 +211,7 @@ public class LabelPanel extends JPanel implements ActionListener {
 			if (aValue instanceof String) {
 				if (columnIndex == 0 || (columnIndex == 1 && !aValue.equals(""))) {
 					super.setValueAt(aValue, rowIndex, columnIndex);
-					List<MR3Literal> beforeMR3LabelList = new ArrayList<MR3Literal>(
+					List<MR3Literal> beforeMR3LabelList = new ArrayList<>(
 							resInfo.getLabelList());
 					setLabelList();
 					List<MR3Literal> afterMR3LabelList = resInfo.getLabelList();

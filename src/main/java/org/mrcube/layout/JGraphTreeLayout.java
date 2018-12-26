@@ -72,10 +72,10 @@ public class JGraphTreeLayout {
 	}
 
 	public void performJGraphTreeLayout(RDFGraph graph, int orientation, int distance, int border) {
-		Map<Object, GraphLayoutData> cellLayoutMap = new HashMap<Object, GraphLayoutData>();
+		Map<Object, GraphLayoutData> cellLayoutMap = new HashMap<>();
 		Set<GraphLayoutData> dataSet = GraphLayoutUtilities.initGraphLayoutData(graph,
 				cellLayoutMap);
-		Set<DefaultGraphCell> rootCells = new HashSet<DefaultGraphCell>();
+		Set<DefaultGraphCell> rootCells = new HashSet<>();
 
 		for (GraphLayoutData data : dataSet) {
 			DefaultGraphCell cell = (DefaultGraphCell) data.getCell();

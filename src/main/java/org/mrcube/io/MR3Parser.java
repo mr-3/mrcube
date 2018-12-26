@@ -83,7 +83,7 @@ public class MR3Parser {
 
 	public void createPropertyGraph(Map<RDFNode, GraphLayoutData> cellLayoutMap) {
 		RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
-		duplicateSubInfo = new HashSet<RDFSModel>();
+		duplicateSubInfo = new HashSet<>();
 		RDFGraph graph = gmanager.getCurrentPropertyGraph();
 		graph.removeEdges();
 
@@ -91,7 +91,7 @@ public class MR3Parser {
 				MR3Resource.Property, cellLayoutMap);
 		Port rootPort = (Port) rootCell.getChildAt(0);
 
-		Map<Object, AttributeMap> attributes = new HashMap<Object, AttributeMap>();
+		Map<Object, AttributeMap> attributes = new HashMap<>();
 		for (Resource property : rdfsModelMap.getRootProperties()) {
 
 			// _1.._numは ， グラフに描画しない
@@ -121,7 +121,7 @@ public class MR3Parser {
 	 */
 	private void createRDFSGraph(GraphLayoutCache graphLayoutCache, RDFSModel supInfo,
 			GraphCell supCell, Port supPort, Map<RDFNode, GraphLayoutData> cellLayoutMap) {
-		Map<Object, AttributeMap> attributes = new HashMap<Object, AttributeMap>();
+		Map<Object, AttributeMap> attributes = new HashMap<>();
 		RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
 		for (Resource subRes : supInfo.getRDFSSubList()) {
 			RDFSModel subInfo = rdfsModelMap.getResourceInfo(subRes);
@@ -287,8 +287,8 @@ public class MR3Parser {
 	}
 
 	public RDFGraph createRDFGraph(Model model, Map<RDFNode, GraphLayoutData> cellLayoutMap) {
-		Map<Object, DefaultGraphCell> resourceMap = new HashMap<Object, DefaultGraphCell>();
-		Map<Object, AttributeMap> attributes = new HashMap<Object, AttributeMap>();
+		Map<Object, DefaultGraphCell> resourceMap = new HashMap<>();
+		Map<Object, AttributeMap> attributes = new HashMap<>();
 		RDFGraph graph = new RDFGraph(gmanager, new RDFGraphModel(), null);
 		GraphLayoutCache graphLayoutCache = graph.getGraphLayoutCache();
 

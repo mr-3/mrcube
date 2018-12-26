@@ -108,11 +108,7 @@ public class FindResourceDialog extends JDialog {
 
         cancelButton = new JButton(MR3Constants.CANCEL);
         cancelButton.setMnemonic('c');
-        cancelButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-            }
-        });
+        cancelButton.addActionListener(e -> setVisible(false));
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BorderLayout());
         buttonPanel.add(cancelButton, BorderLayout.EAST);
@@ -218,7 +214,7 @@ public class FindResourceDialog extends JDialog {
     }
 
     public Object[] getFindResources(String key, FindActionType type) {
-        Map<String, Object> resourceMap = new TreeMap<String, Object>();
+        Map<String, Object> resourceMap = new TreeMap<>();
         key = resolvePrefix(key);
         if (rdfCheckBox.isSelected()) {
             Set<GraphCell> rdfCellSet = null;

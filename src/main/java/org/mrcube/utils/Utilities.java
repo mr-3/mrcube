@@ -185,12 +185,12 @@ public class Utilities {
     }
 
     public static Object[] getSortedCellSet(Object[] cells) {
-        Map<String, Object> map = new TreeMap<String, Object>();
-        for (int i = 0; i < cells.length; i++) {
-            if (cells[i] == null) {
-                map.put("", cells[i]);
+        Map<String, Object> map = new TreeMap<>();
+        for (Object cell : cells) {
+            if (cell == null) {
+                map.put("", cell);
             } else {
-                map.put(cells[i].toString(), cells[i]);
+                map.put(cell.toString(), cell);
             }
         }
         return map.values().toArray();

@@ -54,21 +54,21 @@ public class PropertyModel extends RDFSModel {
 	public PropertyModel(String uri) {
 		super(uri);
 		metaClass = RDF.Property.toString();
-		domainSet = new HashSet<GraphCell>();
-		rangeSet = new HashSet<GraphCell>();
+		domainSet = new HashSet<>();
+		rangeSet = new HashSet<>();
 		isContainer = false;
-		subProperties = new HashSet<Resource>();
-		supProperties = new HashSet<RDFNode>();
+		subProperties = new HashSet<>();
+		supProperties = new HashSet<>();
 	}
 
 	public PropertyModel(PropertyModel info) {
 		super(info);
-		domainSet = new HashSet<GraphCell>(info.getDomain());
-		rangeSet = new HashSet<GraphCell>(info.getRange());
+		domainSet = new HashSet<>(info.getDomain());
+		rangeSet = new HashSet<>(info.getRange());
 		isContainer = info.isContainer();
 		num = info.getNum();
-		subProperties = new HashSet<Resource>();
-		supProperties = new HashSet<RDFNode>();
+		subProperties = new HashSet<>();
+		supProperties = new HashSet<>();
 	}
 
 	public Set<Resource> getRDFSSubList() {
@@ -119,7 +119,7 @@ public class PropertyModel extends RDFSModel {
 	}
 
 	public void clearDomain() {
-		domainSet = new HashSet<GraphCell>();
+		domainSet = new HashSet<>();
 	}
 
 	public Set<GraphCell> getDomain() {
@@ -148,7 +148,7 @@ public class PropertyModel extends RDFSModel {
 	}
 
 	public void clearRange() {
-		rangeSet = new HashSet<GraphCell>();
+		rangeSet = new HashSet<>();
 	}
 
 	public Set<GraphCell> getRange() {
@@ -160,7 +160,7 @@ public class PropertyModel extends RDFSModel {
 	}
 
 	public void clearSubProperty() {
-		subProperties = new HashSet<Resource>();
+		subProperties = new HashSet<>();
 	}
 
 	public void addSupProperty(RDFNode resource) {
@@ -172,7 +172,7 @@ public class PropertyModel extends RDFSModel {
 	}
 
 	public void clearSupProperty() {
-		supProperties = new HashSet<RDFNode>();
+		supProperties = new HashSet<>();
 	}
 
 	public boolean isContainer() {

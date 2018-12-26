@@ -133,16 +133,16 @@ public class MR3 extends JFrame implements ChangeListener {
 	}
 
 	private void initWeakReferences() {
-		rdfEditorOverviewRef = new WeakReference<OverviewDialog>(null);
-		classEditorOverviewRef = new WeakReference<OverviewDialog>(null);
-		propertyEditorOverviewRef = new WeakReference<OverviewDialog>(null);
+		rdfEditorOverviewRef = new WeakReference<>(null);
+		classEditorOverviewRef = new WeakReference<>(null);
+		propertyEditorOverviewRef = new WeakReference<>(null);
 		// ontTreeEditorRef = new WeakReference<OntTreeEditor>(null);
-		importDialogRef = new WeakReference<ImportDialog>(null);
-		exportDialogRef = new WeakReference<ExportDialog>(null);
-		historyManagerRef = new WeakReference<HistoryManager>(null);
-		validatorRef = new WeakReference<ValidatorDialog>(null);
-		projectInfoDialogRef = new WeakReference<ProjectInfoDialog>(null);
-		optionDialogRef = new WeakReference<OptionDialog>(null);
+		importDialogRef = new WeakReference<>(null);
+		exportDialogRef = new WeakReference<>(null);
+		historyManagerRef = new WeakReference<>(null);
+		validatorRef = new WeakReference<>(null);
+		projectInfoDialogRef = new WeakReference<>(null);
+		optionDialogRef = new WeakReference<>(null);
 	}
 
 	private AbstractAction newProjectAction;
@@ -335,7 +335,7 @@ public class MR3 extends JFrame implements ChangeListener {
 			RDFEditor editor = getCurrentProject().getRDFEditor();
 			result = new OverviewDialog(this, OverviewDialog.RDF_EDITOR_OVERVIEW, editor);
 			result.setIconImage(OverviewDialog.RDF_EDITOR_ICON.getImage());
-			rdfEditorOverviewRef = new WeakReference<OverviewDialog>(result);
+			rdfEditorOverviewRef = new WeakReference<>(result);
 		} else {
 			result.setEditor(getCurrentProject().getRDFEditor());
 		}
@@ -348,7 +348,7 @@ public class MR3 extends JFrame implements ChangeListener {
 			ClassEditor editor = getCurrentProject().getClassEditor();
 			result = new OverviewDialog(this, OverviewDialog.CLASS_EDITOR_OVERVIEW, editor);
 			result.setIconImage(OverviewDialog.CLASS_EDITOR_ICON.getImage());
-			classEditorOverviewRef = new WeakReference<OverviewDialog>(result);
+			classEditorOverviewRef = new WeakReference<>(result);
 		} else {
 			result.setEditor(getCurrentProject().getClassEditor());
 		}
@@ -374,7 +374,7 @@ public class MR3 extends JFrame implements ChangeListener {
 			PropertyEditor editor = getCurrentProject().getPropertyEditor();
 			result = new OverviewDialog(this, OverviewDialog.PROPERTY_EDITOR_OVERVIEW, editor);
 			result.setIconImage(OverviewDialog.PROPERTY_EDITOR_ICON.getImage());
-			propertyEditorOverviewRef = new WeakReference<OverviewDialog>(result);
+			propertyEditorOverviewRef = new WeakReference<>(result);
 		} else {
 			result.setEditor(getCurrentProject().getPropertyEditor());
 		}
@@ -393,7 +393,7 @@ public class MR3 extends JFrame implements ChangeListener {
 		if (result == null) {
 			checkCurrentProject();
 			result = new OptionDialog(gmanager, userPrefs);
-			optionDialogRef = new WeakReference<OptionDialog>(result);
+			optionDialogRef = new WeakReference<>(result);
 		}
 		result.resetConfig();
 		result.setVisible(true);
@@ -403,7 +403,7 @@ public class MR3 extends JFrame implements ChangeListener {
 		ImportDialog result = importDialogRef.get();
 		if (result == null) {
 			result = new ImportDialog(gmanager);
-			importDialogRef = new WeakReference<ImportDialog>(result);
+			importDialogRef = new WeakReference<>(result);
 		}
 		return result;
 	}
@@ -412,7 +412,7 @@ public class MR3 extends JFrame implements ChangeListener {
 		ExportDialog result = exportDialogRef.get();
 		if (result == null) {
 			result = new ExportDialog(gmanager);
-			exportDialogRef = new WeakReference<ExportDialog>(result);
+			exportDialogRef = new WeakReference<>(result);
 		}
 		return result;
 	}
@@ -422,7 +422,7 @@ public class MR3 extends JFrame implements ChangeListener {
 		if (result == null) {
 			checkCurrentProject();
 			result = new HistoryManager(gmanager.getRootFrame(), this);
-			historyManagerRef = new WeakReference<HistoryManager>(result);
+			historyManagerRef = new WeakReference<>(result);
 		}
 		return result;
 	}
@@ -432,7 +432,7 @@ public class MR3 extends JFrame implements ChangeListener {
 		if (result == null) {
 			checkCurrentProject();
 			result = new ValidatorDialog(gmanager.getRootFrame(), gmanager);
-			validatorRef = new WeakReference<ValidatorDialog>(result);
+			validatorRef = new WeakReference<>(result);
 		}
 		return result;
 	}
@@ -727,10 +727,10 @@ public class MR3 extends JFrame implements ChangeListener {
 			RDFGraph classGraph = getClassGraph();
 			Object[] cells = classGraph.getSelectionCells();
 			if (cells != null) {
-				LinkedList<Object> children = new LinkedList<Object>();
-				for (int i = 0; i < cells.length; i++) {
-					if (RDFGraph.isRDFSClassCell(cells[i])) {
-						children.add(cells[i]);
+				LinkedList<Object> children = new LinkedList<>();
+				for (Object cell : cells) {
+					if (RDFGraph.isRDFSClassCell(cell)) {
+						children.add(cell);
 					}
 				}
 				// メソッド名が変更されている

@@ -48,6 +48,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -180,11 +181,7 @@ public class ExportDialog extends JDialog implements ActionListener {
         reloadButton.addActionListener(this);
         cancelButton = new JButton(MR3Constants.CANCEL);
         cancelButton.setMnemonic('c');
-        cancelButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-            }
-        });
+        cancelButton.addActionListener(e -> setVisible(false));
         JPanel otherButtonPanel = new JPanel();
         otherButtonPanel.setLayout(new GridLayout(2, 1, 5, 5));
         otherButtonPanel.add(reloadButton);
@@ -335,11 +332,11 @@ public class ExportDialog extends JDialog implements ActionListener {
 
     private void setRDFTreeRoot() {
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
-        Map<Resource, Set<GraphCell>> map = new HashMap<Resource, Set<GraphCell>>();
+        Map<Resource, Set<GraphCell>> map = new HashMap<>();
         RDFGraph graph = gmanager.getCurrentRDFGraph();
         Object[] cells = graph.getAllCells();
-        for (int i = 0; i < cells.length; i++) {
-            GraphCell cell = (GraphCell) cells[i];
+        for (Object cell1 : cells) {
+            GraphCell cell = (GraphCell) cell1;
             if (RDFGraph.isRDFResourceCell(cell)) {
                 RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(cell.getAttributes());
                 Resource resType = info.getType();
@@ -348,7 +345,7 @@ public class ExportDialog extends JDialog implements ActionListener {
                 }
                 Set<GraphCell> instanceSet = map.get(resType);
                 if (instanceSet == null) {
-                    instanceSet = new HashSet<GraphCell>();
+                    instanceSet = new HashSet<>();
                 }
                 instanceSet.add(cell);
                 map.put(resType, instanceSet);
@@ -402,11 +399,7 @@ public class ExportDialog extends JDialog implements ActionListener {
         Writer writer = new StringWriter();
         writeModel(model, writer);
         if (!encodeCheckBox.isSelected()) {
-            try {
-                return URLDecoder.decode(writer.toString(), "UTF-8");
-            } catch (UnsupportedEncodingException uee) {
-                uee.printStackTrace();
-            }
+            return URLDecoder.decode(writer.toString(), StandardCharsets.UTF_8);
         }
         return writer.toString();
     }

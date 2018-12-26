@@ -95,7 +95,7 @@ public class InsertRDFResDialog extends JDialog implements ItemListener {
         panel.add(uriFieldP);
         panel.add(getButtonPanel());
 
-        Component order[] = new Component[] { resTypeBox, uriPrefixBox, isAnonBox, uriField, confirmButton,
+        Component[] order = new Component[]{resTypeBox, uriPrefixBox, isAnonBox, uriField, confirmButton,
                 cancelButton};
         setFocusTraversalPolicy(Utilities.getMyFocusTraversalPolicy(order, 3));
 

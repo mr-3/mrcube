@@ -343,8 +343,8 @@ public class TreeLayoutAlgorithm {
     }
 
     protected void layoutTrees(Collection roots) {
-        for (Iterator iterator = roots.iterator(); iterator.hasNext();) {
-            VertexView view = (VertexView) iterator.next();
+        for (Object root1 : roots) {
+            VertexView view = (VertexView) root1;
             TreeLayoutNode root = getTreeLayoutNode(view);
 
             // kick off Moen's algorithm
@@ -352,21 +352,21 @@ public class TreeLayoutAlgorithm {
             layout(root, nodeSet);
             Point rootPos = view.getBounds().getBounds().getLocation();
             switch (orientation) {
-            case LEFT_TO_RIGHT:
-                leftRightNodeLayout(root, rootPos.x, rootPos.y);
-                break;
-            case UP_TO_DOWN:
-                upDownNodeLayout(root, rootPos.x, rootPos.y);
-                break;
-            default:
-                leftRightNodeLayout(root, rootPos.x, rootPos.y);
+                case LEFT_TO_RIGHT:
+                    leftRightNodeLayout(root, rootPos.x, rootPos.y);
+                    break;
+                case UP_TO_DOWN:
+                    upDownNodeLayout(root, rootPos.x, rootPos.y);
+                    break;
+                default:
+                    leftRightNodeLayout(root, rootPos.x, rootPos.y);
             }
         }
     }
 
     protected void buildLayoutHelperTree(Collection roots) {
-        for (Iterator iterator = roots.iterator(); iterator.hasNext();) {
-            VertexView vv = (VertexView) iterator.next();
+        for (Object root : roots) {
+            VertexView vv = (VertexView) root;
             decorateNode(vv);
         }
     }
@@ -409,8 +409,8 @@ public class TreeLayoutAlgorithm {
     }
 
     protected void display(Collection roots) {
-        for (Iterator iterator = roots.iterator(); iterator.hasNext();) {
-            VertexView vertexView = (VertexView) iterator.next();
+        for (Object root : roots) {
+            VertexView vertexView = (VertexView) root;
             displayHelper(vertexView);
         }
     }
@@ -425,8 +425,8 @@ public class TreeLayoutAlgorithm {
         jgraph.getGraphLayoutCache().edit(attributes, null, null, null);
 
         List c = getChildren(view);
-        for (Iterator iterator = c.iterator(); iterator.hasNext();) {
-            VertexView vertexView = (VertexView) iterator.next();
+        for (Object o : c) {
+            VertexView vertexView = (VertexView) o;
             displayHelper(vertexView);
         }
         view.getAttributes().remove(CELL_WRAPPER);

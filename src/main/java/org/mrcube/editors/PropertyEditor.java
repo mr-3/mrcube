@@ -92,7 +92,7 @@ public class PropertyEditor extends Editor {
         PropertyPanel result = propPanelRef.get();
         if (result == null) {
             result = new PropertyPanel(gmanager);
-            propPanelRef = new WeakReference<PropertyPanel>(result);
+            propPanelRef = new WeakReference<>(result);
         }
         return result;
     }

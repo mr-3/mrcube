@@ -66,10 +66,10 @@ public class PasteAction extends AbstractAction {
 				new ActionEvent(graph, e.getID(), e.getActionCommand()));
 		Object[] copyCells = graph.getCopyCells();
 
-		Set<GraphCell> pasteGraphCellSet = new HashSet<GraphCell>();
-		Set<GraphCell> removeGraphCellSet = new HashSet<GraphCell>();
-		for (int i = 0; i < copyCells.length; i++) {
-			GraphCell cell = (GraphCell) copyCells[i];
+		Set<GraphCell> pasteGraphCellSet = new HashSet<>();
+		Set<GraphCell> removeGraphCellSet = new HashSet<>();
+		for (Object copyCell : copyCells) {
+			GraphCell cell = (GraphCell) copyCell;
 			if (graph.getType() == GraphType.CLASS && RDFGraph.isRDFSClassCell(cell)) {
 				pasteGraphCellSet.add(cell);
 				cloneRDFSClassCell(cell);

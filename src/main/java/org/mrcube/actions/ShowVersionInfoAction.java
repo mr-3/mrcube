@@ -46,7 +46,7 @@ public class ShowVersionInfoAction extends MR3AbstractAction {
     public ShowVersionInfoAction(Frame frame) {
         super(TITLE, ICON);
         rootFrame = frame;
-        versionInfoDialogRef = new WeakReference<VersionInfoDialog>(null);
+        versionInfoDialogRef = new WeakReference<>(null);
         setValues();
     }
 
@@ -59,7 +59,7 @@ public class ShowVersionInfoAction extends MR3AbstractAction {
         VersionInfoDialog result = versionInfoDialogRef.get();
         if (result == null) {
             result = new VersionInfoDialog(rootFrame, TITLE, ICON);
-            versionInfoDialogRef = new WeakReference<VersionInfoDialog>(result);
+            versionInfoDialogRef = new WeakReference<>(result);
         }
         return result;
     }

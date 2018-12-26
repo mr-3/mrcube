@@ -36,6 +36,7 @@ import org.mrcube.views.HistoryManager;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Set;
 import java.util.prefs.Preferences;
 
@@ -114,16 +115,22 @@ public abstract class AbstractActionFile extends MR3AbstractAction {
 		Component desktop = mr3.getGraphManager().getDesktopTabbedPane();
 		Preferences userPrefs = mr3.getUserPrefs();
 		JFileChooser jfc = new JFileChooser(userPrefs.get(PrefConstants.WorkDirectory, ""));
-		if (extension.equals("mr3")) {
-			jfc.setFileFilter(mr3FileFilter);
-		} else if (extension.equals("n3")) {
-			jfc.setFileFilter(n3FileFilter);
-		} else if (extension.equals("png")) {
-			jfc.setFileFilter(pngFileFilter);
-		} else if (extension.equals("owl")) {
-			jfc.setFileFilter(owlFileFilter);
-		} else {
-			jfc.setFileFilter(rdfsFileFilter);
+		switch (extension) {
+			case "mr3":
+				jfc.setFileFilter(mr3FileFilter);
+				break;
+			case "n3":
+				jfc.setFileFilter(n3FileFilter);
+				break;
+			case "png":
+				jfc.setFileFilter(pngFileFilter);
+				break;
+			case "owl":
+				jfc.setFileFilter(owlFileFilter);
+				break;
+			default:
+				jfc.setFileFilter(rdfsFileFilter);
+				break;
 		}
 
 		if (isOpenFile) {
@@ -162,7 +169,7 @@ public abstract class AbstractActionFile extends MR3AbstractAction {
 	protected void saveProject(File file) {
 		try {
 			Model exportModel = mr3.getMR3Writer().getProjectModel();
-			Writer writer = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
+			Writer writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
 			// RDF/XML-ABBREVにするとRDFAnonが出て，import時にAnonymousがうまく扱えない．
 			setNsPrefix(exportModel);
 			exportModel.write(writer, "RDF/XML", getBaseURI());
@@ -170,8 +177,6 @@ public abstract class AbstractActionFile extends MR3AbstractAction {
 			MR3.setCurrentProjectName();
 		} catch (FileNotFoundException e2) {
 			JOptionPane.showMessageDialog(null, "FileNotFound", "Warning", JOptionPane.ERROR_MESSAGE);
-		} catch (UnsupportedEncodingException e3) {
-			e3.printStackTrace();
 		}
 	}
 

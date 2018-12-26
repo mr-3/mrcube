@@ -54,11 +54,7 @@ public class VersionInfoDialog extends JDialog implements HyperlinkListener {
         }
 
         JButton okButton = new JButton("OK");
-        okButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-            }
-        });
+        okButton.addActionListener(e -> setVisible(false));
         setLayout(new BorderLayout());
         add(new JScrollPane(htmlPane), BorderLayout.CENTER);
         add(Utilities.createEastPanel(okButton), BorderLayout.SOUTH);

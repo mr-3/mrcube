@@ -59,8 +59,8 @@ public class SelectResourceTypePanel extends SelectClassPanel {
 
     private void changeTypeCellColor(Object typeCell) {
         Object[] cells = graph.getAllCells();
-        for (int i = 0; i < cells.length; i++) {
-            GraphCell cell = (GraphCell) cells[i];
+        for (Object cell1 : cells) {
+            GraphCell cell = (GraphCell) cell1;
             if (RDFGraph.isRDFSClassCell(cell)) {
                 if (cell == typeCell) {
                     GraphUtilities.changeDefaultCellStyle(graph, cell, GraphUtilities.selectedColor);

@@ -81,9 +81,9 @@ public class RDFEditor extends Editor {
 
     protected void initField(GraphManager manager) {
         super.initField(manager);
-        resPanelRef = new WeakReference<RDFResourcePanel>(null);
-        propPanelRef = new WeakReference<RDFPropertyPanel>(null);
-        litPanelRef = new WeakReference<RDFLiteralPanel>(null);
+        resPanelRef = new WeakReference<>(null);
+        propPanelRef = new WeakReference<>(null);
+        litPanelRef = new WeakReference<>(null);
     }
 
     // 対応するRDFSクラスを選択
@@ -166,7 +166,7 @@ public class RDFEditor extends Editor {
         RDFResourcePanel result = resPanelRef.get();
         if (result == null) {
             result = new RDFResourcePanel(gmanager);
-            resPanelRef = new WeakReference<RDFResourcePanel>(result);
+            resPanelRef = new WeakReference<>(result);
         }
         return result;
     }
@@ -175,7 +175,7 @@ public class RDFEditor extends Editor {
         RDFPropertyPanel result = propPanelRef.get();
         if (result == null) {
             result = new RDFPropertyPanel(gmanager);
-            propPanelRef = new WeakReference<RDFPropertyPanel>(result);
+            propPanelRef = new WeakReference<>(result);
         }
         return result;
     }
@@ -184,7 +184,7 @@ public class RDFEditor extends Editor {
         RDFLiteralPanel result = litPanelRef.get();
         if (result == null) {
             result = new RDFLiteralPanel(gmanager);
-            litPanelRef = new WeakReference<RDFLiteralPanel>(result);
+            litPanelRef = new WeakReference<>(result);
         }
         return result;
     }

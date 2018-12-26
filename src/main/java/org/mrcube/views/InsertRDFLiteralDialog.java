@@ -110,7 +110,7 @@ public class InsertRDFLiteralDialog extends JDialog implements ActionListener {
         getContentPane().add(mainPanel, BorderLayout.CENTER);
         getContentPane().add(Utilities.createEastPanel(buttonPanel), BorderLayout.SOUTH);
 
-        Component order[] = new Component[] { langField, typeBox, isTypedLiteralBox, literalValueArea, confirmButton,
+        Component[] order = new Component[]{langField, typeBox, isTypedLiteralBox, literalValueArea, confirmButton,
                 cancelButton};
         setFocusTraversalPolicy(Utilities.getMyFocusTraversalPolicy(order, 3));
 
@@ -134,7 +134,7 @@ public class InsertRDFLiteralDialog extends JDialog implements ActionListener {
         typeBox.setEnabled(false);
         isTypedLiteralBox.setSelected(false);
         DefaultComboBoxModel model = new DefaultComboBoxModel();
-        Set<String> sortedSet = new TreeSet<String>();
+        Set<String> sortedSet = new TreeSet<>();
         for (Iterator i = typeMapper.listTypes(); i.hasNext();) {
             sortedSet.add(((RDFDatatype) i.next()).getURI());
         }

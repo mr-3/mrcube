@@ -44,9 +44,9 @@ public class VGJTreeLayout {
     public static Map<RDFNode, GraphLayoutData> getVGJRDFCellLayoutMap(Model model) {
         if (!GraphLayoutUtilities.LAYOUT_TYPE.equals(GraphLayoutUtilities.VGJ_TREE_LAYOUT)) { return null; }
 
-        Map<RDFNode, GraphLayoutData> cellLayoutMap = new HashMap<RDFNode, GraphLayoutData>();
+        Map<RDFNode, GraphLayoutData> cellLayoutMap = new HashMap<>();
         Set<GraphLayoutData> dataSet = GraphLayoutUtilities.initGraphLayoutData(model, cellLayoutMap);
-        Set<RDFNode> rootNodes = new HashSet<RDFNode>();
+        Set<RDFNode> rootNodes = new HashSet<>();
         for (GraphLayoutData data : dataSet) {
             GraphLayoutUtilities.addChild(model, data, cellLayoutMap);
             if (!data.hasParent()) {
@@ -70,7 +70,7 @@ public class VGJTreeLayout {
 
     public static Map<RDFNode, GraphLayoutData> getVGJPropertyCellLayoutMap() {
         if (!GraphLayoutUtilities.LAYOUT_TYPE.equals(GraphLayoutUtilities.VGJ_TREE_LAYOUT)) { return null; }
-        Map<RDFNode, GraphLayoutData> cellLayoutMap = new HashMap<RDFNode, GraphLayoutData>();
+        Map<RDFNode, GraphLayoutData> cellLayoutMap = new HashMap<>();
         GraphLayoutUtilities.initPropertyGraphLayoutData(cellLayoutMap);
         return getVGJCellLayoutMap(cellLayoutMap, GraphLayoutUtilities.getVGJPropertyLayoutDirection(),
                 GraphType.PROPERTY);
@@ -78,7 +78,7 @@ public class VGJTreeLayout {
 
     public static Map<RDFNode, GraphLayoutData> getVGJClassCellLayoutMap() {
         if (!GraphLayoutUtilities.LAYOUT_TYPE.equals(GraphLayoutUtilities.VGJ_TREE_LAYOUT)) { return null; }
-        Map<RDFNode, GraphLayoutData> cellLayoutMap = new HashMap<RDFNode, GraphLayoutData>();
+        Map<RDFNode, GraphLayoutData> cellLayoutMap = new HashMap<>();
         GraphLayoutUtilities.initClassGraphLayoutData(cellLayoutMap);
         return getVGJCellLayoutMap(cellLayoutMap, GraphLayoutUtilities.getVGJClassLayoutDirection(), GraphType.CLASS);
     }

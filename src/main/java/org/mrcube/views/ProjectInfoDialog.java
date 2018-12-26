@@ -210,8 +210,8 @@ public class ProjectInfoDialog extends JDialog {
         resourceSet.addAll(objectSet);
 
         int rdfResourceCnt = 0;
-        for (Iterator i = resourceSet.iterator(); i.hasNext(); ) {
-            if (i.next() instanceof Resource) {
+        for (Object o : resourceSet) {
+            if (o instanceof Resource) {
                 rdfResourceCnt++;
             }
         }
@@ -222,8 +222,8 @@ public class ProjectInfoDialog extends JDialog {
         Set objectSet = IteratorCollection.iteratorToSet(model.listObjects());
 
         int literalCnt = 0;
-        for (Iterator i = objectSet.iterator(); i.hasNext(); ) {
-            if (i.next() instanceof Literal) {
+        for (Object o : objectSet) {
+            if (o instanceof Literal) {
                 literalCnt++;
             }
         }

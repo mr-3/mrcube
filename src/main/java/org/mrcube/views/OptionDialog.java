@@ -274,7 +274,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         }
 
         private Object[] getLanguages(File resourceDir) {
-            Set<String> langSet = new TreeSet<String>();
+            Set<String> langSet = new TreeSet<>();
             try {
                 for (File resFile : resourceDir.listFiles()) {
                     if (resFile.getName().matches("MR3_.*\\.properties")) {
@@ -348,14 +348,14 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
 
             public ChooseFontAction(String name) {
                 super(name);
-                jfontChooserRef = new WeakReference<JFontChooser>(null);
+                jfontChooserRef = new WeakReference<>(null);
             }
 
             private JFontChooser getJFontChooser() {
                 JFontChooser result = jfontChooserRef.get();
                 if (result == null) {
                     result = new JFontChooser();
-                    jfontChooserRef = new WeakReference<JFontChooser>(result);
+                    jfontChooserRef = new WeakReference<>(result);
                 }
                 return result;
             }
@@ -380,9 +380,9 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
 
             private void setGraphFont(RDFGraph graph, Font font) {
                 Object[] cells = graph.getAllCells();
-                for (int i = 0; i < cells.length; i++) {
-                    if (cells[i] instanceof GraphCell) {
-                        GraphCell cell = (GraphCell) cells[i];
+                for (Object cell1 : cells) {
+                    if (cell1 instanceof GraphCell) {
+                        GraphCell cell = (GraphCell) cell1;
                         AttributeMap map = cell.getAttributes();
                         GraphConstants.setFont(map, font);
                         GraphUtilities.editCell(cell, map, graph);
@@ -761,8 +761,8 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             String[] list = classClassListStr.split(" ");
             Arrays.sort(list);
             classClassListModel.clear();
-            for (int i = 0; i < list.length; i++) {
-                classClassListModel.addElement(list[i]);
+            for (String s1 : list) {
+                classClassListModel.addElement(s1);
             }
 
             String defaultPropertyClass = userPrefs.get(PrefConstants.DefaultPropertyClass, RDF.Property.getURI());
@@ -772,8 +772,8 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             list = propClassListStr.split(" ");
             Arrays.sort(list);
             propClassListModel.clear();
-            for (int i = 0; i < list.length; i++) {
-                propClassListModel.addElement(list[i]);
+            for (String s : list) {
+                propClassListModel.addElement(s);
             }
         }
 
@@ -1445,8 +1445,8 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
 
     private String getMetaClassStr(Object[] list) {
         String metaClassListStr = "";
-        for (int i = 0; i < list.length; i++) {
-            metaClassListStr += list[i] + " ";
+        for (Object o : list) {
+            metaClassListStr += o + " ";
         }
         return metaClassListStr;
     }

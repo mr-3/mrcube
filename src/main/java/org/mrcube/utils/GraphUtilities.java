@@ -48,7 +48,7 @@ public class GraphUtilities {
 	public static Font defaultFont = null;
 	public static boolean isColor = true;
 
-	private static Set<NamespaceModel> namespaceModelSet = new HashSet<NamespaceModel>();
+	private static Set<NamespaceModel> namespaceModelSet = new HashSet<>();
 
 	public static Color selectedColor = new Color(240, 240, 200);
 	// public static Color selectedForegroundColor = new Color(0, 0, 128);
@@ -73,25 +73,25 @@ public class GraphUtilities {
 		}
 
 		Object[] cells = rdfGraph.getAllCells();
-		for (int i = 0; i < cells.length; i++) {
-			if (cells[i] instanceof RDFCellStyleChanger) {
-				RDFCellStyleChanger changer = (RDFCellStyleChanger) cells[i];
+		for (Object cell2 : cells) {
+			if (cell2 instanceof RDFCellStyleChanger) {
+				RDFCellStyleChanger changer = (RDFCellStyleChanger) cell2;
 				changer.changeDefaultStyle(rdfGraph);
 			}
 		}
 
 		cells = classGraph.getAllCells();
-		for (int i = 0; i < cells.length; i++) {
-			if (cells[i] instanceof RDFCellStyleChanger) {
-				RDFCellStyleChanger changer = (RDFCellStyleChanger) cells[i];
+		for (Object cell1 : cells) {
+			if (cell1 instanceof RDFCellStyleChanger) {
+				RDFCellStyleChanger changer = (RDFCellStyleChanger) cell1;
 				changer.changeDefaultStyle(classGraph);
 			}
 		}
 
 		cells = propertyGraph.getAllCells();
-		for (int i = 0; i < cells.length; i++) {
-			if (cells[i] instanceof RDFCellStyleChanger) {
-				RDFCellStyleChanger changer = (RDFCellStyleChanger) cells[i];
+		for (Object cell : cells) {
+			if (cell instanceof RDFCellStyleChanger) {
+				RDFCellStyleChanger changer = (RDFCellStyleChanger) cell;
 				changer.changeDefaultStyle(propertyGraph);
 			}
 		}
@@ -152,17 +152,17 @@ public class GraphUtilities {
 		if (!isChangedSelectedColor) {
 			return lastSelectionCells;
 		}
-		for (int i = 0; i < lastSelectionCells.length; i++) {
-			if (lastSelectionCells[i] instanceof RDFCellStyleChanger) {
-				RDFCellStyleChanger changer = (RDFCellStyleChanger) lastSelectionCells[i];
+		for (Object lastSelectionCell : lastSelectionCells) {
+			if (lastSelectionCell instanceof RDFCellStyleChanger) {
+				RDFCellStyleChanger changer = (RDFCellStyleChanger) lastSelectionCell;
 				changer.changeDefaultStyle(graph);
 			}
 		}
 		Object[] cells = graph.getSelectionCells();
 		cells = graph.getDescendants(cells);
-		for (int i = 0; i < cells.length; i++) {
-			if (cells[i] instanceof RDFCellStyleChanger) {
-				RDFCellStyleChanger changer = (RDFCellStyleChanger) cells[i];
+		for (Object cell : cells) {
+			if (cell instanceof RDFCellStyleChanger) {
+				RDFCellStyleChanger changer = (RDFCellStyleChanger) cell;
 				changer.changeStyle(graph);
 			}
 		}
@@ -181,8 +181,8 @@ public class GraphUtilities {
 	public static void resizeAllRDFResourceCell(GraphManager gm) {
 		RDFGraph graph = gm.getCurrentRDFGraph();
 		Object[] cells = graph.getAllCells();
-		for (int i = 0; i < cells.length; i++) {
-			GraphCell cell = (GraphCell) cells[i];
+		for (Object cell1 : cells) {
+			GraphCell cell = (GraphCell) cell1;
 			if (RDFGraph.isRDFResourceCell(cell)) {
 				RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(cell
 						.getAttributes());
@@ -193,16 +193,16 @@ public class GraphUtilities {
 
 	public static void resizeAllRDFSResourceCell(GraphManager gm) {
 		Object[] cells = gm.getCurrentClassGraph().getAllCells();
-		for (int i = 0; i < cells.length; i++) {
-			GraphCell cell = (GraphCell) cells[i];
+		for (Object cell2 : cells) {
+			GraphCell cell = (GraphCell) cell2;
 			if (RDFGraph.isRDFSCell(cell)) {
 				RDFSModel info = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
 				resizeRDFSResourceCell(gm, info, cell);
 			}
 		}
 		cells = gm.getCurrentPropertyGraph().getAllCells();
-		for (int i = 0; i < cells.length; i++) {
-			GraphCell cell = (GraphCell) cells[i];
+		for (Object cell1 : cells) {
+			GraphCell cell = (GraphCell) cell1;
 			if (RDFGraph.isRDFSCell(cell)) {
 				RDFSModel info = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
 				resizeRDFSResourceCell(gm, info, cell);
@@ -304,8 +304,8 @@ public class GraphUtilities {
 
 	public static void emphasisNodes(RDFGraph graph) {
 		Object[] cells = graph.getSelectionCells();
-		for (int i = 0; i < cells.length; i++) {
-			GraphCell cell = (GraphCell) cells[i];
+		for (Object cell1 : cells) {
+			GraphCell cell = (GraphCell) cell1;
 			AttributeMap map = cell.getAttributes();
 			// GraphConstants.setLineWidth(map, EMPHASIS_WIDTH);
 			editCell(cell, map, graph);

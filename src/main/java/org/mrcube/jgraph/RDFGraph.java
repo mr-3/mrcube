@@ -257,7 +257,7 @@ public class RDFGraph extends JGraph {
      * cellに接続されているエッジのtargetとなるcellのSetを返す
      */
     public Set<GraphCell> getTargetCells(DefaultGraphCell cell) {
-        Set<GraphCell> supCells = new HashSet<GraphCell>();
+        Set<GraphCell> supCells = new HashSet<>();
         if (cell.getChildCount() == 0) {
             return supCells;
         }
@@ -314,9 +314,9 @@ public class RDFGraph extends JGraph {
     public void removeCellsWithEdges(Object[] cells) {
         RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
         Set removeCells = new HashSet();
-        for (int i = 0; i < cells.length; i++) {
-            GraphCell cell = (GraphCell) cells[i];
-            if (isPort(cells[i])) {
+        for (Object cell1 : cells) {
+            GraphCell cell = (GraphCell) cell1;
+            if (isPort(cell1)) {
                 Port port = (Port) cell;
                 for (Iterator edges = graphModel.edges(port); edges.hasNext(); ) {
                     removeCells.add(edges.next());
@@ -446,8 +446,8 @@ public class RDFGraph extends JGraph {
                         msg = getRDFPropertyToolTipText(cell);
                     } else {
                         List children = ((DefaultGraphCell) cell).getChildren();
-                        for (Iterator i = children.iterator(); i.hasNext(); ) {
-                            GraphCell resCell = (GraphCell) i.next();
+                        for (Object child : children) {
+                            GraphCell resCell = (GraphCell) child;
                             if (isRDFResourceCell(resCell)) {
                                 msg = getRDFResourceToolTipText(resCell);
                             }

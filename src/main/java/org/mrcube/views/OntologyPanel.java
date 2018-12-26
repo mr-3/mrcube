@@ -216,7 +216,7 @@ public abstract class OntologyPanel extends JPanel implements ListSelectionListe
 
     /** スーパークラスまたは、スーパープロパティの名前のセットを返す */
     protected Object[] getTargetInfo(Set<GraphCell> supCellSet) {
-        Set<String> result = new HashSet<String>();
+        Set<String> result = new HashSet<>();
         for (GraphCell cell : supCellSet) {
             RDFSModel supInfo = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
             result.add(supInfo.getURIStr());
@@ -248,11 +248,7 @@ public abstract class OntologyPanel extends JPanel implements ListSelectionListe
                 Set<GraphCell> targetCells = graph.getTargetCells(cell);
                 setValue(targetCells);
                 rdfsModel.setSuperRDFS(targetCells);
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        basePanel.getIDField().requestFocus();
-                    }
-                });
+                SwingUtilities.invokeLater(() -> basePanel.getIDField().requestFocus());
             }
         }
     }

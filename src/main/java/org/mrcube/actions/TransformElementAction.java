@@ -62,10 +62,10 @@ public class TransformElementAction extends AbstractAction {
     }
 
     private void setURISet() {
-        uriSet = new HashSet<String>();
+        uriSet = new HashSet<>();
         Object[] cells = graph.getDescendants(graph.getSelectionCells());
-        for (int i = 0; i < cells.length; i++) {
-            GraphCell cell = (GraphCell) cells[i];
+        for (Object cell1 : cells) {
+            GraphCell cell = (GraphCell) cell1;
 
             if (fromGraphType == GraphType.RDF && RDFGraph.isRDFResourceCell(cell)) {
                 RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(cell.getAttributes());

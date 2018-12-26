@@ -28,9 +28,9 @@ public class TreeAlgorithm {
     private char rootOrient_;
     private Point2D.Double rootPos_;
     private int depth_;
-    private GraphLayoutData prevNodeAtLevel_[];
-    private double levelHeight_[];
-    private double levelPosition_[];
+    private GraphLayoutData[] prevNodeAtLevel_;
+    private double[] levelHeight_;
+    private double[] levelPosition_;
 
     private double levelSeparation_;
     private double subtreeSeparation_;
@@ -115,7 +115,7 @@ public class TreeAlgorithm {
 
         if (level > depth_) depth_ = level;
 
-        GraphLayoutData children[] = new GraphLayoutData[node.getChildCount()];
+        GraphLayoutData[] children = new GraphLayoutData[node.getChildCount()];
         int num_children = 0;
 
         // Put all the unvisited children in the list.

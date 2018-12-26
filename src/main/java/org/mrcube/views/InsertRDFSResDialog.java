@@ -72,7 +72,7 @@ public class InsertRDFSResDialog extends JDialog {
         nsLabel = new JLabel("");
         JComponent nsLabelP = Utilities.createTitledPanel(nsLabel, MR3Constants.NAME_SPACE, FIELD_WIDTH, FIELD_HEIGHT);
 
-        Component order[] = new Component[] { uriPrefixBox, idField, confirmButton, cancelButton};
+        Component[] order = new Component[]{uriPrefixBox, idField, confirmButton, cancelButton};
         setFocusTraversalPolicy(Utilities.getMyFocusTraversalPolicy(order, 1));
 
         JPanel panel = new JPanel();

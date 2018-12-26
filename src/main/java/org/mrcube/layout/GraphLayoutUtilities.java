@@ -121,7 +121,7 @@ public class GraphLayoutUtilities {
     }
 
     public static void reverseArc(MR3CellMaker cellMaker, RDFGraph graph) {
-        Set<Edge> removeEdges = new HashSet<Edge>();
+        Set<Edge> removeEdges = new HashSet<>();
         for (Object cell : graph.getAllCells()) {
             if (RDFGraph.isEdge(cell)) {
                 Edge edge = (Edge) cell;
@@ -183,7 +183,7 @@ public class GraphLayoutUtilities {
     }
 
     public static void initPropertyGraphLayoutData(Map<RDFNode, GraphLayoutData> cellLayoutMap) {
-        duplicateResourceSet = new HashSet<Resource>();
+        duplicateResourceSet = new HashSet<>();
         Dimension dim = GraphUtilities.getAutoNodeDimension(gmanager, gmanager.getRDFSNodeValue(MR3Resource.Property,
                 null));
         GraphLayoutData rootData = new GraphLayoutData(MR3Resource.Property, dim);
@@ -211,7 +211,7 @@ public class GraphLayoutUtilities {
     private static Set<Resource> duplicateResourceSet;
 
     public static void initClassGraphLayoutData(Map<RDFNode, GraphLayoutData> cellLayoutMap) {
-        duplicateResourceSet = new HashSet<Resource>();
+        duplicateResourceSet = new HashSet<>();
         RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
         RDFSModel rootInfo = rdfsModelMap.getResourceInfo(RDFS.Resource);
         if (rootInfo != null && rootInfo.getRDFSSubList().size() > 0) {
@@ -253,8 +253,8 @@ public class GraphLayoutUtilities {
 
     public static Set<GraphLayoutData> initGraphLayoutData(Model model, Map<RDFNode, GraphLayoutData> cellLayoutMap) {
         GraphLayoutData data = null;
-        Set<RDFNode> nodeSet = new HashSet<RDFNode>();
-        Set<GraphLayoutData> dataSet = new HashSet<GraphLayoutData>();
+        Set<RDFNode> nodeSet = new HashSet<>();
+        Set<GraphLayoutData> dataSet = new HashSet<>();
 
         for (StmtIterator i = model.listStatements(); i.hasNext(); ) {
             Statement stmt = i.nextStatement();
@@ -294,9 +294,9 @@ public class GraphLayoutUtilities {
 
     public static Set<GraphLayoutData> initGraphLayoutData(RDFGraph graph, Map<Object, GraphLayoutData> cellLayoutMap) {
         Object[] cells = graph.getAllCells();
-        Set<GraphLayoutData> dataSet = new HashSet<GraphLayoutData>();
-        for (int i = 0; i < cells.length; i++) {
-            GraphCell cell = (GraphCell) cells[i];
+        Set<GraphLayoutData> dataSet = new HashSet<>();
+        for (Object cell1 : cells) {
+            GraphCell cell = (GraphCell) cell1;
             if (!RDFGraph.isTypeCell(cell)
                     && (RDFGraph.isRDFSCell(cell) || RDFGraph.isRDFResourceCell(cell) || RDFGraph
                     .isRDFLiteralCell(cell))) {
@@ -381,7 +381,7 @@ public class GraphLayoutUtilities {
         if (tmpRoot == null) {
             return;
         }
-        Set<Object> removeCellsSet = new HashSet<Object>();
+        Set<Object> removeCellsSet = new HashSet<>();
         Port port = (Port) tmpRoot.getChildAt(0);
         removeCellsSet.add(tmpRoot);
         removeCellsSet.add(port);
@@ -458,9 +458,9 @@ public class GraphLayoutUtilities {
             reviseY = MARGIN - rec.getY();
         }
         MR3.STATUS_BAR.initNormal(cells.length);
-        for (int i = 0; i < cells.length; i++) {
-            if (RDFGraph.isRDFsCell(cells[i]) || RDFGraph.isTypeCell(cells[i])) {
-                GraphCell cell = (GraphCell) cells[i];
+        for (Object cell1 : cells) {
+            if (RDFGraph.isRDFsCell(cell1) || RDFGraph.isTypeCell(cell1)) {
+                GraphCell cell = (GraphCell) cell1;
                 AttributeMap map = cell.getAttributes();
                 Rectangle2D cellRec = GraphConstants.getBounds(map);
                 if (cellRec != null) {

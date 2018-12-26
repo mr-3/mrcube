@@ -76,7 +76,7 @@ public class HistoryManager extends JDialog implements ActionListener {
 		private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 		public String format(LogRecord logRecord) {
-			final StringBuffer stringBuffer = new StringBuffer();
+			final StringBuilder stringBuffer = new StringBuilder();
 
 			stringBuffer.append(this.dateFormat.format(new Date(logRecord.getMillis())));
 			stringBuffer.append(" ");
@@ -97,7 +97,7 @@ public class HistoryManager extends JDialog implements ActionListener {
 			} else if (level == Level.SEVERE) {
 				stringBuffer.append("SEVERE");
 			} else {
-				stringBuffer.append(Integer.toString(logRecord.getLevel().intValue()));
+				stringBuffer.append(logRecord.getLevel().intValue());
 				stringBuffer.append(" ");
 			}
 			stringBuffer.append(" ");
@@ -139,7 +139,7 @@ public class HistoryManager extends JDialog implements ActionListener {
 		mr3 = m;
 		mr3Reader = mr3.getMR3Reader();
 		mr3Writer = mr3.getMR3Writer();
-		dateHistoryDataMap = new HashMap<Date, HistoryModel>();
+		dateHistoryDataMap = new HashMap<>();
 		historyTableModel = new DefaultTableModel(columnNames, 0);
 		historyTable = new JTable(historyTableModel);
 		TableColumnModel tcModel = historyTable.getColumnModel();
@@ -226,30 +226,30 @@ public class HistoryManager extends JDialog implements ActionListener {
 		if (!GraphManager.isLogAvailable()) {
 			return;
 		}
-		StringBuffer buf = new StringBuffer("DELETE: \n");
-		for (int i = 0; i < removeCells.length; i++) {
-			GraphCell cell = (GraphCell) removeCells[i];
+		StringBuilder buf = new StringBuilder("DELETE: \n");
+		for (Object removeCell : removeCells) {
+			GraphCell cell = (GraphCell) removeCell;
 			if (RDFGraph.isRDFResourceCell(cell)) {
 				RDFResourceModel resInfo = (RDFResourceModel) GraphConstants.getValue(cell.getAttributes());
-				buf.append("RDF Resource: " + resInfo.getURIStr() + "\t");
-				buf.append("RDF Resource Type: " + resInfo.getType() + "\n");
+				buf.append("RDF Resource: ").append(resInfo.getURIStr()).append("\t");
+				buf.append("RDF Resource Type: ").append(resInfo.getType()).append("\n");
 			} else if (historyType == HistoryType.DELETE_RDF && RDFGraph.isRDFPropertyCell(cell)) {
 				RDFSModel rdfsModel = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
-				buf.append("RDF Property: " + rdfsModel.getURIStr() + "\n");
+				buf.append("RDF Property: ").append(rdfsModel.getURIStr()).append("\n");
 			} else if (RDFGraph.isRDFLiteralCell(cell)) {
 				MR3Literal literal = (MR3Literal) GraphConstants.getValue(cell.getAttributes());
 				buf.append("RDF Literal: \n");
-				buf.append("Language: " + literal.getLanguage() + "\t");
-				buf.append("Datatype: " + literal.getDatatype() + "\t");
-				buf.append("String: " + literal.getString() + "\n");
+				buf.append("Language: ").append(literal.getLanguage()).append("\t");
+				buf.append("Datatype: ").append(literal.getDatatype()).append("\t");
+				buf.append("String: ").append(literal.getString()).append("\n");
 			} else if (RDFGraph.isRDFSClassCell(cell)) {
 				RDFSModel rdfsModel = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
-				buf.append("Ont Class: " + rdfsModel.getURIStr() + "\t");
-				buf.append("Meta Class: " + rdfsModel.getMetaClass() + "\n");
+				buf.append("Ont Class: ").append(rdfsModel.getURIStr()).append("\t");
+				buf.append("Meta Class: ").append(rdfsModel.getMetaClass()).append("\n");
 			} else if (RDFGraph.isRDFSPropertyCell(cell)) {
 				RDFSModel rdfsModel = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
-				buf.append("Ont Property: " + rdfsModel.getURIStr() + "\t");
-				buf.append("Meta Property: " + rdfsModel.getMetaClass() + "\n");
+				buf.append("Ont Property: ").append(rdfsModel.getURIStr()).append("\t");
+				buf.append("Meta Property: ").append(rdfsModel.getMetaClass()).append("\n");
 			}
 		}
 
@@ -269,13 +269,13 @@ public class HistoryManager extends JDialog implements ActionListener {
 		if (!GraphManager.isLogAvailable()) {
 			return;
 		}
-		StringBuffer beforeBuf = new StringBuffer("");
+		StringBuilder beforeBuf = new StringBuilder();
 		for (MR3Literal lit : beforeMR3LiteralList) {
-			beforeBuf.append("Language: " + lit.getLanguage() + "\tString: " + lit.getString() + "\n");
+			beforeBuf.append("Language: ").append(lit.getLanguage()).append("\tString: ").append(lit.getString()).append("\n");
 		}
-		StringBuffer afterBuf = new StringBuffer("");
+		StringBuilder afterBuf = new StringBuilder();
 		for (MR3Literal lit : afterMR3LiteralList) {
-			afterBuf.append("Language: " + lit.getLanguage() + "\tString: " + lit.getString() + "\n");
+			afterBuf.append("Language: ").append(lit.getLanguage()).append("\tString: ").append(lit.getString()).append("\n");
 		}
 
 		switch (historyType) {
@@ -409,9 +409,9 @@ public class HistoryManager extends JDialog implements ActionListener {
 				ClassModel clsInfo = (ClassModel) afterInfo;
 				Set<RDFResourceModel> instanceInfoSet = gmanager.getClassInstanceInfoSet(clsInfo);
 				if (0 < instanceInfoSet.size()) {
-					StringBuffer instanceInfoStr = new StringBuffer("");
+					StringBuilder instanceInfoStr = new StringBuilder();
 					for (RDFResourceModel resInfo : instanceInfoSet) {
-						instanceInfoStr.append("RDF Resource: " + resInfo.getURIStr() + "\n");
+						instanceInfoStr.append("RDF Resource: ").append(resInfo.getURIStr()).append("\n");
 					}
 					logger.info(META_MODEL + "[" + HistoryType.META_MODEL_MANAGEMNET_REPLACE_CLASS + "]\n"
 							+ instanceInfoStr);
@@ -427,11 +427,11 @@ public class HistoryManager extends JDialog implements ActionListener {
 				PropertyModel propInfo = (PropertyModel) afterInfo;
 				Set instanceSet = gmanager.getPropertyInstanceInfoSet(propInfo);
 				if (0 < instanceSet.size()) {
-					StringBuffer instanceInfoStr = new StringBuffer("");
+					StringBuilder instanceInfoStr = new StringBuilder();
 					for (Object cell : instanceSet) {
 						RDFResourceModel resInfo = (RDFResourceModel) GraphConstants.getValue(((GraphCell) cell)
 								.getAttributes());
-						instanceInfoStr.append("Source RDF Resource: " + resInfo.getURIStr() + "\n");
+						instanceInfoStr.append("Source RDF Resource: ").append(resInfo.getURIStr()).append("\n");
 					}
 					// 正確にやるなら，RDFプロパティのグラフセルのセットから，sourcevertex,
 					// targetvertexを得て，

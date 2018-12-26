@@ -136,7 +136,7 @@ public class ReferenceListPanel extends JPanel {
         if (tableModel.getRowCount() <= 0) { return; }
         for (int i = 0; i < tableModel.getRowCount(); i++) {
             Boolean t = (Boolean) tableModel.getValueAt(i, 0);
-            tableModel.setValueAt(!t.booleanValue(), i, 0);
+            tableModel.setValueAt(!t, i, 0);
         }
     }
 
@@ -256,8 +256,8 @@ public class ReferenceListPanel extends JPanel {
         DefaultTableModel tableModel = getTableModel();
         Set set = (Set) map.get(cell);
         if (set == null) { return null; }
-        for (Iterator i = set.iterator(); i.hasNext();) {
-            Object[] list = new Object[] {Boolean.TRUE, i.next()};
+        for (Object o : set) {
+            Object[] list = new Object[]{Boolean.TRUE, o};
             tableModel.addRow(list);
         }
         return tableModel;
@@ -266,9 +266,7 @@ public class ReferenceListPanel extends JPanel {
     public void setTableModelMap(Set cells, Map classRDFMap, Map classPropMap) {
         rdfRefTable.setModel(nullTableModel);
         propRefTable.setModel(nullTableModel);
-        for (Iterator i = cells.iterator(); i.hasNext();) {
-            Object cell = i.next();
-
+        for (Object cell : cells) {
             Object tModel = getTableModel(cell, classRDFMap);
             rdfTableModelMap.put(cell, tModel);
 
@@ -279,7 +277,7 @@ public class ReferenceListPanel extends JPanel {
 
     private boolean isAvailable(TableModel tableModel, int row, int column) {
         Boolean isAvailable = (Boolean) tableModel.getValueAt(row, column);
-        return isAvailable.booleanValue();
+        return isAvailable;
     }
 
     class ReferenceTableModel extends DefaultTableModel {
@@ -293,7 +291,7 @@ public class ReferenceListPanel extends JPanel {
         }
 
         public Class getColumnClass(int column) {
-            Vector v = (Vector) dataVector.elementAt(0);
+            Vector v = dataVector.elementAt(0);
             return v.elementAt(column).getClass();
         }
     }

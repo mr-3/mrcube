@@ -78,7 +78,7 @@ public class GraphLayoutData {
     public GraphLayoutData(GraphCell cell, RDFGraph graph) {
         this.cell = cell;
         this.graph = graph;
-        children = new HashSet<GraphLayoutData>();
+        children = new HashSet<>();
         Map map = cell.getAttributes();
         rec = GraphConstants.getBounds(map);
         point = new Point2D.Double(rec.getX(), rec.getY());

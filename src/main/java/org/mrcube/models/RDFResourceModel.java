@@ -53,8 +53,8 @@ public class RDFResourceModel extends ResourceModel implements Serializable {
     public RDFResourceModel(MR3Constants.URIType type, String uri) {
         setURIType(type);
         this.uri = uri;
-        labelList = new ArrayList<MR3Literal>();
-        commentList = new ArrayList<MR3Literal>();
+        labelList = new ArrayList<>();
+        commentList = new ArrayList<>();
     }
 
     public RDFResourceModel(RDFResourceModel info) {
@@ -65,8 +65,8 @@ public class RDFResourceModel extends ResourceModel implements Serializable {
             uri = info.getURIStr();
         }
         typeCell = info.getTypeCell();
-        labelList = new ArrayList<MR3Literal>(info.getLabelList());
-        commentList = new ArrayList<MR3Literal>(info.getCommentList());
+        labelList = new ArrayList<>(info.getLabelList());
+        commentList = new ArrayList<>(info.getCommentList());
     }
 
     public RDFSModel getTypeInfo() {

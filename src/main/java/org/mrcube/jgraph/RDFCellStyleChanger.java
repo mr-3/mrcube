@@ -28,7 +28,7 @@ package org.mrcube.jgraph;
  */
 public interface RDFCellStyleChanger {
 
-    public void changeStyle(RDFGraph graph);
-    public void changeDefaultStyle(RDFGraph graph);
+    void changeStyle(RDFGraph graph);
+    void changeDefaultStyle(RDFGraph graph);
 
 }

@@ -112,9 +112,9 @@ public class MR3Generator {
 	 */
 	private Object[] getEdges(Model rdfModel, Object[] cells) {
 		if (cells != null) {
-			List<GraphCell> result = new ArrayList<GraphCell>();
-			for (int i = 0; i < cells.length; i++) {
-				GraphCell cell = (GraphCell) cells[i];
+			List<GraphCell> result = new ArrayList<>();
+			for (Object cell1 : cells) {
+				GraphCell cell = (GraphCell) cell1;
 				if (RDFGraph.isEdge(cell)) {
 					result.add(cell);
 				} else if (!RDFGraph.isTypeCell(cell) && RDFGraph.isRDFResourceCell(cell)) {
@@ -179,9 +179,9 @@ public class MR3Generator {
 		if (property.getURI().equals(RDF.getURI() + "li")) {
 			if (containerNumMap.get(subject) != null) {
 				Integer num = containerNumMap.get(subject);
-				num = num.intValue() + 1;
+				num = num + 1;
 				// System.out.println(num);
-				property = RDF.li(num.intValue());
+				property = RDF.li(num);
 				containerNumMap.put(subject, num);
 			} else {
 				containerNumMap.put(subject, 1);
@@ -193,9 +193,9 @@ public class MR3Generator {
 
 	private void createRDFModel(RDFGraph graph, Model rdfModel, Object[] edges) {
 		// rdf:liを利用していた場合に，subjectとなるリソースごとに番号を割り振るために利用
-		Map<Resource, Integer> containerNumMap = new HashMap<Resource, Integer>();
-		for (int i = 0; i < edges.length; i++) {
-			Edge edge = (Edge) edges[i];
+		Map<Resource, Integer> containerNumMap = new HashMap<>();
+		for (Object edge1 : edges) {
+			Edge edge = (Edge) edge1;
 			GraphCell sourceCell = (GraphCell) graph.getSourceVertex(edge);
 			RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(sourceCell
 					.getAttributes());

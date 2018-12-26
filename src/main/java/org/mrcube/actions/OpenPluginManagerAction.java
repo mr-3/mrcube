@@ -43,7 +43,7 @@ public class OpenPluginManagerAction extends MR3AbstractAction {
 
     public OpenPluginManagerAction(MR3 mr3, String name) {
         super(mr3, name, ICON);
-        pluginManagerRef = new WeakReference<PluginManager>(null);
+        pluginManagerRef = new WeakReference<>(null);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_DOWN_MASK));
     }
 
@@ -51,7 +51,7 @@ public class OpenPluginManagerAction extends MR3AbstractAction {
         PluginManager result = pluginManagerRef.get();
         if (result == null) {
             result = new PluginManager(mr3);
-            pluginManagerRef = new WeakReference<PluginManager>(result);
+            pluginManagerRef = new WeakReference<>(result);
         }
         return result;
     }

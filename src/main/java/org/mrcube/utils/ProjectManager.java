@@ -66,8 +66,8 @@ public class ProjectManager {
 		int literal_cnt = 0;
 		RDFGraph graph = gmanager.getCurrentRDFGraph();
 		Object[] cells = graph.getAllCells();
-		for (int i = 0; i < cells.length; i++) {
-			GraphCell cell = (GraphCell) cells[i];
+		for (Object cell1 : cells) {
+			GraphCell cell = (GraphCell) cell1;
 			if (RDFGraph.isRDFResourceCell(cell)) {
 				addRDFResourceProjectModel(projectModel, cell);
 			} else if (RDFGraph.isRDFPropertyCell(cell)) {
@@ -137,9 +137,9 @@ public class ProjectManager {
 
 	private void addRDFSProjectModel(Model projectModel, RDFGraph graph) {
 		Object[] cells = graph.getAllCells();
-		for (int i = 0; i < cells.length; i++) {
-			if (RDFGraph.isRDFSCell(cells[i])) {
-				GraphCell cell = (GraphCell) cells[i];
+		for (Object cell1 : cells) {
+			if (RDFGraph.isRDFSCell(cell1)) {
+				GraphCell cell = (GraphCell) cell1;
 				Rectangle2D rec = GraphConstants.getBounds(cell.getAttributes());
 				RDFSModel info = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
 				Literal x = ResourceFactory.createPlainLiteral(String.valueOf(rec.getX()));
@@ -230,7 +230,7 @@ public class ProjectManager {
 	}
 
 	private void changeNSModel(Map<String, String> uriPrefixMap, Map<String, Boolean> uriIsAvailableMap) {
-		Set<String> existNSSet = new HashSet<String>();
+		Set<String> existNSSet = new HashSet<>();
 		for (int i = 0; i < nsTableModel.getRowCount(); i++) {
 			String nameSpace = (String) nsTableModel.getValueAt(i, NS_COLUMN);
 			String prefix = uriPrefixMap.get(nameSpace);
@@ -259,8 +259,8 @@ public class ProjectManager {
 	public void removeEmptyClass() {
 		RDFGraph graph = gmanager.getCurrentRDFGraph();
 		Object[] cells = graph.getAllCells();
-		for (int i = 0; i < cells.length; i++) {
-			GraphCell cell = (GraphCell) cells[i];
+		for (Object cell1 : cells) {
+			GraphCell cell = (GraphCell) cell1;
 			if (RDFGraph.isRDFResourceCell(cell)) {
 				RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(cell.getAttributes());
 				if (info.getType().equals(MR3Resource.Empty)) {
@@ -297,7 +297,7 @@ public class ProjectManager {
 	}
 
 	public void setCellLayoutMap(Model model) {
-		layoutMap = new HashMap<RDFNode, GraphLayoutData>();
+		layoutMap = new HashMap<>();
 
 		for (StmtIterator i = model.listStatements(); i.hasNext();) {
 			Statement stmt = i.nextStatement();
@@ -327,9 +327,9 @@ public class ProjectManager {
 	}
 
 	public void loadProject(Model model) {
-		Map<Resource, MR3Literal> uriNodeInfoMap = new HashMap<Resource, MR3Literal>(); // リソースのＵＲＩとMR3Literalのマップ
-		Map<String, String> uriPrefixMap = new HashMap<String, String>(); // URIとプレフィックスのマップ
-		Map<String, Boolean> uriIsAvailableMap = new HashMap<String, Boolean>(); // URIとisAvailable(boolean)のマップ
+		Map<Resource, MR3Literal> uriNodeInfoMap = new HashMap<>(); // リソースのＵＲＩとMR3Literalのマップ
+		Map<String, String> uriPrefixMap = new HashMap<>(); // URIとプレフィックスのマップ
+		Map<String, Boolean> uriIsAvailableMap = new HashMap<>(); // URIとisAvailable(boolean)のマップ
 
 		MR3.STATUS_BAR.initNormal(getStmtCount(model));
 		for (StmtIterator i = model.listStatements(); i.hasNext();) {

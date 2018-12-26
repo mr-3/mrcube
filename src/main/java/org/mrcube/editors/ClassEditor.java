@@ -98,7 +98,7 @@ public class ClassEditor extends Editor {
         ClassPanel result = classPanelRef.get();
         if (result == null) {
             result = new ClassPanel(gmanager);
-            classPanelRef = new WeakReference<ClassPanel>(result);
+            classPanelRef = new WeakReference<>(result);
         }
         return result;
     }

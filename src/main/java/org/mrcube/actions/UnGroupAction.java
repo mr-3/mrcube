@@ -67,8 +67,8 @@ public class UnGroupAction extends AbstractAction {
 	public static void ungroup(RDFGraph graph) {
 		Object[] cells = graph.getSelectionCells();
 		if (cells != null && cells.length > 0) {
-			List<Object> groups = new ArrayList<Object>();
-			List<Object> children = new ArrayList<Object>();
+			List<Object> groups = new ArrayList<>();
+			List<Object> children = new ArrayList<>();
 			for (Object cell : cells) {
 				if (isGroup(graph, cell)) {
 					groups.add(cell);

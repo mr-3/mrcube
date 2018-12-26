@@ -146,8 +146,8 @@ public class RDFLiteralPanel extends JPanel implements ActionListener {
 			for (Iterator i = typeMapper.listTypes(); i.hasNext();) {
 				sortedSet.add(((RDFDatatype) i.next()).getURI());
 			}
-			for (Iterator i = sortedSet.iterator(); i.hasNext();) {
-				model.addElement(i.next());
+			for (String s : sortedSet) {
+				model.addElement(s);
 			}
 			typeBox.setModel(model);
 			if (literal.getDatatype() != null) {
@@ -162,11 +162,7 @@ public class RDFLiteralPanel extends JPanel implements ActionListener {
 			literalValueArea.setText(literal.getString());
 		}
 
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				literalValueArea.requestFocus();
-			}
-		});
+		SwingUtilities.invokeLater(() -> literalValueArea.requestFocus());
 	}
 
 	public void apply() {

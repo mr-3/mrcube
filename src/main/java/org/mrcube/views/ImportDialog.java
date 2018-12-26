@@ -46,6 +46,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.*;
 import java.util.prefs.Preferences;
@@ -166,8 +167,8 @@ public class ImportDialog extends JDialog implements ActionListener {
 		if (!gmanager.getWorkDirectory().equals("")) {
 			containerSet.add(gmanager.getWorkDirectory());
 		}
-		for (Iterator i = containerSet.iterator(); i.hasNext();) {
-			containerListModel.addElement(i.next());
+		for (String s : containerSet) {
+			containerListModel.addElement(s);
 		}
 
 		ActionListener addContainerAction = new AddContainerAction();
@@ -352,8 +353,8 @@ public class ImportDialog extends JDialog implements ActionListener {
 			if (selectedContainers == null) {
 				return;
 			}
-			uriSet = new TreeSet<String>();
-			fileSet = new TreeSet<File>();
+			uriSet = new TreeSet<>();
+			fileSet = new TreeSet<>();
 			for (Object selectedContainer : selectedContainers) {
 				File selectedDirectory = new File(selectedContainer.toString());
 				if (!selectedDirectory.isDirectory()) {
@@ -389,7 +390,7 @@ public class ImportDialog extends JDialog implements ActionListener {
 
 	private void setFindList() {
 		int[] lastSelectedIndices = fileListUI.getSelectedIndices();
-		Set<String> fileNameSet = new TreeSet<String>();
+		Set<String> fileNameSet = new TreeSet<>();
 		for (File file : fileSet) {
 			String regex = ".*";
 			if (findField.getText().length() != 0) {
@@ -453,7 +454,7 @@ public class ImportDialog extends JDialog implements ActionListener {
 	}
 
 	private Set<InputStream> getFileInputStreamSet() {
-		Set<InputStream> inputStreamSet = new HashSet<InputStream>();
+		Set<InputStream> inputStreamSet = new HashSet<>();
 		if (fileListUI.isSelectionEmpty()) {
 			return inputStreamSet;
 		}
@@ -472,7 +473,7 @@ public class ImportDialog extends JDialog implements ActionListener {
 	}
 
 	private Set<InputStream> getURIInputStreamSet() {
-		Set<InputStream> inputStreamSet = new HashSet<InputStream>();
+		Set<InputStream> inputStreamSet = new HashSet<>();
 		for (String uri : uriSet) {
 			if (uri == null) {
 				return null;
@@ -500,11 +501,7 @@ public class ImportDialog extends JDialog implements ActionListener {
 		}
 		for (InputStream is : inputStreamSet) {
 			BufferedReader reader = null;
-			try {
-				reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-			} catch (UnsupportedEncodingException e1) {
-				e1.printStackTrace();
-			}
+			reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
 			StringBuilder builder = new StringBuilder();
 			String line = "";
 			try {
@@ -515,13 +512,9 @@ public class ImportDialog extends JDialog implements ActionListener {
 				e.printStackTrace();
 			}
 			String decodedText;
-			try {
-				decodedText = URLDecoder.decode(builder.toString(), "UTF-8");
-				StringReader r = new StringReader(decodedText);
-				model.read(r, gmanager.getBaseURI(), getSyntax());
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			}
+			decodedText = URLDecoder.decode(builder.toString(), StandardCharsets.UTF_8);
+			StringReader r = new StringReader(decodedText);
+			model.read(r, gmanager.getBaseURI(), getSyntax());
 		}
 		return model;
 	}

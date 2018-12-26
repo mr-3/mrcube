@@ -78,7 +78,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
         super(gm.getRootFrame(), Translator.getString("NameSpaceTable.Title"), false);
         setIconImage(Utilities.getImageIcon(Translator.getString("NameSpaceTable.Icon")).getImage());
         gmanager = gm;
-        prefixNSMap = new HashMap<String, String>();
+        prefixNSMap = new HashMap<>();
         initTable();
         nsPanel = new JPanel();
         nsPanel.setLayout(new BorderLayout());
@@ -93,7 +93,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
     }
 
     private void initKnownPrefixNSMap() {
-        knownNSPrefixMap = new HashMap<String, String>();
+        knownNSPrefixMap = new HashMap<>();
         knownNSPrefixMap.put("http://purl.org/dc/elements/1.1/", "dc");
         knownNSPrefixMap.put("http://purl.org/rss/1.0/", "rss");
         knownNSPrefixMap.put("http://xmlns.com/foaf/0.1/", "foaf");
@@ -150,7 +150,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
     }
 
     public void setCurrentNSPrefix(Model model) {
-        Set<String> nsSet = new HashSet<String>();
+        Set<String> nsSet = new HashSet<>();
         for (StmtIterator i = model.listStatements(); i.hasNext();) {
             Statement stmt = i.nextStatement();
             String ns = Utilities.getNameSpace(stmt.getSubject());
@@ -199,12 +199,12 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
     }
 
     public void resetNSTable() {
-        prefixNSMap = new HashMap<String, String>();
+        prefixNSMap = new HashMap<>();
         // 一気にすべて削除する方法がわからない．
         while (nsTableModel.getRowCount() != 0) {
             nsTableModel.removeRow(nsTableModel.getRowCount() - 1);
         }
-        GraphUtilities.setNamespaceModelSet(new HashSet<NamespaceModel>());
+        GraphUtilities.setNamespaceModelSet(new HashSet<>());
     }
 
     private void initTable() {
@@ -346,7 +346,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
     /** テーブルのチェックボックスがチェックされたかどうか */
     private boolean isPrefixAvailable(int row, int column) {
         Boolean isPrefixAvailable = (Boolean) nsTableModel.getValueAt(row, column);
-        return isPrefixAvailable.booleanValue();
+        return isPrefixAvailable;
     }
 
     public void tableChanged(TableModelEvent e) {
@@ -360,7 +360,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
     }
 
     private Set<NamespaceModel> getPrefixNSInfoSet() {
-        Set<NamespaceModel> infoSet = new HashSet<NamespaceModel>();
+        Set<NamespaceModel> infoSet = new HashSet<>();
         for (int i = 0; i < nsTableModel.getRowCount(); i++) {
             String prefix = (String) nsTableModel.getValueAt(i, 1);
             String ns = (String) nsTableModel.getValueAt(i, 2);
@@ -383,7 +383,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
         }
 
         public Class getColumnClass(int column) {
-            Vector v = (Vector) dataVector.elementAt(0);
+            Vector v = dataVector.elementAt(0);
             return v.elementAt(column).getClass();
         }
 

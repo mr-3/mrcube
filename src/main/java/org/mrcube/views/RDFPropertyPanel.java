@@ -173,7 +173,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		private void selectLocalName() {
 			selectNameSpaceList();
 			ListModel listModel = localNameList.getModel();
-			List<Object> list = new ArrayList<Object>();
+			List<Object> list = new ArrayList<>();
 			String idStr = findIDField.getText();
 			for (int i = 0; i < listModel.getSize(); i++) {
 				String elementStr = listModel.getElementAt(i).toString();
@@ -278,7 +278,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 			localNameList.setListData(NULL);
 			return;
 		}
-		Set<String> modifyLocalNames = new TreeSet<String>();
+		Set<String> modifyLocalNames = new TreeSet<>();
 		for (String localName : localNames) {
 			if (localName.length() == 0) { // localNameがない場合，Nullを表示
 				modifyLocalNames.add(NULL_LOCAL_NAME);
@@ -347,27 +347,19 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 			}
 		}
 		setPrefix();
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				idField.requestFocus();
-			}
-		});
+		SwingUtilities.invokeLater(() -> idField.requestFocus());
 	}
 
 	public void setPropertyList(List<GraphCell> plist) {
 		propList = plist;
-		propMap = new HashMap<String, Set<String>>();
-		propNameSpaceSet = new HashSet<String>();
+		propMap = new HashMap<>();
+		propNameSpaceSet = new HashSet<>();
 
 		for (GraphCell cell : propList) {
 			RDFSModel info = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
 			Resource uri = info.getURI();
 			propNameSpaceSet.add(uri.getNameSpace());
-			Set<String> localNames = propMap.get(uri.getNameSpace());
-			if (localNames == null) {
-				localNames = new HashSet<String>();
-				propMap.put(uri.getNameSpace(), localNames);
-			}
+			Set<String> localNames = propMap.computeIfAbsent(uri.getNameSpace(), k -> new HashSet<>());
 			localNames.add(uri.getLocalName());
 		}
 		selectNameSpaceList();
@@ -395,7 +387,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 
 	private void setContainerMemberProperty() {
 		Integer num = (Integer) numSpinner.getValue();
-		Resource resource = ResourceFactory.createResource(RDF.getURI() + "_" + num.intValue());
+		Resource resource = ResourceFactory.createResource(RDF.getURI() + "_" + num);
 		GraphCell propertyCell = gmanager.getPropertyCell(resource, false);
 		RDFSModel rdfsModel = (RDFSModel) GraphConstants.getValue(propertyCell.getAttributes());
 		GraphConstants.setValue(edge.getAttributes(), rdfsModel);

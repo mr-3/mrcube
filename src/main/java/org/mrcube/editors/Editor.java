@@ -234,13 +234,11 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
 			if (graph.getType() == GraphType.RDF) {
 				toolbar.addSeparator();
 				editModeButton.setIcon(Utilities.getImageIcon("link.png"));
-				editModeButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						if (editModeButton.isSelected()) {
-							editModeButton.setIcon(Utilities.getImageIcon("link_break.png"));
-						} else {
-							editModeButton.setIcon(Utilities.getImageIcon("link.png"));
-						}
+				editModeButton.addActionListener(e -> {
+					if (editModeButton.isSelected()) {
+						editModeButton.setIcon(Utilities.getImageIcon("link_break.png"));
+					} else {
+						editModeButton.setIcon(Utilities.getImageIcon("link.png"));
 					}
 				});
 				toolbar.add(editModeButton);
@@ -326,9 +324,9 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
 		}
 		RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
 		Object[] newAllCells = graph.getAllCells();
-		Set<GraphCell> newRDFSCellSet = new HashSet<GraphCell>();
-		for (int i = 0; i < newAllCells.length; i++) { // undo/redo前よりもセル数が増えた場合
-			GraphCell cell = (GraphCell) newAllCells[i];
+		Set<GraphCell> newRDFSCellSet = new HashSet<>();
+		for (Object newAllCell : newAllCells) { // undo/redo前よりもセル数が増えた場合
+			GraphCell cell = (GraphCell) newAllCell;
 			if (RDFGraph.isRDFSCell(cell)) {
 				newRDFSCellSet.add(cell);
 				RDFSModel info = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
@@ -340,8 +338,8 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
 				}
 			}
 		}
-		for (int i = 0; i < orgAllCells.length; i++) { // undo/redo前よりもセル数が減った場合
-			GraphCell cell = (GraphCell) orgAllCells[i];
+		for (Object orgAllCell : orgAllCells) { // undo/redo前よりもセル数が減った場合
+			GraphCell cell = (GraphCell) orgAllCell;
 			if (RDFGraph.isRDFSCell(cell) && !newRDFSCellSet.contains(cell)) {
 				rdfsModelMap.removeCellInfo(cell);
 			}

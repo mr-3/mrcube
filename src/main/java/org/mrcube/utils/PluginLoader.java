@@ -48,16 +48,12 @@ public class PluginLoader {
 	private static Collection<Manifest> manifests;
 	private static SortedMap<String, List> pluginMenuMap;
 
-	private static FilenameFilter jarFilter = new FilenameFilter() {
-		public boolean accept(File dir, String name) {
-			return name.endsWith(".jar");
-		}
-	};
+	private static FilenameFilter jarFilter = (dir, name) -> name.endsWith(".jar");
 
 	public static Map getPluginMenuMap() {
 		Collection<File> files = null;
-		manifests = new ArrayList<Manifest>();
-		pluginMenuMap = new TreeMap<String, List>();
+		manifests = new ArrayList<>();
+		pluginMenuMap = new TreeMap<>();
 		try {
 			files = getClassPathFiles();
 			classLoader = createClassLoader(files);
@@ -71,7 +67,7 @@ public class PluginLoader {
 	}
 
 	private static Collection<File> getClassPathFiles() {
-		Collection<File> files = new ArrayList<File>();
+		Collection<File> files = new ArrayList<>();
 		Preferences userPrefs = Preferences.userNodeForPackage(MR3.class);
 		pluginPath = userPrefs.get(PrefConstants.PluginsDirectory, System.getProperty("user.dir"));
 		if (pluginPath.equals(System.getProperty("user.dir"))) {
@@ -130,9 +126,7 @@ public class PluginLoader {
 	private static final String PLUGIN_DESCRIPTION_KEY = "description";
 
 	private static void processManifest(Manifest manifest) {
-		Iterator i = manifest.getEntries().keySet().iterator();
-		while (i.hasNext()) {
-			String attributeName = (String) i.next();
+		for (String attributeName : manifest.getEntries().keySet()) {
 			Attributes attributes = manifest.getAttributes(attributeName);
 			// MR3プラグインに関係のある属性を含まないものはパス
 			if (attributes.getValue(PLUGIN_NAME_KEY) == null
@@ -153,7 +147,7 @@ public class PluginLoader {
 				if (pluginName == null) {
 					continue;
 				}
-				List<Object> pluginInfo = new ArrayList<Object>();
+				List<Object> pluginInfo = new ArrayList<>();
 				pluginInfo.add(classObj);
 				pluginInfo.add(attributes.getValue(PLUGIN_CREATOR_KEY));
 				pluginInfo.add(attributes.getValue(PLUGIN_DATE_KEY));
@@ -170,10 +164,8 @@ public class PluginLoader {
 			clas = Class.forName(className, true, classLoader);
 		} catch (ClassNotFoundException cnfe) {
 			// 無視
-		} catch (Error error) {
+		} catch (Error | Exception error) {
 			error.printStackTrace();
-		} catch (Exception exp) {
-			exp.printStackTrace();
 		}
 		return clas;
 	}

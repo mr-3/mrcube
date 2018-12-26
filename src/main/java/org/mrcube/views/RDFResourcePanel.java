@@ -85,7 +85,7 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
 		gmanager = gm;
 		loadResourceBundle();
 		decideAction = new DecideActon();
-		selectResTypeDialogRef = new WeakReference<SelectResourceTypeDialog>(null);
+		selectResTypeDialogRef = new WeakReference<>(null);
 		// setBorder(BorderFactory.createTitledBorder(Translator.getString("AttributeDialog.RDFResourceAttribute.Text")));
 
 		uriPanel = new URIPanel();
@@ -255,7 +255,7 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
 			}
 			RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
 			if (rdfsModelMap.isClassCell(uri)) {
-				Object classCell = (GraphCell) rdfsModelMap.getClassCell(uri);
+				Object classCell = rdfsModelMap.getClassCell(uri);
 				gmanager.selectClassCell(classCell);
 			} else {
 				JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(),
@@ -443,15 +443,10 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
 		setResTypePrefix();
 		uriPanel.setURI(resInfo.getURIStr());
 		typePanel.selectTypeMode(resInfo.hasType());
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				uriPanel.getURIField().requestFocus();
-			}
-		});
+		SwingUtilities.invokeLater(() -> uriPanel.getURIField().requestFocus());
 	}
 
 	private void setCellValue() {
-		// setURI()������O��URI�^�C�v��ύX����K�v����DURI�^�C�v�ɂ���ď����ᕪ���Ă��邽��
 		if (uriPanel.isAnon()) {
 			resInfo.setURIType(URIType.ANONYMOUS);
 			resInfo.setURI(ResourceFactory.createResource().toString());
@@ -467,7 +462,7 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
 		SelectResourceTypeDialog result = selectResTypeDialogRef.get();
 		if (result == null) {
 			result = new SelectResourceTypeDialog(gmanager);
-			selectResTypeDialogRef = new WeakReference<SelectResourceTypeDialog>(result);
+			selectResTypeDialogRef = new WeakReference<>(result);
 		}
 		result.replaceGraph(gmanager.getCurrentClassGraph());
 		result.setInitCell(resInfo.getTypeCell());

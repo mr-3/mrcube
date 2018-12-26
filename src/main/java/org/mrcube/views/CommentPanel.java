@@ -64,7 +64,7 @@ public class CommentPanel extends JPanel implements ActionListener {
 	public CommentPanel(Frame frame) {
 		rootFrame = frame;
 		graphType = GraphType.RDF;
-		editCommentDialogRef = new WeakReference<EditCommentDialog>(null);
+		editCommentDialogRef = new WeakReference<>(null);
 
 		commentTableModel = new CommentTableModel(new Object[] { MR3Constants.LANG,
 				MR3Constants.COMMENT }, 0);
@@ -96,7 +96,7 @@ public class CommentPanel extends JPanel implements ActionListener {
 		EditCommentDialog result = editCommentDialogRef.get();
 		if (result == null) {
 			result = new EditCommentDialog(rootFrame);
-			editCommentDialogRef = new WeakReference<EditCommentDialog>(result);
+			editCommentDialogRef = new WeakReference<>(result);
 		}
 		return result;
 	}
@@ -148,7 +148,7 @@ public class CommentPanel extends JPanel implements ActionListener {
 		if (!literal.getString().equals("")) {
 			commentTableModel.insertRow(commentTableModel.getRowCount(),
 					new Object[] { literal.getLanguage(), literal.getString() });
-			List<MR3Literal> beforeMR3CommentList = new ArrayList<MR3Literal>(
+			List<MR3Literal> beforeMR3CommentList = new ArrayList<>(
 					resInfo.getCommentList());
 			setCommentList();
 			List<MR3Literal> afterMR3CommentList = resInfo.getCommentList();
@@ -168,7 +168,7 @@ public class CommentPanel extends JPanel implements ActionListener {
 	private void deleteComment() {
 		if (commentTable.getSelectedRowCount() == 1) {
 			commentTableModel.removeRow(commentTable.getSelectedRow());
-			List<MR3Literal> beforeMR3CommentList = new ArrayList<MR3Literal>(
+			List<MR3Literal> beforeMR3CommentList = new ArrayList<>(
 					resInfo.getCommentList());
 			setCommentList();
 			List<MR3Literal> afterMR3CommentList = resInfo.getCommentList();
@@ -209,7 +209,7 @@ public class CommentPanel extends JPanel implements ActionListener {
 	}
 
 	private void setCommentList() {
-		List<MR3Literal> commentList = new ArrayList<MR3Literal>();
+		List<MR3Literal> commentList = new ArrayList<>();
 		for (int i = 0; i < commentTable.getRowCount(); i++) {
 			String lang = commentTable.getValueAt(i, 0).toString();
 			String label = commentTable.getValueAt(i, 1).toString();
@@ -234,7 +234,7 @@ public class CommentPanel extends JPanel implements ActionListener {
 			if (aValue instanceof String) {
 				if (columnIndex == 0 || (columnIndex == 1 && !aValue.equals(""))) {
 					super.setValueAt(aValue, rowIndex, columnIndex);
-					List<MR3Literal> beforeMR3CommentList = new ArrayList<MR3Literal>(
+					List<MR3Literal> beforeMR3CommentList = new ArrayList<>(
 							resInfo.getCommentList());
 					setCommentList();
 					List<MR3Literal> afterMR3CommentList = resInfo.getCommentList();

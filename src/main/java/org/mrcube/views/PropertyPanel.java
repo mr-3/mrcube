@@ -230,7 +230,7 @@ public class PropertyPanel extends OntologyPanel {
             private void setDomainList(Set<GraphCell> set) {
                 if (set != null) {
                     PropertyModel info = (PropertyModel) GraphConstants.getValue(cell.getAttributes());
-                    Set<GraphCell> beforeDomainSet = new HashSet<GraphCell>(info.getDomain());
+                    Set<GraphCell> beforeDomainSet = new HashSet<>(info.getDomain());
                     info.addAllDomain(set);
                     domainList.setListData(info.getDomain().toArray());
                     HistoryManager.saveHistory(HistoryType.ADD_ONT_PROPERTY_DOMAIN, beforeDomainSet, info.getDomain(),
@@ -241,7 +241,7 @@ public class PropertyPanel extends OntologyPanel {
             private void setRangeList(Set<GraphCell> set) {
                 if (set != null) {
                     PropertyModel info = (PropertyModel) GraphConstants.getValue(cell.getAttributes());
-                    Set<GraphCell> beforeRangeSet = new HashSet<GraphCell>(info.getRange());
+                    Set<GraphCell> beforeRangeSet = new HashSet<>(info.getRange());
                     info.addAllRange(set);
                     rangeList.setListData(info.getRange().toArray());
                     HistoryManager.saveHistory(HistoryType.ADD_ONT_PROPERTY_RANGE, beforeRangeSet, info.getRange(),
@@ -255,7 +255,7 @@ public class PropertyPanel extends OntologyPanel {
         SelectRDFSDialog result = (SelectRDFSDialog) selectRDFSDialogRef.get();
         if (result == null) {
             result = new SelectRDFSDialog(Translator.getString("SelectRegionDialog.Title"), gmanager);
-            selectRDFSDialogRef = new WeakReference<SelectRDFSDialog>(result);
+            selectRDFSDialogRef = new WeakReference<>(result);
         }
         result.replaceGraph(gmanager.getCurrentClassGraph());
         result.setRegionSet(regionSet);

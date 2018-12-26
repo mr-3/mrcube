@@ -43,17 +43,18 @@ public class PrefixNSUtil {
     }
 
     public static String getBaseURIPrefix(String baseURI) {
-        for (Iterator i = namespaceModelSet.iterator(); i.hasNext();) {
-            NamespaceModel info = (NamespaceModel) i.next();
-            if (info.getNameSpace().equals(baseURI)) { return info.getPrefix(); }
+        for (NamespaceModel info : namespaceModelSet) {
+            if (info.getNameSpace().equals(baseURI)) {
+                return info.getPrefix();
+            }
         }
         return null;
     }
 
     private static Set<String> getPropNSSet(List propList) {
-        Set<String> propNSSet = new HashSet<String>();
-        for (Iterator i = propList.iterator(); i.hasNext();) {
-            GraphCell cell = (GraphCell) i.next();
+        Set<String> propNSSet = new HashSet<>();
+        for (Object o : propList) {
+            GraphCell cell = (GraphCell) o;
             RDFSModel info = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
             propNSSet.add(info.getNameSpace());
         }
@@ -61,10 +62,9 @@ public class PrefixNSUtil {
     }
 
     public static Set getPropPrefixes(List propList) {
-        Set<String> prefixSet = new TreeSet<String>();
+        Set<String> prefixSet = new TreeSet<>();
         Set<String> propNSSet = getPropNSSet(propList);
-        for (Iterator i = namespaceModelSet.iterator(); i.hasNext();) {
-            NamespaceModel info = (NamespaceModel) i.next();
+        for (NamespaceModel info : namespaceModelSet) {
             if (propNSSet.contains(info.getNameSpace())) {
                 prefixSet.add(info.getPrefix());
             }
@@ -73,18 +73,18 @@ public class PrefixNSUtil {
     }
 
     public static Set getPrefixes() {
-        Set<String> prefixes = new TreeSet<String>();
-        for (Iterator i = namespaceModelSet.iterator(); i.hasNext();) {
-            NamespaceModel info = (NamespaceModel) i.next();
+        Set<String> prefixes = new TreeSet<>();
+        for (NamespaceModel info : namespaceModelSet) {
             prefixes.add(info.getPrefix());
         }
         return prefixes;
     }
 
     public static String getNameSpace(String prefix) {
-        for (Iterator i = namespaceModelSet.iterator(); i.hasNext();) {
-            NamespaceModel info = (NamespaceModel) i.next();
-            if (info.getPrefix().equals(prefix)) { return info.getNameSpace(); }
+        for (NamespaceModel info : namespaceModelSet) {
+            if (info.getPrefix().equals(prefix)) {
+                return info.getNameSpace();
+            }
         }
         return "#";
     }

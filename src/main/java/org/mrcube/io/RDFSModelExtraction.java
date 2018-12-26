@@ -50,7 +50,7 @@ public class RDFSModelExtraction {
 		Model classModel = ModelFactory.createDefaultModel();
 		addInnerClassModel(orgModel);
 		Set<Resource> classClassList = gmanager.getClassClassList();
-		Set<Resource> findClassClassList = new HashSet<Resource>();
+		Set<Resource> findClassClassList = new HashSet<>();
 		for (Resource clsClass : classClassList) {
 			gmanager.findMetaClass(orgModel, clsClass, findClassClassList);
 		}
@@ -119,7 +119,7 @@ public class RDFSModelExtraction {
 		Model propertyModel = ModelFactory.createDefaultModel();
 		addInnerPropertyModel(orgModel);
 		Set<Resource> propClassList = gmanager.getPropertyClassList();
-		Set<Resource> findPropClassList = new HashSet<Resource>();
+		Set<Resource> findPropClassList = new HashSet<>();
 		for (Resource propClass : propClassList) {
 			gmanager.findMetaClass(orgModel, propClass, findPropClassList);
 		}

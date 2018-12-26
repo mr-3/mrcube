@@ -44,14 +44,14 @@ public class ChooseFontAction extends MR3AbstractAction {
 
 	public ChooseFontAction(MR3 mr3, String name) {
 		super(mr3, name);
-		jfontChooserRef = new WeakReference<JFontChooser>(null);
+		jfontChooserRef = new WeakReference<>(null);
 	}
 
 	private JFontChooser getJFontChooser() {
 		JFontChooser result = jfontChooserRef.get();
 		if (result == null) {
 			result = new JFontChooser();
-			jfontChooserRef = new WeakReference<JFontChooser>(result);
+			jfontChooserRef = new WeakReference<>(result);
 		}
 		return result;
 	}
@@ -76,9 +76,9 @@ public class ChooseFontAction extends MR3AbstractAction {
 
 	private void setGraphFont(RDFGraph graph, Font font) {
 		Object[] cells = graph.getAllCells();
-		for (int i = 0; i < cells.length; i++) {
-			if (cells[i] instanceof GraphCell) {
-				GraphCell cell = (GraphCell) cells[i];
+		for (Object cell1 : cells) {
+			if (cell1 instanceof GraphCell) {
+				GraphCell cell = (GraphCell) cell1;
 				AttributeMap map = cell.getAttributes();
 				GraphConstants.setFont(map, font);
 				GraphUtilities.editCell(cell, map, graph);

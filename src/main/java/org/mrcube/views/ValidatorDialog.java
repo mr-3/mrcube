@@ -118,7 +118,7 @@ public class ValidatorDialog extends JDialog {
 	private void validateModel() {
 		Model model = mr3Writer.getRDFModel();
 		model.add(mr3Writer.getRDFSModel());
-		StringBuilder messages = new StringBuilder("");
+		StringBuilder messages = new StringBuilder();
 		InfModel infmodel = ModelFactory.createRDFSModel(model);
 		ValidityReport validity = infmodel.validate();
 		if (validity.isValid()) {
@@ -127,7 +127,7 @@ public class ValidatorDialog extends JDialog {
 			messages.append("Conflicts");
 			messages.append(System.lineSeparator());
 			for (Iterator i = validity.getReports(); i.hasNext();) {
-				messages.append(" - " + i.next());
+				messages.append(" - ").append(i.next());
 				messages.append(System.lineSeparator());
 			}
 		}
