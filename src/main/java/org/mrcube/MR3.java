@@ -211,7 +211,7 @@ public class MR3 extends JFrame implements ChangeListener {
 
     private JToolBar createToolBar() {
         JToolBar toolbar = new JToolBar();
-        toolbar.setFloatable(true);
+        toolbar.setFloatable(false);
         toolbar.add(newProjectAction);
         toolbar.add(openProjectAction);
         toolbar.add(saveProjectAction);
