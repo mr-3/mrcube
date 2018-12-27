@@ -292,7 +292,7 @@ public class GraphUtilities {
 			defaultFont = gmanager.getCurrentRDFGraph().getFont();
 		}
 		FontMetrics fm = gmanager.getCurrentRDFGraph().getFontMetrics(defaultFont);
-		int width = fm.stringWidth(value) + MR3CellMaker.CELL_MARGIN;
+		int width = fm.stringWidth(value) * 2;
 		if (value.length() == 0) {
 			width = ANON_NODE_WIDTH;
 		}

@@ -49,7 +49,7 @@ public class MR3CellMaker {
 
     private GraphManager gmanager;
 
-    public static final int CELL_MARGIN = 10;
+    public static final int CELL_MARGIN = 20;
     public static int CELL_WIDTH = 100;
     public static int DEFAULT_CELL_WIDTH = 100;
     public static int CELL_HEIGHT = 25;
@@ -111,9 +111,6 @@ public class MR3CellMaker {
         GraphConstants.setOpaque(map, false);
         GraphConstants.setForeground(map, Color.blue);
 
-        if (gmanager.isAutoNodeSize()) {
-            GraphConstants.setAutoSize(map, true);
-        }
         if (rectangle != null) {
             GraphConstants.setBounds(map, rectangle);
         } else {
@@ -139,9 +136,6 @@ public class MR3CellMaker {
         GraphConstants.setBorderColor(map, Color.black);
         GraphConstants.setLineWidth(map, 1);
 
-        if (gmanager.isAutoNodeSize()) {
-            GraphConstants.setAutoSize(map, true);
-        }
         if (rectangle != null) {
             GraphConstants.setBounds(map, rectangle);
         } else {
@@ -152,7 +146,6 @@ public class MR3CellMaker {
 
     public AttributeMap getLiteralMap(Rectangle2D rectangle, Color cellColor) {
         AttributeMap literalMap = getResourceMap(rectangle, cellColor);
-        GraphConstants.setAutoSize(literalMap, false);
         return literalMap;
     }
 

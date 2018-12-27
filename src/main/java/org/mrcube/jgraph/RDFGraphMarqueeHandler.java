@@ -270,7 +270,6 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
                     overlay(g);
                     port = newPort;
                     g.setColor(bg);
-                    g.setXORMode(fg);
                     overlay(g);
                 }
             }

@@ -1094,10 +1094,8 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
 
             if (autoSizeButton.isSelected()) {
                 userPrefs.put(PrefConstants.NODE_SIZE, PrefConstants.NODE_SIZE_AUTO);
-                gmanager.setAutoSize(true);
             } else {
                 userPrefs.put(PrefConstants.NODE_SIZE, PrefConstants.NODE_SIZE_FIX);
-                gmanager.setAutoSize(false);
             }
             userPrefs.put(PrefConstants.NODE_WIDTH, nodeWidthSpinner.getValue().toString());
             MR3CellMaker.CELL_WIDTH = Integer.parseInt(nodeWidthSpinner.getValue().toString());

@@ -436,20 +436,6 @@ public class GraphManager {
         clearSelection();
     }
 
-    public void setAutoSize(boolean t) {
-        for (Object p : desktopTabbedPane.getComponents()) {
-            if (p instanceof MR3Project) {
-                MR3Project mr3Project = (MR3Project) p;
-                RDFGraph rdfGraph = (RDFGraph) mr3Project.getRDFEditor().getGraph();
-                rdfGraph.setAutoSize(t);
-                RDFGraph classGraph = (RDFGraph) mr3Project.getClassEditor().getGraph();
-                classGraph.setAutoSize(t);
-                RDFGraph propertyGraph = (RDFGraph) mr3Project.getPropertyEditor().getGraph();
-                propertyGraph.setAutoSize(t);
-            }
-        }
-    }
-
     public void removeTypeCells() {
         Object[] rdfCells = getCurrentRDFGraph().getAllCells();
         List<GraphCell> typeCellList = new ArrayList<>();
@@ -643,7 +629,7 @@ public class GraphManager {
         AttributeMap map = cell.getAttributes();
         GraphConstants.setValue(map, value);
         if (isAutoNodeSize()) {
-            Dimension dim = null;
+            Dimension dim;
             if (RDFGraph.isRDFLiteralCell(cell)) {
                 dim = GraphUtilities.getAutoLiteralNodeDimention(this, value);
             } else if (RDFGraph.isRDFResourceCell(cell)) {
