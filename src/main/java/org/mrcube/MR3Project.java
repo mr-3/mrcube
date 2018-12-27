@@ -36,6 +36,7 @@ import org.mrcube.views.TabComponent;
 
 import javax.swing.*;
 import java.awt.*;
+import java.beans.PropertyVetoException;
 import java.io.File;
 
 /**
@@ -95,6 +96,7 @@ public class MR3Project extends JPanel {
         editorFrame.setFrameIcon(imageIcon);
         editorFrame.setTitle(title);
         editorFrame.setResizable(true);
+        editorFrame.setMaximizable(true);
         editorFrame.setIconifiable(true);
         editorFrame.setVisible(true);
         return editorFrame;
@@ -117,6 +119,13 @@ public class MR3Project extends JPanel {
     public void deployCPR() {
         int rootWindowWidth = getRootPane().getWidth();
         int rootWindowHeight = getRootPane().getHeight();
+        try {
+            classEditorFrame.setIcon(false);
+            propertyEditorFrame.setIcon(false);
+            rdfEditorFrame.setIcon(false);
+        } catch (PropertyVetoException e) {
+            e.printStackTrace();
+        }
         classEditorFrame.setSize(rootWindowWidth / 2, rootWindowHeight / 2);
         classEditorFrame.setLocation(new Point(0, 0));
         propertyEditorFrame.setSize(rootWindowWidth / 2, rootWindowHeight / 2);
@@ -128,6 +137,12 @@ public class MR3Project extends JPanel {
     public void deployCR() {
         int rootWindowWidth = getRootPane().getWidth();
         int rootWindowHeight = getRootPane().getHeight();
+        try {
+            classEditorFrame.setIcon(false);
+            rdfEditorFrame.setIcon(false);
+        } catch (PropertyVetoException e) {
+            e.printStackTrace();
+        }
         classEditorFrame.setSize(rootWindowWidth, rootWindowHeight / 2);
         classEditorFrame.setLocation(new Point(0, 0));
         rdfEditorFrame.setSize(rootWindowWidth, rootWindowHeight / 2);
@@ -138,6 +153,12 @@ public class MR3Project extends JPanel {
     public void deployPR() {
         int rootWindowWidth = getRootPane().getWidth();
         int rootWindowHeight = getRootPane().getHeight();
+        try {
+            propertyEditorFrame.setIcon(false);
+            rdfEditorFrame.setIcon(false);
+        } catch (PropertyVetoException e) {
+            e.printStackTrace();
+        }
         propertyEditorFrame.setSize(rootWindowWidth, rootWindowHeight / 2);
         propertyEditorFrame.setLocation(new Point(0, 0));
         rdfEditorFrame.setSize(rootWindowWidth, rootWindowHeight / 2);
