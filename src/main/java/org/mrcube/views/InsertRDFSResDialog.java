@@ -51,7 +51,7 @@ public class InsertRDFSResDialog extends JDialog {
     private GraphManager gmanager;
 
     private static final int FIELD_WIDTH = 300;
-    private static final int FIELD_HEIGHT = 20;
+    private static final int FIELD_HEIGHT = 30;
 
     public InsertRDFSResDialog(GraphManager gm) {
         super(gm.getRootFrame(), true);

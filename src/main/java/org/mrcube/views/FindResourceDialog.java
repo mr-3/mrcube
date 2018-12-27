@@ -70,10 +70,10 @@ public class FindResourceDialog extends JDialog {
     private static Object[] NULL = new Object[0];
 
     private static final int BOX_WIDTH = 100;
-    private static final int BOX_HEIGHT = 20;
+    private static final int BOX_HEIGHT = 30;
     private static final int LIST_WIDTH = 300;
     private static final int LIST_HEIGHT = 120;
-    private static final int FIELD_HEIGHT = 20;
+    private static final int FIELD_HEIGHT = 30;
 
     public FindResourceDialog(GraphManager gm) {
         super(gm.getRootFrame(), Translator.getString("FindResourceDialog.Title"), false);

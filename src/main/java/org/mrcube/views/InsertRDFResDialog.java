@@ -56,7 +56,7 @@ public class InsertRDFResDialog extends JDialog implements ItemListener {
     private GraphManager gmanager;
 
     private static final int FIELD_WIDTH = 300;
-    private static final int FIELD_HEIGHT = 20;
+    private static final int FIELD_HEIGHT = 30;
 
     public InsertRDFResDialog(GraphManager gm) {
         super(gm.getRootFrame(), Translator.getString("InsertResourceDialog.Title"), true);
@@ -73,8 +73,7 @@ public class InsertRDFResDialog extends JDialog implements ItemListener {
         resTypeBoxP.setBorder(BorderFactory.createTitledBorder(Translator.getString("ResourceType")));
 
         uriField = new JTextField();
-        JComponent uriFieldP = Utilities.createTitledPanel(uriField, Translator.getString("RDFResource"), FIELD_WIDTH,
-                FIELD_HEIGHT);
+        JComponent uriFieldP = Utilities.createTitledPanel(uriField, Translator.getString("RDFResource"), FIELD_WIDTH, FIELD_HEIGHT);
 
         isAnonBox = new JCheckBox(Translator.getString("IsBlank"));
         isAnonBox.addActionListener(new IsAnonAction());

@@ -959,7 +959,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
     }
 
     private static final int BUTTON_WIDTH = 200;
-    private static final int BUTTON_HEIGHT = 25;
+    private static final int BUTTON_HEIGHT = 30;
 
     class LayoutPanel extends JPanel {
 
@@ -1045,7 +1045,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             propertyLayoutDirectionBox = new JComboBox(directionList);
 
             JPanel mainPanel = new JPanel();
-            mainPanel.setPreferredSize(new Dimension(400, 250));
+            mainPanel.setPreferredSize(new Dimension(400, 350));
             mainPanel.setLayout(new GridLayout(3, 1));
             mainPanel.add(getLayoutDirectionPanel());
             mainPanel.add(getLayoutSpacePanel());
@@ -1423,7 +1423,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
     }
 
     private static final int PREFIX_BOX_WIDTH = 120;
-    private static final int PREFIX_BOX_HEIGHT = 20;
+    private static final int PREFIX_BOX_HEIGHT = 30;
 
     private void setText(JTextComponent jtc, String text) {
         jtc.setText(text);

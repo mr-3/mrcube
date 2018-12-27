@@ -46,6 +46,7 @@ import org.mrcube.views.*;
 import org.mrcube.views.FindResourceDialog.FindActionType;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
@@ -801,6 +802,7 @@ public class MR3 extends JFrame implements ChangeListener {
         JenaSystem.init();
         userPrefs = Preferences.userNodeForPackage(cls);
         Translator.loadResourceBundle(userPrefs);
+        UIManager.put("TitledBorder.border", new LineBorder(new Color(200, 200, 200), 1));
         try {
             try {
                 for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {

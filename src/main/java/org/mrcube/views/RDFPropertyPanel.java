@@ -80,7 +80,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 	private EditRDFPropertyAction editRDFPropertyAction;
 
 	private static final int FIELD_WIDTH = 80;
-	private static final int FIELD_HEIGHT = 20;
+	private static final int FIELD_HEIGHT = 30;
 
 	public RDFPropertyPanel(GraphManager manager) {
 		gmanager = manager;

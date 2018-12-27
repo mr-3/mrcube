@@ -42,7 +42,6 @@ MR<sup>3</sup>はフリーソフトウェアです．Free Software Foundation �
 * [Drawing Graphs with VGJ](http://www.eng.auburn.edu/department/cse/research/graph_drawing/graph_drawing.html)([License](http://www.eng.auburn.edu/department/cse/research/graph_drawing/COPYING))
 * [JFontChooser](http://jfontchooser.sourceforge.jp/)([License](http://sourceforge.jp/softwaremap/trove_list.php?form_cat=188))
 * [Silk Icons](http://www.famfamfam.com)([License](http://creativecommons.org/licenses/by/2.5/))
-* [exewrap](http://exewrap.sourceforge.jp/)([License](http://exewrap.sourceforge.jp/#license))
 
 ## プロジェクトメンバー
 * 森田 武史 (慶應義塾大学 理工学部)

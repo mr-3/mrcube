@@ -41,7 +41,6 @@ MR<sup>3</sup> uses the following libraries.
 * [Drawing Graphs with VGJ](http://www.eng.auburn.edu/department/cse/research/graph_drawing/graph_drawing.html)([License](http://www.eng.auburn.edu/department/cse/research/graph_drawing/COPYING))
 * [JFontChooser](http://jfontchooser.sourceforge.jp/)([License](http://sourceforge.jp/softwaremap/trove_list.php?form_cat=188))
 * [Silk Icons](http://www.famfamfam.com)([License](http://creativecommons.org/licenses/by/2.5/))
-* [exewrap](http://exewrap.sourceforge.jp/)([License](http://exewrap.sourceforge.jp/#license))
 
 ## Project Member
 * Takeshi Morita (Faculty of Science and Technology, Keio University, Japan)
