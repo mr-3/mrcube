@@ -38,7 +38,6 @@ MR<sup>3</sup> uses the following libraries.
 
 * [JGraph and JGraphAddons](http://www.jgraph.com/)([License](https://github.com/jgraph/legacy-jgraph5/blob/master/LICENSE)]
 * [Apache Jena](https://jena.apache.org/)([License](http://www.apache.org/licenses/LICENSE-2.0))
-* [InfoNode Docking Windows](http://www.infonode.net/index.html?idw)([License](http://www.infonode.net/index.html?idwlicense))
 * [Drawing Graphs with VGJ](http://www.eng.auburn.edu/department/cse/research/graph_drawing/graph_drawing.html)([License](http://www.eng.auburn.edu/department/cse/research/graph_drawing/COPYING))
 * [JFontChooser](http://jfontchooser.sourceforge.jp/)([License](http://sourceforge.jp/softwaremap/trove_list.php?form_cat=188))
 * [Silk Icons](http://www.famfamfam.com)([License](http://creativecommons.org/licenses/by/2.5/))
