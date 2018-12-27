@@ -1,6 +1,6 @@
 /*
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
- * Project Website: http://mr3.sourceforge.net/
+ * Project Website: http://mrcube.org/
  *
  * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
  *
@@ -40,7 +40,7 @@ import java.util.Set;
  *
  * @author Takeshi Morita
  */
-public abstract class RDFSInfo extends ResourceInfo implements Serializable {
+public abstract class RDFSModel extends ResourceModel implements Serializable {
 
     protected transient String uri;
     protected transient String metaClass;
@@ -50,10 +50,10 @@ public abstract class RDFSInfo extends ResourceInfo implements Serializable {
 
     private static final long serialVersionUID = -2970145279588775430L;
 
-    RDFSInfo() {
+    RDFSModel() {
     }
 
-    RDFSInfo(String uri) {
+    RDFSModel(String uri) {
         this.uri = uri;
         superRDFS = new HashSet<>();
         labelList = new ArrayList<>();
@@ -61,7 +61,7 @@ public abstract class RDFSInfo extends ResourceInfo implements Serializable {
         model = ModelFactory.createDefaultModel();
     }
 
-    RDFSInfo(RDFSInfo info) {
+    RDFSModel(RDFSModel info) {
         uri = info.getURIStr();
         metaClass = info.getMetaClass();
         superRDFS = new HashSet<>();
@@ -79,12 +79,12 @@ public abstract class RDFSInfo extends ResourceInfo implements Serializable {
         if (o instanceof String) { // completeediting用
             return o.equals(uri);
         }
-        RDFSInfo info = (RDFSInfo) o;
+        RDFSModel info = (RDFSModel) o;
         return info.getURIStr().equals(uri);
     }
 
-    public boolean isSameInfo(RDFSInfo rdfsInfo) {
-        return rdfsInfo.getURIStr().equals(uri) && rdfsInfo.getMetaClass().equals(metaClass);
+    public boolean isSameInfo(RDFSModel rdfsModel) {
+        return rdfsModel.getURIStr().equals(uri) && rdfsModel.getMetaClass().equals(metaClass);
     }
 
     public void addStatement(Statement stmt) {

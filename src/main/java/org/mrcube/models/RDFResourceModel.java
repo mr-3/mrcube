@@ -37,7 +37,7 @@ import org.mrcube.utils.GraphUtilities;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class RDFResourceInfo extends ResourceInfo implements Serializable {
+public class RDFResourceModel extends ResourceModel implements Serializable {
 
     private GraphCell typeCell;
     // private Set typeCells; // RDFリソースのタイプを複数保持する．
@@ -50,14 +50,14 @@ public class RDFResourceInfo extends ResourceInfo implements Serializable {
     // 実験用
     private Resource typeRes;
 
-    public RDFResourceInfo(MR3Constants.URIType type, String uri) {
+    public RDFResourceModel(MR3Constants.URIType type, String uri) {
         setURIType(type);
         this.uri = uri;
-        labelList = new ArrayList<MR3Literal>();
-        commentList = new ArrayList<MR3Literal>();
+        labelList = new ArrayList<>();
+        commentList = new ArrayList<>();
     }
 
-    public RDFResourceInfo(RDFResourceInfo info) {
+    public RDFResourceModel(RDFResourceModel info) {
         setURIType(info.getURIType());
         if (info.getURIType() == MR3Constants.URIType.ANONYMOUS) {
             uri = ResourceFactory.createResource().toString();
@@ -65,14 +65,14 @@ public class RDFResourceInfo extends ResourceInfo implements Serializable {
             uri = info.getURIStr();
         }
         typeCell = info.getTypeCell();
-        labelList = new ArrayList<MR3Literal>(info.getLabelList());
-        commentList = new ArrayList<MR3Literal>(info.getCommentList());
+        labelList = new ArrayList<>(info.getLabelList());
+        commentList = new ArrayList<>(info.getCommentList());
     }
 
-    public RDFSInfo getTypeInfo() {
+    public RDFSModel getTypeInfo() {
         if (MR3.OFF_META_MODEL_MANAGEMENT) {
             if (typeRes != null) {
-                ClassInfo tmpInfo = new ClassInfo("");
+                ClassModel tmpInfo = new ClassModel("");
                 tmpInfo.setURI(typeRes.getURI());
                 return tmpInfo;
             }
@@ -82,28 +82,28 @@ public class RDFResourceInfo extends ResourceInfo implements Serializable {
         if (typeCell == null) {
             return NULL_INFO;
         }
-        return (RDFSInfo) GraphConstants.getValue(typeCell.getAttributes());
+        return (RDFSModel) GraphConstants.getValue(typeCell.getAttributes());
     }
 
     public boolean equals(Object o) {
         if (o instanceof String) {
             return o.equals(uri);
         }
-        RDFResourceInfo info = (RDFResourceInfo) o;
+        RDFResourceModel info = (RDFResourceModel) o;
         return info.getURIStr().equals(uri);
     }
 
-    public boolean isSameInfo(RDFResourceInfo resInfo) {
+    public boolean isSameInfo(RDFResourceModel resInfo) {
         return resInfo.getURIType().equals(uriType) && resInfo.getURIStr().equals(uri)
                 && resInfo.getType().equals(getType());
     }
 
-    private static final ClassInfo NULL_INFO = new ClassInfo("");
+    private static final ClassModel NULL_INFO = new ClassModel("");
 
     public void setTypeCell(GraphCell cell, RDFGraph graph) {
         if (MR3.OFF_META_MODEL_MANAGEMENT) {
             if (cell != null) {
-                RDFSInfo info = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
+                RDFSModel info = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
                 typeRes = info.getURI();
             } else {
                 typeRes = null;

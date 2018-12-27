@@ -25,7 +25,6 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.io.*;
@@ -134,7 +133,7 @@ public class MR3LogConsole extends JDialog {
      * Initialises the Swing components
      * 
      */
-    private void jbInit() throws Exception {
+    private void jbInit() {
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 this_windowClosing(e);
@@ -319,7 +318,7 @@ public class MR3LogConsole extends JDialog {
         public void println(double d) {
             if (showOrig) orig.println(d);
 
-            target.append(Double.toString(d) + "\n");
+            target.append(d + "\n");
             target.setCaretPosition(target.getText().length());
         }
 
@@ -340,7 +339,7 @@ public class MR3LogConsole extends JDialog {
         public void println(float f) {
             if (showOrig) orig.println(f);
 
-            target.append(Float.toString(f) + "\n");
+            target.append(f + "\n");
             target.setCaretPosition(target.getText().length());
         }
 
@@ -361,7 +360,7 @@ public class MR3LogConsole extends JDialog {
         public void println(int i) {
             if (showOrig) orig.println(i);
 
-            target.append(Integer.toString(i) + "\n");
+            target.append(i + "\n");
             target.setCaretPosition(target.getText().length());
         }
 
@@ -382,7 +381,7 @@ public class MR3LogConsole extends JDialog {
         public void println(long l) {
             if (showOrig) orig.println(l);
 
-            target.append(Long.toString(l) + "\n");
+            target.append(l + "\n");
             target.setCaretPosition(target.getText().length());
         }
 
@@ -442,7 +441,7 @@ public class MR3LogConsole extends JDialog {
         public void println() {
             if (showOrig) orig.println();
 
-            target.append(new String("\n"));
+            target.append("\n");
             target.setCaretPosition(target.getText().length());
         }
     }
@@ -464,7 +463,7 @@ public class MR3LogConsole extends JDialog {
      * Shows the popup menu for the System.out textarea
      */
     void stdoutText_mouseClicked(MouseEvent e) {
-        if (e.getModifiers() == MouseEvent.META_MASK) {
+        if (e.getModifiersEx() == MouseEvent.META_DOWN_MASK) {
             popup.setTextArea(stdoutText);
             popup.show(this.stdoutText, e.getX(), e.getY());
         }
@@ -475,7 +474,7 @@ public class MR3LogConsole extends JDialog {
      * Shows the popup menu for the System.err textarea
      */
     void stderrText_mouseClicked(MouseEvent e) {
-        if (e.getModifiers() == MouseEvent.META_MASK) {
+        if (e.getModifiersEx() == MouseEvent.META_DOWN_MASK) {
             popup.setTextArea(stderrText);
             popup.show(this.stderrText, e.getX(), e.getY());
         }
@@ -573,16 +572,8 @@ class InternalPopupMenu extends JPopupMenu {
         this.addSeparator();
         this.add(jMenuItemSaveToFile);
 
-        jMenuItemClearWindow.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                clearWindow();
-            }
-        });
-        jMenuItemSaveToFile.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                saveWindowToFile();
-            }
-        });
+        jMenuItemClearWindow.addActionListener(e -> clearWindow());
+        jMenuItemSaveToFile.addActionListener(e -> saveWindowToFile());
         // jMenuItemSaveToFile.setEnabled(false);//.disable();
     }
 

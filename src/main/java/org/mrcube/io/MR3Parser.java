@@ -58,7 +58,7 @@ public class MR3Parser {
 		cellMaker = new MR3CellMaker(gmanager);
 	}
 
-	private Set<RDFSInfo> duplicateSubInfo;
+	private Set<RDFSModel> duplicateSubInfo;
 
 	public void createClassGraph(Map<RDFNode, GraphLayoutData> cellLayoutMap) {
 		duplicateSubInfo = new HashSet<>();
@@ -68,11 +68,11 @@ public class MR3Parser {
 				cellLayoutMap);
 		Port rootPort = (Port) rootCell.getChildAt(0);
 
-		RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-		ClassInfo rootInfo = (ClassInfo) rdfsInfoMap.getResourceInfo(RDFS.Resource);
+		RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+		ClassModel rootInfo = (ClassModel) rdfsModelMap.getResourceInfo(RDFS.Resource);
 		if (rootInfo != null) {
 			GraphConstants.setValue(rootCell.getAttributes(), rootInfo);
-			rdfsInfoMap.putURICellMap(rootInfo, rootCell);
+			rdfsModelMap.putURICellMap(rootInfo, rootCell);
 			rootInfo.setURI(RDFS.Resource.getURI());
 			if (rootInfo.getRDFSSubList().size() > 0) {
 				createRDFSGraph(graph.getGraphLayoutCache(), rootInfo, rootCell, rootPort,
@@ -82,8 +82,8 @@ public class MR3Parser {
 	}
 
 	public void createPropertyGraph(Map<RDFNode, GraphLayoutData> cellLayoutMap) {
-		RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-		duplicateSubInfo = new HashSet<RDFSInfo>();
+		RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+		duplicateSubInfo = new HashSet<>();
 		RDFGraph graph = gmanager.getCurrentPropertyGraph();
 		graph.removeEdges();
 
@@ -91,20 +91,20 @@ public class MR3Parser {
 				MR3Resource.Property, cellLayoutMap);
 		Port rootPort = (Port) rootCell.getChildAt(0);
 
-		Map<Object, AttributeMap> attributes = new HashMap<Object, AttributeMap>();
-		for (Resource property : rdfsInfoMap.getRootProperties()) {
+		Map<Object, AttributeMap> attributes = new HashMap<>();
+		for (Resource property : rdfsModelMap.getRootProperties()) {
 
 			// _1.._numは ， グラフに描画しない
 			if (property.getURI().matches(RDF.getURI() + "_\\d*")) {
 				continue;
 			}
 
-			PropertyInfo info = (PropertyInfo) rdfsInfoMap.getResourceInfo(property);
+			PropertyModel info = (PropertyModel) rdfsModelMap.getResourceInfo(property);
 			DefaultGraphCell pCell = (DefaultGraphCell) gmanager.getPropertyCell(property,
 					cellLayoutMap);
 			Port pPort = (Port) pCell.getChildAt(0);
 			GraphConstants.setValue(pCell.getAttributes(), info);
-			rdfsInfoMap.putURICellMap(info, pCell);
+			rdfsModelMap.putURICellMap(info, pCell);
 
 			Edge edge = getEdge(attributes, null);
 			ConnectionSet cs = new ConnectionSet(edge, pPort, rootPort);
@@ -119,23 +119,23 @@ public class MR3Parser {
 	/**
 	 * graphModel -> class or property
 	 */
-	private void createRDFSGraph(GraphLayoutCache graphLayoutCache, RDFSInfo supInfo,
+	private void createRDFSGraph(GraphLayoutCache graphLayoutCache, RDFSModel supInfo,
 			GraphCell supCell, Port supPort, Map<RDFNode, GraphLayoutData> cellLayoutMap) {
-		Map<Object, AttributeMap> attributes = new HashMap<Object, AttributeMap>();
-		RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
+		Map<Object, AttributeMap> attributes = new HashMap<>();
+		RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
 		for (Resource subRes : supInfo.getRDFSSubList()) {
-			RDFSInfo subInfo = rdfsInfoMap.getResourceInfo(subRes);
+			RDFSModel subInfo = rdfsModelMap.getResourceInfo(subRes);
 
 			DefaultGraphCell subCell = null;
-			if (supInfo instanceof ClassInfo) {
+			if (supInfo instanceof ClassModel) {
 				subCell = (DefaultGraphCell) gmanager.getClassCell(subRes, cellLayoutMap);
-			} else if (subInfo instanceof PropertyInfo) {
+			} else if (subInfo instanceof PropertyModel) {
 				subCell = (DefaultGraphCell) gmanager.getPropertyCell(subRes, cellLayoutMap);
 			}
 
 			Port subPort = (Port) subCell.getChildAt(0);
 			GraphConstants.setValue(subCell.getAttributes(), subInfo);
-			rdfsInfoMap.putURICellMap(subInfo, subCell);
+			rdfsModelMap.putURICellMap(subInfo, subCell);
 			subInfo.addSupRDFS(supCell);
 
 			Edge edge = getEdge(attributes, null);
@@ -161,24 +161,24 @@ public class MR3Parser {
 			attributes.put(edge, edgeMap);
 			return edge;
 		}
-		RDFSInfo rdfsInfo = null;
+		RDFSModel rdfsModel = null;
 		if (predicate.equals(MR3Resource.Nil)) {
-			rdfsInfo = new PropertyInfo(MR3Resource.Nil.getURI());
+			rdfsModel = new PropertyModel(MR3Resource.Nil.getURI());
 		} else {
 			GraphCell propertyCell = gmanager.getPropertyCell(predicate, false);
 			if (propertyCell != null) {
-				rdfsInfo = (RDFSInfo) GraphConstants.getValue(propertyCell.getAttributes());
+				rdfsModel = (RDFSModel) GraphConstants.getValue(propertyCell.getAttributes());
 			}
 		}
-		DefaultEdge edge = new RDFPropertyCell(rdfsInfo);
-		AttributeMap edgeMap = cellMaker.getEdgeMap(rdfsInfo, edge);
+		DefaultEdge edge = new RDFPropertyCell(rdfsModel);
+		AttributeMap edgeMap = cellMaker.getEdgeMap(rdfsModel, edge);
 		attributes.put(edge, edgeMap);
 
 		return edge;
 	}
 
 	private boolean isExtractProperty(GraphCell subjectCell, Property predicate, RDFNode object) {
-		RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(subjectCell
+		RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(subjectCell
 				.getAttributes());
 		if (predicate.equals(RDF.type)) {
 			GraphCell cell = gmanager.getClassCell((Resource) object, false);
@@ -197,11 +197,11 @@ public class MR3Parser {
 
 	private DefaultGraphCell createResourceCell(Resource uri, Map<Object, DefaultGraphCell> resMap,
 			Map<Object, AttributeMap> attr, GraphLayoutData data) {
-		RDFResourceInfo resInfo = null;
+		RDFResourceModel resInfo = null;
 		if (uri.isAnon()) {
-			resInfo = new RDFResourceInfo(URIType.ANONYMOUS, uri.getId().toString());
+			resInfo = new RDFResourceModel(URIType.ANONYMOUS, uri.getId().toString());
 		} else {
-			resInfo = new RDFResourceInfo(URIType.URI, uri.toString());
+			resInfo = new RDFResourceModel(URIType.URI, uri.toString());
 		}
 
 		DefaultGraphCell resCell = new RDFResourceCell(resInfo);
@@ -266,7 +266,7 @@ public class MR3Parser {
 			Statement stmt = i.nextStatement();
 			if (stmt.getPredicate().equals(RDFS.label)) {
 				GraphCell cell = (GraphCell) gmanager.getRDFResourceCell(stmt.getSubject());
-				ResourceInfo info = (ResourceInfo) GraphConstants.getValue(cell.getAttributes());
+				ResourceModel info = (ResourceModel) GraphConstants.getValue(cell.getAttributes());
 				if (info == null) {
 					// ラベルまたは，コメント以外の関係をもたないリソースがくる．
 					// 無視している
@@ -275,7 +275,7 @@ public class MR3Parser {
 				info.addLabel(new MR3Literal((Literal) stmt.getObject()));
 			} else if (stmt.getPredicate().equals(RDFS.comment)) {
 				GraphCell cell = (GraphCell) gmanager.getRDFResourceCell(stmt.getSubject());
-				ResourceInfo info = (ResourceInfo) GraphConstants.getValue(cell.getAttributes());
+				ResourceModel info = (ResourceModel) GraphConstants.getValue(cell.getAttributes());
 				if (info == null) {
 					// ラベルまたは，コメント以外の関係をもたないリソースがくる．
 					// 無視している
@@ -287,8 +287,8 @@ public class MR3Parser {
 	}
 
 	public RDFGraph createRDFGraph(Model model, Map<RDFNode, GraphLayoutData> cellLayoutMap) {
-		Map<Object, DefaultGraphCell> resourceMap = new HashMap<Object, DefaultGraphCell>();
-		Map<Object, AttributeMap> attributes = new HashMap<Object, AttributeMap>();
+		Map<Object, DefaultGraphCell> resourceMap = new HashMap<>();
+		Map<Object, AttributeMap> attributes = new HashMap<>();
 		RDFGraph graph = new RDFGraph(gmanager, new RDFGraphModel(), null);
 		GraphLayoutCache graphLayoutCache = graph.getGraphLayoutCache();
 

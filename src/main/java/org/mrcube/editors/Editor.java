@@ -36,8 +36,8 @@ import org.mrcube.jgraph.RDFGraph;
 import org.mrcube.jgraph.RDFGraphMarqueeHandler;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.MR3Constants.HistoryType;
-import org.mrcube.models.RDFSInfo;
-import org.mrcube.models.RDFSInfoMap;
+import org.mrcube.models.RDFSModel;
+import org.mrcube.models.RDFSModelMap;
 import org.mrcube.utils.MR3CellMaker;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
@@ -79,7 +79,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		int up = -1;
 		int down = 1;
-		if (e.getModifiers() == MouseWheelEvent.CTRL_MASK) {
+		if (e.getModifiersEx() == MouseWheelEvent.CTRL_DOWN_MASK) {
 			if (e.getWheelRotation() == up) {
 				graph.setScale(1.05 * graph.getScale());
 			} else if (e.getWheelRotation() == down) {
@@ -234,13 +234,11 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
 			if (graph.getType() == GraphType.RDF) {
 				toolbar.addSeparator();
 				editModeButton.setIcon(Utilities.getImageIcon("link.png"));
-				editModeButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						if (editModeButton.isSelected()) {
-							editModeButton.setIcon(Utilities.getImageIcon("link_break.png"));
-						} else {
-							editModeButton.setIcon(Utilities.getImageIcon("link.png"));
-						}
+				editModeButton.addActionListener(e -> {
+					if (editModeButton.isSelected()) {
+						editModeButton.setIcon(Utilities.getImageIcon("link_break.png"));
+					} else {
+						editModeButton.setIcon(Utilities.getImageIcon("link.png"));
 					}
 				});
 				toolbar.add(editModeButton);
@@ -324,26 +322,26 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
 		if (graph.getType() == GraphType.RDF) {
 			return;
 		}
-		RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
+		RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
 		Object[] newAllCells = graph.getAllCells();
-		Set<GraphCell> newRDFSCellSet = new HashSet<GraphCell>();
-		for (int i = 0; i < newAllCells.length; i++) { // undo/redo前よりもセル数が増えた場合
-			GraphCell cell = (GraphCell) newAllCells[i];
+		Set<GraphCell> newRDFSCellSet = new HashSet<>();
+		for (Object newAllCell : newAllCells) { // undo/redo前よりもセル数が増えた場合
+			GraphCell cell = (GraphCell) newAllCell;
 			if (RDFGraph.isRDFSCell(cell)) {
 				newRDFSCellSet.add(cell);
-				RDFSInfo info = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
-				if (graph.getType() == GraphType.CLASS && !rdfsInfoMap.isClassCell(info.getURI())) {
-					rdfsInfoMap.putURICellMap(info, cell);
+				RDFSModel info = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
+				if (graph.getType() == GraphType.CLASS && !rdfsModelMap.isClassCell(info.getURI())) {
+					rdfsModelMap.putURICellMap(info, cell);
 				} else if (graph.getType() == GraphType.PROPERTY
-						&& !rdfsInfoMap.isPropertyCell(info.getURI())) {
-					rdfsInfoMap.putURICellMap(info, cell);
+						&& !rdfsModelMap.isPropertyCell(info.getURI())) {
+					rdfsModelMap.putURICellMap(info, cell);
 				}
 			}
 		}
-		for (int i = 0; i < orgAllCells.length; i++) { // undo/redo前よりもセル数が減った場合
-			GraphCell cell = (GraphCell) orgAllCells[i];
+		for (Object orgAllCell : orgAllCells) { // undo/redo前よりもセル数が減った場合
+			GraphCell cell = (GraphCell) orgAllCell;
 			if (RDFGraph.isRDFSCell(cell) && !newRDFSCellSet.contains(cell)) {
-				rdfsInfoMap.removeCellInfo(cell);
+				rdfsModelMap.removeCellInfo(cell);
 			}
 		}
 	}

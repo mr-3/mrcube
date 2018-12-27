@@ -58,7 +58,7 @@ public class PasteAction extends AbstractAction {
 		graph = g;
 		gmanager = gm;
 		putValue(SHORT_DESCRIPTION, TITLE);
-		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_MASK));
+		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_DOWN_MASK));
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -66,10 +66,10 @@ public class PasteAction extends AbstractAction {
 				new ActionEvent(graph, e.getID(), e.getActionCommand()));
 		Object[] copyCells = graph.getCopyCells();
 
-		Set<GraphCell> pasteGraphCellSet = new HashSet<GraphCell>();
-		Set<GraphCell> removeGraphCellSet = new HashSet<GraphCell>();
-		for (int i = 0; i < copyCells.length; i++) {
-			GraphCell cell = (GraphCell) copyCells[i];
+		Set<GraphCell> pasteGraphCellSet = new HashSet<>();
+		Set<GraphCell> removeGraphCellSet = new HashSet<>();
+		for (Object copyCell : copyCells) {
+			GraphCell cell = (GraphCell) copyCell;
 			if (graph.getType() == GraphType.CLASS && RDFGraph.isRDFSClassCell(cell)) {
 				pasteGraphCellSet.add(cell);
 				cloneRDFSClassCell(cell);
@@ -126,7 +126,7 @@ public class PasteAction extends AbstractAction {
 	 * @param cell
 	 */
 	private void cloneRDFResourceCell(GraphCell cell) {
-		RDFResourceInfo orgInfo = (RDFResourceInfo) GraphConstants.getValue(cell.getAttributes());
+		RDFResourceModel orgInfo = (RDFResourceModel) GraphConstants.getValue(cell.getAttributes());
 
 		Object typeViewCell = orgInfo.getTypeViewCell();
 		if (typeViewCell != null) {
@@ -134,16 +134,16 @@ public class PasteAction extends AbstractAction {
 			Map clones = graph.cloneCells(new Object[] { typeViewCell });
 			typeViewCell = clones.get(typeViewCell);
 		}
-		RDFResourceInfo newInfo = new RDFResourceInfo(orgInfo);
+		RDFResourceModel newInfo = new RDFResourceModel(orgInfo);
 		newInfo.setTypeViewCell((GraphCell) typeViewCell);
 		newInfo.setURI(cloneRDFURI(newInfo));
 		GraphConstants.setValue(cell.getAttributes(), newInfo);
 		graph.getGraphLayoutCache().editCell(cell, cell.getAttributes());
 	}
 
-	private void cloneRDFSCell(GraphCell cell, RDFSInfo newInfo) {
-		RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-		rdfsInfoMap.putURICellMap(newInfo, cell);
+	private void cloneRDFSCell(GraphCell cell, RDFSModel newInfo) {
+		RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+		rdfsModelMap.putURICellMap(newInfo, cell);
 		GraphConstants.setValue(cell.getAttributes(), newInfo);
 		graph.getGraphLayoutCache().editCell(cell, cell.getAttributes());
 	}
@@ -152,8 +152,8 @@ public class PasteAction extends AbstractAction {
 	 * @param cell
 	 */
 	private void cloneRDFSPropertyCell(GraphCell cell) {
-		PropertyInfo orgInfo = (PropertyInfo) GraphConstants.getValue(cell.getAttributes());
-		PropertyInfo newInfo = new PropertyInfo(orgInfo);
+		PropertyModel orgInfo = (PropertyModel) GraphConstants.getValue(cell.getAttributes());
+		PropertyModel newInfo = new PropertyModel(orgInfo);
 		newInfo.setURI(cloneRDFSURI(newInfo, GraphType.PROPERTY));
 		cloneRDFSCell(cell, newInfo);
 	}
@@ -162,13 +162,13 @@ public class PasteAction extends AbstractAction {
 	 * @param cell
 	 */
 	private void cloneRDFSClassCell(GraphCell cell) {
-		ClassInfo orgInfo = (ClassInfo) GraphConstants.getValue(cell.getAttributes());
-		ClassInfo newInfo = new ClassInfo(orgInfo);
+		ClassModel orgInfo = (ClassModel) GraphConstants.getValue(cell.getAttributes());
+		ClassModel newInfo = new ClassModel(orgInfo);
 		newInfo.setURI(cloneRDFSURI(newInfo, GraphType.CLASS));
 		cloneRDFSCell(cell, newInfo);
 	}
 
-	private String cloneRDFSURI(RDFSInfo info, GraphType graphType) {
+	private String cloneRDFSURI(RDFSModel info, GraphType graphType) {
 		if (gmanager.isDuplicated(info.getURIStr(), null, graphType)) {
 			for (int j = 1; true; j++) {
 				String compURI = info.getURIStr() + "-copy" + j;
@@ -183,7 +183,7 @@ public class PasteAction extends AbstractAction {
 	/*
 	 * リソースが重複しないように，-copy番号をローカル名に追加する
 	 */
-	private String cloneRDFURI(RDFResourceInfo info) {
+	private String cloneRDFURI(RDFResourceModel info) {
 		if (gmanager.isDuplicated(info.getURIStr(), null, GraphType.RDF)) {
 			for (int j = 1; true; j++) {
 				String compURI = info.getURIStr() + "-copy" + j;

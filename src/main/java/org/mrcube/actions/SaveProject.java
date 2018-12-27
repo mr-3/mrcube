@@ -1,6 +1,6 @@
 /*
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
- * Project Website: http://mr3.sourceforge.net/
+ * Project Website: http://mrcube.org/
  * 
  * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
  * 
@@ -61,9 +61,9 @@ public class SaveProject extends AbstractActionFile {
     private void setValues(String shortDescription) {
         putValue(SHORT_DESCRIPTION, shortDescription);
         if (shortDescription.equals(SAVE_PROJECT)) {
-            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_MASK));
+            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
         } else if (shortDescription.equals(SAVE_AS_PROJECT)) {
-            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_MASK + KeyEvent.SHIFT_MASK));
+            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK + KeyEvent.SHIFT_DOWN_MASK));
         }
     }
 

@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
  * 
- * Copyright (C) 2003-2015 Yamaguchi Laboratory, Keio University. All rights reserved. 
+ * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
  * 
  * This file is part of MR^3.
  * 
@@ -28,7 +28,7 @@ import org.jgraph.graph.GraphCell;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.models.MR3Constants;
 import org.mrcube.models.MR3Constants.GraphType;
-import org.mrcube.models.PrefixNSInfo;
+import org.mrcube.models.NamespaceModel;
 import org.mrcube.utils.GraphUtilities;
 import org.mrcube.utils.PrefixNSUtil;
 import org.mrcube.utils.Translator;
@@ -41,7 +41,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Map;
@@ -57,7 +56,7 @@ public class FindResourceDialog extends JDialog {
     private JTextField findField;
     private JTextField findLabelField;
     private JTextField findCommentField;
-    private Set<PrefixNSInfo> prefixNSInfoSet;
+    private Set<NamespaceModel> namespaceModelSet;
     private JComboBox uriPrefixBox;
     private JList resourceList;
 
@@ -71,10 +70,10 @@ public class FindResourceDialog extends JDialog {
     private static Object[] NULL = new Object[0];
 
     private static final int BOX_WIDTH = 100;
-    private static final int BOX_HEIGHT = 20;
+    private static final int BOX_HEIGHT = 30;
     private static final int LIST_WIDTH = 300;
     private static final int LIST_HEIGHT = 120;
-    private static final int FIELD_HEIGHT = 20;
+    private static final int FIELD_HEIGHT = 30;
 
     public FindResourceDialog(GraphManager gm) {
         super(gm.getRootFrame(), Translator.getString("FindResourceDialog.Title"), false);
@@ -108,11 +107,7 @@ public class FindResourceDialog extends JDialog {
 
         cancelButton = new JButton(MR3Constants.CANCEL);
         cancelButton.setMnemonic('c');
-        cancelButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-            }
-        });
+        cancelButton.addActionListener(e -> setVisible(false));
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BorderLayout());
         buttonPanel.add(cancelButton, BorderLayout.EAST);
@@ -186,8 +181,8 @@ public class FindResourceDialog extends JDialog {
     }
 
     public void setURIPrefixBox() {
-        prefixNSInfoSet = GraphUtilities.getPrefixNSInfoSet();
-        PrefixNSUtil.setPrefixNSInfoSet(prefixNSInfoSet);
+        namespaceModelSet = GraphUtilities.getNamespaceModelSet();
+        PrefixNSUtil.setNamespaceModelSet(namespaceModelSet);
         uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
         // findField.setText(PrefixNSUtil.getNameSpace((String)
         // uriPrefixBox.getSelectedItem()));
@@ -218,7 +213,7 @@ public class FindResourceDialog extends JDialog {
     }
 
     public Object[] getFindResources(String key, FindActionType type) {
-        Map<String, Object> resourceMap = new TreeMap<String, Object>();
+        Map<String, Object> resourceMap = new TreeMap<>();
         key = resolvePrefix(key);
         if (rdfCheckBox.isSelected()) {
             Set<GraphCell> rdfCellSet = null;
@@ -252,7 +247,7 @@ public class FindResourceDialog extends JDialog {
         String prefix = tokens[0];
         String id = tokens[1];
         if (prefix.equals("http")) { return key; }
-        for (PrefixNSInfo info : prefixNSInfoSet) {
+        for (NamespaceModel info : namespaceModelSet) {
             if (info.getPrefix().equals(prefix)) { return info.getNameSpace() + id; }
         }
         return key;

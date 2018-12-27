@@ -1,8 +1,8 @@
 /*
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
- * Project Website: http://mr3.sourceforge.net/
+ * Project Website: http://mrcube.org/
  * 
- * Copyright (C) 2003-2015 Yamaguchi Laboratory, Keio University. All rights reserved. 
+ * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
  * 
  * This file is part of MR^3.
  * 
@@ -110,7 +110,7 @@ public class InsertRDFLiteralDialog extends JDialog implements ActionListener {
         getContentPane().add(mainPanel, BorderLayout.CENTER);
         getContentPane().add(Utilities.createEastPanel(buttonPanel), BorderLayout.SOUTH);
 
-        Component order[] = new Component[] { langField, typeBox, isTypedLiteralBox, literalValueArea, confirmButton,
+        Component[] order = new Component[]{langField, typeBox, isTypedLiteralBox, literalValueArea, confirmButton,
                 cancelButton};
         setFocusTraversalPolicy(Utilities.getMyFocusTraversalPolicy(order, 3));
 
@@ -134,7 +134,7 @@ public class InsertRDFLiteralDialog extends JDialog implements ActionListener {
         typeBox.setEnabled(false);
         isTypedLiteralBox.setSelected(false);
         DefaultComboBoxModel model = new DefaultComboBoxModel();
-        Set<String> sortedSet = new TreeSet<String>();
+        Set<String> sortedSet = new TreeSet<>();
         for (Iterator i = typeMapper.listTypes(); i.hasNext();) {
             sortedSet.add(((RDFDatatype) i.next()).getURI());
         }

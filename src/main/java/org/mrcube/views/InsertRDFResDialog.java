@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
  * 
- * Copyright (C) 2003-2015 Yamaguchi Laboratory, Keio University. All rights reserved. 
+ * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
  * 
  * This file is part of MR^3.
  * 
@@ -56,7 +56,7 @@ public class InsertRDFResDialog extends JDialog implements ItemListener {
     private GraphManager gmanager;
 
     private static final int FIELD_WIDTH = 300;
-    private static final int FIELD_HEIGHT = 20;
+    private static final int FIELD_HEIGHT = 30;
 
     public InsertRDFResDialog(GraphManager gm) {
         super(gm.getRootFrame(), Translator.getString("InsertResourceDialog.Title"), true);
@@ -73,8 +73,7 @@ public class InsertRDFResDialog extends JDialog implements ItemListener {
         resTypeBoxP.setBorder(BorderFactory.createTitledBorder(Translator.getString("ResourceType")));
 
         uriField = new JTextField();
-        JComponent uriFieldP = Utilities.createTitledPanel(uriField, Translator.getString("RDFResource"), FIELD_WIDTH,
-                FIELD_HEIGHT);
+        JComponent uriFieldP = Utilities.createTitledPanel(uriField, Translator.getString("RDFResource"), FIELD_WIDTH, FIELD_HEIGHT);
 
         isAnonBox = new JCheckBox(Translator.getString("IsBlank"));
         isAnonBox.addActionListener(new IsAnonAction());
@@ -95,7 +94,7 @@ public class InsertRDFResDialog extends JDialog implements ItemListener {
         panel.add(uriFieldP);
         panel.add(getButtonPanel());
 
-        Component order[] = new Component[] { resTypeBox, uriPrefixBox, isAnonBox, uriField, confirmButton,
+        Component[] order = new Component[]{resTypeBox, uriPrefixBox, isAnonBox, uriField, confirmButton,
                 cancelButton};
         setFocusTraversalPolicy(Utilities.getMyFocusTraversalPolicy(order, 3));
 
@@ -129,7 +128,7 @@ public class InsertRDFResDialog extends JDialog implements ItemListener {
     public void initData(Object[] cells) {
         resourceType = null;
         uriField.setText("");
-        PrefixNSUtil.setPrefixNSInfoSet(GraphUtilities.getPrefixNSInfoSet());
+        PrefixNSUtil.setNamespaceModelSet(GraphUtilities.getNamespaceModelSet());
         uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
         resTypeBox.setModel(new DefaultComboBoxModel(cells));
         Object[] typeCells = gmanager.getCurrentClassGraph().getSelectionCells();

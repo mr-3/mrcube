@@ -97,7 +97,7 @@ public class MR3OverviewPanel extends JPanel implements ComponentListener, Graph
     //
     // invoked when user changes zoom in graphpad
     public void propertyChange(PropertyChangeEvent evt) {
-        double newScale = ((Double) evt.getNewValue()).doubleValue();
+        double newScale = (Double) evt.getNewValue();
         // v.scaleChanged(newScale);
         componentResized(null);
     }
@@ -208,7 +208,7 @@ public class MR3OverviewPanel extends JPanel implements ComponentListener, Graph
         boolean isResizing = false;
 
         BasicStroke stroke = new BasicStroke(1.0f);
-        float dash1[] = { 2.5f};
+        float[] dash1 = {2.5f};
         BasicStroke dashStroke = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f, dash1, 0.0f);
 
         private Point viewportPosition;
@@ -250,7 +250,7 @@ public class MR3OverviewPanel extends JPanel implements ComponentListener, Graph
         // invoked when user changes zoom in graphpad
         public void propertyChange(PropertyChangeEvent evt) {
             if (!isResizing) {
-                zoomScale = ((Double) evt.getNewValue()).doubleValue();
+                zoomScale = (Double) evt.getNewValue();
                 combinedScale = graphWindowToPannerScale / zoomScale;
                 container.repaint();
             }

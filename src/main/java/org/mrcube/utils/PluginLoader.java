@@ -1,8 +1,8 @@
 /*
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
- * Project Website: http://mr3.sourceforge.net/
+ * Project Website: http://mrcube.org/
  * 
- * Copyright (C) 2003-2015 Yamaguchi Laboratory, Keio University. All rights reserved. 
+ * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
  * 
  * This file is part of MR^3.
  * 
@@ -23,7 +23,6 @@
 
 package org.mrcube.utils;
 
-import org.apache.oro.text.perl.Perl5Util;
 import org.mrcube.MR3;
 import org.mrcube.models.PrefConstants;
 import org.mrcube.plugin.MR3Plugin;
@@ -49,16 +48,12 @@ public class PluginLoader {
 	private static Collection<Manifest> manifests;
 	private static SortedMap<String, List> pluginMenuMap;
 
-	private static FilenameFilter jarFilter = new FilenameFilter() {
-		public boolean accept(File dir, String name) {
-			return name.endsWith(".jar");
-		}
-	};
+	private static FilenameFilter jarFilter = (dir, name) -> name.endsWith(".jar");
 
 	public static Map getPluginMenuMap() {
 		Collection<File> files = null;
-		manifests = new ArrayList<Manifest>();
-		pluginMenuMap = new TreeMap<String, List>();
+		manifests = new ArrayList<>();
+		pluginMenuMap = new TreeMap<>();
 		try {
 			files = getClassPathFiles();
 			classLoader = createClassLoader(files);
@@ -72,7 +67,7 @@ public class PluginLoader {
 	}
 
 	private static Collection<File> getClassPathFiles() {
-		Collection<File> files = new ArrayList<File>();
+		Collection<File> files = new ArrayList<>();
 		Preferences userPrefs = Preferences.userNodeForPackage(MR3.class);
 		pluginPath = userPrefs.get(PrefConstants.PluginsDirectory, System.getProperty("user.dir"));
 		if (pluginPath.equals(System.getProperty("user.dir"))) {
@@ -104,12 +99,10 @@ public class PluginLoader {
 	}
 
 	private static void loadManifests() {
-		Perl5Util util = new Perl5Util();
 		try {
-			for (Enumeration e = classLoader.getResources("META-INF/MANIFEST.MF"); e
-					.hasMoreElements();) {
-				URL url = (URL) e.nextElement();
-				if (util.match("/" + pluginPath.replace('\\', '/') + "/", url.getFile())) {
+			List<URL> urlList = Collections.list(classLoader.getResources("META-INF/MANIFEST.MF"));
+			for (URL url: urlList) {
+			    if (url.getFile().matches("/" + pluginPath.replace('\\', '/') + "/")) {
 					InputStream inputStream = url.openStream();
 					manifests.add(new Manifest(inputStream));
 					inputStream.close();
@@ -133,9 +126,7 @@ public class PluginLoader {
 	private static final String PLUGIN_DESCRIPTION_KEY = "description";
 
 	private static void processManifest(Manifest manifest) {
-		Iterator i = manifest.getEntries().keySet().iterator();
-		while (i.hasNext()) {
-			String attributeName = (String) i.next();
+		for (String attributeName : manifest.getEntries().keySet()) {
 			Attributes attributes = manifest.getAttributes(attributeName);
 			// MR3プラグインに関係のある属性を含まないものはパス
 			if (attributes.getValue(PLUGIN_NAME_KEY) == null
@@ -156,7 +147,7 @@ public class PluginLoader {
 				if (pluginName == null) {
 					continue;
 				}
-				List<Object> pluginInfo = new ArrayList<Object>();
+				List<Object> pluginInfo = new ArrayList<>();
 				pluginInfo.add(classObj);
 				pluginInfo.add(attributes.getValue(PLUGIN_CREATOR_KEY));
 				pluginInfo.add(attributes.getValue(PLUGIN_DATE_KEY));
@@ -173,10 +164,8 @@ public class PluginLoader {
 			clas = Class.forName(className, true, classLoader);
 		} catch (ClassNotFoundException cnfe) {
 			// 無視
-		} catch (Error error) {
+		} catch (Error | Exception error) {
 			error.printStackTrace();
-		} catch (Exception exp) {
-			exp.printStackTrace();
 		}
 		return clas;
 	}

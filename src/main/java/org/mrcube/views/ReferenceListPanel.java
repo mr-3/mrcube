@@ -28,8 +28,8 @@ import org.jgraph.graph.GraphConstants;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.jgraph.RDFGraph;
 import org.mrcube.models.MR3Resource;
-import org.mrcube.models.PropertyInfo;
-import org.mrcube.models.RDFResourceInfo;
+import org.mrcube.models.PropertyModel;
+import org.mrcube.models.RDFResourceModel;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
 
@@ -118,7 +118,7 @@ public class ReferenceListPanel extends JPanel {
     private void setCheck(TableModel tableModel, boolean t) {
         if (tableModel.getRowCount() <= 0) { return; }
         for (int i = 0; i < tableModel.getRowCount(); i++) {
-            tableModel.setValueAt(new Boolean(t), i, 0);
+            tableModel.setValueAt(t, i, 0);
         }
     }
 
@@ -136,7 +136,7 @@ public class ReferenceListPanel extends JPanel {
         if (tableModel.getRowCount() <= 0) { return; }
         for (int i = 0; i < tableModel.getRowCount(); i++) {
             Boolean t = (Boolean) tableModel.getValueAt(i, 0);
-            tableModel.setValueAt(new Boolean(!t.booleanValue()), i, 0);
+            tableModel.setValueAt(!t, i, 0);
         }
     }
 
@@ -223,10 +223,10 @@ public class ReferenceListPanel extends JPanel {
             if (isAvailable(tableModel, i, 0)) {
                 GraphCell rdfCell = (GraphCell) tableModel.getValueAt(i, 1);
                 if (RDFGraph.isRDFResourceCell(rdfCell)) {
-                    RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(rdfCell.getAttributes());
+                    RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(rdfCell.getAttributes());
                     info.setTypeCell(null, gmanager.getCurrentRDFGraph()); // Typeをnullに変更
                 } else if (RDFGraph.isRDFPropertyCell(rdfCell)) {
-                    GraphConstants.setValue(rdfCell.getAttributes(), new PropertyInfo(MR3Resource.Nil.getURI()));
+                    GraphConstants.setValue(rdfCell.getAttributes(), new PropertyModel(MR3Resource.Nil.getURI()));
                     gmanager.getCurrentRDFGraph().getGraphLayoutCache().editCell(rdfCell, rdfCell.getAttributes());
                 }
             }
@@ -239,7 +239,7 @@ public class ReferenceListPanel extends JPanel {
         for (int i = 0; i < tableModel.getRowCount(); i++) {
             if (isAvailable(tableModel, i, 0)) {
                 GraphCell propertyCell = (GraphCell) tableModel.getValueAt(i, 1);
-                PropertyInfo info = (PropertyInfo) GraphConstants.getValue(propertyCell.getAttributes());
+                PropertyModel info = (PropertyModel) GraphConstants.getValue(propertyCell.getAttributes());
                 info.removeDomain(cell);
                 info.removeRange(cell);
             }
@@ -256,8 +256,8 @@ public class ReferenceListPanel extends JPanel {
         DefaultTableModel tableModel = getTableModel();
         Set set = (Set) map.get(cell);
         if (set == null) { return null; }
-        for (Iterator i = set.iterator(); i.hasNext();) {
-            Object[] list = new Object[] { new Boolean(true), i.next()};
+        for (Object o : set) {
+            Object[] list = new Object[]{Boolean.TRUE, o};
             tableModel.addRow(list);
         }
         return tableModel;
@@ -266,9 +266,7 @@ public class ReferenceListPanel extends JPanel {
     public void setTableModelMap(Set cells, Map classRDFMap, Map classPropMap) {
         rdfRefTable.setModel(nullTableModel);
         propRefTable.setModel(nullTableModel);
-        for (Iterator i = cells.iterator(); i.hasNext();) {
-            Object cell = i.next();
-
+        for (Object cell : cells) {
             Object tModel = getTableModel(cell, classRDFMap);
             rdfTableModelMap.put(cell, tModel);
 
@@ -279,7 +277,7 @@ public class ReferenceListPanel extends JPanel {
 
     private boolean isAvailable(TableModel tableModel, int row, int column) {
         Boolean isAvailable = (Boolean) tableModel.getValueAt(row, column);
-        return isAvailable.booleanValue();
+        return isAvailable;
     }
 
     class ReferenceTableModel extends DefaultTableModel {

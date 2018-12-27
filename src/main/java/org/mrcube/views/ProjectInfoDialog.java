@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
  *
- * Copyright (C) 2003-2015 Yamaguchi Laboratory, Keio University. All rights reserved.
+ * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -39,7 +39,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -158,16 +157,16 @@ public class ProjectInfoDialog extends JDialog {
         } else {
             currentProjectValue.setText(MR3.getCurrentProject().getTitle());
         }
-        lastImportTimeValue.setText(new Double(MR3.STATUS_BAR.getProgressTime()).toString());
+        lastImportTimeValue.setText(Double.toString(MR3.STATUS_BAR.getProgressTime()));
 
-        modelResourceCntValue.setText(new Integer(calcResourceCnt(mr3Writer.getRDFModel())).toString());
-        modelLiteralCntValue.setText(new Integer(calcLiteralCnt(mr3Writer.getRDFModel())).toString());
-        modelStatementCntValue.setText(new Integer(calcStatementCnt(mr3Writer.getRDFModel())).toString());
-        ontClassCntValue.setText(new Integer(calcOntCnt(gmanager.getCurrentClassGraph())).toString());
-        ontPropertyCntValue.setText(new Integer(calcOntCnt(gmanager.getCurrentPropertyGraph())).toString());
-        allResourceCntValue.setText(new Integer(calcAllResourceCnt()).toString());
-        allLiteralCntValue.setText(new Integer(calcAllLiteralCnt()).toString());
-        allStatementCntValue.setText(new Integer(calcAllStatementCnt()).toString());
+        modelResourceCntValue.setText(Integer.toString(calcResourceCnt(mr3Writer.getRDFModel())));
+        modelLiteralCntValue.setText(Integer.toString(calcLiteralCnt(mr3Writer.getRDFModel())));
+        modelStatementCntValue.setText(Integer.toString(calcStatementCnt(mr3Writer.getRDFModel())));
+        ontClassCntValue.setText(Integer.toString(calcOntCnt(gmanager.getCurrentClassGraph())));
+        ontPropertyCntValue.setText(Integer.toString(calcOntCnt(gmanager.getCurrentPropertyGraph())));
+        allResourceCntValue.setText(Integer.toString(calcAllResourceCnt()));
+        allLiteralCntValue.setText(Integer.toString(calcAllLiteralCnt()));
+        allStatementCntValue.setText(Integer.toString(calcAllStatementCnt()));
     }
 
     private JComponent getButtonPanel() {
@@ -210,8 +209,8 @@ public class ProjectInfoDialog extends JDialog {
         resourceSet.addAll(objectSet);
 
         int rdfResourceCnt = 0;
-        for (Iterator i = resourceSet.iterator(); i.hasNext(); ) {
-            if (i.next() instanceof Resource) {
+        for (Object o : resourceSet) {
+            if (o instanceof Resource) {
                 rdfResourceCnt++;
             }
         }
@@ -222,8 +221,8 @@ public class ProjectInfoDialog extends JDialog {
         Set objectSet = IteratorCollection.iteratorToSet(model.listObjects());
 
         int literalCnt = 0;
-        for (Iterator i = objectSet.iterator(); i.hasNext(); ) {
-            if (i.next() instanceof Literal) {
+        for (Object o : objectSet) {
+            if (o instanceof Literal) {
                 literalCnt++;
             }
         }

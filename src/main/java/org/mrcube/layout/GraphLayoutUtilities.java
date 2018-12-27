@@ -34,9 +34,9 @@ import org.mrcube.jgraph.RDFPropertyCell;
 import org.mrcube.jgraph.RDFResourceCell;
 import org.mrcube.models.MR3Constants.URIType;
 import org.mrcube.models.MR3Resource;
-import org.mrcube.models.RDFResourceInfo;
-import org.mrcube.models.RDFSInfo;
-import org.mrcube.models.RDFSInfoMap;
+import org.mrcube.models.RDFResourceModel;
+import org.mrcube.models.RDFSModel;
+import org.mrcube.models.RDFSModelMap;
 import org.mrcube.utils.GraphUtilities;
 import org.mrcube.utils.MR3CellMaker;
 import org.mrcube.utils.Translator;
@@ -121,7 +121,7 @@ public class GraphLayoutUtilities {
     }
 
     public static void reverseArc(MR3CellMaker cellMaker, RDFGraph graph) {
-        Set<Edge> removeEdges = new HashSet<Edge>();
+        Set<Edge> removeEdges = new HashSet<>();
         for (Object cell : graph.getAllCells()) {
             if (RDFGraph.isEdge(cell)) {
                 Edge edge = (Edge) cell;
@@ -183,14 +183,14 @@ public class GraphLayoutUtilities {
     }
 
     public static void initPropertyGraphLayoutData(Map<RDFNode, GraphLayoutData> cellLayoutMap) {
-        duplicateResourceSet = new HashSet<Resource>();
+        duplicateResourceSet = new HashSet<>();
         Dimension dim = GraphUtilities.getAutoNodeDimension(gmanager, gmanager.getRDFSNodeValue(MR3Resource.Property,
                 null));
         GraphLayoutData rootData = new GraphLayoutData(MR3Resource.Property, dim);
         rootData.setHasParent(false);
         cellLayoutMap.put(MR3Resource.Property, rootData);
-        RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-        for (Resource property : rdfsInfoMap.getRootProperties()) {
+        RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+        for (Resource property : rdfsModelMap.getRootProperties()) {
             if (!isNumProperty(property)) {
                 GraphLayoutData childData = cellLayoutMap.get(property);
                 if (childData == null) {
@@ -200,7 +200,7 @@ public class GraphLayoutUtilities {
                     cellLayoutMap.put(property, childData);
                 }
                 rootData.addChild(childData);
-                RDFSInfo info = rdfsInfoMap.getResourceInfo(property);
+                RDFSModel info = rdfsModelMap.getResourceInfo(property);
                 if (info.getRDFSSubList().size() > 0) {
                     initRDFSGraphLayoutData(cellLayoutMap, info, childData);
                 }
@@ -211,9 +211,9 @@ public class GraphLayoutUtilities {
     private static Set<Resource> duplicateResourceSet;
 
     public static void initClassGraphLayoutData(Map<RDFNode, GraphLayoutData> cellLayoutMap) {
-        duplicateResourceSet = new HashSet<Resource>();
-        RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-        RDFSInfo rootInfo = rdfsInfoMap.getResourceInfo(RDFS.Resource);
+        duplicateResourceSet = new HashSet<>();
+        RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+        RDFSModel rootInfo = rdfsModelMap.getResourceInfo(RDFS.Resource);
         if (rootInfo != null && rootInfo.getRDFSSubList().size() > 0) {
             Dimension dim = GraphUtilities.getAutoNodeDimension(gmanager, gmanager
                     .getRDFSNodeValue(RDFS.Resource, null));
@@ -224,10 +224,10 @@ public class GraphLayoutUtilities {
         }
     }
 
-    public static void initRDFSGraphLayoutData(Map<RDFNode, GraphLayoutData> cellLayoutMap, RDFSInfo supInfo,
+    public static void initRDFSGraphLayoutData(Map<RDFNode, GraphLayoutData> cellLayoutMap, RDFSModel supInfo,
                                                GraphLayoutData parentData) {
         for (Resource resource : supInfo.getRDFSSubList()) {
-            RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
+            RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
             if (!isNumProperty(resource)) {
                 GraphLayoutData childData = cellLayoutMap.get(resource);
                 if (childData == null) {
@@ -238,7 +238,7 @@ public class GraphLayoutUtilities {
                     cellLayoutMap.put(resource, childData);
                 }
                 parentData.addChild(childData);
-                RDFSInfo subInfo = rdfsInfoMap.getResourceInfo(resource);
+                RDFSModel subInfo = rdfsModelMap.getResourceInfo(resource);
                 if (!duplicateResourceSet.contains(resource)) {
                     duplicateResourceSet.add(resource);
                 } else {
@@ -253,8 +253,8 @@ public class GraphLayoutUtilities {
 
     public static Set<GraphLayoutData> initGraphLayoutData(Model model, Map<RDFNode, GraphLayoutData> cellLayoutMap) {
         GraphLayoutData data = null;
-        Set<RDFNode> nodeSet = new HashSet<RDFNode>();
-        Set<GraphLayoutData> dataSet = new HashSet<GraphLayoutData>();
+        Set<RDFNode> nodeSet = new HashSet<>();
+        Set<GraphLayoutData> dataSet = new HashSet<>();
 
         for (StmtIterator i = model.listStatements(); i.hasNext(); ) {
             Statement stmt = i.nextStatement();
@@ -294,9 +294,9 @@ public class GraphLayoutUtilities {
 
     public static Set<GraphLayoutData> initGraphLayoutData(RDFGraph graph, Map<Object, GraphLayoutData> cellLayoutMap) {
         Object[] cells = graph.getAllCells();
-        Set<GraphLayoutData> dataSet = new HashSet<GraphLayoutData>();
-        for (int i = 0; i < cells.length; i++) {
-            GraphCell cell = (GraphCell) cells[i];
+        Set<GraphLayoutData> dataSet = new HashSet<>();
+        for (Object cell1 : cells) {
+            GraphCell cell = (GraphCell) cell1;
             if (!RDFGraph.isTypeCell(cell)
                     && (RDFGraph.isRDFSCell(cell) || RDFGraph.isRDFResourceCell(cell) || RDFGraph
                     .isRDFLiteralCell(cell))) {
@@ -330,7 +330,7 @@ public class GraphLayoutUtilities {
 
     public static Object collectRoot(RDFGraph graph, MR3CellMaker cellMaker, Set<DefaultGraphCell> rootCells,
                                      Set<GraphLayoutData> dataSet, Map<Object, GraphLayoutData> cellLayoutMap) {
-        RDFResourceInfo rootInfo = new RDFResourceInfo(URIType.ANONYMOUS, new AnonId().toString());
+        RDFResourceModel rootInfo = new RDFResourceModel(URIType.ANONYMOUS, new AnonId().toString());
         DefaultGraphCell rootCell = new RDFResourceCell(rootInfo);
         DefaultPort rootPort = new DefaultPort();
         rootCell.add(rootPort);
@@ -381,7 +381,7 @@ public class GraphLayoutUtilities {
         if (tmpRoot == null) {
             return;
         }
-        Set<Object> removeCellsSet = new HashSet<Object>();
+        Set<Object> removeCellsSet = new HashSet<>();
         Port port = (Port) tmpRoot.getChildAt(0);
         removeCellsSet.add(tmpRoot);
         removeCellsSet.add(port);
@@ -458,9 +458,9 @@ public class GraphLayoutUtilities {
             reviseY = MARGIN - rec.getY();
         }
         MR3.STATUS_BAR.initNormal(cells.length);
-        for (int i = 0; i < cells.length; i++) {
-            if (RDFGraph.isRDFsCell(cells[i]) || RDFGraph.isTypeCell(cells[i])) {
-                GraphCell cell = (GraphCell) cells[i];
+        for (Object cell1 : cells) {
+            if (RDFGraph.isRDFsCell(cell1) || RDFGraph.isTypeCell(cell1)) {
+                GraphCell cell = (GraphCell) cell1;
                 AttributeMap map = cell.getAttributes();
                 Rectangle2D cellRec = GraphConstants.getBounds(map);
                 if (cellRec != null) {

@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
  * 
- * Copyright (C) 2003-2015 Yamaguchi Laboratory, Keio University. All rights reserved. 
+ * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
  * 
  * This file is part of MR^3.
  * 
@@ -66,8 +66,8 @@ public class ProjectManager {
 		int literal_cnt = 0;
 		RDFGraph graph = gmanager.getCurrentRDFGraph();
 		Object[] cells = graph.getAllCells();
-		for (int i = 0; i < cells.length; i++) {
-			GraphCell cell = (GraphCell) cells[i];
+		for (Object cell1 : cells) {
+			GraphCell cell = (GraphCell) cell1;
 			if (RDFGraph.isRDFResourceCell(cell)) {
 				addRDFResourceProjectModel(projectModel, cell);
 			} else if (RDFGraph.isRDFPropertyCell(cell)) {
@@ -81,7 +81,7 @@ public class ProjectManager {
 	 */
 	private void addRDFResourceProjectModel(Model projectModel, GraphCell cell) {
 		Rectangle2D rec = GraphConstants.getBounds(cell.getAttributes());
-		RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(cell.getAttributes());
+		RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(cell.getAttributes());
 		Literal x = ResourceFactory.createPlainLiteral(String.valueOf(rec.getX()));
 		projectModel.add(info.getURI(), MR3Resource.PointX, x);
 		Literal y = ResourceFactory.createPlainLiteral(String.valueOf(rec.getY()));
@@ -104,9 +104,9 @@ public class ProjectManager {
 		GraphCell sourceCell = (GraphCell) graph.getSourceVertex(edge);
 		GraphCell targetCell = (GraphCell) graph.getTargetVertex(edge);
 		if (RDFGraph.isRDFLiteralCell(targetCell)) {
-			RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(sourceCell.getAttributes());
+			RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(sourceCell.getAttributes());
 
-			RDFSInfo propInfo = (RDFSInfo) GraphConstants.getValue(edge.getAttributes());
+			RDFSModel propInfo = (RDFSModel) GraphConstants.getValue(edge.getAttributes());
 			Resource litRes = ResourceFactory.createResource(MR3Resource.Literal + Integer.toString(literal_cnt++));
 			projectModel.add(litRes, MR3Resource.HasLiteralResource, info.getURI());
 			if (propInfo == null) {
@@ -137,11 +137,11 @@ public class ProjectManager {
 
 	private void addRDFSProjectModel(Model projectModel, RDFGraph graph) {
 		Object[] cells = graph.getAllCells();
-		for (int i = 0; i < cells.length; i++) {
-			if (RDFGraph.isRDFSCell(cells[i])) {
-				GraphCell cell = (GraphCell) cells[i];
+		for (Object cell1 : cells) {
+			if (RDFGraph.isRDFSCell(cell1)) {
+				GraphCell cell = (GraphCell) cell1;
 				Rectangle2D rec = GraphConstants.getBounds(cell.getAttributes());
-				RDFSInfo info = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
+				RDFSModel info = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
 				Literal x = ResourceFactory.createPlainLiteral(String.valueOf(rec.getX()));
 				projectModel.add(info.getURI(), MR3Resource.PointX, x);
 				Literal y = ResourceFactory.createPlainLiteral(String.valueOf(rec.getY()));
@@ -230,7 +230,7 @@ public class ProjectManager {
 	}
 
 	private void changeNSModel(Map<String, String> uriPrefixMap, Map<String, Boolean> uriIsAvailableMap) {
-		Set<String> existNSSet = new HashSet<String>();
+		Set<String> existNSSet = new HashSet<>();
 		for (int i = 0; i < nsTableModel.getRowCount(); i++) {
 			String nameSpace = (String) nsTableModel.getValueAt(i, NS_COLUMN);
 			String prefix = uriPrefixMap.get(nameSpace);
@@ -259,10 +259,10 @@ public class ProjectManager {
 	public void removeEmptyClass() {
 		RDFGraph graph = gmanager.getCurrentRDFGraph();
 		Object[] cells = graph.getAllCells();
-		for (int i = 0; i < cells.length; i++) {
-			GraphCell cell = (GraphCell) cells[i];
+		for (Object cell1 : cells) {
+			GraphCell cell = (GraphCell) cell1;
 			if (RDFGraph.isRDFResourceCell(cell)) {
-				RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(cell.getAttributes());
+				RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(cell.getAttributes());
 				if (info.getType().equals(MR3Resource.Empty)) {
 					info.setTypeCell(null, gmanager.getCurrentRDFGraph());
 					GraphConstants.setValue(cell.getAttributes(), info);
@@ -270,8 +270,8 @@ public class ProjectManager {
 			}
 		}
 		graph = gmanager.getCurrentClassGraph();
-		RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-		Object cell = rdfsInfoMap.getClassCell(MR3Resource.Empty);
+		RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+		Object cell = rdfsModelMap.getClassCell(MR3Resource.Empty);
 		graph.clearSelection();
 		graph.setSelectionCell(cell);
 		gmanager.removeAction(graph);
@@ -297,7 +297,7 @@ public class ProjectManager {
 	}
 
 	public void setCellLayoutMap(Model model) {
-		layoutMap = new HashMap<RDFNode, GraphLayoutData>();
+		layoutMap = new HashMap<>();
 
 		for (StmtIterator i = model.listStatements(); i.hasNext();) {
 			Statement stmt = i.nextStatement();
@@ -327,9 +327,9 @@ public class ProjectManager {
 	}
 
 	public void loadProject(Model model) {
-		Map<Resource, MR3Literal> uriNodeInfoMap = new HashMap<Resource, MR3Literal>(); // リソースのＵＲＩとMR3Literalのマップ
-		Map<String, String> uriPrefixMap = new HashMap<String, String>(); // URIとプレフィックスのマップ
-		Map<String, Boolean> uriIsAvailableMap = new HashMap<String, Boolean>(); // URIとisAvailable(boolean)のマップ
+		Map<Resource, MR3Literal> uriNodeInfoMap = new HashMap<>(); // リソースのＵＲＩとMR3Literalのマップ
+		Map<String, String> uriPrefixMap = new HashMap<>(); // URIとプレフィックスのマップ
+		Map<String, Boolean> uriIsAvailableMap = new HashMap<>(); // URIとisAvailable(boolean)のマップ
 
 		MR3.STATUS_BAR.initNormal(getStmtCount(model));
 		for (StmtIterator i = model.listStatements(); i.hasNext();) {
@@ -369,9 +369,9 @@ public class ProjectManager {
 				uriNodeInfoMap.put(stmt.getSubject(), rec);
 			} else if (stmt.getPredicate().equals(MR3Resource.IsPrefixAvailable)) {
 				if (stmt.getObject().toString().equals("true")) {
-					uriIsAvailableMap.put(stmt.getSubject().getURI(), new Boolean(true));
+					uriIsAvailableMap.put(stmt.getSubject().getURI(), Boolean.TRUE);
 				} else {
-					uriIsAvailableMap.put(stmt.getSubject().getURI(), new Boolean(false));
+					uriIsAvailableMap.put(stmt.getSubject().getURI(), Boolean.FALSE);
 				}
 			}
 			MR3.STATUS_BAR.addValue();

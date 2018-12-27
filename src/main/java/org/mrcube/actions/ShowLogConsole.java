@@ -45,7 +45,7 @@ public class ShowLogConsole extends MR3AbstractAction {
 
     private void setValues() {
         putValue(SHORT_DESCRIPTION, getName());
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.ALT_MASK));
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.ALT_DOWN_MASK));
     }
 
     public void actionPerformed(ActionEvent e) {

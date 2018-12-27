@@ -1,8 +1,8 @@
 /*
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
- * Project Website: http://mr3.sourceforge.net/
+ * Project Website: http://mrcube.org/
  * 
- * Copyright (C) 2003-2015 Yamaguchi Laboratory, Keio University. All rights reserved. 
+ * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
  * 
  * This file is part of MR^3.
  * 
@@ -32,8 +32,8 @@ import org.mrcube.actions.EditConceptAction;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.jgraph.RDFGraph;
 import org.mrcube.models.MR3Constants;
-import org.mrcube.models.PrefixNSInfo;
-import org.mrcube.models.RDFSInfo;
+import org.mrcube.models.NamespaceModel;
+import org.mrcube.models.RDFSModel;
 import org.mrcube.utils.GraphUtilities;
 import org.mrcube.utils.PrefixNSUtil;
 import org.mrcube.utils.Translator;
@@ -62,7 +62,7 @@ public abstract class OntologyPanel extends JPanel implements ListSelectionListe
     protected LabelPanel labelPanel;
     protected CommentPanel commentPanel;
 
-    protected Set<PrefixNSInfo> prefixNSInfoSet;
+    protected Set<NamespaceModel> namespaceModelSet;
 
     protected JButton applyButton;
     protected JButton resetButton;
@@ -70,7 +70,7 @@ public abstract class OntologyPanel extends JPanel implements ListSelectionListe
 
     protected GraphCell cell;
     protected RDFGraph graph;
-    protected RDFSInfo rdfsInfo;
+    protected RDFSModel rdfsModel;
     protected GraphManager gmanager;
 
     protected JList instanceList;
@@ -186,13 +186,13 @@ public abstract class OntologyPanel extends JPanel implements ListSelectionListe
         public void setMetaClassBox(Set<Resource> metaClassList) {
             ComboBoxModel model = new DefaultComboBoxModel(metaClassList.toArray());
             metaClassBox.setModel(model);
-            metaClassBox.setSelectedItem(ResourceFactory.createResource(rdfsInfo.getMetaClass()));
-            metaClassBox.setEnabled(!metaClassList.contains(rdfsInfo.getURI()));
+            metaClassBox.setSelectedItem(ResourceFactory.createResource(rdfsModel.getMetaClass()));
+            metaClassBox.setEnabled(!metaClassList.contains(rdfsModel.getURI()));
         }
 
         public void setPrefix() {
-            for (PrefixNSInfo prefNSInfo : prefixNSInfoSet) {
-                if (prefNSInfo.getNameSpace().equals(rdfsInfo.getURI().getNameSpace())) {
+            for (NamespaceModel prefNSInfo : namespaceModelSet) {
+                if (prefNSInfo.getNameSpace().equals(rdfsModel.getURI().getNameSpace())) {
                     uriPrefixBox.setSelectedItem(prefNSInfo.getPrefix());
                     nsLabel.setText(prefNSInfo.getNameSpace());
                     break;
@@ -207,18 +207,18 @@ public abstract class OntologyPanel extends JPanel implements ListSelectionListe
 
     public void setValue() {
         labelPanel.clearField();
-        labelPanel.setResourceInfo(rdfsInfo);
-        commentPanel.setResourceInfo(rdfsInfo);
-        basePanel.getIDField().setText(rdfsInfo.getLocalName());
+        labelPanel.setResourceInfo(rdfsModel);
+        commentPanel.setResourceInfo(rdfsModel);
+        basePanel.getIDField().setText(rdfsModel.getLocalName());
     }
 
     abstract public void setValue(Set<GraphCell> supCellSet);
 
     /** スーパークラスまたは、スーパープロパティの名前のセットを返す */
     protected Object[] getTargetInfo(Set<GraphCell> supCellSet) {
-        Set<String> result = new HashSet<String>();
+        Set<String> result = new HashSet<>();
         for (GraphCell cell : supCellSet) {
-            RDFSInfo supInfo = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
+            RDFSModel supInfo = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
             result.add(supInfo.getURIStr());
         }
         return result.toArray();
@@ -235,24 +235,20 @@ public abstract class OntologyPanel extends JPanel implements ListSelectionListe
 
     public void showRDFSInfo(DefaultGraphCell cell) {
         if (RDFGraph.isRDFSCell(cell)) {
-            rdfsInfo = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
-            if (rdfsInfo != null) {
+            rdfsModel = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
+            if (rdfsModel != null) {
                 editConceptAction.setGraphCell(cell);
-                editConceptAction.setRDFSInfo(rdfsInfo);
+                editConceptAction.setRDFSInfo(rdfsModel);
                 setCell(cell);
-                prefixNSInfoSet = GraphUtilities.getPrefixNSInfoSet();
-                PrefixNSUtil.setPrefixNSInfoSet(prefixNSInfoSet);
+                namespaceModelSet = GraphUtilities.getNamespaceModelSet();
+                PrefixNSUtil.setNamespaceModelSet(namespaceModelSet);
                 basePanel.initURIPrefixBox();
                 basePanel.setPrefix();
                 setInstanceList();
                 Set<GraphCell> targetCells = graph.getTargetCells(cell);
                 setValue(targetCells);
-                rdfsInfo.setSuperRDFS(targetCells);
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        basePanel.getIDField().requestFocus();
-                    }
-                });
+                rdfsModel.setSuperRDFS(targetCells);
+                SwingUtilities.invokeLater(() -> basePanel.getIDField().requestFocus());
             }
         }
     }

@@ -1,8 +1,8 @@
 /*
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
- * Project Website: http://mr3.sourceforge.net/
+ * Project Website: http://mrcube.org/
  * 
- * Copyright (C) 2003-2015 Yamaguchi Laboratory, Keio University. All rights reserved. 
+ * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
  * 
  * This file is part of MR^3.
  * 
@@ -38,7 +38,6 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -50,7 +49,7 @@ public class MR3CellMaker {
 
     private GraphManager gmanager;
 
-    public static final int CELL_MARGIN = 10;
+    public static final int CELL_MARGIN = 20;
     public static int CELL_WIDTH = 100;
     public static int DEFAULT_CELL_WIDTH = 100;
     public static int CELL_HEIGHT = 25;
@@ -112,9 +111,6 @@ public class MR3CellMaker {
         GraphConstants.setOpaque(map, false);
         GraphConstants.setForeground(map, Color.blue);
 
-        if (gmanager.isAutoNodeSize()) {
-            GraphConstants.setAutoSize(map, true);
-        }
         if (rectangle != null) {
             GraphConstants.setBounds(map, rectangle);
         } else {
@@ -140,9 +136,6 @@ public class MR3CellMaker {
         GraphConstants.setBorderColor(map, Color.black);
         GraphConstants.setLineWidth(map, 1);
 
-        if (gmanager.isAutoNodeSize()) {
-            GraphConstants.setAutoSize(map, true);
-        }
         if (rectangle != null) {
             GraphConstants.setBounds(map, rectangle);
         } else {
@@ -153,7 +146,6 @@ public class MR3CellMaker {
 
     public AttributeMap getLiteralMap(Rectangle2D rectangle, Color cellColor) {
         AttributeMap literalMap = getResourceMap(rectangle, cellColor);
-        GraphConstants.setAutoSize(literalMap, false);
         return literalMap;
     }
 
@@ -179,7 +171,7 @@ public class MR3CellMaker {
     public void addTypeCell(GraphCell rdfCell, AttributeMap attributes) {
         RDFGraph graph = gmanager.getCurrentRDFGraph();
         GraphCell typeViewCell = null;
-        RDFResourceInfo resInfo = (RDFResourceInfo) GraphConstants.getValue(rdfCell.getAttributes());
+        RDFResourceModel resInfo = (RDFResourceModel) GraphConstants.getValue(rdfCell.getAttributes());
         if (gmanager.isShowTypeCell()) {
             typeViewCell = new TypeViewCell(resInfo.getTypeInfo());
             AttributeMap typeViewMap = getTypeMap(GraphUtilities.getTypeCellRectangle(rdfCell, resInfo.getTypeInfo(),
@@ -199,20 +191,20 @@ public class MR3CellMaker {
         AttributeMap attributes = new AttributeMap();
         point = graph.snap(new Point2D.Double(point.getX(), point.getY()));
 
-        RDFResourceInfo info = null;
+        RDFResourceModel model = null;
         if (type == URIType.ANONYMOUS) {
-            info = new RDFResourceInfo(type, ResourceFactory.createResource().toString());
+            model = new RDFResourceModel(type, ResourceFactory.createResource().toString());
         } else {
-            info = new RDFResourceInfo(type, uri);
+            model = new RDFResourceModel(type, uri);
         }
-        RDFResourceCell rdfCell = new RDFResourceCell(info);
+        RDFResourceCell rdfCell = new RDFResourceCell(model);
         rdfCell.add(new DefaultPort());
         AttributeMap resMap = getResourceMap(getRDFNodeRectangle(point, uri), RDFResourceCell.rdfResourceColor);
         attributes.put(rdfCell, resMap);
-        info.setTypeCell((GraphCell) resTypeCell, gmanager.getCurrentRDFGraph());
-        GraphConstants.setValue(rdfCell.getAttributes(), info);
+        model.setTypeCell((GraphCell) resTypeCell, gmanager.getCurrentRDFGraph());
+        GraphConstants.setValue(rdfCell.getAttributes(), model);
         graph.getGraphLayoutCache().insert(new Object[] { rdfCell}, attributes, null, null);
-        GraphUtilities.resizeRDFResourceCell(gmanager, info, rdfCell);
+        GraphUtilities.resizeRDFResourceCell(gmanager, model, rdfCell);
         addTypeCell(rdfCell, attributes);
 
         gmanager.selectRDFCell(rdfCell);
@@ -226,8 +218,8 @@ public class MR3CellMaker {
         double right = 50;
         double bottom = 0;
         if (supCells == null) { return new Point2D.Double((left + right) / 2, bottom + 100); }
-        for (Iterator i = supCells.iterator(); i.hasNext();) {
-            GraphCell cell = (GraphCell) i.next();
+        for (Object supCell : supCells) {
+            GraphCell cell = (GraphCell) supCell;
             AttributeMap map = cell.getAttributes();
             Rectangle2D rec = GraphConstants.getBounds(map);
             if (isFirst) {
@@ -251,9 +243,9 @@ public class MR3CellMaker {
     }
 
     public void connectSubToSups(Port subPort, Object[] supCells, RDFGraph graph) {
-        for (int i = 0; i < supCells.length; i++) {
-            if (RDFGraph.isPort(supCells[i])) {
-                Port supPort = (Port) supCells[i];
+        for (Object supCell : supCells) {
+            if (RDFGraph.isPort(supCell)) {
+                Port supPort = (Port) supCell;
                 connect(subPort, supPort, null, graph);
             }
         }
@@ -286,22 +278,20 @@ public class MR3CellMaker {
 
         GraphCell rdfsPropCell = null;
         Object[] rdfsPropertyCells = gmanager.getCurrentPropertyGraph().getSelectionCells();
-        RDFSInfo info = null;
+        RDFSModel info = null;
         if (rdfsPropertyCells.length == 1 && RDFGraph.isRDFSPropertyCell(rdfsPropertyCells[0])) {
             rdfsPropCell = (GraphCell) rdfsPropertyCells[0];
-            info = (RDFSInfo) GraphConstants.getValue(rdfsPropCell.getAttributes());
+            info = (RDFSModel) GraphConstants.getValue(rdfsPropCell.getAttributes());
             if (MR3.OFF_META_MODEL_MANAGEMENT) {
-                PropertyInfo pInfo = (PropertyInfo) info;
-                info = new PropertyInfo(pInfo.getURIStr());
+                PropertyModel pInfo = (PropertyModel) info;
+                info = new PropertyModel(pInfo.getURIStr());
             }
         } else {
-            info = new PropertyInfo(MR3Resource.Nil.getURI());
+            info = new PropertyModel(MR3Resource.Nil.getURI());
         }
         AttributeMap map = getEdgeMap(info, edge);
         GraphConstants.setRouting(map, GraphConstants.ROUTING_SIMPLE);
         attributes.put(edge, map);
-        // graph.getGraphLayoutCache().insert(new Object[] { edge}, attributes,
-        // cs, null, null);
         graph.getGraphLayoutCache().insert(new Object[] { edge}, attributes, cs, null);
     }
 
@@ -313,14 +303,14 @@ public class MR3CellMaker {
         JGraph graph = gmanager.getCurrentClassGraph();
         rectangle.getBounds().setLocation((Point) graph.snap(rectangle.getBounds().getLocation()));
         AttributeMap map = getResourceMap(rectangle, OntClassCell.classColor);
-        RDFSInfo info = new ClassInfo(uri);
+        RDFSModel info = new ClassModel(uri);
         info.setMetaClass(gmanager.getDefaultClassClass());
         OntClassCell vertex = new OntClassCell(info);
         setCell(graph, vertex, map);
         GraphConstants.setValue(vertex.getAttributes(), info);
         GraphUtilities.resizeRDFSResourceCell(gmanager, info, vertex);
-        RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-        rdfsInfoMap.putURICellMap(info, vertex);
+        RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+        rdfsModelMap.putURICellMap(info, vertex);
 
         return vertex;
     }
@@ -334,7 +324,7 @@ public class MR3CellMaker {
         rectangle.getBounds().setLocation((Point) graph.snap(rectangle.getBounds().getLocation()));
         AttributeMap map = getResourceMap(rectangle, OntPropertyCell.propertyColor);
 
-        PropertyInfo info = new PropertyInfo(uri);
+        PropertyModel info = new PropertyModel(uri);
         info.setMetaClass(gmanager.getDefaultPropertyClass());
         OntPropertyCell vertex = new OntPropertyCell(info);
         if (uri.matches(RDF.getURI() + "_\\d*")) {
@@ -345,15 +335,15 @@ public class MR3CellMaker {
         }
         GraphConstants.setValue(vertex.getAttributes(), info);
         GraphUtilities.resizeRDFSResourceCell(gmanager, info, vertex);
-        RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-        rdfsInfoMap.putURICellMap(info, vertex);
+        RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+        rdfsModelMap.putURICellMap(info, vertex);
 
         return vertex;
     }
 
     private void setCell(JGraph graph, DefaultGraphCell cell, AttributeMap map) {
         cell.add(new DefaultPort());
-        HashMap<Object, AttributeMap> attributes = new HashMap<Object, AttributeMap>();
+        HashMap<Object, AttributeMap> attributes = new HashMap<>();
         attributes.put(cell, map);
         graph.getGraphLayoutCache().insert(new Object[] { cell}, attributes, null, null);
     }

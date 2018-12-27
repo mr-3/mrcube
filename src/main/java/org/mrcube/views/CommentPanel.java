@@ -23,12 +23,12 @@
 
 package org.mrcube.views;
 
-import org.mrcube.models.ClassInfo;
+import org.mrcube.models.ClassModel;
 import org.mrcube.models.MR3Constants;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.MR3Constants.HistoryType;
 import org.mrcube.models.MR3Literal;
-import org.mrcube.models.ResourceInfo;
+import org.mrcube.models.ResourceModel;
 import org.mrcube.utils.Utilities;
 
 import javax.swing.*;
@@ -48,7 +48,7 @@ import java.util.List;
 public class CommentPanel extends JPanel implements ActionListener {
 
 	private Frame rootFrame;
-	private ResourceInfo resInfo;
+	private ResourceModel resInfo;
 
 	private WeakReference<EditCommentDialog> editCommentDialogRef;
 
@@ -64,7 +64,7 @@ public class CommentPanel extends JPanel implements ActionListener {
 	public CommentPanel(Frame frame) {
 		rootFrame = frame;
 		graphType = GraphType.RDF;
-		editCommentDialogRef = new WeakReference<EditCommentDialog>(null);
+		editCommentDialogRef = new WeakReference<>(null);
 
 		commentTableModel = new CommentTableModel(new Object[] { MR3Constants.LANG,
 				MR3Constants.COMMENT }, 0);
@@ -96,7 +96,7 @@ public class CommentPanel extends JPanel implements ActionListener {
 		EditCommentDialog result = editCommentDialogRef.get();
 		if (result == null) {
 			result = new EditCommentDialog(rootFrame);
-			editCommentDialogRef = new WeakReference<EditCommentDialog>(result);
+			editCommentDialogRef = new WeakReference<>(result);
 		}
 		return result;
 	}
@@ -148,7 +148,7 @@ public class CommentPanel extends JPanel implements ActionListener {
 		if (!literal.getString().equals("")) {
 			commentTableModel.insertRow(commentTableModel.getRowCount(),
 					new Object[] { literal.getLanguage(), literal.getString() });
-			List<MR3Literal> beforeMR3CommentList = new ArrayList<MR3Literal>(
+			List<MR3Literal> beforeMR3CommentList = new ArrayList<>(
 					resInfo.getCommentList());
 			setCommentList();
 			List<MR3Literal> afterMR3CommentList = resInfo.getCommentList();
@@ -168,7 +168,7 @@ public class CommentPanel extends JPanel implements ActionListener {
 	private void deleteComment() {
 		if (commentTable.getSelectedRowCount() == 1) {
 			commentTableModel.removeRow(commentTable.getSelectedRow());
-			List<MR3Literal> beforeMR3CommentList = new ArrayList<MR3Literal>(
+			List<MR3Literal> beforeMR3CommentList = new ArrayList<>(
 					resInfo.getCommentList());
 			setCommentList();
 			List<MR3Literal> afterMR3CommentList = resInfo.getCommentList();
@@ -185,7 +185,7 @@ public class CommentPanel extends JPanel implements ActionListener {
 		}
 	}
 
-	public void setResourceInfo(ResourceInfo info) {
+	public void setResourceInfo(ResourceModel info) {
 		resInfo = info;
 		while (commentTableModel.getRowCount() != 0) {
 			commentTableModel.removeRow(0);
@@ -209,7 +209,7 @@ public class CommentPanel extends JPanel implements ActionListener {
 	}
 
 	private void setCommentList() {
-		List<MR3Literal> commentList = new ArrayList<MR3Literal>();
+		List<MR3Literal> commentList = new ArrayList<>();
 		for (int i = 0; i < commentTable.getRowCount(); i++) {
 			String lang = commentTable.getValueAt(i, 0).toString();
 			String label = commentTable.getValueAt(i, 1).toString();
@@ -234,7 +234,7 @@ public class CommentPanel extends JPanel implements ActionListener {
 			if (aValue instanceof String) {
 				if (columnIndex == 0 || (columnIndex == 1 && !aValue.equals(""))) {
 					super.setValueAt(aValue, rowIndex, columnIndex);
-					List<MR3Literal> beforeMR3CommentList = new ArrayList<MR3Literal>(
+					List<MR3Literal> beforeMR3CommentList = new ArrayList<>(
 							resInfo.getCommentList());
 					setCommentList();
 					List<MR3Literal> afterMR3CommentList = resInfo.getCommentList();
@@ -256,7 +256,7 @@ public class CommentPanel extends JPanel implements ActionListener {
 	public static void main(String[] args) {
 		JFrame frame = new JFrame();
 		CommentPanel commentPanel = new CommentPanel(new JFrame());
-		ResourceInfo info = new ClassInfo("http://mr3.sourceforge.net#test");
+		ResourceModel info = new ClassModel("http://mrcube.org#test");
 		info.addLabel(new MR3Literal("日本語コメントのテスト", "ja", null));
 		info.addLabel(new MR3Literal("english comment test", "en", null));
 		commentPanel.setResourceInfo(info);

@@ -34,9 +34,9 @@ import org.mrcube.io.MR3Writer;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.jgraph.RDFGraph;
 import org.mrcube.models.MR3Constants;
+import org.mrcube.models.NamespaceModel;
 import org.mrcube.models.PrefConstants;
-import org.mrcube.models.PrefixNSInfo;
-import org.mrcube.models.RDFResourceInfo;
+import org.mrcube.models.RDFResourceModel;
 import org.mrcube.utils.*;
 
 import javax.imageio.ImageIO;
@@ -48,6 +48,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -180,11 +181,7 @@ public class ExportDialog extends JDialog implements ActionListener {
         reloadButton.addActionListener(this);
         cancelButton = new JButton(MR3Constants.CANCEL);
         cancelButton.setMnemonic('c');
-        cancelButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-            }
-        });
+        cancelButton.addActionListener(e -> setVisible(false));
         JPanel otherButtonPanel = new JPanel();
         otherButtonPanel.setLayout(new GridLayout(2, 1, 5, 5));
         otherButtonPanel.add(reloadButton);
@@ -335,20 +332,20 @@ public class ExportDialog extends JDialog implements ActionListener {
 
     private void setRDFTreeRoot() {
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
-        Map<Resource, Set<GraphCell>> map = new HashMap<Resource, Set<GraphCell>>();
+        Map<Resource, Set<GraphCell>> map = new HashMap<>();
         RDFGraph graph = gmanager.getCurrentRDFGraph();
         Object[] cells = graph.getAllCells();
-        for (int i = 0; i < cells.length; i++) {
-            GraphCell cell = (GraphCell) cells[i];
+        for (Object cell1 : cells) {
+            GraphCell cell = (GraphCell) cell1;
             if (RDFGraph.isRDFResourceCell(cell)) {
-                RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(cell.getAttributes());
+                RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(cell.getAttributes());
                 Resource resType = info.getType();
                 if (resType.getURI().length() == 0) {
                     resType = RDFS.Resource;
                 }
                 Set<GraphCell> instanceSet = map.get(resType);
                 if (instanceSet == null) {
-                    instanceSet = new HashSet<GraphCell>();
+                    instanceSet = new HashSet<>();
                 }
                 instanceSet.add(cell);
                 map.put(resType, instanceSet);
@@ -404,8 +401,8 @@ public class ExportDialog extends JDialog implements ActionListener {
         if (!encodeCheckBox.isSelected()) {
             try {
                 return URLDecoder.decode(writer.toString(), "UTF-8");
-            } catch (UnsupportedEncodingException uee) {
-                uee.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
             }
         }
         return writer.toString();
@@ -475,7 +472,7 @@ public class ExportDialog extends JDialog implements ActionListener {
 
         if (getSelectedCount() == 1) {
             // treePanel.replaceNameSpace(treePanel.getRoot(),
-            // gmanager.getPrefixNSInfoSet());
+            // gmanager.getNamespaceModelSet());
         }
         if (encodeCheckBox.isSelected()) {
             model = getEncodedModel(model);
@@ -519,8 +516,8 @@ public class ExportDialog extends JDialog implements ActionListener {
     }
 
     private void setNsPrefix(Model model) {
-        Set<PrefixNSInfo> prefixNsInfoSet = GraphUtilities.getPrefixNSInfoSet();
-        for (PrefixNSInfo info : prefixNsInfoSet) {
+        Set<NamespaceModel> namespaceModelSet = GraphUtilities.getNamespaceModelSet();
+        for (NamespaceModel info : namespaceModelSet) {
             if (info.isAvailable()) {
                 model.setNsPrefix(info.getPrefix(), info.getNameSpace());
             }

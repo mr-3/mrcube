@@ -30,15 +30,12 @@ import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -70,16 +67,14 @@ public class PluginManager extends JDialog implements ActionListener {
         pluginDescriptionAreaScroll.setBorder(BorderFactory.createTitledBorder(Translator
                 .getString("Component.Tools.Plugins.Description")));
         pluginTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        pluginTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent e) {
-                int selectedRow = pluginTable.getSelectedRow();
-                if (selectedRow == -1) { return; }
-                String pluginName = (String) pluginTable.getValueAt(selectedRow, 0);
-                List pluginInfo = (List) pluginMenuMap.get(pluginName);
-                String description = (String) pluginInfo.get(3);
-                if (description != null) {
-                    pluginDescriptionArea.setText(description);
-                }
+        pluginTable.getSelectionModel().addListSelectionListener(e -> {
+            int selectedRow = pluginTable.getSelectedRow();
+            if (selectedRow == -1) { return; }
+            String pluginName = (String) pluginTable.getValueAt(selectedRow, 0);
+            List pluginInfo = (List) pluginMenuMap.get(pluginName);
+            String description = (String) pluginInfo.get(3);
+            if (description != null) {
+                pluginDescriptionArea.setText(description);
             }
         });
 
@@ -120,12 +115,12 @@ public class PluginManager extends JDialog implements ActionListener {
                 Translator.getString("Component.Tools.Plugins.Date")};
         DefaultTableModel pluginTableModel = new DefaultTableModel(columnNames, 0);
         // System.out.println(pluginMenuMap);
-        for (Iterator i = pluginMenuMap.keySet().iterator(); i.hasNext();) {
-            String pluginName = (String) i.next();
+        for (Object o : pluginMenuMap.keySet()) {
+            String pluginName = (String) o;
             List pluginInfo = (List) pluginMenuMap.get(pluginName);
             String creatorName = (String) pluginInfo.get(1);
             String date = (String) pluginInfo.get(2);
-            pluginTableModel.insertRow(pluginTableModel.getRowCount(), new Object[] { pluginName, creatorName, date});
+            pluginTableModel.insertRow(pluginTableModel.getRowCount(), new Object[]{pluginName, creatorName, date});
         }
         pluginTable.setModel(pluginTableModel);
         pluginDescriptionArea.setText("");
@@ -149,20 +144,12 @@ public class PluginManager extends JDialog implements ActionListener {
                 Class classObj = (Class) pluginInfo.get(0);
                 // System.out.println("class: "+classObj.hashCode());
                 Object instance = classObj.newInstance();
-                Method initMethod = classObj.getMethod("setMR3", new Class[] { MR3.class});
-                initMethod.invoke(instance, new Object[] { mr3});
+                Method initMethod = classObj.getMethod("setMR3", MR3.class);
+                initMethod.invoke(instance, mr3);
                 Method m = classObj.getMethod(PLUGIN_METHOD_NAME);
                 m.invoke(instance);
-            } catch (NoClassDefFoundError ncdfe) {
+            } catch (NoClassDefFoundError | InvocationTargetException | IllegalAccessException | InstantiationException | NoSuchMethodException ncdfe) {
                 ncdfe.printStackTrace();
-            } catch (NoSuchMethodException nsme) {
-                nsme.printStackTrace();
-            } catch (InstantiationException ine) {
-                ine.printStackTrace();
-            } catch (IllegalAccessException ille) {
-                ille.printStackTrace();
-            } catch (InvocationTargetException inve) {
-                inve.printStackTrace();
             }
         } else if (e.getSource() == cancelButton) {
             setVisible(false);

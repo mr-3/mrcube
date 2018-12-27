@@ -1,6 +1,6 @@
 /*
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
- * Project Website: http://mr3.sourceforge.net/
+ * Project Website: http://mrcube.org/
  * 
  * Copyright (C) 2003-2009 Yamaguchi Laboratory, Keio University. All rights reserved. 
  * 
@@ -29,13 +29,12 @@ import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphConstants;
 import org.mrcube.MR3;
 import org.mrcube.jgraph.GraphManager;
+import org.mrcube.models.*;
 import org.mrcube.models.MR3Constants.CreateRDFSType;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.MR3Constants.HistoryType;
-import org.mrcube.models.MR3Resource;
-import org.mrcube.models.PropertyInfo;
-import org.mrcube.models.RDFSInfo;
-import org.mrcube.models.RDFSInfoMap;
+import org.mrcube.models.PropertyModel;
+import org.mrcube.models.RDFSModel;
 import org.mrcube.utils.GraphUtilities;
 import org.mrcube.utils.Translator;
 import org.mrcube.views.HistoryManager;
@@ -68,8 +67,8 @@ public class EditRDFPropertyAction {
 	public boolean editRDFProperty() {
 		GraphCell propertyCell = null;
 		Resource uri = ResourceFactory.createResource(uriStr);
-		RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-		if (rdfsInfoMap.isPropertyCell(uri) || uri.equals(MR3Resource.Nil)) {
+		RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+		if (rdfsModelMap.isPropertyCell(uri) || uri.equals(MR3Resource.Nil)) {
 			propertyCell = gmanager.getPropertyCell(uri, false);
 		} else {
 			if (gmanager.isDuplicatedWithDialog(uri.getURI(), null, GraphType.PROPERTY)) {
@@ -79,7 +78,7 @@ public class EditRDFPropertyAction {
 				return false;
 			}
 
-			RDFSInfo propInfo = (RDFSInfo) GraphConstants.getValue(edge.getAttributes());
+			RDFSModel propInfo = (RDFSModel) GraphConstants.getValue(edge.getAttributes());
 			if (propInfo.getURI().equals(MR3Resource.Nil)) {
 				int ans = JOptionPane.showConfirmDialog(gmanager.getDesktopTabbedPane(),
 						Translator.getString("Warning.Message10"), WARNING, JOptionPane.YES_NO_OPTION);
@@ -105,12 +104,12 @@ public class EditRDFPropertyAction {
 					HistoryManager
 							.saveHistory(HistoryType.META_MODEL_MANAGEMNET_REPLACE_PROPERTY_WITH_CREATE_ONT_PROPERTY);
 				} else if (createType == CreateRDFSType.RENAME) {
-					propInfo = (RDFSInfo) GraphConstants.getValue(edge.getAttributes());
+					propInfo = (RDFSModel) GraphConstants.getValue(edge.getAttributes());
 					propertyCell = gmanager.getPropertyCell(propInfo.getURI(), false);
-					rdfsInfoMap.removeURICellMap(propInfo);
+					rdfsModelMap.removeURICellMap(propInfo);
 					propInfo.setURI(uri.getURI());
 					GraphUtilities.resizeRDFSResourceCell(gmanager, propInfo, propertyCell);
-					rdfsInfoMap.putURICellMap(propInfo, propertyCell);
+					rdfsModelMap.putURICellMap(propInfo, propertyCell);
 					gmanager.selectChangedRDFCells(propInfo);
 					HistoryManager
 							.saveHistory(HistoryType.META_MODEL_MANAGEMNET_REPLACE_PROPERTY_WITH_REPLACE_ONT_PROPERTY);
@@ -124,9 +123,9 @@ public class EditRDFPropertyAction {
 			gmanager.selectPropertyCell(propertyCell); 
 		}
 
-		PropertyInfo propInfo = (PropertyInfo) GraphConstants.getValue(propertyCell.getAttributes());
+		PropertyModel propInfo = (PropertyModel) GraphConstants.getValue(propertyCell.getAttributes());
 		if (MR3.OFF_META_MODEL_MANAGEMENT) {
-			propInfo = new PropertyInfo(propInfo.getURIStr());
+			propInfo = new PropertyModel(propInfo.getURIStr());
 		}
 		GraphConstants.setValue(edge.getAttributes(), propInfo);
 		GraphUtilities.editCell(edge, edge.getAttributes(), gmanager.getCurrentRDFGraph());

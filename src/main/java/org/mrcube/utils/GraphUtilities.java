@@ -1,8 +1,8 @@
 /*
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
- * Project Website: http://mr3.sourceforge.net/
+ * Project Website: http://mrcube.org/
  * 
- * Copyright (C) 2003-2015 Yamaguchi Laboratory, Keio University. All rights reserved. 
+ * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
  * 
  * This file is part of MR^3.
  * 
@@ -30,11 +30,11 @@ import org.jgraph.graph.GraphConstants;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.jgraph.RDFCellStyleChanger;
 import org.mrcube.jgraph.RDFGraph;
-import org.mrcube.models.ClassInfo;
+import org.mrcube.models.ClassModel;
 import org.mrcube.models.MR3Constants.GraphType;
-import org.mrcube.models.PrefixNSInfo;
-import org.mrcube.models.RDFResourceInfo;
-import org.mrcube.models.RDFSInfo;
+import org.mrcube.models.NamespaceModel;
+import org.mrcube.models.RDFResourceModel;
+import org.mrcube.models.RDFSModel;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -48,19 +48,19 @@ public class GraphUtilities {
 	public static Font defaultFont = null;
 	public static boolean isColor = true;
 
-	private static Set<PrefixNSInfo> prefixNSInfoSet = new HashSet<PrefixNSInfo>();
+	private static Set<NamespaceModel> namespaceModelSet = new HashSet<>();
 
 	public static Color selectedColor = new Color(240, 240, 200);
 	// public static Color selectedForegroundColor = new Color(0, 0, 128);
 	public static Color selectedBorderColor = new Color(70, 70, 70);
 	public static Color graphBackgroundColor = Color.white;
 
-	public static void setPrefixNSInfoSet(Set<PrefixNSInfo> infoSet) {
-		prefixNSInfoSet = infoSet;
+	public static void setNamespaceModelSet(Set<NamespaceModel> infoSet) {
+		namespaceModelSet = infoSet;
 	}
 
-	public static Set<PrefixNSInfo> getPrefixNSInfoSet() {
-		return Collections.unmodifiableSet(prefixNSInfoSet);
+	public static Set<NamespaceModel> getNamespaceModelSet() {
+		return Collections.unmodifiableSet(namespaceModelSet);
 	}
 
 	public static void changeAllCellColor(GraphManager gmanager) {
@@ -73,25 +73,25 @@ public class GraphUtilities {
 		}
 
 		Object[] cells = rdfGraph.getAllCells();
-		for (int i = 0; i < cells.length; i++) {
-			if (cells[i] instanceof RDFCellStyleChanger) {
-				RDFCellStyleChanger changer = (RDFCellStyleChanger) cells[i];
+		for (Object cell2 : cells) {
+			if (cell2 instanceof RDFCellStyleChanger) {
+				RDFCellStyleChanger changer = (RDFCellStyleChanger) cell2;
 				changer.changeDefaultStyle(rdfGraph);
 			}
 		}
 
 		cells = classGraph.getAllCells();
-		for (int i = 0; i < cells.length; i++) {
-			if (cells[i] instanceof RDFCellStyleChanger) {
-				RDFCellStyleChanger changer = (RDFCellStyleChanger) cells[i];
+		for (Object cell1 : cells) {
+			if (cell1 instanceof RDFCellStyleChanger) {
+				RDFCellStyleChanger changer = (RDFCellStyleChanger) cell1;
 				changer.changeDefaultStyle(classGraph);
 			}
 		}
 
 		cells = propertyGraph.getAllCells();
-		for (int i = 0; i < cells.length; i++) {
-			if (cells[i] instanceof RDFCellStyleChanger) {
-				RDFCellStyleChanger changer = (RDFCellStyleChanger) cells[i];
+		for (Object cell : cells) {
+			if (cell instanceof RDFCellStyleChanger) {
+				RDFCellStyleChanger changer = (RDFCellStyleChanger) cell;
 				changer.changeDefaultStyle(propertyGraph);
 			}
 		}
@@ -152,17 +152,17 @@ public class GraphUtilities {
 		if (!isChangedSelectedColor) {
 			return lastSelectionCells;
 		}
-		for (int i = 0; i < lastSelectionCells.length; i++) {
-			if (lastSelectionCells[i] instanceof RDFCellStyleChanger) {
-				RDFCellStyleChanger changer = (RDFCellStyleChanger) lastSelectionCells[i];
+		for (Object lastSelectionCell : lastSelectionCells) {
+			if (lastSelectionCell instanceof RDFCellStyleChanger) {
+				RDFCellStyleChanger changer = (RDFCellStyleChanger) lastSelectionCell;
 				changer.changeDefaultStyle(graph);
 			}
 		}
 		Object[] cells = graph.getSelectionCells();
 		cells = graph.getDescendants(cells);
-		for (int i = 0; i < cells.length; i++) {
-			if (cells[i] instanceof RDFCellStyleChanger) {
-				RDFCellStyleChanger changer = (RDFCellStyleChanger) cells[i];
+		for (Object cell : cells) {
+			if (cell instanceof RDFCellStyleChanger) {
+				RDFCellStyleChanger changer = (RDFCellStyleChanger) cell;
 				changer.changeStyle(graph);
 			}
 		}
@@ -181,10 +181,10 @@ public class GraphUtilities {
 	public static void resizeAllRDFResourceCell(GraphManager gm) {
 		RDFGraph graph = gm.getCurrentRDFGraph();
 		Object[] cells = graph.getAllCells();
-		for (int i = 0; i < cells.length; i++) {
-			GraphCell cell = (GraphCell) cells[i];
+		for (Object cell1 : cells) {
+			GraphCell cell = (GraphCell) cell1;
 			if (RDFGraph.isRDFResourceCell(cell)) {
-				RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(cell
+				RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(cell
 						.getAttributes());
 				resizeRDFResourceCell(gm, info, cell);
 			}
@@ -193,34 +193,34 @@ public class GraphUtilities {
 
 	public static void resizeAllRDFSResourceCell(GraphManager gm) {
 		Object[] cells = gm.getCurrentClassGraph().getAllCells();
-		for (int i = 0; i < cells.length; i++) {
-			GraphCell cell = (GraphCell) cells[i];
+		for (Object cell2 : cells) {
+			GraphCell cell = (GraphCell) cell2;
 			if (RDFGraph.isRDFSCell(cell)) {
-				RDFSInfo info = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
+				RDFSModel info = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
 				resizeRDFSResourceCell(gm, info, cell);
 			}
 		}
 		cells = gm.getCurrentPropertyGraph().getAllCells();
-		for (int i = 0; i < cells.length; i++) {
-			GraphCell cell = (GraphCell) cells[i];
+		for (Object cell1 : cells) {
+			GraphCell cell = (GraphCell) cell1;
 			if (RDFGraph.isRDFSCell(cell)) {
-				RDFSInfo info = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
+				RDFSModel info = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
 				resizeRDFSResourceCell(gm, info, cell);
 			}
 		}
 	}
 
-	public static void resizeRDFSResourceCell(GraphManager gm, RDFSInfo rdfsInfo, GraphCell cell) {
-		String value = gm.getRDFSNodeValue(rdfsInfo.getURI(), rdfsInfo);
+	public static void resizeRDFSResourceCell(GraphManager gm, RDFSModel rdfsModel, GraphCell cell) {
+		String value = gm.getRDFSNodeValue(rdfsModel.getURI(), rdfsModel);
 		Dimension size = GraphUtilities.getAutoNodeDimension(gm, value);
-		if (rdfsInfo instanceof ClassInfo) {
+		if (rdfsModel instanceof ClassModel) {
 			GraphUtilities.resizeCell(size, gm.getCurrentClassGraph(), cell);
 		} else {
 			GraphUtilities.resizeCell(size, gm.getCurrentPropertyGraph(), cell);
 		}
 	}
 
-	public static void resizeRDFResourceCell(GraphManager gm, RDFResourceInfo resInfo,
+	public static void resizeRDFResourceCell(GraphManager gm, RDFResourceModel resInfo,
 			GraphCell cell) {
 		String value = gm.getRDFNodeValue(resInfo.getURI(), resInfo);
 		Dimension size = GraphUtilities.getAutoNodeDimension(gm, value);
@@ -266,17 +266,17 @@ public class GraphUtilities {
 		if (uri.isAnon()) {
 			return "";
 		}
-		for (PrefixNSInfo prefixNSInfo : prefixNSInfoSet) {
-			if (Utilities.getNameSpace(uri).equals(prefixNSInfo.getNameSpace())) {
-				if (prefixNSInfo.isAvailable()) {
-					return prefixNSInfo.getPrefix() + ":" + Utilities.getLocalName(uri);
+		for (NamespaceModel namespaceModel : namespaceModelSet) {
+			if (Utilities.getNameSpace(uri).equals(namespaceModel.getNameSpace())) {
+				if (namespaceModel.isAvailable()) {
+					return namespaceModel.getPrefix() + ":" + Utilities.getLocalName(uri);
 				}
 			}
 		}
 		return uri.toString();
 	}
 
-	public static Rectangle2D getTypeCellRectangle(GraphCell cell, RDFSInfo info, GraphManager gm) {
+	public static Rectangle2D getTypeCellRectangle(GraphCell cell, RDFSModel info, GraphManager gm) {
 		Dimension typeDim = getAutoNodeDimension(gm, gm.getRDFSNodeValue(info.getURI(), info));
 		Rectangle2D rect = GraphConstants.getBounds(cell.getAttributes());
 		Rectangle2D.Double typeRect = new Rectangle2D.Double(rect.getX() + (rect.getWidth() / 3),
@@ -292,7 +292,7 @@ public class GraphUtilities {
 			defaultFont = gmanager.getCurrentRDFGraph().getFont();
 		}
 		FontMetrics fm = gmanager.getCurrentRDFGraph().getFontMetrics(defaultFont);
-		int width = fm.stringWidth(value) + MR3CellMaker.CELL_MARGIN;
+		int width = fm.stringWidth(value) * 2;
 		if (value.length() == 0) {
 			width = ANON_NODE_WIDTH;
 		}
@@ -304,8 +304,8 @@ public class GraphUtilities {
 
 	public static void emphasisNodes(RDFGraph graph) {
 		Object[] cells = graph.getSelectionCells();
-		for (int i = 0; i < cells.length; i++) {
-			GraphCell cell = (GraphCell) cells[i];
+		for (Object cell1 : cells) {
+			GraphCell cell = (GraphCell) cell1;
 			AttributeMap map = cell.getAttributes();
 			// GraphConstants.setLineWidth(map, EMPHASIS_WIDTH);
 			editCell(cell, map, graph);

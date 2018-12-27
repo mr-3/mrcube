@@ -80,7 +80,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 	private EditRDFPropertyAction editRDFPropertyAction;
 
 	private static final int FIELD_WIDTH = 80;
-	private static final int FIELD_HEIGHT = 20;
+	private static final int FIELD_HEIGHT = 30;
 
 	public RDFPropertyPanel(GraphManager manager) {
 		gmanager = manager;
@@ -173,7 +173,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		private void selectLocalName() {
 			selectNameSpaceList();
 			ListModel listModel = localNameList.getModel();
-			List<Object> list = new ArrayList<Object>();
+			List<Object> list = new ArrayList<>();
 			String idStr = findIDField.getText();
 			for (int i = 0; i < listModel.getSize(); i++) {
 				String elementStr = listModel.getElementAt(i).toString();
@@ -254,7 +254,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 
 	private void setPrefix() {
 		setURIPrefixBoxModel();
-		for (PrefixNSInfo prefNSInfo : GraphUtilities.getPrefixNSInfoSet()) {
+		for (NamespaceModel prefNSInfo : GraphUtilities.getNamespaceModelSet()) {
 			if (prefNSInfo.getNameSpace().equals(nsLabel.getText())) {
 				uriPrefixBox.setSelectedItem(prefNSInfo.getPrefix());
 				break;
@@ -278,7 +278,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 			localNameList.setListData(NULL);
 			return;
 		}
-		Set<String> modifyLocalNames = new TreeSet<String>();
+		Set<String> modifyLocalNames = new TreeSet<>();
 		for (String localName : localNames) {
 			if (localName.length() == 0) { // localNameがない場合，Nullを表示
 				modifyLocalNames.add(NULL_LOCAL_NAME);
@@ -315,7 +315,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		}
 	}
 
-	public void setValue(GraphCell c, PropertyInfo info) {
+	public void setValue(GraphCell c, PropertyModel info) {
 		edge = c;
 		if (info == null) {
 			setNSLabel(MR3Resource.Nil.getNameSpace());
@@ -327,13 +327,13 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 			isContainerBox.setSelected(info.isContainer());
 			setContainer(info.isContainer());
 			if (info.isContainer()) {
-				numSpinner.setValue(new Integer(info.getNum()));
+				numSpinner.setValue(info.getNum());
 			} else {
 				// mr3:nilの場合には，名前空間はBaseURIとする
 				if (info.getURIStr().equals(MR3Resource.Nil.getURI())) {
 					if (0 < propList.size()) {
 						GraphCell cell = propList.get(0);
-						RDFSInfo propInfo = (RDFSInfo) GraphConstants
+						RDFSModel propInfo = (RDFSModel) GraphConstants
 								.getValue(cell.getAttributes());
 						setNSLabel(propInfo.getURI().getNameSpace());
 					} else {
@@ -347,27 +347,19 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 			}
 		}
 		setPrefix();
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				idField.requestFocus();
-			}
-		});
+		SwingUtilities.invokeLater(() -> idField.requestFocus());
 	}
 
 	public void setPropertyList(List<GraphCell> plist) {
 		propList = plist;
-		propMap = new HashMap<String, Set<String>>();
-		propNameSpaceSet = new HashSet<String>();
+		propMap = new HashMap<>();
+		propNameSpaceSet = new HashSet<>();
 
 		for (GraphCell cell : propList) {
-			RDFSInfo info = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
+			RDFSModel info = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
 			Resource uri = info.getURI();
 			propNameSpaceSet.add(uri.getNameSpace());
-			Set<String> localNames = propMap.get(uri.getNameSpace());
-			if (localNames == null) {
-				localNames = new HashSet<String>();
-				propMap.put(uri.getNameSpace(), localNames);
-			}
+			Set<String> localNames = propMap.computeIfAbsent(uri.getNameSpace(), k -> new HashSet<>());
 			localNames.add(uri.getLocalName());
 		}
 		selectNameSpaceList();
@@ -382,9 +374,9 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		if (gmanager.isEmptyURI(uri.getURI())) {
 			return;
 		}
-		RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-		if (rdfsInfoMap.isPropertyCell(uri)) {
-			Object propertyCell = rdfsInfoMap.getPropertyCell(uri);
+		RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+		if (rdfsModelMap.isPropertyCell(uri)) {
+			Object propertyCell = rdfsModelMap.getPropertyCell(uri);
 			gmanager.selectPropertyCell(propertyCell);
 		} else {
 			JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(),
@@ -395,10 +387,10 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 
 	private void setContainerMemberProperty() {
 		Integer num = (Integer) numSpinner.getValue();
-		Resource resource = ResourceFactory.createResource(RDF.getURI() + "_" + num.intValue());
+		Resource resource = ResourceFactory.createResource(RDF.getURI() + "_" + num);
 		GraphCell propertyCell = gmanager.getPropertyCell(resource, false);
-		RDFSInfo rdfsInfo = (RDFSInfo) GraphConstants.getValue(propertyCell.getAttributes());
-		GraphConstants.setValue(edge.getAttributes(), rdfsInfo);
+		RDFSModel rdfsModel = (RDFSModel) GraphConstants.getValue(propertyCell.getAttributes());
+		GraphConstants.setValue(edge.getAttributes(), rdfsModel);
 		gmanager.getCurrentRDFGraph().getGraphLayoutCache().editCell(edge, edge.getAttributes());
 	}
 
@@ -407,8 +399,8 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 			return;
 		}
 		if (e.getSource() == applyButton || e.getSource() == idField) {
-			RDFSInfo beforeRDFSInfo = (RDFSInfo) GraphConstants.getValue(edge.getAttributes());
-			String beforeProperty = beforeRDFSInfo.getURIStr();
+			RDFSModel beforeRDFSModel = (RDFSModel) GraphConstants.getValue(edge.getAttributes());
+			String beforeProperty = beforeRDFSModel.getURIStr();
 			if (isContainer()) {
 				setContainerMemberProperty();
 			} else {
@@ -418,8 +410,8 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 				findIDField.setText("");
 				gmanager.selectRDFCell(edge);
 			}
-			RDFSInfo afterRDFSInfo = (RDFSInfo) GraphConstants.getValue(edge.getAttributes());
-			String afterProperty = afterRDFSInfo.getURIStr();
+			RDFSModel afterRDFSModel = (RDFSModel) GraphConstants.getValue(edge.getAttributes());
+			String afterProperty = afterRDFSModel.getURIStr();
 			HistoryManager.saveHistory(HistoryType.EDIT_PROPERTY_WITH_DIAGLOG, beforeProperty,
 					afterProperty);
 		} else if (e.getSource() == propOnlyCheck) {

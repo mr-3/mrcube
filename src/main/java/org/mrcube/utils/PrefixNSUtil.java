@@ -1,8 +1,8 @@
 /*
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
- * Project Website: http://mr3.sourceforge.net/
+ * Project Website: http://mrcube.org/
  * 
- * Copyright (C) 2003-2015 Yamaguchi Laboratory, Keio University. All rights reserved. 
+ * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
  * 
  * This file is part of MR^3.
  * 
@@ -25,8 +25,8 @@ package org.mrcube.utils;
 
 import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphConstants;
-import org.mrcube.models.PrefixNSInfo;
-import org.mrcube.models.RDFSInfo;
+import org.mrcube.models.NamespaceModel;
+import org.mrcube.models.RDFSModel;
 
 import javax.swing.*;
 import java.util.*;
@@ -36,35 +36,35 @@ import java.util.*;
  */
 public class PrefixNSUtil {
 
-    private static Set<PrefixNSInfo> prefixNSInfoSet;
+    private static Set<NamespaceModel> namespaceModelSet;
 
-    public static void setPrefixNSInfoSet(Set<PrefixNSInfo> set) {
-        prefixNSInfoSet = set;
+    public static void setNamespaceModelSet(Set<NamespaceModel> set) {
+        namespaceModelSet = set;
     }
 
     public static String getBaseURIPrefix(String baseURI) {
-        for (Iterator i = prefixNSInfoSet.iterator(); i.hasNext();) {
-            PrefixNSInfo info = (PrefixNSInfo) i.next();
-            if (info.getNameSpace().equals(baseURI)) { return info.getPrefix(); }
+        for (NamespaceModel info : namespaceModelSet) {
+            if (info.getNameSpace().equals(baseURI)) {
+                return info.getPrefix();
+            }
         }
         return null;
     }
 
     private static Set<String> getPropNSSet(List propList) {
-        Set<String> propNSSet = new HashSet<String>();
-        for (Iterator i = propList.iterator(); i.hasNext();) {
-            GraphCell cell = (GraphCell) i.next();
-            RDFSInfo info = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
+        Set<String> propNSSet = new HashSet<>();
+        for (Object o : propList) {
+            GraphCell cell = (GraphCell) o;
+            RDFSModel info = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
             propNSSet.add(info.getNameSpace());
         }
         return propNSSet;
     }
 
     public static Set getPropPrefixes(List propList) {
-        Set<String> prefixSet = new TreeSet<String>();
+        Set<String> prefixSet = new TreeSet<>();
         Set<String> propNSSet = getPropNSSet(propList);
-        for (Iterator i = prefixNSInfoSet.iterator(); i.hasNext();) {
-            PrefixNSInfo info = (PrefixNSInfo) i.next();
+        for (NamespaceModel info : namespaceModelSet) {
             if (propNSSet.contains(info.getNameSpace())) {
                 prefixSet.add(info.getPrefix());
             }
@@ -73,18 +73,18 @@ public class PrefixNSUtil {
     }
 
     public static Set getPrefixes() {
-        Set<String> prefixes = new TreeSet<String>();
-        for (Iterator i = prefixNSInfoSet.iterator(); i.hasNext();) {
-            PrefixNSInfo info = (PrefixNSInfo) i.next();
+        Set<String> prefixes = new TreeSet<>();
+        for (NamespaceModel info : namespaceModelSet) {
             prefixes.add(info.getPrefix());
         }
         return prefixes;
     }
 
     public static String getNameSpace(String prefix) {
-        for (Iterator i = prefixNSInfoSet.iterator(); i.hasNext();) {
-            PrefixNSInfo info = (PrefixNSInfo) i.next();
-            if (info.getPrefix().equals(prefix)) { return info.getNameSpace(); }
+        for (NamespaceModel info : namespaceModelSet) {
+            if (info.getPrefix().equals(prefix)) {
+                return info.getNameSpace();
+            }
         }
         return "#";
     }

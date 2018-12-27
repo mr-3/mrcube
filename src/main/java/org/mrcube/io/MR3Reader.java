@@ -35,8 +35,8 @@ import org.mrcube.layout.JGraphTreeLayout;
 import org.mrcube.layout.VGJTreeLayout;
 import org.mrcube.models.MR3Constants.HistoryType;
 import org.mrcube.models.MR3Resource;
-import org.mrcube.models.RDFSInfo;
-import org.mrcube.models.RDFSInfoMap;
+import org.mrcube.models.RDFSModel;
+import org.mrcube.models.RDFSModelMap;
 import org.mrcube.utils.ProjectManager;
 import org.mrcube.views.HistoryManager;
 import org.mrcube.views.NameSpaceTableDialog;
@@ -66,7 +66,7 @@ public class MR3Reader {
 		mr3Generator = new MR3Generator(gmanager);
 		jgraphTreeLayout = new JGraphTreeLayout(gmanager);
 		extractRDFS = new RDFSModelExtraction(gmanager);
-		replaceRDFSDialogRef = new WeakReference<ReplaceRDFSDialog>(null);
+		replaceRDFSDialogRef = new WeakReference<>(null);
 	}
 
 	public void replaceRDFModel(Model newModel) {
@@ -74,25 +74,21 @@ public class MR3Reader {
 		if (model == null) {
 			return;
 		}
-		new Thread() {
-			public void run() {
-				gmanager.importing(true);
-				replaceRDF(model);
-				performTreeLayout();
-				gmanager.importing(false);
-			}
-		}.start();
+		new Thread(() -> {
+			gmanager.importing(true);
+			replaceRDF(model);
+			performTreeLayout();
+			gmanager.importing(false);
+		}).start();
 	}
 
 	public void mergeRDFModelThread(Model newModel) {
 		model = newModel;
-		new Thread() {
-			public void run() {
-				gmanager.importing(true);
-				mergeRDFModel(model);
-				gmanager.importing(false);
-			}
-		}.start();
+		new Thread(() -> {
+			gmanager.importing(true);
+			mergeRDFModel(model);
+			gmanager.importing(false);
+		}).start();
 	}
 
 	public void mergeRDFModel(Model newModel) {
@@ -114,10 +110,10 @@ public class MR3Reader {
 	private void resetPropertyInfo() {
 		RDFGraph rdfGraph = gmanager.getCurrentRDFGraph();
 		Object[] cells = rdfGraph.getAllCells();
-		for (int i = 0; i < cells.length; i++) {
-			GraphCell cell = (GraphCell) cells[i];
+		for (Object cell1 : cells) {
+			GraphCell cell = (GraphCell) cell1;
 			if (RDFGraph.isRDFPropertyCell(cell)) {
-				RDFSInfo info = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
+				RDFSModel info = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
 				if (!info.getURI().equals(MR3Resource.Nil)) {
 					GraphCell propCell = gmanager.getPropertyCell(info.getURI(), false);
 					Object newInfo = GraphConstants.getValue(propCell.getAttributes());
@@ -148,16 +144,14 @@ public class MR3Reader {
 		if (ontModel == null) {
 			return;
 		}
-		new Thread() {
-			public void run() {
-				gmanager.importing(true);
-				// OntModelからDefaultModelへの変換処理
-				Model rdfsModel = OntModelToRDFSModel.convertOntModelToRDFSModel(ontModel);
-				mergeRDFs(rdfsModel);
-				performTreeLayout();
-				gmanager.importing(false);
-			}
-		}.start();
+		new Thread(() -> {
+			gmanager.importing(true);
+			// OntModelからDefaultModelへの変換処理
+			Model rdfsModel = OntModelToRDFSModel.convertOntModelToRDFSModel(ontModel);
+			mergeRDFs(rdfsModel);
+			performTreeLayout();
+			gmanager.importing(false);
+		}).start();
 	}
 
 	// private void addRDFTypeModel(Model rdfModel) {
@@ -180,13 +174,13 @@ public class MR3Reader {
 
 	private void setPropertyLabel(RDFGraph graph, Object edge) {
 		GraphCell sourceCell = (GraphCell) graph.getSourceVertex(edge);
-		RDFSInfo sourceInfo = (RDFSInfo) GraphConstants.getValue(sourceCell.getAttributes());
+		RDFSModel sourceInfo = (RDFSModel) GraphConstants.getValue(sourceCell.getAttributes());
 		Resource sourceRes = sourceInfo.getURI();
 		GraphCell targetCell = (GraphCell) graph.getTargetVertex(edge);
-		RDFSInfo targetInfo = (RDFSInfo) GraphConstants.getValue(targetCell.getAttributes());
+		RDFSModel targetInfo = (RDFSModel) GraphConstants.getValue(targetCell.getAttributes());
 		Resource targetRes = targetInfo.getURI();
-		RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-		Model model = rdfsInfoMap.getPropertyLabelModel();
+		RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+		Model model = rdfsModelMap.getPropertyLabelModel();
 		for (StmtIterator i = model.listStatements(); i.hasNext();) {
 			Statement stmt = i.nextStatement();
 			Resource subject = stmt.getSubject();
@@ -218,8 +212,8 @@ public class MR3Reader {
 		} else {
 			mr3Parser.createClassGraph(VGJTreeLayout.getVGJClassCellLayoutMap());
 		}
-		RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-		rdfsInfoMap.clearTemporaryObject();
+		RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+		rdfsModelMap.clearTemporaryObject();
 		gmanager.getCurrentClassGraph().clearSelection();
 	}
 
@@ -233,8 +227,8 @@ public class MR3Reader {
 		} else {
 			mr3Parser.createPropertyGraph(VGJTreeLayout.getVGJPropertyCellLayoutMap());
 		}
-		RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-		rdfsInfoMap.clearTemporaryObject();
+		RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+		rdfsModelMap.clearTemporaryObject();
 		gmanager.getCurrentPropertyGraph().clearSelection();
 	}
 
@@ -261,32 +255,30 @@ public class MR3Reader {
 		if (model == null) {
 			return;
 		}
-		new Thread() {
-			public void run() {
-				if (gmanager.getCurrentRDFGraph().getAllCells().length == 0) {
-					gmanager.getCurrentClassGraph().removeAllCells();
-					gmanager.getCurrentPropertyGraph().removeAllCells();
+		new Thread(() -> {
+			if (gmanager.getCurrentRDFGraph().getAllCells().length == 0) {
+				gmanager.getCurrentClassGraph().removeAllCells();
+				gmanager.getCurrentPropertyGraph().removeAllCells();
+				gmanager.importing(true);
+				replaceRDFS(model);
+				performRDFSTreeLayout();
+			} else {
+				ReplaceRDFSDialog replaceRDFSDialog = getReplaceRDFSDialog(model);
+				if (replaceRDFSDialog.isApply()) {
 					gmanager.importing(true);
 					replaceRDFS(model);
 					performRDFSTreeLayout();
-				} else {
-					ReplaceRDFSDialog replaceRDFSDialog = getReplaceRDFSDialog(model);
-					if (replaceRDFSDialog.isApply()) {
-						gmanager.importing(true);
-						replaceRDFS(model);
-						performRDFSTreeLayout();
-					}
 				}
-				gmanager.importing(false);
 			}
-		}.start();
+			gmanager.importing(false);
+		}).start();
 	}
 
 	public ReplaceRDFSDialog getReplaceRDFSDialog(Model model) {
 		ReplaceRDFSDialog result = replaceRDFSDialogRef.get();
 		if (result == null) {
 			result = new ReplaceRDFSDialog(gmanager);
-			replaceRDFSDialogRef = new WeakReference<ReplaceRDFSDialog>(result);
+			replaceRDFSDialogRef = new WeakReference<>(result);
 		}
 		result.initListData(model.union(ModelFactory.createDefaultModel()));
 		result.setVisible(true);
@@ -305,14 +297,12 @@ public class MR3Reader {
 		if (model == null) {
 			return;
 		}
-		new Thread() {
-			public void run() {
-				gmanager.importing(true);
-				mergeRDFs(model);
-				performTreeLayout();
-				gmanager.importing(false);
-			}
-		}.start();
+		new Thread(() -> {
+			gmanager.importing(true);
+			mergeRDFs(model);
+			performTreeLayout();
+			gmanager.importing(false);
+		}).start();
 	}
 
 	public void performTreeLayout() {
@@ -352,26 +342,24 @@ public class MR3Reader {
 		if (model == null) {
 			return;
 		}
-		new Thread() {
-			public void run() {
-				File currentProjectFile = MR3.getCurrentProject().getCurrentProjectFile(); // NewProjectよりも前のを保存
-				gmanager.importing(true);
-				ProjectManager projectManager = new ProjectManager(gmanager);
-				Model projectModel = projectManager.extractProjectModel(model);
-				mergeRDFs(model);
-				projectManager.loadProject(projectModel);
-				projectManager.removeEmptyClass();
-				nsTableDialog.setPrefixNSInfoSet();
-				gmanager.clearSelection();
-				gmanager.refreshGraphs();
-				gmanager.importing(false);
-				if (currentProjectFile != null) {
-					MR3.getCurrentProject().setCurrentProjectFile(currentProjectFile);
-					MR3.setCurrentProjectName();
-					HistoryManager.saveHistory(HistoryType.OPEN_PROJECT,
-							currentProjectFile.getAbsolutePath());
-				}
+		new Thread(() -> {
+			File currentProjectFile = MR3.getCurrentProject().getCurrentProjectFile(); // NewProjectよりも前のを保存
+			gmanager.importing(true);
+			ProjectManager projectManager = new ProjectManager(gmanager);
+			Model projectModel1 = projectManager.extractProjectModel(model);
+			mergeRDFs(model);
+			projectManager.loadProject(projectModel1);
+			projectManager.removeEmptyClass();
+			nsTableDialog.setPrefixNSInfoSet();
+			gmanager.clearSelection();
+			gmanager.refreshGraphs();
+			gmanager.importing(false);
+			if (currentProjectFile != null) {
+				MR3.getCurrentProject().setCurrentProjectFile(currentProjectFile);
+				MR3.setCurrentProjectName();
+				HistoryManager.saveHistory(HistoryType.OPEN_PROJECT,
+						currentProjectFile.getAbsolutePath());
 			}
-		}.start();
+		}).start();
 	}
 }

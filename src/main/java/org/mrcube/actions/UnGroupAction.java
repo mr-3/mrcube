@@ -1,6 +1,6 @@
 /*
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
- * Project Website: http://mr3.sourceforge.net/
+ * Project Website: http://mrcube.org/
  * 
  * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
  * 
@@ -52,7 +52,7 @@ public class UnGroupAction extends AbstractAction {
 		graph = g;
 		gmanager = gm;
 		putValue(SHORT_DESCRIPTION, TITLE);
-		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_U, KeyEvent.CTRL_MASK));
+		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_U, KeyEvent.CTRL_DOWN_MASK));
 	}
 
 	// Determines if a Cell is a Group
@@ -67,8 +67,8 @@ public class UnGroupAction extends AbstractAction {
 	public static void ungroup(RDFGraph graph) {
 		Object[] cells = graph.getSelectionCells();
 		if (cells != null && cells.length > 0) {
-			List<Object> groups = new ArrayList<Object>();
-			List<Object> children = new ArrayList<Object>();
+			List<Object> groups = new ArrayList<>();
+			List<Object> children = new ArrayList<>();
 			for (Object cell : cells) {
 				if (isGroup(graph, cell)) {
 					groups.add(cell);

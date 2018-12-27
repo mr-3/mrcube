@@ -1,3 +1,10 @@
-*.iml
-target/
 .idea/
+.gradle/
+gradle/
+target/
+build/
+out/
+*.iml
+gradlew
+gradlew.bat
+.DS_Store

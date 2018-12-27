@@ -181,22 +181,22 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
         rdfsModelExtraction.extractPropertyModel(replaceModel);
 
         setListData(currentClassListModel, gmanager.getClassSet());
-        RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-        setListData(replaceClassListModel, rdfsInfoMap.getClassSet(new HashSet<String>(), RDFS.Resource));
+        RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+        setListData(replaceClassListModel, rdfsModelMap.getClassSet(new HashSet<>(), RDFS.Resource));
         setListData(currentPropertyListModel, gmanager.getPropertySet());
         Set replacePropertySet = new HashSet();
 
-        for (Resource res : rdfsInfoMap.getRootProperties()) {
+        for (Resource res : rdfsModelMap.getRootProperties()) {
             replacePropertySet.add(res.getURI());
-            rdfsInfoMap.getPropertySet(replacePropertySet, res);
+            rdfsModelMap.getPropertySet(replacePropertySet, res);
         }
         setListData(replacePropertyListModel, replacePropertySet);
         fixListData();
     }
 
     private void setListData(DefaultListModel listModel, Set<String> dataSet) {
-        for (Iterator i = dataSet.iterator(); i.hasNext();) {
-            listModel.addElement(i.next());
+        for (String s : dataSet) {
+            listModel.addElement(s);
         }
     }
 
@@ -288,28 +288,28 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
     }
 
     private void replaceRDFResourceType(GraphCell cell, Map currentReplaceMap) {
-        RDFResourceInfo resInfo = (RDFResourceInfo) GraphConstants.getValue(cell.getAttributes());
-        RDFSInfo rdfsInfo = resInfo.getTypeInfo();
-        String res = (String) currentReplaceMap.get(rdfsInfo.getURIStr());
+        RDFResourceModel resInfo = (RDFResourceModel) GraphConstants.getValue(cell.getAttributes());
+        RDFSModel rdfsModel = resInfo.getTypeInfo();
+        String res = (String) currentReplaceMap.get(rdfsModel.getURIStr());
         if (res.equals(NULL)) {
             resInfo.setTypeCell(null, gmanager.getCurrentRDFGraph());
         } else {
             Resource resource = ResourceFactory.createResource(res);
-            resInfo.setTypeCell((GraphCell) gmanager.getClassCell(resource, false), gmanager.getCurrentRDFGraph());
+            resInfo.setTypeCell(gmanager.getClassCell(resource, false), gmanager.getCurrentRDFGraph());
         }
     }
 
     private void replaceRDFProperty(GraphCell cell, Map currentReplaceMap) {
-        RDFSInfo info = (RDFSInfo) GraphConstants.getValue(cell.getAttributes());
+        RDFSModel info = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
         String prop = (String) currentReplaceMap.get(info.getURIStr());
         if (prop.equals(NULL)) {
             GraphCell rdfsPropCell = gmanager.getPropertyCell(MR3Resource.Nil, false);
-            RDFSInfo rdfsInfo = (RDFSInfo) GraphConstants.getValue(rdfsPropCell.getAttributes());
-            GraphConstants.setValue(cell.getAttributes(), rdfsInfo);
+            RDFSModel rdfsModel = (RDFSModel) GraphConstants.getValue(rdfsPropCell.getAttributes());
+            GraphConstants.setValue(cell.getAttributes(), rdfsModel);
         } else {
             GraphCell rdfsPropCell = gmanager.getPropertyCell(ResourceFactory.createResource(prop), false);
-            RDFSInfo rdfsInfo = (RDFSInfo) GraphConstants.getValue(rdfsPropCell.getAttributes());
-            GraphConstants.setValue(cell.getAttributes(), rdfsInfo);
+            RDFSModel rdfsModel = (RDFSModel) GraphConstants.getValue(rdfsPropCell.getAttributes());
+            GraphConstants.setValue(cell.getAttributes(), rdfsModel);
         }
     }
     private void replaceClassList() {
@@ -326,8 +326,8 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
         Map currentReplaceMap = getCurrentReplaceMap(currentPropertyListModel, replacePropertyListModel);
         RDFGraph graph = gmanager.getCurrentRDFGraph();
         Object[] cells = graph.getAllCells();
-        for (int i = 0; i < cells.length; i++) {
-            GraphCell cell = (GraphCell) cells[i];
+        for (Object cell1 : cells) {
+            GraphCell cell = (GraphCell) cell1;
             if (RDFGraph.isRDFPropertyCell(cell)) {
                 replaceRDFProperty(cell, currentReplaceMap);
             }
@@ -342,10 +342,10 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
         RDFGraph graph = gmanager.getCurrentClassGraph();
         Object[] cells = graph.getAllCells();
         graph.clearSelection();
-        for (int i = 0; i < cells.length; i++) {
-            GraphCell cell = (GraphCell) cells[i];
+        for (Object cell1 : cells) {
+            GraphCell cell = (GraphCell) cell1;
             if (RDFGraph.isRDFSClassCell(cell)) {
-                ClassInfo info = (ClassInfo) GraphConstants.getValue(cell.getAttributes());
+                ClassModel info = (ClassModel) GraphConstants.getValue(cell.getAttributes());
                 // ラベルとコメントを消すべきか？
                 info.clearSubClass();
                 info.clearSupClass();
@@ -363,10 +363,10 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
         RDFGraph graph = gmanager.getCurrentPropertyGraph();
         Object[] cells = graph.getAllCells();
         graph.clearSelection();
-        for (int i = 0; i < cells.length; i++) {
-            GraphCell cell = (GraphCell) cells[i];
+        for (Object cell1 : cells) {
+            GraphCell cell = (GraphCell) cell1;
             if (RDFGraph.isRDFSPropertyCell(cell)) {
-                PropertyInfo info = (PropertyInfo) GraphConstants.getValue(cell.getAttributes());
+                PropertyModel info = (PropertyModel) GraphConstants.getValue(cell.getAttributes());
                 info.clearSubProperty();
                 info.clearSupProperty();
                 info.clearDomain();
@@ -402,8 +402,8 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
     public void setVisible(boolean flag) {
         super.setVisible(flag);
         if (!flag) {
-            RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-            rdfsInfoMap.clearTemporaryObject();
+            RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+            rdfsModelMap.clearTemporaryObject();
         }
     }
 

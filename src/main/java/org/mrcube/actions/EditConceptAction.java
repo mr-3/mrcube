@@ -26,12 +26,11 @@ package org.mrcube.actions;
 import org.jgraph.graph.GraphCell;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.jgraph.RDFGraph;
-import org.mrcube.models.ClassInfo;
+import org.mrcube.models.*;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.MR3Constants.HistoryType;
-import org.mrcube.models.PropertyInfo;
-import org.mrcube.models.RDFSInfo;
-import org.mrcube.models.RDFSInfoMap;
+import org.mrcube.models.PropertyModel;
+import org.mrcube.models.RDFSModel;
 import org.mrcube.utils.GraphUtilities;
 import org.mrcube.views.HistoryManager;
 import org.mrcube.views.OntologyPanel.BasePanel;
@@ -46,7 +45,7 @@ public class EditConceptAction extends AbstractAction {
 
     private String uri;
     private BasePanel basePanel;
-    private RDFSInfo rdfsInfo;
+    private RDFSModel rdfsModel;
     private GraphCell graphCell;
     private RDFGraph graph;
     private GraphManager gmanager;
@@ -70,39 +69,39 @@ public class EditConceptAction extends AbstractAction {
         graphCell = gc;
     }
 
-    public void setRDFSInfo(RDFSInfo info) {
-        rdfsInfo = info;
+    public void setRDFSInfo(RDFSModel info) {
+        rdfsModel = info;
     }
 
-    private RDFSInfo editConcept() {
-        RDFSInfo beforeRDFSInfo = null;
-        if (rdfsInfo instanceof ClassInfo) {
-            beforeRDFSInfo = new ClassInfo((ClassInfo) rdfsInfo);
-        } else if (rdfsInfo instanceof PropertyInfo) {
-            beforeRDFSInfo = new PropertyInfo((PropertyInfo) rdfsInfo);
+    private RDFSModel editConcept() {
+        RDFSModel beforeRDFSModel = null;
+        if (rdfsModel instanceof ClassModel) {
+            beforeRDFSModel = new ClassModel((ClassModel) rdfsModel);
+        } else if (rdfsModel instanceof PropertyModel) {
+            beforeRDFSModel = new PropertyModel((PropertyModel) rdfsModel);
         }
 
         // ここで，URIとセルのマッピングを削除する
-        RDFSInfoMap rdfsInfoMap = gmanager.getCurrentRDFSInfoMap();
-        rdfsInfoMap.removeURICellMap(rdfsInfo);
-        rdfsInfo.setURI(uri);
-        GraphUtilities.resizeRDFSResourceCell(gmanager, rdfsInfo, graphCell);
-        rdfsInfoMap.putURICellMap(rdfsInfo, graphCell);
-        gmanager.selectChangedRDFCells(rdfsInfo);
+        RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+        rdfsModelMap.removeURICellMap(rdfsModel);
+        rdfsModel.setURI(uri);
+        GraphUtilities.resizeRDFSResourceCell(gmanager, rdfsModel, graphCell);
+        rdfsModelMap.putURICellMap(rdfsModel, graphCell);
+        gmanager.selectChangedRDFCells(rdfsModel);
 
-        return beforeRDFSInfo;
+        return beforeRDFSModel;
     }
 
     private void editWithDialog() {
         if (graphCell != null) {
             uri = basePanel.getURIString();
             if (gmanager.isEmptyURI(uri) || gmanager.isDuplicatedWithDialog(uri, graphCell, graph.getType())) { return; }
-            RDFSInfo beforeRDFSInfo = editConcept();
-            rdfsInfo.setMetaClass(basePanel.getMetaClassString());
+            RDFSModel beforeRDFSModel = editConcept();
+            rdfsModel.setMetaClass(basePanel.getMetaClassString());
             if (graph.getType() == GraphType.CLASS) {
-                HistoryManager.saveHistory(HistoryType.EDIT_CLASS_WITH_DIAGLOG, beforeRDFSInfo, rdfsInfo);
+                HistoryManager.saveHistory(HistoryType.EDIT_CLASS_WITH_DIAGLOG, beforeRDFSModel, rdfsModel);
             } else if (graph.getType() == GraphType.PROPERTY) {
-                HistoryManager.saveHistory(HistoryType.EDIT_ONT_PROPERTY_WITH_DIAGLOG, beforeRDFSInfo, rdfsInfo);
+                HistoryManager.saveHistory(HistoryType.EDIT_ONT_PROPERTY_WITH_DIAGLOG, beforeRDFSModel, rdfsModel);
             }
             graph.clearSelection();
             graph.setSelectionCell(graphCell);
@@ -113,19 +112,19 @@ public class EditConceptAction extends AbstractAction {
         return !newRes.equals(oldRes) && !gmanager.isDuplicatedWithDialog(newRes, null, graph.getType());
     }
 
-    public void editWithGraph(String uri, RDFSInfo info, GraphCell cell) {
-        rdfsInfo = info;
+    public void editWithGraph(String uri, RDFSModel info, GraphCell cell) {
+        rdfsModel = info;
         graphCell = cell;
         this.uri = uri;
-        if (!isValidResource(uri, rdfsInfo.getURIStr())) {
+        if (!isValidResource(uri, rdfsModel.getURIStr())) {
             graph.getGraphLayoutCache().editCell(cell, cell.getAttributes());
             return;
         }
-        RDFSInfo beforeInfo = editConcept();
+        RDFSModel beforeInfo = editConcept();
         if (RDFGraph.isRDFSClassCell(graphCell)) {
-            HistoryManager.saveHistory(HistoryType.EDIT_CLASS_WITH_GRAPH, beforeInfo, rdfsInfo);
+            HistoryManager.saveHistory(HistoryType.EDIT_CLASS_WITH_GRAPH, beforeInfo, rdfsModel);
         } else if (RDFGraph.isRDFSPropertyCell(graphCell)) {
-            HistoryManager.saveHistory(HistoryType.EDIT_ONT_PROPERTY_WITH_GRAPH, beforeInfo, rdfsInfo);
+            HistoryManager.saveHistory(HistoryType.EDIT_ONT_PROPERTY_WITH_GRAPH, beforeInfo, rdfsModel);
         }
     }
 

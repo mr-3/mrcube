@@ -26,17 +26,13 @@ package org.mrcube.views;
 import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
-import org.jgraph.graph.AttributeMap;
-import org.jgraph.graph.GraphCell;
-import org.jgraph.graph.GraphConstants;
 import org.mrcube.jgraph.*;
 import org.mrcube.layout.GraphLayoutUtilities;
 import org.mrcube.models.MR3Constants;
 import org.mrcube.models.MR3Resource;
+import org.mrcube.models.NamespaceModel;
 import org.mrcube.models.PrefConstants;
-import org.mrcube.models.PrefixNSInfo;
 import org.mrcube.utils.*;
-import say.swing.JFontChooser;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -47,9 +43,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.lang.ref.WeakReference;
+import java.util.Arrays;
 import java.util.List;
-import java.util.*;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.prefs.Preferences;
 
 /**
@@ -187,8 +184,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         private JComboBox uiLangBox;
         private ComboBoxModel outputEncodingBoxModel;
         private JComboBox outputEncodingBox;
-        private JLabel fontSettingValueLabel;
-        private JButton fontSettingButton;
         private JComboBox uriPrefixBox;
         private JLabel baseURILabel;
         private JCheckBox isLogAvailableCheckBox;
@@ -201,7 +196,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             panel.add(getLangPanel());
             panel.add(getUILangPanel());
             panel.add(getEncodingPanel());
-            panel.add(getFontSettingPanel());
             panel.add(getBaseURIPanel());
             panel.add(getLogFilePanel());
             setLayout(new BorderLayout());
@@ -274,7 +268,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         }
 
         private Object[] getLanguages(File resourceDir) {
-            Set<String> langSet = new TreeSet<String>();
+            Set<String> langSet = new TreeSet<>();
             try {
                 for (File resFile : resourceDir.listFiles()) {
                     if (resFile.getName().matches("MR3_.*\\.properties")) {
@@ -327,68 +321,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             encodingPanel.add(outputEncodingBox);
 
             return Utilities.createWestPanel(encodingPanel);
-        }
-
-        private JComponent getFontSettingPanel() {
-            fontSettingValueLabel = new JLabel(getFont().getFontName() + "-" + getFont().getSize());
-            fontSettingButton = new JButton(Translator.getString("PreferenceDialog.BaseTab.FontSetting.Button"));
-            fontSettingButton
-                    .addActionListener(new ChooseFontAction(Translator.getString("Component.View.ChooseFont")));
-            JPanel fontSettingPanel = new JPanel();
-            fontSettingPanel.setLayout(new GridLayout(1, 3, 5, 5));
-            fontSettingPanel.add(new JLabel(Translator.getString("PreferenceDialog.BaseTab.FontSetting") + ": "));
-            fontSettingPanel.add(fontSettingValueLabel);
-            fontSettingPanel.add(fontSettingButton);
-            return Utilities.createWestPanel(fontSettingPanel);
-        }
-
-        public class ChooseFontAction extends AbstractAction {
-
-            private WeakReference<JFontChooser> jfontChooserRef;
-
-            public ChooseFontAction(String name) {
-                super(name);
-                jfontChooserRef = new WeakReference<JFontChooser>(null);
-            }
-
-            private JFontChooser getJFontChooser() {
-                JFontChooser result = jfontChooserRef.get();
-                if (result == null) {
-                    result = new JFontChooser();
-                    jfontChooserRef = new WeakReference<JFontChooser>(result);
-                }
-                return result;
-            }
-
-            public void actionPerformed(ActionEvent arg0) {
-                JFontChooser jfontChooser = getJFontChooser();
-                if (GraphUtilities.defaultFont == null) {
-                    GraphUtilities.defaultFont = getFont();
-                }
-                jfontChooser.setSelectedFont(GraphUtilities.defaultFont);
-                int result = jfontChooser.showDialog(gmanager.getRootFrame());
-                if (result == JFontChooser.OK_OPTION) {
-                    // System.out.println(jfontChooser.getSelectedFont());
-                    Font font = jfontChooser.getSelectedFont();
-                    fontSettingValueLabel.setText(font.getFontName() + "-" + font.getSize());
-                    GraphUtilities.defaultFont = font;
-                    setGraphFont(gmanager.getCurrentRDFGraph(), font);
-                    setGraphFont(gmanager.getCurrentClassGraph(), font);
-                    setGraphFont(gmanager.getCurrentPropertyGraph(), font);
-                }
-            }
-
-            private void setGraphFont(RDFGraph graph, Font font) {
-                Object[] cells = graph.getAllCells();
-                for (int i = 0; i < cells.length; i++) {
-                    if (cells[i] instanceof GraphCell) {
-                        GraphCell cell = (GraphCell) cells[i];
-                        AttributeMap map = cell.getAttributes();
-                        GraphConstants.setFont(map, font);
-                        GraphUtilities.editCell(cell, map, graph);
-                    }
-                }
-            }
         }
 
         private JComponent getBaseURIPanel() {
@@ -462,13 +394,13 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         }
 
         private void initPrefixBox() {
-            PrefixNSUtil.setPrefixNSInfoSet(GraphUtilities.getPrefixNSInfoSet());
+            PrefixNSUtil.setNamespaceModelSet(GraphUtilities.getNamespaceModelSet());
             uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
             setPrefix();
         }
 
         private void setPrefix() {
-            for (PrefixNSInfo prefNSInfo : GraphUtilities.getPrefixNSInfoSet()) {
+            for (NamespaceModel prefNSInfo : GraphUtilities.getNamespaceModelSet()) {
                 if (prefNSInfo.getNameSpace().equals(gmanager.getBaseURI())) {
                     uriPrefixBox.setSelectedItem(prefNSInfo.getPrefix());
                     baseURILabel.setText(prefNSInfo.getNameSpace());
@@ -761,8 +693,8 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             String[] list = classClassListStr.split(" ");
             Arrays.sort(list);
             classClassListModel.clear();
-            for (int i = 0; i < list.length; i++) {
-                classClassListModel.addElement(list[i]);
+            for (String s1 : list) {
+                classClassListModel.addElement(s1);
             }
 
             String defaultPropertyClass = userPrefs.get(PrefConstants.DefaultPropertyClass, RDF.Property.getURI());
@@ -772,8 +704,8 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             list = propClassListStr.split(" ");
             Arrays.sort(list);
             propClassListModel.clear();
-            for (int i = 0; i < list.length; i++) {
-                propClassListModel.addElement(list[i]);
+            for (String s : list) {
+                propClassListModel.addElement(s);
             }
         }
 
@@ -959,7 +891,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
     }
 
     private static final int BUTTON_WIDTH = 200;
-    private static final int BUTTON_HEIGHT = 25;
+    private static final int BUTTON_HEIGHT = 30;
 
     class LayoutPanel extends JPanel {
 
@@ -1045,7 +977,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             propertyLayoutDirectionBox = new JComboBox(directionList);
 
             JPanel mainPanel = new JPanel();
-            mainPanel.setPreferredSize(new Dimension(400, 250));
+            mainPanel.setPreferredSize(new Dimension(400, 350));
             mainPanel.setLayout(new GridLayout(3, 1));
             mainPanel.add(getLayoutDirectionPanel());
             mainPanel.add(getLayoutSpacePanel());
@@ -1094,10 +1026,8 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
 
             if (autoSizeButton.isSelected()) {
                 userPrefs.put(PrefConstants.NODE_SIZE, PrefConstants.NODE_SIZE_AUTO);
-                gmanager.setAutoSize(true);
             } else {
                 userPrefs.put(PrefConstants.NODE_SIZE, PrefConstants.NODE_SIZE_FIX);
-                gmanager.setAutoSize(false);
             }
             userPrefs.put(PrefConstants.NODE_WIDTH, nodeWidthSpinner.getValue().toString());
             MR3CellMaker.CELL_WIDTH = Integer.parseInt(nodeWidthSpinner.getValue().toString());
@@ -1130,17 +1060,17 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
                 propertyLayoutDirectionBox.setSelectedItem(direction);
             }
 
-            rdfVerticalSpaceSpinner.setValue(new Integer(userPrefs.get(PrefConstants.RDF_VERTICAL_SPACE,
+            rdfVerticalSpaceSpinner.setValue(Integer.valueOf(userPrefs.get(PrefConstants.RDF_VERTICAL_SPACE,
                     Integer.toString(GraphLayoutUtilities.VERTICAL_SPACE))));
-            rdfHorizontalSpaceSpinner.setValue(new Integer(userPrefs.get(PrefConstants.RDF_HORIZONTAL_SPACE,
+            rdfHorizontalSpaceSpinner.setValue(Integer.valueOf(userPrefs.get(PrefConstants.RDF_HORIZONTAL_SPACE,
                     Integer.toString(GraphLayoutUtilities.HORIZONTAL_SPACE))));
-            classVerticalSpaceSpinner.setValue(new Integer(userPrefs.get(PrefConstants.CLASS_VERTICAL_SPACE,
+            classVerticalSpaceSpinner.setValue(Integer.valueOf(userPrefs.get(PrefConstants.CLASS_VERTICAL_SPACE,
                     Integer.toString(GraphLayoutUtilities.VERTICAL_SPACE))));
-            classHorizontalSpaceSpinner.setValue(new Integer(userPrefs.get(PrefConstants.CLASS_HORIZONTAL_SPACE,
+            classHorizontalSpaceSpinner.setValue(Integer.valueOf(userPrefs.get(PrefConstants.CLASS_HORIZONTAL_SPACE,
                     Integer.toString(GraphLayoutUtilities.HORIZONTAL_SPACE))));
-            propertyVerticalSpaceSpinner.setValue(new Integer(userPrefs.get(PrefConstants.PROPERTY_VERTICAL_SPACE,
+            propertyVerticalSpaceSpinner.setValue(Integer.valueOf(userPrefs.get(PrefConstants.PROPERTY_VERTICAL_SPACE,
                     Integer.toString(GraphLayoutUtilities.VERTICAL_SPACE))));
-            propertyHorizontalSpaceSpinner.setValue(new Integer(userPrefs.get(PrefConstants.PROPERTY_HORIZONTAL_SPACE,
+            propertyHorizontalSpaceSpinner.setValue(Integer.valueOf(userPrefs.get(PrefConstants.PROPERTY_HORIZONTAL_SPACE,
                     Integer.toString(GraphLayoutUtilities.HORIZONTAL_SPACE))));
 
             String nodeSize = userPrefs.get(PrefConstants.NODE_SIZE, PrefConstants.NODE_SIZE_AUTO);
@@ -1149,9 +1079,9 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             } else {
                 fixSizeButton.setSelected(true);
             }
-            nodeWidthSpinner.setValue(new Integer(userPrefs.get(PrefConstants.NODE_WIDTH,
+            nodeWidthSpinner.setValue(Integer.valueOf(userPrefs.get(PrefConstants.NODE_WIDTH,
                     Integer.toString(MR3CellMaker.CELL_WIDTH))));
-            nodeHeightSpinner.setValue(new Integer(userPrefs.get(PrefConstants.NODE_HEIGHT,
+            nodeHeightSpinner.setValue(Integer.valueOf(userPrefs.get(PrefConstants.NODE_HEIGHT,
                     Integer.toString(MR3CellMaker.CELL_HEIGHT))));
             nodeWidthSpinner.setEnabled(fixSizeButton.isSelected());
             nodeHeightSpinner.setEnabled(fixSizeButton.isSelected());
@@ -1423,7 +1353,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
     }
 
     private static final int PREFIX_BOX_WIDTH = 120;
-    private static final int PREFIX_BOX_HEIGHT = 20;
+    private static final int PREFIX_BOX_HEIGHT = 30;
 
     private void setText(JTextComponent jtc, String text) {
         jtc.setText(text);
@@ -1445,8 +1375,8 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
 
     private String getMetaClassStr(Object[] list) {
         String metaClassListStr = "";
-        for (int i = 0; i < list.length; i++) {
-            metaClassListStr += list[i] + " ";
+        for (Object o : list) {
+            metaClassListStr += o + " ";
         }
         return metaClassListStr;
     }

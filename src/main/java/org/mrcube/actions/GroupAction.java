@@ -1,6 +1,6 @@
 /*
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
- * Project Website: http://mr3.sourceforge.net/
+ * Project Website: http://mrcube.org/
  * 
  * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
  * 
@@ -47,7 +47,7 @@ public class GroupAction extends AbstractAction {
         super(TITLE, ICON);
         graph = g;
         putValue(SHORT_DESCRIPTION, TITLE);
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_G, KeyEvent.CTRL_MASK));
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_G, KeyEvent.CTRL_DOWN_MASK));
     }
 
     // Returns the total number of cells in a graph
@@ -62,7 +62,7 @@ public class GroupAction extends AbstractAction {
 
         if (cells != null && cells.length > 0) {
             int count = getCellCount(graph);
-            DefaultGraphCell group = new DefaultGraphCell(new Integer(count - 1));
+            DefaultGraphCell group = new DefaultGraphCell(count - 1);
             ParentMap map = new ParentMap();
             for (Object cell : cells) {
                 map.addEntry(cell, group);

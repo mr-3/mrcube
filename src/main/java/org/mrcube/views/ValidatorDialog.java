@@ -1,6 +1,6 @@
 /*
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
- * Project Website: http://mr3.sourceforge.net/
+ * Project Website: http://mrcube.org/
  * 
  * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
  * 
@@ -118,7 +118,7 @@ public class ValidatorDialog extends JDialog {
 	private void validateModel() {
 		Model model = mr3Writer.getRDFModel();
 		model.add(mr3Writer.getRDFSModel());
-		StringBuilder messages = new StringBuilder("");
+		StringBuilder messages = new StringBuilder();
 		InfModel infmodel = ModelFactory.createRDFSModel(model);
 		ValidityReport validity = infmodel.validate();
 		if (validity.isValid()) {
@@ -127,7 +127,7 @@ public class ValidatorDialog extends JDialog {
 			messages.append("Conflicts");
 			messages.append(System.lineSeparator());
 			for (Iterator i = validity.getReports(); i.hasNext();) {
-				messages.append(" - " + i.next());
+				messages.append(" - ").append(i.next());
 				messages.append(System.lineSeparator());
 			}
 		}

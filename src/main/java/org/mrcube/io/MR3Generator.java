@@ -64,7 +64,7 @@ public class MR3Generator {
 	private void createPropertyModel(RDFGraph graph, Object[] cells, Model propertyModel) {
 		for (Object cell : cells) {
 			if (RDFGraph.isRDFSPropertyCell(cell)) {
-				PropertyInfo info = (PropertyInfo) GraphConstants.getValue(((GraphCell) cell)
+				PropertyModel info = (PropertyModel) GraphConstants.getValue(((GraphCell) cell)
 						.getAttributes());
 				Set<GraphCell> supProperties = graph.getTargetCells((DefaultGraphCell) cell);
 				info.setSuperRDFS(supProperties);
@@ -92,7 +92,7 @@ public class MR3Generator {
 		for (Object cell : cells) {
 			if (RDFGraph.isRDFSClassCell(cell)) {
 				DefaultGraphCell classCell = (DefaultGraphCell) cell;
-				ClassInfo info = (ClassInfo) GraphConstants.getValue(classCell.getAttributes());
+				ClassModel info = (ClassModel) GraphConstants.getValue(classCell.getAttributes());
 				Set<GraphCell> supClasses = graph.getTargetCells(classCell);
 				info.setSuperRDFS(supClasses);
 				classModel.add(info.getModel());
@@ -101,7 +101,7 @@ public class MR3Generator {
 	}
 
 	private void setResourceType(Model rdfModel, GraphCell cell) {
-		RDFResourceInfo resInfo = (RDFResourceInfo) GraphConstants.getValue(cell.getAttributes());
+		RDFResourceModel resInfo = (RDFResourceModel) GraphConstants.getValue(cell.getAttributes());
 		if (resInfo.hasType()) {
 			rdfModel.add(rdfModel.createStatement(resInfo.getURI(), RDF.type, resInfo.getType()));
 		}
@@ -112,9 +112,9 @@ public class MR3Generator {
 	 */
 	private Object[] getEdges(Model rdfModel, Object[] cells) {
 		if (cells != null) {
-			List<GraphCell> result = new ArrayList<GraphCell>();
-			for (int i = 0; i < cells.length; i++) {
-				GraphCell cell = (GraphCell) cells[i];
+			List<GraphCell> result = new ArrayList<>();
+			for (Object cell1 : cells) {
+				GraphCell cell = (GraphCell) cell1;
 				if (RDFGraph.isEdge(cell)) {
 					result.add(cell);
 				} else if (!RDFGraph.isTypeCell(cell) && RDFGraph.isRDFResourceCell(cell)) {
@@ -147,7 +147,7 @@ public class MR3Generator {
 	private void addRDFModel(Object[] cells, Model rdfModel) {
 		for (Object cell : cells) {
 			if (RDFGraph.isRDFResourceCell(cell)) {
-				RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(((GraphCell) cell)
+				RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(((GraphCell) cell)
 						.getAttributes());
 				rdfModel.add(info.getModel(info.getURI()));
 			}
@@ -156,11 +156,11 @@ public class MR3Generator {
 
 	private Property getRDFProperty(Edge edge) {
 		if (edge.getAttributes() == null
-				|| !(GraphConstants.getValue(edge.getAttributes()) instanceof RDFSInfo)) {
+				|| !(GraphConstants.getValue(edge.getAttributes()) instanceof RDFSModel)) {
 			return MR3Resource.Nil;
 		}
 
-		RDFSInfo propInfo = (RDFSInfo) GraphConstants.getValue(edge.getAttributes());
+		RDFSModel propInfo = (RDFSModel) GraphConstants.getValue(edge.getAttributes());
 		Property property = null;
 		if (propInfo == null) {
 			property = MR3Resource.Nil;
@@ -179,12 +179,12 @@ public class MR3Generator {
 		if (property.getURI().equals(RDF.getURI() + "li")) {
 			if (containerNumMap.get(subject) != null) {
 				Integer num = containerNumMap.get(subject);
-				num = new Integer(num.intValue() + 1);
+				num = num + 1;
 				// System.out.println(num);
-				property = RDF.li(num.intValue());
+				property = RDF.li(num);
 				containerNumMap.put(subject, num);
 			} else {
-				containerNumMap.put(subject, new Integer(1));
+				containerNumMap.put(subject, 1);
 				property = RDF.li(1);
 			}
 		}
@@ -193,11 +193,11 @@ public class MR3Generator {
 
 	private void createRDFModel(RDFGraph graph, Model rdfModel, Object[] edges) {
 		// rdf:liを利用していた場合に，subjectとなるリソースごとに番号を割り振るために利用
-		Map<Resource, Integer> containerNumMap = new HashMap<Resource, Integer>();
-		for (int i = 0; i < edges.length; i++) {
-			Edge edge = (Edge) edges[i];
+		Map<Resource, Integer> containerNumMap = new HashMap<>();
+		for (Object edge1 : edges) {
+			Edge edge = (Edge) edge1;
 			GraphCell sourceCell = (GraphCell) graph.getSourceVertex(edge);
-			RDFResourceInfo info = (RDFResourceInfo) GraphConstants.getValue(sourceCell
+			RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(sourceCell
 					.getAttributes());
 			Resource subject = info.getURI();
 			Property property = getRDFProperty(edge);
@@ -205,7 +205,7 @@ public class MR3Generator {
 			GraphCell targetCell = (GraphCell) graph.getTargetVertex(edge);
 
 			if (RDFGraph.isRDFResourceCell(targetCell)) {
-				info = (RDFResourceInfo) GraphConstants.getValue(targetCell.getAttributes());
+				info = (RDFResourceModel) GraphConstants.getValue(targetCell.getAttributes());
 				rdfModel.add(rdfModel.createStatement(subject, property, info.getURI()));
 			} else if (RDFGraph.isRDFLiteralCell(targetCell)) {
 				// MR3Literal to Literal

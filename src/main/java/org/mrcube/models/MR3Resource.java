@@ -34,7 +34,7 @@ import org.apache.jena.rdf.model.ResourceFactory;
  */
 public class MR3Resource {
 
-	private static final String DEFAULT_URI = "http://mr3.sourceforge.net#";
+	private static final String DEFAULT_URI = "http://mrcube.org#";
 	private static final String DEFAULT_LANG = "DefaultLang";
 	private static final String PROPERTY = "Property";
 	private static final String NIL = "nil";

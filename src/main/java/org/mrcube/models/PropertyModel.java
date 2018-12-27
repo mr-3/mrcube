@@ -40,7 +40,7 @@ import java.util.Set;
  * @author Takeshi Morita
  * 
  */
-public class PropertyInfo extends RDFSInfo {
+public class PropertyModel extends RDFSModel {
 
 	private Set<GraphCell> domainSet;
 	private Set<GraphCell> rangeSet;
@@ -51,24 +51,24 @@ public class PropertyInfo extends RDFSInfo {
 
 	private static final long serialVersionUID = -1326136347122640640L;
 
-	public PropertyInfo(String uri) {
+	public PropertyModel(String uri) {
 		super(uri);
 		metaClass = RDF.Property.toString();
-		domainSet = new HashSet<GraphCell>();
-		rangeSet = new HashSet<GraphCell>();
+		domainSet = new HashSet<>();
+		rangeSet = new HashSet<>();
 		isContainer = false;
-		subProperties = new HashSet<Resource>();
-		supProperties = new HashSet<RDFNode>();
+		subProperties = new HashSet<>();
+		supProperties = new HashSet<>();
 	}
 
-	public PropertyInfo(PropertyInfo info) {
+	public PropertyModel(PropertyModel info) {
 		super(info);
-		domainSet = new HashSet<GraphCell>(info.getDomain());
-		rangeSet = new HashSet<GraphCell>(info.getRange());
+		domainSet = new HashSet<>(info.getDomain());
+		rangeSet = new HashSet<>(info.getRange());
 		isContainer = info.isContainer();
 		num = info.getNum();
-		subProperties = new HashSet<Resource>();
-		supProperties = new HashSet<RDFNode>();
+		subProperties = new HashSet<>();
+		supProperties = new HashSet<>();
 	}
 
 	public Set<Resource> getRDFSSubList() {
@@ -81,18 +81,18 @@ public class PropertyInfo extends RDFSInfo {
 		tmpModel.add(tmpModel.createStatement(res, RDF.type,
 				ResourceFactory.createResource(metaClass)));
 		for (GraphCell supRDFSCell : superRDFS) {
-			RDFSInfo propInfo = (RDFSInfo) GraphConstants.getValue(supRDFSCell.getAttributes());
+			RDFSModel propInfo = (RDFSModel) GraphConstants.getValue(supRDFSCell.getAttributes());
 			if (!propInfo.getURI().equals(MR3Resource.Property)) {
 				tmpModel.add(tmpModel.createStatement(res, RDFS.subPropertyOf, propInfo.getURI()));
 			}
 		}
 		for (GraphCell domainClassCell : domainSet) {
-			RDFSInfo classInfo = (RDFSInfo) GraphConstants
+			RDFSModel classInfo = (RDFSModel) GraphConstants
 					.getValue(domainClassCell.getAttributes());
 			tmpModel.add(tmpModel.createStatement(res, RDFS.domain, classInfo.getURI()));
 		}
 		for (GraphCell rangeClassCell : rangeSet) {
-			RDFSInfo classInfo = (RDFSInfo) GraphConstants.getValue(rangeClassCell.getAttributes());
+			RDFSModel classInfo = (RDFSModel) GraphConstants.getValue(rangeClassCell.getAttributes());
 			tmpModel.add(tmpModel.createStatement(res, RDFS.range, classInfo.getURI()));
 		}
 		return tmpModel;
@@ -119,7 +119,7 @@ public class PropertyInfo extends RDFSInfo {
 	}
 
 	public void clearDomain() {
-		domainSet = new HashSet<GraphCell>();
+		domainSet = new HashSet<>();
 	}
 
 	public Set<GraphCell> getDomain() {
@@ -148,7 +148,7 @@ public class PropertyInfo extends RDFSInfo {
 	}
 
 	public void clearRange() {
-		rangeSet = new HashSet<GraphCell>();
+		rangeSet = new HashSet<>();
 	}
 
 	public Set<GraphCell> getRange() {
@@ -160,7 +160,7 @@ public class PropertyInfo extends RDFSInfo {
 	}
 
 	public void clearSubProperty() {
-		subProperties = new HashSet<Resource>();
+		subProperties = new HashSet<>();
 	}
 
 	public void addSupProperty(RDFNode resource) {
@@ -172,7 +172,7 @@ public class PropertyInfo extends RDFSInfo {
 	}
 
 	public void clearSupProperty() {
-		supProperties = new HashSet<RDFNode>();
+		supProperties = new HashSet<>();
 	}
 
 	public boolean isContainer() {
