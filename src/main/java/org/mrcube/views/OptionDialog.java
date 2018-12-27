@@ -26,17 +26,13 @@ package org.mrcube.views;
 import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
-import org.jgraph.graph.AttributeMap;
-import org.jgraph.graph.GraphCell;
-import org.jgraph.graph.GraphConstants;
 import org.mrcube.jgraph.*;
 import org.mrcube.layout.GraphLayoutUtilities;
 import org.mrcube.models.MR3Constants;
 import org.mrcube.models.MR3Resource;
-import org.mrcube.models.PrefConstants;
 import org.mrcube.models.NamespaceModel;
+import org.mrcube.models.PrefConstants;
 import org.mrcube.utils.*;
-import say.swing.JFontChooser;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -47,9 +43,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.lang.ref.WeakReference;
+import java.util.Arrays;
 import java.util.List;
-import java.util.*;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.prefs.Preferences;
 
 /**
@@ -187,8 +184,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         private JComboBox uiLangBox;
         private ComboBoxModel outputEncodingBoxModel;
         private JComboBox outputEncodingBox;
-        private JLabel fontSettingValueLabel;
-        private JButton fontSettingButton;
         private JComboBox uriPrefixBox;
         private JLabel baseURILabel;
         private JCheckBox isLogAvailableCheckBox;
@@ -201,7 +196,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             panel.add(getLangPanel());
             panel.add(getUILangPanel());
             panel.add(getEncodingPanel());
-            panel.add(getFontSettingPanel());
             panel.add(getBaseURIPanel());
             panel.add(getLogFilePanel());
             setLayout(new BorderLayout());
@@ -327,68 +321,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             encodingPanel.add(outputEncodingBox);
 
             return Utilities.createWestPanel(encodingPanel);
-        }
-
-        private JComponent getFontSettingPanel() {
-            fontSettingValueLabel = new JLabel(getFont().getFontName() + "-" + getFont().getSize());
-            fontSettingButton = new JButton(Translator.getString("PreferenceDialog.BaseTab.FontSetting.Button"));
-            fontSettingButton
-                    .addActionListener(new ChooseFontAction(Translator.getString("Component.View.ChooseFont")));
-            JPanel fontSettingPanel = new JPanel();
-            fontSettingPanel.setLayout(new GridLayout(1, 3, 5, 5));
-            fontSettingPanel.add(new JLabel(Translator.getString("PreferenceDialog.BaseTab.FontSetting") + ": "));
-            fontSettingPanel.add(fontSettingValueLabel);
-            fontSettingPanel.add(fontSettingButton);
-            return Utilities.createWestPanel(fontSettingPanel);
-        }
-
-        public class ChooseFontAction extends AbstractAction {
-
-            private WeakReference<JFontChooser> jfontChooserRef;
-
-            public ChooseFontAction(String name) {
-                super(name);
-                jfontChooserRef = new WeakReference<>(null);
-            }
-
-            private JFontChooser getJFontChooser() {
-                JFontChooser result = jfontChooserRef.get();
-                if (result == null) {
-                    result = new JFontChooser();
-                    jfontChooserRef = new WeakReference<>(result);
-                }
-                return result;
-            }
-
-            public void actionPerformed(ActionEvent arg0) {
-                JFontChooser jfontChooser = getJFontChooser();
-                if (GraphUtilities.defaultFont == null) {
-                    GraphUtilities.defaultFont = getFont();
-                }
-                jfontChooser.setSelectedFont(GraphUtilities.defaultFont);
-                int result = jfontChooser.showDialog(gmanager.getRootFrame());
-                if (result == JFontChooser.OK_OPTION) {
-                    // System.out.println(jfontChooser.getSelectedFont());
-                    Font font = jfontChooser.getSelectedFont();
-                    fontSettingValueLabel.setText(font.getFontName() + "-" + font.getSize());
-                    GraphUtilities.defaultFont = font;
-                    setGraphFont(gmanager.getCurrentRDFGraph(), font);
-                    setGraphFont(gmanager.getCurrentClassGraph(), font);
-                    setGraphFont(gmanager.getCurrentPropertyGraph(), font);
-                }
-            }
-
-            private void setGraphFont(RDFGraph graph, Font font) {
-                Object[] cells = graph.getAllCells();
-                for (Object cell1 : cells) {
-                    if (cell1 instanceof GraphCell) {
-                        GraphCell cell = (GraphCell) cell1;
-                        AttributeMap map = cell.getAttributes();
-                        GraphConstants.setFont(map, font);
-                        GraphUtilities.editCell(cell, map, graph);
-                    }
-                }
-            }
         }
 
         private JComponent getBaseURIPanel() {

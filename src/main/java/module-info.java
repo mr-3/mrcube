@@ -4,7 +4,6 @@ module org.mrcube.mrcube {
     requires java.logging;
     requires jgraph;
     requires org.apache.jena.core;
-    requires jfontchooser;
     exports org.mrcube;
     exports org.mrcube.jgraph;
     exports org.mrcube.models;
