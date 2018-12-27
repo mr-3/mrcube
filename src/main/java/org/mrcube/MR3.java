@@ -127,6 +127,7 @@ public class MR3 extends JFrame implements ChangeListener {
         String logFilePath = userPrefs.get(PrefConstants.logFile, System.getProperty("user.dir") + "/"
                 + HistoryManager.DEFAULT_LOG_FILE_NAME);
         HistoryManager.initLogger(logFilePath);
+        newProject(null);
     }
 
     public JTabbedPane getDesktopTabbedPane() {
