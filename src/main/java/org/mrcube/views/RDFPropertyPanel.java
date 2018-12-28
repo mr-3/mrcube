@@ -28,6 +28,7 @@ import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.vocabulary.RDF;
 import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphConstants;
+import org.mrcube.MR3;
 import org.mrcube.actions.EditRDFPropertyAction;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.models.*;
@@ -379,7 +380,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 			Object propertyCell = rdfsModelMap.getPropertyCell(uri);
 			gmanager.selectPropertyCell(propertyCell);
 		} else {
-			JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(),
+			JOptionPane.showMessageDialog(MR3.getCurrentProject(),
 					Translator.getString("Warning.Message3"), Translator.getString("Warning"),
 					JOptionPane.ERROR_MESSAGE);
 		}

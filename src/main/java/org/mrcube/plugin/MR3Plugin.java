@@ -264,13 +264,6 @@ public abstract class MR3Plugin {
         return mr3.getBaseURI();
     }
 
-    /**
-     * 
-     * @return JTabbedPane
-     */
-    protected JTabbedPane getDesktopPane() {
-        return mr3.getGraphManager().getDesktopTabbedPane();
-    }
 
     /**
      * 

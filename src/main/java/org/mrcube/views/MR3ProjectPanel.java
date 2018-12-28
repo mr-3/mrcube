@@ -21,13 +21,15 @@
  *
  */
 
-package org.mrcube;
+package org.mrcube.views;
 
 import org.mrcube.editors.ClassEditor;
 import org.mrcube.editors.Editor;
 import org.mrcube.editors.PropertyEditor;
 import org.mrcube.editors.RDFEditor;
 import org.mrcube.jgraph.GraphManager;
+import org.mrcube.jgraph.RDFGraph;
+import org.mrcube.models.MR3Constants;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.RDFSModelMap;
 import org.mrcube.utils.Translator;
@@ -42,7 +44,7 @@ import java.io.File;
 /**
  * @author Takeshi Morita
  */
-public class MR3Project extends JPanel {
+public class MR3ProjectPanel extends JPanel {
 
     private File currentProjectFile;
     private RDFSModelMap rdfsModelMap;
@@ -56,19 +58,18 @@ public class MR3Project extends JPanel {
     private JInternalFrame classEditorFrame;
     private JInternalFrame propertyEditorFrame;
 
-    private TabComponent tabComponent;
+    private static final int HEADER_HEIGHT = 70;
 
-    public MR3Project(GraphManager gmanager, String basePath, Color color, TabComponent tabComp) {
+    public MR3ProjectPanel(GraphManager gmanager) {
         rdfsModelMap = new RDFSModelMap();
-        tabComponent = tabComp;
-        currentProjectFile = new File(basePath, Translator.getString("Component.File.NewProject.Text"));
+        currentProjectFile = new File(System.getProperty("user.dir"), Translator.getString("Component.File.NewProject.Text"));
 
         classEditor = new ClassEditor(gmanager);
-        classEditor.setBackground(color);
+        classEditor.setBackground(Color.WHITE);
         propertyEditor = new PropertyEditor(gmanager);
-        propertyEditor.setBackground(color);
+        propertyEditor.setBackground(Color.WHITE);
         rdfEditor = new RDFEditor(gmanager);
-        rdfEditor.setBackground(color);
+        rdfEditor.setBackground(Color.WHITE);
         registerComponent();
 
         rdfEditorFrame = createEditorFrame(rdfEditor, Translator.getString("RDFEditor.Title"),
@@ -102,10 +103,6 @@ public class MR3Project extends JPanel {
         return editorFrame;
     }
 
-    public TabComponent getTabComponent() {
-        return tabComponent;
-    }
-
     public void frontEditor(GraphType graphType) {
         if (graphType == GraphType.RDF) {
             rdfEditorFrame.toFront();
@@ -118,7 +115,7 @@ public class MR3Project extends JPanel {
 
     public void deployCPR() {
         int rootWindowWidth = getRootPane().getWidth();
-        int rootWindowHeight = getRootPane().getHeight();
+        int rootWindowHeight = getRootPane().getHeight() - HEADER_HEIGHT;
         try {
             classEditorFrame.setIcon(false);
             propertyEditorFrame.setIcon(false);
@@ -136,7 +133,7 @@ public class MR3Project extends JPanel {
 
     public void deployCR() {
         int rootWindowWidth = getRootPane().getWidth();
-        int rootWindowHeight = getRootPane().getHeight();
+        int rootWindowHeight = getRootPane().getHeight() - HEADER_HEIGHT;
         try {
             classEditorFrame.setIcon(false);
             rdfEditorFrame.setIcon(false);
@@ -152,7 +149,7 @@ public class MR3Project extends JPanel {
 
     public void deployPR() {
         int rootWindowWidth = getRootPane().getWidth();
-        int rootWindowHeight = getRootPane().getHeight();
+        int rootWindowHeight = getRootPane().getHeight() - HEADER_HEIGHT;
         try {
             propertyEditorFrame.setIcon(false);
             rdfEditorFrame.setIcon(false);
@@ -181,6 +178,12 @@ public class MR3Project extends JPanel {
             return GraphType.PROPERTY;
         }
         return GraphType.RDF;
+    }
+
+    public void resetEditors() {
+        ((RDFGraph) rdfEditor.getGraph()).removeAllCells();
+        ((RDFGraph) classEditor.getGraph()).removeAllCells();
+        ((RDFGraph) propertyEditor.getGraph()).removeAllCells();
     }
 
     public RDFEditor getRDFEditor() {

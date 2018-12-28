@@ -258,7 +258,7 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
 				Object classCell = rdfsModelMap.getClassCell(uri);
 				gmanager.selectClassCell(classCell);
 			} else {
-				JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(),
+				JOptionPane.showMessageDialog(MR3.getCurrentProject(),
 						Translator.getString("Warning.Message3"), WARNING, JOptionPane.ERROR_MESSAGE);
 			}
 		}
@@ -268,7 +268,6 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
 			resTypeField.setToolTipText(uri);
 		}
 
-		// RDF���\�[�X�̃^�C�v�����݂���΃`�F�b�N�{�^���Ƀ`�F�b�N����D
 		public void selectTypeMode(boolean t) {
 			isTypeCellCheckBox.setSelected(t);
 			if (t) {
@@ -489,7 +488,7 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
 					return null;
 				}
 				if (resInfo.getTypeCell() == null) {
-					int ans = JOptionPane.showConfirmDialog(gmanager.getDesktopTabbedPane(),
+					int ans = JOptionPane.showConfirmDialog(MR3.getCurrentProject(),
 							Translator.getString("Warning.Message2"), WARNING, JOptionPane.YES_NO_OPTION);
 					if (ans == JOptionPane.YES_OPTION) {
 						Set supClasses = gmanager.getSupRDFS(gmanager.getCurrentClassGraph(),

@@ -80,7 +80,7 @@ public class EditRDFPropertyAction {
 
 			RDFSModel propInfo = (RDFSModel) GraphConstants.getValue(edge.getAttributes());
 			if (propInfo.getURI().equals(MR3Resource.Nil)) {
-				int ans = JOptionPane.showConfirmDialog(gmanager.getDesktopTabbedPane(),
+				int ans = JOptionPane.showConfirmDialog(MR3.getCurrentProject(),
 						Translator.getString("Warning.Message10"), WARNING, JOptionPane.YES_NO_OPTION);
 				if (ans == JOptionPane.YES_OPTION) {
 					propertyCell = (GraphCell) gmanager.insertSubRDFS(uri, null, gmanager.getCurrentPropertyGraph());

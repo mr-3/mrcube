@@ -27,6 +27,7 @@ import org.apache.jena.rdf.model.*;
 import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
+import org.mrcube.MR3;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.models.MR3Constants;
 import org.mrcube.models.MR3Resource;
@@ -283,7 +284,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
     /** prefix が空でなくかつ，すでに登録されていない場合true */
     private boolean isValidPrefixWithWarning(String prefix) {
         if (isValidPrefix(prefix)) { return true; }
-        JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), Translator.getString("Warning.Message5"),
+        JOptionPane.showMessageDialog(MR3.getCurrentProject(), Translator.getString("Warning.Message5"),
                 WARNING, JOptionPane.ERROR_MESSAGE);
         return false;
     }
@@ -291,7 +292,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
     /** nsが空でもnullでもなく，すでに登録されてない場合 true */
     private boolean isValidNSWithWarning(String ns) {
         if (isValidNS(ns)) { return true; }
-        JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), Translator.getString("Warning.Message6"),
+        JOptionPane.showMessageDialog(MR3.getCurrentProject(), Translator.getString("Warning.Message6"),
                 WARNING, JOptionPane.ERROR_MESSAGE);
         return false;
     }
@@ -316,12 +317,12 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
         String rmPrefix = (String) nsTableModel.getValueAt(row, 1);
         String rmNS = (String) nsTableModel.getValueAt(row, 2);
         if (rmNS.equals(gmanager.getBaseURI())) {
-            JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), Translator.getString("Warning.Message7"),
+            JOptionPane.showMessageDialog(MR3.getCurrentProject(), Translator.getString("Warning.Message7"),
                     WARNING, JOptionPane.ERROR_MESSAGE);
             return;
         }
         if (rmNS.equals(MR3Resource.DefaultURI.getNameSpace())) {
-            JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), Translator.getString("Warning.Message8"),
+            JOptionPane.showMessageDialog(MR3.getCurrentProject(), Translator.getString("Warning.Message8"),
                     WARNING, JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -330,7 +331,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
             nsTableModel.removeRow(row);
             setPrefixNSInfoSet();
         } else {
-            JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), Translator.getString("Warning.Message9"),
+            JOptionPane.showMessageDialog(MR3.getCurrentProject(), Translator.getString("Warning.Message9"),
                     WARNING, JOptionPane.ERROR_MESSAGE);
         }
     }

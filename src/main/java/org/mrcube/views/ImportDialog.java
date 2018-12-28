@@ -26,6 +26,7 @@ package org.mrcube.views;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
+import org.mrcube.MR3;
 import org.mrcube.io.MR3Reader;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.models.MR3Constants;
@@ -281,7 +282,7 @@ public class ImportDialog extends JDialog implements ActionListener {
             JFileChooser jfc = new JFileChooser(userPrefs.get(PrefConstants.WorkDirectory, ""));
             jfc.setFileHidingEnabled(true);
             jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            if (jfc.showOpenDialog(gmanager.getDesktopTabbedPane()) == JFileChooser.APPROVE_OPTION) {
+            if (jfc.showOpenDialog(MR3.getCurrentProject()) == JFileChooser.APPROVE_OPTION) {
                 return jfc.getSelectedFile();
             }
             return null;
@@ -481,12 +482,12 @@ public class ImportDialog extends JDialog implements ActionListener {
             try {
                 inputStreamSet.add(new BufferedInputStream(getURI(uri).openStream()));
             } catch (UnknownHostException uhe) {
-                JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), "Unknown Host(Proxy)", "Warning",
+                JOptionPane.showMessageDialog(MR3.getCurrentProject(), "Unknown Host(Proxy)", "Warning",
                         JOptionPane.ERROR_MESSAGE);
             } catch (MalformedURLException uriex) {
                 uriex.printStackTrace();
             } catch (IOException ioe) {
-                JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), "File Not Found.", "Warning",
+                JOptionPane.showMessageDialog(MR3.getCurrentProject(), "File Not Found.", "Warning",
                         JOptionPane.ERROR_MESSAGE);
             }
         }

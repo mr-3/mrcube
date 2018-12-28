@@ -26,6 +26,7 @@ package org.mrcube.views;
 import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
+import org.mrcube.MR3;
 import org.mrcube.jgraph.*;
 import org.mrcube.layout.GraphLayoutUtilities;
 import org.mrcube.models.MR3Constants;
@@ -1165,14 +1166,12 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         private JButton classColorButton;
         private JButton propertyColorButton;
         private JButton selectedColorButton;
-        private JButton backgroundColorButton;
 
         private Color rdfResourceColor;
         private Color literalColor;
         private Color classColor;
         private Color propertyColor;
         private Color selectedColor;
-        private Color backgroundColor;
 
         RenderingPanel() {
             ChangeColorAction action = new ChangeColorAction();
@@ -1195,10 +1194,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
                     + "(S)");
             selectedColorButton.setMnemonic('s');
             initColorButton(selectedColorButton, "Selected", BUTTON_WIDTH, BUTTON_HEIGHT, action);
-            backgroundColorButton = new JButton(Translator.getString("PreferenceDialog.RenderingTab.BackgroundColor")
-                    + "(B)");
-            backgroundColorButton.setMnemonic('b');
-            initColorButton(backgroundColorButton, "Background", BUTTON_WIDTH, BUTTON_HEIGHT, action);
 
             isColorBox = new JCheckBox(Translator.getString("PreferenceDialog.RenderingTab.Option.Color"));
             isAntialiasBox = new JCheckBox(Translator.getString("PreferenceDialog.RenderingTab.Option.Antialias"));
@@ -1206,13 +1201,12 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             JPanel colorPanel = new JPanel();
             colorPanel.setBorder(BorderFactory.createTitledBorder(Translator
                     .getString("PreferenceDialog.RenderingTab.SelectColor")));
-            colorPanel.setLayout(new GridLayout(6, 1, 5, 5));
+            colorPanel.setLayout(new GridLayout(5, 1, 5, 5));
             colorPanel.add(rdfResourceColorButton);
             colorPanel.add(literalColorButton);
             colorPanel.add(classColorButton);
             colorPanel.add(propertyColorButton);
             colorPanel.add(selectedColorButton);
-            colorPanel.add(backgroundColorButton);
             JPanel optionPanel = new JPanel();
             optionPanel.setBorder(BorderFactory.createTitledBorder(Translator
                     .getString("PreferenceDialog.RenderingTab.Option")));
@@ -1244,9 +1238,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             OntPropertyCell.propertyColor = propertyColor;
             userPrefs.putInt(PrefConstants.SelectedColor, selectedColor.getRGB());
             GraphUtilities.selectedColor = selectedColor;
-            userPrefs.putInt(PrefConstants.BackgroundColor, backgroundColor.getRGB());
-            GraphUtilities.graphBackgroundColor = backgroundColor;
-            gmanager.setGraphBackground(backgroundColor);
             userPrefs.putBoolean(PrefConstants.Color, isColorBox.isSelected());
             GraphUtilities.isColor = isColorBox.isSelected();
             // Colorがあるかないかをチェックした後に，セルの色を変更する．
@@ -1262,7 +1253,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             classColor = OntClassCell.classColor;
             propertyColor = OntPropertyCell.propertyColor;
             selectedColor = GraphUtilities.selectedColor;
-            backgroundColor = Color.white;
 
             isColorBox.setSelected(userPrefs.getBoolean(PrefConstants.Color, true));
             isAntialiasBox.setSelected(userPrefs.getBoolean(PrefConstants.Antialias, true));
@@ -1304,8 +1294,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
                     g.setColor(propertyColor);
                 } else if (name.equals("Selected")) {
                     g.setColor(selectedColor);
-                } else if (name.equals("Background")) {
-                    g.setColor(backgroundColor);
                 }
 
                 g.fillRect(x + 2, y + 2, getIconWidth() - 4, getIconHeight() - 4);
@@ -1326,8 +1314,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
                     current = propertyColor;
                 } else if (e.getSource() == selectedColorButton) {
                     current = selectedColor;
-                } else if (e.getSource() == backgroundColorButton) {
-                    current = backgroundColor;
                 }
 
                 Color c = JColorChooser.showDialog(getContentPane(), "Choose Color", current);
@@ -1345,8 +1331,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
                     propertyColor = c;
                 } else if (e.getSource() == selectedColorButton) {
                     selectedColor = c;
-                } else if (e.getSource() == backgroundColorButton) {
-                    backgroundColor = c;
                 }
             }
         }
@@ -1392,7 +1376,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
                 layoutPanel.setConfig();
                 renderingPanel.setConfig();
             } catch (NumberFormatException nfe) {
-                JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), "Number Format Exception", "Warning",
+                JOptionPane.showMessageDialog(MR3.getCurrentProject(), "Number Format Exception", "Warning",
                         JOptionPane.ERROR_MESSAGE);
                 return;
             }

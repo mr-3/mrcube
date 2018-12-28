@@ -30,7 +30,6 @@ import org.apache.jena.vocabulary.RDFS;
 import org.jgraph.JGraph;
 import org.jgraph.graph.*;
 import org.mrcube.MR3;
-import org.mrcube.MR3Project;
 import org.mrcube.editors.ClassEditor;
 import org.mrcube.editors.PropertyEditor;
 import org.mrcube.editors.RDFEditor;
@@ -67,7 +66,7 @@ import java.util.prefs.Preferences;
 public class GraphManager {
 
     private Frame rootFrame;
-    private JTabbedPane desktopTabbedPane;
+    private MR3ProjectPanel mr3ProjectPanel;
 
     private MR3Writer mr3Writer;
 
@@ -94,8 +93,7 @@ public class GraphManager {
     public static String CLASS_CLASS_LIST;
     public static String PROPERTY_CLASS_LIST;
 
-    public GraphManager(JTabbedPane desktop, Preferences prefs, Frame root) {
-        desktopTabbedPane = desktop;
+    public GraphManager(Preferences prefs, Frame root) {
         rootFrame = root;
         userPrefs = prefs;
         attrDialogRef = new WeakReference<>(null);
@@ -112,59 +110,52 @@ public class GraphManager {
                 + " " + OWL.DatatypeProperty.toString();
     }
 
+    public void setMR3ProjectPanel(MR3ProjectPanel panel) {
+        this.mr3ProjectPanel = panel;
+    }
+
     public MR3CellMaker getCellMaker() {
         return cellMaker;
     }
 
     public RDFSModelMap getCurrentRDFSInfoMap() {
-        MR3Project project = (MR3Project) desktopTabbedPane.getSelectedComponent();
-        return project.getRDFSInfoMap();
+        return mr3ProjectPanel.getRDFSInfoMap();
     }
 
     public RDFEditor getCurrentRDFEditor() {
-        MR3Project project = (MR3Project) desktopTabbedPane.getSelectedComponent();
-        return project.getRDFEditor();
+        return mr3ProjectPanel.getRDFEditor();
     }
 
     public ClassEditor getCurrentClassEditor() {
-        MR3Project project = (MR3Project) desktopTabbedPane.getSelectedComponent();
-        return project.getClassEditor();
+        return mr3ProjectPanel.getClassEditor();
     }
 
     public PropertyEditor getCurrentPropertyEditor() {
-        MR3Project project = (MR3Project) desktopTabbedPane.getSelectedComponent();
-        return project.getPropertyEditor();
+        return mr3ProjectPanel.getPropertyEditor();
     }
 
     public RDFGraph getCurrentRDFGraph() {
-        MR3Project project = (MR3Project) desktopTabbedPane.getSelectedComponent();
-        if (project != null) {
-            return (RDFGraph) project.getRDFEditor().getGraph();
+        if (mr3ProjectPanel != null) {
+            return (RDFGraph) mr3ProjectPanel.getRDFEditor().getGraph();
         } else {
             return null;
         }
     }
 
     public RDFGraph getCurrentPropertyGraph() {
-        MR3Project project = (MR3Project) desktopTabbedPane.getSelectedComponent();
-        if (project != null) {
-            return (RDFGraph) project.getPropertyEditor().getGraph();
+        if (mr3ProjectPanel != null) {
+            return (RDFGraph) mr3ProjectPanel.getPropertyEditor().getGraph();
         } else {
             return null;
         }
     }
 
     public RDFGraph getCurrentClassGraph() {
-        MR3Project project = (MR3Project) desktopTabbedPane.getSelectedComponent();
-        if (project != null) {
-            return (RDFGraph) project.getClassEditor().getGraph();
+        if (mr3ProjectPanel != null) {
+            return (RDFGraph) mr3ProjectPanel.getClassEditor().getGraph();
         } else {
             return null;
         }
-    }
-
-    public JTabbedPane getDesktopTabbedPane() {
-        return desktopTabbedPane;
     }
 
     public Frame getRootFrame() {
@@ -500,7 +491,7 @@ public class GraphManager {
 
     public boolean isEmptyURI(String uri) {
         if (uri.equals("")) {
-            JOptionPane.showMessageDialog(desktopTabbedPane, Translator.getString("Warning.Message4"), WARNING,
+            JOptionPane.showMessageDialog(mr3ProjectPanel, Translator.getString("Warning.Message4"), WARNING,
                     JOptionPane.ERROR_MESSAGE);
             return true;
         }

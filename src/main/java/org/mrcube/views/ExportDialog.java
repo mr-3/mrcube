@@ -30,6 +30,7 @@ import org.apache.jena.util.URIref;
 import org.apache.jena.vocabulary.RDFS;
 import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphConstants;
+import org.mrcube.MR3;
 import org.mrcube.io.MR3Writer;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.jgraph.RDFGraph;
@@ -248,7 +249,7 @@ public class ExportDialog extends JDialog implements ActionListener {
                 break;
         }
 
-        if (jfc.showSaveDialog(gmanager.getDesktopTabbedPane()) == JFileChooser.APPROVE_OPTION) {
+        if (jfc.showSaveDialog(MR3.getCurrentProject()) == JFileChooser.APPROVE_OPTION) {
             String defaultPath = jfc.getSelectedFile().getAbsolutePath();
             if (jfc.getFileFilter() instanceof MR3FileFilter) {
                 MR3FileFilter filter = (MR3FileFilter) jfc.getFileFilter();
@@ -303,7 +304,7 @@ public class ExportDialog extends JDialog implements ActionListener {
     class ExportImgEvent implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             if (getSelectedCount() != 1) {
-                JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), "Check (RDF or Class or Property)", "",
+                JOptionPane.showMessageDialog(MR3.getCurrentProject(), "Check (RDF or Class or Property)", "",
                         JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -391,7 +392,7 @@ public class ExportDialog extends JDialog implements ActionListener {
             rdfWriter.write(model, writer, gmanager.getBaseURI());
         } catch (Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(), "Export Error", "", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(MR3.getCurrentProject(), "Export Error", "", JOptionPane.ERROR_MESSAGE);
         }
     }
 

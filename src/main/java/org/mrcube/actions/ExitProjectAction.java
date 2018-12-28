@@ -5,7 +5,7 @@
 package org.mrcube.actions;
 
 import org.mrcube.MR3;
-import org.mrcube.MR3Project;
+import org.mrcube.views.MR3ProjectPanel;
 import org.mrcube.utils.Translator;
 
 import javax.swing.*;
@@ -21,17 +21,13 @@ public class ExitProjectAction extends AbstractActionFile {
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
-		MR3Project project = MR3.getCurrentProject();
+		MR3ProjectPanel project = MR3.getCurrentProject();
 		int messageType = JOptionPane.showConfirmDialog(mr3.getGraphManager().getRootFrame(),
 				project.getTitle() + "\n" + Translator.getString("SaveChanges"), "MR^3 - "
 						+ project.getTitle(), JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.INFORMATION_MESSAGE);
 		if (messageType == JOptionPane.YES_OPTION) {
-			exitProject(project);
-			mr3.removeTab(project);
-		}
-		if (messageType != JOptionPane.CANCEL_OPTION) {
-			mr3.removeTab(project);
+			exitProject();
 		}
 	}
 }
