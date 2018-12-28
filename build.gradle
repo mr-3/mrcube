@@ -1,14 +1,12 @@
 plugins {
-    id "com.github.johnrengelman.shadow" version "4.0.3"
     id 'org.beryx.jlink' version '2.2.1'
-    id 'application'
     id 'maven-publish'
     id 'idea'
 }
 
 group 'org.mrcube'
 version = '1.0.4'
-mainClassName = 'org.mrcube.MR3'
+mainClassName = 'org.mrcube.mrcube/org.mrcube.MR3'
 sourceCompatibility = targetCompatibility = '11'
 
 project.ext {
@@ -29,6 +27,8 @@ jar {
     inputs.property("moduleName", moduleName)
     manifest {
         attributes('Automatic-Module-Name': moduleName)
+        attributes 'Implementation-Title': "mrcube",
+                'Main-Class': 'org.mrcube.MR3'
     }
 }
 
@@ -77,45 +77,42 @@ test {
     }
 }
 
-shadowJar {
-    mergeServiceFiles()
-    manifest {
-        attributes 'Main-Class': 'org.mrcube.MR3'
-    }
-    archiveName = "mrcube.jar"
-}
-
 jlink {
     mergedModule {
+        requires 'java.desktop'
+        requires 'java.logging'
+        uses 'org.apache.jena.sys.JenaSubsystemLifecycle'
     }
     options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
     launcher {
         name = 'mrcube'
+    }
+    imageDir = file("$buildDir/mrcube-${version}")
+    imageZip = file("$buildDir/mrcube-${version}.zip")
+
+}
+
+tasks.jlink.doLast {
+    copy {
+        from('./README.md')
+        into("$buildDir/mrcube-${version}")
+    }
+    copy {
+        from('./README.ja.md')
+        into("$buildDir/mrcube-${version}")
+    }
+    copy {
+        from('./src/main/resources/gpl.md')
+        into("$buildDir/mrcube-${version}")
     }
 }
 
 dependencies {
     compile 'jgraph:jgraph:5.13.0.0'
     compile 'org.apache.jena:jena-core:3.9.0'
-//    compile 'org.slf4j:slf4j-log4j12:1.7.25'
+    compile 'org.slf4j:slf4j-simple:1.7.25'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.2'
-}
-
-task zipApp(type: Zip, dependsOn: startShadowScripts) {
-    archiveName = "mrcube-${version}.${extension}"
-
-    from('./README.md')
-    from('./README.ja.md')
-    from('./src/main/resources/gpl.md')
-    into('bin') {
-        from('build/scriptsShadow/mrcube')
-        from('build/scriptsShadow/mrcube.bat')
-    }
-
-    into('lib') {
-        from('build/libs/mrcube.jar')
-    }
 }
 
 publishing {
@@ -130,4 +127,3 @@ publishing {
     }
 }
 
-defaultTasks 'zipApp'
