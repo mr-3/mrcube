@@ -170,10 +170,9 @@ public class MR3CellMaker {
 
     public void addTypeCell(GraphCell rdfCell, AttributeMap attributes) {
         RDFGraph graph = gmanager.getCurrentRDFGraph();
-        GraphCell typeViewCell = null;
         RDFResourceModel resInfo = (RDFResourceModel) GraphConstants.getValue(rdfCell.getAttributes());
         if (gmanager.isShowTypeCell()) {
-            typeViewCell = new TypeViewCell(resInfo.getTypeInfo());
+            GraphCell typeViewCell = new TypeViewCell(resInfo.getTypeInfo());
             AttributeMap typeViewMap = getTypeMap(GraphUtilities.getTypeCellRectangle(rdfCell, resInfo.getTypeInfo(),
                     gmanager));
             attributes.put(typeViewCell, typeViewMap);
