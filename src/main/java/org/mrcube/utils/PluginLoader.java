@@ -59,7 +59,7 @@ public class PluginLoader {
 			classLoader = createClassLoader(files);
 			Thread.currentThread().setContextClassLoader(classLoader);
 		} catch (SecurityException e) {
-			System.err.println(e);
+			e.printStackTrace();
 		}
 		loadManifests();
 		processManifests();

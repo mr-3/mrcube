@@ -36,6 +36,7 @@ import org.mrcube.utils.GraphUtilities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class RDFResourceModel extends ResourceModel implements Serializable {
 
@@ -109,11 +110,7 @@ public class RDFResourceModel extends ResourceModel implements Serializable {
                 typeRes = null;
             }
             if (typeViewCell != null) { // 仮ルートを作る時，typeViewCellを作らないため
-                if (typeRes != null) {
-                    GraphConstants.setValue(typeViewCell.getAttributes(), typeRes);
-                } else {
-                    GraphConstants.setValue(typeViewCell.getAttributes(), "");
-                }
+                GraphConstants.setValue(typeViewCell.getAttributes(), Objects.requireNonNullElse(typeRes, ""));
                 graph.getGraphLayoutCache().editCell(typeViewCell, typeViewCell.getAttributes());
             }
             return;

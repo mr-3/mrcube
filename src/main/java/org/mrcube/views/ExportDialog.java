@@ -49,7 +49,6 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -80,11 +79,6 @@ public class ExportDialog extends JDialog implements ActionListener {
     private JCheckBox selectedCheckBox;
     private JCheckBox abbrevCheckBox;
     private JCheckBox xmlbaseCheckBox;
-
-    private JButton reloadButton;
-    private JButton cancelButton;
-    private JButton exportFileButton;
-    private JButton exportImgButton;
 
     private static JTextArea exportTextArea;
     private static final int FRAME_HEIGHT = 500;
@@ -168,19 +162,19 @@ public class ExportDialog extends JDialog implements ActionListener {
         optionCheckPanel.add(abbrevCheckBox);
         optionCheckPanel.add(xmlbaseCheckBox);
 
-        exportFileButton = new JButton(Translator.getString("ExportDialog.File") + "(F)", FILE_ICON);
+        JButton exportFileButton = new JButton(Translator.getString("ExportDialog.File") + "(F)", FILE_ICON);
         exportFileButton.setHorizontalAlignment(JButton.LEFT);
         exportFileButton.setMnemonic('f');
         exportFileButton.addActionListener(new ExportFileEvent());
-        exportImgButton = new JButton(Translator.getString("ExportDialog.Image") + "(I)", IMAGE_ICON);
+        JButton exportImgButton = new JButton(Translator.getString("ExportDialog.Image") + "(I)", IMAGE_ICON);
         exportImgButton.setHorizontalAlignment(JButton.LEFT);
         exportImgButton.setMnemonic('i');
         exportImgButton.addActionListener(new ExportImgEvent());
 
-        reloadButton = new JButton(MR3Constants.RELOAD + "(L)");
+        JButton reloadButton = new JButton(MR3Constants.RELOAD + "(L)");
         reloadButton.setMnemonic('l');
         reloadButton.addActionListener(this);
-        cancelButton = new JButton(MR3Constants.CANCEL);
+        JButton cancelButton = new JButton(MR3Constants.CANCEL);
         cancelButton.setMnemonic('c');
         cancelButton.addActionListener(e -> setVisible(false));
         JPanel otherButtonPanel = new JPanel();

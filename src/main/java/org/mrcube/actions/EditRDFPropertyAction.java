@@ -33,8 +33,6 @@ import org.mrcube.models.*;
 import org.mrcube.models.MR3Constants.CreateRDFSType;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.MR3Constants.HistoryType;
-import org.mrcube.models.PropertyModel;
-import org.mrcube.models.RDFSModel;
 import org.mrcube.utils.GraphUtilities;
 import org.mrcube.utils.Translator;
 import org.mrcube.views.HistoryManager;

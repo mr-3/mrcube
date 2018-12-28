@@ -277,9 +277,8 @@ public class GraphUtilities {
     public static Rectangle2D getTypeCellRectangle(GraphCell cell, RDFSModel info, GraphManager gm) {
         Dimension typeDim = getAutoNodeDimension(gm, gm.getRDFSNodeValue(info.getURI(), info));
         Rectangle2D rect = GraphConstants.getBounds(cell.getAttributes());
-        Rectangle2D.Double typeRect = new Rectangle2D.Double(rect.getX(),
+        return new Rectangle2D.Double(rect.getX(),
                 rect.getY() - rect.getHeight(), typeDim.getWidth(), typeDim.getHeight());
-        return typeRect;
     }
 
     public static Dimension getAutoNodeDimension(GraphManager gmanager, String value) {

@@ -26,7 +26,6 @@ package org.mrcube.views;
 import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
-import org.mrcube.MR3;
 import org.mrcube.jgraph.*;
 import org.mrcube.layout.GraphLayoutUtilities;
 import org.mrcube.models.MR3Constants;
@@ -72,7 +71,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
 
     private JButton applyButton;
     private JButton confirmButton;
-    private JButton cancelButton;
 
     private static final int WINDOW_WIDTH = 600;
     private static final int WINDOW_HEIGHT = 450;
@@ -151,7 +149,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         confirmButton = new JButton(MR3Constants.OK);
         confirmButton.setMnemonic('o');
         confirmButton.addActionListener(decideAction);
-        cancelButton = new JButton(MR3Constants.CANCEL);
+        JButton cancelButton = new JButton(MR3Constants.CANCEL);
         cancelButton.setMnemonic('c');
         cancelButton.addActionListener(decideAction);
         JPanel buttonPanel = new JPanel();
@@ -1377,7 +1375,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
                 renderingPanel.setConfig();
             } catch (NumberFormatException nfe) {
                 Utilities.showErrorMessageDialog("Number Format Exception");
-                return;
             }
         }
 

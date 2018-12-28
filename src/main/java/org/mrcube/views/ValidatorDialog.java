@@ -47,10 +47,8 @@ public class ValidatorDialog extends JDialog {
 	private GraphManager gmanager;
 
 	private JEditorPane indicationPane;
-	private JButton validateButton;
-	private JButton cancelButton;
 
-	private static final int WINDOW_HEIGHT = 400;
+    private static final int WINDOW_HEIGHT = 400;
 	private static final int WINDOW_WIDTH = 550;
 
 	private static final String TITLE = Translator.getString("Component.Tools.Validator.Text");
@@ -97,16 +95,15 @@ public class ValidatorDialog extends JDialog {
 				cell = gmanager.getPropertyCell(res);
 				if (cell != null) {
 					gmanager.selectPropertyCell(cell);
-					return;
 				}
 			}
 		}
 	}
 
 	private JComponent getButtonPanel() {
-		validateButton = new JButton(new ValidateAction());
+        JButton validateButton = new JButton(new ValidateAction());
 		validateButton.setMnemonic('v');
-		cancelButton = new JButton(new CancelAction());
+        JButton cancelButton = new JButton(new CancelAction());
 		cancelButton.setMnemonic('c');
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new GridLayout(1, 2, 5, 5));

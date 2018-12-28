@@ -76,7 +76,6 @@ public class EditorSelect extends MR3AbstractAction {
 
     public void actionPerformed(ActionEvent e) {
         MR3ProjectPanel project = MR3.getCurrentProject();
-        if (project == null) { return; }
         if (getName().equals(RDF_EDITOR)) {
             project.frontEditor(GraphType.RDF);
         } else if (getName().equals(CLASS_EDITOR)) {

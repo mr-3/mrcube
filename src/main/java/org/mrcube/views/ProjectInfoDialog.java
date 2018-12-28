@@ -46,32 +46,19 @@ import java.util.Set;
  */
 public class ProjectInfoDialog extends JDialog {
 
-    private JLabel currentProjectLabel;
     private JLabel currentProjectValue;
-    private JLabel lastImportTimeLabel;
     private JLabel lastImportTimeValue;
 
-    private JLabel modelResourceCntLabel;
     private JLabel modelResourceCntValue;
-    private JLabel modelLiteralCntLabel;
     private JLabel modelLiteralCntValue;
-    private JLabel modelStatementCntLabel;
     private JLabel modelStatementCntValue;
 
-    private JLabel ontClassCntLabel;
     private JLabel ontClassCntValue;
-    private JLabel ontPropertyCntLabel;
     private JLabel ontPropertyCntValue;
 
-    private JLabel allResourceCntLabel;
     private JLabel allResourceCntValue;
-    private JLabel allLiteralCntLabel;
     private JLabel allLiteralCntValue;
-    private JLabel allStatementCntLabel;
     private JLabel allStatementCntValue;
-
-    private JButton reloadButton;
-    private JButton cancelButton;
 
     private MR3Writer mr3Writer;
     private GraphManager gmanager;
@@ -85,9 +72,9 @@ public class ProjectInfoDialog extends JDialog {
         mr3Writer = new MR3Writer(gm);
         gmanager = gm;
 
-        currentProjectLabel = new JLabel(Translator.getString("Component.Tools.ProjectInfo.CurrentProjectName"));
+        JLabel currentProjectLabel = new JLabel(Translator.getString("Component.Tools.ProjectInfo.CurrentProjectName"));
         currentProjectValue = new JLabel();
-        lastImportTimeLabel = new JLabel(Translator.getString("Component.Tools.ProjectInfo.LastImportTime"));
+        JLabel lastImportTimeLabel = new JLabel(Translator.getString("Component.Tools.ProjectInfo.LastImportTime"));
         lastImportTimeValue = new JLabel();
 
         JPanel importPanel = new JPanel();
@@ -98,23 +85,23 @@ public class ProjectInfoDialog extends JDialog {
         importPanel.add(lastImportTimeLabel);
         importPanel.add(lastImportTimeValue);
 
-        modelResourceCntLabel = new JLabel(Translator.getString("Component.Tools.ProjectInfo.NumberOfModelResource"));
+        JLabel modelResourceCntLabel = new JLabel(Translator.getString("Component.Tools.ProjectInfo.NumberOfModelResource"));
         modelResourceCntValue = new JLabel();
-        modelLiteralCntLabel = new JLabel(Translator.getString("Component.Tools.ProjectInfo.NumberOfModelLiteral"));
+        JLabel modelLiteralCntLabel = new JLabel(Translator.getString("Component.Tools.ProjectInfo.NumberOfModelLiteral"));
         modelLiteralCntValue = new JLabel();
-        modelStatementCntLabel = new JLabel(Translator.getString("Component.Tools.ProjectInfo.NumberOfModelStatement"));
+        JLabel modelStatementCntLabel = new JLabel(Translator.getString("Component.Tools.ProjectInfo.NumberOfModelStatement"));
         modelStatementCntValue = new JLabel();
 
-        ontClassCntLabel = new JLabel(Translator.getString("Component.Tools.ProjectInfo.NumberOfClass"));
+        JLabel ontClassCntLabel = new JLabel(Translator.getString("Component.Tools.ProjectInfo.NumberOfClass"));
         ontClassCntValue = new JLabel();
-        ontPropertyCntLabel = new JLabel(Translator.getString("Component.Tools.ProjectInfo.NumberOfProperty"));
+        JLabel ontPropertyCntLabel = new JLabel(Translator.getString("Component.Tools.ProjectInfo.NumberOfProperty"));
         ontPropertyCntValue = new JLabel();
 
-        allResourceCntLabel = new JLabel(Translator.getString("Component.Tools.ProjectInfo.NumberOfAllResource"));
+        JLabel allResourceCntLabel = new JLabel(Translator.getString("Component.Tools.ProjectInfo.NumberOfAllResource"));
         allResourceCntValue = new JLabel();
-        allLiteralCntLabel = new JLabel(Translator.getString("Component.Tools.ProjectInfo.NumberOfAllLiteral"));
+        JLabel allLiteralCntLabel = new JLabel(Translator.getString("Component.Tools.ProjectInfo.NumberOfAllLiteral"));
         allLiteralCntValue = new JLabel();
-        allStatementCntLabel = new JLabel(Translator.getString("Component.Tools.ProjectInfo.NumberOfAllStatement"));
+        JLabel allStatementCntLabel = new JLabel(Translator.getString("Component.Tools.ProjectInfo.NumberOfAllStatement"));
         allStatementCntValue = new JLabel();
 
         JPanel cntPanel = new JPanel();
@@ -170,9 +157,9 @@ public class ProjectInfoDialog extends JDialog {
     }
 
     private JComponent getButtonPanel() {
-        reloadButton = new JButton(new ReloadAction());
+        JButton reloadButton = new JButton(new ReloadAction());
         reloadButton.setMnemonic('o');
-        cancelButton = new JButton(new CancelAction());
+        JButton cancelButton = new JButton(new CancelAction());
         cancelButton.setMnemonic('c');
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(1, 2, 5, 5));

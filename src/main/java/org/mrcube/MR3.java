@@ -198,11 +198,8 @@ public class MR3 extends JFrame implements ChangeListener {
         showVersionInfoAction = new ShowVersionInfoAction(this);
     }
 
-    private JLabel findLabel;
     private JTextField findField;
     private JLabel findResNum;
-    private JButton findPrevButton;
-    private JButton findNextButton;
     private int currentFindResourceNum;
     private Object[] findList;
 
@@ -230,7 +227,7 @@ public class MR3 extends JFrame implements ChangeListener {
         toolbar.add(deployWindowCRAction);
         toolbar.add(deployWindowPRAction);
         toolbar.addSeparator();
-        findLabel = new JLabel(Translator.getString("Component.Edit.FindResource.Text") + ": ");
+        JLabel findLabel = new JLabel(Translator.getString("Component.Edit.FindResource.Text") + ": ");
         toolbar.add(findLabel);
         findField = new JTextField(20);
         findField.setFocusAccelerator('/');
@@ -241,9 +238,9 @@ public class MR3 extends JFrame implements ChangeListener {
         toolbar.add(findResNum);
         ImageIcon PREV_ICON = Utilities.getImageIcon(Translator.getString("ToolBar.FindField.Icon.prev"));
         ImageIcon NEXT_ICON = Utilities.getImageIcon(Translator.getString("ToolBar.FindField.Icon.next"));
-        findPrevButton = new JButton(PREV_ICON);
+        JButton findPrevButton = new JButton(PREV_ICON);
         findPrevButton.addActionListener(new PrevResourceAction());
-        findNextButton = new JButton(NEXT_ICON);
+        JButton findNextButton = new JButton(NEXT_ICON);
         findNextButton.addActionListener(new NextResourceAction());
         toolbar.add(findPrevButton);
         toolbar.add(findNextButton);

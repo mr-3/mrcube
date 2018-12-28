@@ -17,15 +17,13 @@ import java.awt.*;
  */
 public class TabComponent extends JPanel {
 
-    private ImageIcon icon;
     private JLabel tabNameLabel;
-    private JButton tabButton;
 
     public TabComponent(MR3 mr3, String tabName) {
         setLayout(new BorderLayout());
-        icon = Utilities.getImageIcon(Translator.getString("CloseTab.Icon"));
+        ImageIcon icon = Utilities.getImageIcon(Translator.getString("CloseTab.Icon"));
         ExitProjectAction exitProjectAction = new ExitProjectAction(mr3, "", icon);
-        tabButton = new JButton(exitProjectAction);
+        JButton tabButton = new JButton(exitProjectAction);
         tabButton.setOpaque(true);
         tabButton.setContentAreaFilled(false);
         int width = icon.getIconWidth();

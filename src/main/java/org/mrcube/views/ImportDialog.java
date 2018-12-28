@@ -76,19 +76,14 @@ public class ImportDialog extends JDialog implements ActionListener {
     private JList containerListUI;
     private JButton addDirButton;
     private JButton addURIButton;
-    private JButton removeContainerButton;
     private DefaultListModel containerListModel;
 
-    private JLabel findLabel;
     private JTextField findField;
     private Set<File> fileSet;
     private Set<String> uriSet;
     private JList fileListUI;
 
     private JComboBox filterBox;
-    private JButton reloadButton;
-    private JButton importButton;
-    private JButton cancelButton;
 
     private ChangeContainerAction changeContainerAction;
 
@@ -181,7 +176,7 @@ public class ImportDialog extends JDialog implements ActionListener {
         addURIButton.setHorizontalAlignment(JButton.LEFT);
         addURIButton.setMnemonic('u');
         addURIButton.addActionListener(addContainerAction);
-        removeContainerButton = new JButton(MR3Constants.REMOVE + "(R)");
+        JButton removeContainerButton = new JButton(MR3Constants.REMOVE + "(R)");
         removeContainerButton.setHorizontalAlignment(JButton.LEFT);
         removeContainerButton.setMnemonic('r');
         removeContainerButton.addActionListener(new RemoveContainerListAction());
@@ -202,7 +197,7 @@ public class ImportDialog extends JDialog implements ActionListener {
         containerListPanel.setLayout(new BorderLayout());
         containerListPanel.add(containerListUIScroll, BorderLayout.CENTER);
         containerListPanel.add(containerButtonPanelNorth, BorderLayout.EAST);
-        findLabel = new JLabel(Translator.getString("Component.Edit.FindResource.Text") + ": ");
+        JLabel findLabel = new JLabel(Translator.getString("Component.Edit.FindResource.Text") + ": ");
         findField = new JTextField();
         findField.getDocument().addDocumentListener(new FindAction());
         JPanel findPanel = new JPanel();
@@ -220,7 +215,7 @@ public class ImportDialog extends JDialog implements ActionListener {
         fileListPanel.setLayout(new BorderLayout());
         fileListPanel.add(fileListScroll, BorderLayout.CENTER);
         fileListPanel.add(filterBox, BorderLayout.SOUTH);
-        reloadButton = new JButton(MR3Constants.RELOAD + "(L)");
+        JButton reloadButton = new JButton(MR3Constants.RELOAD + "(L)");
         reloadButton.setMnemonic('l');
         reloadButton.addActionListener(changeContainerAction);
         JComponent reloadButtonPanel = Utilities.createEastPanel(reloadButton);
@@ -229,10 +224,10 @@ public class ImportDialog extends JDialog implements ActionListener {
         selectFilePanel.add(findPanel, BorderLayout.NORTH);
         selectFilePanel.add(fileListPanel, BorderLayout.CENTER);
         selectFilePanel.add(reloadButtonPanel, BorderLayout.SOUTH);
-        importButton = new JButton(Translator.getString("Component.File.Import.Text") + "(I)", IMPORT_ICON);
+        JButton importButton = new JButton(Translator.getString("Component.File.Import.Text") + "(I)", IMPORT_ICON);
         importButton.setMnemonic('i');
         importButton.addActionListener(this);
-        cancelButton = new JButton(MR3Constants.CANCEL);
+        JButton cancelButton = new JButton(MR3Constants.CANCEL);
         cancelButton.setMnemonic('c');
         cancelButton.addActionListener(new AbstractAction() {
             public void actionPerformed(ActionEvent e) {

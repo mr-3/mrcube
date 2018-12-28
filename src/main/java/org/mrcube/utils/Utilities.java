@@ -160,7 +160,7 @@ public class Utilities {
     public static FocusTraversalPolicy getMyFocusTraversalPolicy(Component[] c, int num) {
         order = c;
         focusNum = num;
-        FocusTraversalPolicy policy = new FocusTraversalPolicy() {
+        return new FocusTraversalPolicy() {
             private List list = Arrays.asList(order);
 
             public Component getDefaultComponent(Container focusCycleRoot) {
@@ -189,7 +189,6 @@ public class Utilities {
                 return order[(index - 1 + order.length) % order.length];
             }
         };
-        return policy;
     }
 
     public static Object[] getSortedCellSet(Object[] cells) {

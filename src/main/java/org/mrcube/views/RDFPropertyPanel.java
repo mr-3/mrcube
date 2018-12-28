@@ -28,7 +28,6 @@ import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.vocabulary.RDF;
 import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphConstants;
-import org.mrcube.MR3;
 import org.mrcube.actions.EditRDFPropertyAction;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.models.*;
@@ -71,8 +70,6 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 
 	private JList localNameList;
 	private Map<String, Set<String>> propMap;
-	private Set<String> propNameSpaceSet;
-	private IconCellRenderer renderer;
 	private static Object[] NULL = new Object[0];
 
 	private List<GraphCell> propList;
@@ -237,7 +234,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		JScrollPane localNameListScroll = new JScrollPane(localNameList);
 		localNameListScroll.setBorder(BorderFactory.createTitledBorder(Translator
 				.getString("Property") + " ID"));
-		renderer = new IconCellRenderer();
+		IconCellRenderer renderer = new IconCellRenderer();
 		localNameList.setCellRenderer(renderer);
 		return localNameListScroll;
 	}
@@ -354,7 +351,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 	public void setPropertyList(List<GraphCell> plist) {
 		propList = plist;
 		propMap = new HashMap<>();
-		propNameSpaceSet = new HashSet<>();
+		Set<String> propNameSpaceSet = new HashSet<>();
 
 		for (GraphCell cell : propList) {
 			RDFSModel info = (RDFSModel) GraphConstants.getValue(cell.getAttributes());

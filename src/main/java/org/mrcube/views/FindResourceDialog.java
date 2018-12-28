@@ -64,8 +64,6 @@ public class FindResourceDialog extends JDialog {
     private JCheckBox classCheckBox;
     private JCheckBox propertyCheckBox;
 
-    private JButton cancelButton;
-
     private GraphManager gmanager;
     private static Object[] NULL = new Object[0];
 
@@ -105,7 +103,7 @@ public class FindResourceDialog extends JDialog {
         JComponent resourceListP = Utilities.createTitledPanel(new JScrollPane(resourceList), Translator
                 .getString("FindResult"), LIST_WIDTH, LIST_HEIGHT);
 
-        cancelButton = new JButton(MR3Constants.CANCEL);
+        JButton cancelButton = new JButton(MR3Constants.CANCEL);
         cancelButton.setMnemonic('c');
         cancelButton.addActionListener(e -> setVisible(false));
         JPanel buttonPanel = new JPanel();

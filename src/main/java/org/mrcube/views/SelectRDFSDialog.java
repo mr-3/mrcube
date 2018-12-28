@@ -41,7 +41,6 @@ public class SelectRDFSDialog extends JDialog implements ActionListener {
 
     private boolean isConfirm;
     private JButton confirmButton;
-    private JButton cancelButton;
     private SelectRDFSPanel panel;
 
     public SelectRDFSDialog(String title, GraphManager gm) {
@@ -59,7 +58,7 @@ public class SelectRDFSDialog extends JDialog implements ActionListener {
         confirmButton = new JButton(MR3Constants.OK);
         confirmButton.setMnemonic('o');
         confirmButton.addActionListener(this);
-        cancelButton = new JButton(MR3Constants.CANCEL);
+        JButton cancelButton = new JButton(MR3Constants.CANCEL);
         cancelButton.setMnemonic('c');
         cancelButton.addActionListener(this);
         JPanel buttonPanel = new JPanel();

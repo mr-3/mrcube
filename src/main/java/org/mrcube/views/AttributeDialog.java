@@ -37,15 +37,14 @@ public class AttributeDialog extends JDialog {
 
 	private static final JPanel NULL_PANEL = new JPanel();
 
-	private static int DIALOG_WIDTH = 500;
-	private static int DIALOG_HEIGHT = 300;
-
 	private static final ImageIcon ICON = Utilities.getImageIcon(Translator
 			.getString("AttributeDialog.Icon"));
 
 	public AttributeDialog(Frame frame) {
 		super(frame, Translator.getString("AttributeDialog.Title"), false);
 		setIconImage(ICON.getImage());
+		int DIALOG_WIDTH = 500;
+		int DIALOG_HEIGHT = 300;
 		setSize(new Dimension(DIALOG_WIDTH, DIALOG_HEIGHT));
 		setLocationRelativeTo(frame);
 		setResizable(false);

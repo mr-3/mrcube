@@ -96,8 +96,7 @@ public abstract class AbstractActionFile extends MR3AbstractAction {
             MR3.getCurrentProject().setCurrentProjectFile(file);
         }
         try {
-            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
-            return bis;
+            return new BufferedInputStream(new FileInputStream(file));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -196,7 +195,6 @@ public abstract class AbstractActionFile extends MR3AbstractAction {
             saveWindows();
             System.exit(0);
         } else if (messageType == JOptionPane.CANCEL_OPTION) {
-            return;
         } else if (messageType == JOptionPane.NO_OPTION) {
             saveWindows();
             System.exit(0);

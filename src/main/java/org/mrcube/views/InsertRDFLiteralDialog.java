@@ -51,8 +51,6 @@ public class InsertRDFLiteralDialog extends JDialog implements ActionListener {
     private JCheckBox isTypedLiteralBox;
     private JComboBox typeBox;
     private JTextArea literalValueArea;
-    private JButton confirmButton;
-    private JButton cancelButton;
     private TypeMapper typeMapper;
 
     private static final int LABEL_WIDTH = 350;
@@ -95,9 +93,9 @@ public class InsertRDFLiteralDialog extends JDialog implements ActionListener {
         mainPanel.add(selectLitTypePanel);
         mainPanel.add(valueScroll);
 
-        confirmButton = new JButton(confirmAction);
+        JButton confirmButton = new JButton(confirmAction);
         confirmButton.setMnemonic('o');
-        cancelButton = new JButton(cancelAction);
+        JButton cancelButton = new JButton(cancelAction);
         cancelButton.setMnemonic('c');
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(1, 2, 5, 5));
