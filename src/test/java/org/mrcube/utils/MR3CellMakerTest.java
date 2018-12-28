@@ -23,8 +23,7 @@ class MR3CellMakerTest {
     @BeforeAll
     public static void setUp() {
         MR3.initialize(MR3.class);
-        MR3 mr3 = new MR3();
-        mr3.newProject("Test");
+        new MR3();
     }
 
     @AfterAll
