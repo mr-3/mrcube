@@ -38,6 +38,7 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -72,11 +73,7 @@ public class MR3CellMaker {
         if (GraphUtilities.defaultFont != null) {
             GraphConstants.setFont(map, GraphUtilities.defaultFont);
         }
-        if (info != null) {
-            GraphConstants.setValue(edge.getAttributes(), info);
-        } else {
-            GraphConstants.setValue(edge.getAttributes(), "");
-        }
+        GraphConstants.setValue(edge.getAttributes(), Objects.requireNonNullElse(info, ""));
         return map;
     }
 
@@ -111,11 +108,7 @@ public class MR3CellMaker {
         GraphConstants.setOpaque(map, false);
         GraphConstants.setForeground(map, Color.blue);
 
-        if (rectangle != null) {
-            GraphConstants.setBounds(map, rectangle);
-        } else {
-            GraphConstants.setBounds(map, new Rectangle(initRectangle));
-        }
+        GraphConstants.setBounds(map, Objects.requireNonNullElseGet(rectangle, () -> new Rectangle(initRectangle)));
 
         return map;
     }
@@ -136,17 +129,12 @@ public class MR3CellMaker {
         GraphConstants.setBorderColor(map, Color.black);
         GraphConstants.setLineWidth(map, 1);
 
-        if (rectangle != null) {
-            GraphConstants.setBounds(map, rectangle);
-        } else {
-            GraphConstants.setBounds(map, new Rectangle(initRectangle));
-        }
+        GraphConstants.setBounds(map, Objects.requireNonNullElseGet(rectangle, () -> new Rectangle(initRectangle)));
         return map;
     }
 
     public AttributeMap getLiteralMap(Rectangle2D rectangle, Color cellColor) {
-        AttributeMap literalMap = getResourceMap(rectangle, cellColor);
-        return literalMap;
+        return getResourceMap(rectangle, cellColor);
     }
 
     public GraphCell insertRDFLiteral(Point pt, MR3Literal literal) {
@@ -170,10 +158,9 @@ public class MR3CellMaker {
 
     public void addTypeCell(GraphCell rdfCell, AttributeMap attributes) {
         RDFGraph graph = gmanager.getCurrentRDFGraph();
-        GraphCell typeViewCell = null;
         RDFResourceModel resInfo = (RDFResourceModel) GraphConstants.getValue(rdfCell.getAttributes());
         if (gmanager.isShowTypeCell()) {
-            typeViewCell = new TypeViewCell(resInfo.getTypeInfo());
+            GraphCell typeViewCell = new TypeViewCell(resInfo.getTypeInfo());
             AttributeMap typeViewMap = getTypeMap(GraphUtilities.getTypeCellRectangle(rdfCell, resInfo.getTypeInfo(),
                     gmanager));
             attributes.put(typeViewCell, typeViewMap);

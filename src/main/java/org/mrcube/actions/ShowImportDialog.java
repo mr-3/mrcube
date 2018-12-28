@@ -50,9 +50,6 @@ public class ShowImportDialog extends MR3AbstractAction {
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (MR3.getCurrentProject() == null) {
-            mr3.newProject(null);
-        }
         ImportDialog importDialog = mr3.getImportDialog();
         if (importDialog != null) {
             mr3.getImportDialog().setVisible(true);

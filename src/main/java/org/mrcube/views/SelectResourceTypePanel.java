@@ -45,7 +45,6 @@ public class SelectResourceTypePanel extends SelectClassPanel {
     private JLabel dspURI;
     private Resource uri;
     private URIType uriType;
-    private GraphCell cell;
     private GraphCell prevCell;
 
     SelectResourceTypePanel(GraphManager gm) {
@@ -83,7 +82,7 @@ public class SelectResourceTypePanel extends SelectClassPanel {
     }
 
     public void valueChanged(GraphSelectionEvent e) {
-        cell = (GraphCell) graph.getSelectionCell();
+        GraphCell cell = (GraphCell) graph.getSelectionCell();
         if (graph.getSelectionCount() == 1 && graph.getModel().getChildCount(cell) <= 1) {
             if (RDFGraph.isRDFSClassCell(cell)) {
                 GraphUtilities.changeDefaultCellStyle(graph, prevCell, OntClassCell.classColor);

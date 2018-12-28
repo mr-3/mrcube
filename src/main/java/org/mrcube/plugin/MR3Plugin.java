@@ -40,7 +40,6 @@ import org.mrcube.utils.GraphUtilities;
 import org.mrcube.utils.MR3CellMaker;
 import org.mrcube.views.MR3TreePanel;
 
-import javax.swing.*;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
@@ -264,13 +263,6 @@ public abstract class MR3Plugin {
         return mr3.getBaseURI();
     }
 
-    /**
-     * 
-     * @return JTabbedPane
-     */
-    protected JTabbedPane getDesktopPane() {
-        return mr3.getGraphManager().getDesktopTabbedPane();
-    }
 
     /**
      * 

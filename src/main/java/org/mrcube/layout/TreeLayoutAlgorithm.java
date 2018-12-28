@@ -10,22 +10,21 @@ import java.awt.*;
 import java.util.List;
 import java.util.*;
 
+/***************************************************************************
+ * layout,attachParent,layoutLeaf,join,merge,offset and bridge methods below
+ * were taken line by line from Moen's algorithm.
+ *
+ * Attempts to understand the above methods without reading the paper first
+ * are strongly discouraged.
+ *
+ * http://www.computer.org/software/so1990/s4021abs.htm
+ *
+ *
+ * modified by
+ *
+ * @author Takeshi Morita
+ **************************************************************************/
 public class TreeLayoutAlgorithm {
-
-    /***************************************************************************
-     * layout,attachParent,layoutLeaf,join,merge,offset and bridge methods below
-     * were taken line by line from Moen's algorithm.
-     * 
-     * Attempts to understand the above methods without reading the paper first
-     * are strongly discouraged.
-     * 
-     * http://www.computer.org/software/so1990/s4021abs.htm
-     * 
-     * 
-     * modified by
-     * 
-     * @author Takeshi Morita
-     **************************************************************************/
 
     public static final Object CELL_WRAPPER = new Object();
     public static final int LEFT_TO_RIGHT = 0;
@@ -62,7 +61,9 @@ public class TreeLayoutAlgorithm {
     protected void layout(TreeLayoutNode t, Set nodeSet) {
         TreeLayoutNode c;
 
-        if (t == null) { return; }
+        if (t == null) {
+            return;
+        }
 
         c = t.child;
         while (c != null) {
@@ -167,7 +168,9 @@ public class TreeLayoutAlgorithm {
     protected int offset(int p1, int p2, int a1, int a2, int b1, int b2) {
         int d, s, t;
 
-        if (b1 <= p1 || p1 + a1 <= 0) { return 0; }
+        if (b1 <= p1 || p1 + a1 <= 0) {
+            return 0;
+        }
 
         t = b1 * a2 - a1 * b2;
         if (t > 0) {
@@ -190,7 +193,9 @@ public class TreeLayoutAlgorithm {
             d = b2 - (p2 + a2);
         }
 
-        if (d > 0) { return d; }
+        if (d > 0) {
+            return d;
+        }
         return 0;
     }
 

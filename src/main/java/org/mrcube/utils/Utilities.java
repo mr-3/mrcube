@@ -25,6 +25,7 @@ package org.mrcube.utils;
 
 import org.apache.jena.datatypes.RDFDatatype;
 import org.apache.jena.rdf.model.*;
+import org.mrcube.MR3;
 
 import javax.swing.*;
 import java.awt.Container;
@@ -38,6 +39,13 @@ import java.util.TreeMap;
  * @author Takeshi Morita
  */
 public class Utilities {
+
+    private static final String WARNING = Translator.getString("Warning");
+
+    public static void showErrorMessageDialog(String message) {
+        JOptionPane.showMessageDialog(MR3.getCurrentProject(),
+                message, WARNING, JOptionPane.ERROR_MESSAGE);
+    }
 
     /*
      * ResourceクラスのgetNameSpaceメソッドは，ローカル名が数字からはじまる場合に名前空間の分割がうまくできないため，
@@ -152,7 +160,7 @@ public class Utilities {
     public static FocusTraversalPolicy getMyFocusTraversalPolicy(Component[] c, int num) {
         order = c;
         focusNum = num;
-        FocusTraversalPolicy policy = new FocusTraversalPolicy() {
+        return new FocusTraversalPolicy() {
             private List list = Arrays.asList(order);
 
             public Component getDefaultComponent(Container focusCycleRoot) {
@@ -181,7 +189,6 @@ public class Utilities {
                 return order[(index - 1 + order.length) % order.length];
             }
         };
-        return policy;
     }
 
     public static Object[] getSortedCellSet(Object[] cells) {

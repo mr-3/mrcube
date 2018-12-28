@@ -24,7 +24,7 @@
 package org.mrcube.actions;
 
 import org.mrcube.MR3;
-import org.mrcube.MR3Project;
+import org.mrcube.views.MR3ProjectPanel;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
@@ -75,8 +75,7 @@ public class EditorSelect extends MR3AbstractAction {
     }
 
     public void actionPerformed(ActionEvent e) {
-        MR3Project project = MR3.getCurrentProject();
-        if (project == null) { return; }
+        MR3ProjectPanel project = MR3.getCurrentProject();
         if (getName().equals(RDF_EDITOR)) {
             project.frontEditor(GraphType.RDF);
         } else if (getName().equals(CLASS_EDITOR)) {

@@ -46,7 +46,6 @@ public class ShowOverview extends MR3AbstractAction {
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (MR3.getCurrentProject() == null) { return; }
         if (type.equals(RDF_EDITOR_OVERVIEW)) {
             mr3.showRDFEditorOverview();
         } else if (type.equals(CLASS_EDITOR_OVERVIEW)) {

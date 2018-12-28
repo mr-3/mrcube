@@ -26,7 +26,6 @@ import java.util.Collection;
 public class TreeAlgorithm {
 
     private char rootOrient_;
-    private Point2D.Double rootPos_;
     private int depth_;
     private GraphLayoutData[] prevNodeAtLevel_;
     private double[] levelHeight_;
@@ -67,7 +66,7 @@ public class TreeAlgorithm {
             levelSeparation_ = GraphLayoutUtilities.PROPERTY_HORIZONTAL_SPACE;
             subtreeSeparation_ = siblingSeparation_ = GraphLayoutUtilities.PROPERTY_VERTICAL_SPACE;
         }
-        rootPos_ = root.getPosition();
+        Point2D.Double rootPos_ = root.getPosition();
 
         // Construct the Node data fields.
         for (GraphLayoutData tmpnode : graphNodes) {

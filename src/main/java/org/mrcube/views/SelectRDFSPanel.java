@@ -40,7 +40,6 @@ public class SelectRDFSPanel extends SelectClassPanel {
     private Set orgRegionSet;
     private Set newRegionSet;
     private JList regionList;
-    private JScrollPane regionListScroll;
 
     public SelectRDFSPanel(GraphManager gm) {
         super(gm);
@@ -54,7 +53,7 @@ public class SelectRDFSPanel extends SelectClassPanel {
 
     protected JComponent getEachDialogComponent() {
         regionList = new JList();
-        regionListScroll = new JScrollPane(regionList);
+        JScrollPane regionListScroll = new JScrollPane(regionList);
         Utilities.initComponent(regionListScroll, Translator.getString("SelectedList"), LIST_WIDTH, 100);
         return regionListScroll;
     }

@@ -1,24 +1,24 @@
 /*
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
- * 
+ *
  * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
- * 
+ *
  * This file is part of MR^3.
- * 
+ *
  * MR^3 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * MR^3 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  */
 
 package org.mrcube.actions;
@@ -34,7 +34,6 @@ import java.awt.event.KeyEvent;
 
 /**
  * @author Takeshi Morita
- * 
  */
 public class OpenProject extends AbstractActionFile {
 
@@ -53,11 +52,7 @@ public class OpenProject extends AbstractActionFile {
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (MR3.getCurrentProject() == null) {
-            mr3.newProject(null);
-        } else if (!isNewProjectFile(MR3.getCurrentProject())) {
-            confirmExitProject(mr3.getGraphManager().getRootFrame(), MR3.getCurrentProject());
-        }
+        confirmExitProject();
         Model model = readModel(getInputStream("mr3"), mr3.getGraphManager().getBaseURI(), "RDF/XML");
         mr3.getMR3Reader().replaceProjectModel(model);
         mr3.setTitle("MR^3: " + MR3.getCurrentProject().getTitle());

@@ -37,6 +37,7 @@ import org.mrcube.models.*;
 import org.mrcube.models.MR3Constants.HistoryType;
 import org.mrcube.utils.GraphUtilities;
 import org.mrcube.utils.Translator;
+import org.mrcube.utils.Utilities;
 import org.mrcube.views.HistoryManager;
 
 import javax.swing.*;
@@ -310,17 +311,14 @@ public class RDFGraphUI extends BasicGraphUI {
 						mr3Reader.mergeRDFPlusRDFSModel(model);
 						return true;
 					}
-					JOptionPane.showMessageDialog(gmanager.getRootFrame(), "Too much element",
-							WARNING, JOptionPane.ERROR_MESSAGE);
+					Utilities.showErrorMessageDialog("Too much element");
 					return false;
 				}
 			} catch (IOException ioe) {
-				JOptionPane.showMessageDialog(gmanager.getRootFrame(), "IOException", WARNING,
-						JOptionPane.ERROR_MESSAGE);
+				Utilities.showErrorMessageDialog("IOException");
 				return false;
 			} catch (UnsupportedFlavorException ufe) {
-				JOptionPane.showMessageDialog(gmanager.getRootFrame(), "Unsupported", WARNING,
-						JOptionPane.ERROR_MESSAGE);
+				Utilities.showErrorMessageDialog("Unsupported");
 				return false;
 			}
 			return false;

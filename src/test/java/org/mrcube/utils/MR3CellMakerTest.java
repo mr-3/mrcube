@@ -5,7 +5,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mrcube.MR3;
-import org.mrcube.MR3Project;
+import org.mrcube.views.MR3ProjectPanel;
 import org.mrcube.jgraph.ClassGraphMarqueeHandler;
 import org.mrcube.jgraph.PropertyGraphMarqueeHandler;
 import org.mrcube.jgraph.RDFGraphMarqueeHandler;
@@ -23,8 +23,7 @@ class MR3CellMakerTest {
     @BeforeAll
     public static void setUp() {
         MR3.initialize(MR3.class);
-        MR3 mr3 = new MR3();
-        mr3.newProject("Test");
+        new MR3();
     }
 
     @AfterAll
@@ -39,7 +38,7 @@ class MR3CellMakerTest {
 
     @Test
     void insertRDFResource() {
-        MR3Project project = MR3.getCurrentProject();
+        MR3ProjectPanel project = MR3.getCurrentProject();
         RDFGraphMarqueeHandler rdfGraphHandler = project.getRDFEditor().getRdfGraphMarqueeHandler();
         MR3CellMaker cellMaker = rdfGraphHandler.getCellMaker();
         String uri  = DEFAULT_URI + "resource_test";
@@ -49,7 +48,7 @@ class MR3CellMakerTest {
 
     @Test
     void insertRDFLiteral() {
-        MR3Project project = MR3.getCurrentProject();
+        MR3ProjectPanel project = MR3.getCurrentProject();
         RDFGraphMarqueeHandler rdfGraphHandler = project.getRDFEditor().getRdfGraphMarqueeHandler();
         MR3CellMaker cellMaker = rdfGraphHandler.getCellMaker();
         MR3Literal literal = new MR3Literal();
@@ -60,7 +59,7 @@ class MR3CellMakerTest {
 
     @Test
     void insertClass() {
-        MR3Project project = MR3.getCurrentProject();
+        MR3ProjectPanel project = MR3.getCurrentProject();
         ClassGraphMarqueeHandler classGraphHandler = project.getClassEditor().getClassGraphMarqueeHandler();
         MR3CellMaker cellMaker = classGraphHandler.getCellMaker();
         GraphCell cell = cellMaker.insertClass(new Point(50, 50), DEFAULT_URI + "TestClass");
@@ -69,7 +68,7 @@ class MR3CellMakerTest {
 
     @Test
     void insertProperty() {
-        MR3Project project = MR3.getCurrentProject();
+        MR3ProjectPanel project = MR3.getCurrentProject();
         PropertyGraphMarqueeHandler propertyGraphHandler = project.getPropertyEditor().getPropertyGraphMarqueeHandler();
         MR3CellMaker cellMaker = propertyGraphHandler.getCellMaker();
         GraphCell cell = cellMaker.insertProperty(new Point(50, 50), DEFAULT_URI + "testProperty");

@@ -191,8 +191,7 @@ public class ReferenceListPanel extends JPanel {
     private ReferenceTableModel getTableModel() {
         Object[] columnNames = new Object[] { Translator.getString("ReferenceList.DeleteCheck"),
                 Translator.getString("ReferenceList.List")};
-        ReferenceTableModel tModel = new ReferenceTableModel(columnNames, 0);
-        return tModel;
+        return new ReferenceTableModel(columnNames, 0);
     }
 
     private void replaceRDFRefTableModel(Object cell) {
@@ -276,8 +275,7 @@ public class ReferenceListPanel extends JPanel {
     }
 
     private boolean isAvailable(TableModel tableModel, int row, int column) {
-        Boolean isAvailable = (Boolean) tableModel.getValueAt(row, column);
-        return isAvailable;
+        return (Boolean) tableModel.getValueAt(row, column);
     }
 
     class ReferenceTableModel extends DefaultTableModel {

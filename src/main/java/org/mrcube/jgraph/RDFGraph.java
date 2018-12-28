@@ -392,7 +392,7 @@ public class RDFGraph extends JGraph {
                 buf.append("\n");
                 cnt = 0;
             }
-            buf.append(str.substring(start, end));
+            buf.append(str, start, end);
             cnt += str.substring(start, end).length();
         }
 

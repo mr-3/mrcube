@@ -52,6 +52,7 @@ public class NewProject extends AbstractActionFile {
     }
 
     public void actionPerformed(ActionEvent e) {
-        mr3.newProject(null);
+        confirmExitProject();
+        mr3.newProject();
     }
 }

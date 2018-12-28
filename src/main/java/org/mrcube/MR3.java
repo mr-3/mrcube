@@ -67,7 +67,7 @@ public class MR3 extends JFrame implements ChangeListener {
     public static boolean OFF_META_MODEL_MANAGEMENT;
 
     private static Preferences userPrefs;
-    private static JTabbedPane desktopTabbedPane;
+    private static MR3ProjectPanel mr3ProjectPanel;
 
     private MR3Reader mr3Reader;
     private MR3Writer mr3Writer;
@@ -97,7 +97,6 @@ public class MR3 extends JFrame implements ChangeListener {
     public static StatusBarPanel STATUS_BAR;
     private static final int MAIN_FRAME_WIDTH = 1024;
     private static final int MAIN_FRAME_HEIGHT = 768;
-    private static final Color DESKTOP_BACK_COLOR = Color.WHITE;
 
     public MR3() {
         MR3Constants.loadResourceBundle();
@@ -105,16 +104,17 @@ public class MR3 extends JFrame implements ChangeListener {
         mr3LogConsole = new MR3LogConsole(this, Translator.getString("LogConsole.Title"),
                 Utilities.getImageIcon("application_xp_terminal.png").getImage());
 
-        desktopTabbedPane = new JTabbedPane();
-        desktopTabbedPane.addChangeListener(this);
-        gmanager = new GraphManager(desktopTabbedPane, userPrefs, this);
+        gmanager = new GraphManager(userPrefs, this);
+
         mr3Reader = new MR3Reader(gmanager);
         mr3Writer = new MR3Writer(gmanager);
         initActions();
         getContentPane().add(createToolBar(), BorderLayout.NORTH);
 
         STATUS_BAR = new StatusBarPanel();
-        getContentPane().add(desktopTabbedPane, BorderLayout.CENTER);
+        mr3ProjectPanel = new MR3ProjectPanel(gmanager);
+        gmanager.setMR3ProjectPanel(mr3ProjectPanel);
+        getContentPane().add(mr3ProjectPanel, BorderLayout.CENTER);
         getContentPane().add(STATUS_BAR, BorderLayout.SOUTH);
 
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -127,11 +127,7 @@ public class MR3 extends JFrame implements ChangeListener {
         String logFilePath = userPrefs.get(PrefConstants.logFile, System.getProperty("user.dir") + "/"
                 + HistoryManager.DEFAULT_LOG_FILE_NAME);
         HistoryManager.initLogger(logFilePath);
-        newProject(null);
-    }
-
-    public JTabbedPane getDesktopTabbedPane() {
-        return desktopTabbedPane;
+        newProject();
     }
 
     private void initWeakReferences() {
@@ -202,11 +198,8 @@ public class MR3 extends JFrame implements ChangeListener {
         showVersionInfoAction = new ShowVersionInfoAction(this);
     }
 
-    private JLabel findLabel;
     private JTextField findField;
     private JLabel findResNum;
-    private JButton findPrevButton;
-    private JButton findNextButton;
     private int currentFindResourceNum;
     private Object[] findList;
 
@@ -234,7 +227,7 @@ public class MR3 extends JFrame implements ChangeListener {
         toolbar.add(deployWindowCRAction);
         toolbar.add(deployWindowPRAction);
         toolbar.addSeparator();
-        findLabel = new JLabel(Translator.getString("Component.Edit.FindResource.Text") + ": ");
+        JLabel findLabel = new JLabel(Translator.getString("Component.Edit.FindResource.Text") + ": ");
         toolbar.add(findLabel);
         findField = new JTextField(20);
         findField.setFocusAccelerator('/');
@@ -245,9 +238,9 @@ public class MR3 extends JFrame implements ChangeListener {
         toolbar.add(findResNum);
         ImageIcon PREV_ICON = Utilities.getImageIcon(Translator.getString("ToolBar.FindField.Icon.prev"));
         ImageIcon NEXT_ICON = Utilities.getImageIcon(Translator.getString("ToolBar.FindField.Icon.next"));
-        findPrevButton = new JButton(PREV_ICON);
+        JButton findPrevButton = new JButton(PREV_ICON);
         findPrevButton.addActionListener(new PrevResourceAction());
-        findNextButton = new JButton(NEXT_ICON);
+        JButton findNextButton = new JButton(NEXT_ICON);
         findNextButton.addActionListener(new NextResourceAction());
         toolbar.add(findPrevButton);
         toolbar.add(findNextButton);
@@ -383,17 +376,9 @@ public class MR3 extends JFrame implements ChangeListener {
         result.setVisible(true);
     }
 
-    private void checkCurrentProject() {
-        MR3Project project = getCurrentProject();
-        if (project == null) {
-            newProject(null);
-        }
-    }
-
     public void showOptionDialog() {
         OptionDialog result = optionDialogRef.get();
         if (result == null) {
-            checkCurrentProject();
             result = new OptionDialog(gmanager, userPrefs);
             optionDialogRef = new WeakReference<>(result);
         }
@@ -422,7 +407,6 @@ public class MR3 extends JFrame implements ChangeListener {
     public HistoryManager getHistoryManager() {
         HistoryManager result = historyManagerRef.get();
         if (result == null) {
-            checkCurrentProject();
             result = new HistoryManager(gmanager.getRootFrame(), this);
             historyManagerRef = new WeakReference<>(result);
         }
@@ -432,7 +416,6 @@ public class MR3 extends JFrame implements ChangeListener {
     public ValidatorDialog getValidator() {
         ValidatorDialog result = validatorRef.get();
         if (result == null) {
-            checkCurrentProject();
             result = new ValidatorDialog(gmanager.getRootFrame(), gmanager);
             validatorRef = new WeakReference<>(result);
         }
@@ -442,7 +425,6 @@ public class MR3 extends JFrame implements ChangeListener {
     public ProjectInfoDialog getProjectInfoDialog() {
         ProjectInfoDialog result = projectInfoDialogRef.get();
         if (result == null) {
-            checkCurrentProject();
             result = new ProjectInfoDialog(gmanager, this);
             projectInfoDialogRef = new WeakReference<>(result);
         }
@@ -577,13 +559,8 @@ public class MR3 extends JFrame implements ChangeListener {
         return userPrefs.get(type, GraphLayoutUtilities.UP_TO_DOWN);
     }
 
-    public static MR3Project getCurrentProject() {
-        return (MR3Project) desktopTabbedPane.getSelectedComponent();
-    }
-
-    public static void setCurrentProjectName() {
-        String tabName = getCurrentProject().getCurrentProjectFile().getName().replaceAll(".mr3", "");
-        getCurrentProject().getTabComponent().setTabName(tabName);
+    public static MR3ProjectPanel getCurrentProject() {
+        return mr3ProjectPanel;
     }
 
     public Preferences getUserPrefs() {
@@ -759,20 +736,12 @@ public class MR3 extends JFrame implements ChangeListener {
         }
     }
 
-    public void newProject(String basePath) {
+    public void newProject() {
         gmanager.getAttrDialog().setNullPanel();
         gmanager.getNSTableDialog().setDefaultNSPrefix();
-        Color backgroundColor = new Color(userPrefs.getInt(PrefConstants.BackgroundColor, DESKTOP_BACK_COLOR.getRGB()));
-        TabComponent tabComponent = new TabComponent(this, Translator.getString("Component.File.NewProject.Text"));
-        MR3Project project = new MR3Project(gmanager, basePath, backgroundColor, tabComponent);
-        desktopTabbedPane.addTab(null, project);
-        desktopTabbedPane.setTabComponentAt(desktopTabbedPane.getTabCount() - 1, tabComponent);
         HistoryManager.saveHistory(HistoryType.NEW_PROJECT);
-        project.deployCPR();
-    }
-
-    public void removeTab(MR3Project project) {
-        desktopTabbedPane.remove(project);
+        mr3ProjectPanel.resetEditors();
+        mr3ProjectPanel.deployCPR();
     }
 
     public MR3Reader getMR3Reader() {
@@ -841,9 +810,8 @@ public class MR3 extends JFrame implements ChangeListener {
     }
 
     public void stateChanged(ChangeEvent e) {
-        MR3Project project = (MR3Project) desktopTabbedPane.getSelectedComponent();
-        if (project != null) {
-            setTitle("MR^3: " + project.getTitle());
+        if (mr3ProjectPanel != null) {
+            setTitle("MR^3: " + mr3ProjectPanel.getTitle());
         } else {
             setTitle("MR^3");
         }

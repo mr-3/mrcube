@@ -24,7 +24,7 @@
 package org.mrcube.actions;
 
 import org.mrcube.MR3;
-import org.mrcube.MR3Project;
+import org.mrcube.views.MR3ProjectPanel;
 import org.mrcube.models.MR3Constants.DeployType;
 
 import javax.swing.*;
@@ -46,7 +46,7 @@ public class DeployWindows extends MR3AbstractAction {
     }
 
     public void actionPerformed(ActionEvent e) {
-        MR3Project project = MR3.getCurrentProject();
+        MR3ProjectPanel project = MR3.getCurrentProject();
         if (project == null) { return; }
         switch (deployType) {
         case CPR:

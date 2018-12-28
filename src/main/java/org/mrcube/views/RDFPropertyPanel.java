@@ -70,8 +70,6 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 
 	private JList localNameList;
 	private Map<String, Set<String>> propMap;
-	private Set<String> propNameSpaceSet;
-	private IconCellRenderer renderer;
 	private static Object[] NULL = new Object[0];
 
 	private List<GraphCell> propList;
@@ -236,7 +234,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 		JScrollPane localNameListScroll = new JScrollPane(localNameList);
 		localNameListScroll.setBorder(BorderFactory.createTitledBorder(Translator
 				.getString("Property") + " ID"));
-		renderer = new IconCellRenderer();
+		IconCellRenderer renderer = new IconCellRenderer();
 		localNameList.setCellRenderer(renderer);
 		return localNameListScroll;
 	}
@@ -353,7 +351,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 	public void setPropertyList(List<GraphCell> plist) {
 		propList = plist;
 		propMap = new HashMap<>();
-		propNameSpaceSet = new HashSet<>();
+		Set<String> propNameSpaceSet = new HashSet<>();
 
 		for (GraphCell cell : propList) {
 			RDFSModel info = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
@@ -379,9 +377,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 			Object propertyCell = rdfsModelMap.getPropertyCell(uri);
 			gmanager.selectPropertyCell(propertyCell);
 		} else {
-			JOptionPane.showMessageDialog(gmanager.getDesktopTabbedPane(),
-					Translator.getString("Warning.Message3"), Translator.getString("Warning"),
-					JOptionPane.ERROR_MESSAGE);
+			Utilities.showErrorMessageDialog(Translator.getString("Warning.Message3"));
 		}
 	}
 

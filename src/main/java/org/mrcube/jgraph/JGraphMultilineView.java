@@ -113,9 +113,6 @@ public class JGraphMultilineView extends VertexView {
 				});
 				AbstractAction newLineAction = new AbstractAction() {
 
-					/**
-					 * @return
-					 */
 					public void actionPerformed(ActionEvent e) {
 						Document doc = editorComponent.getDocument();
 						try {
