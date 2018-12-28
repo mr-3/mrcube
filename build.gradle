@@ -1,5 +1,7 @@
 plugins {
     id 'org.beryx.jlink' version '2.2.1'
+    id "com.jfrog.bintray" version "1.8.4"
+    id 'java'
     id 'maven-publish'
     id 'idea'
 }
@@ -117,13 +119,51 @@ dependencies {
 
 publishing {
     publications {
-        maven(MavenPublication) {
+        MyPublication(MavenPublication) {
             groupId = 'org.mrcube'
             artifactId = 'mrcube'
             version = '1.0.4'
 
             from components.java
+            pom {
+                name = 'MRCube'
+                description = 'Meta-Model Management based on RDFs Revision Reflection'
+                url = 'http://mrcube.org/'
+                licenses {
+                    license {
+                        name = 'GNU GENERAL PUBLIC LICENSE, Version 3'
+                        url = 'http://www.gnu.org/licenses/gpl-3.0.html'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 't-morita'
+                        name = 'Takeshi Morita'
+                        email = 't_morita@ae.keio.ac.jp'
+                    }
+                }
+            }
         }
     }
 }
 
+def siteUrl = 'https://mrcube.org/'
+def githubUrl = 'https://github.com/mr-3/mrcube'
+bintray {
+    user = project.getProperty('bintray_user')
+    key = project.getProperty('bintray_api_key')
+    publications = ['MyPublication']
+    override = true
+    pkg {
+        repo = 'maven'
+        name = project.group + ':' + project.ext.artifactId
+        userOrg = 'mrcube'
+        licenses = ['GPL']
+        websiteUrl = siteUrl
+        vcsUrl = githubUrl + '.git'
+        issueTrackerUrl = githubUrl + '/issues'
+        version {
+            name = project.version
+        }
+    }
+}

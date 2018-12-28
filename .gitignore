@@ -8,3 +8,4 @@ out/
 gradlew
 gradlew.bat
 .DS_Store
+gradle.properties
