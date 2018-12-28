@@ -1376,8 +1376,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
                 layoutPanel.setConfig();
                 renderingPanel.setConfig();
             } catch (NumberFormatException nfe) {
-                JOptionPane.showMessageDialog(MR3.getCurrentProject(), "Number Format Exception", "Warning",
-                        JOptionPane.ERROR_MESSAGE);
+                Utilities.showErrorMessageDialog("Number Format Exception");
                 return;
             }
         }

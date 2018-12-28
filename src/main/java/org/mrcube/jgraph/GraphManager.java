@@ -491,8 +491,7 @@ public class GraphManager {
 
     public boolean isEmptyURI(String uri) {
         if (uri.equals("")) {
-            JOptionPane.showMessageDialog(mr3ProjectPanel, Translator.getString("Warning.Message4"), WARNING,
-                    JOptionPane.ERROR_MESSAGE);
+            Utilities.showErrorMessageDialog(Translator.getString("Warning.Message4"));
             return true;
         }
         return false;
@@ -500,8 +499,7 @@ public class GraphManager {
 
     public boolean isDuplicatedWithDialog(String uri, Object cell, GraphType type) {
         if (isDuplicated(uri, cell, type)) {
-            JOptionPane.showMessageDialog(getGraph(type), Translator.getString("Warning.Message1"), WARNING,
-                    JOptionPane.ERROR_MESSAGE);
+            Utilities.showErrorMessageDialog(Translator.getString("Warning.Message1"));
             return true;
         }
         return false;

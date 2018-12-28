@@ -482,13 +482,11 @@ public class ImportDialog extends JDialog implements ActionListener {
             try {
                 inputStreamSet.add(new BufferedInputStream(getURI(uri).openStream()));
             } catch (UnknownHostException uhe) {
-                JOptionPane.showMessageDialog(MR3.getCurrentProject(), "Unknown Host(Proxy)", "Warning",
-                        JOptionPane.ERROR_MESSAGE);
+                Utilities.showErrorMessageDialog("Unknown Host (Proxy)");
             } catch (MalformedURLException uriex) {
                 uriex.printStackTrace();
             } catch (IOException ioe) {
-                JOptionPane.showMessageDialog(MR3.getCurrentProject(), "File Not Found.", "Warning",
-                        JOptionPane.ERROR_MESSAGE);
+                Utilities.showErrorMessageDialog("File Not Found");
             }
         }
         return inputStreamSet;

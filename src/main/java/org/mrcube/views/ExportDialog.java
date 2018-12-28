@@ -304,8 +304,7 @@ public class ExportDialog extends JDialog implements ActionListener {
     class ExportImgEvent implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             if (getSelectedCount() != 1) {
-                JOptionPane.showMessageDialog(MR3.getCurrentProject(), "Check (RDF or Class or Property)", "",
-                        JOptionPane.ERROR_MESSAGE);
+                Utilities.showErrorMessageDialog("Check (RDF or Class or Property)");
                 return;
             }
             String fileType = "png";
@@ -392,7 +391,7 @@ public class ExportDialog extends JDialog implements ActionListener {
             rdfWriter.write(model, writer, gmanager.getBaseURI());
         } catch (Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(MR3.getCurrentProject(), "Export Error", "", JOptionPane.ERROR_MESSAGE);
+            Utilities.showErrorMessageDialog("Export Error");
         }
     }
 

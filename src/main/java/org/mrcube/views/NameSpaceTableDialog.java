@@ -1,24 +1,24 @@
 /*
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
- * 
+ *
  * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
- * 
+ *
  * This file is part of MR^3.
- * 
+ *
  * MR^3 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * MR^3 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  */
 
 package org.mrcube.views;
@@ -49,10 +49,9 @@ import java.util.List;
 import java.util.*;
 
 /**
- * 
  * 名前空間と接頭辞の対応付けをテーブルで行う チェックにより，Class, Property, Resourceの名前空間を接頭辞で置き換える
  * 接頭辞の名前変更はテーブルから行うことができる
- * 
+ *
  * @author Takeshi Morita
  */
 public class NameSpaceTableDialog extends JDialog implements ActionListener, TableModelListener, Serializable {
@@ -125,7 +124,9 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
         String prefix = model.getNsURIPrefix(ns);
         // System.out.println(ns);
         // System.out.println(prefix);
-        if (prefix != null && (!prefix.equals(""))) { return prefix; }
+        if (prefix != null && (!prefix.equals(""))) {
+            return prefix;
+        }
         return getKnownPrefix(ns);
     }
 
@@ -152,7 +153,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
 
     public void setCurrentNSPrefix(Model model) {
         Set<String> nsSet = new HashSet<>();
-        for (StmtIterator i = model.listStatements(); i.hasNext();) {
+        for (StmtIterator i = model.listStatements(); i.hasNext(); ) {
             Statement stmt = i.nextStatement();
             String ns = Utilities.getNameSpace(stmt.getSubject());
             if (ns != null) {
@@ -179,6 +180,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
         }
         setPrefixNSInfoSet();
     }
+
     public NSTableModel getNSTableModel() {
         return nsTableModel;
     }
@@ -209,7 +211,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
     }
 
     private void initTable() {
-        Object[] columnNames = new Object[] { Translator.getString("Available"), Translator.getString("Prefix"), "URI"};
+        Object[] columnNames = new Object[]{Translator.getString("Available"), Translator.getString("Prefix"), "URI"};
         nsTableModel = new NSTableModel(columnNames, 0);
         nsTableModel.addTableModelListener(this);
         nsTable = new JTable(nsTableModel);
@@ -281,26 +283,32 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
         return (ns != null && !ns.equals("") && !ns.equals("http://") && !values.contains(ns));
     }
 
-    /** prefix が空でなくかつ，すでに登録されていない場合true */
+    /**
+     * prefix が空でなくかつ，すでに登録されていない場合true
+     */
     private boolean isValidPrefixWithWarning(String prefix) {
-        if (isValidPrefix(prefix)) { return true; }
-        JOptionPane.showMessageDialog(MR3.getCurrentProject(), Translator.getString("Warning.Message5"),
-                WARNING, JOptionPane.ERROR_MESSAGE);
+        if (isValidPrefix(prefix)) {
+            return true;
+        }
+        Utilities.showErrorMessageDialog(Translator.getString("Warning.Message5"));
         return false;
     }
 
-    /** nsが空でもnullでもなく，すでに登録されてない場合 true */
+    /**
+     * nsが空でもnullでもなく，すでに登録されてない場合 true
+     */
     private boolean isValidNSWithWarning(String ns) {
-        if (isValidNS(ns)) { return true; }
-        JOptionPane.showMessageDialog(MR3.getCurrentProject(), Translator.getString("Warning.Message6"),
-                WARNING, JOptionPane.ERROR_MESSAGE);
+        if (isValidNS(ns)) {
+            return true;
+        }
+        Utilities.showErrorMessageDialog(Translator.getString("Warning.Message6"));
         return false;
     }
 
     public void addNameSpaceTable(Boolean isAvailable, String prefix, String ns) {
         if (isValidPrefixWithWarning(prefix) && isValidNSWithWarning(ns)) {
             prefixNSMap.put(prefix, ns);
-            Object[] list = new Object[] { isAvailable, prefix, ns};
+            Object[] list = new Object[]{isAvailable, prefix, ns};
             nsTableModel.insertRow(nsTableModel.getRowCount(), list);
             prefixField.setText("");
             nsField.setText("");
@@ -312,18 +320,18 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
         int length = removeList.length;
         // どうやったら，複数のrowを消すせるのかがよくわからない．
         // modelから消した時点でrow番号が変わってしまうのが原因
-        if (length == 0) { return; }
+        if (length == 0) {
+            return;
+        }
         int row = removeList[0];
         String rmPrefix = (String) nsTableModel.getValueAt(row, 1);
         String rmNS = (String) nsTableModel.getValueAt(row, 2);
         if (rmNS.equals(gmanager.getBaseURI())) {
-            JOptionPane.showMessageDialog(MR3.getCurrentProject(), Translator.getString("Warning.Message7"),
-                    WARNING, JOptionPane.ERROR_MESSAGE);
+            Utilities.showErrorMessageDialog(Translator.getString("Warning.Message7"));
             return;
         }
         if (rmNS.equals(MR3Resource.DefaultURI.getNameSpace())) {
-            JOptionPane.showMessageDialog(MR3.getCurrentProject(), Translator.getString("Warning.Message8"),
-                    WARNING, JOptionPane.ERROR_MESSAGE);
+            Utilities.showErrorMessageDialog(Translator.getString("Warning.Message8"));
             return;
         }
         if (!gmanager.getAllNameSpaceSet().contains(rmNS)) {
@@ -331,8 +339,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
             nsTableModel.removeRow(row);
             setPrefixNSInfoSet();
         } else {
-            JOptionPane.showMessageDialog(MR3.getCurrentProject(), Translator.getString("Warning.Message9"),
-                    WARNING, JOptionPane.ERROR_MESSAGE);
+            Utilities.showErrorMessageDialog(Translator.getString("Warning.Message9"));
         }
     }
 
@@ -344,7 +351,9 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
         return (type == TableModelEvent.UPDATE && column == 0);
     }
 
-    /** テーブルのチェックボックスがチェックされたかどうか */
+    /**
+     * テーブルのチェックボックスがチェックされたかどうか
+     */
     private boolean isPrefixAvailable(int row, int column) {
         Boolean isPrefixAvailable = (Boolean) nsTableModel.getValueAt(row, column);
         return isPrefixAvailable;

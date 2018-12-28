@@ -173,7 +173,7 @@ public abstract class AbstractActionFile extends MR3AbstractAction {
             exportModel.write(writer, "RDF/XML", getBaseURI());
             MR3.getCurrentProject().setCurrentProjectFile(file);
         } catch (FileNotFoundException e2) {
-            JOptionPane.showMessageDialog(null, "FileNotFound", "Warning", JOptionPane.ERROR_MESSAGE);
+            Utilities.showErrorMessageDialog("File Not Found");
         }
     }
 
