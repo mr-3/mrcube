@@ -34,8 +34,8 @@ import java.awt.event.ActionEvent;
  */
 public class SelectNodes extends MR3AbstractAction {
 
-    private GraphType graphType;
-    private GraphManager graphManager;
+    private final GraphType graphType;
+    private final GraphManager graphManager;
 
     public SelectNodes(GraphManager gm, GraphType type, String name) {
         super(name);

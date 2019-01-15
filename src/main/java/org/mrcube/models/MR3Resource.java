@@ -53,24 +53,24 @@ public class MR3Resource {
 	private static final String IS_PREFIX_AVAILABLE = "isPrefixAvailable";
 	private static final String CONCEPT_LABEL = "conceptLabel";
 
-	public static Resource DefaultURI;
-	public static org.apache.jena.rdf.model.Property DefaultLang;
-	public static Property Property;
-	public static Property Nil;
-	public static Resource Empty;
-	public static Resource Literal;
-	public static Property LiteralProperty;
-	public static Property HasLiteralResource;
-	public static Property LiteralLang;
-	public static Property LiteralDatatype;
-	public static Property LiteralString;
-	public static Property PointX;
-	public static Property PointY;
-	public static Property NodeWidth;
-	public static Property NodeHeight;
-	public static Property Prefix;
-	public static Property IsPrefixAvailable;
-	public static Property conceptLabel;
+	public static final Resource DefaultURI;
+	public static final org.apache.jena.rdf.model.Property DefaultLang;
+	public static final Property Property;
+	public static final Property Nil;
+	public static final Resource Empty;
+	public static final Resource Literal;
+	public static final Property LiteralProperty;
+	public static final Property HasLiteralResource;
+	public static final Property LiteralLang;
+	public static final Property LiteralDatatype;
+	public static final Property LiteralString;
+	public static final Property PointX;
+	public static final Property PointY;
+	public static final Property NodeWidth;
+	public static final Property NodeHeight;
+	public static final Property Prefix;
+	public static final Property IsPrefixAvailable;
+	public static final Property conceptLabel;
 
 	static {
 		DefaultURI = ResourceFactory.createResource(DEFAULT_URI);

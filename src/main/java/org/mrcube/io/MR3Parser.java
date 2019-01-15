@@ -50,8 +50,8 @@ import java.util.Set;
  */
 public class MR3Parser {
 
-	private MR3CellMaker cellMaker;
-	private GraphManager gmanager;
+	private final MR3CellMaker cellMaker;
+	private final GraphManager gmanager;
 
 	public MR3Parser(GraphManager manager) {
 		gmanager = manager;
@@ -286,7 +286,7 @@ public class MR3Parser {
 		}
 	}
 
-	public RDFGraph createRDFGraph(Model model, Map<RDFNode, GraphLayoutData> cellLayoutMap) {
+	private RDFGraph createRDFGraph(Model model, Map<RDFNode, GraphLayoutData> cellLayoutMap) {
 		Map<Object, DefaultGraphCell> resourceMap = new HashMap<>();
 		Map<Object, AttributeMap> attributes = new HashMap<>();
 		RDFGraph graph = new RDFGraph(gmanager, new RDFGraphModel(), null);

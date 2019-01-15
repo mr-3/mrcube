@@ -49,6 +49,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -59,33 +60,33 @@ import java.util.Set;
  */
 public class ExportDialog extends JDialog implements ActionListener {
 
-    private MR3Writer mr3Writer;
-    private GraphManager gmanager;
+    private final MR3Writer mr3Writer;
+    private final GraphManager gmanager;
     private MR3TreePanel treePanel;
 
-    private JRadioButton xmlRadioButton;
-    private JRadioButton nTripleRadioButton;
-    private JRadioButton turtleRadioButton;
-    private JRadioButton n3RadioButton;
-    private JRadioButton n3PPRadioButton;
-    private JRadioButton n3PLAINRadioButton;
-    private JRadioButton n3TRIPLERadioButton;
+    private final JRadioButton xmlRadioButton;
+    private final JRadioButton nTripleRadioButton;
+    private final JRadioButton turtleRadioButton;
+    private final JRadioButton n3RadioButton;
+    private final JRadioButton n3PPRadioButton;
+    private final JRadioButton n3PLAINRadioButton;
+    private final JRadioButton n3TRIPLERadioButton;
 
-    private JCheckBox rdfConvertBox;
-    private JCheckBox classConvertBox;
-    private JCheckBox propertyConvertBox;
+    private final JCheckBox rdfConvertBox;
+    private final JCheckBox classConvertBox;
+    private final JCheckBox propertyConvertBox;
 
-    private JCheckBox encodeCheckBox;
-    private JCheckBox selectedCheckBox;
-    private JCheckBox abbrevCheckBox;
-    private JCheckBox xmlbaseCheckBox;
+    private final JCheckBox encodeCheckBox;
+    private final JCheckBox selectedCheckBox;
+    private final JCheckBox abbrevCheckBox;
+    private final JCheckBox xmlbaseCheckBox;
 
     private static JTextArea exportTextArea;
     private static final int FRAME_HEIGHT = 500;
     private static final int FRAME_WIDTH = 600;
-    private static ImageIcon EXPORT_ICON = Utilities.getImageIcon(Translator.getString("Component.File.Export.Icon"));
-    private static ImageIcon FILE_ICON = Utilities.getImageIcon("page_white_text.png");
-    private static ImageIcon IMAGE_ICON = Utilities.getImageIcon("image.png");
+    private static final ImageIcon EXPORT_ICON = Utilities.getImageIcon(Translator.getString("Component.File.Export.Icon"));
+    private static final ImageIcon FILE_ICON = Utilities.getImageIcon("page_white_text.png");
+    private static final ImageIcon IMAGE_ICON = Utilities.getImageIcon("image.png");
 
     public ExportDialog(GraphManager gm) {
         super(gm.getRootFrame(), Translator.getString("ExportDialog.Title"), true);
@@ -215,11 +216,11 @@ public class ExportDialog extends JDialog implements ActionListener {
         setVisible(false);
     }
 
-    private static RDFsFileFilter rdfsFileFilter = new RDFsFileFilter(true);
-    private static NTripleFileFilter n3FileFilter = new NTripleFileFilter(true);
-    private static TurtleFileFilter turtleFileFilter = new TurtleFileFilter(true);
-    private static OWLFileFilter owlFileFilter = new OWLFileFilter(true);
-    private static PNGFileFilter pngFileFilter = new PNGFileFilter();
+    private static final RDFsFileFilter rdfsFileFilter = new RDFsFileFilter(true);
+    private static final NTripleFileFilter n3FileFilter = new NTripleFileFilter(true);
+    private static final TurtleFileFilter turtleFileFilter = new TurtleFileFilter(true);
+    private static final OWLFileFilter owlFileFilter = new OWLFileFilter(true);
+    private static final PNGFileFilter pngFileFilter = new PNGFileFilter();
 
     private File getFile() {
         return getFile(getExtension());
@@ -393,11 +394,7 @@ public class ExportDialog extends JDialog implements ActionListener {
         Writer writer = new StringWriter();
         writeModel(model, writer);
         if (!encodeCheckBox.isSelected()) {
-            try {
-                return URLDecoder.decode(writer.toString(), "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
+            return URLDecoder.decode(writer.toString(), StandardCharsets.UTF_8);
         }
         return writer.toString();
     }

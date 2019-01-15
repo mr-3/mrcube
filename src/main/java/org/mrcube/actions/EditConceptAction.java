@@ -26,10 +26,12 @@ package org.mrcube.actions;
 import org.jgraph.graph.GraphCell;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.jgraph.RDFGraph;
-import org.mrcube.models.*;
+import org.mrcube.models.ClassModel;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.MR3Constants.HistoryType;
+import org.mrcube.models.PropertyModel;
 import org.mrcube.models.RDFSModel;
+import org.mrcube.models.RDFSModelMap;
 import org.mrcube.utils.GraphUtilities;
 import org.mrcube.views.HistoryManager;
 import org.mrcube.views.OntologyPanel.BasePanel;
@@ -46,8 +48,8 @@ public class EditConceptAction extends AbstractAction {
     private BasePanel basePanel;
     private RDFSModel rdfsModel;
     private GraphCell graphCell;
-    private RDFGraph graph;
-    private GraphManager gmanager;
+    private final RDFGraph graph;
+    private final GraphManager gmanager;
 
     public EditConceptAction(RDFGraph g, GraphManager gm) {
         graph = g;

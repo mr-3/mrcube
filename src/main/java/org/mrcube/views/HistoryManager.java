@@ -60,8 +60,8 @@ public class HistoryManager extends JDialog implements ActionListener {
 
 	private static GraphManager gmanager;
 
-	private JButton applyButton;
-	private JButton cancelButton;
+	private final JButton applyButton;
+	private final JButton cancelButton;
 
 	private static final int WINDOW_WIDTH = 400;
 	private static final int WINDOW_HEIGHT = 400;
@@ -70,7 +70,7 @@ public class HistoryManager extends JDialog implements ActionListener {
 
 	private static Logger logger;
 
-	public static class CustomLogFormatter extends SimpleFormatter {
+	static class CustomLogFormatter extends SimpleFormatter {
 		private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 		public String format(LogRecord logRecord) {
@@ -520,7 +520,7 @@ public class HistoryManager extends JDialog implements ActionListener {
 		// data.getHistoryType()});
 	}
 
-	public void loadHistory() {
+	private void loadHistory() {
 		if (historyTable.getSelectedRowCount() == 1) {
 			Date date = (Date) historyTableModel.getValueAt(historyTable.getSelectedRow(), 0);
 			HistoryModel data = dateHistoryDataMap.get(date);

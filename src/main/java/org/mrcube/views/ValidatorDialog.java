@@ -43,10 +43,10 @@ import java.util.Iterator;
  */
 public class ValidatorDialog extends JDialog {
 
-	private MR3Writer mr3Writer;
-	private GraphManager gmanager;
+	private final MR3Writer mr3Writer;
+	private final GraphManager gmanager;
 
-	private JEditorPane indicationPane;
+	private final JEditorPane indicationPane;
 
     private static final int WINDOW_HEIGHT = 400;
 	private static final int WINDOW_WIDTH = 550;

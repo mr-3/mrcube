@@ -48,11 +48,11 @@ import java.util.Observable;
  */
 public class MR3OverviewPanel extends JPanel implements ComponentListener, GraphModelListener,
         GraphLayoutCacheListener, PropertyChangeListener {
-    protected JGraph graph;
-    protected JGraph originalGraph;
-    protected PannerViewfinder v;
+    private JGraph graph;
+    private JGraph originalGraph;
+    private PannerViewfinder v;
     protected Rectangle r;
-    double graphWindowToPannerScale = 0.5;
+    private double graphWindowToPannerScale = 0.5;
 
     public MR3OverviewPanel(Editor editor) {
         setEditor(editor);
@@ -152,9 +152,9 @@ public class MR3OverviewPanel extends JPanel implements ComponentListener, Graph
     // View Redirector
     //
 
-    public class ViewRedirector extends GraphLayoutCache {
+    class ViewRedirector extends GraphLayoutCache {
 
-        protected GraphLayoutCache realView;
+        final GraphLayoutCache realView;
 
         public ViewRedirector(JGraph graph, GraphLayoutCache realView) {
             super(graph.getModel(), realView.getFactory());
@@ -179,14 +179,14 @@ public class MR3OverviewPanel extends JPanel implements ComponentListener, Graph
     }
 
     class PannerViewfinder implements MouseListener, MouseMotionListener, PropertyChangeListener, ChangeListener {
-        public final int LEFT_VERTICAL = 1;
-        public final int RIGHT_VERTICAL = 2;
-        public final int UPPER_HORIZONTAL = 4;
-        public final int LOWER_HORIZONTAL = 8;
-        public final int NW_CORNER = 5;
-        public final int NE_CORNER = 6;
-        public final int SW_CORNER = 9;
-        public final int SE_CORNER = 10;
+        final int LEFT_VERTICAL = 1;
+        final int RIGHT_VERTICAL = 2;
+        final int UPPER_HORIZONTAL = 4;
+        final int LOWER_HORIZONTAL = 8;
+        final int NW_CORNER = 5;
+        final int NE_CORNER = 6;
+        final int SW_CORNER = 9;
+        final int SE_CORNER = 10;
 
         int scaledWidth = 50;
         int scaledHeight = 25;
@@ -194,26 +194,26 @@ public class MR3OverviewPanel extends JPanel implements ComponentListener, Graph
         int last_x, last_y;
 
         Rectangle pannerContainerRectangle;
-        Rectangle pannerViewRectangle;
+        final Rectangle pannerViewRectangle;
         Rectangle pannerViewRectangleCopy;
         Rectangle pannerContainerRectangleCopy;
 
-        Rectangle pannerResizeDecoration;
-        Container container;
-        JViewport viewport;
+        final Rectangle pannerResizeDecoration;
+        final Container container;
+        final JViewport viewport;
         double zoomScale = 1.0;
         double combinedScale = graphWindowToPannerScale / zoomScale;
 
         boolean isActive = false;
         boolean isResizing = false;
 
-        BasicStroke stroke = new BasicStroke(1.0f);
-        float[] dash1 = {2.5f};
-        BasicStroke dashStroke = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f, dash1, 0.0f);
+        final BasicStroke stroke = new BasicStroke(1.0f);
+        final float[] dash1 = {2.5f};
+        final BasicStroke dashStroke = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f, dash1, 0.0f);
 
-        private Point viewportPosition;
+        private final Point viewportPosition;
 
-        public PannerViewfinder(Container c, JViewport jvp) {
+        PannerViewfinder(Container c, JViewport jvp) {
             this.container = c;
             this.viewport = jvp;
             viewport.addChangeListener(this);
@@ -226,7 +226,7 @@ public class MR3OverviewPanel extends JPanel implements ComponentListener, Graph
             return pannerViewRectangle.contains(me.getX(), me.getY());
         }
 
-        public JViewport getViewport() {
+        JViewport getViewport() {
             return viewport;
         }
 
@@ -238,7 +238,7 @@ public class MR3OverviewPanel extends JPanel implements ComponentListener, Graph
             }
         }
 
-        public void synchViewportWithPanner() {
+        void synchViewportWithPanner() {
             Point p = viewport.getViewPosition();
             combinedScale = graphWindowToPannerScale / zoomScale;
             int pannerx = (int) (p.getX() * combinedScale);
@@ -433,13 +433,13 @@ public class MR3OverviewPanel extends JPanel implements ComponentListener, Graph
             return cursor;
         }
 
-        public void updatePannerLocation(MouseEvent e) {
+        void updatePannerLocation(MouseEvent e) {
             pannerViewRectangle.setLocation(last_x + e.getX(), last_y + e.getY());
             ensureWithinPannerBounds();
             container.repaint();
         }
 
-        public void update(Graphics g) {
+        void update(Graphics g) {
             Graphics2D g2 = (Graphics2D) g;
 
             Rectangle viewportR = viewport.getViewRect();

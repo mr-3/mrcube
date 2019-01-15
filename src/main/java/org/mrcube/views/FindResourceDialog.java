@@ -54,18 +54,18 @@ import java.util.TreeMap;
 public class FindResourceDialog extends JDialog {
 
     private JTextField findField;
-    private JTextField findLabelField;
-    private JTextField findCommentField;
+    private final JTextField findLabelField;
+    private final JTextField findCommentField;
     private Set<NamespaceModel> namespaceModelSet;
     private JComboBox uriPrefixBox;
-    private JList resourceList;
+    private final JList resourceList;
 
     private JCheckBox rdfCheckBox;
     private JCheckBox classCheckBox;
     private JCheckBox propertyCheckBox;
 
-    private GraphManager gmanager;
-    private static Object[] NULL = new Object[0];
+    private final GraphManager gmanager;
+    private static final Object[] NULL = new Object[0];
 
     private static final int BOX_WIDTH = 100;
     private static final int BOX_HEIGHT = 30;
@@ -287,9 +287,9 @@ public class FindResourceDialog extends JDialog {
     }
 
     class FindAction implements DocumentListener {
-        private FindActionType type;
+        private final FindActionType type;
 
-        public FindAction(FindActionType type) {
+        FindAction(FindActionType type) {
             this.type = type;
         }
 

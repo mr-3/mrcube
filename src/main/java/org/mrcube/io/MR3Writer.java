@@ -33,8 +33,8 @@ import org.mrcube.utils.ProjectManager;
  */
 public class MR3Writer {
 
-	private GraphManager gmanager;
-	private MR3Generator mr3Generator;
+	private final GraphManager gmanager;
+	private final MR3Generator mr3Generator;
 
 	public MR3Writer(GraphManager gm) {
 		gmanager = gm;

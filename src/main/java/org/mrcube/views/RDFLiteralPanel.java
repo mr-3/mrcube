@@ -51,15 +51,15 @@ import java.util.TreeSet;
  */
 public class RDFLiteralPanel extends JPanel implements ActionListener {
 
-	private JTextField langField;
-	private JCheckBox isTypedLiteralBox;
-	private JComboBox typeBox;
-	private JTextArea literalValueArea;
-	private JButton applyButton;
-	private JButton cancelButton;
+	private final JTextField langField;
+	private final JCheckBox isTypedLiteralBox;
+	private final JComboBox typeBox;
+	private final JTextArea literalValueArea;
+	private final JButton applyButton;
+	private final JButton cancelButton;
 	private GraphCell cell;
-	private GraphManager gmanager;
-	private TypeMapper typeMapper;
+	private final GraphManager gmanager;
+	private final TypeMapper typeMapper;
 
 	private static final int LABEL_WIDTH = 350;
 	private static final int LABEL_HEIGHT = 100;
@@ -165,7 +165,7 @@ public class RDFLiteralPanel extends JPanel implements ActionListener {
 		SwingUtilities.invokeLater(() -> literalValueArea.requestFocus());
 	}
 
-	public void apply() {
+	private void apply() {
 		if (cell != null) {
 			String dataType = null;
 			if (isTypedLiteralBox.isSelected()) {

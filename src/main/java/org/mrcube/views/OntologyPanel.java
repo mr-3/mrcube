@@ -52,38 +52,38 @@ import java.util.Set;
  */
 public abstract class OntologyPanel extends JPanel implements ListSelectionListener {
 
-    private EditConceptAction editConceptAction;
+    private final EditConceptAction editConceptAction;
 
-    protected JPanel menuPanel;
-    protected JList menuList;
-    protected CardLayout cardLayout;
+    JPanel menuPanel;
+    JList menuList;
+    CardLayout cardLayout;
 
-    protected BasePanel basePanel;
-    protected LabelPanel labelPanel;
-    protected CommentPanel commentPanel;
+    final BasePanel basePanel;
+    final LabelPanel labelPanel;
+    final CommentPanel commentPanel;
 
-    protected Set<NamespaceModel> namespaceModelSet;
+    private Set<NamespaceModel> namespaceModelSet;
 
-    protected JButton applyButton;
-    protected JButton resetButton;
-    protected JButton cancelButton;
+    final JButton applyButton;
+    final JButton resetButton;
+    final JButton cancelButton;
 
-    protected GraphCell cell;
-    protected RDFGraph graph;
-    protected RDFSModel rdfsModel;
-    protected GraphManager gmanager;
+    GraphCell cell;
+    private final RDFGraph graph;
+    RDFSModel rdfsModel;
+    final GraphManager gmanager;
 
-    protected JList instanceList;
-    protected JScrollPane instanceListScroll;
+    final JList instanceList;
+    final JScrollPane instanceListScroll;
 
     protected static final int LIST_WIDTH = 350;
     protected static final int FIELD_HEIGHT = 30;
     protected static final int LIST_HEIGHT = 80;
-    protected static final int MENU_WIDTH = 90;
+    static final int MENU_WIDTH = 90;
 
     protected static Object[] ZERO = new Object[0];
 
-    public OntologyPanel(RDFGraph g, GraphManager gm) {
+    OntologyPanel(RDFGraph g, GraphManager gm) {
         graph = g;
         gmanager = gm;
 
@@ -120,10 +120,10 @@ public abstract class OntologyPanel extends JPanel implements ListSelectionListe
 
     public class BasePanel extends JPanel {
 
-        protected JComboBox metaClassBox;
-        protected JComboBox uriPrefixBox;
-        protected JTextField idField;
-        protected JLabel nsLabel;
+        final JComboBox metaClassBox;
+        final JComboBox uriPrefixBox;
+        final JTextField idField;
+        final JLabel nsLabel;
 
         BasePanel() {
             metaClassBox = new JComboBox();
@@ -165,11 +165,11 @@ public abstract class OntologyPanel extends JPanel implements ListSelectionListe
             return Translator.getString("Base");
         }
 
-        public void setMetaClassList(Set<Resource> metaClassList) {
+        void setMetaClassList(Set<Resource> metaClassList) {
             setMetaClassBox(metaClassList);
         }
 
-        public JTextField getIDField() {
+        JTextField getIDField() {
             return idField;
         }
 
@@ -179,18 +179,18 @@ public abstract class OntologyPanel extends JPanel implements ListSelectionListe
             }
         }
 
-        public void initURIPrefixBox() {
+        void initURIPrefixBox() {
             uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
         }
 
-        public void setMetaClassBox(Set<Resource> metaClassList) {
+        void setMetaClassBox(Set<Resource> metaClassList) {
             ComboBoxModel model = new DefaultComboBoxModel(metaClassList.toArray());
             metaClassBox.setModel(model);
             metaClassBox.setSelectedItem(ResourceFactory.createResource(rdfsModel.getMetaClass()));
             metaClassBox.setEnabled(!metaClassList.contains(rdfsModel.getURI()));
         }
 
-        public void setPrefix() {
+        void setPrefix() {
             for (NamespaceModel prefNSInfo : namespaceModelSet) {
                 if (prefNSInfo.getNameSpace().equals(rdfsModel.getURI().getNameSpace())) {
                     uriPrefixBox.setSelectedItem(prefNSInfo.getPrefix());
@@ -201,21 +201,21 @@ public abstract class OntologyPanel extends JPanel implements ListSelectionListe
         }
     }
 
-    public void setCell(GraphCell cell) {
+    private void setCell(GraphCell cell) {
         this.cell = cell;
     }
 
-    public void setValue() {
+    void setValue() {
         labelPanel.clearField();
         labelPanel.setResourceInfo(rdfsModel);
         commentPanel.setResourceInfo(rdfsModel);
         basePanel.getIDField().setText(rdfsModel.getLocalName());
     }
 
-    abstract public void setValue(Set<GraphCell> supCellSet);
+    protected abstract void setValue(Set<GraphCell> supCellSet);
 
     /** スーパークラスまたは、スーパープロパティの名前のセットを返す */
-    protected Object[] getTargetInfo(Set<GraphCell> supCellSet) {
+    Object[] getTargetInfo(Set<GraphCell> supCellSet) {
         Set<String> result = new HashSet<>();
         for (GraphCell cell : supCellSet) {
             RDFSModel supInfo = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
@@ -224,9 +224,9 @@ public abstract class OntologyPanel extends JPanel implements ListSelectionListe
         return result.toArray();
     }
 
-    abstract public void setInstanceList();
+    protected abstract void setInstanceList();
 
-    protected class InstanceAction implements ListSelectionListener {
+    class InstanceAction implements ListSelectionListener {
         public void valueChanged(ListSelectionEvent e) {
             Object cell = instanceList.getSelectedValue();
             gmanager.selectRDFCell(cell);

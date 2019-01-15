@@ -15,9 +15,9 @@ import java.awt.*;
 /**
  * @author Takeshi Morita
  */
-public class TabComponent extends JPanel {
+class TabComponent extends JPanel {
 
-    private JLabel tabNameLabel;
+    private final JLabel tabNameLabel;
 
     public TabComponent(MR3 mr3, String tabName) {
         setLayout(new BorderLayout());

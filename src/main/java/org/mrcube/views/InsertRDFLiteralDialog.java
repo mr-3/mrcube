@@ -44,14 +44,14 @@ import java.util.TreeSet;
 public class InsertRDFLiteralDialog extends JDialog implements ActionListener {
 
     private boolean isConfirm;
-    private Action confirmAction;
-    private Action cancelAction;
+    private final Action confirmAction;
+    private final Action cancelAction;
 
-    private JTextField langField;
-    private JCheckBox isTypedLiteralBox;
-    private JComboBox typeBox;
-    private JTextArea literalValueArea;
-    private TypeMapper typeMapper;
+    private final JTextField langField;
+    private final JCheckBox isTypedLiteralBox;
+    private final JComboBox typeBox;
+    private final JTextArea literalValueArea;
+    private final TypeMapper typeMapper;
 
     private static final int LABEL_WIDTH = 350;
     private static final int LABEL_HEIGHT = 90;

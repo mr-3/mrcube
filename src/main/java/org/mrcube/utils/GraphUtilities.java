@@ -52,8 +52,8 @@ public class GraphUtilities {
 
     public static Color selectedColor = new Color(240, 240, 200);
     // public static Color selectedForegroundColor = new Color(0, 0, 128);
-    public static Color selectedBorderColor = new Color(70, 70, 70);
-    public static Color graphBackgroundColor = Color.white;
+    public static final Color selectedBorderColor = new Color(70, 70, 70);
+    public static final Color graphBackgroundColor = Color.white;
 
     public static void setNamespaceModelSet(Set<NamespaceModel> infoSet) {
         namespaceModelSet = infoSet;
@@ -174,7 +174,7 @@ public class GraphUtilities {
         graph.getGraphLayoutCache().edit(nested, null, null, null);
     }
 
-    public static final int ANON_NODE_WIDTH = 50;
+    private static final int ANON_NODE_WIDTH = 50;
 
     public static void resizeAllRDFResourceCell(GraphManager gm) {
         RDFGraph graph = gm.getCurrentRDFGraph();

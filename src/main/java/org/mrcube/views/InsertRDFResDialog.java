@@ -43,17 +43,17 @@ import java.awt.event.ItemListener;
 public class InsertRDFResDialog extends JDialog implements ItemListener {
 
     private boolean isConfirm;
-    private JComboBox resTypeBox;
-    private JTextField uriField;
-    private JComboBox uriPrefixBox;
+    private final JComboBox resTypeBox;
+    private final JTextField uriField;
+    private final JComboBox uriPrefixBox;
     private JButton confirmButton;
     private JButton cancelButton;
     private Object resourceType;
-    private JCheckBox isAnonBox;
+    private final JCheckBox isAnonBox;
 
-    private ConfirmAction confirmAction;
-    private CancelAction cancelAction;
-    private GraphManager gmanager;
+    private final ConfirmAction confirmAction;
+    private final CancelAction cancelAction;
+    private final GraphManager gmanager;
 
     private static final int FIELD_WIDTH = 300;
     private static final int FIELD_HEIGHT = 30;

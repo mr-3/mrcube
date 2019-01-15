@@ -30,7 +30,7 @@ import java.io.File;
  */
 public class OWLFileFilter extends MR3FileFilter implements java.io.FileFilter {
 
-	private boolean isShowDirectories;
+	private final boolean isShowDirectories;
 
 	public OWLFileFilter(boolean isShowDirectories) {
 		this.isShowDirectories = isShowDirectories;

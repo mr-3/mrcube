@@ -47,9 +47,9 @@ public class RemoveDialog extends JDialog implements ListSelectionListener, Acti
     private JButton applyButton;
     private JButton cancelButton;
 
-    private JList removeRDFSList;
-    private ReferenceListPanel refListPanel;
-    private GraphManager gmanager;
+    private final JList removeRDFSList;
+    private final ReferenceListPanel refListPanel;
+    private final GraphManager gmanager;
 
     private static final int LIST_WIDTH = 400;
     private static final int LIST_HEIGHT = 100;

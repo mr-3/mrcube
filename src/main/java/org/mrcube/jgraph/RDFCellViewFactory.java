@@ -32,7 +32,7 @@ import java.awt.event.MouseEvent;
 /**
  * @author Takeshi Morita
  */
-public class RDFCellViewFactory extends DefaultCellViewFactory {
+class RDFCellViewFactory extends DefaultCellViewFactory {
 
     public VertexView createVertexView(Object v) {
         if (v instanceof RDFResourceCell || v instanceof OntPropertyCell) { return new JGraphEllipseView(v); }

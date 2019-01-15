@@ -36,8 +36,8 @@ import java.awt.event.ActionEvent;
  */
 public class RemoveAction extends AbstractAction {
 
-    private RDFGraph graph;
-    private GraphManager gmanager;
+    private final RDFGraph graph;
+    private final GraphManager gmanager;
     private static final String TITLE = Translator.getString("Action.Remove.Text");
     private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("Action.Remove.Icon"));
 

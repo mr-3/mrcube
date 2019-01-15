@@ -44,13 +44,13 @@ import java.util.Map;
  */
 public class PluginManager extends JDialog implements ActionListener {
 
-    private MR3 mr3;
+    private final MR3 mr3;
     private static Map pluginMenuMap;
-    private static JTable pluginTable = new JTable();
-    private static JTextArea pluginDescriptionArea = new JTextArea(6, 3);
-    private JButton reloadButton;
-    private JButton execButton;
-    private JButton cancelButton;
+    private static final JTable pluginTable = new JTable();
+    private static final JTextArea pluginDescriptionArea = new JTextArea(6, 3);
+    private final JButton reloadButton;
+    private final JButton execButton;
+    private final JButton cancelButton;
 
     private static final int FRAME_WIDTH = 500;
     private static final int FRAME_HEIGHT = 300;

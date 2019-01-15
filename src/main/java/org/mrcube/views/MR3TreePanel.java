@@ -47,12 +47,12 @@ import java.util.*;
  */
 public class MR3TreePanel extends JPanel {
 
-    private JTree rdfsTree;
-    private GraphManager gmanager;
-    private DefaultTreeModel treeModel;
-    private MR3TreeCellRenderer rdfTreeCellRenderer;
-    private MR3TreeCellRenderer classTreeCellRenderer;
-    private MR3TreeCellRenderer propertyTreeCellRenderer;
+    private final JTree rdfsTree;
+    private final GraphManager gmanager;
+    private final DefaultTreeModel treeModel;
+    private final MR3TreeCellRenderer rdfTreeCellRenderer;
+    private final MR3TreeCellRenderer classTreeCellRenderer;
+    private final MR3TreeCellRenderer propertyTreeCellRenderer;
 
     public MR3TreePanel(GraphManager manager) {
         gmanager = manager;
@@ -76,7 +76,7 @@ public class MR3TreePanel extends JPanel {
         rdfsTree.addTreeSelectionListener(tsl);
     }
 
-    public void replaceNameSpace(Object parent, Set prefixNSInfoSet) {
+    private void replaceNameSpace(Object parent, Set prefixNSInfoSet) {
         if (treeModel.getChildCount(parent) == 0) { return; }
         for (int i = 0; i < treeModel.getChildCount(parent); i++) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) treeModel.getChild(parent, i);
@@ -99,7 +99,7 @@ public class MR3TreePanel extends JPanel {
         rdfsTree.setRootVisible(false);
     }
 
-    public void setRoot(TreeNode rootNode) {
+    private void setRoot(TreeNode rootNode) {
         treeModel.setRoot(rootNode);
         rdfsTree.setRootVisible(true);
     }
@@ -192,7 +192,7 @@ public class MR3TreePanel extends JPanel {
 
     class GraphModelTreeNode implements TreeNode {
 
-        protected GraphModel model;
+        final GraphModel model;
 
         public GraphModelTreeNode(GraphModel model) {
             this.model = model;
@@ -234,12 +234,12 @@ public class MR3TreePanel extends JPanel {
         }
     }
 
-    public class MR3TreeCellRenderer extends JLabel implements TreeCellRenderer {
+    class MR3TreeCellRenderer extends JLabel implements TreeCellRenderer {
 
-        private Icon imageIcon;
-        private Icon typeIcon;
+        private final Icon imageIcon;
+        private final Icon typeIcon;
 
-        public MR3TreeCellRenderer(ImageIcon icon, ImageIcon type) {
+        MR3TreeCellRenderer(ImageIcon icon, ImageIcon type) {
             imageIcon = icon;
             typeIcon = type;
             setOpaque(true);

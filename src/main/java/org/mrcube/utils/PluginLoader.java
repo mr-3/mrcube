@@ -48,7 +48,7 @@ public class PluginLoader {
 	private static Collection<Manifest> manifests;
 	private static SortedMap<String, List> pluginMenuMap;
 
-	private static FilenameFilter jarFilter = (dir, name) -> name.endsWith(".jar");
+	private static final FilenameFilter jarFilter = (dir, name) -> name.endsWith(".jar");
 
 	public static Map getPluginMenuMap() {
 		Collection<File> files = null;
@@ -94,7 +94,7 @@ public class PluginLoader {
 				e.printStackTrace();
 			}
 		}
-		URL[] urlArray = urls.toArray(new URL[urls.size()]);
+		URL[] urlArray = urls.toArray(new URL[0]);
 		return new URLClassLoader(urlArray, PluginLoader.class.getClassLoader());
 	}
 

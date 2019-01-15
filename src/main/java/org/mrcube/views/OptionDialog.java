@@ -43,10 +43,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.prefs.Preferences;
 
 /**
@@ -54,20 +52,20 @@ import java.util.prefs.Preferences;
  */
 public class OptionDialog extends JDialog implements ListSelectionListener {
 
-    private JList menuList;
-    private JPanel mainPanel;
+    private final JList menuList;
+    private final JPanel mainPanel;
 
-    private CardLayout cardLayout;
+    private final CardLayout cardLayout;
 
-    private BasePanel basePanel;
-    private DirectoryPanel directoryPanel;
-    private ProxyPanel proxyPanel;
-    private MetaClassPanel metaClassPanel;
-    private LayoutPanel layoutPanel;
-    private RenderingPanel renderingPanel;
+    private final BasePanel basePanel;
+    private final DirectoryPanel directoryPanel;
+    private final ProxyPanel proxyPanel;
+    private final MetaClassPanel metaClassPanel;
+    private final LayoutPanel layoutPanel;
+    private final RenderingPanel renderingPanel;
 
-    private GraphManager gmanager;
-    private Preferences userPrefs;
+    private final GraphManager gmanager;
+    private final Preferences userPrefs;
 
     private JButton applyButton;
     private JButton confirmButton;
@@ -206,7 +204,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             return Translator.getString("PreferenceDialog.BaseTab");
         }
 
-        public void setConfig() {
+        void setConfig() {
             if (!userPrefs.get(PrefConstants.UILang, "en").equals(uiLangBox.getSelectedItem())) {
                 userPrefs.put(PrefConstants.UILang, (String) uiLangBox.getSelectedItem());
                 // Translator.loadResourceBundle(userPrefs);
@@ -228,7 +226,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             PluginManager.reloadPlugins();
         }
 
-        public void resetConfig() {
+        void resetConfig() {
             initPrefixBox();
             uiLangBox.setModel(new DefaultComboBoxModel(getUILanguages()));
             uiLangBox.setSelectedItem(userPrefs.get(PrefConstants.UILang, "en"));
@@ -341,7 +339,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         }
 
         class BrowseFile extends AbstractAction {
-            private JTextField fileField;
+            private final JTextField fileField;
 
             BrowseFile(JTextField field) {
                 fileField = field;
@@ -437,13 +435,13 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             return Translator.getString("PreferenceDialog.DirectoryTab");
         }
 
-        public void setConfig() {
+        void setConfig() {
             userPrefs.put(PrefConstants.WorkDirectory, workDirectoryField.getText());
             userPrefs.put(PrefConstants.PluginsDirectory, pluginsDirectoryField.getText());
             userPrefs.put(PrefConstants.ResourceDirectory, resourceDirectoryField.getText());
         }
 
-        public void resetConfig() {
+        void resetConfig() {
             setText(workDirectoryField, userPrefs.get(PrefConstants.WorkDirectory, ""));
             setText(pluginsDirectoryField,
                     userPrefs.get(PrefConstants.PluginsDirectory, System.getProperty("user.dir") + "\\plugins"));
@@ -452,7 +450,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         }
 
         class BrowseDirectory extends AbstractAction {
-            private JTextField directoryField;
+            private final JTextField directoryField;
 
             BrowseDirectory(JTextField field) {
                 directoryField = field;
@@ -549,9 +547,9 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
 
     class ProxyPanel extends JPanel {
 
-        private JCheckBox isProxy;
-        private JTextField proxyHost;
-        private JTextField proxyPort;
+        private final JCheckBox isProxy;
+        private final JTextField proxyHost;
+        private final JTextField proxyPort;
 
         ProxyPanel() {
             isProxy = new JCheckBox(Translator.getString("PreferenceDialog.ProxyTab"));
@@ -584,13 +582,13 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             }
         }
 
-        public void setConfig() {
+        void setConfig() {
             userPrefs.putBoolean(PrefConstants.Proxy, isProxy.isSelected());
             userPrefs.put(PrefConstants.ProxyHost, proxyHost.getText());
             userPrefs.putInt(PrefConstants.ProxyPort, Integer.parseInt(proxyPort.getText()));
         }
 
-        public void resetConfig() {
+        void resetConfig() {
             isProxy.setSelected(userPrefs.getBoolean(PrefConstants.Proxy, false));
             setText(proxyHost, userPrefs.get(PrefConstants.ProxyHost, "http://localhost"));
             proxyHost.setEditable(isProxy.isSelected());
@@ -601,19 +599,19 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
 
     class MetaClassPanel extends JPanel implements ListSelectionListener {
 
-        private JTextField metaClassField;
+        private final JTextField metaClassField;
 
-        private JTextField defaultClassClassField;
-        private JList classClassList;
-        private DefaultListModel classClassListModel;
+        private final JTextField defaultClassClassField;
+        private final JList classClassList;
+        private final DefaultListModel classClassListModel;
         private JButton setDefaultClassClassButton;
         private JButton classClassEditButton;
         private JButton classClassAddButton;
         private JButton classClassRemoveButton;
 
-        private JTextField defaultPropertyClassField;
-        private JList propClassList;
-        private DefaultListModel propClassListModel;
+        private final JTextField defaultPropertyClassField;
+        private final JList propClassList;
+        private final DefaultListModel propClassListModel;
         private JButton setDefaultPropertyClassButton;
         private JButton propClassEditButton;
         private JButton propClassAddButton;
@@ -677,14 +675,14 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             return Translator.getString("PreferenceDialog.MetaClassTab");
         }
 
-        public void setConfig() {
+        void setConfig() {
             userPrefs.put(PrefConstants.DefaultClassClass, defaultClassClassField.getText());
             userPrefs.put(PrefConstants.ClassClassList, getMetaClassStr(classClassListModel.toArray()));
             userPrefs.put(PrefConstants.DefaultPropertyClass, defaultPropertyClassField.getText());
             userPrefs.put(PrefConstants.PropClassList, getMetaClassStr(propClassListModel.toArray()));
         }
 
-        public void resetConfig() {
+        void resetConfig() {
             String defaultClassClass = userPrefs.get(PrefConstants.DefaultClassClass, RDFS.Class.getURI());
             defaultClassClassField.setText(defaultClassClass);
             defaultClassClassField.setToolTipText(defaultClassClass);
@@ -791,7 +789,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
                 if (classClassList.isSelectionEmpty()) {
                     return;
                 }
-                List removeList = Arrays.asList(classClassList.getSelectedValuesList());
+                List removeList = Collections.singletonList(classClassList.getSelectedValuesList());
                 for (Object item : removeList) {
                     if (!isDefaultClass(item)) {
                         if (item.equals(defaultClassClassField.getText())) {
@@ -856,7 +854,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
                 if (propClassList.isSelectionEmpty()) {
                     return;
                 }
-                List removeList = Arrays.asList(propClassList.getSelectedValuesList());
+                List removeList = Collections.singletonList(propClassList.getSelectedValuesList());
                 for (Object item : removeList) {
                     if (!isDefaultProperty(item)) {
                         if (item.equals(defaultPropertyClassField.getText())) {
@@ -894,32 +892,32 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
 
     class LayoutPanel extends JPanel {
 
-        private JRadioButton autoSizeButton;
-        private JRadioButton fixSizeButton;
-        private JLabel nodeHeightLabel;
-        private JLabel nodeWidthLabel;
-        private JSpinner nodeHeightSpinner;
-        private JSpinner nodeWidthSpinner;
+        private final JRadioButton autoSizeButton;
+        private final JRadioButton fixSizeButton;
+        private final JLabel nodeHeightLabel;
+        private final JLabel nodeWidthLabel;
+        private final JSpinner nodeHeightSpinner;
+        private final JSpinner nodeWidthSpinner;
 
-        private JLabel layoutTypeLabel;
-        private JLabel rdfLayoutLabel;
-        private JLabel classLayoutLabel;
-        private JLabel propertyLayoutLabel;
+        private final JLabel layoutTypeLabel;
+        private final JLabel rdfLayoutLabel;
+        private final JLabel classLayoutLabel;
+        private final JLabel propertyLayoutLabel;
 
-        private JLabel verticalSpaceLabel;
-        private JLabel horizontalSpaceLabel;
+        private final JLabel verticalSpaceLabel;
+        private final JLabel horizontalSpaceLabel;
 
-        private JComboBox layoutTypeBox;
-        private JComboBox rdfLayoutDirectionBox;
-        private JComboBox classLayoutDirectionBox;
-        private JComboBox propertyLayoutDirectionBox;
+        private final JComboBox layoutTypeBox;
+        private final JComboBox rdfLayoutDirectionBox;
+        private final JComboBox classLayoutDirectionBox;
+        private final JComboBox propertyLayoutDirectionBox;
 
-        private JSpinner rdfVerticalSpaceSpinner;
-        private JSpinner rdfHorizontalSpaceSpinner;
-        private JSpinner classVerticalSpaceSpinner;
-        private JSpinner classHorizontalSpaceSpinner;
-        private JSpinner propertyVerticalSpaceSpinner;
-        private JSpinner propertyHorizontalSpaceSpinner;
+        private final JSpinner rdfVerticalSpaceSpinner;
+        private final JSpinner rdfHorizontalSpaceSpinner;
+        private final JSpinner classVerticalSpaceSpinner;
+        private final JSpinner classHorizontalSpaceSpinner;
+        private final JSpinner propertyVerticalSpaceSpinner;
+        private final JSpinner propertyHorizontalSpaceSpinner;
 
         LayoutPanel() {
             ChangeNodeSizeAction nodeSizeAction = new ChangeNodeSizeAction();
@@ -991,7 +989,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             return Translator.getString("PreferenceDialog.LayoutTab");
         }
 
-        public void setConfig() {
+        void setConfig() {
             userPrefs.put(PrefConstants.LAYOUT_TYPE, (String) layoutTypeBox.getSelectedItem());
             GraphLayoutUtilities.LAYOUT_TYPE = (String) layoutTypeBox.getSelectedItem();
             userPrefs.put(PrefConstants.RDF_LAYOUT_DIRECTION, (String) rdfLayoutDirectionBox.getSelectedItem());
@@ -1034,7 +1032,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             MR3CellMaker.CELL_HEIGHT = Integer.parseInt(nodeHeightSpinner.getValue().toString());
         }
 
-        public void resetConfig() {
+        void resetConfig() {
             String layoutType = userPrefs.get(PrefConstants.LAYOUT_TYPE, GraphLayoutUtilities.VGJ_TREE_LAYOUT);
             layoutTypeBox.setSelectedItem(layoutType);
             String direction = userPrefs.get(PrefConstants.RDF_LAYOUT_DIRECTION, GraphLayoutUtilities.LEFT_TO_RIGHT);
@@ -1156,14 +1154,14 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
 
     class RenderingPanel extends JPanel {
 
-        private JCheckBox isAntialiasBox;
+        private final JCheckBox isAntialiasBox;
 
-        private JCheckBox isColorBox;
-        private JButton rdfResourceColorButton;
-        private JButton literalColorButton;
-        private JButton classColorButton;
-        private JButton propertyColorButton;
-        private JButton selectedColorButton;
+        private final JCheckBox isColorBox;
+        private final JButton rdfResourceColorButton;
+        private final JButton literalColorButton;
+        private final JButton classColorButton;
+        private final JButton propertyColorButton;
+        private final JButton selectedColorButton;
 
         private Color rdfResourceColor;
         private Color literalColor;
@@ -1225,7 +1223,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             return Translator.getString("PreferenceDialog.RenderingTab");
         }
 
-        public void setConfig() {
+        void setConfig() {
             userPrefs.putInt(PrefConstants.RDFResourceColor, rdfResourceColor.getRGB());
             RDFResourceCell.rdfResourceColor = rdfResourceColor;
             userPrefs.putInt(PrefConstants.LiteralColor, literalColor.getRGB());
@@ -1245,7 +1243,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             gmanager.setAntialias();
         }
 
-        public void resetConfig() {
+        void resetConfig() {
             rdfResourceColor = RDFResourceCell.rdfResourceColor;
             literalColor = RDFLiteralCell.literalColor;
             classColor = OntClassCell.classColor;
@@ -1264,7 +1262,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         }
 
         class ColorSwatch implements Icon {
-            private String name;
+            private final String name;
 
             ColorSwatch(String str) {
                 name = str;
@@ -1282,16 +1280,22 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
                 g.setColor(Color.black);
                 g.fillRect(x, y, getIconWidth(), getIconHeight());
 
-                if (name.equals("Resource")) {
-                    g.setColor(rdfResourceColor);
-                } else if (name.equals("Literal")) {
-                    g.setColor(literalColor);
-                } else if (name.equals("Class")) {
-                    g.setColor(classColor);
-                } else if (name.equals("Property")) {
-                    g.setColor(propertyColor);
-                } else if (name.equals("Selected")) {
-                    g.setColor(selectedColor);
+                switch (name) {
+                    case "Resource":
+                        g.setColor(rdfResourceColor);
+                        break;
+                    case "Literal":
+                        g.setColor(literalColor);
+                        break;
+                    case "Class":
+                        g.setColor(classColor);
+                        break;
+                    case "Property":
+                        g.setColor(propertyColor);
+                        break;
+                    case "Selected":
+                        g.setColor(selectedColor);
+                        break;
                 }
 
                 g.fillRect(x + 2, y + 2, getIconWidth() - 4, getIconHeight() - 4);

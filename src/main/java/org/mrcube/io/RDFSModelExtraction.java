@@ -40,7 +40,7 @@ import java.util.Set;
  */
 public class RDFSModelExtraction {
 
-	private GraphManager gmanager;
+	private final GraphManager gmanager;
 
 	public RDFSModelExtraction(GraphManager gm) {
 		gmanager = gm;
@@ -71,7 +71,7 @@ public class RDFSModelExtraction {
 	}
 
 	// subPropertyOfが省略されたプロパティは，Propertyクラスのサブクラスとみなす、
-	public void setDefaultSubPropertyOf(Resource property) {
+    private void setDefaultSubPropertyOf(Resource property) {
 		if (!property.hasProperty(RDFS.subPropertyOf)) {
 			RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
 			rdfsModelMap.addRootProperties(property);
@@ -142,7 +142,7 @@ public class RDFSModelExtraction {
 		return propertyModel;
 	}
 
-	public Model extractRDFSModel(Model rdfsModel, Resource metaResource, RDFSModel info) {
+	private Model extractRDFSModel(Model rdfsModel, Resource metaResource, RDFSModel info) {
 		Model removeModel = ModelFactory.createDefaultModel();
 		for (StmtIterator i = metaResource.listProperties(); i.hasNext();) {
 			Statement stmt = i.nextStatement();
@@ -163,7 +163,7 @@ public class RDFSModelExtraction {
 
 	// Resourceクラス以外のsubClassOfが省略されたクラスは，
 	// Resourceクラスのサブクラスとみなす
-	public void setDefaultSubClassOf(Resource rdfsResource, ClassModel info) {
+    private void setDefaultSubClassOf(Resource rdfsResource, ClassModel info) {
 		if (!rdfsResource.equals(RDFS.Resource) && !rdfsResource.hasProperty(RDFS.subClassOf)) {
 			ClassModel supResInfo = getClassResInfo(RDFS.Resource);
 			supResInfo.addSubClass(rdfsResource);
@@ -264,7 +264,7 @@ public class RDFSModelExtraction {
 		}
 	}
 
-	public ClassModel getClassResInfo(Resource resource) {
+	private ClassModel getClassResInfo(Resource resource) {
 		RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
 		ClassModel info = (ClassModel) rdfsModelMap.getResourceInfo(resource);
 		if (info == null)
@@ -272,7 +272,7 @@ public class RDFSModelExtraction {
 		return info;
 	}
 
-	public PropertyModel getPropertyResInfo(Resource resource) {
+	private PropertyModel getPropertyResInfo(Resource resource) {
 		RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
 		PropertyModel info = (PropertyModel) rdfsModelMap.getResourceInfo(resource);
 		if (info == null)

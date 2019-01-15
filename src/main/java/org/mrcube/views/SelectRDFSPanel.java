@@ -38,7 +38,7 @@ import java.util.Set;
  */
 public class SelectRDFSPanel extends SelectClassPanel {
     private Set orgRegionSet;
-    private Set newRegionSet;
+    private final Set newRegionSet;
     private JList regionList;
 
     public SelectRDFSPanel(GraphManager gm) {

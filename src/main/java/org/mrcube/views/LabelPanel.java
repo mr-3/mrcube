@@ -48,15 +48,15 @@ public class LabelPanel extends JPanel implements ActionListener {
 
 	private ResourceModel resInfo;
 
-	private JTable labelTable;
-	private LabelTableModel labelTableModel;
+	private final JTable labelTable;
+	private final LabelTableModel labelTableModel;
 
-	private JTextField langField;
-	private JTextField labelField;
+	private final JTextField langField;
+	private final JTextField labelField;
 
-	private JButton addLabelButton;
-	private JButton removeLabelButton;
-	private JButton clearFieldButton;
+	private final JButton addLabelButton;
+	private final JButton removeLabelButton;
+	private final JButton clearFieldButton;
 
 	private GraphType graphType;
 
@@ -201,9 +201,9 @@ public class LabelPanel extends JPanel implements ActionListener {
 		return MR3Constants.LABEL;
 	}
 
-	public class LabelTableModel extends DefaultTableModel implements Serializable {
+	class LabelTableModel extends DefaultTableModel implements Serializable {
 
-		public LabelTableModel(Object[] columnNames, int rowCount) {
+		LabelTableModel(Object[] columnNames, int rowCount) {
 			super(columnNames, rowCount);
 		}
 

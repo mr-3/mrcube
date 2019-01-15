@@ -65,18 +65,18 @@ import java.util.prefs.Preferences;
  */
 public class GraphManager {
 
-    private Frame rootFrame;
+    private final Frame rootFrame;
     private MR3ProjectPanel mr3ProjectPanel;
 
-    private MR3Writer mr3Writer;
+    private final MR3Writer mr3Writer;
 
     private RDFGraph realRDFGraph;
 
     private boolean isImporting;
     private boolean isShowTypeCell;
 
-    private MR3CellMaker cellMaker;
-    private JGraphTreeLayout treeLayout;
+    private final MR3CellMaker cellMaker;
+    private final JGraphTreeLayout treeLayout;
 
     private WeakReference<AttributeDialog> attrDialogRef;
     private WeakReference<FindResourceDialog> findResDialogRef;
@@ -126,11 +126,11 @@ public class GraphManager {
         return mr3ProjectPanel.getRDFEditor();
     }
 
-    public ClassEditor getCurrentClassEditor() {
+    private ClassEditor getCurrentClassEditor() {
         return mr3ProjectPanel.getClassEditor();
     }
 
-    public PropertyEditor getCurrentPropertyEditor() {
+    private PropertyEditor getCurrentPropertyEditor() {
         return mr3ProjectPanel.getPropertyEditor();
     }
 
@@ -216,7 +216,7 @@ public class GraphManager {
                 if (t) {
                     GraphConstants.setFont(cell.getAttributes(), GraphUtilities.defaultFont);
                 } else {
-                    GraphConstants.setFont(cell.getAttributes(), new Font("", 0, 0));
+                    GraphConstants.setFont(cell.getAttributes(), new Font("", Font.PLAIN, 0));
                 }
                 rdfGraph.getGraphLayoutCache().editCell(cell, cell.getAttributes());
             }
@@ -532,7 +532,7 @@ public class GraphManager {
         return allNSSet;
     }
 
-    public Set<String> getRDFNameSpaceSet() {
+    private Set<String> getRDFNameSpaceSet() {
         Set<String> nameSpaces = new HashSet<>();
 
         Object[] rdfCells = getCurrentRDFGraph().getAllCells();
@@ -547,7 +547,7 @@ public class GraphManager {
         return nameSpaces;
     }
 
-    public Set<String> getClassNameSpaceSet() {
+    private Set<String> getClassNameSpaceSet() {
         Set<String> nameSpaces = new HashSet<>();
 
         Object[] classCells = getCurrentClassGraph().getAllCells();
@@ -562,7 +562,7 @@ public class GraphManager {
         return nameSpaces;
     }
 
-    public Set<String> getPropertyNameSpaceSet() {
+    private Set<String> getPropertyNameSpaceSet() {
         Set<String> nameSpaces = new HashSet<>();
         for (Object cell : getCurrentPropertyGraph().getAllCells()) {
             if (RDFGraph.isRDFSPropertyCell(cell)) {
@@ -760,7 +760,7 @@ public class GraphManager {
         return null;
     }
 
-    private static Point INSERT_POINT = new Point(50, 50);
+    private static final Point INSERT_POINT = new Point(50, 50);
 
     public Object getClassCell(Resource uri, Map<RDFNode, GraphLayoutData> cellLayoutMap) {
         RDFSModelMap rdfsModelMap = getCurrentRDFSInfoMap();
@@ -1002,7 +1002,7 @@ public class GraphManager {
         return result;
     }
 
-    public Set<GraphCell> getFindRDFSResult(String key, RDFGraph graph, FindActionType findActionType) {
+    private Set<GraphCell> getFindRDFSResult(String key, RDFGraph graph, FindActionType findActionType) {
         Set<GraphCell> result = new HashSet<>();
         Object[] cells = graph.getAllCells();
 
@@ -1169,13 +1169,13 @@ public class GraphManager {
         rdfGraph.repaint();
     }
 
-    public void repaintClassGrpah() {
+    private void repaintClassGrpah() {
         RDFGraph classGraph = getCurrentClassGraph();
         classGraph.getGraphLayoutCache().reload();
         classGraph.repaint();
     }
 
-    public void repaintPropertyGraph() {
+    private void repaintPropertyGraph() {
         RDFGraph propGraph = getCurrentPropertyGraph();
         propGraph.getGraphLayoutCache().reload();
         propGraph.repaint();

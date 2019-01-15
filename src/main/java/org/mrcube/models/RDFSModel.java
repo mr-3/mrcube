@@ -42,11 +42,11 @@ import java.util.Set;
  */
 public abstract class RDFSModel extends ResourceModel implements Serializable {
 
-    protected transient String uri;
-    protected transient String metaClass;
+    private transient String uri;
+    transient String metaClass;
 
-    transient protected Model model;
-    transient protected Set<GraphCell> superRDFS;
+    private transient Model model;
+    transient Set<GraphCell> superRDFS;
 
     private static final long serialVersionUID = -2970145279588775430L;
 
@@ -91,7 +91,7 @@ public abstract class RDFSModel extends ResourceModel implements Serializable {
         model.add(stmt);
     }
 
-    public Model getInnerModel() {
+    private Model getInnerModel() {
         return model;
     }
 
@@ -99,7 +99,7 @@ public abstract class RDFSModel extends ResourceModel implements Serializable {
         model = m;
     }
 
-    public Model getModel() {
+    Model getModel() {
         Model tmpModel = ModelFactory.createDefaultModel();
         tmpModel.add(model);
         tmpModel.add(super.getModel(ResourceFactory.createResource(uri)));
@@ -149,7 +149,7 @@ public abstract class RDFSModel extends ResourceModel implements Serializable {
         return ResourceFactory.createResource(uri).getLocalName();
     }
 
-    public String getModelString() {
+    String getModelString() {
         StringWriter writer = new StringWriter();
         getModel().write(writer);
         return writer.toString();

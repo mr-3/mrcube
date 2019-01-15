@@ -28,7 +28,9 @@ import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 /**
@@ -45,7 +47,8 @@ public class ShowLogConsole extends MR3AbstractAction {
 
     private void setValues() {
         putValue(SHORT_DESCRIPTION, getName());
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.ALT_DOWN_MASK));
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_L,
+                Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | InputEvent.SHIFT_DOWN_MASK));
     }
 
     public void actionPerformed(ActionEvent e) {

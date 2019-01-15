@@ -45,11 +45,6 @@ import java.io.*;
 public class MR3LogConsole extends JDialog {
 
     /**
-     * The PrintStream for the System.out
-     * 
-     */
-    private PrintStream stdout = null;
-    /**
      * The PrintStream for the System.err
      * 
      */
@@ -65,33 +60,33 @@ public class MR3LogConsole extends JDialog {
      * Card Layout for the Window
      * 
      */
-    CardLayout cardLayout = new CardLayout();
+    private final CardLayout cardLayout = new CardLayout();
     /**
      * Text area for the System.err output
      */
-    JTextArea stderrText = new JTextArea();
+    private final JTextArea stderrText = new JTextArea();
     /**
      * ScrollPane for the System.out text area
      */
-    JScrollPane stdoutScrollPane = new JScrollPane();
+    private final JScrollPane stdoutScrollPane = new JScrollPane();
     /**
      * Text area for the System.out output
      */
-    JTextArea stdoutText = new JTextArea();
+    private final JTextArea stdoutText = new JTextArea();
     /**
      * ScrollPane for the System.err text area
      */
-    JScrollPane stderrScrollPane = new JScrollPane();
+    private final JScrollPane stderrScrollPane = new JScrollPane();
     /**
      * Tabbed pane for the System.out and System.err text area
      */
-    JTabbedPane jTabbedPane1 = new JTabbedPane();
+    private final JTabbedPane jTabbedPane1 = new JTabbedPane();
     /**
      * Icon for the Window
      */
-    Image myIcon = null;
+    private Image myIcon = null;
     /** PopUpMenu for save and clear the output textareas */
-    InternalPopupMenu popup = new InternalPopupMenu();
+    private final InternalPopupMenu popup = new InternalPopupMenu();
 
     /**
      * creates an instance
@@ -186,7 +181,11 @@ public class MR3LogConsole extends JDialog {
      */
     private void redirect() {
 
-        stdout = System.out;
+        /**
+         * The PrintStream for the System.out
+         *
+         */
+        PrintStream stdout = System.out;
         stderr = System.err;
 
         System.setOut(new JTextAreaOutputStream(stdoutText, stdout, true));
@@ -223,7 +222,7 @@ public class MR3LogConsole extends JDialog {
          * creates an instance
          * 
          */
-        public JTextAreaOutputStream(JTextArea t, PrintStream orig, boolean showOrig) {
+        JTextAreaOutputStream(JTextArea t, PrintStream orig, boolean showOrig) {
             super(new ByteArrayOutputStream());
             target = t;
 
@@ -449,20 +448,20 @@ public class MR3LogConsole extends JDialog {
     /**
      * disposes this window
      */
-    void this_windowDispose(WindowEvent e) {
+    private void this_windowDispose(WindowEvent e) {
         this.dispose();
     }
     /**
      * closes this window
      */
-    void this_windowClosing(WindowEvent e) {
+    private void this_windowClosing(WindowEvent e) {
         this_windowDispose(e);
         System.exit(0);
     }
     /**
      * Shows the popup menu for the System.out textarea
      */
-    void stdoutText_mouseClicked(MouseEvent e) {
+    private void stdoutText_mouseClicked(MouseEvent e) {
         if (e.getModifiersEx() == MouseEvent.META_DOWN_MASK) {
             popup.setTextArea(stdoutText);
             popup.show(this.stdoutText, e.getX(), e.getY());
@@ -473,7 +472,7 @@ public class MR3LogConsole extends JDialog {
     /**
      * Shows the popup menu for the System.err textarea
      */
-    void stderrText_mouseClicked(MouseEvent e) {
+    private void stderrText_mouseClicked(MouseEvent e) {
         if (e.getModifiersEx() == MouseEvent.META_DOWN_MASK) {
             popup.setTextArea(stderrText);
             popup.show(this.stderrText, e.getX(), e.getY());
@@ -538,7 +537,7 @@ class MyDocumentListener implements DocumentListener {
     /**
      * Switches the rights one text area to front
      */
-    void getInFront() {
+    private void getInFront() {
         // bring the attached component in front
         paneToSwitch.setSelectedComponent(this.componentInFront);
     }
@@ -553,11 +552,11 @@ class InternalPopupMenu extends JPopupMenu {
     /**
      * Menu item for clearing the text area
      */
-    JMenuItem jMenuItemClearWindow = new JMenuItem("Clear output");
+    private final JMenuItem jMenuItemClearWindow = new JMenuItem("Clear output");
     /**
      * Menu item for saving the text area
      */
-    JMenuItem jMenuItemSaveToFile = new JMenuItem("Save to file...");
+    private final JMenuItem jMenuItemSaveToFile = new JMenuItem("Save to file...");
     /**
      * The current textarea
      */

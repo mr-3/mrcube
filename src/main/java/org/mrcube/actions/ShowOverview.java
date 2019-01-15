@@ -33,7 +33,7 @@ import java.awt.event.ActionEvent;
  */
 public class ShowOverview extends MR3AbstractAction {
 
-    String type;
+    private final String type;
     public static final String RDF_EDITOR_OVERVIEW = Translator.getString("Component.Window.RDFEditorOverview.Text");
     public static final String CLASS_EDITOR_OVERVIEW = Translator
             .getString("Component.Window.ClassEditorOverview.Text");

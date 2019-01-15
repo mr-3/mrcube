@@ -26,18 +26,18 @@ import java.util.*;
  **************************************************************************/
 public class TreeLayoutAlgorithm {
 
-    public static final Object CELL_WRAPPER = new Object();
-    public static final int LEFT_TO_RIGHT = 0;
-    public static final int UP_TO_DOWN = 1;
-    public static final int DEFAULT_ORIENTATION = LEFT_TO_RIGHT;
+    private static final Object CELL_WRAPPER = new Object();
+    private static final int LEFT_TO_RIGHT = 0;
+    private static final int UP_TO_DOWN = 1;
+    private static final int DEFAULT_ORIENTATION = LEFT_TO_RIGHT;
 
     // public ProgressDialog dlgProgress = new ProgressDialog((Frame) null,
     // "Progress:", false);
 
     private JGraph jgraph;
-    protected int orientation;
-    protected int childParentDistance;
-    protected int BORDER;
+    private int orientation;
+    private int childParentDistance;
+    private final int BORDER;
 
     public TreeLayoutAlgorithm(int orientation, int distance, int border) {
         BORDER = border;
@@ -45,7 +45,7 @@ public class TreeLayoutAlgorithm {
         setLayoutOrientation(orientation);
     }
 
-    public void setLayoutOrientation(int orientation) {
+    private void setLayoutOrientation(int orientation) {
         if (orientation < 0 && orientation > 1) {
             orientation = DEFAULT_ORIENTATION;
         } else {
@@ -53,12 +53,12 @@ public class TreeLayoutAlgorithm {
         }
     }
 
-    public void setChildParentDistance(int distance) {
+    private void setChildParentDistance(int distance) {
         if (distance <= 0) throw new IllegalArgumentException("Distance has to be positive integer " + distance);
         childParentDistance = distance;
     }
 
-    protected void layout(TreeLayoutNode t, Set nodeSet) {
+    private void layout(TreeLayoutNode t, Set nodeSet) {
         TreeLayoutNode c;
 
         if (t == null) {
@@ -83,7 +83,7 @@ public class TreeLayoutAlgorithm {
         }
     }
 
-    protected void attachParent(TreeLayoutNode t, int h) {
+    private void attachParent(TreeLayoutNode t, int h) {
         final int x;
         int y1;
         final int y2;
@@ -97,14 +97,14 @@ public class TreeLayoutAlgorithm {
         t.contour.lower_head = new PolyLine(t.width, 0, new PolyLine(x, y2, t.contour.lower_head));
     }
 
-    protected void layoutLeaf(TreeLayoutNode t) {
+    private void layoutLeaf(TreeLayoutNode t) {
         t.contour.upper_tail = new PolyLine(t.width + 2 * t.border, 0, null);
         t.contour.upper_head = t.contour.upper_tail;
         t.contour.lower_tail = new PolyLine(0, -t.height - 2 * t.border, null);
         t.contour.lower_head = new PolyLine(t.width + 2 * t.border, 0, t.contour.lower_tail);
     }
 
-    protected int join(TreeLayoutNode t) {
+    private int join(TreeLayoutNode t) {
         TreeLayoutNode c;
         int d, h, sum;
 
@@ -124,7 +124,7 @@ public class TreeLayoutAlgorithm {
         return sum;
     }
 
-    protected int merge(Polygon c1, Polygon c2) {
+    private int merge(Polygon c1, Polygon c2) {
         int x, y, total, d;
         PolyLine lower, upper, b;
 
@@ -165,7 +165,7 @@ public class TreeLayoutAlgorithm {
         return total;
     }
 
-    protected int offset(int p1, int p2, int a1, int a2, int b1, int b2) {
+    private int offset(int p1, int p2, int a1, int a2, int b1, int b2) {
         int d, s, t;
 
         if (b1 <= p1 || p1 + a1 <= 0) {
@@ -199,7 +199,7 @@ public class TreeLayoutAlgorithm {
         return 0;
     }
 
-    protected PolyLine bridge(PolyLine line1, int x1, int y1, PolyLine line2, int x2, int y2) {
+    private PolyLine bridge(PolyLine line1, int x1, int y1, PolyLine line2, int x2, int y2) {
         int dy, dx, s;
         PolyLine r;
 
@@ -217,7 +217,7 @@ public class TreeLayoutAlgorithm {
         return r;
     }
 
-    protected void leftRightNodeLayout(TreeLayoutNode node, int off_x, int off_y) {
+    private void leftRightNodeLayout(TreeLayoutNode node, int off_x, int off_y) {
         TreeLayoutNode child, s;
         int siblingOffest;
 
@@ -236,7 +236,7 @@ public class TreeLayoutAlgorithm {
         }
     }
 
-    protected void upDownNodeLayout(TreeLayoutNode node, int off_x, int off_y) {
+    private void upDownNodeLayout(TreeLayoutNode node, int off_x, int off_y) {
         TreeLayoutNode child, s;
         int siblingOffset;
 
@@ -318,7 +318,7 @@ public class TreeLayoutAlgorithm {
         // dlgProgress.setVisible(false);
     }
 
-    protected List getChildren(VertexView node) {
+    private List getChildren(VertexView node) {
         ArrayList children = new ArrayList();
         Object vertex = node.getCell();
         GraphModel model = jgraph.getModel();
@@ -347,7 +347,7 @@ public class TreeLayoutAlgorithm {
         return children;
     }
 
-    protected void layoutTrees(Collection roots) {
+    private void layoutTrees(Collection roots) {
         for (Object root1 : roots) {
             VertexView view = (VertexView) root1;
             TreeLayoutNode root = getTreeLayoutNode(view);
@@ -369,14 +369,14 @@ public class TreeLayoutAlgorithm {
         }
     }
 
-    protected void buildLayoutHelperTree(Collection roots) {
+    private void buildLayoutHelperTree(Collection roots) {
         for (Object root : roots) {
             VertexView vv = (VertexView) root;
             decorateNode(vv);
         }
     }
 
-    protected void decorateNode(VertexView node) {
+    private void decorateNode(VertexView node) {
         List cl = getChildren(node);
         TreeLayoutNode parent = getTreeLayoutNode(node);
         if (cl.size() > 0) {
@@ -399,11 +399,11 @@ public class TreeLayoutAlgorithm {
         }
     }
 
-    protected TreeLayoutNode getTreeLayoutNode(VertexView view) {
+    private TreeLayoutNode getTreeLayoutNode(VertexView view) {
         return getTreeLayoutNode(view, true);
     }
 
-    protected TreeLayoutNode getTreeLayoutNode(VertexView view, boolean createIfNotPresent) {
+    private TreeLayoutNode getTreeLayoutNode(VertexView view, boolean createIfNotPresent) {
         TreeLayoutNode decor = (TreeLayoutNode) view.getAttributes().get(CELL_WRAPPER);
         if (decor == null && createIfNotPresent) {
             TreeLayoutNode n = new TreeLayoutNode(view);
@@ -413,14 +413,14 @@ public class TreeLayoutAlgorithm {
         return decor;
     }
 
-    protected void display(Collection roots) {
+    private void display(Collection roots) {
         for (Object root : roots) {
             VertexView vertexView = (VertexView) root;
             displayHelper(vertexView);
         }
     }
 
-    protected void displayHelper(VertexView view) {
+    private void displayHelper(VertexView view) {
         TreeLayoutNode node = getTreeLayoutNode(view);
 
         Object cell = view.getCell();
@@ -446,7 +446,7 @@ public class TreeLayoutAlgorithm {
         final Point offset;
         Polygon contour;
 
-        public TreeLayoutNode(VertexView node) {
+        TreeLayoutNode(VertexView node) {
             width = (int) node.getBounds().getWidth();
             height = (int) node.getBounds().getHeight();
             // border = 5;

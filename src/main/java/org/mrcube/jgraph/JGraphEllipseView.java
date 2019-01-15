@@ -45,7 +45,7 @@ import java.awt.geom.Rectangle2D;
  */
 public class JGraphEllipseView extends VertexView {
 
-	public static transient JGraphEllipseRenderer renderer = new JGraphEllipseRenderer();
+	private static final transient JGraphEllipseRenderer renderer = new JGraphEllipseRenderer();
 
 	public JGraphEllipseView() {
 		super();

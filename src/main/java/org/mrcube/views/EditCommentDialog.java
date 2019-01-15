@@ -36,15 +36,15 @@ import java.awt.event.ActionListener;
 /**
  * @author Takeshi Morita
  */
-public class EditCommentDialog extends JDialog implements ActionListener {
+class EditCommentDialog extends JDialog implements ActionListener {
 
-    private MR3Literal literal;
+    private final MR3Literal literal;
 
-    private JTextField langField;
-    private JTextArea commentArea;
+    private final JTextField langField;
+    private final JTextArea commentArea;
 
-    private JButton applyButton;
-    private JButton cancelButton;
+    private final JButton applyButton;
+    private final JButton cancelButton;
 
     private static final int DIALOG_WIDTH = 300;
     private static final int DIALOG_HEIGHT = 250;

@@ -30,6 +30,7 @@ import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ import java.util.List;
  */
 public class UnGroupAction extends AbstractAction {
 
-	private RDFGraph graph;
+	private final RDFGraph graph;
 	private static GraphManager gmanager;
 	private static final String TITLE = Translator.getString("Action.UnGroup.Text");
 	private static final ImageIcon ICON = Utilities.getImageIcon(Translator
@@ -52,7 +53,8 @@ public class UnGroupAction extends AbstractAction {
 		graph = g;
 		gmanager = gm;
 		putValue(SHORT_DESCRIPTION, TITLE);
-		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_U, KeyEvent.CTRL_DOWN_MASK));
+		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_U,
+				Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 	}
 
 	// Determines if a Cell is a Group

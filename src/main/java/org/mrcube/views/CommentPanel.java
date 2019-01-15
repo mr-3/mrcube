@@ -47,17 +47,17 @@ import java.util.List;
  */
 public class CommentPanel extends JPanel implements ActionListener {
 
-	private Frame rootFrame;
+	private final Frame rootFrame;
 	private ResourceModel resInfo;
 
 	private WeakReference<EditCommentDialog> editCommentDialogRef;
 
-	private JTable commentTable;
-	private CommentTableModel commentTableModel;
+	private final JTable commentTable;
+	private final CommentTableModel commentTableModel;
 
-	private JButton editCommentButton;
-	private JButton addCommentButton;
-	private JButton removeCommentButton;
+	private final JButton editCommentButton;
+	private final JButton addCommentButton;
+	private final JButton removeCommentButton;
 
 	private GraphType graphType;
 
@@ -224,9 +224,9 @@ public class CommentPanel extends JPanel implements ActionListener {
 		return MR3Constants.COMMENT;
 	}
 
-	public class CommentTableModel extends DefaultTableModel implements Serializable {
+	class CommentTableModel extends DefaultTableModel implements Serializable {
 
-		public CommentTableModel(Object[] columnNames, int rowCount) {
+		CommentTableModel(Object[] columnNames, int rowCount) {
 			super(columnNames, rowCount);
 		}
 

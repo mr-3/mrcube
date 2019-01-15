@@ -49,9 +49,9 @@ import java.util.*;
  */
 public class ProjectManager {
 
-	private GraphManager gmanager;
-	private NSTableModel nsTableModel;
-	private NameSpaceTableDialog nsTableDialog;
+	private final GraphManager gmanager;
+	private final NSTableModel nsTableModel;
+	private final NameSpaceTableDialog nsTableDialog;
 
 	public ProjectManager(GraphManager gm) {
 		gmanager = gm;
@@ -292,11 +292,11 @@ public class ProjectManager {
 		return layoutMap;
 	}
 
-	public void initLayoutMap() {
+	private void initLayoutMap() {
 		layoutMap = null;
 	}
 
-	public void setCellLayoutMap(Model model) {
+	private void setCellLayoutMap(Model model) {
 		layoutMap = new HashMap<>();
 
 		for (StmtIterator i = model.listStatements(); i.hasNext();) {

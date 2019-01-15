@@ -55,6 +55,7 @@ import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.prefs.Preferences;
@@ -69,9 +70,9 @@ public class MR3 extends JFrame implements ChangeListener {
     private static Preferences userPrefs;
     private static MR3ProjectPanel mr3ProjectPanel;
 
-    private MR3Reader mr3Reader;
-    private MR3Writer mr3Writer;
-    private GraphManager gmanager;
+    private final MR3Reader mr3Reader;
+    private final MR3Writer mr3Writer;
+    private final GraphManager gmanager;
 
     private WeakReference<OverviewDialog> rdfEditorOverviewRef;
     private WeakReference<OverviewDialog> classEditorOverviewRef;
@@ -83,7 +84,7 @@ public class MR3 extends JFrame implements ChangeListener {
     private WeakReference<HistoryManager> historyManagerRef;
     private WeakReference<ValidatorDialog> validatorRef;
     private WeakReference<ProjectInfoDialog> projectInfoDialogRef;
-    private MR3LogConsole mr3LogConsole;
+    private final MR3LogConsole mr3LogConsole;
 
     private JCheckBoxMenuItem uriView;
     private JCheckBoxMenuItem idView;
@@ -165,9 +166,9 @@ public class MR3 extends JFrame implements ChangeListener {
     private AbstractAction showOptionDialogAction;
     private AbstractAction showVersionInfoAction;
 
-    private ImageIcon CPR_ICON = Utilities.getImageIcon(Translator.getString("Component.Window.DeployCPRWindows.Icon"));
-    private ImageIcon CR_ICON = Utilities.getImageIcon(Translator.getString("Component.Window.DeployCRWindows.Icon"));
-    private ImageIcon PR_ICON = Utilities.getImageIcon(Translator.getString("Component.Window.DeployPRWindows.Icon"));
+    private final ImageIcon CPR_ICON = Utilities.getImageIcon(Translator.getString("Component.Window.DeployCPRWindows.Icon"));
+    private final ImageIcon CR_ICON = Utilities.getImageIcon(Translator.getString("Component.Window.DeployCRWindows.Icon"));
+    private final ImageIcon PR_ICON = Utilities.getImageIcon(Translator.getString("Component.Window.DeployPRWindows.Icon"));
 
     private void initActions() {
         newProjectAction = new NewProject(this);
@@ -181,12 +182,16 @@ public class MR3 extends JFrame implements ChangeListener {
         toFrontClassEditorAction = new EditorSelect(this, EditorSelect.CLASS_EDITOR, EditorSelect.CLASS_EDITOR_ICON);
         toFrontPropertyEditorAction = new EditorSelect(this, EditorSelect.PROPERTY_EDITOR,
                 EditorSelect.PROPERTY_EDITOR_ICON);
+
         deployWindowCPRAction = new DeployWindows(this, Translator.getString("Component.Window.DeployCPRWindows.Text"),
-                CPR_ICON, DeployType.CPR, "control alt R");
+                CPR_ICON, DeployType.CPR,
+                KeyStroke.getKeyStroke(KeyEvent.VK_1, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         deployWindowCRAction = new DeployWindows(this, Translator.getString("Component.Window.DeployCRWindows.Text"),
-                CR_ICON, DeployType.CR, "control alt C");
+                CR_ICON, DeployType.CR,
+                KeyStroke.getKeyStroke(KeyEvent.VK_2, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         deployWindowPRAction = new DeployWindows(this, Translator.getString("Component.Window.DeployPRWindows.Text"),
-                PR_ICON, DeployType.PR, "control alt P");
+                PR_ICON, DeployType.PR,
+                KeyStroke.getKeyStroke(KeyEvent.VK_3, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         showAttrDialogAction = new ShowAttrDialog(this);
         showNSTableDialogAction = new ShowNSTableDialog(this);
         showImportDialogAction = new ShowImportDialog(this, Translator.getString("Component.Window.ImportDialog.Text"));
@@ -287,7 +292,7 @@ public class MR3 extends JFrame implements ChangeListener {
         }
     }
 
-    private static Object[] NULL = new Object[0];
+    private static final Object[] NULL = new Object[0];
 
     private void setFindList() {
         gmanager.getFindResourceDialog().setAllCheckBoxSelected(true);
@@ -696,7 +701,7 @@ public class MR3 extends JFrame implements ChangeListener {
         }
     }
 
-    class ShowGraphNodeAction extends AbstractAction {
+    private class ShowGraphNodeAction extends AbstractAction {
 
         ShowGraphNodeAction(String title) {
             super(title);
@@ -730,7 +735,7 @@ public class MR3 extends JFrame implements ChangeListener {
         }
     }
 
-    public class ShowRDFPropertyLabelAction implements ActionListener {
+    class ShowRDFPropertyLabelAction implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             gmanager.showRDFPropertyLabel(showRDFPropertyLabelBox.isSelected());
         }

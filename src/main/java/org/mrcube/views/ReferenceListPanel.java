@@ -45,12 +45,12 @@ import java.util.*;
  * @author Takeshi Morita
  * 
  */
-public class ReferenceListPanel extends JPanel {
+class ReferenceListPanel extends JPanel {
 
     private JTable rdfRefTable;
     private JTable propRefTable;
-    private JTabbedPane tab;
-    private GraphManager gmanager;
+    private final JTabbedPane tab;
+    private final GraphManager gmanager;
     private static TableModel nullTableModel;
 
     private JButton selectAllButton;
@@ -58,8 +58,8 @@ public class ReferenceListPanel extends JPanel {
     private JButton reverseButton;
     private JButton jumpButton;
 
-    private Map rdfTableModelMap;
-    private Map propTableModelMap;
+    private final Map rdfTableModelMap;
+    private final Map propTableModelMap;
 
     private static final int LIST_WIDTH = 380;
     private static final int LIST_HEIGHT = 100;
@@ -215,7 +215,7 @@ public class ReferenceListPanel extends JPanel {
         replacePropRefTableModel(cell);
     }
 
-    public void removeRefRDFAction(Object cell) {
+    private void removeRefRDFAction(Object cell) {
         TableModel tableModel = (TableModel) rdfTableModelMap.get(cell);
         if (tableModel == null) { return; }
         for (int i = 0; i < tableModel.getRowCount(); i++) {
@@ -231,7 +231,7 @@ public class ReferenceListPanel extends JPanel {
             }
         }
     }
-    public void removeRefPropAction(Object cell) {
+    private void removeRefPropAction(Object cell) {
         TableModel tableModel = (TableModel) propTableModelMap.get(cell);
         if (tableModel == null) { return; }
 
@@ -280,7 +280,7 @@ public class ReferenceListPanel extends JPanel {
 
     class ReferenceTableModel extends DefaultTableModel {
 
-        public ReferenceTableModel(Object[] columnNames, int rowCount) {
+        ReferenceTableModel(Object[] columnNames, int rowCount) {
             super(columnNames, rowCount);
         }
 
@@ -289,7 +289,7 @@ public class ReferenceListPanel extends JPanel {
         }
 
         public Class getColumnClass(int column) {
-            Vector v = (Vector) dataVector.elementAt(0);
+            Vector v = dataVector.elementAt(0);
             return v.elementAt(column).getClass();
         }
     }

@@ -154,14 +154,14 @@ public class Utilities {
         return panel;
     }
 
-    static int focusNum;
-    static Component[] order;
+    private static int focusNum;
+    private static Component[] order;
 
     public static FocusTraversalPolicy getMyFocusTraversalPolicy(Component[] c, int num) {
         order = c;
         focusNum = num;
         return new FocusTraversalPolicy() {
-            private List list = Arrays.asList(order);
+            private final List list = Arrays.asList(order);
 
             public Component getDefaultComponent(Container focusCycleRoot) {
                 return order[focusNum];

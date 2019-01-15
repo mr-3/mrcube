@@ -58,43 +58,43 @@ import java.util.regex.PatternSyntaxException;
  */
 public class ImportDialog extends JDialog implements ActionListener {
 
-    private MR3Reader mr3Reader;
-    private GraphManager gmanager;
+    private final MR3Reader mr3Reader;
+    private final GraphManager gmanager;
 
-    private JRadioButton syntaxXMLButton;
-    private JRadioButton syntaxN3Button;
-    private JRadioButton syntaxNTripleButton;
-    private JRadioButton syntaxTurtleButton;
+    private final JRadioButton syntaxXMLButton;
+    private final JRadioButton syntaxN3Button;
+    private final JRadioButton syntaxNTripleButton;
+    private final JRadioButton syntaxTurtleButton;
 
-    private JRadioButton importReplaceButton;
-    private JRadioButton importMergeButton;
+    private final JRadioButton importReplaceButton;
+    private final JRadioButton importMergeButton;
 
-    private JRadioButton dataTypeRDFButton;
-    private JRadioButton dataTypeRDFSButton;
-    private JRadioButton dataTypeOWLButton;
+    private final JRadioButton dataTypeRDFButton;
+    private final JRadioButton dataTypeRDFSButton;
+    private final JRadioButton dataTypeOWLButton;
 
-    private JList containerListUI;
-    private JButton addDirButton;
-    private JButton addURIButton;
-    private DefaultListModel containerListModel;
+    private final JList containerListUI;
+    private final JButton addDirButton;
+    private final JButton addURIButton;
+    private final DefaultListModel containerListModel;
 
-    private JTextField findField;
+    private final JTextField findField;
     private Set<File> fileSet;
     private Set<String> uriSet;
-    private JList fileListUI;
+    private final JList fileListUI;
 
-    private JComboBox filterBox;
+    private final JComboBox filterBox;
 
-    private ChangeContainerAction changeContainerAction;
+    private final ChangeContainerAction changeContainerAction;
 
-    private static FileFilter owlFileFilter = new OWLFileFilter(false);
-    private static FileFilter rdfsFileFilter = new RDFsFileFilter(false);
-    private static FileFilter n3FileFilter = new NTripleFileFilter(false);
-    private static FileFilter turtleFileFilter = new TurtleFileFilter(false);
+    private static final FileFilter owlFileFilter = new OWLFileFilter(false);
+    private static final FileFilter rdfsFileFilter = new RDFsFileFilter(false);
+    private static final FileFilter n3FileFilter = new NTripleFileFilter(false);
+    private static final FileFilter turtleFileFilter = new TurtleFileFilter(false);
 
     private static final int FRAME_HEIGHT = 400;
     private static final int FRAME_WIDTH = 600;
-    private static ImageIcon IMPORT_ICON = Utilities.getImageIcon(Translator.getString("ImportDialog.Icon"));
+    private static final ImageIcon IMPORT_ICON = Utilities.getImageIcon(Translator.getString("ImportDialog.Icon"));
 
     public ImportDialog(GraphManager gm) {
         super(gm.getRootFrame(), Translator.getString("ImportDialog.Title"), true);
@@ -426,7 +426,7 @@ public class ImportDialog extends JDialog implements ActionListener {
         }
     }
 
-    protected URL getURI(String uri) throws MalformedURLException {
+    private URL getURI(String uri) throws MalformedURLException {
         Preferences userPrefs = gmanager.getUserPrefs();
         URL rdfURI = null;
         boolean isProxy = userPrefs.getBoolean("Proxy", false);
@@ -505,11 +505,7 @@ public class ImportDialog extends JDialog implements ActionListener {
                 e.printStackTrace();
             }
             String decodedText = null;
-            try {
-                decodedText = URLDecoder.decode(builder.toString(), "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
+            decodedText = URLDecoder.decode(builder.toString(), StandardCharsets.UTF_8);
             StringReader r = new StringReader(decodedText);
             model.read(r, gmanager.getBaseURI(), getSyntax());
         }

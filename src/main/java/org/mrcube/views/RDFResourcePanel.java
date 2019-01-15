@@ -55,26 +55,26 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
 
     private WeakReference<SelectResourceTypeDialog> selectResTypeDialogRef;
 
-    private Action decideAction;
+    private final Action decideAction;
 
-    private JList menuList;
-    private JPanel menuPanel;
-    private CardLayout cardLayout;
+    private final JList menuList;
+    private final JPanel menuPanel;
+    private final CardLayout cardLayout;
 
-    private URIPanel uriPanel;
-    private TypePanel typePanel;
-    private LabelPanel labelPanel;
-    private CommentPanel commentPanel;
+    private final URIPanel uriPanel;
+    private final TypePanel typePanel;
+    private final LabelPanel labelPanel;
+    private final CommentPanel commentPanel;
 
-    private JButton resetButton;
-    private JButton applyButton;
-    private JButton cancelButton;
+    private final JButton resetButton;
+    private final JButton applyButton;
+    private final JButton cancelButton;
 
     private Set<NamespaceModel> namespaceModelSet;
 
     private GraphCell cell;
     private RDFResourceModel resInfo;
-    private GraphManager gmanager;
+    private final GraphManager gmanager;
 
     private static final String WARNING = Translator.getString("Warning");
     private static final int MENU_WIDTH = 80;
@@ -151,10 +151,10 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
 
     class TypePanel extends JPanel implements ActionListener {
 
-        private JComboBox resTypePrefixBox;
-        private JTextField resTypeField;
-        private JCheckBox isTypeCellCheckBox;
-        private JLabel resTypeNSLabel;
+        private final JComboBox resTypePrefixBox;
+        private final JTextField resTypeField;
+        private final JCheckBox isTypeCellCheckBox;
+        private final JLabel resTypeNSLabel;
         private JButton selectTypeButton;
         private JButton jumpRDFSClassButton;
 
@@ -189,15 +189,15 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
             add(panel, BorderLayout.NORTH);
         }
 
-        public JComboBox getResTypePrefixBox() {
+        JComboBox getResTypePrefixBox() {
             return resTypePrefixBox;
         }
 
-        public JLabel getResTypeNSLabel() {
+        JLabel getResTypeNSLabel() {
             return resTypeNSLabel;
         }
 
-        public boolean isType() {
+        boolean isType() {
             return isTypeCellCheckBox.isSelected();
         }
 
@@ -234,7 +234,7 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
             }
         }
 
-        public void selectResourceType() {
+        void selectResourceType() {
             SelectResourceTypeDialog selectResDialog = getSelectResourceTypeDialog();
             Resource uri = (Resource) selectResDialog.getValue();
             if (uri != null) {
@@ -265,7 +265,7 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
             resTypeField.setToolTipText(uri);
         }
 
-        public void selectTypeMode(boolean t) {
+        void selectTypeMode(boolean t) {
             isTypeCellCheckBox.setSelected(t);
             if (t) {
                 // setResourceTypeField(resInfo.getType().getLocalName());
@@ -289,9 +289,9 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
 
     class URIPanel extends JPanel {
 
-        private JCheckBox isAnonBox;
-        private JTextField uriField;
-        private JComboBox resPrefixBox;
+        private final JCheckBox isAnonBox;
+        private final JTextField uriField;
+        private final JComboBox resPrefixBox;
 
         URIPanel() {
             resPrefixBox = new JComboBox();
@@ -318,19 +318,19 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
             add(panel, BorderLayout.NORTH);
         }
 
-        public JTextField getURIField() {
+        JTextField getURIField() {
             return uriField;
         }
 
-        public void setResPrefixBox() {
+        void setResPrefixBox() {
             resPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
         }
 
-        public JComboBox getResPrefixBox() {
+        JComboBox getResPrefixBox() {
             return resPrefixBox;
         }
 
-        public boolean isAnon() {
+        boolean isAnon() {
             return isAnonBox.isSelected();
         }
 
@@ -345,7 +345,7 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
         }
 
         // URI�̏d���ƁC��̃`�F�b�N������D
-        public boolean isErrorResource() {
+        boolean isErrorResource() {
             String uri = getResourceURI();
             if (isAnonBox.isSelected()) {
                 return false;
@@ -357,11 +357,11 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
             return false;
         }
 
-        public String getResourceURI() {
+        String getResourceURI() {
             return uriField.getText();
         }
 
-        public void setURI(String resURI) {
+        void setURI(String resURI) {
             if (resInfo.getURIType() == URIType.ANONYMOUS) {
                 setURIField("", false);
             } else {
@@ -454,7 +454,7 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
         GraphUtilities.resizeRDFResourceCell(gmanager, resInfo, cell);
     }
 
-    public SelectResourceTypeDialog getSelectResourceTypeDialog() {
+    private SelectResourceTypeDialog getSelectResourceTypeDialog() {
         SelectResourceTypeDialog result = selectResTypeDialogRef.get();
         if (result == null) {
             result = new SelectResourceTypeDialog(gmanager);

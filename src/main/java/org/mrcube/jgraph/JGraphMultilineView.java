@@ -52,8 +52,8 @@ import java.util.Map;
  */
 public class JGraphMultilineView extends VertexView {
 
-	protected static transient MultiLinedRenderer renderer = new MultiLinedRenderer();
-	protected static transient MultiLinedEditor editor = new MultiLinedEditor();
+	private static final transient MultiLinedRenderer renderer = new MultiLinedRenderer();
+	private static final transient MultiLinedEditor editor = new MultiLinedEditor();
 
 	public JGraphMultilineView() {
 		super();
@@ -85,9 +85,9 @@ public class JGraphMultilineView extends VertexView {
 		return super.getPerimeterPoint(edge, source, p);
 	}
 
-	public static class MultiLinedEditor extends DefaultGraphCellEditor {
-		public class RealCellEditor extends AbstractCellEditor implements GraphCellEditor {
-			JTextArea editorComponent = new JTextArea();
+	protected static class MultiLinedEditor extends DefaultGraphCellEditor {
+		class RealCellEditor extends AbstractCellEditor implements GraphCellEditor {
+			final JTextArea editorComponent = new JTextArea();
 
 			public RealCellEditor() {
 				editorComponent.setBorder(UIManager.getBorder("Tree.editorBorder"));
@@ -213,14 +213,16 @@ public class JGraphMultilineView extends VertexView {
 		}
 	}
 
-	public static class MultiLinedRenderer extends JTextArea implements CellViewRenderer {
+	protected static class MultiLinedRenderer extends JTextArea implements CellViewRenderer {
 
-		protected transient JGraph graph = null;
+		transient JGraph graph = null;
 
-		transient protected Color gradientColor = null;
+		transient Color gradientColor = null;
 
 		/** Cached hasFocus and selected value. */
-		transient protected boolean hasFocus, selected, preview;
+		transient boolean hasFocus;
+        transient boolean selected;
+        transient boolean preview;
 
 		public MultiLinedRenderer() {
 			setLineWrap(true);
@@ -258,7 +260,7 @@ public class JGraphMultilineView extends VertexView {
 		/**
 		 * Provided for subclassers to paint a selection border.
 		 */
-		protected void paintSelectionBorder(Graphics g) {
+        void paintSelectionBorder(Graphics g) {
 			((Graphics2D) g).setStroke(GraphConstants.SELECTION_STROKE);
 			if (hasFocus && selected)
 				g.setColor(graph.getLockedHandleColor());
@@ -275,7 +277,7 @@ public class JGraphMultilineView extends VertexView {
 		 * line between the source and the specified point p. The specified
 		 * point is expected not to intersect the bounds.
 		 */
-		public Point2D getPerimeterPoint(VertexView view, Point2D source, Point2D p) {
+        Point2D getPerimeterPoint(VertexView view, Point2D source, Point2D p) {
 			Rectangle2D bounds = view.getBounds();
 			double x = bounds.getX();
 			double y = bounds.getY();
@@ -307,7 +309,7 @@ public class JGraphMultilineView extends VertexView {
 			return new Point2D.Double(xout, yout);
 		}
 
-		protected void installAttributes(JGraph graph, Map attributes) {
+		void installAttributes(JGraph graph, Map attributes) {
 			setOpaque(GraphConstants.isOpaque(attributes));
 			Color foreground = GraphConstants.getForeground(attributes);
 			setForeground((foreground != null) ? foreground : graph.getForeground());
