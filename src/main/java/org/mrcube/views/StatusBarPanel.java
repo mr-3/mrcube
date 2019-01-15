@@ -38,8 +38,8 @@ public class StatusBarPanel extends Panel {
     private int maxValue;
     private int currentValue;
 
-    private JTextField statusField;
-    private JProgressBar progressBar;
+    private final JTextField statusField;
+    private final JProgressBar progressBar;
     private static final Color STATUS_BAR_COLOR = new Color(240, 240, 240);
 
     public StatusBarPanel() {
@@ -92,7 +92,7 @@ public class StatusBarPanel extends Panel {
         }
     }
 
-    public void setValue() {
+    private void setValue() {
         setCurrentTime();
         progressBar.setValue(currentValue);
         progressBar.paintImmediately(progressBar.getVisibleRect());

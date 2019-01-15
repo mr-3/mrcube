@@ -50,12 +50,12 @@ import java.lang.ref.WeakReference;
  */
 public class MR3Reader {
 
-	private MR3Parser mr3Parser;
-	private GraphManager gmanager;
-	private MR3Generator mr3Generator;
-	private RDFSModelExtraction extractRDFS;
-	private NameSpaceTableDialog nsTableDialog;
-	private JGraphTreeLayout jgraphTreeLayout;
+	private final MR3Parser mr3Parser;
+	private final GraphManager gmanager;
+	private final MR3Generator mr3Generator;
+	private final RDFSModelExtraction extractRDFS;
+	private final NameSpaceTableDialog nsTableDialog;
+	private final JGraphTreeLayout jgraphTreeLayout;
 
 	private WeakReference<ReplaceRDFSDialog> replaceRDFSDialogRef;
 
@@ -91,7 +91,7 @@ public class MR3Reader {
 		}).start();
 	}
 
-	public void mergeRDFModel(Model newModel) {
+	private void mergeRDFModel(Model newModel) {
 		Model rdfModel = mr3Generator.getRDFModel(false);
 		rdfModel.add(newModel);
 		nsTableDialog.setCurrentNSPrefix(rdfModel);
@@ -123,7 +123,7 @@ public class MR3Reader {
 		}
 	}
 
-	public void mergeRDFSModel(Model model) {
+	private void mergeRDFSModel(Model model) {
 		MR3.STATUS_BAR.initIndeterminate();
 		// addInnerModel(model);
 		// model.add(mr3Generator.getPropertyModel(false));
@@ -232,7 +232,7 @@ public class MR3Reader {
 		gmanager.getCurrentPropertyGraph().clearSelection();
 	}
 
-	public void replaceRDF(Model model) {
+	private void replaceRDF(Model model) {
 		if (model != null) {
 			nsTableDialog.setCurrentNSPrefix(model);
 			gmanager.getCurrentRDFGraph().removeAllCells();
@@ -244,7 +244,7 @@ public class MR3Reader {
 		}
 	}
 
-	public void replaceRDFS(Model model) {
+	private void replaceRDFS(Model model) {
 		if (model != null) {
 			mergeRDFSModel(model);
 		}
@@ -274,7 +274,7 @@ public class MR3Reader {
 		}).start();
 	}
 
-	public ReplaceRDFSDialog getReplaceRDFSDialog(Model model) {
+	private ReplaceRDFSDialog getReplaceRDFSDialog(Model model) {
 		ReplaceRDFSDialog result = replaceRDFSDialogRef.get();
 		if (result == null) {
 			result = new ReplaceRDFSDialog(gmanager);
@@ -285,7 +285,7 @@ public class MR3Reader {
 		return result;
 	}
 
-	public void mergeRDFs(Model model) {
+	private void mergeRDFs(Model model) {
 		if (model != null) {
 			mergeRDFSModel(model);
 			mergeRDFModel(model);
@@ -311,7 +311,7 @@ public class MR3Reader {
 		}
 	}
 
-	public void performRDFSTreeLayout() {
+	private void performRDFSTreeLayout() {
 		if (GraphLayoutUtilities.LAYOUT_TYPE.equals(GraphLayoutUtilities.JGRAPH_TREE_LAYOUT)) {
 			jgraphTreeLayout.performJGraphRDFSTreeLayout();
 		}

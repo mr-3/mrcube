@@ -36,8 +36,8 @@ import java.util.List;
  */
 public abstract class ResourceModel {
 
-	protected transient List<MR3Literal> labelList;
-	protected transient List<MR3Literal> commentList;
+	transient List<MR3Literal> labelList;
+	transient List<MR3Literal> commentList;
 
 	public void setLabelList(List<MR3Literal> labelList) {
 		this.labelList = labelList;

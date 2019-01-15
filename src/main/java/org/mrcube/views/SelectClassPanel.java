@@ -48,22 +48,22 @@ import java.util.List;
 /**
  * @author Takeshi Morita
  */
-public abstract class SelectClassPanel extends JPanel implements GraphSelectionListener {
+abstract class SelectClassPanel extends JPanel implements GraphSelectionListener {
 
     private int index; // 検索のインデックス
     private String currentKey; // 現在のキー
     private List findList; // 検索リスト
-    protected JLabel nsLabel;
+    JLabel nsLabel;
 
-    protected JTextField findField;
-    protected JButton findButton;
-    protected JComboBox uriPrefixBox;
+    JTextField findField;
+    JButton findButton;
+    JComboBox uriPrefixBox;
 
-    protected RDFGraph graph;
+    RDFGraph graph;
 
-    protected GraphManager gmanager;
+    private final GraphManager gmanager;
 
-    public SelectClassPanel(GraphManager gm) {
+    SelectClassPanel(GraphManager gm) {
         index = 0;
         gmanager = gm;
         currentKey = null;
@@ -74,8 +74,8 @@ public abstract class SelectClassPanel extends JPanel implements GraphSelectionL
         add(getEachDialogComponent(), BorderLayout.SOUTH);
     }
 
-    protected static final int LIST_WIDTH = 450;
-    protected static final int LIST_HEIGHT = 20;
+    static final int LIST_WIDTH = 450;
+    static final int LIST_HEIGHT = 20;
 
     class ChangePrefixAction extends AbstractAction {
         public void actionPerformed(ActionEvent e) {
@@ -187,7 +187,7 @@ public abstract class SelectClassPanel extends JPanel implements GraphSelectionL
         return graph;
     }
 
-    protected void changeAllCellColor(Color color) {
+    void changeAllCellColor(Color color) {
         Object[] cells = graph.getAllCells();
         for (Object cell1 : cells) {
             GraphCell cell = (GraphCell) cell1;

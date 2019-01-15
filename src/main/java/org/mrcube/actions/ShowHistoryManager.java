@@ -27,13 +27,15 @@ import org.mrcube.MR3;
 import org.mrcube.views.HistoryManager;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 /**
  * @author Takeshi Morita
  */
-public class ShowHistoryManager extends MR3AbstractAction {
+class ShowHistoryManager extends MR3AbstractAction {
 
     // private static ImageIcon ICON =
     // Utilities.getImageIcon(Translator.getString("ExportDialog.Icon"));
@@ -47,7 +49,8 @@ public class ShowHistoryManager extends MR3AbstractAction {
 
     private void setValues() {
         putValue(SHORT_DESCRIPTION, getName());
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_H, KeyEvent.CTRL_DOWN_MASK));
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_H,
+                Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | InputEvent.SHIFT_DOWN_MASK));
     }
 
     public void actionPerformed(ActionEvent e) {

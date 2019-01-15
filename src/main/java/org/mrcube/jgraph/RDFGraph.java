@@ -49,9 +49,9 @@ import java.util.Set;
  */
 public class RDFGraph extends JGraph {
 
-    private CopyAction copyAction;
-    private CutAction cutAction;
-    private PasteAction pasteAction;
+    private final CopyAction copyAction;
+    private final CutAction cutAction;
+    private final PasteAction pasteAction;
 
     private boolean pagevisible = false;
     private transient PageFormat pageFormat = new PageFormat();
@@ -60,8 +60,8 @@ public class RDFGraph extends JGraph {
 
     private Object[] copyCells;
 
-    private GraphType type;
-    private GraphManager gmanager;
+    private final GraphType type;
+    private final GraphManager gmanager;
 
     public RDFGraph(GraphManager gm, GraphModel model, GraphType type) {
         super(model, new GraphLayoutCache(model, new RDFCellViewFactory(), false));
@@ -116,7 +116,7 @@ public class RDFGraph extends JGraph {
      * instance of Port or Edge, and all of its children are ports, or it has no
      * children.
      */
-    public boolean isGroup(Object cell) {
+    private boolean isGroup(Object cell) {
         // Map the Cell to its View
         CellView view = getGraphLayoutCache().getMapping(cell, false);
         if (view != null)
@@ -189,7 +189,7 @@ public class RDFGraph extends JGraph {
         return (isRDFCell(object) || isRDFSCell(object));
     }
 
-    public static boolean isRDFCell(Object object) {
+    private static boolean isRDFCell(Object object) {
         return (isRDFResourceCell(object) || isRDFPropertyCell(object) || isRDFLiteralCell(object));
     }
 
@@ -379,7 +379,7 @@ public class RDFGraph extends JGraph {
         return getPropertyToolTipText(cell);
     }
 
-    public String insertLineFeed(String str) {
+    private String insertLineFeed(String str) {
         int COMMENT_WIDTH = 30;
         str = str.replaceAll("(\n|\r)+", "");
         BreakIterator i = BreakIterator.getLineInstance();
@@ -473,7 +473,7 @@ public class RDFGraph extends JGraph {
         return pasteAction;
     }
 
-    public ActionMap createActionMap() {
+    private ActionMap createActionMap() {
         ActionMap map = new ActionMapUIResource();
         map.put(TransferHandler.getCutAction().getValue(Action.NAME), cutAction);
         map.put(TransferHandler.getCopyAction().getValue(Action.NAME), copyAction);

@@ -46,12 +46,12 @@ import java.util.Set;
 public class GraphLayoutData {
 
     private RDFNode rdfNode;
-    private Point2D.Double point;
-    private Dimension dimension;
+    private final Point2D.Double point;
+    private final Dimension dimension;
     private Rectangle2D rec;
     private RDFGraph graph;
     private GraphCell cell;
-    private Set<GraphLayoutData> children;
+    private final Set<GraphLayoutData> children;
     private boolean hasParent;
     TreeAlgorithm.TreeAlgorithmData data;
 

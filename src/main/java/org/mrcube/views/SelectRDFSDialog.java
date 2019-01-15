@@ -41,7 +41,7 @@ public class SelectRDFSDialog extends JDialog implements ActionListener {
 
     private boolean isConfirm;
     private JButton confirmButton;
-    private SelectRDFSPanel panel;
+    private final SelectRDFSPanel panel;
 
     public SelectRDFSDialog(String title, GraphManager gm) {
         super(gm.getRootFrame(), title, true);

@@ -30,7 +30,7 @@ import java.io.File;
  */
 public class RDFsFileFilter extends MR3FileFilter implements java.io.FileFilter {
 
-	private boolean isShowDirectories;
+	private final boolean isShowDirectories;
 
 	public RDFsFileFilter(boolean isShowDirectories) {
 		this.isShowDirectories = isShowDirectories;

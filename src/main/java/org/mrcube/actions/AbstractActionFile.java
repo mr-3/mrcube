@@ -43,7 +43,7 @@ import java.util.prefs.Preferences;
 /**
  * @author Takeshi Morita
  */
-public abstract class AbstractActionFile extends MR3AbstractAction {
+abstract class AbstractActionFile extends MR3AbstractAction {
 
     public AbstractActionFile() {
     }
@@ -103,11 +103,11 @@ public abstract class AbstractActionFile extends MR3AbstractAction {
         return null;
     }
 
-    private static ProjectFileFilter mr3FileFilter = new ProjectFileFilter();
-    private static OWLFileFilter owlFileFilter = new OWLFileFilter(true);
-    private static RDFsFileFilter rdfsFileFilter = new RDFsFileFilter(true);
-    private static NTripleFileFilter n3FileFilter = new NTripleFileFilter(true);
-    private static PNGFileFilter pngFileFilter = new PNGFileFilter();
+    private static final ProjectFileFilter mr3FileFilter = new ProjectFileFilter();
+    private static final OWLFileFilter owlFileFilter = new OWLFileFilter(true);
+    private static final RDFsFileFilter rdfsFileFilter = new RDFsFileFilter(true);
+    private static final NTripleFileFilter n3FileFilter = new NTripleFileFilter(true);
+    private static final PNGFileFilter pngFileFilter = new PNGFileFilter();
 
     protected File getFile(boolean isOpenFile, String extension) {
         Preferences userPrefs = mr3.getUserPrefs();

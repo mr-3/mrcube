@@ -40,7 +40,7 @@ import java.util.Set;
  */
 public class ClassPanel extends OntologyPanel {
 
-    private JList supClasses;
+    private final JList supClasses;
 
     public ClassPanel(GraphManager gm) {
         super(gm.getCurrentClassGraph(), gm);

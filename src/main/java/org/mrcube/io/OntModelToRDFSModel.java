@@ -37,7 +37,7 @@ import java.util.Iterator;
 /**
  * @author Takeshi Morita
  */
-public class OntModelToRDFSModel {
+class OntModelToRDFSModel {
 
     public static Model convertOntModelToRDFSModel(OntModel ontModel) {
         Model rdfsModel = ModelFactory.createDefaultModel();

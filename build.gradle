@@ -104,7 +104,7 @@ tasks.jlink.doLast {
         into("$buildDir/mrcube-${version}")
     }
     copy {
-        from('./src/main/resources/gpl.md')
+        from('./LICENSE')
         into("$buildDir/mrcube-${version}")
     }
 }

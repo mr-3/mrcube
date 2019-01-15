@@ -42,7 +42,7 @@ import java.util.*;
  */
 public class MR3Generator {
 
-	private GraphManager gmanager;
+	private final GraphManager gmanager;
 
 	public MR3Generator(GraphManager gm) {
 		gmanager = gm;

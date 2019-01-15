@@ -50,7 +50,7 @@ import java.lang.ref.WeakReference;
  */
 public class RDFEditor extends Editor {
 
-    private RDFGraphMarqueeHandler rdfGraphMarqueeHandler;
+    private final RDFGraphMarqueeHandler rdfGraphMarqueeHandler;
     private static WeakReference<RDFResourcePanel> resPanelRef;
     private static WeakReference<RDFPropertyPanel> propPanelRef;
     private static WeakReference<RDFLiteralPanel> litPanelRef;

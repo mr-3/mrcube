@@ -48,13 +48,13 @@ import java.util.Set;
  */
 public class MR3CellMaker {
 
-    private GraphManager gmanager;
+    private final GraphManager gmanager;
 
     public static final int CELL_MARGIN = 20;
     public static int CELL_WIDTH = 100;
-    public static int DEFAULT_CELL_WIDTH = 100;
+    public static final int DEFAULT_CELL_WIDTH = 100;
     public static int CELL_HEIGHT = 25;
-    public static int DEFAULT_CELL_HEIGHT = 25;
+    public static final int DEFAULT_CELL_HEIGHT = 25;
     private static final Dimension initDimension = new Dimension(CELL_WIDTH, CELL_HEIGHT);
     private static final Rectangle initRectangle = new Rectangle(new Point(0, 0), initDimension);
 
@@ -77,19 +77,19 @@ public class MR3CellMaker {
         return map;
     }
 
-    public Rectangle2D getRDFNodeRectangle(Point2D point, String uri) {
+    private Rectangle2D getRDFNodeRectangle(Point2D point, String uri) {
         String value = gmanager.getRDFNodeValue(ResourceFactory.createResource(uri), null);
         Dimension dim = GraphUtilities.getAutoNodeDimension(gmanager, value);
         return new Rectangle2D.Double(point.getX(), point.getY(), dim.getWidth(), dim.getHeight());
     }
 
-    public Rectangle2D getRDFSNodeRectangle(Point2D point, String uri) {
+    private Rectangle2D getRDFSNodeRectangle(Point2D point, String uri) {
         String value = gmanager.getRDFSNodeValue(ResourceFactory.createResource(uri), null);
         Dimension dim = GraphUtilities.getAutoNodeDimension(gmanager, value);
         return new Rectangle2D.Double(point.getX(), point.getY(), dim.getWidth(), dim.getHeight());
     }
 
-    public Rectangle2D getRectangle(Point2D point, String value) {
+    private Rectangle2D getRectangle(Point2D point, String value) {
         Dimension size = GraphUtilities.getAutoLiteralNodeDimention(gmanager, value);
         return new Rectangle2D.Double(point.getX(), point.getY(), size.getWidth(), size.getHeight());
     }
@@ -98,7 +98,7 @@ public class MR3CellMaker {
         return new Rectangle2D.Double(point.getX(), point.getY(), initDimension.getWidth(), initDimension.getHeight());
     }
 
-    public AttributeMap getTypeMap(Rectangle2D rectangle) {
+    private AttributeMap getTypeMap(Rectangle2D rectangle) {
         AttributeMap map = new AttributeMap();
 
         if (GraphUtilities.defaultFont != null) {

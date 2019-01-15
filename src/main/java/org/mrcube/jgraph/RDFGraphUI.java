@@ -59,13 +59,13 @@ import java.util.Set;
 /**
  * @author Takeshi Morita
  */
-public class RDFGraphUI extends BasicGraphUI {
+class RDFGraphUI extends BasicGraphUI {
 
-	private RDFGraph graph;
-	private GraphManager gmanager;
-	private MR3Reader mr3Reader;
-	private EditConceptAction editConceptAction;
-	private EditRDFPropertyAction editRDFPropertyAction;
+	private final RDFGraph graph;
+	private final GraphManager gmanager;
+	private final MR3Reader mr3Reader;
+	private final EditConceptAction editConceptAction;
+	private final EditRDFPropertyAction editRDFPropertyAction;
 	private static final String WARNING = Translator.getString("Warning");
 
 	RDFGraphUI(RDFGraph g, GraphManager gm) {
@@ -76,7 +76,7 @@ public class RDFGraphUI extends BasicGraphUI {
 		editRDFPropertyAction = new EditRDFPropertyAction(gmanager);
 	}
 
-	public RDFGraph getRDFGraph() {
+	private RDFGraph getRDFGraph() {
 		return graph;
 	}
 
@@ -273,7 +273,7 @@ public class RDFGraphUI extends BasicGraphUI {
 		return new RDFTransferHandler();
 	}
 
-	public class RDFTransferHandler extends GraphTransferHandler {
+	class RDFTransferHandler extends GraphTransferHandler {
 
 		protected void handleExternalDrop(JGraph graph, Object[] cells, Map nested,
 				ConnectionSet cs, ParentMap pm, double dx, double dy) {

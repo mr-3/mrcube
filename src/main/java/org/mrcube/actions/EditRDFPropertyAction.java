@@ -47,7 +47,7 @@ public class EditRDFPropertyAction {
 
 	private String uriStr;
 	private GraphCell edge;
-	private GraphManager gmanager;
+	private final GraphManager gmanager;
 	private static final String WARNING = Translator.getString("Warning");
 
 	public EditRDFPropertyAction(GraphManager gm) {

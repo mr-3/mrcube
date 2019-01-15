@@ -46,10 +46,10 @@ import java.util.Set;
 public class TransformElementAction extends AbstractAction {
 
     private Set<String> uriSet;
-    private RDFGraph graph;
-    private GraphType fromGraphType;
-    private GraphType toGraphType;
-    private GraphManager gmanager;
+    private final RDFGraph graph;
+    private final GraphType fromGraphType;
+    private final GraphType toGraphType;
+    private final GraphManager gmanager;
 
     // private RDFSModelMap rdfsInfoMap = RDFSModelMap.getInstance();
 

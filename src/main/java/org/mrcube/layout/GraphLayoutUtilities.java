@@ -224,8 +224,8 @@ public class GraphLayoutUtilities {
         }
     }
 
-    public static void initRDFSGraphLayoutData(Map<RDFNode, GraphLayoutData> cellLayoutMap, RDFSModel supInfo,
-                                               GraphLayoutData parentData) {
+    private static void initRDFSGraphLayoutData(Map<RDFNode, GraphLayoutData> cellLayoutMap, RDFSModel supInfo,
+                                                GraphLayoutData parentData) {
         for (Resource resource : supInfo.getRDFSSubList()) {
             RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
             if (!isNumProperty(resource)) {
@@ -408,7 +408,7 @@ public class GraphLayoutUtilities {
         return startPoint;
     }
 
-    public static void setRevisePoint(Point2D.Double revisePoint, Point2D.Double startPoint) {
+    private static void setRevisePoint(Point2D.Double revisePoint, Point2D.Double startPoint) {
         int MARGIN = 50;
         if (startPoint.x <= 0) {
             revisePoint.x = (-startPoint.x) + MARGIN;

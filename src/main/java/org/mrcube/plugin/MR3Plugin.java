@@ -54,7 +54,7 @@ import java.util.Set;
 public abstract class MR3Plugin {
 
     private MR3 mr3;
-    private String menuName;
+    private final String menuName;
 
     protected MR3Plugin(String mn) {
         menuName = mn;
@@ -269,7 +269,7 @@ public abstract class MR3Plugin {
      * URI文字列のセットを受け取って，RDFエディタ内の指定されたノードを選択する
      * 
      */
-    protected void selectRDFNodes(Set nodes) {
+    private void selectRDFNodes(Set nodes) {
         Set selectionCells = new HashSet();
         RDFGraph graph = mr3.getRDFGraph();
 
@@ -302,7 +302,7 @@ public abstract class MR3Plugin {
      * URI文字列のセットを受け取って，クラスエディタ内の指定されたノードを選択する
      * 
      */
-    protected void selectClassNodes(Set nodes) {
+    private void selectClassNodes(Set nodes) {
         Set selectionCells = new HashSet();
         RDFGraph graph = mr3.getClassGraph();
         graph.clearSelection();
@@ -321,7 +321,7 @@ public abstract class MR3Plugin {
      * URI文字列のセットを受け取って，プロパティエディタ内の指定されたノードを選択する
      * 
      */
-    protected void selectPropertyNodes(Set nodes) {
+    private void selectPropertyNodes(Set nodes) {
         Set selectionCells = new HashSet();
         RDFGraph graph = mr3.getPropertyGraph();
         graph.clearSelection();

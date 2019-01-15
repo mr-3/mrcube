@@ -30,7 +30,7 @@ import java.io.File;
  */
 public class TurtleFileFilter extends MR3FileFilter implements java.io.FileFilter {
 
-	private boolean isShowDirectories;
+	private final boolean isShowDirectories;
 
 	public TurtleFileFilter(boolean isShowDirectories) {
 		this.isShowDirectories = isShowDirectories;

@@ -38,14 +38,14 @@ import java.util.Set;
 /**
  * @author Takeshi Morita
  */
-public class OntManagementDialog extends JDialog implements ActionListener {
+class OntManagementDialog extends JDialog implements ActionListener {
 
 	private CreateRDFSType type;
 	private JButton confirmButton;
 	private JButton cancelButton;
 	private JRadioButton renameButton;
 	private JRadioButton createButton;
-	private SelectRDFSPanel panel;
+	private final SelectRDFSPanel panel;
 	private static final String TITLE = Translator.getString("RDFSManagementDialog.Title");
 
 	public OntManagementDialog(GraphManager gm) {

@@ -35,6 +35,7 @@ import org.mrcube.utils.Utilities;
 import org.mrcube.views.HistoryManager;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.HashSet;
@@ -47,8 +48,8 @@ import java.util.Set;
 
 public class PasteAction extends AbstractAction {
 
-	private RDFGraph graph;
-	private GraphManager gmanager;
+	private final RDFGraph graph;
+	private final GraphManager gmanager;
 	private static final String TITLE = Translator.getString("Action.Paste.Text");
 	private static final ImageIcon ICON = Utilities.getImageIcon(Translator
 			.getString("Action.Paste.Icon"));
@@ -58,7 +59,8 @@ public class PasteAction extends AbstractAction {
 		graph = g;
 		gmanager = gm;
 		putValue(SHORT_DESCRIPTION, TITLE);
-		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_DOWN_MASK));
+		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_V,
+				Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 	}
 
 	public void actionPerformed(ActionEvent e) {

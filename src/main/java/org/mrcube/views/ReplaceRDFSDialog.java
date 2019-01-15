@@ -49,25 +49,25 @@ import java.util.*;
  */
 public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener, ActionListener {
 
-    private GraphManager gmanager;
-    private RDFSModelExtraction rdfsModelExtraction;
+    private final GraphManager gmanager;
+    private final RDFSModelExtraction rdfsModelExtraction;
 
-    private JList currentClassList;
-    private DefaultListModel currentClassListModel;
-    private JList replaceClassList;
-    private DefaultListModel replaceClassListModel;
-    private JList currentPropertyList;
-    private DefaultListModel currentPropertyListModel;
-    private JList replacePropertyList;
-    private DefaultListModel replacePropertyListModel;
+    private final JList currentClassList;
+    private final DefaultListModel currentClassListModel;
+    private final JList replaceClassList;
+    private final DefaultListModel replaceClassListModel;
+    private final JList currentPropertyList;
+    private final DefaultListModel currentPropertyListModel;
+    private final JList replacePropertyList;
+    private final DefaultListModel replacePropertyListModel;
 
-    private JButton replaceClassUpButton;
-    private JButton replaceClassDownButton;
-    private JButton replacePropertyUpButton;
-    private JButton replacePropertyDownButton;
+    private final JButton replaceClassUpButton;
+    private final JButton replaceClassDownButton;
+    private final JButton replacePropertyUpButton;
+    private final JButton replacePropertyDownButton;
 
-    private JButton applyButton;
-    private JButton cancelButton;
+    private final JButton applyButton;
+    private final JButton cancelButton;
 
     private static final int DIALOG_WIDTH = 650;
     private static final int DIALOG_HEIGHT = 450;

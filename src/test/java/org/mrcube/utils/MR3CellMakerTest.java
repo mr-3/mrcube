@@ -21,13 +21,13 @@ class MR3CellMakerTest {
     private static final String DEFAULT_URI = "http://mrcube.org#";
 
     @BeforeAll
-    public static void setUp() {
+    static void setUp() {
         MR3.initialize(MR3.class);
         new MR3();
     }
 
     @AfterAll
-    public static void tearDown() {
+    static void tearDown() {
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {

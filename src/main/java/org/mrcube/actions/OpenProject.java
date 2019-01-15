@@ -29,6 +29,7 @@ import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
@@ -48,7 +49,8 @@ public class OpenProject extends AbstractActionFile {
 
     private void setValues() {
         putValue(SHORT_DESCRIPTION, TITLE);
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O,
+                Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
     }
 
     public void actionPerformed(ActionEvent e) {

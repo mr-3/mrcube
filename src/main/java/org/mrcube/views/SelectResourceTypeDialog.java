@@ -43,7 +43,7 @@ public class SelectResourceTypeDialog extends JDialog implements ActionListener 
 
     private boolean isConfirm;
     private JButton confirmButton;
-    private SelectResourceTypePanel panel;
+    private final SelectResourceTypePanel panel;
 
     SelectResourceTypeDialog(GraphManager gm) {
         super(gm.getRootFrame(), Translator.getString("SelectResourceTypeDialog.Title"), true);

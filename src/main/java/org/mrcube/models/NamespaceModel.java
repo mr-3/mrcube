@@ -32,9 +32,9 @@ package org.mrcube.models;
  */
 public class NamespaceModel {
 
-    private String prefix;
-    private String nameSpace;
-    private boolean isAvailable;
+    private final String prefix;
+    private final String nameSpace;
+    private final boolean isAvailable;
 
     public NamespaceModel(String p, String ns, boolean t) {
         prefix = p;

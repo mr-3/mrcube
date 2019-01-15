@@ -145,7 +145,7 @@ public class GPConverter {
     // GXL Converter
     //
 
-    static transient Hashtable hash;
+    private static transient Hashtable hash;
 
     // Create a GXL-representation for the specified cells.
     public static String toGXL(RDFGraph graph, Object[] cells) {
@@ -169,13 +169,13 @@ public class GPConverter {
         return gxl;
     }
 
-    public static String vertexGXL(RDFGraph graph, Object id, Object vertex) {
+    private static String vertexGXL(RDFGraph graph, Object id, Object vertex) {
         String label = graph.convertValueToString(vertex);
         return "\n\t<node id=\"node" + id.toString() + "\">" + "\n\t\t<attr name=\"Label\">" + "\n\t\t\t<string>"
                 + label + "</string>" + "\n\t\t</attr>" + "\n\t</node>";
     }
 
-    public static String edgeGXL(RDFGraph graph, Object id, Object edge) {
+    private static String edgeGXL(RDFGraph graph, Object id, Object edge) {
         GraphModel model = graph.getModel();
         String from = "";
         if (model.getSource(edge) != null) {

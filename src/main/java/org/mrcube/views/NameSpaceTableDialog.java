@@ -66,9 +66,9 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
     transient private JButton cancelButton;
     transient private JTextField prefixField;
     transient private JTextField nsField;
-    transient private JPanel nsPanel;
+    final transient private JPanel nsPanel;
 
-    transient private GraphManager gmanager;
+    final transient private GraphManager gmanager;
     transient private Map<String, String> knownNSPrefixMap;
 
     private static final String WARNING = Translator.getString("Warning");
@@ -354,8 +354,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
      * テーブルのチェックボックスがチェックされたかどうか
      */
     private boolean isPrefixAvailable(int row, int column) {
-        Boolean isPrefixAvailable = (Boolean) nsTableModel.getValueAt(row, column);
-        return isPrefixAvailable;
+        return (Boolean) nsTableModel.getValueAt(row, column);
     }
 
     public void tableChanged(TableModelEvent e) {
@@ -382,7 +381,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
 
         private static final long serialVersionUID = -5977304717491874293L;
 
-        public NSTableModel(Object[] columnNames, int rowCount) {
+        NSTableModel(Object[] columnNames, int rowCount) {
             super(columnNames, rowCount);
         }
 
@@ -392,7 +391,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
         }
 
         public Class getColumnClass(int column) {
-            Vector v = (Vector) dataVector.elementAt(0);
+            Vector v = dataVector.elementAt(0);
             return v.elementAt(column).getClass();
         }
 

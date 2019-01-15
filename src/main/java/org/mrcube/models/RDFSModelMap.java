@@ -42,13 +42,13 @@ import java.util.*;
  */
 public class RDFSModelMap {
 
-    private Map<Resource, RDFSModel> resourceInfoMap; // Resourceとメタ情報の関連づけ
-    private Map<String, GraphCell> classCellMap; // uriとClassの関連づけ
-    private Map<String, GraphCell> propertyCellMap; // uriとPropertyの関連づけ
-    private Set<Resource> rootProperties; // subPropertyOf Propertyのセット
-    private DefaultTreeModel classTreeModel;
-    private DefaultTreeModel propTreeModel;
-    private Model propertyLabelModel;
+    private final Map<Resource, RDFSModel> resourceInfoMap; // Resourceとメタ情報の関連づけ
+    private final Map<String, GraphCell> classCellMap; // uriとClassの関連づけ
+    private final Map<String, GraphCell> propertyCellMap; // uriとPropertyの関連づけ
+    private final Set<Resource> rootProperties; // subPropertyOf Propertyのセット
+    private final DefaultTreeModel classTreeModel;
+    private final DefaultTreeModel propTreeModel;
+    private final Model propertyLabelModel;
 
     public RDFSModelMap() {
         resourceInfoMap = new HashMap<>();
@@ -222,20 +222,20 @@ public class RDFSModelMap {
         return propertyCellMap.get(uri.getURI());
     }
 
-    public Object getRDFSCell(Resource uri) {
+    private Object getRDFSCell(Resource uri) {
         if (isClassCell(uri)) {
             return getClassCell(uri);
         }
         return getPropertyCell(uri);
     }
 
-    public DefaultMutableTreeNode getRootNode() {
+    private DefaultMutableTreeNode getRootNode() {
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(getClassCell(RDFS.Resource));
         createRDFSNodes(RDFS.Resource, rootNode);
         return rootNode;
     }
 
-    public DefaultMutableTreeNode getPropRootNode() {
+    private DefaultMutableTreeNode getPropRootNode() {
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
         for (Resource property : rootProperties) {
             RDFSModel info = getResourceInfo(property);

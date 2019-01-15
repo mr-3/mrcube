@@ -29,7 +29,9 @@ import org.mrcube.utils.Utilities;
 import org.mrcube.views.ImportDialog;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 /**
@@ -37,7 +39,7 @@ import java.awt.event.KeyEvent;
  */
 public class ShowImportDialog extends MR3AbstractAction {
 
-    private static ImageIcon ICON = Utilities.getImageIcon(Translator.getString("ImportDialog.Icon"));
+    private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("ImportDialog.Icon"));
 
     public ShowImportDialog(MR3 mr3, String title) {
         super(mr3, title, ICON);
@@ -46,7 +48,8 @@ public class ShowImportDialog extends MR3AbstractAction {
 
     private void setValues() {
         putValue(SHORT_DESCRIPTION, getName());
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_I, KeyEvent.CTRL_DOWN_MASK));
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_I,
+                Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | InputEvent.SHIFT_DOWN_MASK));
     }
 
     public void actionPerformed(ActionEvent e) {

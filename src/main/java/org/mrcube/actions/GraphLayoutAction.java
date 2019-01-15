@@ -36,8 +36,8 @@ import java.awt.event.ActionEvent;
  */
 public class GraphLayoutAction extends AbstractAction {
 
-	private GraphType graphType;
-	private GraphManager gmanager;
+	private final GraphType graphType;
+	private final GraphManager gmanager;
 	public static final ImageIcon layoutRDFGraphIcon = Utilities
 			.getImageIcon("layout_rdf_graph.png");
 	public static final ImageIcon layoutClassGraphIcon = Utilities

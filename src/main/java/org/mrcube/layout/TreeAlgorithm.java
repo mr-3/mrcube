@@ -23,7 +23,7 @@ import org.mrcube.models.MR3Constants.GraphType;
 import java.awt.geom.Point2D;
 import java.util.Collection;
 
-public class TreeAlgorithm {
+class TreeAlgorithm {
 
     private char rootOrient_;
     private int depth_;
@@ -55,7 +55,7 @@ public class TreeAlgorithm {
         }
     }
 
-    public boolean compute(Collection<GraphLayoutData> graphNodes, GraphLayoutData root, GraphType type) {
+    private boolean compute(Collection<GraphLayoutData> graphNodes, GraphLayoutData root, GraphType type) {
         if (type == GraphType.RDF) {
             levelSeparation_ = GraphLayoutUtilities.RDF_HORIZONTAL_SPACE;
             subtreeSeparation_ = siblingSeparation_ = GraphLayoutUtilities.RDF_VERTICAL_SPACE;
@@ -320,20 +320,20 @@ public class TreeAlgorithm {
 
     public class TreeAlgorithmData {
 
-        public int level;
-        public GraphLayoutData parent;
-        public GraphLayoutData leftChild;
-        public GraphLayoutData rightChild;
-        public GraphLayoutData leftSibling;
-        public GraphLayoutData rightSibling;
-        public GraphLayoutData leftNeighbor;
-        public GraphLayoutData rightNeighbor;
-        public boolean isLeaf;
-        public double modifier;
-        public double prelim;
-        public GraphLayoutData group;
+        int level;
+        GraphLayoutData parent;
+        GraphLayoutData leftChild;
+        GraphLayoutData rightChild;
+        GraphLayoutData leftSibling;
+        GraphLayoutData rightSibling;
+        GraphLayoutData leftNeighbor;
+        GraphLayoutData rightNeighbor;
+        boolean isLeaf;
+        double modifier;
+        double prelim;
+        final GraphLayoutData group;
 
-        public TreeAlgorithmData() {
+        TreeAlgorithmData() {
             level = -1;
             parent = leftChild = rightChild = leftSibling = rightSibling = leftNeighbor = rightNeighbor = null;
             isLeaf = false;

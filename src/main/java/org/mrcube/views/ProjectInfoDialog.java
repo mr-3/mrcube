@@ -46,22 +46,22 @@ import java.util.Set;
  */
 public class ProjectInfoDialog extends JDialog {
 
-    private JLabel currentProjectValue;
-    private JLabel lastImportTimeValue;
+    private final JLabel currentProjectValue;
+    private final JLabel lastImportTimeValue;
 
-    private JLabel modelResourceCntValue;
-    private JLabel modelLiteralCntValue;
-    private JLabel modelStatementCntValue;
+    private final JLabel modelResourceCntValue;
+    private final JLabel modelLiteralCntValue;
+    private final JLabel modelStatementCntValue;
 
-    private JLabel ontClassCntValue;
-    private JLabel ontPropertyCntValue;
+    private final JLabel ontClassCntValue;
+    private final JLabel ontPropertyCntValue;
 
-    private JLabel allResourceCntValue;
-    private JLabel allLiteralCntValue;
-    private JLabel allStatementCntValue;
+    private final JLabel allResourceCntValue;
+    private final JLabel allLiteralCntValue;
+    private final JLabel allStatementCntValue;
 
-    private MR3Writer mr3Writer;
-    private GraphManager gmanager;
+    private final MR3Writer mr3Writer;
+    private final GraphManager gmanager;
 
     private static final int WINDOW_HEIGHT = 450;
     private static final int WINDOW_WIDTH = 550;

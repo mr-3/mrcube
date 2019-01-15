@@ -39,7 +39,7 @@ public class VGJTreeLayout {
 
     public char LEFT_TO_RIGHT = 'r';
     public char UP_TO_DOWN = 'u';
-    private static TreeAlgorithm treeAlgorithm = new TreeAlgorithm(GraphLayoutUtilities.getVGJRDFLayoutDirection());
+    private static final TreeAlgorithm treeAlgorithm = new TreeAlgorithm(GraphLayoutUtilities.getVGJRDFLayoutDirection());
 
     public static Map<RDFNode, GraphLayoutData> getVGJRDFCellLayoutMap(Model model) {
         if (!GraphLayoutUtilities.LAYOUT_TYPE.equals(GraphLayoutUtilities.VGJ_TREE_LAYOUT)) { return null; }

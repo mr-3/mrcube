@@ -31,6 +31,7 @@ import org.mrcube.utils.Utilities;
 import org.mrcube.views.HistoryManager;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
@@ -39,7 +40,7 @@ import java.awt.event.KeyEvent;
  */
 public class CopyAction extends AbstractAction {
 
-    private RDFGraph graph;
+    private final RDFGraph graph;
     private static final String TITLE = Translator.getString("Action.Copy.Text");
     private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("Action.Copy.Icon"));
 
@@ -47,7 +48,8 @@ public class CopyAction extends AbstractAction {
         super(TITLE, ICON);
         graph = g;
         putValue(SHORT_DESCRIPTION, TITLE);
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_DOWN_MASK));
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_C,
+                Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
     }
 
     public void actionPerformed(ActionEvent e) {

@@ -38,7 +38,7 @@ import java.lang.ref.WeakReference;
  */
 public class ShowVersionInfoAction extends MR3AbstractAction {
 
-    private Frame rootFrame;
+    private final Frame rootFrame;
     private WeakReference<VersionInfoDialog> versionInfoDialogRef;
     private static final String TITLE = Translator.getString("Component.Help.About.Text");
     private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("Component.Help.About.Icon"));
@@ -55,7 +55,7 @@ public class ShowVersionInfoAction extends MR3AbstractAction {
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("F1"));
     }
 
-    public VersionInfoDialog getVersionInfoDialog() {
+    private VersionInfoDialog getVersionInfoDialog() {
         VersionInfoDialog result = versionInfoDialogRef.get();
         if (result == null) {
             result = new VersionInfoDialog(rootFrame, TITLE, ICON);

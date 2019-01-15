@@ -36,7 +36,7 @@ import java.awt.*;
  */
 public class OverviewDialog extends JDialog {
 
-    private MR3OverviewPanel overviewPanel;
+    private final MR3OverviewPanel overviewPanel;
     private static final int LENGH = 200;
 
     public static final String RDF_EDITOR_OVERVIEW = Translator.getString("RDFEditorOverview.Title");

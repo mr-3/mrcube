@@ -33,7 +33,7 @@ public abstract class MR3FileFilter extends FileFilter {
 
     public abstract String getExtension();
 
-    public String getExtension(File f) {
+    String getExtension(File f) {
         String ext = null;
         String s = f.getName();
         int i = s.lastIndexOf('.');

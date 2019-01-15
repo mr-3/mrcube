@@ -38,17 +38,17 @@ import java.awt.event.ActionEvent;
  */
 public class InsertRDFSResDialog extends JDialog {
 
-    private JComboBox uriPrefixBox;
-    private JTextField idField;
-    private JLabel nsLabel;
+    private final JComboBox uriPrefixBox;
+    private final JTextField idField;
+    private final JLabel nsLabel;
     private JButton confirmButton;
     private JButton cancelButton;
 
-    private ConfirmAction confirmAction;
-    private CancelAction cancelAction;
+    private final ConfirmAction confirmAction;
+    private final CancelAction cancelAction;
 
     private boolean isConfirm;
-    private GraphManager gmanager;
+    private final GraphManager gmanager;
 
     private static final int FIELD_WIDTH = 300;
     private static final int FIELD_HEIGHT = 30;

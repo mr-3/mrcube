@@ -43,9 +43,9 @@ import java.util.prefs.Preferences;
  */
 public class Translator {
 
-    protected static ResourceBundle resourceBundle;
+    private static ResourceBundle resourceBundle;
 
-    public static String getString(String sKey) {
+    public static final String getString(String sKey) {
         try {
             return resourceBundle.getString(sKey);
         } catch (Exception e) {
@@ -57,7 +57,7 @@ public class Translator {
     /*
      * システムに内蔵しておく言語ファイルのセット(Locale型)
      */
-    private static Set<Locale> systemLocaleSet;
+    private static final Set<Locale> systemLocaleSet;
 
     static {
         systemLocaleSet = new HashSet<>();
@@ -69,7 +69,7 @@ public class Translator {
     /*
      * デフォルトのロカールの言語ファイルがシステムに内蔵されている場合は， その言語を返し，内蔵されていない場合には，英語の言語を返す.
      */
-    public static String getSystemLanguage() {
+    private static String getSystemLanguage() {
         if (systemLocaleSet.contains(Locale.getDefault())) {
             return Locale.getDefault().getLanguage();
         }

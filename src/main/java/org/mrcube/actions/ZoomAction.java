@@ -38,9 +38,9 @@ import java.awt.geom.Rectangle2D;
  */
 public class ZoomAction extends AbstractAction {
 
-    private String title;
-    private RDFGraph graph;
-    private Editor editor;
+    private final String title;
+    private final RDFGraph graph;
+    private final Editor editor;
 
     public static final String ZOOM_STD = Translator.getString("Action.ZoomStd.Text");
     public static final String ZOOM_IN = Translator.getString("Action.ZoomIn.Text");
@@ -80,7 +80,7 @@ public class ZoomAction extends AbstractAction {
     // putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_N));
     // }
 
-    public void fitWindow() {
+    private void fitWindow() {
         Rectangle2D p = graph.getCellBounds(graph.getRoots());
         if (p != null) {
             Dimension s = editor.getJScrollPane().getViewport().getExtentSize();

@@ -33,7 +33,6 @@ import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.RDFSModelMap;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
-import org.mrcube.views.TabComponent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,16 +45,16 @@ import java.io.File;
 public class MR3ProjectPanel extends JPanel {
 
     private File currentProjectFile;
-    private RDFSModelMap rdfsModelMap;
+    private final RDFSModelMap rdfsModelMap;
 
-    private RDFEditor rdfEditor;
-    private ClassEditor classEditor;
-    private PropertyEditor propertyEditor;
+    private final RDFEditor rdfEditor;
+    private final ClassEditor classEditor;
+    private final PropertyEditor propertyEditor;
 
-    private JDesktopPane desktopPane;
-    private JInternalFrame rdfEditorFrame;
-    private JInternalFrame classEditorFrame;
-    private JInternalFrame propertyEditorFrame;
+    private final JDesktopPane desktopPane;
+    private final JInternalFrame rdfEditorFrame;
+    private final JInternalFrame classEditorFrame;
+    private final JInternalFrame propertyEditorFrame;
 
     private static final int HEADER_HEIGHT = 70;
 
@@ -103,12 +102,16 @@ public class MR3ProjectPanel extends JPanel {
     }
 
     public void frontEditor(GraphType graphType) {
-        if (graphType == GraphType.RDF) {
-            rdfEditorFrame.toFront();
-        } else if (graphType == GraphType.CLASS) {
-            classEditorFrame.toFront();
-        } else if (graphType == GraphType.PROPERTY) {
-            propertyEditorFrame.toFront();
+        try {
+            if (graphType == GraphType.RDF) {
+                rdfEditorFrame.setSelected(true);
+            } else if (graphType == GraphType.CLASS) {
+                classEditorFrame.setSelected(true);
+            } else if (graphType == GraphType.PROPERTY) {
+                propertyEditorFrame.setSelected(true);
+            }
+        } catch (PropertyVetoException e) {
+            e.printStackTrace();
         }
     }
 
@@ -162,7 +165,7 @@ public class MR3ProjectPanel extends JPanel {
         classEditorFrame.toBack();
     }
 
-    public void registerComponent() {
+    private void registerComponent() {
         ToolTipManager.sharedInstance().registerComponent(rdfEditor.getGraph());
         ToolTipManager.sharedInstance().registerComponent(classEditor.getGraph());
         ToolTipManager.sharedInstance().registerComponent(propertyEditor.getGraph());

@@ -34,9 +34,9 @@ import java.util.Date;
  */
 public class HistoryModel {
 
-    private Date savedTime;
-    private Model projectModel;
-    private HistoryType historyType;
+    private final Date savedTime;
+    private final Model projectModel;
+    private final HistoryType historyType;
 
     /*
      * 上記の他に，どのリソースを追加したとか，何を削除したなどの情報も 保存できるようにすべきだが，とりあえずは，履歴のタイプのみで

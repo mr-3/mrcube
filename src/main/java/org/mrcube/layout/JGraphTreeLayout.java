@@ -38,8 +38,8 @@ import java.util.Set;
  */
 public class JGraphTreeLayout {
 
-	private GraphManager gmanager;
-	private MR3CellMaker cellMaker;
+	private final GraphManager gmanager;
+	private final MR3CellMaker cellMaker;
 
 	public JGraphTreeLayout(GraphManager gm) {
 		gmanager = gm;

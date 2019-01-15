@@ -55,27 +55,27 @@ import java.util.*;
  */
 public class RDFPropertyPanel extends JPanel implements ActionListener, ListSelectionListener {
 
-	private JCheckBox isContainerBox;
-	private JSpinner numSpinner;
+	private final JCheckBox isContainerBox;
+	private final JSpinner numSpinner;
 
-	private JCheckBox propOnlyCheck;
-	private JComboBox uriPrefixBox;
-	private JTextField idField;
-	private JTextField findIDField;
-	private JLabel nsLabel;
-	private JButton applyButton;
-	private JButton cancelButton;
-	private JButton jumpPropertyButton;
+	private final JCheckBox propOnlyCheck;
+	private final JComboBox uriPrefixBox;
+	private final JTextField idField;
+	private final JTextField findIDField;
+	private final JLabel nsLabel;
+	private final JButton applyButton;
+	private final JButton cancelButton;
+	private final JButton jumpPropertyButton;
 	private GraphCell edge;
 
 	private JList localNameList;
 	private Map<String, Set<String>> propMap;
-	private static Object[] NULL = new Object[0];
+	private static final Object[] NULL = new Object[0];
 
 	private List<GraphCell> propList;
-	private GraphManager gmanager;
+	private final GraphManager gmanager;
 
-	private EditRDFPropertyAction editRDFPropertyAction;
+	private final EditRDFPropertyAction editRDFPropertyAction;
 
 	private static final int FIELD_WIDTH = 80;
 	private static final int FIELD_HEIGHT = 30;

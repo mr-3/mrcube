@@ -49,8 +49,8 @@ import java.util.Set;
  */
 public class PropertyPanel extends OntologyPanel {
 
-    private RegionPanel regionPanel;
-    private JList supProperties;
+    private final RegionPanel regionPanel;
+    private final JList supProperties;
     private WeakReference selectRDFSDialogRef;
 
     public PropertyPanel(GraphManager manager) {
@@ -106,23 +106,17 @@ public class PropertyPanel extends OntologyPanel {
         instanceList.setListData(gmanager.getPropertyInstanceSet(cell).toArray());
     }
 
-    class InstanceAction implements ListSelectionListener {
-        public void valueChanged(ListSelectionEvent e) {
-
-        }
-    }
-
     class RegionPanel extends JPanel implements ListSelectionListener {
 
-        private JList domainList;
-        private JList rangeList;
+        private final JList domainList;
+        private final JList rangeList;
 
         private JButton addDomainButton;
         private JButton addRangeButton;
         private JButton removeRegionListButton;
 
-        private JScrollPane domainListScroll;
-        private JScrollPane rangeListScroll;
+        private final JScrollPane domainListScroll;
+        private final JScrollPane rangeListScroll;
 
         RegionPanel() {
             domainList = new JList();
@@ -161,11 +155,11 @@ public class PropertyPanel extends OntologyPanel {
             return Translator.getString("Region");
         }
 
-        public JList getDomainList() {
+        JList getDomainList() {
             return domainList;
         }
 
-        public JList getRangeList() {
+        JList getRangeList() {
             return rangeList;
         }
 
@@ -251,7 +245,7 @@ public class PropertyPanel extends OntologyPanel {
         }
     }
 
-    public SelectRDFSDialog getSelectRDFSDialog(Set regionSet) {
+    private SelectRDFSDialog getSelectRDFSDialog(Set regionSet) {
         SelectRDFSDialog result = (SelectRDFSDialog) selectRDFSDialogRef.get();
         if (result == null) {
             result = new SelectRDFSDialog(Translator.getString("SelectRegionDialog.Title"), gmanager);

@@ -34,10 +34,10 @@ import java.awt.*;
 /**
  * @author Takeshi Morita
  */
-public class OntTreeEditor extends JDialog {
+class OntTreeEditor extends JDialog {
 
-    private MR3TreePanel classTreePanel;
-    private MR3TreePanel propertyTreePanel;
+    private final MR3TreePanel classTreePanel;
+    private final MR3TreePanel propertyTreePanel;
 
     public OntTreeEditor(GraphManager gm) {
         super(gm.getRootFrame(), "OntTreeEditor");
