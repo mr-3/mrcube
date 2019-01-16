@@ -51,6 +51,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.DefaultEditorKit;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.awt.desktop.QuitEvent;
@@ -104,7 +105,6 @@ public class MR3 extends JFrame implements ChangeListener {
     private static final int MAIN_FRAME_HEIGHT = 768;
 
     public MR3() {
-        System.setProperty("apple.eawt.quitStrategy", "CLOSE_ALL_WINDOWS");
         MR3Constants.loadResourceBundle();
         initWeakReferences();
         mr3LogConsole = new MR3LogConsole(this, Translator.getString("LogConsole.Title"),
