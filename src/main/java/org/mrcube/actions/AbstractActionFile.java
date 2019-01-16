@@ -186,7 +186,7 @@ abstract class AbstractActionFile extends MR3AbstractAction {
         MR3.getCurrentProject().setCurrentProjectFile(file);
     }
 
-    protected void exitProgram(Frame frame) {
+    protected void quitMR3(Frame frame) {
         int messageType = JOptionPane.showConfirmDialog(frame, Translator.getString("SaveChanges"), "MR^3 - "
                         + Translator.getString("ExitProgram"), JOptionPane.YES_NO_CANCEL_OPTION,
                 JOptionPane.INFORMATION_MESSAGE);
@@ -201,7 +201,7 @@ abstract class AbstractActionFile extends MR3AbstractAction {
         }
     }
 
-    protected void exitProject() {
+    protected void quitProject() {
         File currentProjectFile = MR3.getCurrentProject().getCurrentProjectFile();
         if (isNewProjectFile(MR3.getCurrentProject())) {
             saveProjectAs();
@@ -237,7 +237,7 @@ abstract class AbstractActionFile extends MR3AbstractAction {
         int messageType = JOptionPane.showConfirmDialog(MR3.getCurrentProject(), title + "\n" + Translator.getString("SaveChanges"),
                 "MR^3 - " + title, JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
         if (messageType == JOptionPane.YES_OPTION) {
-            exitProject();
+            quitProject();
         }
         return messageType;
     }

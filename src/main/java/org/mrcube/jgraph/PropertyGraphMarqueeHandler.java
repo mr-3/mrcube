@@ -63,6 +63,7 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
         InputMap inputMap = panel.getInputMap(JComponent.WHEN_FOCUSED);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_I, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
                 insertPropertyAction.getValue(Action.NAME));
+        setCopyCutPasteAction(actionMap, inputMap);
     }
 
     // 接続するかどうか

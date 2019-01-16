@@ -40,7 +40,7 @@ public class CloseWindow extends AbstractActionFile implements WindowListener {
     }
 
     public void windowClosing(WindowEvent e) {
-        exitProgram(mr3.getGraphManager().getRootFrame());
+        quitMR3(mr3.getGraphManager().getRootFrame());
     }
 
     public void actionPerformed(ActionEvent e) {

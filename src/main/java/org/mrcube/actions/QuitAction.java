@@ -36,17 +36,17 @@ import java.awt.event.KeyEvent;
 /**
  * @author Takeshi Morita
  */
-public class ExitAction extends AbstractActionFile {
+public class QuitAction extends AbstractActionFile {
 
     private static final String TITLE = Translator.getString("Component.File.Exit.Text");
     private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("Component.File.Exit.Icon"));
 
-    public ExitAction(MR3 mr3) {
+    public QuitAction(MR3 mr3) {
         super(mr3, TITLE, ICON);
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_DOWN_MASK));
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Q, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
     }
 
     public void actionPerformed(ActionEvent e) {
-        exitProgram(mr3.getGraphManager().getRootFrame());
+        quitMR3(mr3.getGraphManager().getRootFrame());
     }
 }

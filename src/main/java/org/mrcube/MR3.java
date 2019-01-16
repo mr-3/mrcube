@@ -53,6 +53,10 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
+import java.awt.desktop.QuitEvent;
+import java.awt.desktop.QuitHandler;
+import java.awt.desktop.QuitResponse;
+import java.awt.desktop.QuitStrategy;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -100,6 +104,7 @@ public class MR3 extends JFrame implements ChangeListener {
     private static final int MAIN_FRAME_HEIGHT = 768;
 
     public MR3() {
+        System.setProperty("apple.eawt.quitStrategy", "CLOSE_ALL_WINDOWS");
         MR3Constants.loadResourceBundle();
         initWeakReferences();
         mr3LogConsole = new MR3LogConsole(this, Translator.getString("LogConsole.Title"),
@@ -114,6 +119,7 @@ public class MR3 extends JFrame implements ChangeListener {
 
         STATUS_BAR = new StatusBarPanel();
         mr3ProjectPanel = new MR3ProjectPanel(gmanager);
+
         gmanager.setMR3ProjectPanel(mr3ProjectPanel);
         getContentPane().add(mr3ProjectPanel, BorderLayout.CENTER);
         getContentPane().add(STATUS_BAR, BorderLayout.SOUTH);
@@ -494,7 +500,7 @@ public class MR3 extends JFrame implements ChangeListener {
         // exportMenu.add(new ExportJavaObject(this));
 
         menu.addSeparator();
-        menu.add(new ExitAction(this));
+        menu.add(new QuitAction(this));
 
         return menu;
     }
