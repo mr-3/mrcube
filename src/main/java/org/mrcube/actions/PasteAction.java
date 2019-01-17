@@ -36,8 +36,12 @@ import org.mrcube.views.HistoryManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -51,8 +55,7 @@ public class PasteAction extends AbstractAction {
     private final RDFGraph graph;
     private final GraphManager gmanager;
     private static final String TITLE = Translator.getString("Action.Paste.Text");
-    private static final ImageIcon ICON = Utilities.getImageIcon(Translator
-            .getString("Action.Paste.Icon"));
+    private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("Action.Paste.Icon"));
 
     public PasteAction(RDFGraph g, GraphManager gm) {
         super(TITLE, ICON);
@@ -64,15 +67,13 @@ public class PasteAction extends AbstractAction {
     }
 
     public void actionPerformed(ActionEvent e) {
-        TransferHandler.getPasteAction().actionPerformed(
-                new ActionEvent(graph, e.getID(), e.getActionCommand()));
+        TransferHandler.getPasteAction().actionPerformed(new ActionEvent(graph, e.getID(), e.getActionCommand()));
         Object[] copyCells = graph.getCopyCells();
-
-        Set<GraphCell> pasteGraphCellSet = new HashSet<>();
-        Set<GraphCell> removeGraphCellSet = new HashSet<>();
         if (copyCells == null) {
             return;
         }
+        Set<GraphCell> pasteGraphCellSet = new HashSet<>();
+        Set<GraphCell> removeGraphCellSet = new HashSet<>();
         for (Object copyCell : copyCells) {
             GraphCell cell = (GraphCell) copyCell;
             if (graph.getType() == GraphType.CLASS && RDFGraph.isRDFSClassCell(cell)) {

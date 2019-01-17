@@ -67,10 +67,6 @@ public class ExportDialog extends JDialog implements ActionListener {
     private final JRadioButton xmlRadioButton;
     private final JRadioButton nTripleRadioButton;
     private final JRadioButton turtleRadioButton;
-    private final JRadioButton n3RadioButton;
-    private final JRadioButton n3PPRadioButton;
-    private final JRadioButton n3PLAINRadioButton;
-    private final JRadioButton n3TRIPLERadioButton;
 
     private final JCheckBox rdfConvertBox;
     private final JCheckBox classConvertBox;
@@ -95,39 +91,23 @@ public class ExportDialog extends JDialog implements ActionListener {
         gmanager = gm;
         mr3Writer = new MR3Writer(gmanager);
 
+        turtleRadioButton = new JRadioButton("Turtle");
+        turtleRadioButton.addActionListener(this);
+        turtleRadioButton.setSelected(true);
         xmlRadioButton = new JRadioButton("RDF/XML");
         xmlRadioButton.addActionListener(this);
         nTripleRadioButton = new JRadioButton("N-Triple");
         nTripleRadioButton.addActionListener(this);
-        turtleRadioButton = new JRadioButton("Turtle");
-        turtleRadioButton.addActionListener(this);
-        n3RadioButton = new JRadioButton("N3");
-        n3RadioButton.addActionListener(this);
-        n3PPRadioButton = new JRadioButton("N3-PP");
-        n3PPRadioButton.addActionListener(this);
-        n3PLAINRadioButton = new JRadioButton("N3-PLAIN");
-        n3PLAINRadioButton.addActionListener(this);
-        n3TRIPLERadioButton = new JRadioButton("N3-TRIPLE");
-        n3TRIPLERadioButton.addActionListener(this);
         ButtonGroup group = new ButtonGroup();
         group.add(xmlRadioButton);
         group.add(nTripleRadioButton);
         group.add(turtleRadioButton);
-        group.add(n3RadioButton);
-        group.add(n3PPRadioButton);
-        group.add(n3PLAINRadioButton);
-        group.add(n3TRIPLERadioButton);
         JPanel outputCheckPanel = new JPanel();
-        outputCheckPanel.setLayout(new GridLayout(2, 4));
+        outputCheckPanel.setLayout(new GridLayout(1, 3));
         outputCheckPanel.setBorder(BorderFactory.createTitledBorder(Translator.getString("ImportDialog.Syntax")));
-        outputCheckPanel.add(xmlRadioButton);
-        xmlRadioButton.setSelected(true);
-        outputCheckPanel.add(nTripleRadioButton);
         outputCheckPanel.add(turtleRadioButton);
-        outputCheckPanel.add(n3RadioButton);
-        outputCheckPanel.add(n3PPRadioButton);
-        outputCheckPanel.add(n3PLAINRadioButton);
-        outputCheckPanel.add(n3TRIPLERadioButton);
+        outputCheckPanel.add(xmlRadioButton);
+        outputCheckPanel.add(nTripleRadioButton);
 
         rdfConvertBox = new JCheckBox("RDF");
         rdfConvertBox.setSelected(true);
@@ -361,9 +341,6 @@ public class ExportDialog extends JDialog implements ActionListener {
     private String getExtension() {
         if (xmlRadioButton.isSelected()) {
             return "rdf";
-        } else if (n3RadioButton.isSelected() || n3PPRadioButton.isSelected() || n3PLAINRadioButton.isSelected()
-                || n3TRIPLERadioButton.isSelected()) {
-            return "n3";
         } else if (nTripleRadioButton.isSelected()) {
             return "n3";
         } else if (turtleRadioButton.isSelected()) {
@@ -405,14 +382,6 @@ public class ExportDialog extends JDialog implements ActionListener {
                 return "RDF/XML-ABBREV";
             }
             return "RDF/XML";
-        } else if (n3RadioButton.isSelected()) {
-            return "N3";
-        } else if (n3PPRadioButton.isSelected()) {
-            return "N3-PP";
-        } else if (n3PLAINRadioButton.isSelected()) {
-            return "N3-PLAIN";
-        } else if (n3TRIPLERadioButton.isSelected()) {
-            return "N3-TRIPLE";
         } else if (nTripleRadioButton.isSelected()) {
             return "N-TRIPLE";
         } else if (turtleRadioButton.isSelected()) {

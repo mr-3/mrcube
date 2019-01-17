@@ -48,8 +48,7 @@ public class CutAction extends AbstractAction {
     private final RDFGraph graph;
     private final GraphManager gmanager;
     private static final String TITLE = Translator.getString("Action.Cut.Text");
-    private static final ImageIcon ICON = Utilities.getImageIcon(Translator
-            .getString("Action.Cut.Icon"));
+    private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("Action.Cut.Icon"));
 
     public CutAction(RDFGraph g, GraphManager gm) {
         super(TITLE, ICON);
@@ -87,7 +86,6 @@ public class CutAction extends AbstractAction {
             }
             HistoryManager.saveHistory(HistoryType.CUT_PROPERTY_GRAPH);
         }
-        TransferHandler.getCutAction().actionPerformed(
-                new ActionEvent(graph, e.getID(), e.getActionCommand()));
+        TransferHandler.getCutAction().actionPerformed(new ActionEvent(graph, e.getID(), e.getActionCommand()));
     }
 }

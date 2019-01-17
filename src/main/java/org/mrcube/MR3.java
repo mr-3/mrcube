@@ -53,6 +53,9 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.DefaultEditorKit;
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.FlavorEvent;
+import java.awt.datatransfer.FlavorListener;
 import java.awt.datatransfer.StringSelection;
 import java.awt.desktop.QuitEvent;
 import java.awt.desktop.QuitHandler;
@@ -800,6 +803,10 @@ public class MR3 extends JFrame implements ChangeListener {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        // クリップボードの内容をクリアする
+        StringSelection ss = new StringSelection("");
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(ss, null);
     }
 
     public static void main(String[] arg) {
@@ -809,9 +816,6 @@ public class MR3 extends JFrame implements ChangeListener {
             if (arg.length == 1 && arg[0].equals("--off")) {
                 MR3.OFF_META_MODEL_MANAGEMENT = true;
             }
-            // クリップボードの内容をクリアする
-            StringSelection ss = new StringSelection("");
-            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, ss);
             new MR3();
         } catch (Exception e) {
             e.printStackTrace();

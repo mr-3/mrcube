@@ -86,7 +86,6 @@ public class RDFGraph extends JGraph {
         background = image;
     }
 
-    // public Image getBackgroundImage() {
     public ImageIcon getBackgroundImage() {
         return background;
     }

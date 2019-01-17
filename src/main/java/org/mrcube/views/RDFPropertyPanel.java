@@ -299,7 +299,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
             if (e.getSource() == localNameList) {
                 selectLocalNameList();
             }
-        } catch (NullPointerException np) { // あとではずす
+        } catch (NullPointerException np) {
             np.printStackTrace();
         }
     }
