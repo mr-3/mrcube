@@ -808,6 +808,9 @@ public class MR3 extends JFrame implements ChangeListener {
         StringSelection ss = new StringSelection("");
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(ss, null);
+        if (Taskbar.isTaskbarSupported()) {
+            Taskbar.getTaskbar().setIconImage(MR3Constants.SPLASH_LOGO.getImage());
+        }
     }
 
     public static void main(String[] arg) {
