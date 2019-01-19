@@ -24,29 +24,58 @@
 package org.mrcube.actions;
 
 import org.mrcube.MR3;
+import org.mrcube.models.PrefConstants;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.util.prefs.Preferences;
 
 /**
  * @author Takeshi Morita
  */
 public class QuitAction extends AbstractActionFile {
 
-    private static final String TITLE = Translator.getString("Component.File.Exit.Text");
-    private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("Component.File.Exit.Icon"));
+    private static final String TITLE = Translator.getString("Component.File.Quit.Text");
+    private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("Component.File.Quit.Icon"));
 
     public QuitAction(MR3 mr3) {
         super(mr3, TITLE, ICON);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Q, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
     }
 
+    public void quitMR3() {
+        int messageType = JOptionPane.showConfirmDialog(mr3, Translator.getString("SaveChanges"), "MR^3 - "
+                        + Translator.getString("Quit"), JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.INFORMATION_MESSAGE);
+        if (messageType == JOptionPane.YES_OPTION) {
+            confirmExitProject();
+            saveWindows();
+            System.exit(0);
+        } else if (messageType == JOptionPane.CANCEL_OPTION) {
+        } else if (messageType == JOptionPane.NO_OPTION) {
+            saveWindows();
+            System.exit(0);
+        }
+    }
+
+    private void saveWindowBounds(Preferences userPrefs) {
+        Rectangle windowRect = mr3.getBounds();
+        userPrefs.putInt(PrefConstants.WindowHeight, (int) windowRect.getHeight());
+        userPrefs.putInt(PrefConstants.WindowWidth, (int) windowRect.getWidth());
+        userPrefs.putInt(PrefConstants.WindowPositionX, (int) windowRect.getX());
+        userPrefs.putInt(PrefConstants.WindowPositionY, (int) windowRect.getY());
+    }
+
+    private void saveWindows() {
+        Preferences userPrefs = mr3.getUserPrefs();
+        saveWindowBounds(userPrefs);
+    }
+
     public void actionPerformed(ActionEvent e) {
-        quitMR3(mr3.getGraphManager().getRootFrame());
+        quitMR3();
     }
 }

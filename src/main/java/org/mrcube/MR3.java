@@ -51,19 +51,10 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.DefaultEditorKit;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.FlavorEvent;
-import java.awt.datatransfer.FlavorListener;
 import java.awt.datatransfer.StringSelection;
-import java.awt.desktop.QuitEvent;
-import java.awt.desktop.QuitHandler;
-import java.awt.desktop.QuitResponse;
-import java.awt.desktop.QuitStrategy;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.prefs.Preferences;
@@ -127,8 +118,17 @@ public class MR3 extends JFrame implements ChangeListener {
         getContentPane().add(mr3ProjectPanel, BorderLayout.CENTER);
         getContentPane().add(STATUS_BAR, BorderLayout.SOUTH);
 
+        var quitAction = new QuitAction(this);
+        if (Desktop.isDesktopSupported()) {
+            var desktop = Desktop.getDesktop();
+            desktop.setQuitHandler((e, response) -> quitAction.quitMR3());
+        }
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        addWindowListener(new CloseWindow(this));
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                quitAction.quitMR3();
+            }
+        });
         setIconImage(MR3Constants.LOGO.getImage());
         setJMenuBar(createMenuBar());
         initOptions();
@@ -139,6 +139,7 @@ public class MR3 extends JFrame implements ChangeListener {
         HistoryManager.initLogger(logFilePath);
         newProject();
     }
+
 
     private void initWeakReferences() {
         rdfEditorOverviewRef = new WeakReference<>(null);
