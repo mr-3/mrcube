@@ -30,6 +30,7 @@ import org.mrcube.jgraph.RDFGraph;
 import org.mrcube.models.*;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.MR3Constants.HistoryType;
+import org.mrcube.utils.GraphUtilities;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
 import org.mrcube.views.HistoryManager;
@@ -79,9 +80,11 @@ public class PasteAction extends AbstractAction {
             if (graph.getType() == GraphType.CLASS && RDFGraph.isRDFSClassCell(cell)) {
                 pasteGraphCellSet.add(cell);
                 cloneRDFSClassCell(cell);
+                gmanager.selectClassCell(cell);
             } else if (graph.getType() == GraphType.PROPERTY && RDFGraph.isRDFSPropertyCell(cell)) {
                 pasteGraphCellSet.add(cell);
                 cloneRDFSPropertyCell(cell);
+                gmanager.selectPropertyCell(cell);
             } else if (graph.getType() == GraphType.RDF) {
                 if (RDFGraph.isRDFResourceCell(cell)) {
                     pasteGraphCellSet.add(cell);
@@ -91,6 +94,7 @@ public class PasteAction extends AbstractAction {
                 } else if (RDFGraph.isRDFLiteralCell(cell)) {
                     pasteGraphCellSet.add(cell);
                     cloneRDFLiteralCell(cell);
+                    gmanager.selectRDFCell(cell);
                 } else {
                     if (!(RDFGraph.isPort(cell) || RDFGraph.isEdge(cell))) {
                         removeGraphCellSet.add(cell);
@@ -108,7 +112,6 @@ public class PasteAction extends AbstractAction {
         }
         graph.getGraphLayoutCache().remove(removeGraphCellSet.toArray());
         gmanager.resetTypeCells();
-        graph.setSelectionCells(pasteGraphCellSet.toArray());
         if (graph.getType() == GraphType.RDF) {
             HistoryManager.saveHistory(HistoryType.PASTE_RDF_GRAPH);
         } else if (graph.getType() == GraphType.CLASS) {
@@ -133,18 +136,12 @@ public class PasteAction extends AbstractAction {
      */
     private void cloneRDFResourceCell(GraphCell cell) {
         RDFResourceModel orgInfo = (RDFResourceModel) GraphConstants.getValue(cell.getAttributes());
-
-        Object typeViewCell = orgInfo.getTypeViewCell();
-        if (typeViewCell != null) {
-            // RDFリソースのタイプを示す矩形セルのクローンを得る
-            Map clones = graph.cloneCells(new Object[]{typeViewCell});
-            typeViewCell = clones.get(typeViewCell);
-        }
         RDFResourceModel newInfo = new RDFResourceModel(orgInfo);
-        newInfo.setTypeViewCell((GraphCell) typeViewCell);
         newInfo.setURI(cloneRDFURI(newInfo));
         GraphConstants.setValue(cell.getAttributes(), newInfo);
         graph.getGraphLayoutCache().editCell(cell, cell.getAttributes());
+        GraphUtilities.resizeRDFResourceCell(gmanager, newInfo, cell);
+        gmanager.selectRDFCell(cell);
     }
 
     private void cloneRDFSCell(GraphCell cell, RDFSModel newInfo) {
@@ -152,6 +149,7 @@ public class PasteAction extends AbstractAction {
         rdfsModelMap.putURICellMap(newInfo, cell);
         GraphConstants.setValue(cell.getAttributes(), newInfo);
         graph.getGraphLayoutCache().editCell(cell, cell.getAttributes());
+        GraphUtilities.resizeRDFSResourceCell(gmanager, newInfo, cell);
     }
 
     /**

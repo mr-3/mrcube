@@ -218,8 +218,7 @@ public class GraphUtilities {
         }
     }
 
-    public static void resizeRDFResourceCell(GraphManager gm, RDFResourceModel resInfo,
-                                             GraphCell cell) {
+    public static void resizeRDFResourceCell(GraphManager gm, RDFResourceModel resInfo, GraphCell cell) {
         String value = gm.getRDFNodeValue(resInfo.getURI(), resInfo);
         Dimension size = GraphUtilities.getAutoNodeDimension(gm, value);
         GraphUtilities.resizeCell(size, gm.getCurrentRDFGraph(), cell);
