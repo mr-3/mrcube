@@ -62,7 +62,6 @@ public class ImportDialog extends JDialog implements ActionListener {
     private final GraphManager gmanager;
 
     private final JRadioButton syntaxXMLButton;
-    private final JRadioButton syntaxN3Button;
     private final JRadioButton syntaxNTripleButton;
     private final JRadioButton syntaxTurtleButton;
 
@@ -103,27 +102,23 @@ public class ImportDialog extends JDialog implements ActionListener {
         mr3Reader = new MR3Reader(gmanager);
 
         ActionListener changeFileFilterAction = new ChangeFileFilterAction();
-        syntaxXMLButton = new JRadioButton("RDF/XML");
-        syntaxXMLButton.addActionListener(changeFileFilterAction);
-        syntaxXMLButton.setSelected(true);
-        syntaxN3Button = new JRadioButton("N3");
-        syntaxN3Button.addActionListener(changeFileFilterAction);
-        syntaxNTripleButton = new JRadioButton("N-Triple");
-        syntaxNTripleButton.addActionListener(changeFileFilterAction);
         syntaxTurtleButton = new JRadioButton("Turtle");
         syntaxTurtleButton.addActionListener(changeFileFilterAction);
+        syntaxXMLButton = new JRadioButton("XML");
+        syntaxTurtleButton.setSelected(true);
+        syntaxXMLButton.addActionListener(changeFileFilterAction);
+        syntaxNTripleButton = new JRadioButton("N-Triple");
+        syntaxNTripleButton.addActionListener(changeFileFilterAction);
         ButtonGroup group = new ButtonGroup();
-        group.add(syntaxXMLButton);
-        group.add(syntaxN3Button);
-        group.add(syntaxNTripleButton);
         group.add(syntaxTurtleButton);
+        group.add(syntaxXMLButton);
+        group.add(syntaxNTripleButton);
         JPanel syntaxPanel = new JPanel();
-        syntaxPanel.setLayout(new GridLayout(2, 2));
+        syntaxPanel.setLayout(new GridLayout(3, 1));
         syntaxPanel.setBorder(BorderFactory.createTitledBorder(Translator.getString("ImportDialog.Syntax")));
-        syntaxPanel.add(syntaxXMLButton);
-        syntaxPanel.add(syntaxN3Button);
-        syntaxPanel.add(syntaxNTripleButton);
         syntaxPanel.add(syntaxTurtleButton);
+        syntaxPanel.add(syntaxXMLButton);
+        syntaxPanel.add(syntaxNTripleButton);
         importReplaceButton = new JRadioButton(Translator.getString("ImportDialog.ImportMethod.Replace"));
         importMergeButton = new JRadioButton(Translator.getString("ImportDialog.ImportMethod.Merge"));
         importMergeButton.setSelected(true);
@@ -131,6 +126,7 @@ public class ImportDialog extends JDialog implements ActionListener {
         group.add(importReplaceButton);
         group.add(importMergeButton);
         JPanel importMethodPanel = new JPanel();
+        importMethodPanel.setLayout(new GridLayout(2, 1));
         importMethodPanel.setBorder(BorderFactory.createTitledBorder(Translator.getString("ImportDialog.ImportMethod")));
         importMethodPanel.add(importMergeButton);
         importMethodPanel.add(importReplaceButton);
@@ -148,6 +144,7 @@ public class ImportDialog extends JDialog implements ActionListener {
         group.add(dataTypeRDFSButton);
         group.add(dataTypeOWLButton);
         JPanel dataTypePanel = new JPanel();
+        dataTypePanel.setLayout(new GridLayout(3, 1));
         dataTypePanel.setBorder(BorderFactory.createTitledBorder(Translator.getString("ImportDialog.DataType")));
         dataTypePanel.add(dataTypeRDFButton);
         dataTypePanel.add(dataTypeRDFSButton);
@@ -157,6 +154,7 @@ public class ImportDialog extends JDialog implements ActionListener {
         mainPanel.add(syntaxPanel);
         mainPanel.add(dataTypePanel);
         mainPanel.add(importMethodPanel);
+        mainPanel.setPreferredSize(new Dimension(150, 400));
         changeContainerAction = new ChangeContainerAction();
         containerListModel = new DefaultListModel();
         Set<String> containerSet = new TreeSet(Arrays.asList(gmanager.getResourceContainer()));
@@ -210,7 +208,7 @@ public class ImportDialog extends JDialog implements ActionListener {
         fileListScroll.setBorder(BorderFactory.createTitledBorder(Translator.getString("ImportDialog.ImportFileList")));
         filterBox = new JComboBox(new Object[]{rdfsFileFilter, n3FileFilter, turtleFileFilter, owlFileFilter, "All Files"});
         filterBox.addActionListener(changeContainerAction);
-        filterBox.setSelectedIndex(0);
+        filterBox.setSelectedItem(turtleFileFilter);
         JPanel fileListPanel = new JPanel();
         fileListPanel.setLayout(new BorderLayout());
         fileListPanel.add(fileListScroll, BorderLayout.CENTER);
@@ -334,7 +332,7 @@ public class ImportDialog extends JDialog implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             if (syntaxXMLButton.isSelected()) {
                 filterBox.setSelectedItem(rdfsFileFilter);
-            } else if (syntaxN3Button.isSelected() || syntaxNTripleButton.isSelected()) {
+            } else if (syntaxNTripleButton.isSelected()) {
                 filterBox.setSelectedItem(n3FileFilter);
             } else if (syntaxTurtleButton.isSelected()) {
                 filterBox.setSelectedItem(turtleFileFilter);
@@ -515,8 +513,6 @@ public class ImportDialog extends JDialog implements ActionListener {
     private String getSyntax() {
         if (syntaxXMLButton.isSelected()) {
             return "RDF/XML";
-        } else if (syntaxN3Button.isSelected()) {
-            return "N3";
         } else if (syntaxNTripleButton.isSelected()) {
             return "N-TRIPLE";
         } else if (syntaxTurtleButton.isSelected()) {
@@ -533,7 +529,7 @@ public class ImportDialog extends JDialog implements ActionListener {
             importMergeButton.setEnabled(!isDataTypeOWL);
             importReplaceButton.setEnabled(!isDataTypeOWL);
             if (dataTypeRDFButton.isSelected() || dataTypeRDFSButton.isSelected()) {
-                if (syntaxN3Button.isSelected() || syntaxNTripleButton.isSelected()) {
+                if (syntaxNTripleButton.isSelected()) {
                     filterBox.setSelectedItem(n3FileFilter);
                 } else {
                     filterBox.setSelectedItem(rdfsFileFilter);

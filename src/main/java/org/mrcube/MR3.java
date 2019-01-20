@@ -52,10 +52,9 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.prefs.Preferences;
@@ -114,12 +113,22 @@ public class MR3 extends JFrame implements ChangeListener {
 
         STATUS_BAR = new StatusBarPanel();
         mr3ProjectPanel = new MR3ProjectPanel(gmanager);
+
         gmanager.setMR3ProjectPanel(mr3ProjectPanel);
         getContentPane().add(mr3ProjectPanel, BorderLayout.CENTER);
         getContentPane().add(STATUS_BAR, BorderLayout.SOUTH);
 
+        var quitAction = new QuitAction(this);
+        if (Desktop.isDesktopSupported()) {
+            var desktop = Desktop.getDesktop();
+            desktop.setQuitHandler((e, response) -> quitAction.quitMR3());
+        }
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        addWindowListener(new CloseWindow(this));
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                quitAction.quitMR3();
+            }
+        });
         setIconImage(MR3Constants.LOGO.getImage());
         setJMenuBar(createMenuBar());
         initOptions();
@@ -130,6 +139,7 @@ public class MR3 extends JFrame implements ChangeListener {
         HistoryManager.initLogger(logFilePath);
         newProject();
     }
+
 
     private void initWeakReferences() {
         rdfEditorOverviewRef = new WeakReference<>(null);
@@ -494,7 +504,7 @@ public class MR3 extends JFrame implements ChangeListener {
         // exportMenu.add(new ExportJavaObject(this));
 
         menu.addSeparator();
-        menu.add(new ExitAction(this));
+        menu.add(new QuitAction(this));
 
         return menu;
     }
@@ -794,6 +804,13 @@ public class MR3 extends JFrame implements ChangeListener {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        // クリップボードの内容をクリアする
+        StringSelection ss = new StringSelection("");
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(ss, null);
+        if (Taskbar.isTaskbarSupported()) {
+            Taskbar.getTaskbar().setIconImage(MR3Constants.SPLASH_LOGO.getImage());
+        }
     }
 
     public static void main(String[] arg) {
@@ -803,9 +820,6 @@ public class MR3 extends JFrame implements ChangeListener {
             if (arg.length == 1 && arg[0].equals("--off")) {
                 MR3.OFF_META_MODEL_MANAGEMENT = true;
             }
-            // クリップボードの内容をクリアする
-            StringSelection ss = new StringSelection("");
-            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, ss);
             new MR3();
         } catch (Exception e) {
             e.printStackTrace();

@@ -106,6 +106,19 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
         return cellMaker;
     }
 
+
+    protected void setCopyCutPasteAction(ActionMap actionMap, InputMap inputMap) {
+        actionMap.put(graph.getCopyAction().getValue(Action.NAME), graph.getCopyAction());
+        actionMap.put(graph.getCutAction().getValue(Action.NAME), graph.getCutAction());
+        actionMap.put(graph.getPasteAction().getValue(Action.NAME), graph.getPasteAction());
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_C, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
+                graph.getCopyAction().getValue(Action.NAME));
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_X, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
+                graph.getCutAction().getValue(Action.NAME));
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_V, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
+                graph.getPasteAction().getValue(Action.NAME));
+    }
+
     private void setAction(JComponent panel) {
         ActionMap actionMap = panel.getActionMap();
         actionMap.put(insertResourceAction.getValue(Action.NAME), insertResourceAction);
@@ -121,6 +134,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
                 moveAction.getValue(Action.NAME));
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_G, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
                 connectAction.getValue(Action.NAME));
+        setCopyCutPasteAction(actionMap, inputMap);
     }
 
     private InsertRDFResDialog getInsertRDFResDialog(Object[] cells) {

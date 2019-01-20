@@ -64,6 +64,7 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
         InputMap inputMap = panel.getInputMap(JComponent.WHEN_FOCUSED);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_I, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
                 insertClassAction.getValue(Action.NAME));
+        setCopyCutPasteAction(actionMap, inputMap);
     }
 
     // connectするかどうかをここで制御

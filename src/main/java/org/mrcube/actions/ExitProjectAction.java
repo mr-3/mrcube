@@ -27,7 +27,7 @@ public class ExitProjectAction extends AbstractActionFile {
 						+ project.getTitle(), JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.INFORMATION_MESSAGE);
 		if (messageType == JOptionPane.YES_OPTION) {
-			exitProject();
+			quitProject();
 		}
 	}
 }

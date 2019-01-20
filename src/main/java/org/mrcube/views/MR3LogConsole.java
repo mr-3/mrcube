@@ -1,22 +1,22 @@
 /*
  * @(#)GPLogConsole.java 1.0 29.01.2003
- * 
+ *
  * Copyright (C) 2003 luzar
- * 
+ *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
  * Free Software Foundation; either version 2.1 of the License, or (at your
  * option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
  * for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this library; if not, write to the Free Software Foundation,
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *  
+ *
  */
 
 package org.mrcube.views;
@@ -31,34 +31,30 @@ import java.io.*;
 
 /**
  * Shows the System.in and System.out in a nice JFrame.
- * 
+ * <p>
  * The Frame looks like this: <br>
  * <img src="doc-files/GPLogConsole.jpg" alt="">
- * 
+ *
  * @author Thomas Genssler (FZI)
  * @author Sven Luzar
- * 
- *         modified GPLogConsole to  MR3LogConsole
- * 
+ * <p>
+ * modified GPLogConsole to  MR3LogConsole
  */
 
 public class MR3LogConsole extends JDialog {
 
     /**
      * The PrintStream for the System.err
-     * 
      */
     private PrintStream stderr = null;
 
     /**
      * Title of the Frame
-     * 
      */
     private String frameTitle = "";
 
     /**
      * Card Layout for the Window
-     * 
      */
     private final CardLayout cardLayout = new CardLayout();
     /**
@@ -84,13 +80,14 @@ public class MR3LogConsole extends JDialog {
     /**
      * Icon for the Window
      */
-    private Image myIcon = null;
-    /** PopUpMenu for save and clear the output textareas */
+    private Image myIcon;
+    /**
+     * PopUpMenu for save and clear the output textareas
+     */
     private final InternalPopupMenu popup = new InternalPopupMenu();
 
     /**
      * creates an instance
-     * 
      */
     public MR3LogConsole(Frame rootFrame, String title, Image icon) {
         super(rootFrame);
@@ -111,7 +108,9 @@ public class MR3LogConsole extends JDialog {
         setLocationRelativeTo(rootFrame);
     }
 
-    /** Overriden, in order to be able to deal with window events */
+    /**
+     * Overriden, in order to be able to deal with window events
+     */
     protected void processWindowEvent(WindowEvent e) {
         //
         if (e.getID() == WindowEvent.WINDOW_CLOSING) {
@@ -126,7 +125,6 @@ public class MR3LogConsole extends JDialog {
 
     /**
      * Initialises the Swing components
-     * 
      */
     private void jbInit() {
         this.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -196,7 +194,7 @@ public class MR3LogConsole extends JDialog {
 
     /**
      * A PrintStream for the text area output.
-     * 
+     *
      * @author Sven Luzar
      */
     class JTextAreaOutputStream extends PrintStream {
@@ -214,13 +212,11 @@ public class MR3LogConsole extends JDialog {
         /**
          * Flag is true if the stream should forward the output to the original
          * stream
-         * 
          */
         private boolean showOrig = false;
 
         /**
          * creates an instance
-         * 
          */
         JTextAreaOutputStream(JTextArea t, PrintStream orig, boolean showOrig) {
             super(new ByteArrayOutputStream());
@@ -229,6 +225,7 @@ public class MR3LogConsole extends JDialog {
             this.showOrig = showOrig;
             this.orig = orig;
         }
+
         /**
          * writes a boolean value to the target
          */
@@ -241,7 +238,6 @@ public class MR3LogConsole extends JDialog {
 
         /**
          * writes a boolean value to the target
-         * 
          */
         public void println(boolean b) {
             if (showOrig) orig.println(b);
@@ -253,7 +249,6 @@ public class MR3LogConsole extends JDialog {
 
         /**
          * writes the value to the target
-         * 
          */
         public void print(char c) {
             if (showOrig) orig.print(c);
@@ -266,7 +261,6 @@ public class MR3LogConsole extends JDialog {
 
         /**
          * writes the value to the target
-         * 
          */
         public void println(char c) {
             if (showOrig) orig.println(c);
@@ -280,7 +274,6 @@ public class MR3LogConsole extends JDialog {
 
         /**
          * writes the value to the target
-         * 
          */
         public void print(char[] s) {
             if (showOrig) orig.print(s);
@@ -291,7 +284,6 @@ public class MR3LogConsole extends JDialog {
 
         /**
          * writes the value to the target
-         * 
          */
         public void println(char[] s) {
             if (showOrig) orig.println(s);
@@ -302,7 +294,6 @@ public class MR3LogConsole extends JDialog {
 
         /**
          * writes the value to the target
-         * 
          */
         public void print(double d) {
             if (showOrig) orig.print(d);
@@ -310,9 +301,9 @@ public class MR3LogConsole extends JDialog {
             target.append(Double.toString(d));
             target.setCaretPosition(target.getText().length());
         }
+
         /**
          * writes the value to the target
-         * 
          */
         public void println(double d) {
             if (showOrig) orig.println(d);
@@ -323,7 +314,6 @@ public class MR3LogConsole extends JDialog {
 
         /**
          * writes the value to the target
-         * 
          */
         public void print(float f) {
             if (showOrig) orig.print(f);
@@ -331,9 +321,9 @@ public class MR3LogConsole extends JDialog {
             target.append(Float.toString(f));
             target.setCaretPosition(target.getText().length());
         }
+
         /**
          * writes the value to the target
-         * 
          */
         public void println(float f) {
             if (showOrig) orig.println(f);
@@ -344,7 +334,6 @@ public class MR3LogConsole extends JDialog {
 
         /**
          * writes the value to the target
-         * 
          */
         public void print(int i) {
             if (showOrig) orig.print(i);
@@ -352,9 +341,9 @@ public class MR3LogConsole extends JDialog {
             target.append(Integer.toString(i));
             target.setCaretPosition(target.getText().length());
         }
+
         /**
          * writes the value to the target
-         * 
          */
         public void println(int i) {
             if (showOrig) orig.println(i);
@@ -365,7 +354,6 @@ public class MR3LogConsole extends JDialog {
 
         /**
          * writes the value to the target
-         * 
          */
         public void print(long l) {
             if (showOrig) orig.print(l);
@@ -373,9 +361,9 @@ public class MR3LogConsole extends JDialog {
             target.append(Long.toString(l));
             target.setCaretPosition(target.getText().length());
         }
+
         /**
          * writes the value to the target
-         * 
          */
         public void println(long l) {
             if (showOrig) orig.println(l);
@@ -386,7 +374,6 @@ public class MR3LogConsole extends JDialog {
 
         /**
          * writes the value to the target
-         * 
          */
         public void print(Object o) {
             if (showOrig) orig.print(o);
@@ -394,9 +381,9 @@ public class MR3LogConsole extends JDialog {
             target.append(o.toString());
             target.setCaretPosition(target.getText().length());
         }
+
         /**
          * writes the value to the target
-         * 
          */
         public void println(Object o) {
             if (showOrig) orig.println(o);
@@ -407,7 +394,6 @@ public class MR3LogConsole extends JDialog {
 
         /**
          * writes the value to the target
-         * 
          */
         public void print(String s) {
             if (showOrig) orig.print(s);
@@ -421,7 +407,6 @@ public class MR3LogConsole extends JDialog {
 
         /**
          * writes the value to the target
-         * 
          */
         public void println(String s) {
             if (showOrig) orig.println(s);
@@ -435,7 +420,6 @@ public class MR3LogConsole extends JDialog {
 
         /**
          * writes the value to the target
-         * 
          */
         public void println() {
             if (showOrig) orig.println();
@@ -451,6 +435,7 @@ public class MR3LogConsole extends JDialog {
     private void this_windowDispose(WindowEvent e) {
         this.dispose();
     }
+
     /**
      * closes this window
      */
@@ -458,6 +443,7 @@ public class MR3LogConsole extends JDialog {
         this_windowDispose(e);
         System.exit(0);
     }
+
     /**
      * Shows the popup menu for the System.out textarea
      */
@@ -499,17 +485,16 @@ class MyDocumentListener implements DocumentListener {
 
     /**
      * creats an instance of this listener
-     * 
      */
     public MyDocumentListener(JTabbedPane paneToSwitch, Component inFront) {
         this.paneToSwitch = paneToSwitch;
         this.componentInFront = inFront;
     }
+
     /**
      * Calls getInFront()
-     * 
+     *
      * @see #getInFront
-     * 
      */
     public void changedUpdate(DocumentEvent e) {
         getInFront();
@@ -517,9 +502,8 @@ class MyDocumentListener implements DocumentListener {
 
     /**
      * Calls getInFront()
-     * 
+     *
      * @see #getInFront
-     * 
      */
     public void insertUpdate(DocumentEvent e) {
         getInFront();
@@ -527,13 +511,13 @@ class MyDocumentListener implements DocumentListener {
 
     /**
      * Calls getInFront()
-     * 
+     *
      * @see #getInFront
-     * 
      */
     public void removeUpdate(DocumentEvent e) {
         getInFront();
     }
+
     /**
      * Switches the rights one text area to front
      */
@@ -578,17 +562,18 @@ class InternalPopupMenu extends JPopupMenu {
 
     /**
      * Sets the current text area
-     * 
      */
     public void setTextArea(JTextArea ta) {
         currentWindow = ta;
     }
+
     /**
      * clears the window
      */
     private void clearWindow() {
         currentWindow.setText("");
     }
+
     /**
      * Shows a file chooser and saves the file to the selected name
      */
