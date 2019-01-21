@@ -21,7 +21,7 @@
  * 
  */
 
-package org.mrcube.views;
+package org.mrcube.views.common;
 
 import org.mrcube.models.ClassModel;
 import org.mrcube.models.MR3Constants;
@@ -30,6 +30,7 @@ import org.mrcube.models.MR3Constants.HistoryType;
 import org.mrcube.models.MR3Literal;
 import org.mrcube.models.ResourceModel;
 import org.mrcube.utils.Utilities;
+import org.mrcube.views.HistoryManager;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

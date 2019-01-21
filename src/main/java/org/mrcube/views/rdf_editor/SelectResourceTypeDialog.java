@@ -21,7 +21,7 @@
  * 
  */
 
-package org.mrcube.views;
+package org.mrcube.views.rdf_editor;
 
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.jgraph.OntClassCell;

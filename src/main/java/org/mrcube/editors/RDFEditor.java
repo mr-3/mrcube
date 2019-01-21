@@ -38,9 +38,9 @@ import org.mrcube.models.PropertyModel;
 import org.mrcube.models.RDFResourceModel;
 import org.mrcube.utils.GraphUtilities;
 import org.mrcube.utils.PrefixNSUtil;
-import org.mrcube.views.RDFLiteralPanel;
-import org.mrcube.views.RDFPropertyPanel;
-import org.mrcube.views.RDFResourcePanel;
+import org.mrcube.views.rdf_editor.RDFLiteralPanel;
+import org.mrcube.views.rdf_editor.RDFPropertyPanel;
+import org.mrcube.views.rdf_editor.RDFResourcePanel;
 
 import javax.swing.*;
 import java.lang.ref.WeakReference;

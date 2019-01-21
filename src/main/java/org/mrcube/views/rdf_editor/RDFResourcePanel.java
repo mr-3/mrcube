@@ -21,7 +21,7 @@
  *
  */
 
-package org.mrcube.views;
+package org.mrcube.views.rdf_editor;
 
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
@@ -38,6 +38,9 @@ import org.mrcube.utils.GraphUtilities;
 import org.mrcube.utils.PrefixNSUtil;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
+import org.mrcube.views.*;
+import org.mrcube.views.common.CommentPanel;
+import org.mrcube.views.common.LabelPanel;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;

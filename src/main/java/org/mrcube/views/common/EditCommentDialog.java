@@ -21,7 +21,7 @@
  * 
  */
 
-package org.mrcube.views;
+package org.mrcube.views.common;
 
 import org.mrcube.models.MR3Constants;
 import org.mrcube.models.MR3Literal;

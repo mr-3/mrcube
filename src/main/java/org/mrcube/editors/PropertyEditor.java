@@ -31,7 +31,7 @@ import org.mrcube.jgraph.*;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.RDFSModel;
 import org.mrcube.utils.GraphUtilities;
-import org.mrcube.views.PropertyPanel;
+import org.mrcube.views.property_editor.PropertyPanel;
 
 import java.lang.ref.WeakReference;
 

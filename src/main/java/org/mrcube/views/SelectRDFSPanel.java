@@ -28,6 +28,7 @@ import org.mrcube.jgraph.GraphManager;
 import org.mrcube.jgraph.RDFGraph;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
+import org.mrcube.views.rdf_editor.SelectClassPanel;
 
 import javax.swing.*;
 import java.util.HashSet;

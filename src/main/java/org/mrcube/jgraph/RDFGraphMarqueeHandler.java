@@ -38,8 +38,8 @@ import org.mrcube.utils.MR3CellMaker;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
 import org.mrcube.views.HistoryManager;
-import org.mrcube.views.InsertRDFLiteralDialog;
-import org.mrcube.views.InsertRDFResDialog;
+import org.mrcube.views.rdf_editor.InsertRDFLiteralDialog;
+import org.mrcube.views.rdf_editor.InsertRDFResDialog;
 import org.mrcube.views.InsertRDFSResDialog;
 
 import javax.swing.*;

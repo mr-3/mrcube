@@ -21,13 +21,14 @@
  * 
  */
 
-package org.mrcube.views;
+package org.mrcube.views.class_editor;
 
 import org.jgraph.graph.GraphCell;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
+import org.mrcube.views.OntologyPanel;
 
 import javax.swing.*;
 import java.awt.*;
