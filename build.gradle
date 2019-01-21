@@ -44,6 +44,10 @@ compileJava {
     }
 }
 
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
 compileTestJava {
     inputs.property("moduleName", moduleName)
     doFirst {
