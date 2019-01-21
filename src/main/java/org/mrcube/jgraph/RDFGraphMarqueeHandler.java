@@ -211,6 +211,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
             Color bg = graph.getBackground();
             Color fg = Color.black;
             g.setColor(fg);
+            g.setXORMode(bg);
             overlay(g);
             current = graph.snap(event.getPoint());
             if (connectButton.isSelected()) {
@@ -220,10 +221,11 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
                 }
             }
             g.setColor(bg);
+            g.setXORMode(fg);
             overlay(g);
             event.consume();
+            super.mouseDragged(event);
         }
-        super.mouseDragged(event);
     }
 
     /*
@@ -282,6 +284,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
                     Color bg = graph.getBackground();
                     Color fg = graph.getMarqueeColor();
                     g.setColor(fg);
+                    g.setXORMode(bg);
                     overlay(g);
                     port = newPort;
                     g.setColor(bg);
