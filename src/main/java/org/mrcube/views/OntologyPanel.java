@@ -38,6 +38,8 @@ import org.mrcube.utils.GraphUtilities;
 import org.mrcube.utils.PrefixNSUtil;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
+import org.mrcube.views.common.CommentPanel;
+import org.mrcube.views.common.LabelPanel;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -54,36 +56,36 @@ public abstract class OntologyPanel extends JPanel implements ListSelectionListe
 
     private final EditConceptAction editConceptAction;
 
-    JPanel menuPanel;
-    JList menuList;
-    CardLayout cardLayout;
+    public JPanel menuPanel;
+    public JList menuList;
+    public CardLayout cardLayout;
 
-    final BasePanel basePanel;
-    final LabelPanel labelPanel;
-    final CommentPanel commentPanel;
+    public final BasePanel basePanel;
+    public final LabelPanel labelPanel;
+    public final CommentPanel commentPanel;
 
     private Set<NamespaceModel> namespaceModelSet;
 
-    final JButton applyButton;
-    final JButton resetButton;
-    final JButton cancelButton;
+    public final JButton applyButton;
+    public final JButton resetButton;
+    public final JButton cancelButton;
 
-    GraphCell cell;
+    public GraphCell cell;
     private final RDFGraph graph;
-    RDFSModel rdfsModel;
-    final GraphManager gmanager;
+    protected RDFSModel rdfsModel;
+    public final GraphManager gmanager;
 
-    final JList instanceList;
-    final JScrollPane instanceListScroll;
+    public final JList instanceList;
+    public final JScrollPane instanceListScroll;
 
-    protected static final int LIST_WIDTH = 350;
-    protected static final int FIELD_HEIGHT = 30;
-    protected static final int LIST_HEIGHT = 80;
-    static final int MENU_WIDTH = 90;
+    public static final int LIST_WIDTH = 350;
+    public static final int FIELD_HEIGHT = 30;
+    public static final int LIST_HEIGHT = 80;
+    public static final int MENU_WIDTH = 90;
 
     protected static Object[] ZERO = new Object[0];
 
-    OntologyPanel(RDFGraph g, GraphManager gm) {
+    public OntologyPanel(RDFGraph g, GraphManager gm) {
         graph = g;
         gmanager = gm;
 
@@ -165,7 +167,7 @@ public abstract class OntologyPanel extends JPanel implements ListSelectionListe
             return Translator.getString("Base");
         }
 
-        void setMetaClassList(Set<Resource> metaClassList) {
+        public void setMetaClassList(Set<Resource> metaClassList) {
             setMetaClassBox(metaClassList);
         }
 
@@ -205,7 +207,7 @@ public abstract class OntologyPanel extends JPanel implements ListSelectionListe
         this.cell = cell;
     }
 
-    void setValue() {
+    protected void setValue() {
         labelPanel.clearField();
         labelPanel.setResourceInfo(rdfsModel);
         commentPanel.setResourceInfo(rdfsModel);
@@ -215,7 +217,7 @@ public abstract class OntologyPanel extends JPanel implements ListSelectionListe
     protected abstract void setValue(Set<GraphCell> supCellSet);
 
     /** スーパークラスまたは、スーパープロパティの名前のセットを返す */
-    Object[] getTargetInfo(Set<GraphCell> supCellSet) {
+    public Object[] getTargetInfo(Set<GraphCell> supCellSet) {
         Set<String> result = new HashSet<>();
         for (GraphCell cell : supCellSet) {
             RDFSModel supInfo = (RDFSModel) GraphConstants.getValue(cell.getAttributes());

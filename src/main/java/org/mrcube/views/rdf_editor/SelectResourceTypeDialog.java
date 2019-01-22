@@ -1,27 +1,27 @@
 /*
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
- * 
+ *
  * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
- * 
+ *
  * This file is part of MR^3.
- * 
+ *
  * MR^3 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * MR^3 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  */
 
-package org.mrcube.views;
+package org.mrcube.views.rdf_editor;
 
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.jgraph.OntClassCell;
@@ -41,7 +41,7 @@ import java.awt.event.ActionListener;
  */
 public class SelectResourceTypeDialog extends JDialog implements ActionListener {
 
-    private boolean isConfirm;
+    private boolean isConfirmed;
     private JButton confirmButton;
     private final SelectResourceTypePanel panel;
 
@@ -71,13 +71,12 @@ public class SelectResourceTypeDialog extends JDialog implements ActionListener 
 
     public Object getValue() {
         if (panel.getPrevCell() != null) {
-            if (isConfirm) {
-                isConfirm = false;
+            if (isConfirmed) {
+                isConfirmed = false;
                 GraphUtilities.changeDefaultCellStyle(panel.getGraph(), panel.getPrevCell(), OntClassCell.classColor);
                 return panel.getURI();
             }
             GraphUtilities.changeDefaultCellStyle(panel.getGraph(), panel.getPrevCell(), OntClassCell.classColor);
-            return null;
         }
         return null;
     }
@@ -91,11 +90,7 @@ public class SelectResourceTypeDialog extends JDialog implements ActionListener 
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == confirmButton) {
-            isConfirm = true;
-        } else {
-            isConfirm = false;
-        }
+        isConfirmed = e.getSource() == confirmButton;
         setVisible(false);
     }
 }

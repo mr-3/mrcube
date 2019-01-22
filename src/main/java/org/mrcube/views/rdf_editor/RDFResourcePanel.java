@@ -21,7 +21,7 @@
  *
  */
 
-package org.mrcube.views;
+package org.mrcube.views.rdf_editor;
 
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
@@ -38,6 +38,9 @@ import org.mrcube.utils.GraphUtilities;
 import org.mrcube.utils.PrefixNSUtil;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
+import org.mrcube.views.*;
+import org.mrcube.views.common.CommentPanel;
+import org.mrcube.views.common.LabelPanel;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -241,7 +244,6 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
                 String ns = Utilities.getNameSpace(uri);
                 setResTypePrefix(ns);
                 PrefixNSUtil.setNSLabel(resTypeNSLabel, ns);
-                // setResourceTypeField(uri.getLocalName());
                 setResourceTypeField(Utilities.getLocalName(uri));
             }
         }
@@ -268,7 +270,6 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
         void selectTypeMode(boolean t) {
             isTypeCellCheckBox.setSelected(t);
             if (t) {
-                // setResourceTypeField(resInfo.getType().getLocalName());
                 setResourceTypeField(Utilities.getLocalName(resInfo.getType()));
             } else {
                 setResourceTypeField("");
@@ -560,6 +561,7 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
                 setResourceType(null);
             }
             setCellValue();
+            gmanager.resetTypeCells();
             gmanager.selectRDFCell(cell);
             HistoryManager.saveHistory(HistoryType.EDIT_RESOURCE_WITH_DIALOG, beforeInfo, resInfo);
         }

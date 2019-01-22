@@ -21,7 +21,7 @@
  *
  */
 
-package org.mrcube.views;
+package org.mrcube.views.rdf_editor;
 
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.mrcube.jgraph.GraphManager;

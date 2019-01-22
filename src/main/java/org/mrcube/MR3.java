@@ -121,7 +121,9 @@ public class MR3 extends JFrame implements ChangeListener {
         var quitAction = new QuitAction(this);
         if (Desktop.isDesktopSupported()) {
             var desktop = Desktop.getDesktop();
-            desktop.setQuitHandler((e, response) -> quitAction.quitMR3());
+            if (desktop.isSupported(Desktop.Action.APP_QUIT_HANDLER)) {
+                desktop.setQuitHandler((e, response) -> quitAction.quitMR3());
+            }
         }
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
@@ -809,7 +811,10 @@ public class MR3 extends JFrame implements ChangeListener {
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(ss, null);
         if (Taskbar.isTaskbarSupported()) {
-            Taskbar.getTaskbar().setIconImage(MR3Constants.SPLASH_LOGO.getImage());
+            var taskbar = Taskbar.getTaskbar();
+            if (taskbar.isSupported(Taskbar.Feature.ICON_IMAGE)) {
+                taskbar.setIconImage(MR3Constants.SPLASH_LOGO.getImage());
+            }
         }
     }
 

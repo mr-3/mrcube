@@ -94,9 +94,9 @@ public class ExportDialog extends JDialog implements ActionListener {
         turtleRadioButton = new JRadioButton("Turtle");
         turtleRadioButton.addActionListener(this);
         turtleRadioButton.setSelected(true);
-        xmlRadioButton = new JRadioButton("RDF/XML");
+        xmlRadioButton = new JRadioButton("XML");
         xmlRadioButton.addActionListener(this);
-        nTripleRadioButton = new JRadioButton("N-Triple");
+        nTripleRadioButton = new JRadioButton("N-Triples");
         nTripleRadioButton.addActionListener(this);
         ButtonGroup group = new ButtonGroup();
         group.add(xmlRadioButton);

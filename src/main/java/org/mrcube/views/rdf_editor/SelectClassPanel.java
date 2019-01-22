@@ -21,7 +21,7 @@
  * 
  */
 
-package org.mrcube.views;
+package org.mrcube.views.rdf_editor;
 
 import org.jgraph.event.GraphSelectionEvent;
 import org.jgraph.event.GraphSelectionListener;
@@ -48,22 +48,22 @@ import java.util.List;
 /**
  * @author Takeshi Morita
  */
-abstract class SelectClassPanel extends JPanel implements GraphSelectionListener {
+public abstract class SelectClassPanel extends JPanel implements GraphSelectionListener {
 
     private int index; // 検索のインデックス
     private String currentKey; // 現在のキー
     private List findList; // 検索リスト
-    JLabel nsLabel;
+    protected JLabel nsLabel;
 
-    JTextField findField;
-    JButton findButton;
-    JComboBox uriPrefixBox;
+    protected JTextField findField;
+    protected JButton findButton;
+    protected JComboBox uriPrefixBox;
 
-    RDFGraph graph;
+    protected RDFGraph graph;
 
     private final GraphManager gmanager;
 
-    SelectClassPanel(GraphManager gm) {
+    public SelectClassPanel(GraphManager gm) {
         index = 0;
         gmanager = gm;
         currentKey = null;
@@ -74,8 +74,8 @@ abstract class SelectClassPanel extends JPanel implements GraphSelectionListener
         add(getEachDialogComponent(), BorderLayout.SOUTH);
     }
 
-    static final int LIST_WIDTH = 450;
-    static final int LIST_HEIGHT = 20;
+    public static final int LIST_WIDTH = 450;
+    public static final int LIST_HEIGHT = 20;
 
     class ChangePrefixAction extends AbstractAction {
         public void actionPerformed(ActionEvent e) {

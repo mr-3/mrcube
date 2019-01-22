@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'org.mrcube'
-version = '1.0.4'
+version = '1.1.0'
 mainClassName = 'org.mrcube.mrcube/org.mrcube.MR3'
 sourceCompatibility = targetCompatibility = '11'
 
@@ -42,6 +42,10 @@ compileJava {
         ]
         classpath = files()
     }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
 }
 
 compileTestJava {
@@ -122,7 +126,7 @@ publishing {
         MyPublication(MavenPublication) {
             groupId = 'org.mrcube'
             artifactId = 'mrcube'
-            version = '1.0.4'
+            version = '1.1.0'
 
             from components.java
             pom {

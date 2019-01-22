@@ -21,7 +21,7 @@
  * 
  */
 
-package org.mrcube.views;
+package org.mrcube.views.rdf_editor;
 
 import org.apache.jena.rdf.model.Resource;
 import org.jgraph.event.GraphSelectionEvent;
