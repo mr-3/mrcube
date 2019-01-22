@@ -107,7 +107,7 @@ public class ImportDialog extends JDialog implements ActionListener {
         syntaxXMLButton = new JRadioButton("XML");
         syntaxTurtleButton.setSelected(true);
         syntaxXMLButton.addActionListener(changeFileFilterAction);
-        syntaxNTripleButton = new JRadioButton("N-Triple");
+        syntaxNTripleButton = new JRadioButton("N-Triples");
         syntaxNTripleButton.addActionListener(changeFileFilterAction);
         ButtonGroup group = new ButtonGroup();
         group.add(syntaxTurtleButton);
