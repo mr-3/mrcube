@@ -162,7 +162,9 @@ public class ImportDialog extends JDialog implements ActionListener {
             containerSet.add(gmanager.getWorkDirectory());
         }
         for (String s : containerSet) {
-            containerListModel.addElement(s);
+            if (!s.isEmpty()) {
+                containerListModel.addElement(s);
+            }
         }
 
         ActionListener addContainerAction = new AddContainerAction();
