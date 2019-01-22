@@ -38,9 +38,9 @@ import org.mrcube.utils.MR3CellMaker;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
 import org.mrcube.views.HistoryManager;
+import org.mrcube.views.InsertRDFSResDialog;
 import org.mrcube.views.rdf_editor.InsertRDFLiteralDialog;
 import org.mrcube.views.rdf_editor.InsertRDFResDialog;
-import org.mrcube.views.InsertRDFSResDialog;
 
 import javax.swing.*;
 import java.awt.*;
@@ -50,8 +50,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.*;
+import java.util.Set;
 
 /**
  * @author Takeshi Morita
@@ -206,7 +208,8 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 
     // Find Port under Mouse and Repaint Connector
     public void mouseDragged(MouseEvent event) {
-        if (!event.isConsumed() && !moveButton.isSelected()) {
+        if (!event.isConsumed() && connectButton.isSelected()) {
+            graph.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
             Graphics g = graph.getGraphics();
             Color bg = graph.getBackground();
             Color fg = Color.black;
@@ -224,6 +227,9 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
             g.setXORMode(fg);
             overlay(g);
             event.consume();
+        } else {
+            graph.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            graph.setMarqueeColor(Color.black);
             super.mouseDragged(event);
         }
     }
@@ -273,10 +279,10 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 
     public void mouseMoved(MouseEvent event) {
         insertPoint = event.getPoint();
-        if (!moveButton.isSelected() && !event.isConsumed()) {
+        if (connectButton.isSelected()) {
             graph.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
-            event.consume();
-            if (connectButton.isSelected()) {
+            if (!event.isConsumed()) {
+                event.consume();
                 PortView oldPort = port;
                 PortView newPort = getPortViewAt(event.getX(), event.getY(), !event.isShiftDown());
                 if (oldPort != newPort) {
@@ -291,8 +297,9 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
                     overlay(g);
                 }
             }
+        } else {
+            super.mouseMoved(event);
         }
-        super.mouseMoved(event);
     }
 
     class ConnectAction extends AbstractAction {
