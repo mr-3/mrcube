@@ -223,7 +223,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             }
             userPrefs.put(PrefConstants.logFile, logFileField.getText());
             HistoryManager.resetFileAppender(logFileField.getText());
-            PluginManager.reloadPlugins();
         }
 
         void resetConfig() {

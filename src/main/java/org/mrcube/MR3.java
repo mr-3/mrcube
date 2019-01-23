@@ -160,7 +160,6 @@ public class MR3 extends JFrame implements ChangeListener {
     private AbstractAction openProjectAction;
     private AbstractAction saveProjectAction;
     private AbstractAction saveProjectAsAction;
-    private AbstractAction showPluginManagerAction;
     private AbstractAction showValidatorAction;
     private AbstractAction toFrontRDFEditorAction;
     private AbstractAction toFrontClassEditorAction;
@@ -187,13 +186,10 @@ public class MR3 extends JFrame implements ChangeListener {
         openProjectAction = new OpenProject(this);
         saveProjectAction = new SaveProject(this, SaveProject.SAVE_PROJECT, SaveProject.SAVE_PROJECT_ICON);
         saveProjectAsAction = new SaveProject(this, SaveProject.SAVE_AS_PROJECT, SaveProject.SAVE_AS_PROJECT_ICON);
-        showPluginManagerAction = new OpenPluginManagerAction(this,
-                Translator.getString("Component.Tools.Plugins.Text"));
         showValidatorAction = new ShowValidator(this);
         toFrontRDFEditorAction = new EditorSelect(this, EditorSelect.RDF_EDITOR, EditorSelect.RDF_EDITOR_ICON);
         toFrontClassEditorAction = new EditorSelect(this, EditorSelect.CLASS_EDITOR, EditorSelect.CLASS_EDITOR_ICON);
-        toFrontPropertyEditorAction = new EditorSelect(this, EditorSelect.PROPERTY_EDITOR,
-                EditorSelect.PROPERTY_EDITOR_ICON);
+        toFrontPropertyEditorAction = new EditorSelect(this, EditorSelect.PROPERTY_EDITOR, EditorSelect.PROPERTY_EDITOR_ICON);
 
         deployWindowCPRAction = new DeployWindows(this, Translator.getString("Component.Window.DeployCPRWindows.Text"),
                 CPR_ICON, DeployType.CPR,
@@ -263,7 +259,6 @@ public class MR3 extends JFrame implements ChangeListener {
         toolbar.add(findNextButton);
         toolbar.addSeparator();
         toolbar.add(showValidatorAction);
-        toolbar.add(showPluginManagerAction);
         toolbar.add(showProjectInfoAction);
         toolbar.add(showLogConsoleAciton);
         toolbar.add(showOptionDialogAction);
@@ -455,37 +450,11 @@ public class MR3 extends JFrame implements ChangeListener {
     private JMenuBar createMenuBar() {
         JMenuBar mb = new JMenuBar();
         mb.add(getFileMenu());
-        mb.add(getEditMenu());
         mb.add(getViewMenu());
         mb.add(getWindowMenu());
         mb.add(getToolsMenu());
         mb.add(getHelpMenu());
         return mb;
-    }
-
-    private JMenu getEditMenu() {
-        JMenu menu = new JMenu(Translator.getString("Component.Edit.Text") + "(E)");
-        menu.setMnemonic('e');
-        menu.add(findResAction);
-        menu.addSeparator();
-        menu.add(getSelectMenu());
-        // selectAbstractLevelMode = new JCheckBoxMenuItem("Change Abstract
-        // Level", false);
-        // selectAbstractLevelMode.addActionListener(new
-        // SelectAbstractLevelAction());
-        // menu.add(selectAbstractLevelMode);
-
-        return menu;
-    }
-
-    private JMenu getSelectMenu() {
-        JMenu selectMenu = new JMenu(Translator.getString("Component.Select.Text"));
-        selectMenu.add(new SelectNodes(gmanager, GraphType.RDF, Translator.getString("Component.Select.RDF.Text")));
-        selectMenu.add(new SelectNodes(gmanager, GraphType.CLASS, Translator.getString("Component.Select.Class.Text")));
-        selectMenu.add(new SelectNodes(gmanager, GraphType.PROPERTY, Translator
-                .getString("Component.Select.Property.Text")));
-
-        return selectMenu;
     }
 
     public GraphManager getGraphManager() {
@@ -503,7 +472,6 @@ public class MR3 extends JFrame implements ChangeListener {
 
         menu.add(new ShowImportDialog(this, Translator.getString("Component.File.Import.Text")));
         menu.add(new ShowExportDialog(this, Translator.getString("Component.File.Export.Text")));
-        // exportMenu.add(new ExportJavaObject(this));
 
         menu.addSeparator();
         menu.add(new QuitAction(this));
@@ -667,7 +635,7 @@ public class MR3 extends JFrame implements ChangeListener {
     private JMenu getToolsMenu() {
         JMenu menu = new JMenu(Translator.getString("Component.Tools.Text") + "(T)");
         menu.setMnemonic('t');
-        menu.add(showPluginManagerAction);
+        menu.add(findResAction);
         menu.add(showValidatorAction);
         menu.add(showProjectInfoAction);
         // menu.add(new ShowHistoryManager(this));
