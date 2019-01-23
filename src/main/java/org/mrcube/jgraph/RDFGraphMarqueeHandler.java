@@ -136,6 +136,8 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
                 moveAction.getValue(Action.NAME));
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_G, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
                 connectAction.getValue(Action.NAME));
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
+                graph.getSelectAllNodesAction().getValue(Action.NAME));
         setCopyCutPasteAction(actionMap, inputMap);
     }
 
