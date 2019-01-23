@@ -626,26 +626,25 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             defaultClassClassField = new JTextField();
             defaultClassClassField.setEditable(false);
             JComponent defaultClassClassFieldP = Utilities.createTitledPanel(defaultClassClassField,
-                    "Default Class Class");
+                    Translator.getString("PreferenceDialog.MetaClassTab.DefaultClassClass"));
             classClassListModel = new DefaultListModel();
             classClassList = new JList(classClassListModel);
             classClassList.addListSelectionListener(this);
             JScrollPane classClassListScroll = new JScrollPane(classClassList);
-            Utilities
-                    .initComponent(classClassListScroll,
-                            Translator.getString("PreferenceDialog.MetaClassTab.ClassClass"), LONG_URI_FIELD_WIDTH,
-                            LIST_HEIGHT);
+            Utilities.initComponent(classClassListScroll,
+                    Translator.getString("PreferenceDialog.MetaClassTab.ClassClassList"),
+                    LONG_URI_FIELD_WIDTH, LIST_HEIGHT);
 
             defaultPropertyClassField = new JTextField();
             defaultPropertyClassField.setEditable(false);
             JComponent defaultPropertyClassFieldP = Utilities.createTitledPanel(defaultPropertyClassField,
-                    "Default Property Class");
+                    Translator.getString("PreferenceDialog.MetaClassTab.DefaultPropertyClass"));
             propClassListModel = new DefaultListModel();
             propClassList = new JList(propClassListModel);
             propClassList.addListSelectionListener(this);
             JScrollPane propClassListScroll = new JScrollPane(propClassList);
             Utilities.initComponent(propClassListScroll,
-                    Translator.getString("PreferenceDialog.MetaClassTab.PropertyClass"), LONG_URI_FIELD_WIDTH,
+                    Translator.getString("PreferenceDialog.MetaClassTab.PropertyClassList"), LONG_URI_FIELD_WIDTH,
                     LIST_HEIGHT);
 
             JPanel classClassPanel = new JPanel();
@@ -661,8 +660,10 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             propertyClassPanel.add(getPropertyClassButtonPanel());
 
             JTabbedPane tab = new JTabbedPane();
-            tab.add(Utilities.createNorthPanel(classClassPanel), "Class Class");
-            tab.add(Utilities.createNorthPanel(propertyClassPanel), "Property Class");
+            tab.add(Utilities.createNorthPanel(classClassPanel),
+                    Translator.getString("PreferenceDialog.MetaClassTab.ClassClass"));
+            tab.add(Utilities.createNorthPanel(propertyClassPanel),
+                    Translator.getString("PreferenceDialog.MetaClassTab.PropertyClass"));
 
             setLayout(new BorderLayout());
             add(getTitledPanel(metaClassFieldP, toString()), BorderLayout.NORTH);
@@ -721,7 +722,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
 
         private JComponent getClassClassButtonPanel() {
             Action classClassButtonAction = new ClassClassButtonAction();
-            setDefaultClassClassButton = new JButton("Set Default");
+            setDefaultClassClassButton = new JButton(Translator.getString("PreferenceDialog.MetaClassTab.SetDefault"));
             setDefaultClassClassButton.addActionListener(classClassButtonAction);
             classClassEditButton = new JButton(EDIT);
             classClassEditButton.addActionListener(classClassButtonAction);
@@ -740,7 +741,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
 
         private JComponent getPropertyClassButtonPanel() {
             Action propClassButtonAction = new PropClassButtonAction();
-            setDefaultPropertyClassButton = new JButton("Set Default");
+            setDefaultPropertyClassButton = new JButton(Translator.getString("PreferenceDialog.MetaClassTab.SetDefault"));
             setDefaultPropertyClassButton.addActionListener(propClassButtonAction);
             propClassEditButton = new JButton(EDIT);
             propClassEditButton.addActionListener(propClassButtonAction);

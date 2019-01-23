@@ -21,6 +21,8 @@
 
 package org.mrcube.views;
 
+import org.mrcube.utils.Translator;
+
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -160,13 +162,10 @@ public class MR3LogConsole extends JDialog {
         jTabbedPane1.setMinimumSize(new Dimension(400, 400));
         jTabbedPane1.setPreferredSize(new Dimension(400, 400));
         this.getContentPane().add(jTabbedPane1, "jTabbedPane1");
-        jTabbedPane1.add(stdoutScrollPane, "Standard out");
-
-        jTabbedPane1.add(stderrScrollPane, "Standard error");
-
+        jTabbedPane1.add(stdoutScrollPane, Translator.getString("Component.Tools.LogConsole.StandardOutput"));
+        jTabbedPane1.add(stderrScrollPane, Translator.getString("Component.Tools.LogConsole.StandardErrorOutput"));
         stderrScrollPane.getViewport().add(stderrText, null);
         stdoutScrollPane.getViewport().add(stdoutText, null);
-
         // make sure the last updated log is always in front
         stdoutText.getDocument().addDocumentListener(new MyDocumentListener(jTabbedPane1, stdoutScrollPane));
         stderrText.getDocument().addDocumentListener(new MyDocumentListener(jTabbedPane1, stderrScrollPane));
