@@ -25,6 +25,7 @@ package org.mrcube.views;
 
 import org.apache.jena.datatypes.RDFDatatype;
 import org.apache.jena.rdf.model.*;
+import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.shared.InvalidPropertyURIException;
 import org.apache.jena.util.URIref;
 import org.apache.jena.vocabulary.RDFS;
@@ -65,9 +66,10 @@ public class ExportDialog extends JDialog implements ActionListener {
     private final GraphManager gmanager;
     private MR3TreePanel treePanel;
 
+    private final JRadioButton turtleRadioButton;
+    private final JRadioButton jsonldRadioButton;
     private final JRadioButton xmlRadioButton;
     private final JRadioButton nTripleRadioButton;
-    private final JRadioButton turtleRadioButton;
 
     private final JCheckBox rdfConvertBox;
     private final JCheckBox classConvertBox;
@@ -95,18 +97,22 @@ public class ExportDialog extends JDialog implements ActionListener {
         turtleRadioButton = new JRadioButton("Turtle");
         turtleRadioButton.addActionListener(this);
         turtleRadioButton.setSelected(true);
+        jsonldRadioButton = new JRadioButton("JSONLD");
+        jsonldRadioButton.addActionListener(this);
         xmlRadioButton = new JRadioButton("XML");
         xmlRadioButton.addActionListener(this);
         nTripleRadioButton = new JRadioButton("N-Triples");
         nTripleRadioButton.addActionListener(this);
         ButtonGroup group = new ButtonGroup();
+        group.add(turtleRadioButton);
+        group.add(jsonldRadioButton);
         group.add(xmlRadioButton);
         group.add(nTripleRadioButton);
-        group.add(turtleRadioButton);
         JPanel outputCheckPanel = new JPanel();
-        outputCheckPanel.setLayout(new GridLayout(1, 3));
+        outputCheckPanel.setLayout(new GridLayout(1, 4));
         outputCheckPanel.setBorder(BorderFactory.createTitledBorder(Translator.getString("ImportDialog.Syntax")));
         outputCheckPanel.add(turtleRadioButton);
+        outputCheckPanel.add(jsonldRadioButton);
         outputCheckPanel.add(xmlRadioButton);
         outputCheckPanel.add(nTripleRadioButton);
 
@@ -200,6 +206,7 @@ public class ExportDialog extends JDialog implements ActionListener {
     private static final RDFsFileFilter rdfsFileFilter = new RDFsFileFilter(true);
     private static final NTripleFileFilter n3FileFilter = new NTripleFileFilter(true);
     private static final TurtleFileFilter turtleFileFilter = new TurtleFileFilter(true);
+    private static final JSONLDFileFilter jsonldFileFilter = new JSONLDFileFilter(true);
     private static final OWLFileFilter owlFileFilter = new OWLFileFilter(true);
     private static final PNGFileFilter pngFileFilter = new PNGFileFilter();
 
@@ -220,6 +227,8 @@ public class ExportDialog extends JDialog implements ActionListener {
             case "ttl":
                 jfc.setFileFilter(turtleFileFilter);
                 break;
+            case "jsonld":
+                jfc.setFileFilter(jsonldFileFilter);
             case "png":
                 jfc.setFileFilter(pngFileFilter);
                 break;
@@ -240,6 +249,7 @@ public class ExportDialog extends JDialog implements ActionListener {
         String ext = (extension != null) ? "." + extension.toLowerCase() : "";
         if (extension != null && !tmp.toLowerCase().endsWith(".rdf") && !tmp.toLowerCase().endsWith(".rdfs")
                 && !tmp.toLowerCase().endsWith(".n3") && !tmp.toLowerCase().endsWith(".ttl")
+                && !tmp.toLowerCase().endsWith(".jsonld")
                 && !tmp.toLowerCase().endsWith(".owl")) {
             tmp += ext;
         }
@@ -346,6 +356,8 @@ public class ExportDialog extends JDialog implements ActionListener {
             return "n3";
         } else if (turtleRadioButton.isSelected()) {
             return "ttl";
+        } else if (jsonldRadioButton.isSelected()) {
+            return "jsonld";
         }
         return "rdf";
     }
@@ -387,6 +399,8 @@ public class ExportDialog extends JDialog implements ActionListener {
             return "N-TRIPLE";
         } else if (turtleRadioButton.isSelected()) {
             return "TURTLE";
+        } else if (jsonldRadioButton.isSelected()) {
+            return "JSONLD";
         }
         return "RDF/XML";
     }

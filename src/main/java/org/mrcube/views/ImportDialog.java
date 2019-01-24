@@ -186,7 +186,7 @@ public class ImportDialog extends JDialog implements ActionListener {
         fileListUI.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         JScrollPane fileListScroll = new JScrollPane(fileListUI);
         fileListScroll.setBorder(BorderFactory.createTitledBorder(Translator.getString("ImportDialog.ImportFileList")));
-        filterBox = new JComboBox(new Object[]{turtleFileFilter, rdfsFileFilter, jsonldFileFilter, n3FileFilter, owlFileFilter, "All Files"});
+        filterBox = new JComboBox(new Object[]{turtleFileFilter, jsonldFileFilter, rdfsFileFilter, n3FileFilter, owlFileFilter, "All Files"});
         filterBox.addActionListener(changeContainerAction);
         filterBox.setSelectedItem(turtleFileFilter);
         JPanel fileListPanel = new JPanel();
