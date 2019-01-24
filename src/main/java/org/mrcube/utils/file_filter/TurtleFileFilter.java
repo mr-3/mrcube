@@ -21,23 +21,23 @@
  * 
  */
 
-package org.mrcube.utils;
+package org.mrcube.utils.file_filter;
 
 import java.io.File;
 
 /**
  * @author Takeshi Morita
  */
-public class OWLFileFilter extends MR3FileFilter implements java.io.FileFilter {
+public class TurtleFileFilter extends MR3FileFilter implements java.io.FileFilter {
 
 	private final boolean isShowDirectories;
 
-	public OWLFileFilter(boolean isShowDirectories) {
+	public TurtleFileFilter(boolean isShowDirectories) {
 		this.isShowDirectories = isShowDirectories;
 	}
 
 	public String getExtension() {
-		return "owl";
+		return "ttl";
 	}
 
 	public boolean accept(File f) {
@@ -45,13 +45,13 @@ public class OWLFileFilter extends MR3FileFilter implements java.io.FileFilter {
 			return isShowDirectories;
 		}
 		String extension = getExtension(f);
-		if (extension != null && extension.equals("owl")) {
+		if (extension != null && extension.equals("ttl")) {
 			return true;
 		}
 		return false;
 	}
 
 	public String getDescription() {
-		return "OWL File (*.owl)";
+		return "Turtle (*.ttl)";
 	}
 }

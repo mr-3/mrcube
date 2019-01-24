@@ -26,12 +26,14 @@ package org.mrcube.views;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.riot.RDFDataMgr;
 import org.mrcube.MR3;
 import org.mrcube.io.MR3Reader;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.models.MR3Constants;
 import org.mrcube.models.PrefConstants;
 import org.mrcube.utils.*;
+import org.mrcube.utils.file_filter.*;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -42,14 +44,13 @@ import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.*;
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLDecoder;
-import java.net.UnknownHostException;
-import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
-import java.util.*;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.prefs.Preferences;
 import java.util.regex.PatternSyntaxException;
 
@@ -60,10 +61,6 @@ public class ImportDialog extends JDialog implements ActionListener {
 
     private final MR3Reader mr3Reader;
     private final GraphManager gmanager;
-
-    private final JRadioButton syntaxXMLButton;
-    private final JRadioButton syntaxNTripleButton;
-    private final JRadioButton syntaxTurtleButton;
 
     private final JRadioButton importReplaceButton;
     private final JRadioButton importMergeButton;
@@ -90,6 +87,7 @@ public class ImportDialog extends JDialog implements ActionListener {
     private static final FileFilter rdfsFileFilter = new RDFsFileFilter(false);
     private static final FileFilter n3FileFilter = new NTripleFileFilter(false);
     private static final FileFilter turtleFileFilter = new TurtleFileFilter(false);
+    private static final FileFilter jsonldFileFilter = new JSONLDFileFilter(false);
 
     private static final int FRAME_HEIGHT = 400;
     private static final int FRAME_WIDTH = 600;
@@ -101,28 +99,10 @@ public class ImportDialog extends JDialog implements ActionListener {
         gmanager = gm;
         mr3Reader = new MR3Reader(gmanager);
 
-        ActionListener changeFileFilterAction = new ChangeFileFilterAction();
-        syntaxTurtleButton = new JRadioButton("Turtle");
-        syntaxTurtleButton.addActionListener(changeFileFilterAction);
-        syntaxXMLButton = new JRadioButton("XML");
-        syntaxTurtleButton.setSelected(true);
-        syntaxXMLButton.addActionListener(changeFileFilterAction);
-        syntaxNTripleButton = new JRadioButton("N-Triples");
-        syntaxNTripleButton.addActionListener(changeFileFilterAction);
-        ButtonGroup group = new ButtonGroup();
-        group.add(syntaxTurtleButton);
-        group.add(syntaxXMLButton);
-        group.add(syntaxNTripleButton);
-        JPanel syntaxPanel = new JPanel();
-        syntaxPanel.setLayout(new GridLayout(3, 1));
-        syntaxPanel.setBorder(BorderFactory.createTitledBorder(Translator.getString("ImportDialog.Syntax")));
-        syntaxPanel.add(syntaxTurtleButton);
-        syntaxPanel.add(syntaxXMLButton);
-        syntaxPanel.add(syntaxNTripleButton);
         importReplaceButton = new JRadioButton(Translator.getString("ImportDialog.ImportMethod.Replace"));
         importMergeButton = new JRadioButton(Translator.getString("ImportDialog.ImportMethod.Merge"));
         importMergeButton.setSelected(true);
-        group = new ButtonGroup();
+        var group = new ButtonGroup();
         group.add(importReplaceButton);
         group.add(importMergeButton);
         JPanel importMethodPanel = new JPanel();
@@ -133,7 +113,6 @@ public class ImportDialog extends JDialog implements ActionListener {
         ActionListener dataTypeManagementAction = new DataTypeManagementAction();
         dataTypeRDFButton = new JRadioButton("RDF");
         dataTypeRDFButton.addActionListener(dataTypeManagementAction);
-        // dataTypeRDFButton.setSelected(true);
         dataTypeRDFSButton = new JRadioButton("RDFS");
         dataTypeRDFSButton.addActionListener(dataTypeManagementAction);
         dataTypeRDFSButton.setSelected(true);
@@ -150,8 +129,7 @@ public class ImportDialog extends JDialog implements ActionListener {
         dataTypePanel.add(dataTypeRDFSButton);
         dataTypePanel.add(dataTypeOWLButton);
         JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new GridLayout(3, 1));
-        mainPanel.add(syntaxPanel);
+        mainPanel.setLayout(new GridLayout(2, 1));
         mainPanel.add(dataTypePanel);
         mainPanel.add(importMethodPanel);
         mainPanel.setPreferredSize(new Dimension(150, 400));
@@ -208,7 +186,7 @@ public class ImportDialog extends JDialog implements ActionListener {
         fileListUI.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         JScrollPane fileListScroll = new JScrollPane(fileListUI);
         fileListScroll.setBorder(BorderFactory.createTitledBorder(Translator.getString("ImportDialog.ImportFileList")));
-        filterBox = new JComboBox(new Object[]{rdfsFileFilter, n3FileFilter, turtleFileFilter, owlFileFilter, "All Files"});
+        filterBox = new JComboBox(new Object[]{turtleFileFilter, rdfsFileFilter, jsonldFileFilter, n3FileFilter, owlFileFilter, "All Files"});
         filterBox.addActionListener(changeContainerAction);
         filterBox.setSelectedItem(turtleFileFilter);
         JPanel fileListPanel = new JPanel();
@@ -330,18 +308,6 @@ public class ImportDialog extends JDialog implements ActionListener {
         }
     }
 
-    class ChangeFileFilterAction implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            if (syntaxXMLButton.isSelected()) {
-                filterBox.setSelectedItem(rdfsFileFilter);
-            } else if (syntaxNTripleButton.isSelected()) {
-                filterBox.setSelectedItem(n3FileFilter);
-            } else if (syntaxTurtleButton.isSelected()) {
-                filterBox.setSelectedItem(turtleFileFilter);
-            }
-        }
-    }
-
     class ChangeContainerAction implements ActionListener, ListSelectionListener {
 
         private void changeContainerList() {
@@ -397,8 +363,6 @@ public class ImportDialog extends JDialog implements ActionListener {
             }
             try {
                 if (file.getName().matches(regex)) {
-                    // System.out.println(file.getParent());
-                    // System.out.println(getDirNum(file.getParent()));
                     fileNameSet.add("[Dir" + getDirNum(file.getParent()) + "] " + file.getName());
                 }
             } catch (PatternSyntaxException e) {
@@ -440,88 +404,10 @@ public class ImportDialog extends JDialog implements ActionListener {
         return rdfURI;
     }
 
-    private File getFile(String file) {
-        String[] tokens = file.split("] ");
-        // System.out.println(tokens[0].substring(4));
-        // System.out.println(tokens[1]);
-        String fileName = tokens[1];
-        String dirPath = containerListModel.get(Integer.parseInt(tokens[0].substring(4))).toString();
-        return new File(dirPath, fileName);
-    }
-
-    private Set<InputStream> getFileInputStreamSet() {
-        Set<InputStream> inputStreamSet = new HashSet<>();
-        if (fileListUI.isSelectionEmpty()) {
-            return inputStreamSet;
-        }
-        for (Object fileObj : fileListUI.getSelectedValuesList()) {
-            File file = getFile(fileObj.toString());
-            if (file == null || file.isDirectory()) {
-                continue;
-            }
-            try {
-                inputStreamSet.add(new BufferedInputStream(new FileInputStream(file)));
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-        return inputStreamSet;
-    }
-
-    private Set<InputStream> getURIInputStreamSet() {
-        Set<InputStream> inputStreamSet = new HashSet<>();
-        for (String uri : uriSet) {
-            if (uri == null) {
-                return null;
-            }
-            try {
-                inputStreamSet.add(new BufferedInputStream(getURI(uri).openStream()));
-            } catch (UnknownHostException uhe) {
-                Utilities.showErrorMessageDialog("Unknown Host (Proxy)");
-            } catch (MalformedURLException uriex) {
-                uriex.printStackTrace();
-            } catch (IOException ioe) {
-                Utilities.showErrorMessageDialog("File Not Found");
-            }
-        }
-        return inputStreamSet;
-    }
-
     private Model readModel(Model model) {
-        Set<InputStream> inputStreamSet = getURIInputStreamSet();
-        inputStreamSet.addAll(getFileInputStreamSet());
-        if (inputStreamSet.size() == 0) {
-            return null;
-        }
-        for (InputStream is : inputStreamSet) {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
-            StringBuilder builder = new StringBuilder();
-            String line = "";
-            try {
-                while ((line = reader.readLine()) != null) {
-                    builder.append(line);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            String decodedText = null;
-            decodedText = URLDecoder.decode(builder.toString(), StandardCharsets.UTF_8);
-            StringReader r = new StringReader(decodedText);
-            model.read(r, gmanager.getBaseURI(), getSyntax());
-        }
+        uriSet.stream().map(RDFDataMgr::loadModel).forEach(model::add);
+        fileSet.stream().map(f -> RDFDataMgr.loadModel(f.getAbsolutePath())).forEach(model::add);
         return model;
-    }
-
-    private String getSyntax() {
-        if (syntaxXMLButton.isSelected()) {
-            return "RDF/XML";
-        } else if (syntaxNTripleButton.isSelected()) {
-            return "N-TRIPLE";
-        } else if (syntaxTurtleButton.isSelected()) {
-            return "TURTLE";
-        } else {
-            return "RDF/XML";
-        }
     }
 
     class DataTypeManagementAction implements ActionListener {
@@ -531,11 +417,7 @@ public class ImportDialog extends JDialog implements ActionListener {
             importMergeButton.setEnabled(!isDataTypeOWL);
             importReplaceButton.setEnabled(!isDataTypeOWL);
             if (dataTypeRDFButton.isSelected() || dataTypeRDFSButton.isSelected()) {
-                if (syntaxNTripleButton.isSelected()) {
-                    filterBox.setSelectedItem(n3FileFilter);
-                } else {
-                    filterBox.setSelectedItem(rdfsFileFilter);
-                }
+                filterBox.setSelectedItem(rdfsFileFilter);
             } else if (dataTypeOWLButton.isSelected()) {
                 filterBox.setSelectedItem(owlFileFilter);
             }

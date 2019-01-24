@@ -39,6 +39,7 @@ import org.mrcube.models.NamespaceModel;
 import org.mrcube.models.PrefConstants;
 import org.mrcube.models.RDFResourceModel;
 import org.mrcube.utils.*;
+import org.mrcube.utils.file_filter.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
