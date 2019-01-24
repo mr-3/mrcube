@@ -1,24 +1,24 @@
 /*
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
- * 
+ *
  * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
- * 
+ *
  * This file is part of MR^3.
- * 
+ *
  * MR^3 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * MR^3 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  */
 
 package org.mrcube.views;
@@ -41,9 +41,7 @@ import java.awt.*;
 import java.util.*;
 
 /**
- * 
  * @author Takeshi Morita
- * 
  */
 public class MR3TreePanel extends JPanel {
 
@@ -77,7 +75,9 @@ public class MR3TreePanel extends JPanel {
     }
 
     private void replaceNameSpace(Object parent, Set prefixNSInfoSet) {
-        if (treeModel.getChildCount(parent) == 0) { return; }
+        if (treeModel.getChildCount(parent) == 0) {
+            return;
+        }
         for (int i = 0; i < treeModel.getChildCount(parent); i++) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) treeModel.getChild(parent, i);
             Resource resource = ResourceFactory.createResource(node.getUserObject().toString());
@@ -124,10 +124,8 @@ public class MR3TreePanel extends JPanel {
 
     public static TreeNode getRDFSTreeRoot(Model model, Resource rootResource, Property subRDFSOf) {
         resSubResSetMap = new HashMap();
-        for (ResIterator i = model.listSubjectsWithProperty(RDF.type); i.hasNext();) {
-            Resource resource = i.nextResource();
-            for (StmtIterator j = resource.listProperties(subRDFSOf); j.hasNext();) {
-                Statement stmt = j.nextStatement();
+        for (Resource resource : model.listSubjectsWithProperty(RDF.type).toList()) {
+            for (Statement stmt : resource.listProperties(subRDFSOf).toList()) {
                 Resource supResource = (Resource) stmt.getObject();
                 Set subResourceSet = (Set) resSubResSetMap.get(supResource);
                 if (subResourceSet == null) {
@@ -150,9 +148,8 @@ public class MR3TreePanel extends JPanel {
     }
 
     private static void setRootSubResource(Model model, Resource rootResource, Property subRDFSOf) {
-        // 手抜き．RDF.typeではなく，メタクラスリストを利用しないといけない
-        for (ResIterator i = model.listSubjectsWithProperty(RDF.type); i.hasNext();) {
-            Resource resource = i.nextResource();
+        // TODO RDF.typeではなく，メタクラスリストを利用するようにする
+        for (Resource resource : model.listSubjectsWithProperty(RDF.type).toList()) {
             if (!resource.listProperties(subRDFSOf).hasNext() && !resource.equals(rootResource)) {
                 // System.out.println("res: " + resource);
                 Set rootSubResourceSet = (Set) resSubResSetMap.get(rootResource);
@@ -246,7 +243,7 @@ public class MR3TreePanel extends JPanel {
         }
 
         public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded,
-                boolean leaf, int row, boolean hasFocus) {
+                                                      boolean leaf, int row, boolean hasFocus) {
 
             setText(value.toString());
 

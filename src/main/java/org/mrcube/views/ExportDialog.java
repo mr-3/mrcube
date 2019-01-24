@@ -52,6 +52,8 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -262,11 +264,9 @@ public class ExportDialog extends JDialog implements ActionListener {
             if (file == null) {
                 return;
             }
-            try {
-                String encoding = gmanager.getUserPrefs().get(PrefConstants.OutputEncoding, "UTF8");
-                Writer writer = new OutputStreamWriter(new BufferedOutputStream(new FileOutputStream(file)), encoding);
+            String encoding = gmanager.getUserPrefs().get(PrefConstants.OutputEncoding, "UTF8");
+            try (Writer writer = new OutputStreamWriter(new BufferedOutputStream(new FileOutputStream(file)), encoding)) {
                 writer.write(getModelString(getModel()));
-                writer.close();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

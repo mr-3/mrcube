@@ -345,8 +345,7 @@ public class GraphManager {
     }
 
     public void findMetaClass(Model orgModel, Resource supClass, Set<Resource> set) {
-        for (ResIterator i = orgModel.listSubjectsWithProperty(RDFS.subClassOf, supClass); i.hasNext(); ) {
-            Resource subject = i.nextResource();
+        for (Resource subject : orgModel.listSubjectsWithProperty(RDFS.subClassOf, supClass).toList()) {
             set.add(subject);
             findMetaClass(orgModel, subject, set);
         }

@@ -578,20 +578,13 @@ class InternalPopupMenu extends JPopupMenu {
      */
     private void saveWindowToFile() {
         JFileChooser fileDlg = new JFileChooser();
-        // fileDlg.setFileFilter(filter);
-        // no file selected.
         if (JFileChooser.APPROVE_OPTION != fileDlg.showSaveDialog(null)) {
             System.out.println("No file selected");
             return;
         }
         File f = fileDlg.getSelectedFile();
-
-        if (!f.canWrite()) System.err.println("Can'buttonText write to file " + f.getAbsolutePath());
-        try {
-            PrintStream os = new PrintStream(new FileOutputStream(f));
+        try (var os = new PrintStream(new FileOutputStream(f))) {
             os.println(currentWindow.getText());
-            os.close();
-
             clearWindow();
         } catch (FileNotFoundException e) {
             System.err.println("Can'buttonText write to file " + f.getAbsolutePath());

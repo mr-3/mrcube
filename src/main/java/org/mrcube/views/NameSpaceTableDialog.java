@@ -152,8 +152,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
 
     public void setCurrentNSPrefix(Model model) {
         Set<String> nsSet = new HashSet<>();
-        for (StmtIterator i = model.listStatements(); i.hasNext(); ) {
-            Statement stmt = i.nextStatement();
+        for (Statement stmt : model.listStatements().toList()) {
             String ns = Utilities.getNameSpace(stmt.getSubject());
             if (ns != null) {
                 nsSet.add(ns);

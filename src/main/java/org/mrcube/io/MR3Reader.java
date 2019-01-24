@@ -181,8 +181,7 @@ public class MR3Reader {
 		Resource targetRes = targetInfo.getURI();
 		RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
 		Model model = rdfsModelMap.getPropertyLabelModel();
-		for (StmtIterator i = model.listStatements(); i.hasNext();) {
-			Statement stmt = i.nextStatement();
+		for (Statement stmt: model.listStatements().toList()) {
 			Resource subject = stmt.getSubject();
 			Property predicate = stmt.getPredicate();
 			RDFNode object = stmt.getObject();
