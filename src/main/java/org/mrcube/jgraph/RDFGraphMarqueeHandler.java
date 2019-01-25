@@ -538,11 +538,9 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
                     Object[] rdfPropCells = getSelectedRDFPropertyCells();
                     for (Object rdfPropCell1 : rdfPropCells) {
                         GraphCell rdfPropCell = (GraphCell) rdfPropCell1;
-                        RDFSModel rdfsModel = (RDFSModel) GraphConstants.getValue(rdfsPropCell
-                                .getAttributes());
+                        RDFSModel rdfsModel = (RDFSModel) GraphConstants.getValue(rdfsPropCell.getAttributes());
                         GraphConstants.setValue(rdfPropCell.getAttributes(), rdfsModel);
-                        graph.getGraphLayoutCache().editCell(rdfPropCell,
-                                rdfPropCell.getAttributes());
+                        graph.getGraphLayoutCache().editCell(rdfPropCell, rdfPropCell.getAttributes());
                     }
                 }
             });

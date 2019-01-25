@@ -234,28 +234,17 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
         toolbar.addSeparator();
 
         if (graph.getType() == GraphType.RDF) {
-            toolbar.add(new InsertEllipseResourceAction(Utilities
-                    .getImageIcon("rdf_resource_ellipse.png")));
+            toolbar.add(new InsertEllipseResourceAction(Utilities.getImageIcon("rdf_resource_ellipse.png")));
         } else if (graph.getType() == GraphType.PROPERTY) {
-            toolbar.add(new InsertEllipseResourceAction(Utilities
-                    .getImageIcon("property_ellipse.png")));
+            toolbar.add(new InsertEllipseResourceAction(Utilities.getImageIcon("property_ellipse.png")));
         }
 
         if (graph.getType() == GraphType.RDF) {
-            toolbar.add(new InsertRectangleResourceAction(Utilities
-                    .getImageIcon("literal_rectangle.png")));
+            toolbar.add(new InsertRectangleResourceAction(Utilities.getImageIcon("literal_rectangle.png")));
         } else if (graph.getType() == GraphType.CLASS) {
-            toolbar.add(new InsertRectangleResourceAction(Utilities
-                    .getImageIcon("class_rectangle.png")));
+            toolbar.add(new InsertRectangleResourceAction(Utilities.getImageIcon("class_rectangle.png")));
         }
 
-        toolbar.addSeparator();
-        undo = new UndoAction();
-        undo.setEnabled(true);
-        toolbar.add(undo);
-        redo = new RedoAction();
-        redo.setEnabled(true);
-        toolbar.add(redo);
 
         toolbar.addSeparator();
         toolbar.add(graph.getCopyAction());
@@ -268,6 +257,14 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
         toolbar.add(remove);
 
         toolbar.addSeparator();
+        undo = new UndoAction();
+        undo.setEnabled(true);
+        toolbar.add(undo);
+        redo = new RedoAction();
+        redo.setEnabled(true);
+        toolbar.add(redo);
+
+        toolbar.addSeparator();
         toolbar.add(new FindResAction(graph, gmanager));
 
         toolbar.addSeparator();
@@ -277,9 +274,6 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
         toolbar.add(new ZoomAction(graph, this, ZoomAction.ZOOM_SUITABLE,
                 ZoomAction.ZOOM_SUITABLE_ICON));
 
-        toolbar.addSeparator();
-        toolbar.add(new GroupAction(graph));
-        toolbar.add(new UnGroupAction(graph, gmanager));
         toolbar.addSeparator();
         GraphLayoutAction graphLayoutAction = null;
         if (graph.getType() == GraphType.RDF) {
