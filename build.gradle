@@ -1,14 +1,16 @@
 plugins {
-    id 'org.beryx.jlink' version '2.2.1'
-    id "com.jfrog.bintray" version "1.8.4"
     id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '4.0.2'
+    id 'org.beryx.runtime' version '1.1.2'
+    id "com.jfrog.bintray" version "1.8.4"
     id 'maven-publish'
     id 'idea'
 }
 
 group 'org.mrcube'
 version = '1.1.0'
-mainClassName = 'org.mrcube.mrcube/org.mrcube.MR3'
+mainClassName = 'org.mrcube.MR3'
 sourceCompatibility = targetCompatibility = '11'
 
 project.ext {
@@ -26,39 +28,13 @@ wrapper {
 }
 
 jar {
-    inputs.property("moduleName", moduleName)
     manifest {
-        attributes('Automatic-Module-Name': moduleName)
-        attributes 'Implementation-Title': "mrcube",
-                'Main-Class': 'org.mrcube.MR3'
-    }
-}
-
-compileJava {
-    inputs.property("moduleName", moduleName)
-    doFirst {
-        options.compilerArgs = [
-                '--module-path', classpath.asPath,
-        ]
-        classpath = files()
+        attributes 'Main-Class': 'org.mrcube.MR3'
     }
 }
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
-}
-
-compileTestJava {
-    inputs.property("moduleName", moduleName)
-    doFirst {
-        options.compilerArgs = [
-                '--module-path', classpath.asPath,
-                '--add-modules', 'junit',
-                '--add-reads', "$moduleName=junit",
-                '--patch-module', "$moduleName=" + files(sourceSets.test.java.srcDirs).asPath,
-        ]
-        classpath = files()
-    }
 }
 
 idea {
@@ -71,34 +47,24 @@ idea {
 
 test {
     useJUnitPlatform()
-    inputs.property("moduleName", moduleName)
-    doFirst {
-        jvmArgs = [
-                '--module-path', classpath.asPath,
-                '--add-modules', 'ALL-MODULE-PATH',
-                '--add-reads', "$moduleName=junit",
-                '--patch-module', "$moduleName=" + files(sourceSets.test.java.outputDir).asPath,
-        ]
-        classpath = files()
-    }
 }
 
-jlink {
-    mergedModule {
-        requires 'java.desktop'
-        requires 'java.logging'
-        uses 'org.apache.jena.sys.JenaSubsystemLifecycle'
+shadowJar {
+    mergeServiceFiles()
+    manifest {
+        attributes 'Main-Class': 'org.mrcube.MR3'
     }
+    archiveName = "mrcube.jar"
+}
+
+runtime {
     options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
-    launcher {
-        name = 'mrcube'
-    }
+    modules = ['java.desktop', 'java.logging']
     imageDir = file("$buildDir/mrcube-${version}")
     imageZip = file("$buildDir/mrcube-${version}.zip")
-
 }
 
-tasks.jlink.doLast {
+tasks.runtime.doLast {
     copy {
         from('./README.md')
         into("$buildDir/mrcube-${version}")
@@ -115,7 +81,8 @@ tasks.jlink.doLast {
 
 dependencies {
     compile 'jgraph:jgraph:5.13.0.0'
-    compile 'org.apache.jena:jena-core:3.9.0'
+    compile 'org.apache.jena:jena-core:3.10.0'
+    compile 'org.apache.jena:jena-arq:3.10.0'
     compile 'org.slf4j:slf4j-simple:1.7.25'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.2'

@@ -147,8 +147,6 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
         JPopupMenu menu = new JPopupMenu();
 
         menu.add(insertPropertyAction);
-        menu.addSeparator();
-        addConnectORMoveMenu(menu);
 
         addTransformMenu(menu, cell);
         addEditMenu(menu, cell);

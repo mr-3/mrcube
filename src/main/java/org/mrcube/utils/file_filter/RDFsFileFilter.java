@@ -21,7 +21,7 @@
  * 
  */
 
-package org.mrcube.utils;
+package org.mrcube.utils.file_filter;
 
 import java.io.File;
 

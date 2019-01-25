@@ -28,7 +28,7 @@ import org.jgraph.graph.*;
 import org.mrcube.actions.CopyAction;
 import org.mrcube.actions.CutAction;
 import org.mrcube.actions.PasteAction;
-import org.mrcube.actions.SelectNodes;
+import org.mrcube.actions.SelectAllNodesAction;
 import org.mrcube.models.*;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.utils.GraphUtilities;
@@ -52,6 +52,7 @@ public class RDFGraph extends JGraph {
     private final CopyAction copyAction;
     private final CutAction cutAction;
     private final PasteAction pasteAction;
+    private final SelectAllNodesAction selectAllNodesAction;
 
     private boolean pagevisible = false;
     private transient PageFormat pageFormat = new PageFormat();
@@ -71,7 +72,12 @@ public class RDFGraph extends JGraph {
         cutAction = new CutAction(this, gmanager);
         copyAction = new CopyAction(this);
         pasteAction = new PasteAction(this, gmanager);
+        selectAllNodesAction = new SelectAllNodesAction(gmanager, type);
         SwingUtilities.replaceUIActionMap(this, createActionMap());
+    }
+
+    public SelectAllNodesAction getSelectAllNodesAction() {
+        return selectAllNodesAction;
     }
 
     public void setCopyCells(Object[] cells) {
@@ -477,7 +483,7 @@ public class RDFGraph extends JGraph {
         map.put(TransferHandler.getCutAction().getValue(Action.NAME), cutAction);
         map.put(TransferHandler.getCopyAction().getValue(Action.NAME), copyAction);
         map.put(TransferHandler.getPasteAction().getValue(Action.NAME), pasteAction);
-        map.put("selectAll", new SelectNodes(gmanager, type, "selectAll"));
+        map.put(selectAllNodesAction.getName(), selectAllNodesAction);
 
         return map;
     }

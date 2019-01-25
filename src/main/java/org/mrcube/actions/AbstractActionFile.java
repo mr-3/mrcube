@@ -26,6 +26,7 @@ package org.mrcube.actions;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.mrcube.MR3;
+import org.mrcube.utils.file_filter.*;
 import org.mrcube.views.MR3ProjectPanel;
 import org.mrcube.models.MR3Constants.HistoryType;
 import org.mrcube.models.PrefConstants;
@@ -34,7 +35,6 @@ import org.mrcube.utils.*;
 import org.mrcube.views.HistoryManager;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Set;

@@ -1,24 +1,24 @@
 /*
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
- * 
+ *
  * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
- * 
+ *
  * This file is part of MR^3.
- * 
+ *
  * MR^3 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * MR^3 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  */
 
 package org.mrcube.utils;
@@ -42,9 +42,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * 
  * @author Takeshi Morita
- * 
  */
 public class MR3CellMaker {
 
@@ -169,7 +167,7 @@ public class MR3CellMaker {
             parentMap.addEntry(rdfCell, group);
             parentMap.addEntry(typeViewCell, group);
             resInfo.setTypeViewCell(typeViewCell);
-            graph.getGraphLayoutCache().insert(new Object[] { group}, attributes, null, parentMap);
+            graph.getGraphLayoutCache().insert(new Object[]{group}, attributes, null, parentMap);
         }
     }
 
@@ -190,7 +188,7 @@ public class MR3CellMaker {
         attributes.put(rdfCell, resMap);
         model.setTypeCell((GraphCell) resTypeCell, gmanager.getCurrentRDFGraph());
         GraphConstants.setValue(rdfCell.getAttributes(), model);
-        graph.getGraphLayoutCache().insert(new Object[] { rdfCell}, attributes, null, null);
+        graph.getGraphLayoutCache().insert(new Object[]{rdfCell}, attributes, null, null);
         GraphUtilities.resizeRDFResourceCell(gmanager, model, rdfCell);
         addTypeCell(rdfCell, attributes);
 
@@ -204,7 +202,9 @@ public class MR3CellMaker {
         double left = 50;
         double right = 50;
         double bottom = 0;
-        if (supCells == null) { return new Point2D.Double((left + right) / 2, bottom + 100); }
+        if (supCells == null) {
+            return new Point2D.Double((left + right) / 2, bottom + 100);
+        }
         for (Object supCell : supCells) {
             GraphCell cell = (GraphCell) supCell;
             AttributeMap map = cell.getAttributes();
@@ -244,7 +244,7 @@ public class MR3CellMaker {
         AttributeMap attributes = new AttributeMap();
         AttributeMap map = getEdgeMap(info, edge);
         attributes.put(edge, map);
-        graph.getGraphLayoutCache().insert(new Object[] { edge}, attributes, cs, null);
+        graph.getGraphLayoutCache().insert(new Object[]{edge}, attributes, cs, null);
         graph.getGraphLayoutCache().reload();
 
         if (gmanager.isClassGraph(graph)) {
@@ -279,7 +279,7 @@ public class MR3CellMaker {
         AttributeMap map = getEdgeMap(info, edge);
         GraphConstants.setRouting(map, GraphConstants.ROUTING_SIMPLE);
         attributes.put(edge, map);
-        graph.getGraphLayoutCache().insert(new Object[] { edge}, attributes, cs, null);
+        graph.getGraphLayoutCache().insert(new Object[]{edge}, attributes, cs, null);
     }
 
     public DefaultGraphCell insertClass(Point2D point, String uri) {
@@ -332,6 +332,6 @@ public class MR3CellMaker {
         cell.add(new DefaultPort());
         HashMap<Object, AttributeMap> attributes = new HashMap<>();
         attributes.put(cell, map);
-        graph.getGraphLayoutCache().insert(new Object[] { cell}, attributes, null, null);
+        graph.getGraphLayoutCache().insert(new Object[]{cell}, attributes, null, null);
     }
 }

@@ -21,27 +21,37 @@
  * 
  */
 
-package org.mrcube.utils;
+package org.mrcube.utils.file_filter;
 
 import java.io.File;
 
 /**
  * @author Takeshi Morita
  */
-public class ProjectFileFilter extends MR3FileFilter {
+public class OWLFileFilter extends MR3FileFilter implements java.io.FileFilter {
 
-    public String getExtension() {
-        return "mr3";
-    }
+	private final boolean isShowDirectories;
 
-    public boolean accept(File f) {
-        if (f.isDirectory()) { return true; }
-        String extension = getExtension(f);
-        if (extension != null && extension.equals("mr3")) { return true; }
-        return false;
-    }
+	public OWLFileFilter(boolean isShowDirectories) {
+		this.isShowDirectories = isShowDirectories;
+	}
 
-    public String getDescription() {
-        return "MR3 Project File (*.mr3)";
-    }
+	public String getExtension() {
+		return "owl";
+	}
+
+	public boolean accept(File f) {
+		if (f.isDirectory()) {
+			return isShowDirectories;
+		}
+		String extension = getExtension(f);
+		if (extension != null && extension.equals("owl")) {
+			return true;
+		}
+		return false;
+	}
+
+	public String getDescription() {
+		return "OWL File (*.owl)";
+	}
 }

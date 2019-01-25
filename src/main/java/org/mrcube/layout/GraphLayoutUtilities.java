@@ -135,8 +135,7 @@ public class GraphLayoutUtilities {
     }
 
     public static void addChild(Model model, GraphLayoutData data, Map<RDFNode, GraphLayoutData> cellLayoutMap) {
-        for (StmtIterator i = model.listStatements(); i.hasNext(); ) {
-            Statement stmt = i.nextStatement();
+        for (Statement stmt : model.listStatements().toList()) {
             RDFNode source = stmt.getSubject();
             RDFNode target = stmt.getObject();
 
@@ -256,9 +255,7 @@ public class GraphLayoutUtilities {
         Set<RDFNode> nodeSet = new HashSet<>();
         Set<GraphLayoutData> dataSet = new HashSet<>();
 
-        for (StmtIterator i = model.listStatements(); i.hasNext(); ) {
-            Statement stmt = i.nextStatement();
-
+        for (Statement stmt : model.listStatements().toList()) {
             RDFNode rdfNode = stmt.getSubject();
             if (!nodeSet.contains(rdfNode)) {
                 Dimension dim = GraphUtilities.getAutoNodeDimension(gmanager, gmanager.getRDFNodeValue(
@@ -367,8 +364,7 @@ public class GraphLayoutUtilities {
             return;
         }
         Model removeModel = ModelFactory.createDefaultModel();
-        for (StmtIterator i = model.listStatements(); i.hasNext(); ) {
-            Statement stmt = i.nextStatement();
+        for (Statement stmt : model.listStatements().toList()) {
             RDFNode subject = stmt.getSubject();
             if (subject.equals(tmpRoot)) {
                 removeModel.add(stmt);

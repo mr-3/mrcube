@@ -21,30 +21,27 @@
  * 
  */
 
-package org.mrcube.utils;
+package org.mrcube.utils.file_filter;
 
-import javax.swing.filechooser.FileFilter;
 import java.io.File;
 
 /**
  * @author Takeshi Morita
  */
-public abstract class MR3FileFilter extends FileFilter {
+public class PNGFileFilter extends MR3FileFilter {
 
-    public abstract String getExtension();
-
-    String getExtension(File f) {
-        String ext = null;
-        String s = f.getName();
-        int i = s.lastIndexOf('.');
-
-        if (i > 0 && i < s.length() - 1) {
-            ext = s.substring(i + 1).toLowerCase();
-        }
-        return ext;
+    public String getExtension() {
+        return "png";
     }
 
-    public String toString() {
-        return getDescription();
+    public boolean accept(File f) {
+        if (f.isDirectory()) { return true; }
+        String extension = getExtension(f);
+        if (extension != null && extension.equals("png")) { return true; }
+        return false;
+    }
+
+    public String getDescription() {
+        return "PNG File (*.png)";
     }
 }
