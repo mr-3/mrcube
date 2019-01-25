@@ -63,8 +63,6 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     final RDFGraph graph;
     final MR3CellMaker cellMaker;
     final GraphManager gmanager;
-//    public final transient JToggleButton moveButton = new JToggleButton();
-//    public final transient JToggleButton connectButton = new JToggleButton();
 
     Point2D start;
     Point2D current;
@@ -510,6 +508,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
         Object[] classCells = gmanager.getCurrentClassGraph().getSelectionCells();
         Object[] resCells = getSelectedRDFResourceCells();
         if (resCells.length != 0 && classCells.length == 1) {
+            menu.addSeparator();
             menu.add(new AbstractAction(Translator.getString("Action.ChangeResourceType.Text")) {
                 public void actionPerformed(ActionEvent ev) {
                     GraphCell typeCell = (GraphCell) gmanager.getCurrentClassGraph()
@@ -523,7 +522,6 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
                     gmanager.repaintRDFGraph();
                 }
             });
-            menu.addSeparator();
         }
     }
 
