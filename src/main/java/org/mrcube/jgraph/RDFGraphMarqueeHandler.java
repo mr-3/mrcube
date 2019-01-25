@@ -63,8 +63,8 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     final RDFGraph graph;
     final MR3CellMaker cellMaker;
     final GraphManager gmanager;
-    public final transient JToggleButton moveButton = new JToggleButton();
-    public final transient JToggleButton connectButton = new JToggleButton();
+//    public final transient JToggleButton moveButton = new JToggleButton();
+//    public final transient JToggleButton connectButton = new JToggleButton();
 
     Point2D start;
     Point2D current;
@@ -75,8 +75,8 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     private WeakReference<InsertRDFLiteralDialog> insertRDFLiteralDialogRef;
     private WeakReference<InsertRDFSResDialog> insertRDFSResDialogRef;
 
-    private final ConnectAction moveAction;
-    private final ConnectAction connectAction;
+    protected boolean isConnectMode;
+
     private final InsertResourceAction insertResourceAction;
     private final InsertLiteralAction insertLiteralAction;
     private final RemoveAction removeAction;
@@ -96,10 +96,6 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
         insertResourceAction = new InsertResourceAction();
         insertLiteralAction = new InsertLiteralAction();
 
-        moveAction = new ConnectAction(Translator.getString("Action.Move.Text"),
-                Utilities.getImageIcon(Translator.getString("Action.Move.Icon")));
-        connectAction = new ConnectAction(Translator.getString("Action.Connect.Text"),
-                Utilities.getImageIcon(Translator.getString("Action.Connect.Icon")));
         removeAction = new RemoveAction(graph, gmanager);
         setAction(graph);
     }
@@ -125,17 +121,11 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
         ActionMap actionMap = panel.getActionMap();
         actionMap.put(insertResourceAction.getValue(Action.NAME), insertResourceAction);
         actionMap.put(insertLiteralAction.getValue(Action.NAME), insertLiteralAction);
-        actionMap.put(moveAction.getValue(Action.NAME), moveAction);
-        actionMap.put(connectAction.getValue(Action.NAME), connectAction);
         InputMap inputMap = panel.getInputMap(JComponent.WHEN_FOCUSED);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_I, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
                 insertResourceAction.getValue(Action.NAME));
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_L, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
                 insertLiteralAction.getValue(Action.NAME));
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_G, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
-                moveAction.getValue(Action.NAME));
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_G, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
-                connectAction.getValue(Action.NAME));
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
                 graph.getSelectAllNodesAction().getValue(Action.NAME));
         setCopyCutPasteAction(actionMap, inputMap);
@@ -176,7 +166,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     }
 
     public boolean isForceMarqueeEvent(MouseEvent e) {
-        return !moveButton.isSelected() || isPopupTrigger(e) || super.isForceMarqueeEvent(e);
+        return isConnectMode || isPopupTrigger(e) || super.isForceMarqueeEvent(e);
     }
 
     // Display PopupMenu or Remember Start Location and First Port
@@ -186,7 +176,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
             Object cell = graph.getFirstCellForLocation(loc.getX(), loc.getY());
             JPopupMenu menu = createPopupMenu(e.getPoint(), cell);
             menu.show(graph, e.getX(), e.getY());
-        } else if (port != null && !e.isConsumed() && connectButton.isSelected()) {
+        } else if (port != null && !e.isConsumed() && isConnectMode) {
             start = graph.snap(e.getPoint());
             firstPort = port;
             if (firstPort != null) {
@@ -201,7 +191,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     private void overlay(Graphics g) {
         super.overlay(graph, g, true);
         if (start != null) {
-            if (connectButton.isSelected() && current != null) {
+            if (isConnectMode && current != null) {
                 g.drawLine((int) start.getX(), (int) start.getY(), (int) current.getX(),
                         (int) current.getY());
             }
@@ -210,7 +200,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 
     // Find Port under Mouse and Repaint Connector
     public void mouseDragged(MouseEvent event) {
-        if (!event.isConsumed() && connectButton.isSelected()) {
+        if (!event.isConsumed() && isConnectMode) {
             graph.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
             Graphics g = graph.getGraphics();
             Color bg = graph.getBackground();
@@ -219,7 +209,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
             g.setXORMode(bg);
             overlay(g);
             current = graph.snap(event.getPoint());
-            if (connectButton.isSelected()) {
+            if (isConnectMode) {
                 port = getPortViewAt(event.getX(), event.getY(), !event.isShiftDown());
                 if (port != null) {
                     current = graph.toScreen(port.getLocation(null));
@@ -266,8 +256,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
         // Shift Jumps to "Default" Port (child index 0)
         if (port == null && jump) {
             Object cell = graph.getFirstCellForLocation(x, y);
-            if (RDFGraph.isRDFSCell(cell) || RDFGraph.isRDFResourceCell(cell)
-                    || RDFGraph.isRDFLiteralCell(cell)) {
+            if (RDFGraph.isRDFSCell(cell) || RDFGraph.isRDFResourceCell(cell) || RDFGraph.isRDFLiteralCell(cell)) {
                 Object firstChild = graph.getModel().getChild(cell, 0);
                 CellView firstChildView = graph.getGraphLayoutCache().getMapping(firstChild, false);
                 if (firstChildView instanceof PortView)
@@ -281,7 +270,11 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 
     public void mouseMoved(MouseEvent event) {
         insertPoint = event.getPoint();
-        if (connectButton.isSelected()) {
+        var sp = graph.fromScreen(new Point2D.Double(event.getX(), event.getY()));
+        var connectPort = graph.getPortViewAt(sp.getX(), sp.getY());
+        isConnectMode = connectPort != null;
+
+        if (isConnectMode) {
             graph.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
             if (!event.isConsumed()) {
                 event.consume();
@@ -300,28 +293,8 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
                 }
             }
         } else {
+            graph.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             super.mouseMoved(event);
-        }
-    }
-
-    class ConnectAction extends AbstractAction {
-        protected ConnectAction(String title, ImageIcon icon) {
-            super(title, icon);
-            setValues(title);
-        }
-
-        private void setValues(String title) {
-            putValue(SHORT_DESCRIPTION, title);
-            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_G,
-                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            if (connectButton.isSelected()) {
-                moveButton.setSelected(true);
-            } else {
-                connectButton.setSelected(true);
-            }
         }
     }
 
@@ -415,8 +388,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
                 info = new PropertyModel(MR3Resource.Nil.getURI());
             }
             cellMaker.connect(sourcePort, targetPort, info, graph);
-            HistoryManager.saveHistory(HistoryType.INSERT_PROPERTY, info, (GraphCell) graph
-                            .getModel().getParent(sourcePort),
+            HistoryManager.saveHistory(HistoryType.INSERT_PROPERTY, info, (GraphCell) graph.getModel().getParent(sourcePort),
                     (GraphCell) graph.getModel().getParent(targetPort));
         }
     }
@@ -426,8 +398,6 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
         if (!insertLiteralDialog.isConfirm()) {
             return null;
         }
-        Point2D point = pt;
-        point = graph.snap(new Point2D.Double(point.getX(), point.getY()));
         return cellMaker.insertRDFLiteral(pt, insertLiteralDialog.getLiteral());
     }
 
@@ -495,10 +465,8 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
         menu.add(insertResourceAction);
         menu.add(insertLiteralAction);
 
-        menu.addSeparator();
         addChangeResourceTypeMenu(menu);
         addChangePropertyMenu(menu);
-        addConnectORMoveMenu(menu);
 
         if (graph.isOneCellSelected(cell) && RDFGraph.isRDFResourceCell(cell)) {
             menu.add(new AbstractAction("Self Connect") {
@@ -563,10 +531,10 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
         Object[] rdfsPropCells = gmanager.getCurrentPropertyGraph().getSelectionCells();
         Object[] rdfPropCells = getSelectedRDFPropertyCells();
         if (rdfPropCells.length != 0 && rdfsPropCells.length == 1) {
+            menu.addSeparator();
             menu.add(new AbstractAction(Translator.getString("Action.ChangeProperty.Text")) {
                 public void actionPerformed(ActionEvent ev) {
-                    GraphCell rdfsPropCell = (GraphCell) gmanager.getCurrentPropertyGraph()
-                            .getSelectionCell();
+                    GraphCell rdfsPropCell = (GraphCell) gmanager.getCurrentPropertyGraph().getSelectionCell();
                     Object[] rdfPropCells = getSelectedRDFPropertyCells();
                     for (Object rdfPropCell1 : rdfPropCells) {
                         GraphCell rdfPropCell = (GraphCell) rdfPropCell1;
@@ -578,17 +546,6 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
                     }
                 }
             });
-            menu.addSeparator();
-        }
-    }
-
-    void addConnectORMoveMenu(JPopupMenu menu) {
-        if (connectButton.isSelected()) {
-            menu.add(new ConnectAction(Translator.getString("Action.Move.Text"), Utilities
-                    .getImageIcon(Translator.getString("Action.Move.Icon"))));
-        } else {
-            menu.add(new ConnectAction(Translator.getString("Action.Connect.Text"), Utilities
-                    .getImageIcon(Translator.getString("Action.Connect.Icon"))));
         }
     }
 

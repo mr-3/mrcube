@@ -120,8 +120,7 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
         if (isCellSelected(cell)) {
             menu.addSeparator();
             menu.add(new TransformElementAction(graph, gmanager, GraphType.CLASS, GraphType.RDF));
-            menu.add(new TransformElementAction(graph, gmanager, GraphType.CLASS,
-                    GraphType.PROPERTY));
+            menu.add(new TransformElementAction(graph, gmanager, GraphType.CLASS, GraphType.PROPERTY));
         }
     }
 
@@ -149,8 +148,6 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
         JPopupMenu menu = new JPopupMenu();
 
         menu.add(insertClassAction);
-        menu.addSeparator();
-        addConnectORMoveMenu(menu);
 
         addTransformMenu(menu, cell);
         addEditMenu(menu, cell);

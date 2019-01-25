@@ -217,21 +217,6 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
         toolbar.setFloatable(false);
 
         if (graph.getMarqueeHandler() instanceof RDFGraphMarqueeHandler) {
-            RDFGraphMarqueeHandler mh = (RDFGraphMarqueeHandler) graph.getMarqueeHandler();
-
-            ButtonGroup group = new ButtonGroup();
-            mh.moveButton.setSelected(true);
-            group.add(mh.moveButton);
-            group.add(mh.connectButton);
-
-            mh.moveButton.setIcon(Utilities.getImageIcon("move.gif")); // move
-            toolbar.add(mh.moveButton);
-
-            ImageIcon connectIcon = Utilities.getImageIcon(Translator
-                    .getString("Action.Connect.Icon"));
-            mh.connectButton.setIcon(connectIcon);
-            toolbar.add(mh.connectButton);
-
             if (graph.getType() == GraphType.RDF) {
                 toolbar.addSeparator();
                 editModeButton.setIcon(Utilities.getImageIcon("link.png"));
