@@ -42,6 +42,6 @@ public class ProjectFileFilter extends MR3FileFilter {
     }
 
     public String getDescription() {
-        return "MR3 Project File (*.mr3)";
+        return "MR^3 Project (*.mr3)";
     }
 }

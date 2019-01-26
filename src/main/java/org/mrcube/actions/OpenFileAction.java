@@ -24,7 +24,10 @@
 package org.mrcube.actions;
 
 import org.apache.jena.rdf.model.Model;
+import org.apache.jena.riot.Lang;
+import org.apache.jena.riot.RDFDataMgr;
 import org.mrcube.MR3;
+import org.mrcube.io.MR3Reader;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
 
@@ -32,31 +35,42 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
 
 /**
  * @author Takeshi Morita
  */
-public class OpenProject extends AbstractActionFile {
+public class OpenFileAction extends AbstractActionFile {
 
+    private MR3Reader mr3Reader;
     private static final String TITLE = Translator.getString("Component.File.OpenProject.Text");
-    private static final ImageIcon ICON = Utilities.getImageIcon(Translator
-            .getString("Component.File.OpenProject.Icon"));
+    private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("Component.File.OpenProject.Icon"));
 
-    public OpenProject(MR3 mr3) {
+    public OpenFileAction(MR3 mr3) {
         super(mr3, TITLE, ICON);
         setValues();
+        mr3Reader = new MR3Reader(mr3.getGraphManager());
+        initializeJFileChooser();
     }
 
     private void setValues() {
         putValue(SHORT_DESCRIPTION, TITLE);
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O,
-                Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
     }
 
     public void actionPerformed(ActionEvent e) {
         confirmExitProject();
-        Model model = readModel(getInputStream("mr3"), mr3.getGraphManager().getBaseURI(), "RDF/XML");
-        mr3.getMR3Reader().replaceProjectModel(model);
-        mr3.setTitle("MR^3: " + MR3.getCurrentProject().getTitle());
+        File file = selectOpenFile();
+        if (file == null) {
+            return;
+        }
+        if (file.getName().endsWith("mr3")) {
+            Model model = RDFDataMgr.loadModel(file.getAbsolutePath(), Lang.TURTLE);
+            mr3.getMR3Reader().replaceProjectModel(model);
+            mr3.setTitle("MR^3: " + MR3.getCurrentProject().getTitle());
+        } else {
+            Model model = RDFDataMgr.loadModel(file.getAbsolutePath());
+            mr3Reader.mergeRDFPlusRDFSModel(model);
+        }
     }
 }

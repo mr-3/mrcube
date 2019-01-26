@@ -52,7 +52,7 @@ public class NTripleFileFilter extends MR3FileFilter implements java.io.FileFilt
 	}
 
 	public String getDescription() {
-		return "N-Triples File (*.n3)";
+		return "N-Triples (*.n3)";
 	}
 
 	public String toString() {

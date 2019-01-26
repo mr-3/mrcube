@@ -42,6 +42,6 @@ public class PNGFileFilter extends MR3FileFilter {
     }
 
     public String getDescription() {
-        return "PNG File (*.png)";
+        return "PNG (*.png)";
     }
 }

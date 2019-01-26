@@ -183,9 +183,9 @@ public class MR3 extends JFrame implements ChangeListener {
 
     private void initActions() {
         newProjectAction = new NewProject(this);
-        openProjectAction = new OpenProject(this);
-        saveProjectAction = new SaveProject(this, SaveProject.SAVE_PROJECT, SaveProject.SAVE_PROJECT_ICON);
-        saveProjectAsAction = new SaveProject(this, SaveProject.SAVE_AS_PROJECT, SaveProject.SAVE_AS_PROJECT_ICON);
+        openProjectAction = new OpenFileAction(this);
+        saveProjectAction = new SaveFileAction(this, SaveFileAction.SAVE_PROJECT, SaveFileAction.SAVE_PROJECT_ICON);
+        saveProjectAsAction = new SaveFileAction(this, SaveFileAction.SAVE_AS_PROJECT, SaveFileAction.SAVE_AS_PROJECT_ICON);
         showValidatorAction = new ShowValidator(this);
         toFrontRDFEditorAction = new EditorSelect(this, EditorSelect.RDF_EDITOR, EditorSelect.RDF_EDITOR_ICON);
         toFrontClassEditorAction = new EditorSelect(this, EditorSelect.CLASS_EDITOR, EditorSelect.CLASS_EDITOR_ICON);
@@ -224,9 +224,9 @@ public class MR3 extends JFrame implements ChangeListener {
         toolbar.add(saveProjectAction);
         toolbar.add(saveProjectAsAction);
         toolbar.addSeparator();
-        toolbar.add(showImportDialogAction);
-        toolbar.add(showExportDialogAction);
-        toolbar.addSeparator();
+//        toolbar.add(showImportDialogAction);
+//        toolbar.add(showExportDialogAction);
+//        toolbar.addSeparator();
         toolbar.add(findResAction);
         toolbar.addSeparator();
         toolbar.add(toFrontRDFEditorAction);
@@ -466,14 +466,13 @@ public class MR3 extends JFrame implements ChangeListener {
         menu.setMnemonic('f');
         menu.add(newProjectAction);
         menu.add(openProjectAction);
+        menu.addSeparator();
         menu.add(saveProjectAction);
         menu.add(saveProjectAsAction);
         menu.addSeparator();
-
-        menu.add(new ShowImportDialog(this, Translator.getString("Component.File.Import.Text")));
-        menu.add(new ShowExportDialog(this, Translator.getString("Component.File.Export.Text")));
-
-        menu.addSeparator();
+//        menu.add(new ShowImportDialog(this, Translator.getString("Component.File.Import.Text")));
+//        menu.add(new ShowExportDialog(this, Translator.getString("Component.File.Export.Text")));
+//        menu.addSeparator();
         menu.add(new QuitAction(this));
 
         return menu;
