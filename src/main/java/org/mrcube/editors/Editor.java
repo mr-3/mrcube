@@ -271,16 +271,17 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
         toolbar.add(new ZoomAction(graph, this, ZoomAction.ZOOM_SUITABLE, ZoomAction.ZOOM_SUITABLE_ICON));
 
         toolbar.addSeparator();
+
+        toolbar.add(new SaveGraphImageAction(gmanager, graph.getType()));
+
+        toolbar.addSeparator();
         GraphLayoutAction graphLayoutAction = null;
         if (graph.getType() == GraphType.RDF) {
-            graphLayoutAction = new GraphLayoutAction(gmanager, graph.getType(),
-                    GraphLayoutAction.layoutRDFGraphIcon);
+            graphLayoutAction = new GraphLayoutAction(gmanager, graph.getType(), GraphLayoutAction.layoutRDFGraphIcon);
         } else if (graph.getType() == GraphType.CLASS) {
-            graphLayoutAction = new GraphLayoutAction(gmanager, graph.getType(),
-                    GraphLayoutAction.layoutClassGraphIcon);
+            graphLayoutAction = new GraphLayoutAction(gmanager, graph.getType(), GraphLayoutAction.layoutClassGraphIcon);
         } else if (graph.getType() == GraphType.PROPERTY) {
-            graphLayoutAction = new GraphLayoutAction(gmanager, graph.getType(),
-                    GraphLayoutAction.layoutPropertyGraphIcon);
+            graphLayoutAction = new GraphLayoutAction(gmanager, graph.getType(), GraphLayoutAction.layoutPropertyGraphIcon);
         }
         toolbar.add(graphLayoutAction);
 

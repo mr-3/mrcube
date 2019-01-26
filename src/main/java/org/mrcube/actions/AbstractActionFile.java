@@ -81,7 +81,6 @@ abstract class AbstractActionFile extends MR3AbstractAction {
     private static final NTripleFileFilter n3FileFilter = new NTripleFileFilter(true);
     private static final TurtleFileFilter turtleFileFilter = new TurtleFileFilter(false);
     private static final JSONLDFileFilter jsonldFileFilter = new JSONLDFileFilter(false);
-    private static final PNGFileFilter pngFileFilter = new PNGFileFilter();
 
     protected File selectOpenFile() {
         Preferences userPrefs = mr3.getUserPrefs();
@@ -92,6 +91,7 @@ abstract class AbstractActionFile extends MR3AbstractAction {
             return null;
         }
     }
+
 
     protected File selectSaveFile() {
         Preferences userPrefs = mr3.getUserPrefs();
@@ -167,10 +167,9 @@ abstract class AbstractActionFile extends MR3AbstractAction {
                 && !defaultPath.toLowerCase().endsWith(".ttl")
                 && !defaultPath.toLowerCase().endsWith(".jsonld")
                 && !defaultPath.toLowerCase().endsWith(".rdf")
-                && !defaultPath.toLowerCase().endsWith(".rdfs")
                 && !defaultPath.toLowerCase().endsWith(".n3")
-                && !defaultPath.toLowerCase().endsWith(".owl")
                 && !defaultPath.toLowerCase().endsWith(".mr3")
+                && !defaultPath.toLowerCase().endsWith(".png")
         ) {
             defaultPath += ext;
         }

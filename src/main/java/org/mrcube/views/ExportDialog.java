@@ -25,7 +25,6 @@ package org.mrcube.views;
 
 import org.apache.jena.datatypes.RDFDatatype;
 import org.apache.jena.rdf.model.*;
-import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.shared.InvalidPropertyURIException;
 import org.apache.jena.util.URIref;
 import org.apache.jena.vocabulary.RDFS;
@@ -39,7 +38,10 @@ import org.mrcube.models.MR3Constants;
 import org.mrcube.models.NamespaceModel;
 import org.mrcube.models.PrefConstants;
 import org.mrcube.models.RDFResourceModel;
-import org.mrcube.utils.*;
+import org.mrcube.utils.GPConverter;
+import org.mrcube.utils.GraphUtilities;
+import org.mrcube.utils.Translator;
+import org.mrcube.utils.Utilities;
 import org.mrcube.utils.file_filter.*;
 
 import javax.imageio.ImageIO;
@@ -52,8 +54,6 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
