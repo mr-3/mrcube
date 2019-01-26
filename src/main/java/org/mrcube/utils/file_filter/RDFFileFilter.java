@@ -28,11 +28,11 @@ import java.io.File;
 /**
  * @author Takeshi Morita
  */
-public class RDFsFileFilter extends MR3FileFilter implements java.io.FileFilter {
+public class RDFFileFilter extends MR3FileFilter implements java.io.FileFilter {
 
     private final boolean isShowDirectories;
 
-    public RDFsFileFilter(boolean isShowDirectories) {
+    public RDFFileFilter(boolean isShowDirectories) {
         this.isShowDirectories = isShowDirectories;
     }
 
@@ -45,12 +45,7 @@ public class RDFsFileFilter extends MR3FileFilter implements java.io.FileFilter 
             return isShowDirectories;
         }
         String extension = getExtension(f);
-        if (extension != null) {
-            if (extension.equals("rdf") || extension.equals("rdfs")) {
-                return true;
-            }
-        }
-        return false;
+        return extension != null && extension.equals("rdf");
     }
 
     public String getDescription() {

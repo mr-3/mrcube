@@ -28,30 +28,20 @@ import java.io.File;
 /**
  * @author Takeshi Morita
  */
-public class OWLFileFilter extends MR3FileFilter implements java.io.FileFilter {
+public class MR3ProjectFileFilter extends MR3FileFilter {
 
-	private final boolean isShowDirectories;
+    public String getExtension() {
+        return "mr3";
+    }
 
-	public OWLFileFilter(boolean isShowDirectories) {
-		this.isShowDirectories = isShowDirectories;
-	}
+    public boolean accept(File f) {
+        if (f.isDirectory()) { return true; }
+        String extension = getExtension(f);
+        if (extension != null && extension.equals("mr3")) { return true; }
+        return false;
+    }
 
-	public String getExtension() {
-		return "owl";
-	}
-
-	public boolean accept(File f) {
-		if (f.isDirectory()) {
-			return isShowDirectories;
-		}
-		String extension = getExtension(f);
-		if (extension != null && extension.equals("owl")) {
-			return true;
-		}
-		return false;
-	}
-
-	public String getDescription() {
-		return "OWL (*.owl)";
-	}
+    public String getDescription() {
+        return "MR^3 Project (*.mr3)";
+    }
 }

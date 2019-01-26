@@ -55,8 +55,7 @@ abstract class AbstractActionFile extends MR3AbstractAction {
         fileChooser.addChoosableFileFilter(turtleFileFilter);
         fileChooser.addChoosableFileFilter(jsonldFileFilter);
         fileChooser.addChoosableFileFilter(n3FileFilter);
-        fileChooser.addChoosableFileFilter(rdfsFileFilter);
-        fileChooser.addChoosableFileFilter(owlFileFilter);
+        fileChooser.addChoosableFileFilter(RDF_FILE_FILTER);
         fileChooser.addChoosableFileFilter(mr3FileFilter);
         fileChooser.setFileFilter(turtleFileFilter);
     }
@@ -75,13 +74,11 @@ abstract class AbstractActionFile extends MR3AbstractAction {
         }
     }
 
-    private static final ProjectFileFilter mr3FileFilter = new ProjectFileFilter();
-    private static final OWLFileFilter owlFileFilter = new OWLFileFilter(true);
-    private static final RDFsFileFilter rdfsFileFilter = new RDFsFileFilter(true);
+    private static final MR3ProjectFileFilter mr3FileFilter = new MR3ProjectFileFilter();
+    private static final RDFFileFilter RDF_FILE_FILTER = new RDFFileFilter(true);
     private static final NTripleFileFilter n3FileFilter = new NTripleFileFilter(true);
     private static final TurtleFileFilter turtleFileFilter = new TurtleFileFilter(false);
     private static final JSONLDFileFilter jsonldFileFilter = new JSONLDFileFilter(false);
-    private static final PNGFileFilter pngFileFilter = new PNGFileFilter();
 
     protected File selectOpenFile() {
         Preferences userPrefs = mr3.getUserPrefs();
@@ -92,6 +89,7 @@ abstract class AbstractActionFile extends MR3AbstractAction {
             return null;
         }
     }
+
 
     protected File selectSaveFile() {
         Preferences userPrefs = mr3.getUserPrefs();
@@ -163,10 +161,14 @@ abstract class AbstractActionFile extends MR3AbstractAction {
 
     private String addFileExtension(String defaultPath, String extension) {
         String ext = (extension != null) ? "." + extension.toLowerCase() : "";
-        if (extension != null && !defaultPath.toLowerCase().endsWith(".rdf") && !defaultPath.toLowerCase().endsWith(".rdfs")
-                && !defaultPath.toLowerCase().endsWith(".n3") && !defaultPath.toLowerCase().endsWith(".ttl")
+        if (extension != null
+                && !defaultPath.toLowerCase().endsWith(".ttl")
                 && !defaultPath.toLowerCase().endsWith(".jsonld")
-                && !defaultPath.toLowerCase().endsWith(".owl")) {
+                && !defaultPath.toLowerCase().endsWith(".rdf")
+                && !defaultPath.toLowerCase().endsWith(".n3")
+                && !defaultPath.toLowerCase().endsWith(".mr3")
+                && !defaultPath.toLowerCase().endsWith(".png")
+        ) {
             defaultPath += ext;
         }
         return defaultPath;
