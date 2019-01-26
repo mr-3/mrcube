@@ -592,12 +592,10 @@ public class MR3 extends JFrame implements ChangeListener {
         isGroup.addActionListener(new IsGroupAction());
         menu.add(isGroup);
         menu.addSeparator();
-        JMenu applyLayout = new JMenu(Translator.getString("Component.View.ApplyLayout.Text"));
-        menu.add(applyLayout);
 
-        applyLayout.add(new GraphLayoutAction(gmanager, GraphType.RDF, GraphLayoutAction.layoutRDFGraphIcon));
-        applyLayout.add(new GraphLayoutAction(gmanager, GraphType.CLASS, GraphLayoutAction.layoutClassGraphIcon));
-        applyLayout.add(new GraphLayoutAction(gmanager, GraphType.PROPERTY, GraphLayoutAction.layoutPropertyGraphIcon));
+        menu.add(new GraphLayoutAction(gmanager, GraphType.RDF, GraphLayoutAction.layoutRDFGraphIcon));
+        menu.add(new GraphLayoutAction(gmanager, GraphType.CLASS, GraphLayoutAction.layoutClassGraphIcon));
+        menu.add(new GraphLayoutAction(gmanager, GraphType.PROPERTY, GraphLayoutAction.layoutPropertyGraphIcon));
 
         return menu;
     }
@@ -611,9 +609,9 @@ public class MR3 extends JFrame implements ChangeListener {
     private JMenu getWindowMenu() {
         JMenu menu = new JMenu(Translator.getString("Component.Window.Text") + "(W)");
         menu.setMnemonic('w');
-        menu.add(new ShowOverview(this, ShowOverview.RDF_EDITOR_OVERVIEW));
-        menu.add(new ShowOverview(this, ShowOverview.CLASS_EDITOR_OVERVIEW));
-        menu.add(new ShowOverview(this, ShowOverview.PROPERTY_EDITOR_OVERVIEW));
+        menu.add(new ShowOverview(this, ShowOverview.RDF_EDITOR_OVERVIEW, ShowOverview.RDF_EDITOR_OVERVIEW_ICON));
+        menu.add(new ShowOverview(this, ShowOverview.CLASS_EDITOR_OVERVIEW, ShowOverview.CLASS_EDITOR_OVERVIEW_ICON));
+        menu.add(new ShowOverview(this, ShowOverview.PROPERTY_EDITOR_OVERVIEW, ShowOverview.PROPERTY_EDITOR_OVERVIEW_ICON));
         menu.addSeparator();
         menu.add(toFrontRDFEditorAction);
         menu.add(toFrontClassEditorAction);
@@ -622,11 +620,9 @@ public class MR3 extends JFrame implements ChangeListener {
         menu.add(showAttrDialogAction);
         menu.add(showNSTableDialogAction);
         menu.addSeparator();
-        JMenu windowMenu = new JMenu(Translator.getString("Component.Window.DeployWindows.Text"));
-        menu.add(windowMenu);
-        windowMenu.add(deployWindowCPRAction);
-        windowMenu.add(deployWindowCRAction);
-        windowMenu.add(deployWindowPRAction);
+        menu.add(deployWindowCPRAction);
+        menu.add(deployWindowCRAction);
+        menu.add(deployWindowPRAction);
 
         return menu;
     }
