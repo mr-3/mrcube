@@ -68,7 +68,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
     private final JButton jumpPropertyButton;
     private GraphCell edge;
 
-    private JList localNameList;
+    private JList<String> localNameList;
     private DefaultListModel<String> localNameListModel;
     private Map<String, Set<String>> propMap;
 
@@ -176,7 +176,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
                     list.add(localNameListModel.getElementAt(i));
                 }
             }
-            localNameList.setListData(list.toArray());
+            localNameList.setListData(list.stream().toArray(String[]::new));
             if (0 < list.size()) {
                 localNameList.setSelectedIndex(0);
             }
@@ -307,6 +307,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 
     public void setValue(GraphCell c, PropertyModel info) {
         edge = c;
+        setPrefix();
         if (info == null) {
             setNSLabel(MR3Resource.Nil.getNameSpace());
             idField.setText(MR3Resource.Nil.getLocalName());
@@ -323,8 +324,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
                 if (info.getURIStr().equals(MR3Resource.Nil.getURI())) {
                     if (0 < propList.size()) {
                         GraphCell cell = propList.get(0);
-                        RDFSModel propInfo = (RDFSModel) GraphConstants
-                                .getValue(cell.getAttributes());
+                        RDFSModel propInfo = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
                         setNSLabel(propInfo.getURI().getNameSpace());
                     } else {
                         setNSLabel(gmanager.getBaseURI());
@@ -336,7 +336,6 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
                 }
             }
         }
-        setPrefix();
         SwingUtilities.invokeLater(() -> idField.requestFocus());
     }
 
