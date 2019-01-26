@@ -163,10 +163,15 @@ abstract class AbstractActionFile extends MR3AbstractAction {
 
     private String addFileExtension(String defaultPath, String extension) {
         String ext = (extension != null) ? "." + extension.toLowerCase() : "";
-        if (extension != null && !defaultPath.toLowerCase().endsWith(".rdf") && !defaultPath.toLowerCase().endsWith(".rdfs")
-                && !defaultPath.toLowerCase().endsWith(".n3") && !defaultPath.toLowerCase().endsWith(".ttl")
+        if (extension != null
+                && !defaultPath.toLowerCase().endsWith(".ttl")
                 && !defaultPath.toLowerCase().endsWith(".jsonld")
-                && !defaultPath.toLowerCase().endsWith(".owl")) {
+                && !defaultPath.toLowerCase().endsWith(".rdf")
+                && !defaultPath.toLowerCase().endsWith(".rdfs")
+                && !defaultPath.toLowerCase().endsWith(".n3")
+                && !defaultPath.toLowerCase().endsWith(".owl")
+                && !defaultPath.toLowerCase().endsWith(".mr3")
+        ) {
             defaultPath += ext;
         }
         return defaultPath;
