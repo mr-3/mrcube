@@ -183,7 +183,7 @@ public class MR3 extends JFrame implements ChangeListener {
 
     private void initActions() {
         newProjectAction = new NewProject(this);
-        openProjectAction = new OpenProject(this);
+        openProjectAction = new OpenFileAction(this);
         saveProjectAction = new SaveProject(this, SaveProject.SAVE_PROJECT, SaveProject.SAVE_PROJECT_ICON);
         saveProjectAsAction = new SaveProject(this, SaveProject.SAVE_AS_PROJECT, SaveProject.SAVE_AS_PROJECT_ICON);
         showValidatorAction = new ShowValidator(this);
@@ -224,7 +224,7 @@ public class MR3 extends JFrame implements ChangeListener {
         toolbar.add(saveProjectAction);
         toolbar.add(saveProjectAsAction);
         toolbar.addSeparator();
-        toolbar.add(showImportDialogAction);
+//        toolbar.add(showImportDialogAction);
         toolbar.add(showExportDialogAction);
         toolbar.addSeparator();
         toolbar.add(findResAction);
@@ -470,7 +470,7 @@ public class MR3 extends JFrame implements ChangeListener {
         menu.add(saveProjectAsAction);
         menu.addSeparator();
 
-        menu.add(new ShowImportDialog(this, Translator.getString("Component.File.Import.Text")));
+//        menu.add(new ShowImportDialog(this, Translator.getString("Component.File.Import.Text")));
         menu.add(new ShowExportDialog(this, Translator.getString("Component.File.Export.Text")));
 
         menu.addSeparator();

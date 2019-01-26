@@ -52,11 +52,13 @@ public class SaveProject extends AbstractActionFile {
     public SaveProject(MR3 mr3, String name) {
         super(mr3, name);
         setValues(name);
+        initializeJFileChooser();
     }
 
     public SaveProject(MR3 mr3, String name, ImageIcon icon) {
         super(mr3, name, icon);
         setValues(name);
+        initializeJFileChooser();
     }
 
     private void setValues(String shortDescription) {
