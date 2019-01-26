@@ -52,6 +52,6 @@ public class OWLFileFilter extends MR3FileFilter implements java.io.FileFilter {
 	}
 
 	public String getDescription() {
-		return "OWL File (*.owl)";
+		return "OWL (*.owl)";
 	}
 }
