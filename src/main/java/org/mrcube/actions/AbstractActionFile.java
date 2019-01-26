@@ -55,8 +55,7 @@ abstract class AbstractActionFile extends MR3AbstractAction {
         fileChooser.addChoosableFileFilter(turtleFileFilter);
         fileChooser.addChoosableFileFilter(jsonldFileFilter);
         fileChooser.addChoosableFileFilter(n3FileFilter);
-        fileChooser.addChoosableFileFilter(rdfsFileFilter);
-        fileChooser.addChoosableFileFilter(owlFileFilter);
+        fileChooser.addChoosableFileFilter(RDF_FILE_FILTER);
         fileChooser.addChoosableFileFilter(mr3FileFilter);
         fileChooser.setFileFilter(turtleFileFilter);
     }
@@ -75,9 +74,8 @@ abstract class AbstractActionFile extends MR3AbstractAction {
         }
     }
 
-    private static final ProjectFileFilter mr3FileFilter = new ProjectFileFilter();
-    private static final OWLFileFilter owlFileFilter = new OWLFileFilter(true);
-    private static final RDFsFileFilter rdfsFileFilter = new RDFsFileFilter(true);
+    private static final MR3ProjectFileFilter mr3FileFilter = new MR3ProjectFileFilter();
+    private static final RDFFileFilter RDF_FILE_FILTER = new RDFFileFilter(true);
     private static final NTripleFileFilter n3FileFilter = new NTripleFileFilter(true);
     private static final TurtleFileFilter turtleFileFilter = new TurtleFileFilter(false);
     private static final JSONLDFileFilter jsonldFileFilter = new JSONLDFileFilter(false);

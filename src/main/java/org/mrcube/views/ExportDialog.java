@@ -205,11 +205,10 @@ public class ExportDialog extends JDialog implements ActionListener {
         setVisible(false);
     }
 
-    private static final RDFsFileFilter rdfsFileFilter = new RDFsFileFilter(true);
+    private static final RDFFileFilter RDF_FILE_FILTER = new RDFFileFilter(true);
     private static final NTripleFileFilter n3FileFilter = new NTripleFileFilter(true);
     private static final TurtleFileFilter turtleFileFilter = new TurtleFileFilter(true);
     private static final JSONLDFileFilter jsonldFileFilter = new JSONLDFileFilter(true);
-    private static final OWLFileFilter owlFileFilter = new OWLFileFilter(true);
     private static final PNGFileFilter pngFileFilter = new PNGFileFilter();
 
     private File getFile() {
@@ -220,8 +219,7 @@ public class ExportDialog extends JDialog implements ActionListener {
         JFileChooser jfc = new JFileChooser(gmanager.getUserPrefs().get(PrefConstants.WorkDirectory, ""));
         switch (extension) {
             case "rdf":
-                jfc.addChoosableFileFilter(rdfsFileFilter);
-                jfc.addChoosableFileFilter(owlFileFilter);
+                jfc.addChoosableFileFilter(RDF_FILE_FILTER);
                 break;
             case "n3":
                 jfc.setFileFilter(n3FileFilter);

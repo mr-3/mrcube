@@ -83,8 +83,7 @@ public class ImportDialog extends JDialog implements ActionListener {
 
     private final ChangeContainerAction changeContainerAction;
 
-    private static final FileFilter owlFileFilter = new OWLFileFilter(false);
-    private static final FileFilter rdfsFileFilter = new RDFsFileFilter(false);
+    private static final FileFilter rdfFileFilter = new RDFFileFilter(false);
     private static final FileFilter n3FileFilter = new NTripleFileFilter(false);
     private static final FileFilter turtleFileFilter = new TurtleFileFilter(false);
     private static final FileFilter jsonldFileFilter = new JSONLDFileFilter(false);
@@ -186,7 +185,7 @@ public class ImportDialog extends JDialog implements ActionListener {
         fileListUI.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         JScrollPane fileListScroll = new JScrollPane(fileListUI);
         fileListScroll.setBorder(BorderFactory.createTitledBorder(Translator.getString("ImportDialog.ImportFileList")));
-        filterBox = new JComboBox(new Object[]{turtleFileFilter, jsonldFileFilter, rdfsFileFilter, n3FileFilter, owlFileFilter, "All Files"});
+        filterBox = new JComboBox(new Object[]{turtleFileFilter, jsonldFileFilter, rdfFileFilter, n3FileFilter, "All Files"});
         filterBox.addActionListener(changeContainerAction);
         filterBox.setSelectedItem(turtleFileFilter);
         JPanel fileListPanel = new JPanel();
@@ -417,9 +416,7 @@ public class ImportDialog extends JDialog implements ActionListener {
             importMergeButton.setEnabled(!isDataTypeOWL);
             importReplaceButton.setEnabled(!isDataTypeOWL);
             if (dataTypeRDFButton.isSelected() || dataTypeRDFSButton.isSelected()) {
-                filterBox.setSelectedItem(rdfsFileFilter);
-            } else if (dataTypeOWLButton.isSelected()) {
-                filterBox.setSelectedItem(owlFileFilter);
+                filterBox.setSelectedItem(rdfFileFilter);
             }
             setFindList();
         }
