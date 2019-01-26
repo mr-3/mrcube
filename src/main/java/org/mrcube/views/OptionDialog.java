@@ -387,20 +387,16 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
 
         private JTextField workDirectoryField;
         private JButton browseWorkDirectoryButton;
-        private JTextField pluginsDirectoryField;
-        private JButton browsePluginsDirectoryButton;
         private JTextField resourceDirectoryField;
         private JButton browseResourceDirectoryButton;
 
         DirectoryPanel() {
             initWorkDirectoryField();
-            initPluginsDirectoryField();
             initResourceDirectoryField();
 
             JPanel panel = new JPanel();
-            panel.setLayout(new GridLayout(3, 1, 10, 5));
+            panel.setLayout(new GridLayout(2, 1, 10, 5));
             panel.add(getWorkDirectoryPanel());
-            panel.add(getPluginDirectoryPanel());
             panel.add(getResourceDirectoryPanel());
             setLayout(new BorderLayout());
             add(getTitledPanel(panel, toString()), BorderLayout.NORTH);
@@ -413,14 +409,11 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
 
         void setConfig() {
             userPrefs.put(PrefConstants.WorkDirectory, workDirectoryField.getText());
-            userPrefs.put(PrefConstants.PluginsDirectory, pluginsDirectoryField.getText());
             userPrefs.put(PrefConstants.ResourceDirectory, resourceDirectoryField.getText());
         }
 
         void resetConfig() {
             setText(workDirectoryField, userPrefs.get(PrefConstants.WorkDirectory, ""));
-            setText(pluginsDirectoryField,
-                    userPrefs.get(PrefConstants.PluginsDirectory, System.getProperty("user.dir") + "\\plugins"));
             setText(resourceDirectoryField,
                     userPrefs.get(PrefConstants.ResourceDirectory, System.getProperty("user.dir") + "\\resources"));
         }
@@ -436,8 +429,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
                 File currentDirectory = null;
                 if (directoryField == workDirectoryField) {
                     currentDirectory = new File(userPrefs.get(PrefConstants.WorkDirectory, ""));
-                } else if (directoryField == pluginsDirectoryField) {
-                    currentDirectory = new File(userPrefs.get(PrefConstants.PluginsDirectory, ""));
                 } else if (directoryField == resourceDirectoryField) {
                     currentDirectory = new File(userPrefs.get(PrefConstants.ResourceDirectory, ""));
                 }
@@ -469,15 +460,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             browseWorkDirectoryButton.addActionListener(new BrowseDirectory(workDirectoryField));
         }
 
-        private void initPluginsDirectoryField() {
-            pluginsDirectoryField = new JTextField(15);
-            pluginsDirectoryField.setEditable(false);
-            browsePluginsDirectoryButton = new JButton(Translator.getString("PreferenceDialog.DirectoryTab.Browse")
-                    + "(P)");
-            browsePluginsDirectoryButton.setMnemonic('p');
-            browsePluginsDirectoryButton.addActionListener(new BrowseDirectory(pluginsDirectoryField));
-        }
-
         private void initResourceDirectoryField() {
             resourceDirectoryField = new JTextField(15);
             resourceDirectoryField.setEditable(false);
@@ -496,16 +478,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             workDirectoryPanel.add(browseWorkDirectoryButton);
 
             return workDirectoryPanel;
-        }
-
-        private JPanel getPluginDirectoryPanel() {
-            JPanel pluginsDirectoryPanel = new JPanel();
-            pluginsDirectoryPanel.setLayout(new BoxLayout(pluginsDirectoryPanel, BoxLayout.X_AXIS));
-            pluginsDirectoryPanel.setBorder(BorderFactory.createTitledBorder(Translator
-                    .getString("PreferenceDialog.DirectoryTab.PluginsDirectory")));
-            pluginsDirectoryPanel.add(pluginsDirectoryField);
-            pluginsDirectoryPanel.add(browsePluginsDirectoryButton);
-            return pluginsDirectoryPanel;
         }
 
         private JPanel getResourceDirectoryPanel() {
