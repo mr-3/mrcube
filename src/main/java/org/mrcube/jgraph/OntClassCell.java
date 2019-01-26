@@ -35,10 +35,6 @@ public class OntClassCell extends DefaultGraphCell implements RDFCellStyleChange
 
     public static Color classColor = new Color(204, 255, 102);
 
-    public OntClassCell() {
-        this(null);
-    }
-
     public OntClassCell(Object userObject) {
         super(userObject);
     }

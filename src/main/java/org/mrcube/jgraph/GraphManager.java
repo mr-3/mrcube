@@ -240,10 +240,6 @@ public class GraphManager {
         isShowTypeCell = t;
     }
 
-    public RDFGraph getRealRDFGraph() {
-        return realRDFGraph;
-    }
-
     public boolean isRDFGraph(Object graph) {
         return graph == getCurrentRDFGraph();
     }
@@ -256,36 +252,10 @@ public class GraphManager {
         return graph == getCurrentPropertyGraph();
     }
 
-    public RDFGraph getGraph(GraphType type) {
-        if (type == GraphType.RDF) {
-            return getCurrentRDFGraph();
-        } else if (type == GraphType.CLASS) {
-            return getCurrentClassGraph();
-        } else if (type == GraphType.PROPERTY) {
-            return getCurrentPropertyGraph();
-        }
-        return null;
-    }
-
     public void clearSelection() {
         getCurrentRDFGraph().clearSelection();
         getCurrentClassGraph().clearSelection();
         getCurrentPropertyGraph().clearSelection();
-    }
-
-    public void setGraphBackground(Color color) {
-        RDFGraph currentRDFGraph = getCurrentRDFGraph();
-        if (currentRDFGraph != null) {
-            currentRDFGraph.setBackground(color);
-        }
-        RDFGraph currentClassGraph = getCurrentClassGraph();
-        if (currentClassGraph != null) {
-            currentClassGraph.setBackground(color);
-        }
-        RDFGraph currentPropertyGraph = getCurrentPropertyGraph();
-        if (currentPropertyGraph != null) {
-            currentPropertyGraph.setBackground(color);
-        }
     }
 
     private Set<Resource> getMetaClassList(String[] list) {
@@ -434,9 +404,6 @@ public class GraphManager {
             if (RDFGraph.isTypeCell(cell)) {
                 typeCellList.add(cell);
             }
-            //	else if (cell.getClass().equals(DefaultGraphCell.class)) {
-            //		typeCellList.add(cell);
-            //	}
         }
         getCurrentRDFGraph().removeCellsWithEdges(typeCellList.toArray());
     }

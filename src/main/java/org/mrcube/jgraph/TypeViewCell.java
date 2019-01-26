@@ -30,9 +30,6 @@ import org.jgraph.graph.DefaultGraphCell;
  * 
  */
 public class TypeViewCell extends DefaultGraphCell {
-    public TypeViewCell() {
-        this(null);
-    }
 
     public TypeViewCell(Object userObject) {
         super(userObject);
