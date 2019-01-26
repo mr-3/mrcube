@@ -180,7 +180,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         private JTextField defaultLangField;
         private JComboBox uiLangBox;
         private ComboBoxModel outputEncodingBoxModel;
-        private JComboBox outputEncodingBox;
         private JComboBox uriPrefixBox;
         private JLabel baseURILabel;
         private JCheckBox isLogAvailableCheckBox;
@@ -192,7 +191,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
             panel.add(getLangPanel());
             panel.add(getUILangPanel());
-            panel.add(getEncodingPanel());
             panel.add(getBaseURIPanel());
             panel.add(getLogFilePanel());
             setLayout(new BorderLayout());
@@ -211,9 +209,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             }
 
             userPrefs.put(PrefConstants.DefaultLang, defaultLangField.getText());
-            // userPrefs.put(PrefConstants.InputEncoding, (String)
-            // inputEncodingBox.getSelectedItem());
-            userPrefs.put(PrefConstants.OutputEncoding, (String) outputEncodingBox.getSelectedItem());
             userPrefs.put(PrefConstants.BaseURI, baseURILabel.getText());
             gmanager.setBaseURI(baseURILabel.getText());
             if (isLogAvailableCheckBox.isSelected()) {
@@ -230,10 +225,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             uiLangBox.setModel(new DefaultComboBoxModel(getUILanguages()));
             uiLangBox.setSelectedItem(userPrefs.get(PrefConstants.UILang, "en"));
             defaultLangField.setText(userPrefs.get(PrefConstants.DefaultLang, "ja"));
-            // inputEncodingBox.setSelectedItem(userPrefs.get(PrefConstants.
-            // InputEncoding,
-            // "SJIS"));
-            outputEncodingBox.setSelectedItem(userPrefs.get(PrefConstants.OutputEncoding, "UTF-8"));
             baseURILabel.setText(userPrefs.get(PrefConstants.BaseURI, MR3Resource.DefaultURI.getURI()));
             if (userPrefs.get(PrefConstants.isLogAvailable, "false").equals("true")) {
                 isLogAvailableCheckBox.setSelected(true);
@@ -303,20 +294,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             uiLangPanel.add(uiLangBox);
 
             return Utilities.createWestPanel(uiLangPanel);
-        }
-
-        private JComponent getEncodingPanel() {
-            Object[] encodingList = new Object[]{"JISAutoDetect", "SJIS", "EUC_JP", "ISO2022JP", "UTF-8", "UTF-16"};
-            encodingList = new Object[]{"SJIS", "EUC_JP", "ISO2022JP", "UTF-8", "UTF-16"};
-            outputEncodingBoxModel = new DefaultComboBoxModel(encodingList);
-            outputEncodingBox = new JComboBox(outputEncodingBoxModel);
-            outputEncodingBox.setPreferredSize(new Dimension(PREFIX_BOX_WIDTH, PREFIX_BOX_HEIGHT));
-            JPanel encodingPanel = new JPanel();
-            encodingPanel.setLayout(new GridLayout(1, 2, 5, 5));
-            encodingPanel.add(new JLabel(Translator.getString("PreferenceDialog.BaseTab.OutputEncoding") + ": "));
-            encodingPanel.add(outputEncodingBox);
-
-            return Utilities.createWestPanel(encodingPanel);
         }
 
         private JComponent getBaseURIPanel() {
