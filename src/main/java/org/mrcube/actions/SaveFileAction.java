@@ -39,23 +39,15 @@ import java.io.File;
 /**
  * @author Takeshi Morita
  */
-public class SaveProject extends AbstractActionFile {
+public class SaveFileAction extends AbstractActionFile {
 
     public static final String SAVE_PROJECT = Translator.getString("Component.File.SaveProject.Text");
     public static final String SAVE_AS_PROJECT = Translator.getString("Component.File.SaveAsProject.Text");
 
-    public static final ImageIcon SAVE_PROJECT_ICON = Utilities.getImageIcon(Translator
-            .getString("Component.File.SaveProject.Icon"));
-    public static final ImageIcon SAVE_AS_PROJECT_ICON = Utilities.getImageIcon(Translator
-            .getString("Component.File.SaveAsProject.Icon"));
+    public static final ImageIcon SAVE_PROJECT_ICON = Utilities.getImageIcon(Translator.getString("Component.File.SaveProject.Icon"));
+    public static final ImageIcon SAVE_AS_PROJECT_ICON = Utilities.getImageIcon(Translator.getString("Component.File.SaveAsProject.Icon"));
 
-    public SaveProject(MR3 mr3, String name) {
-        super(mr3, name);
-        setValues(name);
-        initializeJFileChooser();
-    }
-
-    public SaveProject(MR3 mr3, String name, ImageIcon icon) {
+    public SaveFileAction(MR3 mr3, String name, ImageIcon icon) {
         super(mr3, name, icon);
         setValues(name);
         initializeJFileChooser();
@@ -78,13 +70,13 @@ public class SaveProject extends AbstractActionFile {
             String basePath = null;
             File newFile = new File(basePath, Translator.getString("Component.File.NewProject.Text"));
             if (newFile.getAbsolutePath().equals(currentProjectFile.getAbsolutePath())) {
-                saveProjectAs();
+                saveFileAs();
             } else {
-                saveProject(currentProjectFile);
+                saveFile(currentProjectFile);
                 HistoryManager.saveHistory(HistoryType.SAVE_PROJECT, currentProjectFile.getAbsolutePath());
             }
         } else {
-            saveProjectAs();
+            saveFileAs();
         }
     }
 }

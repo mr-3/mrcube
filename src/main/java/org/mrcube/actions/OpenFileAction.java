@@ -60,7 +60,7 @@ public class OpenFileAction extends AbstractActionFile {
 
     public void actionPerformed(ActionEvent e) {
         confirmExitProject();
-        File file = openFile();
+        File file = selectOpenFile();
         if (file == null) {
             return;
         }

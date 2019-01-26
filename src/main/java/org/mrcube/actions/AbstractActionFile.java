@@ -25,9 +25,10 @@ package org.mrcube.actions;
 
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
+import org.apache.jena.riot.RDFFormat;
 import org.mrcube.MR3;
+import org.mrcube.io.MR3Writer;
 import org.mrcube.utils.file_filter.*;
 import org.mrcube.views.MR3ProjectPanel;
 import org.mrcube.models.MR3Constants.HistoryType;
@@ -38,7 +39,6 @@ import org.mrcube.views.HistoryManager;
 
 import javax.swing.*;
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.Set;
 import java.util.prefs.Preferences;
 
@@ -47,6 +47,7 @@ import java.util.prefs.Preferences;
  */
 abstract class AbstractActionFile extends MR3AbstractAction {
 
+    private MR3Writer mr3Writer;
     protected JFileChooser fileChooser;
 
     protected void initializeJFileChooser() {
@@ -60,13 +61,9 @@ abstract class AbstractActionFile extends MR3AbstractAction {
         fileChooser.setFileFilter(turtleFileFilter);
     }
 
-    public AbstractActionFile(MR3 mr3, String name) {
-        super(name);
-        this.mr3 = mr3;
-    }
-
     public AbstractActionFile(MR3 mr3, String name, ImageIcon icon) {
         super(mr3, name, icon);
+        mr3Writer = new MR3Writer(mr3.getGraphManager());
     }
 
     protected void setNsPrefix(Model model) {
@@ -78,26 +75,6 @@ abstract class AbstractActionFile extends MR3AbstractAction {
         }
     }
 
-    private String getBaseURI() {
-        return mr3.getGraphManager().getBaseURI().replaceAll("#", "");
-    }
-
-    protected InputStream getInputStream(String ext) {
-        File file = openFile();
-        if (file == null) {
-            return null;
-        }
-        if (ext.equals("mr3")) {
-            MR3.getCurrentProject().setCurrentProjectFile(file);
-        }
-        try {
-            return new BufferedInputStream(new FileInputStream(file));
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        return null;
-    }
-
     private static final ProjectFileFilter mr3FileFilter = new ProjectFileFilter();
     private static final OWLFileFilter owlFileFilter = new OWLFileFilter(true);
     private static final RDFsFileFilter rdfsFileFilter = new RDFsFileFilter(true);
@@ -106,7 +83,7 @@ abstract class AbstractActionFile extends MR3AbstractAction {
     private static final JSONLDFileFilter jsonldFileFilter = new JSONLDFileFilter(false);
     private static final PNGFileFilter pngFileFilter = new PNGFileFilter();
 
-    protected File openFile() {
+    protected File selectOpenFile() {
         Preferences userPrefs = mr3.getUserPrefs();
         fileChooser.setCurrentDirectory(new File(userPrefs.get(PrefConstants.WorkDirectory, "")));
         if (fileChooser.showOpenDialog(MR3.getCurrentProject()) == JFileChooser.APPROVE_OPTION) {
@@ -116,36 +93,91 @@ abstract class AbstractActionFile extends MR3AbstractAction {
         }
     }
 
-    protected File saveFile() {
+    protected File selectSaveFile() {
         Preferences userPrefs = mr3.getUserPrefs();
         fileChooser.setCurrentDirectory(new File(userPrefs.get(PrefConstants.WorkDirectory, "")));
         if (fileChooser.showSaveDialog(MR3.getCurrentProject()) == JFileChooser.APPROVE_OPTION) {
-            return fileChooser.getSelectedFile();
+            File selectedFile = fileChooser.getSelectedFile();
+            if (fileChooser.getFileFilter() instanceof MR3FileFilter) {
+                MR3FileFilter filter = (MR3FileFilter) fileChooser.getFileFilter();
+                return new File(addFileExtension(selectedFile.getAbsolutePath(), filter.getExtension()));
+            } else {
+                return selectedFile;
+            }
         } else {
             return null;
         }
     }
 
-    protected void saveProject(File file) {
+    private Model getModel() {
+        Model model = ModelFactory.createDefaultModel();
+        model.add(mr3Writer.getRDFModel());
+        model.add(mr3Writer.getClassModel());
+        model.add(mr3Writer.getPropertyModel());
+        return model;
+    }
+
+    String getExtension(File f) {
+        String ext = null;
+        String s = f.getName();
+        int i = s.lastIndexOf('.');
+
+        if (i > 0 && i < s.length() - 1) {
+            ext = s.substring(i + 1).toLowerCase();
+        }
+        return ext;
+    }
+
+    protected void saveFile(File file) {
         try {
-            Model exportModel = mr3.getMR3Writer().getProjectModel();
-//            Writer writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
-            // RDF/XML-ABBREVにするとRDFAnonが出て，import時にAnonymousがうまく扱えない．
+            var fileExtension = getExtension(file);
+            var exportModel = ModelFactory.createDefaultModel();
+            var rdfFormat = RDFFormat.TURTLE;
+            if (fileExtension.equals("mr3")) {
+                exportModel = mr3.getMR3Writer().getProjectModel();
+                MR3.getCurrentProject().setCurrentProjectFile(file);
+            } else {
+                exportModel = getModel();
+                switch (fileExtension) {
+                    case "ttl":
+                        rdfFormat = RDFFormat.TURTLE;
+                        break;
+                    case "jsonld":
+                        rdfFormat = RDFFormat.JSONLD;
+                        break;
+                    case "rdf":
+                        rdfFormat = RDFFormat.RDFXML_ABBREV;
+                        break;
+                    case "n3":
+                        rdfFormat = RDFFormat.NTRIPLES_UTF8;
+                        break;
+                }
+            }
             setNsPrefix(exportModel);
-            RDFDataMgr.write(new FileOutputStream(file), exportModel, Lang.TURTLE);
-//            exportModel.write(writer, "RDF/XML", getBaseURI());
-            MR3.getCurrentProject().setCurrentProjectFile(file);
+            RDFDataMgr.write(new FileOutputStream(file), exportModel, rdfFormat);
+            MR3.STATUS_BAR.setText(SaveFileAction.SAVE_PROJECT + ": " + file.getAbsolutePath());
         } catch (FileNotFoundException e2) {
             Utilities.showErrorMessageDialog("File Not Found");
         }
     }
 
-    protected void saveProjectAs() {
-        File file = saveFile();
+    private String addFileExtension(String defaultPath, String extension) {
+        String ext = (extension != null) ? "." + extension.toLowerCase() : "";
+        if (extension != null && !defaultPath.toLowerCase().endsWith(".rdf") && !defaultPath.toLowerCase().endsWith(".rdfs")
+                && !defaultPath.toLowerCase().endsWith(".n3") && !defaultPath.toLowerCase().endsWith(".ttl")
+                && !defaultPath.toLowerCase().endsWith(".jsonld")
+                && !defaultPath.toLowerCase().endsWith(".owl")) {
+            defaultPath += ext;
+        }
+        return defaultPath;
+    }
+
+    protected void saveFileAs() {
+        File file = selectSaveFile();
         if (file == null) {
             return;
         }
-        saveProject(file);
+        saveFile(file);
         HistoryManager.saveHistory(HistoryType.SAVE_PROJECT_AS, file.getAbsolutePath());
         MR3.getCurrentProject().setCurrentProjectFile(file);
     }
@@ -153,14 +185,13 @@ abstract class AbstractActionFile extends MR3AbstractAction {
     protected void quitProject() {
         File currentProjectFile = MR3.getCurrentProject().getCurrentProjectFile();
         if (isNewProjectFile(MR3.getCurrentProject())) {
-            saveProjectAs();
+            saveFileAs();
             HistoryManager.saveHistory(HistoryType.SAVE_PROJECT_AS, currentProjectFile.getAbsolutePath());
         } else {
-            saveProject(currentProjectFile);
+            saveFile(currentProjectFile);
             HistoryManager.saveHistory(HistoryType.SAVE_PROJECT, currentProjectFile.getAbsolutePath());
         }
     }
-
 
     protected boolean isNewProjectFile(MR3ProjectPanel currentProject) {
         String basePath = null;
