@@ -196,10 +196,24 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
         }
     }
 
+    private boolean isConnectMode(MouseEvent event) {
+        var sp = graph.fromScreen(new Point2D.Double(event.getX(), event.getY()));
+        var connectPort = graph.getPortViewAt(sp.getX(), sp.getY());
+        return connectPort != null;
+    }
+
+    private void setCursor(MouseEvent event) {
+        if (isConnectMode(event)) {
+            graph.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
+        } else {
+            graph.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        }
+    }
+
     // Find Port under Mouse and Repaint Connector
     public void mouseDragged(MouseEvent event) {
+        setCursor(event);
         if (!event.isConsumed() && isConnectMode) {
-            graph.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
             Graphics g = graph.getGraphics();
             Color bg = graph.getBackground();
             Color fg = Color.black;
@@ -218,7 +232,6 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
             overlay(g);
             event.consume();
         } else {
-            graph.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             graph.setMarqueeColor(Color.black);
             super.mouseDragged(event);
         }
@@ -232,6 +245,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     }
 
     public void mouseReleased(MouseEvent e) {
+        setCursor(e);
         if (e != null && !e.isConsumed() && port != null && firstPort != null && firstPort != port
                 && isEllipseView(firstPort.getParentView())) {
             Port source = (Port) firstPort.getCell();
@@ -268,12 +282,9 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 
     public void mouseMoved(MouseEvent event) {
         insertPoint = event.getPoint();
-        var sp = graph.fromScreen(new Point2D.Double(event.getX(), event.getY()));
-        var connectPort = graph.getPortViewAt(sp.getX(), sp.getY());
-        isConnectMode = connectPort != null;
-
+        setCursor(event);
+        isConnectMode = isConnectMode(event);
         if (isConnectMode) {
-            graph.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
             if (!event.isConsumed()) {
                 event.consume();
                 PortView oldPort = port;
@@ -291,7 +302,6 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
                 }
             }
         } else {
-            graph.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             super.mouseMoved(event);
         }
     }
