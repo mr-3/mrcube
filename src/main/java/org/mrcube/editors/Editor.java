@@ -265,14 +265,10 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
         toolbar.add(redo);
 
         toolbar.addSeparator();
-        toolbar.add(new FindResAction(graph, gmanager));
-
-        toolbar.addSeparator();
         toolbar.add(new ZoomAction(graph, this, ZoomAction.ZOOM_STD, ZoomAction.ZOOM_STD_ICON));
         toolbar.add(new ZoomAction(graph, this, ZoomAction.ZOOM_IN, ZoomAction.ZOOM_IN_ICON));
         toolbar.add(new ZoomAction(graph, this, ZoomAction.ZOOM_OUT, ZoomAction.ZOOM_OUT_ICON));
-        toolbar.add(new ZoomAction(graph, this, ZoomAction.ZOOM_SUITABLE,
-                ZoomAction.ZOOM_SUITABLE_ICON));
+        toolbar.add(new ZoomAction(graph, this, ZoomAction.ZOOM_SUITABLE, ZoomAction.ZOOM_SUITABLE_ICON));
 
         toolbar.addSeparator();
         GraphLayoutAction graphLayoutAction = null;
