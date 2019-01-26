@@ -43,20 +43,16 @@ import org.mrcube.utils.MR3CellMaker;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
 import org.mrcube.views.*;
-import org.mrcube.views.FindResourceDialog.FindActionType;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
 import java.lang.ref.WeakReference;
-import java.util.LinkedList;
 import java.util.prefs.Preferences;
 
 /**
@@ -169,7 +165,6 @@ public class MR3 extends JFrame implements ChangeListener {
     private AbstractAction deployWindowPRAction;
     private AbstractAction showAttrDialogAction;
     private AbstractAction showNSTableDialogAction;
-    private AbstractAction showImportDialogAction;
     private AbstractAction showRDFSourceCodeViewer;
     private AbstractAction findResAction;
     private AbstractAction showProjectInfoAction;
@@ -202,7 +197,6 @@ public class MR3 extends JFrame implements ChangeListener {
                 KeyStroke.getKeyStroke(KeyEvent.VK_3, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         showAttrDialogAction = new ShowAttrDialog(this);
         showNSTableDialogAction = new ShowNSTableDialog(this);
-//        showImportDialogAction = new ShowImportDialog(this, Translator.getString("Component.Window.ImportDialog.Text"));
         showRDFSourceCodeViewer = new ShowRDFSourceCodeViewer(this, Translator.getString("RDFSourceCodeViewer.Title"));
         findResAction = new FindResAction(null, gmanager);
         showProjectInfoAction = new ShowProjectInfoDialog(this);
@@ -210,11 +204,6 @@ public class MR3 extends JFrame implements ChangeListener {
         showOptionDialogAction = new ShowOptionDialog(this);
         showVersionInfoAction = new ShowVersionInfoAction(this);
     }
-
-    private JTextField findField;
-    private JLabel findResNum;
-    private int currentFindResourceNum;
-    private Object[] findList;
 
     private JToolBar createToolBar() {
         JToolBar toolbar = new JToolBar();
@@ -224,8 +213,6 @@ public class MR3 extends JFrame implements ChangeListener {
         toolbar.add(saveProjectAction);
         toolbar.add(saveProjectAsAction);
         toolbar.addSeparator();
-//        toolbar.add(showImportDialogAction);
-//        toolbar.addSeparator();
         toolbar.add(findResAction);
         toolbar.addSeparator();
         toolbar.add(toFrontRDFEditorAction);
@@ -239,24 +226,6 @@ public class MR3 extends JFrame implements ChangeListener {
         toolbar.add(deployWindowCRAction);
         toolbar.add(deployWindowPRAction);
         toolbar.addSeparator();
-        JLabel findLabel = new JLabel(Translator.getString("Component.Edit.FindResource.Text") + ": ");
-        toolbar.add(findLabel);
-        findField = new JTextField(20);
-        findField.setFocusAccelerator('/');
-        findField.addActionListener(new NextResourceAction());
-        findField.getDocument().addDocumentListener(new IncrementalFindAction());
-        toolbar.add(findField);
-        findResNum = new JLabel("(0/0)");
-        toolbar.add(findResNum);
-        ImageIcon PREV_ICON = Utilities.getImageIcon(Translator.getString("ToolBar.FindField.Icon.prev"));
-        ImageIcon NEXT_ICON = Utilities.getImageIcon(Translator.getString("ToolBar.FindField.Icon.next"));
-        JButton findPrevButton = new JButton(PREV_ICON);
-        findPrevButton.addActionListener(new PrevResourceAction());
-        JButton findNextButton = new JButton(NEXT_ICON);
-        findNextButton.addActionListener(new NextResourceAction());
-        toolbar.add(findPrevButton);
-        toolbar.add(findNextButton);
-        toolbar.addSeparator();
         toolbar.add(showRDFSourceCodeViewer);
         toolbar.add(showValidatorAction);
         toolbar.add(showProjectInfoAction);
@@ -268,73 +237,7 @@ public class MR3 extends JFrame implements ChangeListener {
         return toolbar;
     }
 
-    class PrevResourceAction implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            setFindList();
-            currentFindResourceNum--;
-            if (currentFindResourceNum == -1) {
-                currentFindResourceNum = findList.length - 1;
-            }
-            jumpFindResource(currentFindResourceNum);
-        }
-    }
-
-    class NextResourceAction implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            setFindList();
-            currentFindResourceNum++;
-            if (currentFindResourceNum == findList.length) {
-                currentFindResourceNum = 0;
-            }
-            jumpFindResource(currentFindResourceNum);
-        }
-    }
-
-    private void jumpFindResource(int num) {
-        if (0 <= num && num < findList.length) {
-            gmanager.selectRDFCell(findList[num]);
-            gmanager.selectClassCell(findList[num]);
-            gmanager.selectPropertyCell(findList[num]);
-            findResNum.setText("(" + (num + 1) + "/" + findList.length + ")");
-        }
-    }
-
     private static final Object[] NULL = new Object[0];
-
-    private void setFindList() {
-        gmanager.getFindResourceDialog().setAllCheckBoxSelected(true);
-        gmanager.getFindResourceDialog().setURIPrefixBox();
-        if (findField.getText().length() == 0) {
-            findList = NULL;
-        } else {
-            findList = gmanager.getFindResourceDialog().getFindResources(findField.getText(), FindActionType.URI);
-        }
-    }
-
-    class IncrementalFindAction implements DocumentListener {
-
-        private void findResources() {
-            setFindList();
-            if (findList.length == 0) {
-                findResNum.setText("(0/0)");
-                return;
-            }
-            currentFindResourceNum = 0;
-            jumpFindResource(currentFindResourceNum);
-        }
-
-        public void changedUpdate(DocumentEvent e) {
-            findResources();
-        }
-
-        public void insertUpdate(DocumentEvent e) {
-            findResources();
-        }
-
-        public void removeUpdate(DocumentEvent e) {
-            findResources();
-        }
-    }
 
     public void showRDFEditorOverview() {
         OverviewDialog result = rdfEditorOverviewRef.get();
@@ -470,9 +373,6 @@ public class MR3 extends JFrame implements ChangeListener {
         menu.add(saveProjectAction);
         menu.add(saveProjectAsAction);
         menu.addSeparator();
-//        menu.add(new ShowImportDialog(this, Translator.getString("Component.File.Import.Text")));
-//        menu.add(new ShowRDFSourceCodeViewer(this, Translator.getString("Component.File.Export.Text")));
-//        menu.addSeparator();
         menu.add(new QuitAction(this));
 
         return menu;
@@ -576,8 +476,6 @@ public class MR3 extends JFrame implements ChangeListener {
         showTypeCellBox.addActionListener(new ShowTypeCellAction());
         menu.add(showTypeCellBox);
 
-        // menu.add(new ShowGraphNodeAction("Show Graph Node"));
-
         showRDFPropertyLabelBox = new JCheckBoxMenuItem(Translator.getString("Component.View.RDFPropertyLabel.Text"),
                 true);
         showRDFPropertyLabelBox.addActionListener(new ShowRDFPropertyLabelAction());
@@ -657,12 +555,6 @@ public class MR3 extends JFrame implements ChangeListener {
 
     class ChangeCellViewAction implements ActionListener {
 
-        private void selectCells(RDFGraph graph) {
-            Object[] selectedCells = graph.getSelectionCells();
-            graph.setSelectionCells(graph.getAllCells());
-            graph.setSelectionCells(selectedCells);
-        }
-
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == uriView) {
                 GraphManager.cellViewType = CellViewType.URI;
@@ -674,29 +566,6 @@ public class MR3 extends JFrame implements ChangeListener {
             GraphUtilities.resizeAllRDFResourceCell(gmanager);
             GraphUtilities.resizeAllRDFSResourceCell(gmanager);
             gmanager.refreshGraphs();
-        }
-    }
-
-    private class ShowGraphNodeAction extends AbstractAction {
-
-        ShowGraphNodeAction(String title) {
-            super(title);
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            RDFGraph classGraph = getClassGraph();
-            Object[] cells = classGraph.getSelectionCells();
-            if (cells != null) {
-                LinkedList<Object> children = new LinkedList<>();
-                for (Object cell : cells) {
-                    if (RDFGraph.isRDFSClassCell(cell)) {
-                        children.add(cell);
-                    }
-                }
-                // メソッド名が変更されている
-                // JGraphUtilities.collapseGroup(classGraph,
-                // children.toArray());
-            }
         }
     }
 
@@ -770,7 +639,6 @@ public class MR3 extends JFrame implements ChangeListener {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        // クリップボードの内容をクリアする
         StringSelection ss = new StringSelection("");
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(ss, null);
