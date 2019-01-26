@@ -26,7 +26,7 @@ package org.mrcube.actions;
 import org.mrcube.MR3;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
-import org.mrcube.views.ExportDialog;
+import org.mrcube.views.RDFSourceCodeViewer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,25 +37,25 @@ import java.awt.event.KeyEvent;
 /**
  * @author Takeshi Morita
  */
-public class ShowExportDialog extends MR3AbstractAction {
+public class ShowRDFSourceCodeViewer extends MR3AbstractAction {
 
-    private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("ExportDialog.Icon"));
+    private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("RDFSourceCodeViewer.Icon"));
 
-    public ShowExportDialog(MR3 mr3, String title) {
+    public ShowRDFSourceCodeViewer(MR3 mr3, String title) {
         super(mr3, title, ICON);
         setValues();
     }
 
     private void setValues() {
         putValue(SHORT_DESCRIPTION, getName());
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_E,
-                Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | InputEvent.SHIFT_DOWN_MASK));
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_R,
+                Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
     }
 
     public void actionPerformed(ActionEvent e) {
-        ExportDialog exportDialog = mr3.getExportDialog();
-        if (exportDialog != null) {
-            mr3.getExportDialog().setVisible(true);
+        RDFSourceCodeViewer RDFSourceCodeViewer = mr3.getRDFSourceCodeViewer();
+        if (RDFSourceCodeViewer != null) {
+            mr3.getRDFSourceCodeViewer().setVisible(true);
         }
     }
 }

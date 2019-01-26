@@ -79,7 +79,7 @@ public class MR3 extends JFrame implements ChangeListener {
     // private WeakReference<OntTreeEditor> ontTreeEditorRef;
     private WeakReference<OptionDialog> optionDialogRef;
     private WeakReference<ImportDialog> importDialogRef;
-    private WeakReference<ExportDialog> exportDialogRef;
+    private WeakReference<RDFSourceCodeViewer> RDFSourceCodeViewerRef;
     private WeakReference<HistoryManager> historyManagerRef;
     private WeakReference<ValidatorDialog> validatorRef;
     private WeakReference<ProjectInfoDialog> projectInfoDialogRef;
@@ -149,7 +149,7 @@ public class MR3 extends JFrame implements ChangeListener {
         propertyEditorOverviewRef = new WeakReference<>(null);
         // ontTreeEditorRef = new WeakReference<OntTreeEditor>(null);
         importDialogRef = new WeakReference<>(null);
-        exportDialogRef = new WeakReference<>(null);
+        RDFSourceCodeViewerRef = new WeakReference<>(null);
         historyManagerRef = new WeakReference<>(null);
         validatorRef = new WeakReference<>(null);
         projectInfoDialogRef = new WeakReference<>(null);
@@ -170,7 +170,7 @@ public class MR3 extends JFrame implements ChangeListener {
     private AbstractAction showAttrDialogAction;
     private AbstractAction showNSTableDialogAction;
     private AbstractAction showImportDialogAction;
-    private AbstractAction showExportDialogAction;
+    private AbstractAction showRDFSourceCodeViewer;
     private AbstractAction findResAction;
     private AbstractAction showProjectInfoAction;
     private AbstractAction showLogConsoleAciton;
@@ -202,8 +202,8 @@ public class MR3 extends JFrame implements ChangeListener {
                 KeyStroke.getKeyStroke(KeyEvent.VK_3, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         showAttrDialogAction = new ShowAttrDialog(this);
         showNSTableDialogAction = new ShowNSTableDialog(this);
-        showImportDialogAction = new ShowImportDialog(this, Translator.getString("Component.Window.ImportDialog.Text"));
-        showExportDialogAction = new ShowExportDialog(this, Translator.getString("Component.Window.ExportDialog.Text"));
+//        showImportDialogAction = new ShowImportDialog(this, Translator.getString("Component.Window.ImportDialog.Text"));
+        showRDFSourceCodeViewer = new ShowRDFSourceCodeViewer(this, Translator.getString("RDFSourceCodeViewer.Title"));
         findResAction = new FindResAction(null, gmanager);
         showProjectInfoAction = new ShowProjectInfoDialog(this);
         showLogConsoleAciton = new ShowLogConsole(this);
@@ -225,7 +225,6 @@ public class MR3 extends JFrame implements ChangeListener {
         toolbar.add(saveProjectAsAction);
         toolbar.addSeparator();
 //        toolbar.add(showImportDialogAction);
-//        toolbar.add(showExportDialogAction);
 //        toolbar.addSeparator();
         toolbar.add(findResAction);
         toolbar.addSeparator();
@@ -258,6 +257,7 @@ public class MR3 extends JFrame implements ChangeListener {
         toolbar.add(findPrevButton);
         toolbar.add(findNextButton);
         toolbar.addSeparator();
+        toolbar.add(showRDFSourceCodeViewer);
         toolbar.add(showValidatorAction);
         toolbar.add(showProjectInfoAction);
         toolbar.add(showLogConsoleAciton);
@@ -407,11 +407,11 @@ public class MR3 extends JFrame implements ChangeListener {
         return result;
     }
 
-    public ExportDialog getExportDialog() {
-        ExportDialog result = exportDialogRef.get();
+    public RDFSourceCodeViewer getRDFSourceCodeViewer() {
+        RDFSourceCodeViewer result = RDFSourceCodeViewerRef.get();
         if (result == null) {
-            result = new ExportDialog(gmanager);
-            exportDialogRef = new WeakReference<>(result);
+            result = new RDFSourceCodeViewer(gmanager);
+            RDFSourceCodeViewerRef = new WeakReference<>(result);
         }
         return result;
     }
@@ -471,7 +471,7 @@ public class MR3 extends JFrame implements ChangeListener {
         menu.add(saveProjectAsAction);
         menu.addSeparator();
 //        menu.add(new ShowImportDialog(this, Translator.getString("Component.File.Import.Text")));
-//        menu.add(new ShowExportDialog(this, Translator.getString("Component.File.Export.Text")));
+//        menu.add(new ShowRDFSourceCodeViewer(this, Translator.getString("Component.File.Export.Text")));
 //        menu.addSeparator();
         menu.add(new QuitAction(this));
 
@@ -634,6 +634,7 @@ public class MR3 extends JFrame implements ChangeListener {
     private JMenu getToolsMenu() {
         JMenu menu = new JMenu(Translator.getString("Component.Tools.Text") + "(T)");
         menu.setMnemonic('t');
+        menu.add(showRDFSourceCodeViewer);
         menu.add(findResAction);
         menu.add(showValidatorAction);
         menu.add(showProjectInfoAction);
