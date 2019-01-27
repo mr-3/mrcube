@@ -69,6 +69,8 @@ public class MR3 extends JFrame implements ChangeListener {
     private final MR3Writer mr3Writer;
     private final GraphManager gmanager;
 
+    private final QuitAction quitAction;
+
     private WeakReference<OverviewDialog> rdfEditorOverviewRef;
     private WeakReference<OverviewDialog> classEditorOverviewRef;
     private WeakReference<OverviewDialog> propertyEditorOverviewRef;
@@ -114,11 +116,13 @@ public class MR3 extends JFrame implements ChangeListener {
         getContentPane().add(mr3ProjectPanel, BorderLayout.CENTER);
         getContentPane().add(STATUS_BAR, BorderLayout.SOUTH);
 
-        var quitAction = new QuitAction(this);
+        quitAction = new QuitAction(this);
         if (Desktop.isDesktopSupported()) {
             var desktop = Desktop.getDesktop();
             if (desktop.isSupported(Desktop.Action.APP_QUIT_HANDLER)) {
-                desktop.setQuitHandler((e, response) -> quitAction.quitMR3());
+                desktop.setQuitHandler((e, response) -> {
+                    // do nothing and invoke quit action
+                });
             }
         }
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -373,7 +377,7 @@ public class MR3 extends JFrame implements ChangeListener {
         menu.add(saveProjectAction);
         menu.add(saveProjectAsAction);
         menu.addSeparator();
-        menu.add(new QuitAction(this));
+        menu.add(quitAction);
 
         return menu;
     }

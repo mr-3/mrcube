@@ -108,6 +108,13 @@ public class GraphManager {
                 + " " + OWL.DatatypeProperty.toString();
     }
 
+    public void closeAllDialogs()  {
+        attributeDialog.setVisible(false);
+        findResourceDialog.setVisible(false);
+        nameSpaceTableDialog.setVisible(false);
+        removeDialog.setVisible(false);
+    }
+
     public void setMR3ProjectPanel(MR3ProjectPanel panel) {
         this.mr3ProjectPanel = panel;
     }
