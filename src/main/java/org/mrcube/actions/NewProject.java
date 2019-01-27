@@ -55,5 +55,6 @@ public class NewProject extends AbstractActionFile {
     public void actionPerformed(ActionEvent e) {
         confirmExitProject();
         mr3.newProject();
+        mr3.ResourcePathTextField.setText("");
     }
 }

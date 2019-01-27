@@ -52,6 +52,7 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
+import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.prefs.Preferences;
 
@@ -603,6 +604,8 @@ public class MR3 extends JFrame implements ChangeListener {
     public void newProject() {
         gmanager.getAttrDialog().setNullPanel();
         gmanager.getNSTableDialog().setDefaultNSPrefix();
+        var newFile = new File(Translator.getString("Component.File.NewProject.Text"));
+        MR3.getCurrentProject().setCurrentProjectFile(newFile);
         HistoryManager.saveHistory(HistoryType.NEW_PROJECT);
         mr3ProjectPanel.resetEditors();
         mr3ProjectPanel.deployCPR();

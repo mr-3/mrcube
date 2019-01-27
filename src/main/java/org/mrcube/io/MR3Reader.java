@@ -355,8 +355,7 @@ public class MR3Reader {
 			gmanager.importing(false);
 			if (currentProjectFile != null) {
 				MR3.getCurrentProject().setCurrentProjectFile(currentProjectFile);
-				HistoryManager.saveHistory(HistoryType.OPEN_PROJECT,
-						currentProjectFile.getAbsolutePath());
+				HistoryManager.saveHistory(HistoryType.OPEN_PROJECT, currentProjectFile.getAbsolutePath());
 			}
 		}).start();
 	}

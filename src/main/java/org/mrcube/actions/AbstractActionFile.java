@@ -182,6 +182,7 @@ abstract class AbstractActionFile extends MR3AbstractAction {
         saveFile(file);
         HistoryManager.saveHistory(HistoryType.SAVE_PROJECT_AS, file.getAbsolutePath());
         MR3.getCurrentProject().setCurrentProjectFile(file);
+        mr3.ResourcePathTextField.setText(file.getAbsolutePath());
     }
 
     protected void quitProject() {
