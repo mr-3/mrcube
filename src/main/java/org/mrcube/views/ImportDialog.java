@@ -449,7 +449,7 @@ public class ImportDialog extends JDialog implements ActionListener {
             if (dataTypeRDFButton.isSelected()) {
                 mr3Reader.mergeRDFModelThread(model);
             } else if (dataTypeRDFSButton.isSelected()) {
-                mr3Reader.mergeRDFPlusRDFSModel(model);
+                mr3Reader.mergeRDFandRDFSModel(model);
             } else if (dataTypeOWLButton.isSelected()) {
                 mr3Reader.mergeOntologyModel((OntModel) model);
             }

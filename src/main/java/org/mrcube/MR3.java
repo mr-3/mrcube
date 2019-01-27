@@ -92,6 +92,7 @@ public class MR3 extends JFrame implements ChangeListener {
     private JCheckBoxMenuItem isGroup;
     private JCheckBoxMenuItem showRDFPropertyLabelBox;
 
+    public static JTextField ResourcePathTextField;
     public static StatusBarPanel STATUS_BAR;
     private static final int MAIN_FRAME_WIDTH = 1024;
     private static final int MAIN_FRAME_HEIGHT = 768;
@@ -109,8 +110,15 @@ public class MR3 extends JFrame implements ChangeListener {
         initActions();
         getContentPane().add(createToolBar(), BorderLayout.NORTH);
 
+        var resourcePathPanel = new JPanel();
+        ResourcePathTextField = new JTextField();
+        var openResourceButton = new JButton(openResourceAction);
+        resourcePathPanel.setLayout(new BorderLayout());
+        resourcePathPanel.add(ResourcePathTextField, BorderLayout.CENTER);
+        resourcePathPanel.add(openResourceButton, BorderLayout.EAST);
         STATUS_BAR = new StatusBarPanel();
         mr3ProjectPanel = new MR3ProjectPanel(gmanager);
+        mr3ProjectPanel.add(resourcePathPanel, BorderLayout.NORTH);
 
         gmanager.setMR3ProjectPanel(mr3ProjectPanel);
         getContentPane().add(mr3ProjectPanel, BorderLayout.CENTER);
@@ -121,7 +129,7 @@ public class MR3 extends JFrame implements ChangeListener {
             var desktop = Desktop.getDesktop();
             if (desktop.isSupported(Desktop.Action.APP_QUIT_HANDLER)) {
                 desktop.setQuitHandler((e, response) -> {
-                    // do nothing and invoke quit action
+                    // do nothing but invoke quit action
                 });
             }
         }
@@ -157,9 +165,10 @@ public class MR3 extends JFrame implements ChangeListener {
     }
 
     private AbstractAction newProjectAction;
-    private AbstractAction openProjectAction;
-    private AbstractAction saveProjectAction;
-    private AbstractAction saveProjectAsAction;
+    private OpenFileAction openFileAction;
+    private OpenResourceAction openResourceAction;
+    private AbstractAction saveFileAction;
+    private AbstractAction saveFileAsAction;
     private AbstractAction showValidatorAction;
     private AbstractAction toFrontRDFEditorAction;
     private AbstractAction toFrontClassEditorAction;
@@ -182,9 +191,10 @@ public class MR3 extends JFrame implements ChangeListener {
 
     private void initActions() {
         newProjectAction = new NewProject(this);
-        openProjectAction = new OpenFileAction(this);
-        saveProjectAction = new SaveFileAction(this, SaveFileAction.SAVE_PROJECT, SaveFileAction.SAVE_PROJECT_ICON);
-        saveProjectAsAction = new SaveFileAction(this, SaveFileAction.SAVE_AS_PROJECT, SaveFileAction.SAVE_AS_PROJECT_ICON);
+        openResourceAction = new OpenResourceAction(this);
+        openFileAction = new OpenFileAction(this);
+        saveFileAction = new SaveFileAction(this, SaveFileAction.SAVE_PROJECT, SaveFileAction.SAVE_PROJECT_ICON);
+        saveFileAsAction = new SaveFileAction(this, SaveFileAction.SAVE_AS_PROJECT, SaveFileAction.SAVE_AS_PROJECT_ICON);
         showValidatorAction = new ShowValidator(this);
         toFrontRDFEditorAction = new EditorSelect(this, EditorSelect.RDF_EDITOR, EditorSelect.RDF_EDITOR_ICON);
         toFrontClassEditorAction = new EditorSelect(this, EditorSelect.CLASS_EDITOR, EditorSelect.CLASS_EDITOR_ICON);
@@ -213,9 +223,9 @@ public class MR3 extends JFrame implements ChangeListener {
         JToolBar toolbar = new JToolBar();
         toolbar.setFloatable(false);
         toolbar.add(newProjectAction);
-        toolbar.add(openProjectAction);
-        toolbar.add(saveProjectAction);
-        toolbar.add(saveProjectAsAction);
+        toolbar.add(openFileAction);
+        toolbar.add(saveFileAction);
+        toolbar.add(saveFileAsAction);
         toolbar.addSeparator();
         toolbar.add(findResAction);
         toolbar.addSeparator();
@@ -372,10 +382,10 @@ public class MR3 extends JFrame implements ChangeListener {
         JMenu menu = new JMenu(Translator.getString("Component.File.Text") + "(F)");
         menu.setMnemonic('f');
         menu.add(newProjectAction);
-        menu.add(openProjectAction);
+        menu.add(openFileAction);
         menu.addSeparator();
-        menu.add(saveProjectAction);
-        menu.add(saveProjectAsAction);
+        menu.add(saveFileAction);
+        menu.add(saveFileAsAction);
         menu.addSeparator();
         menu.add(quitAction);
 

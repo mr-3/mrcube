@@ -291,7 +291,7 @@ public class MR3Reader {
 		}
 	}
 
-	public void mergeRDFPlusRDFSModel(Model mdl) {
+	public void mergeRDFandRDFSModel(Model mdl) {
 		model = mdl;
 		if (model == null) {
 			return;
