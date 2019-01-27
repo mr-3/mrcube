@@ -172,6 +172,9 @@ public class MR3ProjectPanel extends JPanel {
     }
 
     public GraphType getFocusedEditorType() {
+        if (desktopPane.getSelectedFrame() == null) {
+            return GraphType.RDF;
+        }
         if (desktopPane.getSelectedFrame().equals(rdfEditorFrame)) {
             return GraphType.RDF;
         } else if (desktopPane.getSelectedFrame().equals(classEditorFrame)) {

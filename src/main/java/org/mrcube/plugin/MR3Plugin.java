@@ -110,7 +110,7 @@ public abstract class MR3Plugin {
      * Jenaが提供するModelを，MR3のRDFSグラフへ変換する． 変換したRDFSグラフを編集中のRDFSグラフにマージする．
      */
     protected void mergeRDFSModel(Model model) {
-        mr3.getMR3Reader().mergeRDFPlusRDFSModel(model);
+        mr3.getMR3Reader().mergeRDFandRDFSModel(model);
     }
 
     /**

@@ -72,7 +72,6 @@ public class RemoveDialog extends JDialog implements ListSelectionListener, Acti
 
         setLocationRelativeTo(gmanager.getRootFrame());
         setSize(new Dimension(500, 350));
-        setVisible(false);
     }
 
     private JComponent getButtonPanel() {

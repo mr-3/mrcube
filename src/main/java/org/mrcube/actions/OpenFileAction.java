@@ -23,13 +23,7 @@
 
 package org.mrcube.actions;
 
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.riot.Lang;
-import org.apache.jena.riot.RDFDataMgr;
 import org.mrcube.MR3;
-import org.mrcube.io.MR3Reader;
-import org.mrcube.utils.Translator;
-import org.mrcube.utils.Utilities;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,21 +34,16 @@ import java.io.File;
 /**
  * @author Takeshi Morita
  */
-public class OpenFileAction extends AbstractActionFile {
-
-    private MR3Reader mr3Reader;
-    private static final String TITLE = Translator.getString("Component.File.OpenProject.Text");
-    private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("Component.File.OpenProject.Icon"));
+public class OpenFileAction extends OpenResourceAction {
 
     public OpenFileAction(MR3 mr3) {
-        super(mr3, TITLE, ICON);
+        super(mr3);
         setValues();
-        mr3Reader = new MR3Reader(mr3.getGraphManager());
-        initializeJFileChooser();
     }
 
-    private void setValues() {
-        putValue(SHORT_DESCRIPTION, TITLE);
+    @Override
+    protected void setValues() {
+        super.setValues();
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
     }
 
@@ -64,13 +53,8 @@ public class OpenFileAction extends AbstractActionFile {
         if (file == null) {
             return;
         }
-        if (file.getName().endsWith("mr3")) {
-            Model model = RDFDataMgr.loadModel(file.getAbsolutePath(), Lang.TURTLE);
-            mr3.getMR3Reader().replaceProjectModel(model);
-            mr3.setTitle("MR^3: " + MR3.getCurrentProject().getTitle());
-        } else {
-            Model model = RDFDataMgr.loadModel(file.getAbsolutePath());
-            mr3Reader.mergeRDFPlusRDFSModel(model);
-        }
+        openResource(file.getAbsolutePath());
+        MR3.getCurrentProject().setCurrentProjectFile(file);
+        mr3.ResourcePathTextField.setText(file.getAbsolutePath());
     }
 }

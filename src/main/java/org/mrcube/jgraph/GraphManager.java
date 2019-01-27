@@ -70,18 +70,16 @@ public class GraphManager {
 
     private final MR3Writer mr3Writer;
 
-    private RDFGraph realRDFGraph;
-
     private boolean isImporting;
     private boolean isShowTypeCell;
 
     private final MR3CellMaker cellMaker;
     private final JGraphTreeLayout treeLayout;
 
-    private WeakReference<AttributeDialog> attrDialogRef;
-    private WeakReference<FindResourceDialog> findResDialogRef;
-    private WeakReference<NameSpaceTableDialog> nsTableDialogRef;
-    private WeakReference<RemoveDialog> removeDialogRef;
+    private AttributeDialog attributeDialog;
+    private FindResourceDialog findResourceDialog;
+    private NameSpaceTableDialog nameSpaceTableDialog;
+    private RemoveDialog removeDialog;
 
     public static CellViewType cellViewType;
 
@@ -96,10 +94,10 @@ public class GraphManager {
     public GraphManager(Preferences prefs, Frame root) {
         rootFrame = root;
         userPrefs = prefs;
-        attrDialogRef = new WeakReference<>(null);
-        findResDialogRef = new WeakReference<>(null);
-        nsTableDialogRef = new WeakReference<>(null);
-        removeDialogRef = new WeakReference<>(null);
+        attributeDialog = new AttributeDialog(getRootFrame());
+        findResourceDialog = new FindResourceDialog(this);
+        nameSpaceTableDialog = new NameSpaceTableDialog(this);
+        removeDialog = new RemoveDialog(this);
         cellMaker = new MR3CellMaker(this);
         treeLayout = new JGraphTreeLayout(this);
         baseURI = userPrefs.get(PrefConstants.BaseURI, MR3Resource.getURI());
@@ -108,6 +106,13 @@ public class GraphManager {
         CLASS_CLASS_LIST = RDFS.Class.toString() + " " + OWL.Class.toString();
         PROPERTY_CLASS_LIST = RDF.Property.toString() + " " + OWL.ObjectProperty.toString()
                 + " " + OWL.DatatypeProperty.toString();
+    }
+
+    public void closeAllDialogs()  {
+        attributeDialog.setVisible(false);
+        findResourceDialog.setVisible(false);
+        nameSpaceTableDialog.setVisible(false);
+        removeDialog.setVisible(false);
     }
 
     public void setMR3ProjectPanel(MR3ProjectPanel panel) {
@@ -240,10 +245,6 @@ public class GraphManager {
         isShowTypeCell = t;
     }
 
-    public RDFGraph getRealRDFGraph() {
-        return realRDFGraph;
-    }
-
     public boolean isRDFGraph(Object graph) {
         return graph == getCurrentRDFGraph();
     }
@@ -256,36 +257,10 @@ public class GraphManager {
         return graph == getCurrentPropertyGraph();
     }
 
-    public RDFGraph getGraph(GraphType type) {
-        if (type == GraphType.RDF) {
-            return getCurrentRDFGraph();
-        } else if (type == GraphType.CLASS) {
-            return getCurrentClassGraph();
-        } else if (type == GraphType.PROPERTY) {
-            return getCurrentPropertyGraph();
-        }
-        return null;
-    }
-
     public void clearSelection() {
         getCurrentRDFGraph().clearSelection();
         getCurrentClassGraph().clearSelection();
         getCurrentPropertyGraph().clearSelection();
-    }
-
-    public void setGraphBackground(Color color) {
-        RDFGraph currentRDFGraph = getCurrentRDFGraph();
-        if (currentRDFGraph != null) {
-            currentRDFGraph.setBackground(color);
-        }
-        RDFGraph currentClassGraph = getCurrentClassGraph();
-        if (currentClassGraph != null) {
-            currentClassGraph.setBackground(color);
-        }
-        RDFGraph currentPropertyGraph = getCurrentPropertyGraph();
-        if (currentPropertyGraph != null) {
-            currentPropertyGraph.setBackground(color);
-        }
     }
 
     private Set<Resource> getMetaClassList(String[] list) {
@@ -434,9 +409,6 @@ public class GraphManager {
             if (RDFGraph.isTypeCell(cell)) {
                 typeCellList.add(cell);
             }
-            //	else if (cell.getClass().equals(DefaultGraphCell.class)) {
-            //		typeCellList.add(cell);
-            //	}
         }
         getCurrentRDFGraph().removeCellsWithEdges(typeCellList.toArray());
     }
@@ -1238,39 +1210,19 @@ public class GraphManager {
     }
 
     public AttributeDialog getAttrDialog() {
-        AttributeDialog result = attrDialogRef.get();
-        if (result == null) {
-            result = new AttributeDialog(getRootFrame());
-            attrDialogRef = new WeakReference<>(result);
-        }
-        return result;
+        return attributeDialog;
     }
 
     public NameSpaceTableDialog getNSTableDialog() {
-        NameSpaceTableDialog result = nsTableDialogRef.get();
-        if (result == null) {
-            result = new NameSpaceTableDialog(this);
-            nsTableDialogRef = new WeakReference<>(result);
-        }
-        return result;
+        return nameSpaceTableDialog;
     }
 
     public FindResourceDialog getFindResourceDialog() {
-        FindResourceDialog result = findResDialogRef.get();
-        if (result == null) {
-            result = new FindResourceDialog(this);
-            findResDialogRef = new WeakReference<>(result);
-        }
-        return result;
+        return findResourceDialog;
     }
 
     public RemoveDialog getRemoveDialog() {
-        RemoveDialog result = removeDialogRef.get();
-        if (result == null) {
-            result = new RemoveDialog(this);
-            removeDialogRef = new WeakReference<>(result);
-        }
-        return result;
+        return removeDialog;
     }
 
     public void setVisibleAttrDialog(boolean t) {

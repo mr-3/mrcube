@@ -43,10 +43,6 @@ public class RDFResourceCell extends DefaultGraphCell implements RDFCellStyleCha
         GraphUtilities.changeDefaultCellStyle(graph, this, rdfResourceColor);
     }
 
-    public RDFResourceCell() {
-        this(null);
-    }
-
     public RDFResourceCell(Object userObject) {
         super(userObject);
     }

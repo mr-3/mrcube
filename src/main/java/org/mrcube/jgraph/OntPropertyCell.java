@@ -35,10 +35,6 @@ public class OntPropertyCell extends DefaultGraphCell implements RDFCellStyleCha
 
     public static Color propertyColor = new Color(255, 204, 102);
 
-    public OntPropertyCell() {
-        this(null);
-    }
-
     public OntPropertyCell(Object userObject) {
         super(userObject);
     }

@@ -36,10 +36,6 @@ public class RDFLiteralCell extends DefaultGraphCell implements RDFCellStyleChan
 
     public static Color literalColor = new Color(255, 255, 204);
 
-    public RDFLiteralCell() {
-        this(null);
-    }
-
     public RDFLiteralCell(Object userObject) {
         super(userObject);
     }

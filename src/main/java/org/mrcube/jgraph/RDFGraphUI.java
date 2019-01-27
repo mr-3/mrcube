@@ -305,7 +305,7 @@ class RDFGraphUI extends BasicGraphUI {
                         }
                         Model model = ModelFactory.createDefaultModel();
                         model.read(bis, MR3Resource.getURI(), "RDF/XML");
-                        mr3Reader.mergeRDFPlusRDFSModel(model);
+                        mr3Reader.mergeRDFandRDFSModel(model);
                         return true;
                     }
                     Utilities.showErrorMessageDialog("Too much element");

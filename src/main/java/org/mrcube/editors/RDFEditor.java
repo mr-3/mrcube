@@ -117,8 +117,8 @@ public class RDFEditor extends Editor {
         Edge edge = (Edge) cell;
         PrefixNSUtil.setNamespaceModelSet(GraphUtilities.getNamespaceModelSet());
         RDFPropertyPanel propPanel = getRDFPropertyPanel();
-        propPanel.setPropertyList(gmanager.getPropertyList());
         propPanel.setValue(edge, propertyInfo);
+        propPanel.setPropertyList(gmanager.getPropertyList());
         gmanager.getAttrDialog().setContentPane(propPanel);
         if (propertyInfo != null) {
             MR3.STATUS_BAR.setText("URI: " + propertyInfo.getURIStr());
