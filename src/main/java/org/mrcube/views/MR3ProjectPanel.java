@@ -60,7 +60,7 @@ public class MR3ProjectPanel extends JPanel {
 
     public MR3ProjectPanel(GraphManager gmanager) {
         rdfsModelMap = new RDFSModelMap();
-        currentProjectFile = new File(System.getProperty("user.dir"), Translator.getString("Component.File.NewProject.Text"));
+        currentProjectFile = new File(System.getProperty("user.dir"), Translator.getString("Component.File.New.Text"));
 
         classEditor = new ClassEditor(gmanager);
         classEditor.setBackground(Color.WHITE);
@@ -217,7 +217,7 @@ public class MR3ProjectPanel extends JPanel {
 
     public String getTitle() {
         if (currentProjectFile == null) {
-            return Translator.getString("Component.File.NewProject.Text");
+            return Translator.getString("Component.File.New.Text");
         }
         return currentProjectFile.getName();
     }

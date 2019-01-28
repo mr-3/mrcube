@@ -604,7 +604,7 @@ public class MR3 extends JFrame implements ChangeListener {
     public void newProject() {
         gmanager.getAttrDialog().setNullPanel();
         gmanager.getNSTableDialog().setDefaultNSPrefix();
-        var newFile = new File(Translator.getString("Component.File.NewProject.Text"));
+        var newFile = new File(Translator.getString("Component.File.New.Text"));
         MR3.getCurrentProject().setCurrentProjectFile(newFile);
         HistoryManager.saveHistory(HistoryType.NEW_PROJECT);
         mr3ProjectPanel.resetEditors();

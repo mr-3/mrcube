@@ -198,7 +198,7 @@ abstract class AbstractActionFile extends MR3AbstractAction {
 
     protected boolean isNewProjectFile(MR3ProjectPanel currentProject) {
         String basePath = null;
-        File newFile = new File(basePath, Translator.getString("Component.File.NewProject.Text"));
+        File newFile = new File(basePath, Translator.getString("Component.File.New.Text"));
         File currentProjectFile = currentProject.getCurrentProjectFile();
         return newFile.getAbsolutePath().equals(currentProjectFile.getAbsolutePath());
     }
