@@ -73,10 +73,10 @@ public class SelectResourceTypeDialog extends JDialog implements ActionListener 
         if (panel.getPrevCell() != null) {
             if (isConfirmed) {
                 isConfirmed = false;
-                GraphUtilities.changeDefaultCellStyle(panel.getGraph(), panel.getPrevCell(), OntClassCell.classColor);
+                GraphUtilities.changeDefaultCellStyle(panel.getGraph(), panel.getPrevCell(), OntClassCell.backgroundColor);
                 return panel.getURI();
             }
-            GraphUtilities.changeDefaultCellStyle(panel.getGraph(), panel.getPrevCell(), OntClassCell.classColor);
+            GraphUtilities.changeDefaultCellStyle(panel.getGraph(), panel.getPrevCell(), OntClassCell.backgroundColor);
         }
         return null;
     }

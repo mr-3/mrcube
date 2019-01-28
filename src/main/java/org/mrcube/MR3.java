@@ -420,27 +420,12 @@ public class MR3 extends JFrame implements ChangeListener {
         GraphLayoutUtilities.PROPERTY_HORIZONTAL_SPACE = Integer.parseInt(userPrefs.get(
                 PrefConstants.PROPERTY_HORIZONTAL_SPACE, Integer.toString(GraphLayoutUtilities.HORIZONTAL_SPACE)));
 
-        MR3CellMaker.CELL_WIDTH = Integer.parseInt(userPrefs.get(PrefConstants.NODE_WIDTH,
-                Integer.toString(MR3CellMaker.CELL_WIDTH)));
-        MR3CellMaker.CELL_HEIGHT = Integer.parseInt(userPrefs.get(PrefConstants.NODE_HEIGHT,
-                Integer.toString(MR3CellMaker.CELL_HEIGHT)));
+        MR3CellMaker.CELL_WIDTH = Integer.parseInt(userPrefs.get(PrefConstants.NODE_WIDTH, Integer.toString(MR3CellMaker.CELL_WIDTH)));
+        MR3CellMaker.CELL_HEIGHT = Integer.parseInt(userPrefs.get(PrefConstants.NODE_HEIGHT, Integer.toString(MR3CellMaker.CELL_HEIGHT)));
 
-        RDFResourceCell.rdfResourceColor = new Color(userPrefs.getInt(PrefConstants.RDFResourceColor,
-                RDFResourceCell.rdfResourceColor.getRGB()));
-        RDFLiteralCell.literalColor = new Color(userPrefs.getInt(PrefConstants.LiteralColor,
-                RDFLiteralCell.literalColor.getRGB()));
-        OntClassCell.classColor = new Color(
-                userPrefs.getInt(PrefConstants.ClassColor, OntClassCell.classColor.getRGB()));
-        OntPropertyCell.propertyColor = new Color(userPrefs.getInt(PrefConstants.PropertyColor,
-                OntPropertyCell.propertyColor.getRGB()));
-        GraphUtilities.selectedColor = new Color(userPrefs.getInt(PrefConstants.SelectedColor,
-                GraphUtilities.selectedColor.getRGB()));
-
-        GraphUtilities.isColor = userPrefs.getBoolean(PrefConstants.Color, true);
         setSize(userPrefs.getInt(PrefConstants.WindowWidth, MAIN_FRAME_WIDTH),
                 userPrefs.getInt(PrefConstants.WindowHeight, MAIN_FRAME_HEIGHT));
-        setLocation(userPrefs.getInt(PrefConstants.WindowPositionX, 50),
-                userPrefs.getInt(PrefConstants.WindowPositionY, 50));
+        setLocation(userPrefs.getInt(PrefConstants.WindowPositionX, 50), userPrefs.getInt(PrefConstants.WindowPositionY, 50));
 
         HistoryManager.resetFileAppender(userPrefs.get(PrefConstants.logFile, System.getProperty("user.dir") + "\\"
                 + HistoryManager.DEFAULT_LOG_FILE_NAME));
