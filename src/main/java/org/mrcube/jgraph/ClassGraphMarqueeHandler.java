@@ -50,7 +50,7 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 
     private final InsertClassAction insertClassAction;
     private static final String INSERT_CLASS_TITLE = Translator.getString("InsertClassDialog.Title");
-    private static final Icon CLASS_RECTANGLE_ICON = Utilities.getImageIcon("class_rectangle.png");
+    public static final Icon CLASS_RECTANGLE_ICON = Utilities.getImageIcon("class_rectangle.png");
 
     public ClassGraphMarqueeHandler(GraphManager gm, RDFGraph classGraph) {
         super(gm, classGraph);

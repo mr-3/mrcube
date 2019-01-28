@@ -1,31 +1,31 @@
 /*
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
- * 
+ *
  * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
- * 
+ *
  * This file is part of MR^3.
- * 
+ *
  * MR^3 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * MR^3 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  */
 
 package org.mrcube.views;
 
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.jgraph.graph.GraphCell;
-import org.mrcube.jgraph.GraphManager;
+import org.mrcube.jgraph.*;
 import org.mrcube.models.MR3Constants;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.NamespaceModel;
@@ -43,13 +43,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * @author Takeshi Morita
- * 
  */
 public class FindResourceDialog extends JDialog {
 
@@ -58,14 +55,14 @@ public class FindResourceDialog extends JDialog {
     private final JTextField findCommentField;
     private Set<NamespaceModel> namespaceModelSet;
     private JComboBox uriPrefixBox;
-    private final JList resourceList;
+    private final JList<GraphCell> resourceList;
+    private DefaultListModel<GraphCell> resourceListModel;
 
     private JCheckBox rdfCheckBox;
     private JCheckBox classCheckBox;
     private JCheckBox propertyCheckBox;
 
     private final GraphManager gmanager;
-    private static final Object[] NULL = new Object[0];
 
     private static final int BOX_WIDTH = 100;
     private static final int BOX_HEIGHT = 30;
@@ -84,12 +81,10 @@ public class FindResourceDialog extends JDialog {
 
         findLabelField = new JTextField();
         findLabelField.getDocument().addDocumentListener(new FindAction(FindActionType.LABEL));
-        JComponent findLabelFieldP = Utilities.createTitledPanel(findLabelField, MR3Constants.LABEL, LIST_WIDTH,
-                FIELD_HEIGHT);
+        JComponent findLabelFieldP = Utilities.createTitledPanel(findLabelField, MR3Constants.LABEL, LIST_WIDTH, FIELD_HEIGHT);
         findCommentField = new JTextField();
         findCommentField.getDocument().addDocumentListener(new FindAction(FindActionType.COMMENT));
-        JComponent findCommentFieldP = Utilities.createTitledPanel(findCommentField, MR3Constants.COMMENT, LIST_WIDTH,
-                FIELD_HEIGHT);
+        JComponent findCommentFieldP = Utilities.createTitledPanel(findCommentField, MR3Constants.COMMENT, LIST_WIDTH, FIELD_HEIGHT);
 
         JPanel northPanel = new JPanel();
         northPanel.setLayout(new BoxLayout(northPanel, BoxLayout.Y_AXIS));
@@ -98,10 +93,12 @@ public class FindResourceDialog extends JDialog {
         northPanel.add(findLabelFieldP);
         northPanel.add(findCommentFieldP);
 
-        resourceList = new JList();
+        resourceListModel = new DefaultListModel<>();
+        resourceList = new JList(resourceListModel);
+        resourceList.setCellRenderer(new ResourceListCellRenderer());
         resourceList.addListSelectionListener(new JumpAction());
-        JComponent resourceListP = Utilities.createTitledPanel(new JScrollPane(resourceList), Translator
-                .getString("FindResult"), LIST_WIDTH, LIST_HEIGHT);
+        JComponent resourceListP = Utilities.createTitledPanel(new JScrollPane(resourceList),
+                Translator.getString("FindResult"), LIST_WIDTH, LIST_HEIGHT);
 
         JButton cancelButton = new JButton(MR3Constants.CANCEL);
         cancelButton.setMnemonic('c');
@@ -143,8 +140,7 @@ public class FindResourceDialog extends JDialog {
     private JComponent getFindAreaPanel() {
         uriPrefixBox = new JComboBox();
         uriPrefixBox.addActionListener(new ChangePrefixAction());
-        JComponent uriPrefixBoxP = Utilities
-                .createTitledPanel(uriPrefixBox, MR3Constants.PREFIX, BOX_WIDTH, BOX_HEIGHT);
+        JComponent uriPrefixBoxP = Utilities.createTitledPanel(uriPrefixBox, MR3Constants.PREFIX, BOX_WIDTH, BOX_HEIGHT);
 
         findField = new JTextField();
         findField.getDocument().addDocumentListener(new FindAction(FindActionType.URI));
@@ -182,8 +178,6 @@ public class FindResourceDialog extends JDialog {
         namespaceModelSet = GraphUtilities.getNamespaceModelSet();
         PrefixNSUtil.setNamespaceModelSet(namespaceModelSet);
         uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
-        // findField.setText(PrefixNSUtil.getNameSpace((String)
-        // uriPrefixBox.getSelectedItem()));
     }
 
     public void setVisible(boolean aFlag) {
@@ -210,8 +204,11 @@ public class FindResourceDialog extends JDialog {
         }
     }
 
-    public Object[] getFindResources(String key, FindActionType type) {
-        Map<String, Object> resourceMap = new TreeMap<>();
+    public Vector<GraphCell> getFindResources(String key, FindActionType type) {
+        Map<String, GraphCell> resourceMap = new TreeMap<>();
+        if (key.isEmpty()) {
+            return new Vector<>(resourceMap.values());
+        }
         key = resolvePrefix(key);
         if (rdfCheckBox.isSelected()) {
             Set<GraphCell> rdfCellSet = null;
@@ -236,47 +233,38 @@ public class FindResourceDialog extends JDialog {
                 resourceMap.put(propertyCell.toString(), propertyCell);
             }
         }
-        return resourceMap.values().toArray();
+        return new Vector<>(resourceMap.values());
     }
 
     private String resolvePrefix(String key) {
         String[] tokens = key.split(":");
-        if (tokens.length != 2) { return key; }
+        if (tokens.length != 2) {
+            return key;
+        }
         String prefix = tokens[0];
         String id = tokens[1];
-        if (prefix.equals("http")) { return key; }
+        if (prefix.equals("http")) {
+            return key;
+        }
         for (NamespaceModel info : namespaceModelSet) {
-            if (info.getPrefix().equals(prefix)) { return info.getNameSpace() + id; }
+            if (info.getPrefix().equals(prefix)) {
+                return info.getNameSpace() + id;
+            }
         }
         return key;
     }
 
     private void setFindList(FindActionType type) {
-        resourceList.removeAll();
-        Object[] findList = null;
+        resourceListModel.clear();
+        Vector<GraphCell> findList = new Vector<>();
         if (type == FindActionType.URI) {
-            if (findField.getText().length() == 0) {
-                resourceList.setListData(NULL);
-                return;
-            }
-            String key = findField.getText();
-            findList = getFindResources(key, type);
+            findList = getFindResources(findField.getText(), type);
         } else if (type == FindActionType.LABEL) {
-            if (findLabelField.getText().length() == 0) {
-                resourceList.setListData(NULL);
-                return;
-            }
-            String key = findLabelField.getText();
-            findList = getFindResources(key, type);
+            findList = getFindResources(findLabelField.getText(), type);
         } else if (type == FindActionType.COMMENT) {
-            if (findCommentField.getText().length() == 0) {
-                resourceList.setListData(NULL);
-                return;
-            }
-            String key = findCommentField.getText();
-            findList = getFindResources(key, type);
+            findList = getFindResources(findCommentField.getText(), type);
         }
-        resourceList.setListData(findList);
+        resourceListModel.addAll(findList);
         if (0 < resourceList.getModel().getSize()) {
             resourceList.setSelectedIndex(0);
         }
@@ -309,7 +297,6 @@ public class FindResourceDialog extends JDialog {
     class JumpAction implements ListSelectionListener {
         public void valueChanged(ListSelectionEvent e) {
             Object cell = resourceList.getSelectedValue();
-            // Object[] cells = resourceList.getSelectedValues();
             if (rdfCheckBox.isSelected()) {
                 gmanager.selectRDFCell(cell);
             }
@@ -321,4 +308,19 @@ public class FindResourceDialog extends JDialog {
             }
         }
     }
+
+    class ResourceListCellRenderer extends DefaultListCellRenderer {
+        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            if (value instanceof RDFResourceCell) {
+                setIcon(RDFGraphMarqueeHandler.RDF_RESOURCE_ELLIPSE_ICON);
+            } else if (value instanceof OntClassCell) {
+                setIcon(ClassGraphMarqueeHandler.CLASS_RECTANGLE_ICON);
+            } else if (value instanceof OntPropertyCell) {
+                setIcon(PropertyGraphMarqueeHandler.PROPERTY_ELLIPSE_ICON);
+            }
+            return this;
+        }
+    }
+
 }

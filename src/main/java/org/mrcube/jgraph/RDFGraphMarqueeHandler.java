@@ -81,8 +81,8 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 
     private static final String INSERT_RESOURCE_TITLE = Translator.getString("InsertResourceDialog.Title");
     private static final String INSERT_LITERAL_TITLE = Translator.getString("InsertLiteralDialog.Title");
-    private static final Icon RDF_RESOURCE_ELLIPSE_ICON = Utilities.getImageIcon("rdf_resource_ellipse.png");
-    private static final Icon LITERAL_RECTANGLE_ICON = Utilities.getImageIcon("literal_rectangle.png");
+    public static final Icon RDF_RESOURCE_ELLIPSE_ICON = Utilities.getImageIcon("rdf_resource_ellipse.png");
+    public static final Icon LITERAL_RECTANGLE_ICON = Utilities.getImageIcon("literal_rectangle.png");
 
     public RDFGraphMarqueeHandler(GraphManager manager, RDFGraph graph) {
         gmanager = manager;

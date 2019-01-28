@@ -104,11 +104,17 @@ public class MR3ProjectPanel extends JPanel {
     public void frontEditor(GraphType graphType) {
         try {
             if (graphType == GraphType.RDF) {
-                rdfEditorFrame.setSelected(true);
+                if (!rdfEditorFrame.isSelected()) {
+                    rdfEditorFrame.setSelected(true);
+                }
             } else if (graphType == GraphType.CLASS) {
-                classEditorFrame.setSelected(true);
+                if (!classEditorFrame.isSelected()) {
+                    classEditorFrame.setSelected(true);
+                }
             } else if (graphType == GraphType.PROPERTY) {
-                propertyEditorFrame.setSelected(true);
+                if (!propertyEditorFrame.isSelected()) {
+                    propertyEditorFrame.setSelected(true);
+                }
             }
         } catch (PropertyVetoException e) {
             e.printStackTrace();
