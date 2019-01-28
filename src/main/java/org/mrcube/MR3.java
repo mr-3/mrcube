@@ -30,7 +30,8 @@ import org.mrcube.editors.PropertyEditor;
 import org.mrcube.editors.RDFEditor;
 import org.mrcube.io.MR3Reader;
 import org.mrcube.io.MR3Writer;
-import org.mrcube.jgraph.*;
+import org.mrcube.jgraph.GraphManager;
+import org.mrcube.jgraph.RDFGraph;
 import org.mrcube.layout.GraphLayoutUtilities;
 import org.mrcube.models.MR3Constants;
 import org.mrcube.models.MR3Constants.CellViewType;
@@ -90,7 +91,6 @@ public class MR3 extends JFrame implements ChangeListener {
 
     private JCheckBoxMenuItem showTypeCellBox;
     private JCheckBoxMenuItem showToolTips;
-    private JCheckBoxMenuItem isGroup;
     private JCheckBoxMenuItem showRDFPropertyLabelBox;
 
     public static JTextField ResourcePathTextField;
@@ -486,22 +486,12 @@ public class MR3 extends JFrame implements ChangeListener {
         ToolTipManager.sharedInstance().setEnabled(true);
         menu.add(showToolTips);
         menu.addSeparator();
-        isGroup = new JCheckBoxMenuItem(Translator.getString("Component.View.Group.Text"), true);
-        isGroup.addActionListener(new IsGroupAction());
-        menu.add(isGroup);
-        menu.addSeparator();
 
         menu.add(new GraphLayoutAction(gmanager, GraphType.RDF, GraphLayoutAction.layoutRDFGraphIcon));
         menu.add(new GraphLayoutAction(gmanager, GraphType.CLASS, GraphLayoutAction.layoutClassGraphIcon));
         menu.add(new GraphLayoutAction(gmanager, GraphType.PROPERTY, GraphLayoutAction.layoutPropertyGraphIcon));
 
         return menu;
-    }
-
-    class IsGroupAction extends AbstractAction {
-        public void actionPerformed(ActionEvent e) {
-            getRDFGraph().getSelectionModel().setChildrenSelectable(!isGroup.isSelected());
-        }
     }
 
     private JMenu getWindowMenu() {
