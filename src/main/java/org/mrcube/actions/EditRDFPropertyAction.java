@@ -117,7 +117,7 @@ public class EditRDFPropertyAction {
 			}
 		}
 
-		if (!gmanager.getCurrentRDFEditor().isEditMode() && propertyCell != null) {
+		if (propertyCell != null) {
 			gmanager.selectPropertyCell(propertyCell); 
 		}
 

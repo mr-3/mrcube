@@ -51,7 +51,6 @@ public class GraphUtilities {
     private static Set<NamespaceModel> namespaceModelSet = new HashSet<>();
 
     public static Color selectedColor = new Color(240, 240, 200);
-    // public static Color selectedForegroundColor = new Color(0, 0, 128);
     public static final Color selectedBorderColor = new Color(70, 70, 70);
     public static final Color graphBackgroundColor = Color.white;
 
@@ -105,8 +104,7 @@ public class GraphUtilities {
      * @param backGroundColor
      * @param borderColor
      */
-    public static void changeCellStyle(RDFGraph graph, GraphCell cell, Color backGroundColor,
-                                       Color borderColor) {
+    public static void changeCellStyle(RDFGraph graph, GraphCell cell, Color backGroundColor, Color borderColor) {
         float lineWidth = 1;
         if (cell != null) {
             Map map = new AttributeMap();
@@ -169,7 +167,6 @@ public class GraphUtilities {
 
     public static void editCell(GraphCell cell, AttributeMap map, RDFGraph graph) {
         Map nested = new HashMap();
-        // nested.put(cell, GraphConstants.cloneMap(map));
         nested.put(cell, map.clone());
         graph.getGraphLayoutCache().edit(nested, null, null, null);
     }
@@ -182,8 +179,7 @@ public class GraphUtilities {
         for (Object cell1 : cells) {
             GraphCell cell = (GraphCell) cell1;
             if (RDFGraph.isRDFResourceCell(cell)) {
-                RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(cell
-                        .getAttributes());
+                RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(cell.getAttributes());
                 resizeRDFResourceCell(gm, info, cell);
             }
         }

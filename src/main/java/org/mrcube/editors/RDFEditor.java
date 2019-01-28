@@ -90,9 +90,7 @@ public class RDFEditor extends Editor {
     private void selectResource(GraphCell cell) {
         RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(cell.getAttributes());
         if (info != null) {
-            if (!isEditMode()) {
-                gmanager.selectClassCell(info.getTypeCell());
-            }
+            gmanager.selectClassCell(info.getTypeCell());
             if (gmanager.getAttrDialog().isVisible()) {
                 RDFResourcePanel resPanel = getRDFResourcePanel();
                 resPanel.setValue(cell);
@@ -110,7 +108,7 @@ public class RDFEditor extends Editor {
         PropertyModel propertyInfo = (PropertyModel) GraphConstants.getValue(cell.getAttributes());
         if (!propertyInfo.getURI().equals(MR3Resource.Nil)) {
             Object propCell = gmanager.getPropertyCell(propertyInfo.getURI(), false);
-            if (propCell != null && !isEditMode()) {
+            if (propCell != null) {
                 gmanager.selectPropertyCell(propCell); // 対応するRDFSプロパティを選択
             }
         }
