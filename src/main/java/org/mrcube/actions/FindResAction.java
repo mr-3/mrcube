@@ -25,10 +25,8 @@ package org.mrcube.actions;
 
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.jgraph.RDFGraph;
-import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
-import org.mrcube.views.FindResourceDialog;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,7 +38,6 @@ import java.awt.event.KeyEvent;
  */
 public class FindResAction extends AbstractAction {
 
-    private final GraphType graphType;
     private final GraphManager gmanager;
     private static final String TITLE = Translator.getString("Component.Edit.FindResource.Text");
     private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("FindResourceDialog.Icon"));
@@ -49,11 +46,6 @@ public class FindResAction extends AbstractAction {
         super(TITLE, ICON);
         gmanager = gm;
         setValues();
-        if (g == null) {
-            graphType = null;
-        } else {
-            graphType = g.getType();
-        }
     }
 
     private void setValues() {
@@ -63,8 +55,6 @@ public class FindResAction extends AbstractAction {
     }
 
     public void actionPerformed(ActionEvent e) {
-        FindResourceDialog findResDialog = gmanager.getFindResourceDialog();
-        findResDialog.setFindArea(graphType);
-        findResDialog.setVisible(true);
+        gmanager.getFindResourceDialog().setVisible(true);
     }
 }

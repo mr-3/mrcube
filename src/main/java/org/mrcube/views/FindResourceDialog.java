@@ -23,14 +23,8 @@
 
 package org.mrcube.views;
 
-import org.apache.jena.rdf.model.ResourceFactory;
 import org.jgraph.graph.GraphCell;
 import org.mrcube.jgraph.*;
-import org.mrcube.models.MR3Constants;
-import org.mrcube.models.MR3Constants.GraphType;
-import org.mrcube.models.NamespaceModel;
-import org.mrcube.utils.GraphUtilities;
-import org.mrcube.utils.PrefixNSUtil;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
 
@@ -40,272 +34,91 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Takeshi Morita
  */
 public class FindResourceDialog extends JDialog {
 
-    private JTextField findField;
-    private final JTextField findLabelField;
-    private final JTextField findCommentField;
-    private Set<NamespaceModel> namespaceModelSet;
-    private JComboBox uriPrefixBox;
+    private final GraphManager gmanager;
+
+    private JTextField keywordField;
     private final JList<GraphCell> resourceList;
     private DefaultListModel<GraphCell> resourceListModel;
 
-    private JCheckBox rdfCheckBox;
-    private JCheckBox classCheckBox;
-    private JCheckBox propertyCheckBox;
-
-    private final GraphManager gmanager;
-
-    private static final int BOX_WIDTH = 100;
-    private static final int BOX_HEIGHT = 30;
-    private static final int LIST_WIDTH = 300;
-    private static final int LIST_HEIGHT = 120;
+    private static final int LIST_WIDTH = 400;
+    private static final int LIST_HEIGHT = 300;
     private static final int FIELD_HEIGHT = 30;
 
     public FindResourceDialog(GraphManager gm) {
         super(gm.getRootFrame(), Translator.getString("FindResourceDialog.Title"), false);
         setIconImage(Utilities.getImageIcon(Translator.getString("FindResourceDialog.Icon")).getImage());
-        Container contentPane = getContentPane();
 
         gmanager = gm;
-        JComponent buttonGroupPanel = getButtonGroupPanel();
-        JComponent findAreaPanel = getFindAreaPanel();
-
-        findLabelField = new JTextField();
-        findLabelField.getDocument().addDocumentListener(new FindAction(FindActionType.LABEL));
-        JComponent findLabelFieldP = Utilities.createTitledPanel(findLabelField, MR3Constants.LABEL, LIST_WIDTH, FIELD_HEIGHT);
-        findCommentField = new JTextField();
-        findCommentField.getDocument().addDocumentListener(new FindAction(FindActionType.COMMENT));
-        JComponent findCommentFieldP = Utilities.createTitledPanel(findCommentField, MR3Constants.COMMENT, LIST_WIDTH, FIELD_HEIGHT);
-
-        JPanel northPanel = new JPanel();
-        northPanel.setLayout(new BoxLayout(northPanel, BoxLayout.Y_AXIS));
-        northPanel.add(buttonGroupPanel);
-        northPanel.add(findAreaPanel);
-        northPanel.add(findLabelFieldP);
-        northPanel.add(findCommentFieldP);
+        keywordField = new JTextField();
+        keywordField.getDocument().addDocumentListener(new FindAction());
+        JComponent findFieldPanel = Utilities.createTitledPanel(keywordField, Translator.getString("Keyword"), LIST_WIDTH, FIELD_HEIGHT);
 
         resourceListModel = new DefaultListModel<>();
         resourceList = new JList(resourceListModel);
         resourceList.setCellRenderer(new ResourceListCellRenderer());
-        resourceList.addListSelectionListener(new JumpAction());
-        JComponent resourceListP = Utilities.createTitledPanel(new JScrollPane(resourceList),
+        resourceList.addListSelectionListener(new SelectResourceAction());
+        JComponent resourceListPanel = Utilities.createTitledPanel(new JScrollPane(resourceList),
                 Translator.getString("FindResult"), LIST_WIDTH, LIST_HEIGHT);
 
-        JButton cancelButton = new JButton(MR3Constants.CANCEL);
-        cancelButton.setMnemonic('c');
-        cancelButton.addActionListener(e -> setVisible(false));
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new BorderLayout());
-        buttonPanel.add(cancelButton, BorderLayout.EAST);
-
+        Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
-        contentPane.add(northPanel, BorderLayout.NORTH);
-        contentPane.add(resourceListP, BorderLayout.CENTER);
-        contentPane.add(buttonPanel, BorderLayout.SOUTH);
+        contentPane.add(findFieldPanel, BorderLayout.NORTH);
+        contentPane.add(resourceListPanel, BorderLayout.CENTER);
 
         pack();
         setLocationRelativeTo(gmanager.getRootFrame());
         setVisible(false);
     }
 
-    private JComponent getButtonGroupPanel() {
-        FindAreaCheck findAreaCheck = new FindAreaCheck();
-        rdfCheckBox = new JCheckBox("RDF");
-        rdfCheckBox.setSelected(true);
-        rdfCheckBox.addItemListener(findAreaCheck);
-        classCheckBox = new JCheckBox(Translator.getString("Class"));
-        classCheckBox.addItemListener(findAreaCheck);
-        propertyCheckBox = new JCheckBox(Translator.getString("Property"));
-        propertyCheckBox.addItemListener(findAreaCheck);
-
-        JPanel buttonGroupPanel = new JPanel();
-        buttonGroupPanel.setLayout(new GridLayout(1, 3));
-        buttonGroupPanel.setBorder(BorderFactory.createTitledBorder(Translator.getString("GraphType")));
-        buttonGroupPanel.add(rdfCheckBox);
-        buttonGroupPanel.add(classCheckBox);
-        buttonGroupPanel.add(propertyCheckBox);
-
-        return Utilities.createWestPanel(buttonGroupPanel);
+    public void setVisible(boolean isVisible) {
+        super.setVisible(isVisible);
     }
 
-    private JComponent getFindAreaPanel() {
-        uriPrefixBox = new JComboBox();
-        uriPrefixBox.addActionListener(new ChangePrefixAction());
-        JComponent uriPrefixBoxP = Utilities.createTitledPanel(uriPrefixBox, MR3Constants.PREFIX, BOX_WIDTH, BOX_HEIGHT);
-
-        findField = new JTextField();
-        findField.getDocument().addDocumentListener(new FindAction(FindActionType.URI));
-        JComponent findFieldP = Utilities.createTitledPanel(findField, "URI", LIST_WIDTH, FIELD_HEIGHT);
-
-        JPanel inlinePanel = new JPanel();
-        inlinePanel.setLayout(new BoxLayout(inlinePanel, BoxLayout.X_AXIS));
-        inlinePanel.add(uriPrefixBoxP);
-        inlinePanel.add(findFieldP);
-        return inlinePanel;
+    private Set<GraphCell> findResourceSet(String keyword) {
+        Set<GraphCell> resourceSet = new HashSet<>();
+        resourceSet.addAll(gmanager.findRDFResourceSet(keyword));
+        resourceSet.addAll(gmanager.findRDFSResourceSet(keyword, gmanager.getCurrentClassGraph()));
+        resourceSet.addAll(gmanager.findRDFSResourceSet(keyword, gmanager.getCurrentPropertyGraph()));
+        return resourceSet;
     }
 
-    public void setAllCheckBoxSelected(boolean t) {
-        rdfCheckBox.setSelected(t);
-        classCheckBox.setSelected(t);
-        propertyCheckBox.setSelected(t);
-    }
-
-    public void setFindArea(GraphType type) {
-        findField.setText("");
-        setAllCheckBoxSelected(false);
-
-        if (type == null) {
-            setAllCheckBoxSelected(true);
-        } else if (type == GraphType.RDF) {
-            rdfCheckBox.setSelected(true);
-        } else if (type == GraphType.CLASS) {
-            classCheckBox.setSelected(true);
-        } else if (type == GraphType.PROPERTY) {
-            propertyCheckBox.setSelected(true);
-        }
-    }
-
-    public void setURIPrefixBox() {
-        namespaceModelSet = GraphUtilities.getNamespaceModelSet();
-        PrefixNSUtil.setNamespaceModelSet(namespaceModelSet);
-        uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
-    }
-
-    public void setVisible(boolean aFlag) {
-        if (aFlag) {
-            setURIPrefixBox();
-        }
-        super.setVisible(aFlag);
-    }
-
-    class ChangePrefixAction extends AbstractAction {
-        public void actionPerformed(ActionEvent e) {
-            if (e.getSource() == uriPrefixBox) {
-                String ns = PrefixNSUtil.getNameSpace((String) uriPrefixBox.getSelectedItem());
-                String id = ResourceFactory.createResource(findField.getText()).getLocalName();
-                findField.setText(ns + id);
-                setFindList(FindActionType.URI);
-            }
-        }
-    }
-
-    class FindAreaCheck implements ItemListener {
-        public void itemStateChanged(ItemEvent e) {
-            setFindList(FindActionType.URI);
-        }
-    }
-
-    public Vector<GraphCell> getFindResources(String key, FindActionType type) {
-        Map<String, GraphCell> resourceMap = new TreeMap<>();
-        if (key.isEmpty()) {
-            return new Vector<>(resourceMap.values());
-        }
-        key = resolvePrefix(key);
-        if (rdfCheckBox.isSelected()) {
-            Set<GraphCell> rdfCellSet = null;
-            if (type == FindActionType.URI) {
-                rdfCellSet = gmanager.getFindRDFResult(key);
-            } else if (type == FindActionType.LABEL || type == FindActionType.COMMENT) {
-                rdfCellSet = gmanager.getFindRDFResult(key, type);
-            }
-            for (GraphCell rdfCell : rdfCellSet) {
-                resourceMap.put(rdfCell.toString(), rdfCell);
-            }
-        }
-        if (classCheckBox.isSelected()) {
-            Set<GraphCell> classCellSet = gmanager.getFindClassResult(key, type);
-            for (GraphCell classCell : classCellSet) {
-                resourceMap.put(classCell.toString(), classCell);
-            }
-        }
-        if (propertyCheckBox.isSelected()) {
-            Set<GraphCell> propertyCellSet = gmanager.getFindPropertyResult(key, type);
-            for (GraphCell propertyCell : propertyCellSet) {
-                resourceMap.put(propertyCell.toString(), propertyCell);
-            }
-        }
-        return new Vector<>(resourceMap.values());
-    }
-
-    private String resolvePrefix(String key) {
-        String[] tokens = key.split(":");
-        if (tokens.length != 2) {
-            return key;
-        }
-        String prefix = tokens[0];
-        String id = tokens[1];
-        if (prefix.equals("http")) {
-            return key;
-        }
-        for (NamespaceModel info : namespaceModelSet) {
-            if (info.getPrefix().equals(prefix)) {
-                return info.getNameSpace() + id;
-            }
-        }
-        return key;
-    }
-
-    private void setFindList(FindActionType type) {
+    private void setFindedResourceSet() {
         resourceListModel.clear();
-        Vector<GraphCell> findList = new Vector<>();
-        if (type == FindActionType.URI) {
-            findList = getFindResources(findField.getText(), type);
-        } else if (type == FindActionType.LABEL) {
-            findList = getFindResources(findLabelField.getText(), type);
-        } else if (type == FindActionType.COMMENT) {
-            findList = getFindResources(findCommentField.getText(), type);
-        }
-        resourceListModel.addAll(findList);
-        if (0 < resourceList.getModel().getSize()) {
+        resourceListModel.addAll(findResourceSet(keywordField.getText()));
+        if (!resourceListModel.isEmpty()) {
             resourceList.setSelectedIndex(0);
         }
     }
 
-    public enum FindActionType {
-        URI, LABEL, COMMENT
-    }
-
     class FindAction implements DocumentListener {
-        private final FindActionType type;
-
-        FindAction(FindActionType type) {
-            this.type = type;
-        }
 
         public void changedUpdate(DocumentEvent e) {
-            setFindList(type);
+            setFindedResourceSet();
         }
 
         public void insertUpdate(DocumentEvent e) {
-            setFindList(type);
+            setFindedResourceSet();
         }
 
         public void removeUpdate(DocumentEvent e) {
-            setFindList(type);
+            setFindedResourceSet();
         }
     }
 
-    class JumpAction implements ListSelectionListener {
+    class SelectResourceAction implements ListSelectionListener {
         public void valueChanged(ListSelectionEvent e) {
             Object cell = resourceList.getSelectedValue();
-            if (rdfCheckBox.isSelected()) {
-                gmanager.selectRDFCell(cell);
-            }
-            if (classCheckBox.isSelected()) {
-                gmanager.selectClassCell(cell);
-            }
-            if (propertyCheckBox.isSelected()) {
-                gmanager.selectPropertyCell(cell);
-            }
+            gmanager.selectRDFCell(cell);
+            gmanager.selectClassCell(cell);
+            gmanager.selectPropertyCell(cell);
         }
     }
 

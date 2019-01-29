@@ -92,7 +92,7 @@ public abstract class SelectClassPanel extends JPanel implements GraphSelectionL
         if (currentKey == null || (!currentKey.equals(key))) {
             index = 0; // indexを元に戻す
             currentKey = key;
-            findList = new ArrayList(gmanager.getFindRDFSResult(key, graph));
+            findList = new ArrayList(gmanager.findRDFSResourceSet(key, graph));
             findNextResource(findList);
         } else {
             findNextResource(findList);
