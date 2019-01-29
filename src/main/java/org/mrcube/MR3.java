@@ -171,9 +171,6 @@ public class MR3 extends JFrame implements ChangeListener {
     private AbstractAction saveFileAction;
     private AbstractAction saveFileAsAction;
     private AbstractAction showValidatorAction;
-    private AbstractAction toFrontRDFEditorAction;
-    private AbstractAction toFrontClassEditorAction;
-    private AbstractAction toFrontPropertyEditorAction;
     private AbstractAction deployWindowCPRAction;
     private AbstractAction deployWindowCRAction;
     private AbstractAction deployWindowPRAction;
@@ -197,9 +194,6 @@ public class MR3 extends JFrame implements ChangeListener {
         saveFileAction = new SaveFileAction(this, SaveFileAction.SAVE_PROJECT, SaveFileAction.SAVE_PROJECT_ICON);
         saveFileAsAction = new SaveFileAction(this, SaveFileAction.SAVE_AS_PROJECT, SaveFileAction.SAVE_AS_PROJECT_ICON);
         showValidatorAction = new ShowValidator(this);
-        toFrontRDFEditorAction = new EditorSelect(this, EditorSelect.RDF_EDITOR, EditorSelect.RDF_EDITOR_ICON);
-        toFrontClassEditorAction = new EditorSelect(this, EditorSelect.CLASS_EDITOR, EditorSelect.CLASS_EDITOR_ICON);
-        toFrontPropertyEditorAction = new EditorSelect(this, EditorSelect.PROPERTY_EDITOR, EditorSelect.PROPERTY_EDITOR_ICON);
 
         deployWindowCPRAction = new DeployWindows(this, Translator.getString("Component.Window.DeployCPRWindows.Text"),
                 CPR_ICON, DeployType.CPR,

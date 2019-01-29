@@ -28,15 +28,12 @@ import org.jgraph.event.GraphSelectionListener;
 import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.GraphUndoManager;
-import org.mrcube.actions.GraphLayoutAction;
-import org.mrcube.actions.RemoveAction;
-import org.mrcube.actions.SaveGraphImageAction;
-import org.mrcube.actions.ZoomAction;
-import org.mrcube.jgraph.GraphManager;
-import org.mrcube.jgraph.RDFGraph;
-import org.mrcube.jgraph.RDFGraphMarqueeHandler;
+import org.mrcube.MR3;
+import org.mrcube.actions.*;
+import org.mrcube.jgraph.*;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.MR3Constants.HistoryType;
+import org.mrcube.models.RDFResourceModel;
 import org.mrcube.models.RDFSModel;
 import org.mrcube.models.RDFSModelMap;
 import org.mrcube.utils.Translator;
@@ -180,12 +177,38 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
         }
     }
 
+    class OpenSelectedResourceAction extends AbstractAction {
+        public OpenSelectedResourceAction() {
+            super(OpenResourceAction.TITLE, OpenResourceAction.ICON);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (graph.getSelectionCount() == 1) {
+                Object selectedCell = graph.getSelectionCell();
+                if (graph.getType() == GraphType.RDF) {
+                    for (Object cell : graph.getAllSelectedCells()) {
+                        if (RDFGraph.isRDFResourceCell(cell)) {
+                            RDFResourceModel model = (RDFResourceModel) GraphConstants.getValue(((GraphCell) cell).getAttributes());
+                            MR3.ResourcePathTextField.setText(model.getURIStr());
+                        }
+                    }
+                } else if (RDFGraph.isRDFsCell(selectedCell)) {
+                    RDFSModel model = (RDFSModel) GraphConstants.getValue(((GraphCell) selectedCell).getAttributes());
+                    MR3.ResourcePathTextField.setText(model.getURIStr());
+                }
+            }
+        }
+    }
+
     /**
      * Create ToolBar
      */
     private JToolBar createToolBar() {
         JToolBar toolbar = new JToolBar();
         toolbar.setFloatable(false);
+
+        toolbar.add(new OpenSelectedResourceAction());
 
         if (graph.getType() == GraphType.RDF) {
             toolbar.add(new InsertEllipseResourceAction(Utilities.getImageIcon("rdf_resource_ellipse.png")));
@@ -198,7 +221,6 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
         } else if (graph.getType() == GraphType.CLASS) {
             toolbar.add(new InsertRectangleResourceAction(Utilities.getImageIcon("class_rectangle.png")));
         }
-
 
         toolbar.addSeparator();
         toolbar.add(graph.getCopyAction());
