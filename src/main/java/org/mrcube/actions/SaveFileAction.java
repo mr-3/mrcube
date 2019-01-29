@@ -56,8 +56,7 @@ public class SaveFileAction extends AbstractActionFile {
     private void setValues(String shortDescription) {
         putValue(SHORT_DESCRIPTION, shortDescription);
         if (shortDescription.equals(SAVE_PROJECT)) {
-            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S,
-                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
+            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         } else if (shortDescription.equals(SAVE_AS_PROJECT)) {
             putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S,
                     Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | InputEvent.SHIFT_DOWN_MASK));

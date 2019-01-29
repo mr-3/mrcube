@@ -52,12 +52,12 @@ abstract class AbstractActionFile extends MR3AbstractAction {
 
     protected void initializeJFileChooser() {
         fileChooser = new JFileChooser();
+        fileChooser.setAcceptAllFileFilterUsed(true);
         fileChooser.addChoosableFileFilter(turtleFileFilter);
         fileChooser.addChoosableFileFilter(jsonldFileFilter);
         fileChooser.addChoosableFileFilter(n3FileFilter);
         fileChooser.addChoosableFileFilter(RDF_FILE_FILTER);
         fileChooser.addChoosableFileFilter(mr3FileFilter);
-        fileChooser.setFileFilter(turtleFileFilter);
     }
 
     public AbstractActionFile(MR3 mr3, String name, ImageIcon icon) {
