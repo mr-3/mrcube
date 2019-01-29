@@ -322,7 +322,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
             } else {
                 // mr3:nilの場合には，名前空間はBaseURIとする
                 if (info.getURIStr().equals(MR3Resource.Nil.getURI())) {
-                    if (0 < propList.size()) {
+                    if (propList != null && !propList.isEmpty()) {
                         GraphCell cell = propList.get(0);
                         RDFSModel propInfo = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
                         setNSLabel(propInfo.getURI().getNameSpace());

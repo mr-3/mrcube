@@ -230,10 +230,6 @@ public class MR3 extends JFrame implements ChangeListener {
         toolbar.addSeparator();
         toolbar.add(findResAction);
         toolbar.addSeparator();
-        toolbar.add(toFrontRDFEditorAction);
-        toolbar.add(toFrontClassEditorAction);
-        toolbar.add(toFrontPropertyEditorAction);
-        toolbar.addSeparator();
         toolbar.add(showAttrDialogAction);
         toolbar.add(showNSTableDialogAction);
         toolbar.addSeparator();
@@ -244,15 +240,10 @@ public class MR3 extends JFrame implements ChangeListener {
         toolbar.add(showRDFSourceCodeViewer);
         toolbar.add(showValidatorAction);
         toolbar.add(showProjectInfoAction);
-        toolbar.add(showLogConsoleAciton);
         toolbar.add(showOptionDialogAction);
-        toolbar.addSeparator();
-        toolbar.add(showVersionInfoAction);
 
         return toolbar;
     }
-
-    private static final Object[] NULL = new Object[0];
 
     public void showRDFEditorOverview() {
         OverviewDialog result = rdfEditorOverviewRef.get();
@@ -500,10 +491,6 @@ public class MR3 extends JFrame implements ChangeListener {
         menu.add(new ShowOverview(this, ShowOverview.RDF_EDITOR_OVERVIEW, ShowOverview.RDF_EDITOR_OVERVIEW_ICON));
         menu.add(new ShowOverview(this, ShowOverview.CLASS_EDITOR_OVERVIEW, ShowOverview.CLASS_EDITOR_OVERVIEW_ICON));
         menu.add(new ShowOverview(this, ShowOverview.PROPERTY_EDITOR_OVERVIEW, ShowOverview.PROPERTY_EDITOR_OVERVIEW_ICON));
-        menu.addSeparator();
-        menu.add(toFrontRDFEditorAction);
-        menu.add(toFrontClassEditorAction);
-        menu.add(toFrontPropertyEditorAction);
         menu.addSeparator();
         menu.add(showAttrDialogAction);
         menu.add(showNSTableDialogAction);
