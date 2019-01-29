@@ -93,9 +93,6 @@ public class FindResourceDialog extends JDialog {
     private void setFindedResourceSet() {
         resourceListModel.clear();
         resourceListModel.addAll(findResourceSet(keywordField.getText()));
-        if (!resourceListModel.isEmpty()) {
-            resourceList.setSelectedIndex(0);
-        }
     }
 
     class FindAction implements DocumentListener {
