@@ -41,11 +41,11 @@ import java.io.File;
  */
 public class SaveFileAction extends AbstractActionFile {
 
-    public static final String SAVE_PROJECT = Translator.getString("Component.File.SaveProject.Text");
-    public static final String SAVE_AS_PROJECT = Translator.getString("Component.File.SaveAsProject.Text");
+    public static final String SAVE_PROJECT = Translator.getString("Component.File.Save.Text");
+    public static final String SAVE_AS_PROJECT = Translator.getString("Component.File.SaveAs.Text");
 
-    public static final ImageIcon SAVE_PROJECT_ICON = Utilities.getImageIcon(Translator.getString("Component.File.SaveProject.Icon"));
-    public static final ImageIcon SAVE_AS_PROJECT_ICON = Utilities.getImageIcon(Translator.getString("Component.File.SaveAsProject.Icon"));
+    public static final ImageIcon SAVE_PROJECT_ICON = Utilities.getImageIcon(Translator.getString("Component.File.Save.Icon"));
+    public static final ImageIcon SAVE_AS_PROJECT_ICON = Utilities.getImageIcon(Translator.getString("Component.File.SaveAs.Icon"));
 
     public SaveFileAction(MR3 mr3, String name, ImageIcon icon) {
         super(mr3, name, icon);
@@ -56,8 +56,7 @@ public class SaveFileAction extends AbstractActionFile {
     private void setValues(String shortDescription) {
         putValue(SHORT_DESCRIPTION, shortDescription);
         if (shortDescription.equals(SAVE_PROJECT)) {
-            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S,
-                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
+            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         } else if (shortDescription.equals(SAVE_AS_PROJECT)) {
             putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S,
                     Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | InputEvent.SHIFT_DOWN_MASK));
@@ -68,7 +67,7 @@ public class SaveFileAction extends AbstractActionFile {
         if (getName().equals(SAVE_PROJECT)) {
             File currentProjectFile = MR3.getCurrentProject().getCurrentProjectFile();
             String basePath = null;
-            File newFile = new File(basePath, Translator.getString("Component.File.NewProject.Text"));
+            File newFile = new File(basePath, Translator.getString("Component.File.New.Text"));
             if (newFile.getAbsolutePath().equals(currentProjectFile.getAbsolutePath())) {
                 saveFileAs();
             } else {

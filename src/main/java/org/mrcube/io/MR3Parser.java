@@ -208,7 +208,7 @@ public class MR3Parser {
         if (data != null) {
             rectangle = data.getRectangle();
         }
-        attr.put(resCell, cellMaker.getResourceMap(rectangle, RDFResourceCell.rdfResourceColor));
+        attr.put(resCell, cellMaker.getResourceMap(rectangle, RDFResourceCell.backgroundColor));
         GraphConstants.setValue(resCell.getAttributes(), resInfo);
 
         return resCell;
@@ -223,7 +223,7 @@ public class MR3Parser {
         if (data != null) {
             rectangle = data.getRectangle();
         }
-        attr.put(litCell, cellMaker.getLiteralMap(rectangle, RDFLiteralCell.literalColor));
+        attr.put(litCell, cellMaker.getLiteralMap(rectangle, RDFLiteralCell.backgroundColor));
         GraphConstants.setValue(litCell.getAttributes(), literal);
 
         return litCell;

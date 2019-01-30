@@ -33,7 +33,9 @@ import java.awt.*;
  */
 public class OntClassCell extends DefaultGraphCell implements RDFCellStyleChanger {
 
-    public static Color classColor = new Color(204, 255, 102);
+    public static Color fontColor = Color.black;
+    public static Color borderColor = Color.black;
+    public static Color backgroundColor = new Color(204, 255, 102);
 
     public OntClassCell(Object userObject) {
         super(userObject);
@@ -44,6 +46,6 @@ public class OntClassCell extends DefaultGraphCell implements RDFCellStyleChange
     }
 
     public void changeDefaultStyle(RDFGraph graph) {
-        GraphUtilities.changeDefaultCellStyle(graph, this, classColor);
+        GraphUtilities.changeDefaultCellStyle(graph, this, backgroundColor);
     }
 }

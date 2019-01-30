@@ -25,6 +25,7 @@ package org.mrcube.jgraph;
 
 import org.jgraph.graph.*;
 import org.mrcube.MR3;
+import org.mrcube.actions.OpenResourceAction;
 import org.mrcube.actions.RemoveAction;
 import org.mrcube.actions.TransformElementAction;
 import org.mrcube.models.MR3Constants.GraphType;
@@ -81,8 +82,8 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 
     private static final String INSERT_RESOURCE_TITLE = Translator.getString("InsertResourceDialog.Title");
     private static final String INSERT_LITERAL_TITLE = Translator.getString("InsertLiteralDialog.Title");
-    private static final Icon RDF_RESOURCE_ELLIPSE_ICON = Utilities.getImageIcon("rdf_resource_ellipse.png");
-    private static final Icon LITERAL_RECTANGLE_ICON = Utilities.getImageIcon("literal_rectangle.png");
+    public static final Icon RDF_RESOURCE_ELLIPSE_ICON = Utilities.getImageIcon("rdf_resource_ellipse.png");
+    public static final Icon LITERAL_RECTANGLE_ICON = Utilities.getImageIcon("literal_rectangle.png");
 
     public RDFGraphMarqueeHandler(GraphManager manager, RDFGraph graph) {
         gmanager = manager;
@@ -93,7 +94,6 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
         cellMaker = new MR3CellMaker(gmanager);
         insertResourceAction = new InsertResourceAction();
         insertLiteralAction = new InsertLiteralAction();
-
         removeAction = new RemoveAction(graph, gmanager);
         setAction(graph);
     }
@@ -281,6 +281,8 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     Point insertPoint = new Point(10, 10);
 
     public void mouseMoved(MouseEvent event) {
+        MR3.getCurrentProject().frontEditor(graph.getType());
+
         insertPoint = event.getPoint();
         setCursor(event);
         isConnectMode = isConnectMode(event);
@@ -487,9 +489,9 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
         addTransformMenu(menu, cell);
         addEditMenu(menu, cell);
         menu.add(new ShowAttrDialog());
-
         return menu;
     }
+
 
     private Object[] getSelectedRDFResourceCells() {
         RDFGraph rdfGraph = gmanager.getCurrentRDFGraph();
@@ -521,12 +523,10 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
             menu.addSeparator();
             menu.add(new AbstractAction(Translator.getString("Action.ChangeResourceType.Text")) {
                 public void actionPerformed(ActionEvent ev) {
-                    GraphCell typeCell = (GraphCell) gmanager.getCurrentClassGraph()
-                            .getSelectionCell();
+                    GraphCell typeCell = (GraphCell) gmanager.getCurrentClassGraph().getSelectionCell();
                     Object[] resCells = getSelectedRDFResourceCells();
                     for (Object resCell : resCells) {
-                        RDFResourceModel info = (RDFResourceModel) GraphConstants
-                                .getValue(((GraphCell) resCell).getAttributes());
+                        RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(((GraphCell) resCell).getAttributes());
                         info.setTypeCell(typeCell, gmanager.getCurrentRDFGraph());
                     }
                     gmanager.repaintRDFGraph();

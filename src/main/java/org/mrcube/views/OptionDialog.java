@@ -26,7 +26,7 @@ package org.mrcube.views;
 import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
-import org.mrcube.jgraph.*;
+import org.mrcube.jgraph.GraphManager;
 import org.mrcube.layout.GraphLayoutUtilities;
 import org.mrcube.models.MR3Constants;
 import org.mrcube.models.MR3Resource;
@@ -43,8 +43,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.prefs.Preferences;
 
 /**
@@ -62,7 +62,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
     private final ProxyPanel proxyPanel;
     private final MetaClassPanel metaClassPanel;
     private final LayoutPanel layoutPanel;
-    private final RenderingPanel renderingPanel;
 
     private final GraphManager gmanager;
     private final Preferences userPrefs;
@@ -87,10 +86,8 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         proxyPanel = new ProxyPanel();
         metaClassPanel = new MetaClassPanel();
         layoutPanel = new LayoutPanel();
-        renderingPanel = new RenderingPanel();
 
-        menuList = new JList(new Object[]{basePanel, directoryPanel, proxyPanel, metaClassPanel, layoutPanel,
-                renderingPanel});
+        menuList = new JList(new Object[]{basePanel, directoryPanel, proxyPanel, metaClassPanel, layoutPanel});
         menuList.addListSelectionListener(this);
         JComponent menuListPanel = Utilities.createTitledPanel(menuList, "", 100, 100);
 
@@ -103,7 +100,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         mainPanel.add(proxyPanel.toString(), proxyPanel);
         mainPanel.add(metaClassPanel.toString(), metaClassPanel);
         mainPanel.add(layoutPanel.toString(), layoutPanel);
-        mainPanel.add(renderingPanel.toString(), renderingPanel);
 
         JPanel topLevelPanel = new JPanel();
         topLevelPanel.setLayout(new BorderLayout());
@@ -1101,192 +1097,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
 
     }
 
-    class RenderingPanel extends JPanel {
-
-        private final JCheckBox isAntialiasBox;
-
-        private final JCheckBox isColorBox;
-        private final JButton rdfResourceColorButton;
-        private final JButton literalColorButton;
-        private final JButton classColorButton;
-        private final JButton propertyColorButton;
-        private final JButton selectedColorButton;
-
-        private Color rdfResourceColor;
-        private Color literalColor;
-        private Color classColor;
-        private Color propertyColor;
-        private Color selectedColor;
-
-        RenderingPanel() {
-            ChangeColorAction action = new ChangeColorAction();
-            rdfResourceColorButton = new JButton(Translator.getString("PreferenceDialog.RenderingTab.RDFResourceColor")
-                    + "(R)");
-            rdfResourceColorButton.setMnemonic('r');
-            initColorButton(rdfResourceColorButton, "Resource", BUTTON_WIDTH, BUTTON_HEIGHT, action);
-            literalColorButton = new JButton(Translator.getString("PreferenceDialog.RenderingTab.RDFLiteralColor")
-                    + "(L)");
-            literalColorButton.setMnemonic('l');
-            initColorButton(literalColorButton, "Literal", BUTTON_WIDTH, BUTTON_HEIGHT, action);
-            classColorButton = new JButton(Translator.getString("PreferenceDialog.RenderingTab.ClassColor") + "(U)");
-            classColorButton.setMnemonic('u');
-            initColorButton(classColorButton, "Class", BUTTON_WIDTH, BUTTON_HEIGHT, action);
-            propertyColorButton = new JButton(Translator.getString("PreferenceDialog.RenderingTab.PropertyColor")
-                    + "(P)");
-            propertyColorButton.setMnemonic('p');
-            initColorButton(propertyColorButton, "Property", BUTTON_WIDTH, BUTTON_HEIGHT, action);
-            selectedColorButton = new JButton(Translator.getString("PreferenceDialog.RenderingTab.SelectedColor")
-                    + "(S)");
-            selectedColorButton.setMnemonic('s');
-            initColorButton(selectedColorButton, "Selected", BUTTON_WIDTH, BUTTON_HEIGHT, action);
-
-            isColorBox = new JCheckBox(Translator.getString("PreferenceDialog.RenderingTab.Option.Color"));
-            isAntialiasBox = new JCheckBox(Translator.getString("PreferenceDialog.RenderingTab.Option.Antialias"));
-
-            JPanel colorPanel = new JPanel();
-            colorPanel.setBorder(BorderFactory.createTitledBorder(Translator
-                    .getString("PreferenceDialog.RenderingTab.SelectColor")));
-            colorPanel.setLayout(new GridLayout(5, 1, 5, 5));
-            colorPanel.add(rdfResourceColorButton);
-            colorPanel.add(literalColorButton);
-            colorPanel.add(classColorButton);
-            colorPanel.add(propertyColorButton);
-            colorPanel.add(selectedColorButton);
-            JPanel optionPanel = new JPanel();
-            optionPanel.setBorder(BorderFactory.createTitledBorder(Translator
-                    .getString("PreferenceDialog.RenderingTab.Option")));
-            optionPanel.add(isColorBox);
-            optionPanel.add(isAntialiasBox);
-            JPanel panel = new JPanel();
-            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-            panel.add(colorPanel);
-            panel.add(optionPanel);
-
-            setLayout(new BorderLayout());
-            add(getTitleField(toString()), BorderLayout.NORTH);
-            add(Utilities.createNorthPanel(panel), BorderLayout.WEST);
-            setBorder(BorderFactory.createEtchedBorder());
-        }
-
-        public String toString() {
-            return Translator.getString("PreferenceDialog.RenderingTab");
-        }
-
-        void setConfig() {
-            userPrefs.putInt(PrefConstants.RDFResourceColor, rdfResourceColor.getRGB());
-            RDFResourceCell.rdfResourceColor = rdfResourceColor;
-            userPrefs.putInt(PrefConstants.LiteralColor, literalColor.getRGB());
-            RDFLiteralCell.literalColor = literalColor;
-            userPrefs.putInt(PrefConstants.ClassColor, classColor.getRGB());
-            OntClassCell.classColor = classColor;
-            userPrefs.putInt(PrefConstants.PropertyColor, propertyColor.getRGB());
-            OntPropertyCell.propertyColor = propertyColor;
-            userPrefs.putInt(PrefConstants.SelectedColor, selectedColor.getRGB());
-            GraphUtilities.selectedColor = selectedColor;
-            userPrefs.putBoolean(PrefConstants.Color, isColorBox.isSelected());
-            GraphUtilities.isColor = isColorBox.isSelected();
-            // Colorがあるかないかをチェックした後に，セルの色を変更する．
-            GraphUtilities.changeAllCellColor(gmanager);
-
-            userPrefs.putBoolean(PrefConstants.Antialias, isAntialiasBox.isSelected());
-            gmanager.setAntialias();
-        }
-
-        void resetConfig() {
-            rdfResourceColor = RDFResourceCell.rdfResourceColor;
-            literalColor = RDFLiteralCell.literalColor;
-            classColor = OntClassCell.classColor;
-            propertyColor = OntPropertyCell.propertyColor;
-            selectedColor = GraphUtilities.selectedColor;
-
-            isColorBox.setSelected(userPrefs.getBoolean(PrefConstants.Color, true));
-            isAntialiasBox.setSelected(userPrefs.getBoolean(PrefConstants.Antialias, true));
-        }
-
-        private void initColorButton(JButton button, String name, int width, int height, Action action) {
-            button.setHorizontalAlignment(JButton.LEFT);
-            button.setIcon(new ColorSwatch(name));
-            button.setPreferredSize(new Dimension(width, height));
-            button.addActionListener(action);
-        }
-
-        class ColorSwatch implements Icon {
-            private final String name;
-
-            ColorSwatch(String str) {
-                name = str;
-            }
-
-            public int getIconWidth() {
-                return 11;
-            }
-
-            public int getIconHeight() {
-                return 11;
-            }
-
-            public void paintIcon(Component c, Graphics g, int x, int y) {
-                g.setColor(Color.black);
-                g.fillRect(x, y, getIconWidth(), getIconHeight());
-
-                switch (name) {
-                    case "Resource":
-                        g.setColor(rdfResourceColor);
-                        break;
-                    case "Literal":
-                        g.setColor(literalColor);
-                        break;
-                    case "Class":
-                        g.setColor(classColor);
-                        break;
-                    case "Property":
-                        g.setColor(propertyColor);
-                        break;
-                    case "Selected":
-                        g.setColor(selectedColor);
-                        break;
-                }
-
-                g.fillRect(x + 2, y + 2, getIconWidth() - 4, getIconHeight() - 4);
-            }
-        }
-
-        class ChangeColorAction extends AbstractAction {
-            public void actionPerformed(ActionEvent e) {
-                Color current = Color.black;
-
-                if (e.getSource() == rdfResourceColorButton) {
-                    current = rdfResourceColor;
-                } else if (e.getSource() == literalColorButton) {
-                    current = literalColor;
-                } else if (e.getSource() == classColorButton) {
-                    current = classColor;
-                } else if (e.getSource() == propertyColorButton) {
-                    current = propertyColor;
-                } else if (e.getSource() == selectedColorButton) {
-                    current = selectedColor;
-                }
-
-                Color c = JColorChooser.showDialog(getContentPane(), "Choose Color", current);
-                if (c == null) {
-                    c = current;
-                }
-
-                if (e.getSource() == rdfResourceColorButton) {
-                    rdfResourceColor = c;
-                } else if (e.getSource() == literalColorButton) {
-                    literalColor = c;
-                } else if (e.getSource() == classColorButton) {
-                    classColor = c;
-                } else if (e.getSource() == propertyColorButton) {
-                    propertyColor = c;
-                } else if (e.getSource() == selectedColorButton) {
-                    selectedColor = c;
-                }
-            }
-        }
-    }
-
     private static final int PREFIX_BOX_WIDTH = 120;
     private static final int PREFIX_BOX_HEIGHT = 30;
 
@@ -1305,7 +1115,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         proxyPanel.resetConfig();
         metaClassPanel.resetConfig();
         layoutPanel.resetConfig();
-        renderingPanel.resetConfig();
     }
 
     private String getMetaClassStr(Object[] list) {
@@ -1325,7 +1134,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
                 proxyPanel.setConfig();
                 metaClassPanel.setConfig();
                 layoutPanel.setConfig();
-                renderingPanel.setConfig();
             } catch (NumberFormatException nfe) {
                 Utilities.showErrorMessageDialog("Number Format Exception");
             }

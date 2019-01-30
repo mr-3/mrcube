@@ -50,9 +50,6 @@ public abstract class RDFSModel extends ResourceModel implements Serializable {
 
     private static final long serialVersionUID = -2970145279588775430L;
 
-    RDFSModel() {
-    }
-
     RDFSModel(String uri) {
         this.uri = uri;
         superRDFS = new HashSet<>();

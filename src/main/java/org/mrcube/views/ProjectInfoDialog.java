@@ -138,7 +138,7 @@ public class ProjectInfoDialog extends JDialog {
     }
 
     public void resetStatus() {
-        String newProjectText = Translator.getString("Component.File.NewProject.Text");
+        String newProjectText = Translator.getString("Component.File.New.Text");
         if (MR3.getCurrentProject() == null || MR3.getCurrentProject().getTitle().equals(newProjectText)) {
             currentProjectValue.setText(newProjectText);
         } else {

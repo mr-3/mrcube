@@ -33,10 +33,11 @@ import java.awt.*;
  */
 public class RDFPropertyCell extends DefaultEdge implements RDFCellStyleChanger {
 
-    public static final Color rdfPropertyColor = new Color(0, 0, 0);
+    public static Color fontColor = Color.black;
+    public static final Color borderColor = new Color(0, 0, 0);
 
     public void changeDefaultStyle(RDFGraph graph) {
-        GraphUtilities.changeDefaultCellStyle(graph, this, rdfPropertyColor);
+        GraphUtilities.changeDefaultCellStyle(graph, this, borderColor);
     }
 
     public void changeStyle(RDFGraph graph) {

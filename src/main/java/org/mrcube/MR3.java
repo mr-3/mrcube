@@ -30,7 +30,8 @@ import org.mrcube.editors.PropertyEditor;
 import org.mrcube.editors.RDFEditor;
 import org.mrcube.io.MR3Reader;
 import org.mrcube.io.MR3Writer;
-import org.mrcube.jgraph.*;
+import org.mrcube.jgraph.GraphManager;
+import org.mrcube.jgraph.RDFGraph;
 import org.mrcube.layout.GraphLayoutUtilities;
 import org.mrcube.models.MR3Constants;
 import org.mrcube.models.MR3Constants.CellViewType;
@@ -90,7 +91,6 @@ public class MR3 extends JFrame implements ChangeListener {
 
     private JCheckBoxMenuItem showTypeCellBox;
     private JCheckBoxMenuItem showToolTips;
-    private JCheckBoxMenuItem isGroup;
     private JCheckBoxMenuItem showRDFPropertyLabelBox;
 
     public static JTextField ResourcePathTextField;
@@ -171,9 +171,6 @@ public class MR3 extends JFrame implements ChangeListener {
     private AbstractAction saveFileAction;
     private AbstractAction saveFileAsAction;
     private AbstractAction showValidatorAction;
-    private AbstractAction toFrontRDFEditorAction;
-    private AbstractAction toFrontClassEditorAction;
-    private AbstractAction toFrontPropertyEditorAction;
     private AbstractAction deployWindowCPRAction;
     private AbstractAction deployWindowCRAction;
     private AbstractAction deployWindowPRAction;
@@ -197,9 +194,6 @@ public class MR3 extends JFrame implements ChangeListener {
         saveFileAction = new SaveFileAction(this, SaveFileAction.SAVE_PROJECT, SaveFileAction.SAVE_PROJECT_ICON);
         saveFileAsAction = new SaveFileAction(this, SaveFileAction.SAVE_AS_PROJECT, SaveFileAction.SAVE_AS_PROJECT_ICON);
         showValidatorAction = new ShowValidator(this);
-        toFrontRDFEditorAction = new EditorSelect(this, EditorSelect.RDF_EDITOR, EditorSelect.RDF_EDITOR_ICON);
-        toFrontClassEditorAction = new EditorSelect(this, EditorSelect.CLASS_EDITOR, EditorSelect.CLASS_EDITOR_ICON);
-        toFrontPropertyEditorAction = new EditorSelect(this, EditorSelect.PROPERTY_EDITOR, EditorSelect.PROPERTY_EDITOR_ICON);
 
         deployWindowCPRAction = new DeployWindows(this, Translator.getString("Component.Window.DeployCPRWindows.Text"),
                 CPR_ICON, DeployType.CPR,
@@ -230,10 +224,6 @@ public class MR3 extends JFrame implements ChangeListener {
         toolbar.addSeparator();
         toolbar.add(findResAction);
         toolbar.addSeparator();
-        toolbar.add(toFrontRDFEditorAction);
-        toolbar.add(toFrontClassEditorAction);
-        toolbar.add(toFrontPropertyEditorAction);
-        toolbar.addSeparator();
         toolbar.add(showAttrDialogAction);
         toolbar.add(showNSTableDialogAction);
         toolbar.addSeparator();
@@ -244,15 +234,10 @@ public class MR3 extends JFrame implements ChangeListener {
         toolbar.add(showRDFSourceCodeViewer);
         toolbar.add(showValidatorAction);
         toolbar.add(showProjectInfoAction);
-        toolbar.add(showLogConsoleAciton);
         toolbar.add(showOptionDialogAction);
-        toolbar.addSeparator();
-        toolbar.add(showVersionInfoAction);
 
         return toolbar;
     }
-
-    private static final Object[] NULL = new Object[0];
 
     public void showRDFEditorOverview() {
         OverviewDialog result = rdfEditorOverviewRef.get();
@@ -420,27 +405,12 @@ public class MR3 extends JFrame implements ChangeListener {
         GraphLayoutUtilities.PROPERTY_HORIZONTAL_SPACE = Integer.parseInt(userPrefs.get(
                 PrefConstants.PROPERTY_HORIZONTAL_SPACE, Integer.toString(GraphLayoutUtilities.HORIZONTAL_SPACE)));
 
-        MR3CellMaker.CELL_WIDTH = Integer.parseInt(userPrefs.get(PrefConstants.NODE_WIDTH,
-                Integer.toString(MR3CellMaker.CELL_WIDTH)));
-        MR3CellMaker.CELL_HEIGHT = Integer.parseInt(userPrefs.get(PrefConstants.NODE_HEIGHT,
-                Integer.toString(MR3CellMaker.CELL_HEIGHT)));
+        MR3CellMaker.CELL_WIDTH = Integer.parseInt(userPrefs.get(PrefConstants.NODE_WIDTH, Integer.toString(MR3CellMaker.CELL_WIDTH)));
+        MR3CellMaker.CELL_HEIGHT = Integer.parseInt(userPrefs.get(PrefConstants.NODE_HEIGHT, Integer.toString(MR3CellMaker.CELL_HEIGHT)));
 
-        RDFResourceCell.rdfResourceColor = new Color(userPrefs.getInt(PrefConstants.RDFResourceColor,
-                RDFResourceCell.rdfResourceColor.getRGB()));
-        RDFLiteralCell.literalColor = new Color(userPrefs.getInt(PrefConstants.LiteralColor,
-                RDFLiteralCell.literalColor.getRGB()));
-        OntClassCell.classColor = new Color(
-                userPrefs.getInt(PrefConstants.ClassColor, OntClassCell.classColor.getRGB()));
-        OntPropertyCell.propertyColor = new Color(userPrefs.getInt(PrefConstants.PropertyColor,
-                OntPropertyCell.propertyColor.getRGB()));
-        GraphUtilities.selectedColor = new Color(userPrefs.getInt(PrefConstants.SelectedColor,
-                GraphUtilities.selectedColor.getRGB()));
-
-        GraphUtilities.isColor = userPrefs.getBoolean(PrefConstants.Color, true);
         setSize(userPrefs.getInt(PrefConstants.WindowWidth, MAIN_FRAME_WIDTH),
                 userPrefs.getInt(PrefConstants.WindowHeight, MAIN_FRAME_HEIGHT));
-        setLocation(userPrefs.getInt(PrefConstants.WindowPositionX, 50),
-                userPrefs.getInt(PrefConstants.WindowPositionY, 50));
+        setLocation(userPrefs.getInt(PrefConstants.WindowPositionX, 50), userPrefs.getInt(PrefConstants.WindowPositionY, 50));
 
         HistoryManager.resetFileAppender(userPrefs.get(PrefConstants.logFile, System.getProperty("user.dir") + "\\"
                 + HistoryManager.DEFAULT_LOG_FILE_NAME));
@@ -501,10 +471,6 @@ public class MR3 extends JFrame implements ChangeListener {
         ToolTipManager.sharedInstance().setEnabled(true);
         menu.add(showToolTips);
         menu.addSeparator();
-        isGroup = new JCheckBoxMenuItem(Translator.getString("Component.View.Group.Text"), true);
-        isGroup.addActionListener(new IsGroupAction());
-        menu.add(isGroup);
-        menu.addSeparator();
 
         menu.add(new GraphLayoutAction(gmanager, GraphType.RDF, GraphLayoutAction.layoutRDFGraphIcon));
         menu.add(new GraphLayoutAction(gmanager, GraphType.CLASS, GraphLayoutAction.layoutClassGraphIcon));
@@ -513,22 +479,12 @@ public class MR3 extends JFrame implements ChangeListener {
         return menu;
     }
 
-    class IsGroupAction extends AbstractAction {
-        public void actionPerformed(ActionEvent e) {
-            getRDFGraph().getSelectionModel().setChildrenSelectable(!isGroup.isSelected());
-        }
-    }
-
     private JMenu getWindowMenu() {
         JMenu menu = new JMenu(Translator.getString("Component.Window.Text") + "(W)");
         menu.setMnemonic('w');
         menu.add(new ShowOverview(this, ShowOverview.RDF_EDITOR_OVERVIEW, ShowOverview.RDF_EDITOR_OVERVIEW_ICON));
         menu.add(new ShowOverview(this, ShowOverview.CLASS_EDITOR_OVERVIEW, ShowOverview.CLASS_EDITOR_OVERVIEW_ICON));
         menu.add(new ShowOverview(this, ShowOverview.PROPERTY_EDITOR_OVERVIEW, ShowOverview.PROPERTY_EDITOR_OVERVIEW_ICON));
-        menu.addSeparator();
-        menu.add(toFrontRDFEditorAction);
-        menu.add(toFrontClassEditorAction);
-        menu.add(toFrontPropertyEditorAction);
         menu.addSeparator();
         menu.add(showAttrDialogAction);
         menu.add(showNSTableDialogAction);
@@ -604,7 +560,7 @@ public class MR3 extends JFrame implements ChangeListener {
     public void newProject() {
         gmanager.getAttrDialog().setNullPanel();
         gmanager.getNSTableDialog().setDefaultNSPrefix();
-        var newFile = new File(Translator.getString("Component.File.NewProject.Text"));
+        var newFile = new File(Translator.getString("Component.File.New.Text"));
         MR3.getCurrentProject().setCurrentProjectFile(newFile);
         HistoryManager.saveHistory(HistoryType.NEW_PROJECT);
         mr3ProjectPanel.resetEditors();

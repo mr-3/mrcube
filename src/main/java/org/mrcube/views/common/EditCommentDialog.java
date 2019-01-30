@@ -55,7 +55,7 @@ class EditCommentDialog extends JDialog implements ActionListener {
         literal = new MR3Literal();
 
         langField = new JTextField(5);
-        JComponent langFieldP = Utilities.createTitledPanel(langField, MR3Constants.LANG, 50, 20);
+        JComponent langFieldP = Utilities.createTitledPanel(langField, MR3Constants.LANG, 50, 30);
         commentArea = new JTextArea(5, 20);
         commentArea.setLineWrap(true);
         JScrollPane commentAreaScroll = new JScrollPane(commentArea);

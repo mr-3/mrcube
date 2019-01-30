@@ -47,9 +47,8 @@ import java.awt.event.MouseEvent;
 public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 
     private final InsertPropertyAction insertPropertyAction;
-    private static final Icon PROPERTY_ELLIPSE_ICON = Utilities.getImageIcon("property_ellipse.png");
-    private static final String INSERT_PROPERTY_TITLE = Translator
-            .getString("InsertPropertyDialog.Title");
+    public static final Icon PROPERTY_ELLIPSE_ICON = Utilities.getImageIcon("property_ellipse.png");
+    private static final String INSERT_PROPERTY_TITLE = Translator.getString("InsertPropertyDialog.Title");
 
     public PropertyGraphMarqueeHandler(GraphManager gm, RDFGraph propGraph) {
         super(gm, propGraph);

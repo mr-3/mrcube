@@ -113,8 +113,7 @@ public class Utilities {
         return p;
     }
 
-    public static JComponent createTitledPanel(JComponent component, String title, int width,
-                                               int height) {
+    public static JComponent createTitledPanel(JComponent component, String title, int width, int height) {
         component.setPreferredSize(new Dimension(width, height));
         component.setMinimumSize(new Dimension(width, height));
         return createTitledPanel(component, title);

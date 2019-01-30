@@ -28,17 +28,14 @@ import org.jgraph.event.GraphSelectionListener;
 import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.GraphUndoManager;
+import org.mrcube.MR3;
 import org.mrcube.actions.*;
-import org.mrcube.io.MR3Generator;
-import org.mrcube.io.MR3Parser;
-import org.mrcube.jgraph.GraphManager;
-import org.mrcube.jgraph.RDFGraph;
-import org.mrcube.jgraph.RDFGraphMarqueeHandler;
+import org.mrcube.jgraph.*;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.MR3Constants.HistoryType;
+import org.mrcube.models.RDFResourceModel;
 import org.mrcube.models.RDFSModel;
 import org.mrcube.models.RDFSModelMap;
-import org.mrcube.utils.MR3CellMaker;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
 import org.mrcube.views.HistoryManager;
@@ -64,10 +61,6 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
     private GraphUndoManager undoManager;
 
     Object[] lastSelectionCells;
-
-    private MR3CellMaker cellMaker;
-    private MR3Generator mr3Generator;
-    private MR3Parser mr3Parser;
 
     private Action undo;
     private Action redo;
@@ -102,9 +95,6 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
     void initField(GraphManager gm) {
         gmanager = gm;
         undoManager = new GraphUndoManager();
-        cellMaker = new MR3CellMaker(gmanager);
-        mr3Parser = new MR3Parser(gmanager);
-        mr3Generator = new MR3Generator(gmanager);
     }
 
     private void initListener() {
@@ -114,11 +104,6 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
     }
 
     private void initLayout() {
-        // Container container = getContentPane();
-        // container.setLayout(new BorderLayout());
-        // container.add(createToolBar(), BorderLayout.NORTH);
-        // graphScrollPane = new JScrollPane(graph);
-        // container.add(graphScrollPane, BorderLayout.CENTER);
         setLayout(new BorderLayout());
         add(createToolBar(), BorderLayout.NORTH);
         graphScrollPane = new JScrollPane(graph);
@@ -132,18 +117,6 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
                 remove.actionPerformed(null);
             }
         }
-    }
-
-    // Brings the Specified Cells to Front
-    public void toFront(Object[] c) {
-        if (c != null && c.length > 0)
-            graph.getGraphLayoutCache().toFront(graph.getGraphLayoutCache().getMapping(c));
-    }
-
-    // Sends the Specified Cells to Back
-    public void toBack(Object[] c) {
-        if (c != null && c.length > 0)
-            graph.getGraphLayoutCache().toBack(graph.getGraphLayoutCache().getMapping(c));
     }
 
     void setToolStatus() {
@@ -160,11 +133,6 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
     }
 
     private static final Point INSERT_POINT = new Point(10, 10);
-    private final JToggleButton editModeButton = new JToggleButton();
-
-    public boolean isEditMode() {
-        return editModeButton.isSelected();
-    }
 
     class InsertEllipseResourceAction extends AbstractAction {
 
@@ -209,6 +177,30 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
         }
     }
 
+    class OpenSelectedResourceAction extends AbstractAction {
+        public OpenSelectedResourceAction() {
+            super(OpenResourceAction.TITLE, OpenResourceAction.ICON);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (graph.getSelectionCount() == 1) {
+                Object selectedCell = graph.getSelectionCell();
+                if (graph.getType() == GraphType.RDF) {
+                    for (Object cell : graph.getAllSelectedCells()) {
+                        if (RDFGraph.isRDFResourceCell(cell)) {
+                            RDFResourceModel model = (RDFResourceModel) GraphConstants.getValue(((GraphCell) cell).getAttributes());
+                            MR3.ResourcePathTextField.setText(model.getURIStr());
+                        }
+                    }
+                } else if (RDFGraph.isRDFsCell(selectedCell)) {
+                    RDFSModel model = (RDFSModel) GraphConstants.getValue(((GraphCell) selectedCell).getAttributes());
+                    MR3.ResourcePathTextField.setText(model.getURIStr());
+                }
+            }
+        }
+    }
+
     /**
      * Create ToolBar
      */
@@ -216,22 +208,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
         JToolBar toolbar = new JToolBar();
         toolbar.setFloatable(false);
 
-        if (graph.getMarqueeHandler() instanceof RDFGraphMarqueeHandler) {
-            if (graph.getType() == GraphType.RDF) {
-                toolbar.addSeparator();
-                editModeButton.setIcon(Utilities.getImageIcon("link.png"));
-                editModeButton.addActionListener(e -> {
-                    if (editModeButton.isSelected()) {
-                        editModeButton.setIcon(Utilities.getImageIcon("link_break.png"));
-                    } else {
-                        editModeButton.setIcon(Utilities.getImageIcon("link.png"));
-                    }
-                });
-                toolbar.add(editModeButton);
-            }
-        }
-
-        toolbar.addSeparator();
+        toolbar.add(new OpenSelectedResourceAction());
 
         if (graph.getType() == GraphType.RDF) {
             toolbar.add(new InsertEllipseResourceAction(Utilities.getImageIcon("rdf_resource_ellipse.png")));
@@ -244,7 +221,6 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
         } else if (graph.getType() == GraphType.CLASS) {
             toolbar.add(new InsertRectangleResourceAction(Utilities.getImageIcon("class_rectangle.png")));
         }
-
 
         toolbar.addSeparator();
         toolbar.add(graph.getCopyAction());

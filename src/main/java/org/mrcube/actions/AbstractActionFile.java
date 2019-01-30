@@ -52,12 +52,12 @@ abstract class AbstractActionFile extends MR3AbstractAction {
 
     protected void initializeJFileChooser() {
         fileChooser = new JFileChooser();
+        fileChooser.setAcceptAllFileFilterUsed(true);
         fileChooser.addChoosableFileFilter(turtleFileFilter);
         fileChooser.addChoosableFileFilter(jsonldFileFilter);
         fileChooser.addChoosableFileFilter(n3FileFilter);
         fileChooser.addChoosableFileFilter(RDF_FILE_FILTER);
         fileChooser.addChoosableFileFilter(mr3FileFilter);
-        fileChooser.setFileFilter(turtleFileFilter);
     }
 
     public AbstractActionFile(MR3 mr3, String name, ImageIcon icon) {
@@ -198,7 +198,7 @@ abstract class AbstractActionFile extends MR3AbstractAction {
 
     protected boolean isNewProjectFile(MR3ProjectPanel currentProject) {
         String basePath = null;
-        File newFile = new File(basePath, Translator.getString("Component.File.NewProject.Text"));
+        File newFile = new File(basePath, Translator.getString("Component.File.New.Text"));
         File currentProjectFile = currentProject.getCurrentProjectFile();
         return newFile.getAbsolutePath().equals(currentProjectFile.getAbsolutePath());
     }

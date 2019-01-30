@@ -553,9 +553,7 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
                 GraphCell resTypeCell = getResourceType();
                 if (resTypeCell != null) {
                     setResourceType(resTypeCell);
-                    if (!gmanager.getCurrentRDFEditor().isEditMode()) {
-                        gmanager.selectClassCell(resTypeCell);
-                    }
+                    gmanager.selectClassCell(resTypeCell);
                 }
             } else {
                 setResourceType(null);

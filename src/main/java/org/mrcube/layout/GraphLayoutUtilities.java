@@ -334,7 +334,7 @@ public class GraphLayoutUtilities {
 
         Map attributes = new HashMap();
         attributes.put(rootCell, cellMaker.getResourceMap(cellMaker.getRectangle(initPoint),
-                RDFResourceCell.rdfResourceColor));
+                RDFResourceCell.backgroundColor));
         // graph.getGraphLayoutCache().insert(new Object[] { rootCell},
         // attributes, null, null, null);
         graph.getGraphLayoutCache().insert(new Object[]{rootCell}, attributes, null, null);
