@@ -49,9 +49,6 @@ public class GraphUtilities {
     public static boolean isColor = true;
 
     private static Set<NamespaceModel> namespaceModelSet = new HashSet<>();
-
-    public static Color selectedColor = new Color(240, 240, 200);
-    public static final Color selectedBorderColor = new Color(70, 70, 70);
     public static final Color graphBackgroundColor = Color.white;
 
     public static void setNamespaceModelSet(Set<NamespaceModel> infoSet) {
@@ -75,7 +72,7 @@ public class GraphUtilities {
         for (Object cell2 : cells) {
             if (cell2 instanceof RDFCellStyleChanger) {
                 RDFCellStyleChanger changer = (RDFCellStyleChanger) cell2;
-                changer.changeDefaultStyle(rdfGraph);
+                changer.changeDefaultCellStyle(rdfGraph);
             }
         }
 
@@ -83,7 +80,7 @@ public class GraphUtilities {
         for (Object cell1 : cells) {
             if (cell1 instanceof RDFCellStyleChanger) {
                 RDFCellStyleChanger changer = (RDFCellStyleChanger) cell1;
-                changer.changeDefaultStyle(classGraph);
+                changer.changeDefaultCellStyle(classGraph);
             }
         }
 
@@ -91,7 +88,7 @@ public class GraphUtilities {
         for (Object cell : cells) {
             if (cell instanceof RDFCellStyleChanger) {
                 RDFCellStyleChanger changer = (RDFCellStyleChanger) cell;
-                changer.changeDefaultStyle(propertyGraph);
+                changer.changeDefaultCellStyle(propertyGraph);
             }
         }
     }
@@ -104,15 +101,14 @@ public class GraphUtilities {
      * @param backGroundColor
      * @param borderColor
      */
-    public static void changeCellStyle(RDFGraph graph, GraphCell cell, Color backGroundColor, Color borderColor) {
-        float lineWidth = 1;
+    public static void changeCellStyle(RDFGraph graph, GraphCell cell, Color backGroundColor, Color borderColor, float lineWidth) {
         if (cell != null) {
             Map map = new AttributeMap();
             if (GraphConstants.getLineWidth(cell.getAttributes()) == EMPHASIS_WIDTH) {
                 lineWidth = EMPHASIS_WIDTH;
             }
-            // GraphConstants.setLineWidth(map, lineWidth);
             if (isColor) {
+                GraphConstants.setLineWidth(map, lineWidth);
                 if (RDFGraph.isRDFPropertyCell(cell)) {
                     GraphConstants.setLineColor(map, backGroundColor);
                 } else {
@@ -136,7 +132,7 @@ public class GraphUtilities {
     }
 
     public static void changeDefaultCellStyle(RDFGraph graph, GraphCell cell, Color backGroundColor) {
-        changeCellStyle(graph, cell, backGroundColor, Color.black);
+        changeCellStyle(graph, cell, backGroundColor, Color.black, RDFCellStyleChanger.LINE_WIDTH);
     }
 
     public static boolean isChangedSelectedColor = true;
@@ -151,7 +147,7 @@ public class GraphUtilities {
         for (Object lastSelectionCell : lastSelectionCells) {
             if (lastSelectionCell instanceof RDFCellStyleChanger) {
                 RDFCellStyleChanger changer = (RDFCellStyleChanger) lastSelectionCell;
-                changer.changeDefaultStyle(graph);
+                changer.changeDefaultCellStyle(graph);
             }
         }
         Object[] cells = graph.getSelectionCells();
@@ -159,7 +155,7 @@ public class GraphUtilities {
         for (Object cell : cells) {
             if (cell instanceof RDFCellStyleChanger) {
                 RDFCellStyleChanger changer = (RDFCellStyleChanger) cell;
-                changer.changeStyle(graph);
+                changer.changeSelectedCellStyle(graph);
             }
         }
         return cells;
