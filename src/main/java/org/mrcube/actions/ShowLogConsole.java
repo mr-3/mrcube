@@ -38,7 +38,7 @@ import java.awt.event.KeyEvent;
  */
 public class ShowLogConsole extends MR3AbstractAction {
 
-    private static final String TITLE = Translator.getString("Component.Tools.LogConsole.Text");
+    private static final String TITLE = Translator.getString("Menu.Tools.LogConsole.Text");
 
     public ShowLogConsole(MR3 mr3) {
         super(mr3, TITLE, Utilities.getImageIcon("application_xp_terminal.png"));

@@ -37,9 +37,9 @@ import java.awt.event.KeyEvent;
  */
 public class NewProject extends AbstractActionFile {
 
-    private static final String TITLE = Translator.getString("Component.File.New.Text");
+    private static final String TITLE = Translator.getString("Menu.File.New.Text");
     private static final ImageIcon ICON = Utilities
-            .getImageIcon(Translator.getString("Component.File.New.Icon"));
+            .getImageIcon(Translator.getString("Menu.File.New.Icon"));
 
     public NewProject(MR3 mr3) {
         super(mr3, TITLE, ICON);

@@ -78,7 +78,6 @@ public class MR3 extends JFrame implements ChangeListener {
     private WeakReference<OverviewDialog> propertyEditorOverviewRef;
     // private WeakReference<OntTreeEditor> ontTreeEditorRef;
     private WeakReference<OptionDialog> optionDialogRef;
-    private WeakReference<ImportDialog> importDialogRef;
     private WeakReference<RDFSourceCodeViewer> RDFSourceCodeViewerRef;
     private WeakReference<HistoryManager> historyManagerRef;
     private WeakReference<ValidatorDialog> validatorRef;
@@ -157,7 +156,6 @@ public class MR3 extends JFrame implements ChangeListener {
         classEditorOverviewRef = new WeakReference<>(null);
         propertyEditorOverviewRef = new WeakReference<>(null);
         // ontTreeEditorRef = new WeakReference<OntTreeEditor>(null);
-        importDialogRef = new WeakReference<>(null);
         RDFSourceCodeViewerRef = new WeakReference<>(null);
         historyManagerRef = new WeakReference<>(null);
         validatorRef = new WeakReference<>(null);
@@ -183,9 +181,9 @@ public class MR3 extends JFrame implements ChangeListener {
     private AbstractAction showOptionDialogAction;
     private AbstractAction showVersionInfoAction;
 
-    private final ImageIcon CPR_ICON = Utilities.getImageIcon(Translator.getString("Component.Window.DeployCPRWindows.Icon"));
-    private final ImageIcon CR_ICON = Utilities.getImageIcon(Translator.getString("Component.Window.DeployCRWindows.Icon"));
-    private final ImageIcon PR_ICON = Utilities.getImageIcon(Translator.getString("Component.Window.DeployPRWindows.Icon"));
+    private final ImageIcon CPR_ICON = Utilities.getImageIcon(Translator.getString("Menu.Window.DeployCPRWindows.Icon"));
+    private final ImageIcon CR_ICON = Utilities.getImageIcon(Translator.getString("Menu.Window.DeployCRWindows.Icon"));
+    private final ImageIcon PR_ICON = Utilities.getImageIcon(Translator.getString("Menu.Window.DeployPRWindows.Icon"));
 
     private void initActions() {
         newProjectAction = new NewProject(this);
@@ -195,13 +193,13 @@ public class MR3 extends JFrame implements ChangeListener {
         saveFileAsAction = new SaveFileAction(this, SaveFileAction.SAVE_AS_PROJECT, SaveFileAction.SAVE_AS_PROJECT_ICON);
         showValidatorAction = new ShowValidator(this);
 
-        deployWindowCPRAction = new DeployWindows(this, Translator.getString("Component.Window.DeployCPRWindows.Text"),
+        deployWindowCPRAction = new DeployWindows(this, Translator.getString("Menu.Window.DeployCPRWindows.Text"),
                 CPR_ICON, DeployType.CPR,
                 KeyStroke.getKeyStroke(KeyEvent.VK_1, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
-        deployWindowCRAction = new DeployWindows(this, Translator.getString("Component.Window.DeployCRWindows.Text"),
+        deployWindowCRAction = new DeployWindows(this, Translator.getString("Menu.Window.DeployCRWindows.Text"),
                 CR_ICON, DeployType.CR,
                 KeyStroke.getKeyStroke(KeyEvent.VK_2, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
-        deployWindowPRAction = new DeployWindows(this, Translator.getString("Component.Window.DeployPRWindows.Text"),
+        deployWindowPRAction = new DeployWindows(this, Translator.getString("Menu.Window.DeployPRWindows.Text"),
                 PR_ICON, DeployType.PR,
                 KeyStroke.getKeyStroke(KeyEvent.VK_3, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         showAttrDialogAction = new ShowAttrDialog(this);
@@ -301,15 +299,6 @@ public class MR3 extends JFrame implements ChangeListener {
         result.setVisible(true);
     }
 
-    public ImportDialog getImportDialog() {
-        ImportDialog result = importDialogRef.get();
-        if (result == null) {
-            result = new ImportDialog(gmanager);
-            importDialogRef = new WeakReference<>(result);
-        }
-        return result;
-    }
-
     public RDFSourceCodeViewer getRDFSourceCodeViewer() {
         RDFSourceCodeViewer result = RDFSourceCodeViewerRef.get();
         if (result == null) {
@@ -365,7 +354,7 @@ public class MR3 extends JFrame implements ChangeListener {
     }
 
     private JMenu getFileMenu() {
-        JMenu menu = new JMenu(Translator.getString("Component.File.Text") + "(F)");
+        JMenu menu = new JMenu(Translator.getString("Menu.File.Text") + "(F)");
         menu.setMnemonic('f');
         menu.add(newProjectAction);
         menu.add(openFileAction);
@@ -437,16 +426,16 @@ public class MR3 extends JFrame implements ChangeListener {
     }
 
     private JMenu getViewMenu() {
-        JMenu menu = new JMenu(Translator.getString("Component.View.Text") + "(V)");
+        JMenu menu = new JMenu(Translator.getString("Menu.View.Text") + "(V)");
         menu.setMnemonic('v');
         ChangeCellViewAction changeCellViewAction = new ChangeCellViewAction();
-        uriView = new JCheckBoxMenuItem(Translator.getString("Component.View.URI.Text"));
+        uriView = new JCheckBoxMenuItem(Translator.getString("Menu.View.URI.Text"));
         uriView.setSelected(true);
         GraphManager.cellViewType = CellViewType.URI;
         uriView.addActionListener(changeCellViewAction);
-        idView = new JCheckBoxMenuItem(Translator.getString("Component.View.ID.Text"));
+        idView = new JCheckBoxMenuItem(Translator.getString("Menu.View.ID.Text"));
         idView.addActionListener(changeCellViewAction);
-        labelView = new JCheckBoxMenuItem(Translator.getString("Component.View.Label.Text"));
+        labelView = new JCheckBoxMenuItem(Translator.getString("Menu.View.Label.Text"));
         labelView.addActionListener(changeCellViewAction);
         ButtonGroup group = new ButtonGroup();
         group.add(uriView);
@@ -456,17 +445,17 @@ public class MR3 extends JFrame implements ChangeListener {
         menu.add(idView);
         menu.add(labelView);
         menu.addSeparator();
-        showTypeCellBox = new JCheckBoxMenuItem(Translator.getString("Component.View.Type.Text"), true);
+        showTypeCellBox = new JCheckBoxMenuItem(Translator.getString("Menu.View.Type.Text"), true);
         gmanager.setIsShowTypeCell(true);
         showTypeCellBox.addActionListener(new ShowTypeCellAction());
         menu.add(showTypeCellBox);
 
-        showRDFPropertyLabelBox = new JCheckBoxMenuItem(Translator.getString("Component.View.RDFPropertyLabel.Text"),
+        showRDFPropertyLabelBox = new JCheckBoxMenuItem(Translator.getString("Menu.View.RDFPropertyLabel.Text"),
                 true);
         showRDFPropertyLabelBox.addActionListener(new ShowRDFPropertyLabelAction());
         menu.add(showRDFPropertyLabelBox);
 
-        showToolTips = new JCheckBoxMenuItem(Translator.getString("Component.View.ToolTips.Text"), true);
+        showToolTips = new JCheckBoxMenuItem(Translator.getString("Menu.View.ToolTips.Text"), true);
         showToolTips.addActionListener(new ShowToolTipsAction());
         ToolTipManager.sharedInstance().setEnabled(true);
         menu.add(showToolTips);
@@ -480,7 +469,7 @@ public class MR3 extends JFrame implements ChangeListener {
     }
 
     private JMenu getWindowMenu() {
-        JMenu menu = new JMenu(Translator.getString("Component.Window.Text") + "(W)");
+        JMenu menu = new JMenu(Translator.getString("Menu.Window.Text") + "(W)");
         menu.setMnemonic('w');
         menu.add(new ShowOverview(this, ShowOverview.RDF_EDITOR_OVERVIEW, ShowOverview.RDF_EDITOR_OVERVIEW_ICON));
         menu.add(new ShowOverview(this, ShowOverview.CLASS_EDITOR_OVERVIEW, ShowOverview.CLASS_EDITOR_OVERVIEW_ICON));
@@ -497,7 +486,7 @@ public class MR3 extends JFrame implements ChangeListener {
     }
 
     private JMenu getToolsMenu() {
-        JMenu menu = new JMenu(Translator.getString("Component.Tools.Text") + "(T)");
+        JMenu menu = new JMenu(Translator.getString("Menu.Tools.Text") + "(T)");
         menu.setMnemonic('t');
         menu.add(showRDFSourceCodeViewer);
         menu.add(findResAction);
@@ -512,7 +501,7 @@ public class MR3 extends JFrame implements ChangeListener {
     }
 
     private JMenu getHelpMenu() {
-        JMenu menu = new JMenu(Translator.getString("Component.Help.Text") + "(H)");
+        JMenu menu = new JMenu(Translator.getString("Menu.Help.Text") + "(H)");
         menu.setMnemonic('h');
         menu.add(showVersionInfoAction);
         return menu;
@@ -560,7 +549,7 @@ public class MR3 extends JFrame implements ChangeListener {
     public void newProject() {
         gmanager.getAttrDialog().setNullPanel();
         gmanager.getNSTableDialog().setDefaultNSPrefix();
-        var newFile = new File(Translator.getString("Component.File.New.Text"));
+        var newFile = new File(Translator.getString("Menu.File.New.Text"));
         MR3.getCurrentProject().setCurrentProjectFile(newFile);
         HistoryManager.saveHistory(HistoryType.NEW_PROJECT);
         mr3ProjectPanel.resetEditors();

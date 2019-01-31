@@ -25,7 +25,6 @@ package org.mrcube.jgraph;
 
 import org.jgraph.graph.*;
 import org.mrcube.MR3;
-import org.mrcube.actions.OpenResourceAction;
 import org.mrcube.actions.RemoveAction;
 import org.mrcube.actions.TransformElementAction;
 import org.mrcube.models.MR3Constants.GraphType;
@@ -558,13 +557,13 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     class ShowAttrDialog extends AbstractAction {
 
         public ShowAttrDialog() {
-            super(Translator.getString("Component.Window.AttrDialog.Text"), Utilities
+            super(Translator.getString("Menu.Window.AttrDialog.Text"), Utilities
                     .getImageIcon(Translator.getString("AttributeDialog.Icon")));
             setValues();
         }
 
         private void setValues() {
-            putValue(SHORT_DESCRIPTION, Translator.getString("Component.Window.AttrDialog.Text"));
+            putValue(SHORT_DESCRIPTION, Translator.getString("Menu.Window.AttrDialog.Text"));
             putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_A,
                     Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | InputEvent.SHIFT_DOWN_MASK));
         }

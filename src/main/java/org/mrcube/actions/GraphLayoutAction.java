@@ -38,7 +38,7 @@ public class GraphLayoutAction extends AbstractAction {
 
     private final GraphType graphType;
     private final GraphManager gmanager;
-    private static final String TITLE = Translator.getString("Component.View.ApplyLayout.Text");
+    private static final String TITLE = Translator.getString("Menu.View.ApplyLayout.Text");
     public static final ImageIcon layoutRDFGraphIcon = Utilities.getImageIcon("layout_rdf_graph.png");
     public static final ImageIcon layoutClassGraphIcon = Utilities.getImageIcon("layout_class_graph.png");
     public static final ImageIcon layoutPropertyGraphIcon = Utilities.getImageIcon("layout_property_graph.png");

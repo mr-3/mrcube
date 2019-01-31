@@ -55,9 +55,9 @@ public class EditorSelect extends MR3AbstractAction {
     }
 
     public static void loadResourceBundle() {
-        RDF_EDITOR = Translator.getString("Component.Window.RDFEditor.Text");
-        CLASS_EDITOR = Translator.getString("Component.Window.ClassEditor.Text");
-        PROPERTY_EDITOR = Translator.getString("Component.Window.PropertyEditor.Text");
+        RDF_EDITOR = Translator.getString("Menu.Window.RDFEditor.Text");
+        CLASS_EDITOR = Translator.getString("Menu.Window.ClassEditor.Text");
+        PROPERTY_EDITOR = Translator.getString("Menu.Window.PropertyEditor.Text");
 
         RDF_EDITOR_ICON = Utilities.getImageIcon(Translator.getString("RDFEditor.Icon"));
         CLASS_EDITOR_ICON = Utilities.getImageIcon(Translator.getString("ClassEditor.Icon"));

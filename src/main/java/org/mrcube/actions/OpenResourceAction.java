@@ -14,8 +14,8 @@ import java.awt.event.ActionEvent;
 public class OpenResourceAction extends AbstractActionFile {
 
     private MR3Reader mr3Reader;
-    public static final String TITLE = Translator.getString("Component.File.Open.Text");
-    public static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("Component.File.Open.Icon"));
+    public static final String TITLE = Translator.getString("Menu.File.Open.Text");
+    public static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("Menu.File.Open.Icon"));
 
     public OpenResourceAction(MR3 mr3) {
         super(mr3, TITLE, ICON);
