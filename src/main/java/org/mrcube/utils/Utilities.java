@@ -97,12 +97,12 @@ public class Utilities {
     public static void center(Window frame) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Dimension frameSize = frame.getSize();
-        frame.setLocation(screenSize.width / 2 - (frameSize.width / 2), screenSize.height / 2
-                - (frameSize.height / 2));
+        frame.setLocation(screenSize.width / 2 - (frameSize.width / 2),
+                screenSize.height / 2 - (frameSize.height / 2));
     }
 
     public static ImageIcon getImageIcon(String image) {
-        return new ImageIcon(Utilities.class.getClassLoader().getResource(image));
+        return new ImageIcon(Utilities.class.getClassLoader().getResource("images/" + image));
     }
 
     public static JComponent createTitledPanel(JComponent component, String title) {
