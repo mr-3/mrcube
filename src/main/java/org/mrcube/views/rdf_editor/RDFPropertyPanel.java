@@ -368,7 +368,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
             Object propertyCell = rdfsModelMap.getPropertyCell(uri);
             gmanager.selectPropertyCell(propertyCell);
         } else {
-            Utilities.showErrorMessageDialog(Translator.getString("Warning.Message3"));
+            Utilities.showErrorMessageDialog(Translator.getString("Warning.Message12"));
         }
     }
 

@@ -75,7 +75,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
     public static JComponent topLevelComponent;
 
     public OptionDialog(GraphManager gm, Preferences prefs) {
-        super(gm.getRootFrame(), Translator.getString("PreferenceDialog.Title"), true);
+        super(gm.getRootFrame(), Translator.getString("OptionDialog.Title"), true);
         setIconImage(Utilities.getImageIcon("cog.png").getImage());
         gmanager = gm;
         userPrefs = prefs;
@@ -195,7 +195,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         }
 
         public String toString() {
-            return Translator.getString("PreferenceDialog.BaseTab");
+            return Translator.getString("OptionDialog.Base");
         }
 
         void setConfig() {
@@ -303,7 +303,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             JPanel baseURIPanel = new JPanel();
             baseURIPanel.setLayout(new BoxLayout(baseURIPanel, BoxLayout.X_AXIS));
             baseURIPanel.setBorder(BorderFactory.createTitledBorder(Translator
-                    .getString("PreferenceDialog.BaseTab.BaseURI")));
+                    .getString("OptionDialog.Base.BaseURI")));
             baseURIPanel.add(uriPrefixBoxP);
             baseURIPanel.add(baseURILabelP);
 
@@ -344,18 +344,18 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         }
 
         private JPanel getLogFilePanel() {
-            isLogAvailableCheckBox = new JCheckBox(Translator.getString("PreferenceDialog.BaseTab.LogFile.check"),
+            isLogAvailableCheckBox = new JCheckBox(Translator.getString("OptionDialog.Base.LogFile.check"),
                     false);
             logFileField = new JTextField(15);
             logFileField.setEditable(false);
-            browseLogFileButton = new JButton(Translator.getString("PreferenceDialog.DirectoryTab.Browse") + "(L)");
+            browseLogFileButton = new JButton(Translator.getString("OptionDialog.Directory.Browse") + "(L)");
             browseLogFileButton.setMnemonic('l');
             browseLogFileButton.addActionListener(new BrowseFile(logFileField));
 
             JPanel logFilePanel = new JPanel();
             logFilePanel.setLayout(new BorderLayout());
             logFilePanel.setBorder(BorderFactory.createTitledBorder(Translator
-                    .getString("PreferenceDialog.BaseTab.LogFile")));
+                    .getString("OptionDialog.Base.LogFile")));
             logFilePanel.add(isLogAvailableCheckBox, BorderLayout.WEST);
             logFilePanel.add(logFileField, BorderLayout.CENTER);
             logFilePanel.add(browseLogFileButton, BorderLayout.EAST);
@@ -400,7 +400,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         }
 
         public String toString() {
-            return Translator.getString("PreferenceDialog.DirectoryTab");
+            return Translator.getString("OptionDialog.Directory");
         }
 
         void setConfig() {
@@ -450,7 +450,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         private void initWorkDirectoryField() {
             workDirectoryField = new JTextField(15);
             workDirectoryField.setEditable(false);
-            browseWorkDirectoryButton = new JButton(Translator.getString("PreferenceDialog.DirectoryTab.Browse")
+            browseWorkDirectoryButton = new JButton(Translator.getString("OptionDialog.Directory.Browse")
                     + "(W)");
             browseWorkDirectoryButton.setMnemonic('w');
             browseWorkDirectoryButton.addActionListener(new BrowseDirectory(workDirectoryField));
@@ -459,7 +459,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         private void initResourceDirectoryField() {
             resourceDirectoryField = new JTextField(15);
             resourceDirectoryField.setEditable(false);
-            browseResourceDirectoryButton = new JButton(Translator.getString("PreferenceDialog.DirectoryTab.Browse")
+            browseResourceDirectoryButton = new JButton(Translator.getString("OptionDialog.Directory.Browse")
                     + "(R)");
             browseResourceDirectoryButton.setMnemonic('r');
             browseResourceDirectoryButton.addActionListener(new BrowseDirectory(resourceDirectoryField));
@@ -469,7 +469,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             JPanel workDirectoryPanel = new JPanel();
             workDirectoryPanel.setLayout(new BoxLayout(workDirectoryPanel, BoxLayout.X_AXIS));
             workDirectoryPanel.setBorder(BorderFactory.createTitledBorder(Translator
-                    .getString("PreferenceDialog.DirectoryTab.WorkDirectory")));
+                    .getString("OptionDialog.Directory.WorkDirectory")));
             workDirectoryPanel.add(workDirectoryField);
             workDirectoryPanel.add(browseWorkDirectoryButton);
 
@@ -480,7 +480,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             JPanel resourceDirectoryPanel = new JPanel();
             resourceDirectoryPanel.setLayout(new BoxLayout(resourceDirectoryPanel, BoxLayout.X_AXIS));
             resourceDirectoryPanel.setBorder(BorderFactory.createTitledBorder(Translator
-                    .getString("PreferenceDialog.DirectoryTab.ResourcesDirectory")));
+                    .getString("OptionDialog.Directory.ResourcesDirectory")));
             resourceDirectoryPanel.add(resourceDirectoryField);
             resourceDirectoryPanel.add(browseResourceDirectoryButton);
 
@@ -496,14 +496,14 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         private final JTextField proxyPort;
 
         ProxyPanel() {
-            isProxy = new JCheckBox(Translator.getString("PreferenceDialog.ProxyTab"));
+            isProxy = new JCheckBox(Translator.getString("OptionDialog.Proxy"));
             isProxy.addActionListener(new CheckProxy());
             proxyHost = new JTextField(25);
             JComponent proxyHostP = Utilities.createTitledPanel(proxyHost,
-                    Translator.getString("PreferenceDialog.ProxyTab.Host"));
+                    Translator.getString("OptionDialog.Proxy.Host"));
             proxyPort = new JTextField(5);
             JComponent proxyPortP = Utilities.createTitledPanel(proxyPort,
-                    Translator.getString("PreferenceDialog.ProxyTab.Port"));
+                    Translator.getString("OptionDialog.Proxy.Port"));
 
             JPanel panel = new JPanel();
             panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
@@ -516,7 +516,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         }
 
         public String toString() {
-            return Translator.getString("PreferenceDialog.ProxyTab");
+            return Translator.getString("OptionDialog.Proxy");
         }
 
         class CheckProxy extends AbstractAction {
@@ -571,25 +571,25 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             defaultClassClassField = new JTextField();
             defaultClassClassField.setEditable(false);
             JComponent defaultClassClassFieldP = Utilities.createTitledPanel(defaultClassClassField,
-                    Translator.getString("PreferenceDialog.MetaClassTab.DefaultClassClass"));
+                    Translator.getString("OptionDialog.MetaClass.DefaultClassClass"));
             classClassListModel = new DefaultListModel();
             classClassList = new JList(classClassListModel);
             classClassList.addListSelectionListener(this);
             JScrollPane classClassListScroll = new JScrollPane(classClassList);
             Utilities.initComponent(classClassListScroll,
-                    Translator.getString("PreferenceDialog.MetaClassTab.ClassClassList"),
+                    Translator.getString("OptionDialog.MetaClass.ClassClassList"),
                     LONG_URI_FIELD_WIDTH, LIST_HEIGHT);
 
             defaultPropertyClassField = new JTextField();
             defaultPropertyClassField.setEditable(false);
             JComponent defaultPropertyClassFieldP = Utilities.createTitledPanel(defaultPropertyClassField,
-                    Translator.getString("PreferenceDialog.MetaClassTab.DefaultPropertyClass"));
+                    Translator.getString("OptionDialog.MetaClass.DefaultPropertyClass"));
             propClassListModel = new DefaultListModel();
             propClassList = new JList(propClassListModel);
             propClassList.addListSelectionListener(this);
             JScrollPane propClassListScroll = new JScrollPane(propClassList);
             Utilities.initComponent(propClassListScroll,
-                    Translator.getString("PreferenceDialog.MetaClassTab.PropertyClassList"), LONG_URI_FIELD_WIDTH,
+                    Translator.getString("OptionDialog.MetaClass.PropertyClassList"), LONG_URI_FIELD_WIDTH,
                     LIST_HEIGHT);
 
             JPanel classClassPanel = new JPanel();
@@ -606,9 +606,9 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
 
             JTabbedPane tab = new JTabbedPane();
             tab.add(Utilities.createNorthPanel(classClassPanel),
-                    Translator.getString("PreferenceDialog.MetaClassTab.ClassClass"));
+                    Translator.getString("OptionDialog.MetaClass.ClassClass"));
             tab.add(Utilities.createNorthPanel(propertyClassPanel),
-                    Translator.getString("PreferenceDialog.MetaClassTab.PropertyClass"));
+                    Translator.getString("OptionDialog.MetaClass.PropertyClass"));
 
             setLayout(new BorderLayout());
             add(getTitledPanel(metaClassFieldP, toString()), BorderLayout.NORTH);
@@ -617,7 +617,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         }
 
         public String toString() {
-            return Translator.getString("PreferenceDialog.MetaClassTab");
+            return Translator.getString("OptionDialog.MetaClass");
         }
 
         void setConfig() {
@@ -667,7 +667,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
 
         private JComponent getClassClassButtonPanel() {
             Action classClassButtonAction = new ClassClassButtonAction();
-            setDefaultClassClassButton = new JButton(Translator.getString("PreferenceDialog.MetaClassTab.SetDefault"));
+            setDefaultClassClassButton = new JButton(Translator.getString("OptionDialog.MetaClass.SetDefault"));
             setDefaultClassClassButton.addActionListener(classClassButtonAction);
             classClassEditButton = new JButton(EDIT);
             classClassEditButton.addActionListener(classClassButtonAction);
@@ -686,7 +686,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
 
         private JComponent getPropertyClassButtonPanel() {
             Action propClassButtonAction = new PropClassButtonAction();
-            setDefaultPropertyClassButton = new JButton(Translator.getString("PreferenceDialog.MetaClassTab.SetDefault"));
+            setDefaultPropertyClassButton = new JButton(Translator.getString("OptionDialog.MetaClass.SetDefault"));
             setDefaultPropertyClassButton.addActionListener(propClassButtonAction);
             propClassEditButton = new JButton(EDIT);
             propClassEditButton.addActionListener(propClassButtonAction);
@@ -866,10 +866,10 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
 
         LayoutPanel() {
             ChangeNodeSizeAction nodeSizeAction = new ChangeNodeSizeAction();
-            autoSizeButton = new JRadioButton(Translator.getString("PreferenceDialog.LayoutTab.Auto"));
+            autoSizeButton = new JRadioButton(Translator.getString("OptionDialog.Layout.Auto"));
             autoSizeButton.addActionListener(nodeSizeAction);
             autoSizeButton.setSelected(true);
-            fixSizeButton = new JRadioButton(Translator.getString("PreferenceDialog.LayoutTab.Fix"));
+            fixSizeButton = new JRadioButton(Translator.getString("OptionDialog.Layout.Fix"));
             fixSizeButton.addActionListener(nodeSizeAction);
             ButtonGroup group = new ButtonGroup();
             group.add(autoSizeButton);
@@ -878,12 +878,12 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             nodeSizeButtonPanel.add(autoSizeButton);
             nodeSizeButtonPanel.add(fixSizeButton);
             nodeSizeButtonPanel.setBorder(BorderFactory.createTitledBorder(Translator
-                    .getString("PreferenceDialog.LayoutTab.NodeSize")));
+                    .getString("OptionDialog.Layout.NodeSize")));
 
-            nodeWidthLabel = new JLabel(Translator.getString("PreferenceDialog.LayoutTab.NodeWidth"));
+            nodeWidthLabel = new JLabel(Translator.getString("OptionDialog.Layout.NodeWidth"));
             nodeWidthSpinner = new JSpinner(new SpinnerNumberModel(50, 0, 999, 1));
             nodeWidthSpinner.setEnabled(false);
-            nodeHeightLabel = new JLabel(Translator.getString("PreferenceDialog.LayoutTab.NodeHeight"));
+            nodeHeightLabel = new JLabel(Translator.getString("OptionDialog.Layout.NodeHeight"));
             nodeHeightSpinner = new JSpinner(new SpinnerNumberModel(50, 0, 999, 1));
             nodeHeightSpinner.setEnabled(false);
 
@@ -895,15 +895,15 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             nodeSizePanel.add(nodeHeightSpinner);
             nodeSizePanel.setBorder(BorderFactory.createEtchedBorder());
 
-            layoutTypeLabel = new JLabel(Translator.getString("PreferenceDialog.LayoutTab.LayoutType"));
-            verticalSpaceLabel = new JLabel(Translator.getString("PreferenceDialog.LayoutTab.VerticalSpace"));
+            layoutTypeLabel = new JLabel(Translator.getString("OptionDialog.Layout.LayoutType"));
+            verticalSpaceLabel = new JLabel(Translator.getString("OptionDialog.Layout.VerticalSpace"));
             verticalSpaceLabel.setHorizontalAlignment(JLabel.CENTER);
-            horizontalSpaceLabel = new JLabel(Translator.getString("PreferenceDialog.LayoutTab.HorizontalSpace"));
+            horizontalSpaceLabel = new JLabel(Translator.getString("OptionDialog.Layout.HorizontalSpace"));
             horizontalSpaceLabel.setHorizontalAlignment(JLabel.CENTER);
 
-            rdfLayoutLabel = new JLabel(Translator.getString("PreferenceDialog.LayoutTab.RDFLayoutDirection"));
-            classLayoutLabel = new JLabel(Translator.getString("PreferenceDialog.LayoutTab.ClassLayoutDirection"));
-            propertyLayoutLabel = new JLabel(Translator.getString("PreferenceDialog.LayoutTab.PropertyLayoutDirection"));
+            rdfLayoutLabel = new JLabel(Translator.getString("OptionDialog.Layout.RDFLayoutDirection"));
+            classLayoutLabel = new JLabel(Translator.getString("OptionDialog.Layout.ClassLayoutDirection"));
+            propertyLayoutLabel = new JLabel(Translator.getString("OptionDialog.Layout.PropertyLayoutDirection"));
 
             layoutTypeBox = new JComboBox(new Object[]{GraphLayoutUtilities.VGJ_TREE_LAYOUT,
                     GraphLayoutUtilities.JGRAPH_TREE_LAYOUT});
@@ -931,7 +931,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         }
 
         public String toString() {
-            return Translator.getString("PreferenceDialog.LayoutTab");
+            return Translator.getString("OptionDialog.Layout");
         }
 
         void setConfig() {
