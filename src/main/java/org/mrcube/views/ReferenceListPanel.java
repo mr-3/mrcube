@@ -1,24 +1,24 @@
 /*
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
- * 
+ *
  * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
- * 
+ *
  * This file is part of MR^3.
- * 
+ *
  * MR^3 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * MR^3 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  */
 
 package org.mrcube.views;
@@ -43,7 +43,6 @@ import java.util.*;
 
 /**
  * @author Takeshi Morita
- * 
  */
 class ReferenceListPanel extends JPanel {
 
@@ -73,11 +72,11 @@ class ReferenceListPanel extends JPanel {
         setLayout(new BorderLayout());
 
         tab = new JTabbedPane();
-        setTableLayout(rdfRefTable, "RDF");
-        setTableLayout(propRefTable, Translator.getString("Property"));
+        setTableLayout(rdfRefTable, Translator.getString("RDFEditor.Title"));
+        setTableLayout(propRefTable, Translator.getString("PropertyEditor.Title"));
         add(tab, BorderLayout.CENTER);
         add(getButtonPanel(), BorderLayout.SOUTH);
-        setBorder(BorderFactory.createTitledBorder(Translator.getString("ReferenceList.Title")));
+        setBorder(BorderFactory.createTitledBorder(Translator.getString("RemoveDialog.ReferenceResourceList.Title")));
     }
 
     private void initTable() {
@@ -98,13 +97,13 @@ class ReferenceListPanel extends JPanel {
 
     private JComponent getButtonPanel() {
         ButtonAction buttonAction = new ButtonAction();
-        selectAllButton = new JButton(Translator.getString("ReferenceList.SelectAll"));
+        selectAllButton = new JButton(Translator.getString("RemoveDialog.ReferenceResourceList.SelectAll"));
         selectAllButton.addActionListener(buttonAction);
-        clearAllButton = new JButton(Translator.getString("ReferenceList.ClearAll"));
+        clearAllButton = new JButton(Translator.getString("RemoveDialog.ReferenceResourceList.ClearAll"));
         clearAllButton.addActionListener(buttonAction);
-        reverseButton = new JButton(Translator.getString("ReferenceList.Reverse"));
+        reverseButton = new JButton(Translator.getString("RemoveDialog.ReferenceResourceList.InverseSelection"));
         reverseButton.addActionListener(buttonAction);
-        jumpButton = new JButton(Translator.getString("ReferenceList.Jump"));
+        jumpButton = new JButton(Translator.getString("RemoveDialog.ReferenceResourceList.Edit"));
         jumpButton.addActionListener(buttonAction);
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(1, 4, 5, 5));
@@ -116,7 +115,9 @@ class ReferenceListPanel extends JPanel {
     }
 
     private void setCheck(TableModel tableModel, boolean t) {
-        if (tableModel.getRowCount() <= 0) { return; }
+        if (tableModel.getRowCount() <= 0) {
+            return;
+        }
         for (int i = 0; i < tableModel.getRowCount(); i++) {
             tableModel.setValueAt(t, i, 0);
         }
@@ -133,7 +134,9 @@ class ReferenceListPanel extends JPanel {
     }
 
     private void checkReverse(TableModel tableModel) {
-        if (tableModel.getRowCount() <= 0) { return; }
+        if (tableModel.getRowCount() <= 0) {
+            return;
+        }
         for (int i = 0; i < tableModel.getRowCount(); i++) {
             Boolean t = (Boolean) tableModel.getValueAt(i, 0);
             tableModel.setValueAt(!t, i, 0);
@@ -189,8 +192,8 @@ class ReferenceListPanel extends JPanel {
     }
 
     private ReferenceTableModel getTableModel() {
-        Object[] columnNames = new Object[] { Translator.getString("ReferenceList.DeleteCheck"),
-                Translator.getString("ReferenceList.List")};
+        Object[] columnNames = new Object[]{Translator.getString("RemoveDialog.ReferenceResourceList.DeleteCheck"),
+                Translator.getString("RemoveDialog.ReferenceResourceList.ResourceList")};
         return new ReferenceTableModel(columnNames, 0);
     }
 
@@ -217,7 +220,9 @@ class ReferenceListPanel extends JPanel {
 
     private void removeRefRDFAction(Object cell) {
         TableModel tableModel = (TableModel) rdfTableModelMap.get(cell);
-        if (tableModel == null) { return; }
+        if (tableModel == null) {
+            return;
+        }
         for (int i = 0; i < tableModel.getRowCount(); i++) {
             if (isAvailable(tableModel, i, 0)) {
                 GraphCell rdfCell = (GraphCell) tableModel.getValueAt(i, 1);
@@ -231,9 +236,12 @@ class ReferenceListPanel extends JPanel {
             }
         }
     }
+
     private void removeRefPropAction(Object cell) {
         TableModel tableModel = (TableModel) propTableModelMap.get(cell);
-        if (tableModel == null) { return; }
+        if (tableModel == null) {
+            return;
+        }
 
         for (int i = 0; i < tableModel.getRowCount(); i++) {
             if (isAvailable(tableModel, i, 0)) {
@@ -254,7 +262,9 @@ class ReferenceListPanel extends JPanel {
     private Object getTableModel(Object cell, Map map) {
         DefaultTableModel tableModel = getTableModel();
         Set set = (Set) map.get(cell);
-        if (set == null) { return null; }
+        if (set == null) {
+            return null;
+        }
         for (Object o : set) {
             Object[] list = new Object[]{Boolean.TRUE, o};
             tableModel.addRow(list);

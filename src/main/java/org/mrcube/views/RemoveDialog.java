@@ -61,7 +61,7 @@ public class RemoveDialog extends JDialog implements ListSelectionListener, Acti
         removeRDFSList = new JList();
         removeRDFSList.addListSelectionListener(this);
         JScrollPane removeRDFSListScroll = new JScrollPane(removeRDFSList);
-        Utilities.initComponent(removeRDFSListScroll, Translator.getString("RemoveDialog.Label.RemoveList"),
+        Utilities.initComponent(removeRDFSListScroll, Translator.getString("RemoveDialog.Label.RemoveResourceList"),
                 LIST_WIDTH, LIST_HEIGHT);
         refListPanel = new ReferenceListPanel(gmanager);
 
