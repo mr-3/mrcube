@@ -45,6 +45,7 @@ import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -241,11 +242,16 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
         toolbar.add(redo);
 
         toolbar.addSeparator();
-        toolbar.add(new ZoomAction(graph, this, ZoomAction.ZOOM_STD, ZoomAction.ZOOM_STD_ICON));
-        toolbar.add(new ZoomAction(graph, this, ZoomAction.ZOOM_IN, ZoomAction.ZOOM_IN_ICON));
-        toolbar.add(new ZoomAction(graph, this, ZoomAction.ZOOM_OUT, ZoomAction.ZOOM_OUT_ICON));
-        toolbar.add(new ZoomAction(graph, this, ZoomAction.ZOOM_SUITABLE, ZoomAction.ZOOM_SUITABLE_ICON));
-
+        var zoomComboBoxModel = new DefaultComboBoxModel<String>();
+        var zoomComboBox = new JComboBox<>(zoomComboBoxModel);
+        zoomComboBox.addActionListener(e -> {
+            String selectedItem = zoomComboBox.getItemAt(zoomComboBox.getSelectedIndex());
+            double scale = Double.parseDouble(selectedItem.replace("%", "")) / 100;
+            graph.setScale(scale);
+        });
+        zoomComboBoxModel.addAll(Arrays.asList("300%", "200%", "150%", "100%", "75%", "50%"));
+        zoomComboBox.setSelectedIndex(3);
+        toolbar.add(zoomComboBox);
         toolbar.addSeparator();
 
         toolbar.add(new SaveGraphImageAction(gmanager, graph.getType()));
