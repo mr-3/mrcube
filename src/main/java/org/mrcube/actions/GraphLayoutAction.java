@@ -38,10 +38,11 @@ public class GraphLayoutAction extends AbstractAction {
 
     private final GraphType graphType;
     private final GraphManager gmanager;
-    private static final String TITLE = Translator.getString("Component.View.ApplyLayout.Text");
-    public static final ImageIcon layoutRDFGraphIcon = Utilities.getImageIcon("layout_rdf_graph.png");
-    public static final ImageIcon layoutClassGraphIcon = Utilities.getImageIcon("layout_class_graph.png");
-    public static final ImageIcon layoutPropertyGraphIcon = Utilities.getImageIcon("layout_property_graph.png");
+    private static final String TITLE = Translator.getString("Menu.View.ApplyLayout.Text");
+    private static final ImageIcon layoutGraphIcon = Utilities.getImageIcon("ic_share_black_18dp.png");
+    public static final ImageIcon layoutRDFGraphIcon = layoutGraphIcon;
+    public static final ImageIcon layoutClassGraphIcon = layoutGraphIcon;
+    public static final ImageIcon layoutPropertyGraphIcon = layoutGraphIcon;
 
     public GraphLayoutAction(GraphManager gm, GraphType type, ImageIcon icon) {
         super(getString(type) + TITLE, icon);

@@ -39,10 +39,10 @@ import java.awt.event.KeyEvent;
  */
 public class ShowProjectInfoDialog extends MR3AbstractAction {
 
-    private static final String TITLE = Translator.getString("Component.Tools.ProjectInfo.Text");
+    private static final String TITLE = Translator.getString("Menu.Tools.ProjectInfo.Text");
 
     public ShowProjectInfoDialog(MR3 mr3) {
-        super(mr3, TITLE, Utilities.getImageIcon("information.png"));
+        super(mr3, TITLE, Utilities.getImageIcon("baseline_info_black_18dp.png"));
         setValues();
     }
 

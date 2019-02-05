@@ -25,9 +25,9 @@ package org.mrcube.jgraph;
 
 import org.jgraph.graph.*;
 import org.mrcube.MR3;
-import org.mrcube.actions.OpenResourceAction;
 import org.mrcube.actions.RemoveAction;
 import org.mrcube.actions.TransformElementAction;
+import org.mrcube.editors.Editor;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.MR3Constants.HistoryType;
 import org.mrcube.models.MR3Constants.URIType;
@@ -39,9 +39,9 @@ import org.mrcube.utils.MR3CellMaker;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
 import org.mrcube.views.HistoryManager;
-import org.mrcube.views.InsertRDFSResDialog;
+import org.mrcube.views.InsertRDFSResourceDialog;
 import org.mrcube.views.rdf_editor.InsertRDFLiteralDialog;
-import org.mrcube.views.rdf_editor.InsertRDFResDialog;
+import org.mrcube.views.rdf_editor.InsertRDFResourceDialog;
 
 import javax.swing.*;
 import java.awt.*;
@@ -70,9 +70,9 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     PortView port;
     PortView firstPort;
 
-    private WeakReference<InsertRDFResDialog> insertRDFResDialogRef;
+    private WeakReference<InsertRDFResourceDialog> insertRDFResDialogRef;
     private WeakReference<InsertRDFLiteralDialog> insertRDFLiteralDialogRef;
-    private WeakReference<InsertRDFSResDialog> insertRDFSResDialogRef;
+    private WeakReference<InsertRDFSResourceDialog> insertRDFSResDialogRef;
 
     protected boolean isConnectMode;
 
@@ -82,8 +82,6 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 
     private static final String INSERT_RESOURCE_TITLE = Translator.getString("InsertResourceDialog.Title");
     private static final String INSERT_LITERAL_TITLE = Translator.getString("InsertLiteralDialog.Title");
-    public static final Icon RDF_RESOURCE_ELLIPSE_ICON = Utilities.getImageIcon("rdf_resource_ellipse.png");
-    public static final Icon LITERAL_RECTANGLE_ICON = Utilities.getImageIcon("literal_rectangle.png");
 
     public RDFGraphMarqueeHandler(GraphManager manager, RDFGraph graph) {
         gmanager = manager;
@@ -129,10 +127,10 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
         setCopyCutPasteAction(actionMap, inputMap);
     }
 
-    private InsertRDFResDialog getInsertRDFResDialog(Object[] cells) {
-        InsertRDFResDialog result = insertRDFResDialogRef.get();
+    private InsertRDFResourceDialog getInsertRDFResDialog(Object[] cells) {
+        InsertRDFResourceDialog result = insertRDFResDialogRef.get();
         if (result == null) {
-            result = new InsertRDFResDialog(gmanager);
+            result = new InsertRDFResourceDialog(gmanager);
             insertRDFResDialogRef = new WeakReference<>(result);
         }
         result.initData(cells);
@@ -149,10 +147,10 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
         return result;
     }
 
-    InsertRDFSResDialog getInsertRDFSResDialog(String title) {
-        InsertRDFSResDialog result = insertRDFSResDialogRef.get();
+    InsertRDFSResourceDialog getInsertRDFSResDialog(String title) {
+        InsertRDFSResourceDialog result = insertRDFSResDialogRef.get();
         if (result == null) {
-            result = new InsertRDFSResDialog(gmanager);
+            result = new InsertRDFSResourceDialog(gmanager);
             insertRDFSResDialogRef = new WeakReference<>(result);
         }
         result.initData(title);
@@ -316,7 +314,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
                 list.add(cell);
             }
         }
-        InsertRDFResDialog dialog = getInsertRDFResDialog(Utilities.getSortedCellSet(list.toArray()));
+        InsertRDFResourceDialog dialog = getInsertRDFResDialog(Utilities.getSortedCellSet(list.toArray()));
         if (!dialog.isConfirm()) {
             return null;
         }
@@ -440,7 +438,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     class InsertResourceAction extends AbstractAction {
 
         InsertResourceAction() {
-            super(INSERT_RESOURCE_TITLE, RDF_RESOURCE_ELLIPSE_ICON);
+            super(INSERT_RESOURCE_TITLE, Editor.RESOURCE_ICON);
             putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_I,
                     Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         }
@@ -453,7 +451,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     class InsertLiteralAction extends AbstractAction {
 
         InsertLiteralAction() {
-            super(INSERT_LITERAL_TITLE, LITERAL_RECTANGLE_ICON);
+            super(INSERT_LITERAL_TITLE, Editor.LITERAL_ICON);
             putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_L,
                     Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         }
@@ -558,13 +556,13 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     class ShowAttrDialog extends AbstractAction {
 
         public ShowAttrDialog() {
-            super(Translator.getString("Component.Window.AttrDialog.Text"), Utilities
+            super(Translator.getString("Menu.Window.AttrDialog.Text"), Utilities
                     .getImageIcon(Translator.getString("AttributeDialog.Icon")));
             setValues();
         }
 
         private void setValues() {
-            putValue(SHORT_DESCRIPTION, Translator.getString("Component.Window.AttrDialog.Text"));
+            putValue(SHORT_DESCRIPTION, Translator.getString("Menu.Window.AttrDialog.Text"));
             putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_A,
                     Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | InputEvent.SHIFT_DOWN_MASK));
         }

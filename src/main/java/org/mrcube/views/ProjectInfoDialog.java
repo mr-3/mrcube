@@ -67,14 +67,14 @@ public class ProjectInfoDialog extends JDialog {
     private static final int WINDOW_WIDTH = 550;
 
     public ProjectInfoDialog(GraphManager gm, Frame frame) {
-        super(frame, Translator.getString("Component.Tools.ProjectInfo.Text"));
-        setIconImage(Utilities.getImageIcon("information.png").getImage());
+        super(frame, Translator.getString("Menu.Tools.ProjectInfo.Text"));
+        setIconImage(Utilities.getImageIcon("baseline_info_black_18dp.png").getImage());
         mr3Writer = new MR3Writer(gm);
         gmanager = gm;
 
-        JLabel currentProjectLabel = new JLabel(Translator.getString("Component.Tools.ProjectInfo.CurrentProjectName"));
+        JLabel currentProjectLabel = new JLabel(Translator.getString("Menu.Tools.ProjectInfo.CurrentProjectName"));
         currentProjectValue = new JLabel();
-        JLabel lastImportTimeLabel = new JLabel(Translator.getString("Component.Tools.ProjectInfo.LastImportTime"));
+        JLabel lastImportTimeLabel = new JLabel(Translator.getString("Menu.Tools.ProjectInfo.LastImportTime"));
         lastImportTimeValue = new JLabel();
 
         JPanel importPanel = new JPanel();
@@ -85,27 +85,27 @@ public class ProjectInfoDialog extends JDialog {
         importPanel.add(lastImportTimeLabel);
         importPanel.add(lastImportTimeValue);
 
-        JLabel modelResourceCntLabel = new JLabel(Translator.getString("Component.Tools.ProjectInfo.NumberOfModelResource"));
+        JLabel modelResourceCntLabel = new JLabel(Translator.getString("Menu.Tools.ProjectInfo.NumberOfRDFResources"));
         modelResourceCntValue = new JLabel();
-        JLabel modelLiteralCntLabel = new JLabel(Translator.getString("Component.Tools.ProjectInfo.NumberOfModelLiteral"));
+        JLabel modelLiteralCntLabel = new JLabel(Translator.getString("Menu.Tools.ProjectInfo.NumberOfRDFLiterals"));
         modelLiteralCntValue = new JLabel();
-        JLabel modelStatementCntLabel = new JLabel(Translator.getString("Component.Tools.ProjectInfo.NumberOfModelStatement"));
+        JLabel modelStatementCntLabel = new JLabel(Translator.getString("Menu.Tools.ProjectInfo.NumberOfRDFStatements"));
         modelStatementCntValue = new JLabel();
 
-        JLabel ontClassCntLabel = new JLabel(Translator.getString("Component.Tools.ProjectInfo.NumberOfClass"));
+        JLabel ontClassCntLabel = new JLabel(Translator.getString("Menu.Tools.ProjectInfo.NumberOfClasses"));
         ontClassCntValue = new JLabel();
-        JLabel ontPropertyCntLabel = new JLabel(Translator.getString("Component.Tools.ProjectInfo.NumberOfProperty"));
+        JLabel ontPropertyCntLabel = new JLabel(Translator.getString("Menu.Tools.ProjectInfo.NumberOfProperties"));
         ontPropertyCntValue = new JLabel();
 
-        JLabel allResourceCntLabel = new JLabel(Translator.getString("Component.Tools.ProjectInfo.NumberOfAllResource"));
+        JLabel allResourceCntLabel = new JLabel(Translator.getString("Menu.Tools.ProjectInfo.NumberOfAllResources"));
         allResourceCntValue = new JLabel();
-        JLabel allLiteralCntLabel = new JLabel(Translator.getString("Component.Tools.ProjectInfo.NumberOfAllLiteral"));
+        JLabel allLiteralCntLabel = new JLabel(Translator.getString("Menu.Tools.ProjectInfo.NumberOfAllLiterals"));
         allLiteralCntValue = new JLabel();
-        JLabel allStatementCntLabel = new JLabel(Translator.getString("Component.Tools.ProjectInfo.NumberOfAllStatement"));
+        JLabel allStatementCntLabel = new JLabel(Translator.getString("Menu.Tools.ProjectInfo.NumberOfAllStatements"));
         allStatementCntValue = new JLabel();
 
         JPanel cntPanel = new JPanel();
-        cntPanel.setBorder(BorderFactory.createTitledBorder(Translator.getString("Component.Tools.ProjectInfo.OntologyMetrics")));
+        cntPanel.setBorder(BorderFactory.createTitledBorder(Translator.getString("Menu.Tools.ProjectInfo.OntologyMetrics")));
         cntPanel.setLayout(new GridLayout(8, 2, 60, 10));
         cntPanel.add(modelResourceCntLabel);
         cntPanel.add(modelResourceCntValue);
@@ -138,7 +138,7 @@ public class ProjectInfoDialog extends JDialog {
     }
 
     public void resetStatus() {
-        String newProjectText = Translator.getString("Component.File.New.Text");
+        String newProjectText = Translator.getString("Menu.File.New.Text");
         if (MR3.getCurrentProject() == null || MR3.getCurrentProject().getTitle().equals(newProjectText)) {
             currentProjectValue.setText(newProjectText);
         } else {

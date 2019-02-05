@@ -41,7 +41,7 @@ public class MetaModelManagementDialog extends JDialog implements ActionListener
 	private JButton confirmButton;
 	private JButton cancelButton;
 	private JRadioButton renameButton;
-    private static final String TITLE = Translator.getString("RDFSManagementDialog.Title");
+    private static final String TITLE = Translator.getString("MetaModelManagementDialog.Title");
 
 	public MetaModelManagementDialog(GraphManager gm) {
 		super(gm.getRootFrame(), TITLE, true);
@@ -68,7 +68,7 @@ public class MetaModelManagementDialog extends JDialog implements ActionListener
 		chooseOnePanel.setLayout(new GridLayout(1, 2));
 		chooseOnePanel.add(renameButton);
 		chooseOnePanel.add(createButton);
-		chooseOnePanel.setBorder(BorderFactory.createTitledBorder(Translator.getString("ChooseOneSelect")));
+		chooseOnePanel.setBorder(BorderFactory.createTitledBorder(Translator.getString("MetaModelManagementDialog.SelectOptions")));
 		return chooseOnePanel;
 	}
 

@@ -162,8 +162,8 @@ public class MR3LogConsole extends JDialog {
         jTabbedPane1.setMinimumSize(new Dimension(400, 400));
         jTabbedPane1.setPreferredSize(new Dimension(400, 400));
         this.getContentPane().add(jTabbedPane1, "jTabbedPane1");
-        jTabbedPane1.add(stdoutScrollPane, Translator.getString("Component.Tools.LogConsole.StandardOutput"));
-        jTabbedPane1.add(stderrScrollPane, Translator.getString("Component.Tools.LogConsole.StandardErrorOutput"));
+        jTabbedPane1.add(stdoutScrollPane, Translator.getString("Menu.Tools.LogConsole.StandardOutput"));
+        jTabbedPane1.add(stderrScrollPane, Translator.getString("Menu.Tools.LogConsole.StandardErrorOutput"));
         stderrScrollPane.getViewport().add(stderrText, null);
         stdoutScrollPane.getViewport().add(stdoutText, null);
         // make sure the last updated log is always in front

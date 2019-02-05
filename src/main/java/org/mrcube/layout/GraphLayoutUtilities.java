@@ -53,8 +53,8 @@ public class GraphLayoutUtilities {
 
     private static GraphManager gmanager;
 
-    public static final String UP_TO_DOWN = Translator.getString("PreferenceDialog.LayoutTab.UP_TO_DOWN");
-    public static final String LEFT_TO_RIGHT = Translator.getString("PreferenceDialog.LayoutTab.LEFT_TO_RIGHT");
+    public static final String UP_TO_DOWN = Translator.getString("OptionDialog.Layout.UpToDown");
+    public static final String LEFT_TO_RIGHT = Translator.getString("OptionDialog.Layout.LeftToRight");
 
     public static final String VGJ_TREE_LAYOUT = "VGJ Tree Layout";
     public static final String JGRAPH_TREE_LAYOUT = "JGraph Tree Layout";

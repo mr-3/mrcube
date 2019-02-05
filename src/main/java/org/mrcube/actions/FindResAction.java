@@ -39,7 +39,7 @@ import java.awt.event.KeyEvent;
 public class FindResAction extends AbstractAction {
 
     private final GraphManager gmanager;
-    private static final String TITLE = Translator.getString("Component.Edit.FindResource.Text");
+    private static final String TITLE = Translator.getString("Action.FindResource.Text");
     private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("FindResourceDialog.Icon"));
 
     public FindResAction(RDFGraph g, GraphManager gm) {

@@ -1,24 +1,24 @@
 /*
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
- * 
+ *
  * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
- * 
+ *
  * This file is part of MR^3.
- * 
+ *
  * MR^3 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * MR^3 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  */
 
 package org.mrcube.views;
@@ -39,11 +39,13 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.Vector;
 
 /**
  * @author Takeshi Morita
- * 
  */
 class ReferenceListPanel extends JPanel {
 
@@ -56,28 +58,28 @@ class ReferenceListPanel extends JPanel {
     private JButton selectAllButton;
     private JButton clearAllButton;
     private JButton reverseButton;
-    private JButton jumpButton;
+    private JButton editButton;
 
-    private final Map rdfTableModelMap;
-    private final Map propTableModelMap;
+    private final Map<Object, TableModel> rdfTableModelMap;
+    private final Map<Object, TableModel> propTableModelMap;
 
     private static final int LIST_WIDTH = 380;
     private static final int LIST_HEIGHT = 100;
 
     ReferenceListPanel(GraphManager manager) {
         gmanager = manager;
-        rdfTableModelMap = new HashMap();
-        propTableModelMap = new HashMap();
+        rdfTableModelMap = new HashMap<>();
+        propTableModelMap = new HashMap<>();
 
         initTable();
         setLayout(new BorderLayout());
 
         tab = new JTabbedPane();
-        setTableLayout(rdfRefTable, "RDF");
-        setTableLayout(propRefTable, Translator.getString("Property"));
+        setTableLayout(rdfRefTable, Translator.getString("RDFEditor.Title"));
+        setTableLayout(propRefTable, Translator.getString("PropertyEditor.Title"));
         add(tab, BorderLayout.CENTER);
         add(getButtonPanel(), BorderLayout.SOUTH);
-        setBorder(BorderFactory.createTitledBorder(Translator.getString("ReferenceList.Title")));
+        setBorder(BorderFactory.createTitledBorder(Translator.getString("RemoveDialog.ReferenceResourceList.Title")));
     }
 
     private void initTable() {
@@ -98,25 +100,27 @@ class ReferenceListPanel extends JPanel {
 
     private JComponent getButtonPanel() {
         ButtonAction buttonAction = new ButtonAction();
-        selectAllButton = new JButton(Translator.getString("ReferenceList.SelectAll"));
+        selectAllButton = new JButton(Translator.getString("RemoveDialog.ReferenceResourceList.SelectAll"));
         selectAllButton.addActionListener(buttonAction);
-        clearAllButton = new JButton(Translator.getString("ReferenceList.ClearAll"));
+        clearAllButton = new JButton(Translator.getString("RemoveDialog.ReferenceResourceList.ClearAll"));
         clearAllButton.addActionListener(buttonAction);
-        reverseButton = new JButton(Translator.getString("ReferenceList.Reverse"));
+        reverseButton = new JButton(Translator.getString("RemoveDialog.ReferenceResourceList.InverseSelection"));
         reverseButton.addActionListener(buttonAction);
-        jumpButton = new JButton(Translator.getString("ReferenceList.Jump"));
-        jumpButton.addActionListener(buttonAction);
+        editButton = new JButton(Translator.getString("RemoveDialog.ReferenceResourceList.Edit"));
+        editButton.addActionListener(buttonAction);
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(1, 4, 5, 5));
         buttonPanel.add(selectAllButton);
         buttonPanel.add(clearAllButton);
         buttonPanel.add(reverseButton);
-        buttonPanel.add(jumpButton);
+        buttonPanel.add(editButton);
         return Utilities.createEastPanel(buttonPanel);
     }
 
     private void setCheck(TableModel tableModel, boolean t) {
-        if (tableModel.getRowCount() <= 0) { return; }
+        if (tableModel.getRowCount() <= 0) {
+            return;
+        }
         for (int i = 0; i < tableModel.getRowCount(); i++) {
             tableModel.setValueAt(t, i, 0);
         }
@@ -133,14 +137,16 @@ class ReferenceListPanel extends JPanel {
     }
 
     private void checkReverse(TableModel tableModel) {
-        if (tableModel.getRowCount() <= 0) { return; }
+        if (tableModel.getRowCount() <= 0) {
+            return;
+        }
         for (int i = 0; i < tableModel.getRowCount(); i++) {
             Boolean t = (Boolean) tableModel.getValueAt(i, 0);
             tableModel.setValueAt(!t, i, 0);
         }
     }
 
-    private void rdfJump() {
+    private void editSelectedRDFResource() {
         int row = rdfRefTable.getSelectedRow();
         if (row == -1) { // 選択されていない場合
             return;
@@ -150,7 +156,7 @@ class ReferenceListPanel extends JPanel {
         gmanager.setVisibleAttrDialog(true);
     }
 
-    private void propJump() {
+    private void editSelectedRDFSProperty() {
         int row = propRefTable.getSelectedRow();
         if (row == -1) { // 選択されていない場合
             return;
@@ -170,12 +176,11 @@ class ReferenceListPanel extends JPanel {
             } else if (e.getSource() == reverseButton) {
                 checkReverse(rdfRefTable.getModel());
                 checkReverse(propRefTable.getModel());
-            } else if (e.getSource() == jumpButton) {
-                // System.out.println(tab.getSelectedIndex());
+            } else if (e.getSource() == editButton) {
                 if (tab.getSelectedIndex() == 0) {
-                    rdfJump();
+                    editSelectedRDFResource();
                 } else if (tab.getSelectedIndex() == 1) {
-                    propJump();
+                    editSelectedRDFSProperty();
                 }
             }
         }
@@ -189,13 +194,13 @@ class ReferenceListPanel extends JPanel {
     }
 
     private ReferenceTableModel getTableModel() {
-        Object[] columnNames = new Object[] { Translator.getString("ReferenceList.DeleteCheck"),
-                Translator.getString("ReferenceList.List")};
+        Object[] columnNames = new Object[]{Translator.getString("RemoveDialog.ReferenceResourceList.DeleteCheck"),
+                Translator.getString("RemoveDialog.ReferenceResourceList.ResourceList")};
         return new ReferenceTableModel(columnNames, 0);
     }
 
     private void replaceRDFRefTableModel(Object cell) {
-        TableModel tableModel = (TableModel) rdfTableModelMap.get(cell);
+        TableModel tableModel = rdfTableModelMap.get(cell);
         if (tableModel != null) {
             rdfRefTable.setModel(tableModel);
             setTableColumnModel(rdfRefTable);
@@ -203,7 +208,7 @@ class ReferenceListPanel extends JPanel {
     }
 
     private void replacePropRefTableModel(Object cell) {
-        TableModel tableModel = (TableModel) propTableModelMap.get(cell);
+        TableModel tableModel = propTableModelMap.get(cell);
         if (tableModel != null) {
             propRefTable.setModel(tableModel);
             setTableColumnModel(propRefTable);
@@ -216,8 +221,10 @@ class ReferenceListPanel extends JPanel {
     }
 
     private void removeRefRDFAction(Object cell) {
-        TableModel tableModel = (TableModel) rdfTableModelMap.get(cell);
-        if (tableModel == null) { return; }
+        TableModel tableModel = rdfTableModelMap.get(cell);
+        if (tableModel == null) {
+            return;
+        }
         for (int i = 0; i < tableModel.getRowCount(); i++) {
             if (isAvailable(tableModel, i, 0)) {
                 GraphCell rdfCell = (GraphCell) tableModel.getValueAt(i, 1);
@@ -231,9 +238,12 @@ class ReferenceListPanel extends JPanel {
             }
         }
     }
+
     private void removeRefPropAction(Object cell) {
-        TableModel tableModel = (TableModel) propTableModelMap.get(cell);
-        if (tableModel == null) { return; }
+        TableModel tableModel = propTableModelMap.get(cell);
+        if (tableModel == null) {
+            return;
+        }
 
         for (int i = 0; i < tableModel.getRowCount(); i++) {
             if (isAvailable(tableModel, i, 0)) {
@@ -251,10 +261,12 @@ class ReferenceListPanel extends JPanel {
         removeRefPropAction(cell);
     }
 
-    private Object getTableModel(Object cell, Map map) {
+    private TableModel getTableModel(Object cell, Map map) {
         DefaultTableModel tableModel = getTableModel();
         Set set = (Set) map.get(cell);
-        if (set == null) { return null; }
+        if (set == null) {
+            return null;
+        }
         for (Object o : set) {
             Object[] list = new Object[]{Boolean.TRUE, o};
             tableModel.addRow(list);
@@ -266,7 +278,7 @@ class ReferenceListPanel extends JPanel {
         rdfRefTable.setModel(nullTableModel);
         propRefTable.setModel(nullTableModel);
         for (Object cell : cells) {
-            Object tModel = getTableModel(cell, classRDFMap);
+            TableModel tModel = getTableModel(cell, classRDFMap);
             rdfTableModelMap.put(cell, tModel);
 
             tModel = getTableModel(cell, classPropMap);

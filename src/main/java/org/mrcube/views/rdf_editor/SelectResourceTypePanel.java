@@ -1,24 +1,24 @@
 /*
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
- * 
+ *
  * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
- * 
+ *
  * This file is part of MR^3.
- * 
+ *
  * MR^3 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * MR^3 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  */
 
 package org.mrcube.views.rdf_editor;
@@ -36,6 +36,7 @@ import org.mrcube.utils.GraphUtilities;
 import org.mrcube.utils.Utilities;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * @author Takeshi Morita
@@ -62,7 +63,7 @@ public class SelectResourceTypePanel extends SelectClassPanel {
             GraphCell cell = (GraphCell) cell1;
             if (RDFGraph.isRDFSClassCell(cell)) {
                 if (cell == typeCell) {
-                    GraphUtilities.changeDefaultCellStyle(graph, cell, GraphUtilities.selectedColor);
+                    GraphUtilities.changeDefaultCellStyle(graph, cell, GraphUtilities.graphBackgroundColor);
                     prevCell = cell;
                     graph.setSelectionCell(cell);
                     break;
@@ -86,8 +87,7 @@ public class SelectResourceTypePanel extends SelectClassPanel {
         if (graph.getSelectionCount() == 1 && graph.getModel().getChildCount(cell) <= 1) {
             if (RDFGraph.isRDFSClassCell(cell)) {
                 GraphUtilities.changeDefaultCellStyle(graph, prevCell, OntClassCell.backgroundColor);
-                GraphUtilities.changeCellStyle(graph, cell, GraphUtilities.selectedColor,
-                        GraphUtilities.selectedBorderColor);
+                GraphUtilities.changeCellStyle(graph, cell, Color.red, GraphUtilities.graphBackgroundColor, 0);
                 RDFSModel info = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
                 if (info != null) {
                     dspURI.setText(info.getURIStr());

@@ -39,8 +39,8 @@ import java.util.prefs.Preferences;
  */
 public class QuitAction extends AbstractActionFile {
 
-    private static final String TITLE = Translator.getString("Component.File.Quit.Text");
-    private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("Component.File.Quit.Icon"));
+    private static final String TITLE = Translator.getString("Menu.File.Quit.Text");
+    private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("Menu.File.Quit.Icon"));
 
     public QuitAction(MR3 mr3) {
         super(mr3, TITLE, ICON);

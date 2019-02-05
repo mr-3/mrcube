@@ -51,11 +51,11 @@ public class ValidatorDialog extends JDialog {
     private static final int WINDOW_HEIGHT = 400;
 	private static final int WINDOW_WIDTH = 550;
 
-	private static final String TITLE = Translator.getString("Component.Tools.Validator.Text");
+	private static final String TITLE = Translator.getString("Menu.Tools.Validator.Text");
 
 	public ValidatorDialog(Frame frame, GraphManager gm) {
 		super(frame, TITLE);
-		setIconImage(Utilities.getImageIcon("accept.png").getImage());
+		setIconImage(Utilities.getImageIcon("baseline_check_circle_black_18dp.png").getImage());
 		mr3Writer = new MR3Writer(gm);
 		gmanager = gm;
 
@@ -133,7 +133,7 @@ public class ValidatorDialog extends JDialog {
 
 	class ValidateAction extends AbstractAction {
 		ValidateAction() {
-			super(Translator.getString("Component.Tools.Validator.Validate"));
+			super(Translator.getString("Menu.Tools.Validator.Validate"));
 		}
 
 		public void actionPerformed(ActionEvent e) {

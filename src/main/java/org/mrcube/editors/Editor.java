@@ -29,8 +29,13 @@ import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.GraphUndoManager;
 import org.mrcube.MR3;
-import org.mrcube.actions.*;
-import org.mrcube.jgraph.*;
+import org.mrcube.actions.GraphLayoutAction;
+import org.mrcube.actions.OpenResourceAction;
+import org.mrcube.actions.RemoveAction;
+import org.mrcube.actions.SaveGraphImageAction;
+import org.mrcube.jgraph.GraphManager;
+import org.mrcube.jgraph.RDFGraph;
+import org.mrcube.jgraph.RDFGraphMarqueeHandler;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.MR3Constants.HistoryType;
 import org.mrcube.models.RDFResourceModel;
@@ -45,6 +50,7 @@ import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -67,6 +73,9 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
     private Action remove;
 
     Font graphFont;
+
+    public static final ImageIcon RESOURCE_ICON = Utilities.getImageIcon("resource.png");
+    public static final ImageIcon LITERAL_ICON = Utilities.getImageIcon("literal.png");
 
     Editor() {
     }
@@ -179,7 +188,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
 
     class OpenSelectedResourceAction extends AbstractAction {
         public OpenSelectedResourceAction() {
-            super(OpenResourceAction.TITLE, OpenResourceAction.ICON);
+            super(OpenResourceAction.TITLE, Utilities.getImageIcon("baseline_open_in_browser_black_18dp.png"));
         }
 
         @Override
@@ -208,18 +217,13 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
         JToolBar toolbar = new JToolBar();
         toolbar.setFloatable(false);
 
-        toolbar.add(new OpenSelectedResourceAction());
-
         if (graph.getType() == GraphType.RDF) {
-            toolbar.add(new InsertEllipseResourceAction(Utilities.getImageIcon("rdf_resource_ellipse.png")));
-        } else if (graph.getType() == GraphType.PROPERTY) {
-            toolbar.add(new InsertEllipseResourceAction(Utilities.getImageIcon("property_ellipse.png")));
-        }
-
-        if (graph.getType() == GraphType.RDF) {
-            toolbar.add(new InsertRectangleResourceAction(Utilities.getImageIcon("literal_rectangle.png")));
+            toolbar.add(new InsertEllipseResourceAction(RESOURCE_ICON));
+            toolbar.add(new InsertRectangleResourceAction(LITERAL_ICON));
         } else if (graph.getType() == GraphType.CLASS) {
-            toolbar.add(new InsertRectangleResourceAction(Utilities.getImageIcon("class_rectangle.png")));
+            toolbar.add(new InsertRectangleResourceAction(RESOURCE_ICON));
+        } else if (graph.getType() == GraphType.PROPERTY) {
+            toolbar.add(new InsertEllipseResourceAction(RESOURCE_ICON));
         }
 
         toolbar.addSeparator();
@@ -241,11 +245,16 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
         toolbar.add(redo);
 
         toolbar.addSeparator();
-        toolbar.add(new ZoomAction(graph, this, ZoomAction.ZOOM_STD, ZoomAction.ZOOM_STD_ICON));
-        toolbar.add(new ZoomAction(graph, this, ZoomAction.ZOOM_IN, ZoomAction.ZOOM_IN_ICON));
-        toolbar.add(new ZoomAction(graph, this, ZoomAction.ZOOM_OUT, ZoomAction.ZOOM_OUT_ICON));
-        toolbar.add(new ZoomAction(graph, this, ZoomAction.ZOOM_SUITABLE, ZoomAction.ZOOM_SUITABLE_ICON));
-
+        var zoomComboBoxModel = new DefaultComboBoxModel<String>();
+        var zoomComboBox = new JComboBox<>(zoomComboBoxModel);
+        zoomComboBox.addActionListener(e -> {
+            String selectedItem = zoomComboBox.getItemAt(zoomComboBox.getSelectedIndex());
+            double scale = Double.parseDouble(selectedItem.replace("%", "")) / 100;
+            graph.setScale(scale);
+        });
+        zoomComboBoxModel.addAll(Arrays.asList("300%", "200%", "150%", "100%", "75%", "50%"));
+        zoomComboBox.setSelectedIndex(3);
+        toolbar.add(zoomComboBox);
         toolbar.addSeparator();
 
         toolbar.add(new SaveGraphImageAction(gmanager, graph.getType()));
@@ -260,6 +269,10 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
             graphLayoutAction = new GraphLayoutAction(gmanager, graph.getType(), GraphLayoutAction.layoutPropertyGraphIcon);
         }
         toolbar.add(graphLayoutAction);
+
+        toolbar.addSeparator();
+
+        toolbar.add(new OpenSelectedResourceAction());
 
         return toolbar;
     }

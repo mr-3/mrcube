@@ -41,7 +41,7 @@ import java.awt.event.KeyEvent;
  */
 public class ShowAttrDialog extends MR3AbstractAction {
 
-    private static final String TITLE = Translator.getString("Component.Window.AttrDialog.Text");
+    private static final String TITLE = Translator.getString("Menu.Window.AttrDialog.Text");
     private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("AttributeDialog.Icon"));
 
     public ShowAttrDialog(MR3 mr3) {

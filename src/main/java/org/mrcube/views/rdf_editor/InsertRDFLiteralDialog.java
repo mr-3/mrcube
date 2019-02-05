@@ -1,24 +1,24 @@
 /*
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
- * 
+ *
  * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
- * 
+ *
  * This file is part of MR^3.
- * 
+ *
  * MR^3 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * MR^3 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  */
 
 package org.mrcube.views.rdf_editor;
@@ -48,8 +48,8 @@ public class InsertRDFLiteralDialog extends JDialog implements ActionListener {
     private final Action cancelAction;
 
     private final JTextField langField;
-    private final JCheckBox isTypedLiteralBox;
-    private final JComboBox typeBox;
+    private final JCheckBox typedLiteralCheckBox;
+    private final JComboBox dataTypeComboBox;
     private final JTextArea literalValueArea;
     private final TypeMapper typeMapper;
 
@@ -68,17 +68,16 @@ public class InsertRDFLiteralDialog extends JDialog implements ActionListener {
         langPanel.setLayout(new BorderLayout());
         langPanel.add(langFieldP, BorderLayout.WEST);
 
-        isTypedLiteralBox = new JCheckBox(Translator.getString("IsType"));
-        isTypedLiteralBox.addActionListener(this);
-        isTypedLiteralBox.setSelected(false);
-        typeBox = new JComboBox();
-        typeBox.setEnabled(false);
-        JComponent typeBoxP = Utilities.createTitledPanel(typeBox, Translator.getString("Type"), 300, 20);
+        typedLiteralCheckBox = new JCheckBox(Translator.getString("DataType"));
+        typedLiteralCheckBox.addActionListener(this);
+        typedLiteralCheckBox.setSelected(false);
+        dataTypeComboBox = new JComboBox();
+        dataTypeComboBox.setEnabled(false);
 
         JPanel selectLitTypePanel = new JPanel();
         selectLitTypePanel.setLayout(new BoxLayout(selectLitTypePanel, BoxLayout.X_AXIS));
-        selectLitTypePanel.add(isTypedLiteralBox);
-        selectLitTypePanel.add(typeBoxP);
+        selectLitTypePanel.add(typedLiteralCheckBox);
+        selectLitTypePanel.add(dataTypeComboBox);
 
         literalValueArea = new JTextArea();
         literalValueArea.setLineWrap(true);
@@ -87,8 +86,7 @@ public class InsertRDFLiteralDialog extends JDialog implements ActionListener {
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        mainPanel.setBorder(BorderFactory.createTitledBorder(Translator
-                .getString("AttributeDialog.RDFLiteralAttribute.Text")));
+        mainPanel.setBorder(BorderFactory.createTitledBorder(Translator.getString("AttributeDialog.RDFLiteralAttribute.Text")));
         mainPanel.add(langPanel);
         mainPanel.add(selectLitTypePanel);
         mainPanel.add(valueScroll);
@@ -108,7 +106,7 @@ public class InsertRDFLiteralDialog extends JDialog implements ActionListener {
         getContentPane().add(mainPanel, BorderLayout.CENTER);
         getContentPane().add(Utilities.createEastPanel(buttonPanel), BorderLayout.SOUTH);
 
-        Component[] order = new Component[]{langField, typeBox, isTypedLiteralBox, literalValueArea, confirmButton,
+        Component[] order = new Component[]{langField, dataTypeComboBox, typedLiteralCheckBox, literalValueArea, confirmButton,
                 cancelButton};
         setFocusTraversalPolicy(Utilities.getMyFocusTraversalPolicy(order, 3));
 
@@ -129,24 +127,24 @@ public class InsertRDFLiteralDialog extends JDialog implements ActionListener {
         langField.setEnabled(true);
         langField.setText("");
         literalValueArea.setText("");
-        typeBox.setEnabled(false);
-        isTypedLiteralBox.setSelected(false);
+        dataTypeComboBox.setEnabled(false);
+        typedLiteralCheckBox.setSelected(false);
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         Set<String> sortedSet = new TreeSet<>();
-        for (Iterator i = typeMapper.listTypes(); i.hasNext();) {
+        for (Iterator i = typeMapper.listTypes(); i.hasNext(); ) {
             sortedSet.add(((RDFDatatype) i.next()).getURI());
         }
 
         for (String dataType : sortedSet) {
             model.addElement(dataType);
         }
-        typeBox.setModel(model);
+        dataTypeComboBox.setModel(model);
         setVisible(true);
     }
 
     public MR3Literal getLiteral() {
-        if (isTypedLiteralBox.isSelected()) {
-            String dataType = (String) typeBox.getSelectedItem();
+        if (typedLiteralCheckBox.isSelected()) {
+            String dataType = (String) dataTypeComboBox.getSelectedItem();
             return new MR3Literal(literalValueArea.getText(), langField.getText(), typeMapper.getTypeByName(dataType));
         }
         return new MR3Literal(literalValueArea.getText(), langField.getText(), null);
@@ -181,9 +179,9 @@ public class InsertRDFLiteralDialog extends JDialog implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == isTypedLiteralBox) {
-            langField.setEnabled(!isTypedLiteralBox.isSelected());
-            typeBox.setEnabled(isTypedLiteralBox.isSelected());
+        if (e.getSource() == typedLiteralCheckBox) {
+            langField.setEnabled(!typedLiteralCheckBox.isSelected());
+            dataTypeComboBox.setEnabled(typedLiteralCheckBox.isSelected());
         }
     }
 }

@@ -80,7 +80,7 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
     private final GraphManager gmanager;
 
     private static final String WARNING = Translator.getString("Warning");
-    private static final int MENU_WIDTH = 80;
+    private static final int MENU_WIDTH = 100;
 
     public RDFResourcePanel(GraphManager gm) {
         gmanager = gm;
@@ -145,7 +145,7 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
     private static String ISBLANK;
 
     public static void loadResourceBundle() {
-        ISBLANK = Translator.getString("IsBlank");
+        ISBLANK = Translator.getString("BlankNode");
     }
 
     public void valueChanged(ListSelectionEvent e) {
@@ -159,7 +159,7 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
         private final JCheckBox isTypeCellCheckBox;
         private final JLabel resTypeNSLabel;
         private JButton selectTypeButton;
-        private JButton jumpRDFSClassButton;
+        private JButton editRDFSClassButton;
 
         TypePanel() {
             resTypePrefixBox = new JComboBox();
@@ -167,10 +167,9 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
             JComponent resTypePrefixBoxP = Utilities.createTitledPanel(resTypePrefixBox, MR3Constants.PREFIX);
 
             resTypeField = new JTextField();
-            JComponent resTypeFieldP = Utilities.createTitledPanel(resTypeField, Translator.getString("ResourceType")
-                    + " ID");
+            JComponent resTypeFieldP = Utilities.createTitledPanel(resTypeField, Translator.getString("ResourceType") + " ID");
 
-            isTypeCellCheckBox = new JCheckBox(Translator.getString("IsType"));
+            isTypeCellCheckBox = new JCheckBox(Translator.getString("ResourceType"));
             isTypeCellCheckBox.addActionListener(new IsTypeCellAction());
 
             JPanel resTypePanel = new JPanel();
@@ -207,20 +206,20 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
         private JComponent getTypeButtonPanel() {
             selectTypeButton = new JButton(Translator.getString("SelectType"));
             selectTypeButton.addActionListener(this);
-            jumpRDFSClassButton = new JButton(Translator.getString("Jump") + Translator.getString("Class"));
-            jumpRDFSClassButton.addActionListener(this);
+            editRDFSClassButton = new JButton(Translator.getString("Class") + Translator.getString("Edit"));
+            editRDFSClassButton.addActionListener(this);
 
             selectTypeMode(false);
 
             JPanel buttonPanel = new JPanel();
             buttonPanel.setLayout(new GridLayout(1, 2, 5, 5));
             buttonPanel.add(selectTypeButton);
-            buttonPanel.add(jumpRDFSClassButton);
+            buttonPanel.add(editRDFSClassButton);
             return Utilities.createEastPanel(buttonPanel);
         }
 
         public String toString() {
-            return Translator.getString("Type");
+            return Translator.getString("ResourceType");
         }
 
         private String getResourceTypeURI() {
@@ -230,8 +229,8 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == selectTypeButton) {
                 selectResourceType();
-            } else if (e.getSource() == jumpRDFSClassButton) {
-                jumpRDFSClass();
+            } else if (e.getSource() == editRDFSClassButton) {
+                editRDFSClass();
             } else if (e.getSource() == resTypePrefixBox) {
                 PrefixNSUtil.replacePrefix((String) resTypePrefixBox.getSelectedItem(), resTypeNSLabel);
             }
@@ -248,7 +247,7 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
             }
         }
 
-        private void jumpRDFSClass() {
+        private void editRDFSClass() {
             Resource uri = ResourceFactory.createResource(getResourceTypeURI());
             if (gmanager.isEmptyURI(uri.getURI())) {
                 return;
@@ -278,7 +277,7 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
             resTypePrefixBox.setEnabled(t);
             resTypeField.setEditable(t);
             selectTypeButton.setEnabled(t);
-            jumpRDFSClassButton.setEnabled(t);
+            editRDFSClassButton.setEnabled(t);
         }
 
         class IsTypeCellAction extends AbstractAction {

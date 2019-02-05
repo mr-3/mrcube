@@ -48,7 +48,6 @@ public class MR3Constants {
     public static String LANG;
     public static String LABEL;
     public static String COMMENT;
-    public static final ImageIcon LOGO = Utilities.getImageIcon(Translator.getString("Logo"));
     public static final ImageIcon SPLASH_LOGO = Utilities.getImageIcon(Translator.getString("SplashLogo"));
 
     public static void loadResourceBundle() {
