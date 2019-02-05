@@ -27,6 +27,7 @@ import org.jgraph.graph.*;
 import org.mrcube.MR3;
 import org.mrcube.actions.RemoveAction;
 import org.mrcube.actions.TransformElementAction;
+import org.mrcube.editors.Editor;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.MR3Constants.HistoryType;
 import org.mrcube.models.MR3Constants.URIType;
@@ -81,8 +82,6 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 
     private static final String INSERT_RESOURCE_TITLE = Translator.getString("InsertResourceDialog.Title");
     private static final String INSERT_LITERAL_TITLE = Translator.getString("InsertLiteralDialog.Title");
-    public static final Icon RDF_RESOURCE_ELLIPSE_ICON = Utilities.getImageIcon("rdf_resource_ellipse.png");
-    public static final Icon LITERAL_RECTANGLE_ICON = Utilities.getImageIcon("literal_rectangle.png");
 
     public RDFGraphMarqueeHandler(GraphManager manager, RDFGraph graph) {
         gmanager = manager;
@@ -439,7 +438,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     class InsertResourceAction extends AbstractAction {
 
         InsertResourceAction() {
-            super(INSERT_RESOURCE_TITLE, RDF_RESOURCE_ELLIPSE_ICON);
+            super(INSERT_RESOURCE_TITLE, Editor.RESOURCE_ICON);
             putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_I,
                     Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         }
@@ -452,7 +451,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     class InsertLiteralAction extends AbstractAction {
 
         InsertLiteralAction() {
-            super(INSERT_LITERAL_TITLE, LITERAL_RECTANGLE_ICON);
+            super(INSERT_LITERAL_TITLE, Editor.LITERAL_ICON);
             putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_L,
                     Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         }

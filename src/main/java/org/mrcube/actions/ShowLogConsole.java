@@ -41,7 +41,7 @@ public class ShowLogConsole extends MR3AbstractAction {
     private static final String TITLE = Translator.getString("Menu.Tools.LogConsole.Text");
 
     public ShowLogConsole(MR3 mr3) {
-        super(mr3, TITLE, Utilities.getImageIcon("application_xp_terminal.png"));
+        super(mr3, TITLE, Utilities.getImageIcon("ic_message_black_18dp.png"));
         setValues();
     }
 

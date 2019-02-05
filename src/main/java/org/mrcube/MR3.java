@@ -101,7 +101,7 @@ public class MR3 extends JFrame implements ChangeListener {
         MR3Constants.loadResourceBundle();
         initWeakReferences();
         mr3LogConsole = new MR3LogConsole(this, Translator.getString("LogConsole.Title"),
-                Utilities.getImageIcon("application_xp_terminal.png").getImage());
+                Utilities.getImageIcon("ic_message_black_18dp.png").getImage());
 
         gmanager = new GraphManager(userPrefs, this);
 
@@ -139,7 +139,6 @@ public class MR3 extends JFrame implements ChangeListener {
                 quitAction.quitMR3();
             }
         });
-        setIconImage(MR3Constants.LOGO.getImage());
         setJMenuBar(createMenuBar());
         initOptions();
 

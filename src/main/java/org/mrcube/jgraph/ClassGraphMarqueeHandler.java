@@ -28,6 +28,7 @@ import org.jgraph.graph.DefaultPort;
 import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.Port;
 import org.mrcube.actions.TransformElementAction;
+import org.mrcube.editors.Editor;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.MR3Constants.HistoryType;
 import org.mrcube.utils.Translator;
@@ -50,7 +51,6 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 
     private final InsertClassAction insertClassAction;
     private static final String INSERT_CLASS_TITLE = Translator.getString("InsertClassDialog.Title");
-    public static final Icon CLASS_RECTANGLE_ICON = Utilities.getImageIcon("class_rectangle.png");
 
     public ClassGraphMarqueeHandler(GraphManager gm, RDFGraph classGraph) {
         super(gm, classGraph);
@@ -126,7 +126,7 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 
     class InsertClassAction extends AbstractAction {
         InsertClassAction() {
-            super(INSERT_CLASS_TITLE, CLASS_RECTANGLE_ICON);
+            super(INSERT_CLASS_TITLE, Editor.RESOURCE_ICON);
             putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_I,
                     Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         }

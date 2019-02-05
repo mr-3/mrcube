@@ -29,8 +29,13 @@ import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.GraphUndoManager;
 import org.mrcube.MR3;
-import org.mrcube.actions.*;
-import org.mrcube.jgraph.*;
+import org.mrcube.actions.GraphLayoutAction;
+import org.mrcube.actions.OpenResourceAction;
+import org.mrcube.actions.RemoveAction;
+import org.mrcube.actions.SaveGraphImageAction;
+import org.mrcube.jgraph.GraphManager;
+import org.mrcube.jgraph.RDFGraph;
+import org.mrcube.jgraph.RDFGraphMarqueeHandler;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.MR3Constants.HistoryType;
 import org.mrcube.models.RDFResourceModel;
@@ -68,6 +73,9 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
     private Action remove;
 
     Font graphFont;
+
+    public static final ImageIcon RESOURCE_ICON = Utilities.getImageIcon("resource.png");
+    public static final ImageIcon LITERAL_ICON = Utilities.getImageIcon("literal.png");
 
     Editor() {
     }
@@ -209,18 +217,13 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
         JToolBar toolbar = new JToolBar();
         toolbar.setFloatable(false);
 
-        toolbar.add(new OpenSelectedResourceAction());
-
         if (graph.getType() == GraphType.RDF) {
-            toolbar.add(new InsertEllipseResourceAction(Utilities.getImageIcon("rdf_resource_ellipse.png")));
-        } else if (graph.getType() == GraphType.PROPERTY) {
-            toolbar.add(new InsertEllipseResourceAction(Utilities.getImageIcon("property_ellipse.png")));
-        }
-
-        if (graph.getType() == GraphType.RDF) {
-            toolbar.add(new InsertRectangleResourceAction(Utilities.getImageIcon("literal_rectangle.png")));
+            toolbar.add(new InsertEllipseResourceAction(RESOURCE_ICON));
+            toolbar.add(new InsertRectangleResourceAction(LITERAL_ICON));
         } else if (graph.getType() == GraphType.CLASS) {
-            toolbar.add(new InsertRectangleResourceAction(Utilities.getImageIcon("class_rectangle.png")));
+            toolbar.add(new InsertRectangleResourceAction(RESOURCE_ICON));
+        } else if (graph.getType() == GraphType.PROPERTY) {
+            toolbar.add(new InsertEllipseResourceAction(RESOURCE_ICON));
         }
 
         toolbar.addSeparator();
@@ -266,6 +269,10 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
             graphLayoutAction = new GraphLayoutAction(gmanager, graph.getType(), GraphLayoutAction.layoutPropertyGraphIcon);
         }
         toolbar.add(graphLayoutAction);
+
+        toolbar.addSeparator();
+
+        toolbar.add(new OpenSelectedResourceAction());
 
         return toolbar;
     }

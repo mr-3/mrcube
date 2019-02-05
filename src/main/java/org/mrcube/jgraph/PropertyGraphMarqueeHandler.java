@@ -28,6 +28,7 @@ import org.jgraph.graph.DefaultPort;
 import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.Port;
 import org.mrcube.actions.TransformElementAction;
+import org.mrcube.editors.Editor;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.MR3Constants.HistoryType;
 import org.mrcube.utils.Translator;
@@ -47,7 +48,6 @@ import java.awt.event.MouseEvent;
 public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 
     private final InsertPropertyAction insertPropertyAction;
-    public static final Icon PROPERTY_ELLIPSE_ICON = Utilities.getImageIcon("property_ellipse.png");
     private static final String INSERT_PROPERTY_TITLE = Translator.getString("InsertPropertyDialog.Title");
 
     public PropertyGraphMarqueeHandler(GraphManager gm, RDFGraph propGraph) {
@@ -124,7 +124,7 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
 
     class InsertPropertyAction extends AbstractAction {
         InsertPropertyAction() {
-            super(INSERT_PROPERTY_TITLE, PROPERTY_ELLIPSE_ICON);
+            super(INSERT_PROPERTY_TITLE, Editor.RESOURCE_ICON);
             putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_I,
                     Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         }
