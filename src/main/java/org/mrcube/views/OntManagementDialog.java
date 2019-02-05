@@ -46,7 +46,7 @@ class OntManagementDialog extends JDialog implements ActionListener {
 	private JRadioButton renameButton;
 	private JRadioButton createButton;
 	private final SelectRDFSPanel panel;
-	private static final String TITLE = Translator.getString("RDFSManagementDialog.Title");
+	private static final String TITLE = Translator.getString("MetaModelManagementDialog.Title");
 
 	public OntManagementDialog(GraphManager gm) {
 		super(gm.getRootFrame(), TITLE, true);
@@ -77,7 +77,7 @@ class OntManagementDialog extends JDialog implements ActionListener {
 		chooseOnePanel.setLayout(new BoxLayout(chooseOnePanel, BoxLayout.X_AXIS));
 		chooseOnePanel.add(renameButton);
 		chooseOnePanel.add(createButton);
-		chooseOnePanel.setBorder(BorderFactory.createTitledBorder(Translator.getString("ChooseOneSelect")));
+		chooseOnePanel.setBorder(BorderFactory.createTitledBorder(Translator.getString("MetaModelManagementDialog.SelectOptions")));
 		return chooseOnePanel;
 	}
 

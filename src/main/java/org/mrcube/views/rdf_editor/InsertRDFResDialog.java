@@ -75,7 +75,7 @@ public class InsertRDFResDialog extends JDialog implements ItemListener {
         uriField = new JTextField();
         JComponent uriFieldP = Utilities.createTitledPanel(uriField, Translator.getString("RDFResource"), FIELD_WIDTH, FIELD_HEIGHT);
 
-        isAnonBox = new JCheckBox(Translator.getString("IsBlank"));
+        isAnonBox = new JCheckBox(Translator.getString("BlankNode"));
         isAnonBox.addActionListener(new IsAnonAction());
 
         uriPrefixBox = new JComboBox();

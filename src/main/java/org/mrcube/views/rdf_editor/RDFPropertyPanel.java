@@ -65,7 +65,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
     private final JLabel nsLabel;
     private final JButton applyButton;
     private final JButton cancelButton;
-    private final JButton jumpPropertyButton;
+    private final JButton editRDFSPropertyButton;
     private GraphCell edge;
 
     private JList<String> localNameList;
@@ -106,22 +106,22 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
         idField = new JTextField();
         idField.addActionListener(this);
         JComponent idFieldP = Utilities.createTitledPanel(idField, "ID");
-        jumpPropertyButton = new JButton(Translator.getString("Property"));
-        jumpPropertyButton.addActionListener(this);
-        JComponent jumpPropertyButtonP = Utilities.createTitledPanel(jumpPropertyButton, Translator.getString("Jump"));
+        editRDFSPropertyButton = new JButton("RDFS" + Translator.getString("Property") + Translator.getString("Edit"));
+        editRDFSPropertyButton.addActionListener(this);
+        JComponent editRDFSPropertyButtonP = Utilities.createTitledPanel(editRDFSPropertyButton, " ");
 
         JPanel uriPanel = new JPanel();
         uriPanel.setLayout(new GridLayout(1, 3, 5, 5));
         uriPanel.add(uriPrefixBoxP);
         uriPanel.add(idFieldP);
-        uriPanel.add(jumpPropertyButtonP);
+        uriPanel.add(editRDFSPropertyButtonP);
 
         nsLabel = new JLabel();
         JComponent nsLabelP = Utilities.createTitledPanel(nsLabel, MR3Constants.NAME_SPACE);
         typePropertyIDAction = new TypePropertyIDAction();
         findIDField = new JTextField();
         findIDField.getDocument().addDocumentListener(typePropertyIDAction);
-        JComponent findIDFieldP = Utilities.createTitledPanel(findIDField, "Find ID", FIELD_WIDTH, FIELD_HEIGHT);
+        JComponent findIDFieldP = Utilities.createTitledPanel(findIDField, Translator.getString("Filter"), FIELD_WIDTH, FIELD_HEIGHT);
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         panel.add(nsLabelP, BorderLayout.CENTER);
@@ -202,7 +202,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
         idField.setEnabled(!t);
         nsLabel.setEnabled(!t);
         findIDField.setEditable(!t);
-        jumpPropertyButton.setEnabled(!t);
+        editRDFSPropertyButton.setEnabled(!t);
         localNameList.setEnabled(!t);
     }
 
@@ -358,7 +358,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
         return nsLabel.getText() + idField.getText();
     }
 
-    private void jumpRDFSProperty() {
+    private void editRDFSProperty() {
         Resource uri = ResourceFactory.createResource(nsLabel.getText() + idField.getText());
         if (gmanager.isEmptyURI(uri.getURI())) {
             return;
@@ -403,8 +403,8 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
         } else if (e.getSource() == propOnlyCheck) {
             setURIPrefixBoxModel();
             selectNameSpaceList();
-        } else if (e.getSource() == jumpPropertyButton) {
-            jumpRDFSProperty();
+        } else if (e.getSource() == editRDFSPropertyButton) {
+            editRDFSProperty();
         } else if (e.getSource() == cancelButton) {
             gmanager.setVisibleAttrDialog(false);
         }
