@@ -24,6 +24,8 @@
 package org.mrcube.actions;
 
 import org.mrcube.MR3;
+import org.mrcube.utils.Translator;
+import org.mrcube.utils.Utilities;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,6 +40,7 @@ public class OpenFileAction extends OpenResourceAction {
 
     public OpenFileAction(MR3 mr3) {
         super(mr3);
+        putValue(Action.SMALL_ICON, Utilities.getImageIcon(Translator.getString("Menu.File.Open.Icon")));
         setValues();
     }
 

@@ -39,7 +39,7 @@ import java.awt.event.KeyEvent;
 public class ShowOptionDialog extends MR3AbstractAction {
 
     public ShowOptionDialog(MR3 mr3) {
-        super(mr3, Translator.getString("Menu.Tools.Options.Text"), Utilities.getImageIcon("cog.png"));
+        super(mr3, Translator.getString("Menu.Tools.Options.Text"), Utilities.getImageIcon("baseline_settings_black_18dp.png"));
         putValue(SHORT_DESCRIPTION, getName());
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O,
                 Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | InputEvent.SHIFT_DOWN_MASK));

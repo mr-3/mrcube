@@ -180,7 +180,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
 
     class OpenSelectedResourceAction extends AbstractAction {
         public OpenSelectedResourceAction() {
-            super(OpenResourceAction.TITLE, OpenResourceAction.ICON);
+            super(OpenResourceAction.TITLE, Utilities.getImageIcon("baseline_open_in_browser_black_18dp.png"));
         }
 
         @Override

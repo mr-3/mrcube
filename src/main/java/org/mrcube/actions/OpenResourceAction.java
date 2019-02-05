@@ -15,7 +15,7 @@ public class OpenResourceAction extends AbstractActionFile {
 
     private MR3Reader mr3Reader;
     public static final String TITLE = Translator.getString("Menu.File.Open.Text");
-    public static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("Menu.File.Open.Icon"));
+    public static final ImageIcon ICON = Utilities.getImageIcon("baseline_open_in_browser_black_18dp.png");
 
     public OpenResourceAction(MR3 mr3) {
         super(mr3, TITLE, ICON);
