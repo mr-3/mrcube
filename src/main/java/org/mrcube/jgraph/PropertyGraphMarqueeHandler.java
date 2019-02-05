@@ -32,9 +32,8 @@ import org.mrcube.editors.Editor;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.MR3Constants.HistoryType;
 import org.mrcube.utils.Translator;
-import org.mrcube.utils.Utilities;
 import org.mrcube.views.HistoryManager;
-import org.mrcube.views.InsertRDFSResDialog;
+import org.mrcube.views.InsertRDFSResourceDialog;
 
 import javax.swing.*;
 import java.awt.*;
@@ -84,7 +83,7 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
     }
 
     public GraphCell insertResourceCell(Point pt) {
-        InsertRDFSResDialog dialog = getInsertRDFSResDialog(INSERT_PROPERTY_TITLE);
+        InsertRDFSResourceDialog dialog = getInsertRDFSResDialog(INSERT_PROPERTY_TITLE);
         if (!dialog.isConfirm()) {
             return null;
         }
@@ -97,7 +96,7 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
     }
 
     private GraphCell insertSubProperty(Point pt, Object[] supCells) {
-        InsertRDFSResDialog dialog = getInsertRDFSResDialog(INSERT_PROPERTY_TITLE);
+        InsertRDFSResourceDialog dialog = getInsertRDFSResDialog(INSERT_PROPERTY_TITLE);
         if (!dialog.isConfirm()) {
             return null;
         }

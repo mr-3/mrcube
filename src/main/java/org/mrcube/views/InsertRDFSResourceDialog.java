@@ -36,7 +36,7 @@ import java.awt.event.ActionEvent;
 /**
  * @author Takeshi Morita
  */
-public class InsertRDFSResDialog extends JDialog {
+public class InsertRDFSResourceDialog extends JDialog {
 
     private final JComboBox uriPrefixBox;
     private final JTextField idField;
@@ -53,7 +53,7 @@ public class InsertRDFSResDialog extends JDialog {
     private static final int FIELD_WIDTH = 300;
     private static final int FIELD_HEIGHT = 30;
 
-    public InsertRDFSResDialog(GraphManager gm) {
+    public InsertRDFSResourceDialog(GraphManager gm) {
         super(gm.getRootFrame(), true);
         gmanager = gm;
         confirmAction = new ConfirmAction();

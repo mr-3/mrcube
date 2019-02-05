@@ -39,9 +39,9 @@ import org.mrcube.utils.MR3CellMaker;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
 import org.mrcube.views.HistoryManager;
-import org.mrcube.views.InsertRDFSResDialog;
+import org.mrcube.views.InsertRDFSResourceDialog;
 import org.mrcube.views.rdf_editor.InsertRDFLiteralDialog;
-import org.mrcube.views.rdf_editor.InsertRDFResDialog;
+import org.mrcube.views.rdf_editor.InsertRDFResourceDialog;
 
 import javax.swing.*;
 import java.awt.*;
@@ -70,9 +70,9 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     PortView port;
     PortView firstPort;
 
-    private WeakReference<InsertRDFResDialog> insertRDFResDialogRef;
+    private WeakReference<InsertRDFResourceDialog> insertRDFResDialogRef;
     private WeakReference<InsertRDFLiteralDialog> insertRDFLiteralDialogRef;
-    private WeakReference<InsertRDFSResDialog> insertRDFSResDialogRef;
+    private WeakReference<InsertRDFSResourceDialog> insertRDFSResDialogRef;
 
     protected boolean isConnectMode;
 
@@ -127,10 +127,10 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
         setCopyCutPasteAction(actionMap, inputMap);
     }
 
-    private InsertRDFResDialog getInsertRDFResDialog(Object[] cells) {
-        InsertRDFResDialog result = insertRDFResDialogRef.get();
+    private InsertRDFResourceDialog getInsertRDFResDialog(Object[] cells) {
+        InsertRDFResourceDialog result = insertRDFResDialogRef.get();
         if (result == null) {
-            result = new InsertRDFResDialog(gmanager);
+            result = new InsertRDFResourceDialog(gmanager);
             insertRDFResDialogRef = new WeakReference<>(result);
         }
         result.initData(cells);
@@ -147,10 +147,10 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
         return result;
     }
 
-    InsertRDFSResDialog getInsertRDFSResDialog(String title) {
-        InsertRDFSResDialog result = insertRDFSResDialogRef.get();
+    InsertRDFSResourceDialog getInsertRDFSResDialog(String title) {
+        InsertRDFSResourceDialog result = insertRDFSResDialogRef.get();
         if (result == null) {
-            result = new InsertRDFSResDialog(gmanager);
+            result = new InsertRDFSResourceDialog(gmanager);
             insertRDFSResDialogRef = new WeakReference<>(result);
         }
         result.initData(title);
@@ -314,7 +314,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
                 list.add(cell);
             }
         }
-        InsertRDFResDialog dialog = getInsertRDFResDialog(Utilities.getSortedCellSet(list.toArray()));
+        InsertRDFResourceDialog dialog = getInsertRDFResDialog(Utilities.getSortedCellSet(list.toArray()));
         if (!dialog.isConfirm()) {
             return null;
         }

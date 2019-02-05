@@ -40,7 +40,7 @@ import java.awt.event.ItemListener;
 /**
  * @author Takeshi Morita
  */
-public class InsertRDFResDialog extends JDialog implements ItemListener {
+public class InsertRDFResourceDialog extends JDialog implements ItemListener {
 
     private boolean isConfirm;
     private final JComboBox resTypeBox;
@@ -58,7 +58,7 @@ public class InsertRDFResDialog extends JDialog implements ItemListener {
     private static final int FIELD_WIDTH = 300;
     private static final int FIELD_HEIGHT = 30;
 
-    public InsertRDFResDialog(GraphManager gm) {
+    public InsertRDFResourceDialog(GraphManager gm) {
         super(gm.getRootFrame(), Translator.getString("InsertResourceDialog.Title"), true);
         gmanager = gm;
         confirmAction = new ConfirmAction();
