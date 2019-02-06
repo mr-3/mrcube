@@ -36,6 +36,7 @@ import org.mrcube.actions.SaveGraphImageAction;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.jgraph.RDFGraph;
 import org.mrcube.jgraph.RDFGraphMarqueeHandler;
+import org.mrcube.layout.GraphLayoutUtilities;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.MR3Constants.HistoryType;
 import org.mrcube.models.RDFResourceModel;
@@ -260,16 +261,15 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
         toolbar.add(new SaveGraphImageAction(gmanager, graph.getType()));
 
         toolbar.addSeparator();
-        GraphLayoutAction graphLayoutAction = null;
         if (graph.getType() == GraphType.RDF) {
-            graphLayoutAction = new GraphLayoutAction(gmanager, graph.getType(), GraphLayoutAction.layoutRDFGraphIcon);
+            toolbar.add(new GraphLayoutAction(gmanager, graph.getType(), GraphLayoutUtilities.LEFT_TO_RIGHT));
         } else if (graph.getType() == GraphType.CLASS) {
-            graphLayoutAction = new GraphLayoutAction(gmanager, graph.getType(), GraphLayoutAction.layoutClassGraphIcon);
+            toolbar.add(new GraphLayoutAction(gmanager, graph.getType(), GraphLayoutUtilities.LEFT_TO_RIGHT));
+            toolbar.add(new GraphLayoutAction(gmanager, graph.getType(), GraphLayoutUtilities.UP_TO_DOWN));
         } else if (graph.getType() == GraphType.PROPERTY) {
-            graphLayoutAction = new GraphLayoutAction(gmanager, graph.getType(), GraphLayoutAction.layoutPropertyGraphIcon);
+            toolbar.add(new GraphLayoutAction(gmanager, graph.getType(), GraphLayoutUtilities.LEFT_TO_RIGHT));
+            toolbar.add(new GraphLayoutAction(gmanager, graph.getType(), GraphLayoutUtilities.UP_TO_DOWN));
         }
-        toolbar.add(graphLayoutAction);
-
         toolbar.addSeparator();
 
         toolbar.add(new OpenSelectedResourceAction());

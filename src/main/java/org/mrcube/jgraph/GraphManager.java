@@ -1173,31 +1173,39 @@ public class GraphManager {
         getAttrDialog().setVisible(t);
     }
 
-    private boolean isGraphEmpty() {
-        return getCurrentRDFGraph().getAllCells().length == 0 && getCurrentClassGraph().getAllCells().length == 0
-                && getCurrentPropertyGraph().getAllCells().length == 0;
-    }
-
     public void applyLayout(GraphType graphType) {
         RDFSModelExtraction extractRDFS = new RDFSModelExtraction(this);
-        if (GraphType.RDF == graphType) {
-            if (GraphLayoutUtilities.LAYOUT_TYPE.equals(GraphLayoutUtilities.VGJ_TREE_LAYOUT)) {
-                applyVGJRDFLayout(graphType);
-            } else if (GraphLayoutUtilities.LAYOUT_TYPE.equals(GraphLayoutUtilities.JGRAPH_TREE_LAYOUT)) {
-                applyJGraphRDFLayout();
-            }
-        } else if (GraphType.CLASS == graphType) {
-            if (GraphLayoutUtilities.LAYOUT_TYPE.equals(GraphLayoutUtilities.VGJ_TREE_LAYOUT)) {
-                applyVGJClassLayout(extractRDFS);
-            } else if (GraphLayoutUtilities.LAYOUT_TYPE.equals(GraphLayoutUtilities.JGRAPH_TREE_LAYOUT)) {
-                applyJGraphClassLayout();
-            }
-        } else if (GraphType.PROPERTY == graphType) {
-            if (GraphLayoutUtilities.LAYOUT_TYPE.equals(GraphLayoutUtilities.VGJ_TREE_LAYOUT)) {
-                applyVGJPropertyLayout(extractRDFS);
-            } else if (GraphLayoutUtilities.LAYOUT_TYPE.equals(GraphLayoutUtilities.JGRAPH_TREE_LAYOUT)) {
-                applyJGraphPropertyLayout();
-            }
+        switch (graphType) {
+            case RDF:
+                switch (GraphLayoutUtilities.LAYOUT_TYPE) {
+                    case GraphLayoutUtilities.VGJ_TREE_LAYOUT:
+                        applyVGJRDFLayout(graphType);
+                        break;
+                    case GraphLayoutUtilities.JGRAPH_TREE_LAYOUT:
+                        applyJGraphRDFLayout();
+                        break;
+                }
+                break;
+            case CLASS:
+                switch (GraphLayoutUtilities.LAYOUT_TYPE) {
+                    case GraphLayoutUtilities.VGJ_TREE_LAYOUT:
+                        applyVGJClassLayout(extractRDFS);
+                        break;
+                    case GraphLayoutUtilities.JGRAPH_TREE_LAYOUT:
+                        applyJGraphClassLayout();
+                        break;
+                }
+                break;
+            case PROPERTY:
+                switch (GraphLayoutUtilities.LAYOUT_TYPE) {
+                    case GraphLayoutUtilities.VGJ_TREE_LAYOUT:
+                        applyVGJPropertyLayout(extractRDFS);
+                        break;
+                    case GraphLayoutUtilities.JGRAPH_TREE_LAYOUT:
+                        applyJGraphPropertyLayout();
+                        break;
+                }
+                break;
         }
     }
 

@@ -24,6 +24,7 @@
 package org.mrcube.actions;
 
 import org.mrcube.jgraph.GraphManager;
+import org.mrcube.layout.GraphLayoutUtilities;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
@@ -36,19 +37,25 @@ import java.awt.event.ActionEvent;
  */
 public class GraphLayoutAction extends AbstractAction {
 
+    private String direction;
     private final GraphType graphType;
     private final GraphManager gmanager;
     private static final String TITLE = Translator.getString("Menu.View.ApplyLayout.Text");
-    private static final ImageIcon layoutGraphIcon = Utilities.getImageIcon("ic_share_black_18dp.png");
-    public static final ImageIcon layoutRDFGraphIcon = layoutGraphIcon;
-    public static final ImageIcon layoutClassGraphIcon = layoutGraphIcon;
-    public static final ImageIcon layoutPropertyGraphIcon = layoutGraphIcon;
+    private static final ImageIcon LEFT_TO_RIGHT_LAYOUT_GRAPH_ICON = Utilities.getImageIcon("left_to_right_ic_share_black_18dp.png");
+    private static final ImageIcon UP_TO_DOWN_LAYOUT_GRAPH_ICON = Utilities.getImageIcon("up_to_down_ic_share_black_18dp.png");
 
-    public GraphLayoutAction(GraphManager gm, GraphType type, ImageIcon icon) {
-        super(getString(type) + TITLE, icon);
+    public GraphLayoutAction(GraphManager gm, GraphType type, String direction) {
+        super(getString(type) + TITLE + " (" + direction + ")");
         gmanager = gm;
         graphType = type;
-        putValue(SHORT_DESCRIPTION, getString(type) + TITLE);
+        this.direction = direction;
+        putValue(SHORT_DESCRIPTION, getString(type) + TITLE + " (" + direction + ")");
+        if (direction.equals(GraphLayoutUtilities.LEFT_TO_RIGHT)) {
+            putValue(Action.SMALL_ICON, LEFT_TO_RIGHT_LAYOUT_GRAPH_ICON);
+        } else {
+            putValue(Action.SMALL_ICON, UP_TO_DOWN_LAYOUT_GRAPH_ICON);
+        }
+        GraphLayoutUtilities.LAYOUT_TYPE = GraphLayoutUtilities.VGJ_TREE_LAYOUT;
     }
 
     private static String getString(GraphType type) {
@@ -62,6 +69,17 @@ public class GraphLayoutAction extends AbstractAction {
     }
 
     public void actionPerformed(ActionEvent arg0) {
+        switch (graphType) {
+            case RDF:
+                GraphLayoutUtilities.RDF_LAYOUT_DIRECTION = direction;
+                break;
+            case CLASS:
+                GraphLayoutUtilities.CLASS_LAYOUT_DIRECTION = direction;
+                break;
+            case PROPERTY:
+                GraphLayoutUtilities.PROPERTY_LAYOUT_DIRECTION = direction;
+                break;
+        }
         gmanager.applyLayout(graphType);
     }
 }
