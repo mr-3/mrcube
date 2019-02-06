@@ -147,13 +147,13 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 
         setLayout(new BorderLayout());
         JPanel titlePanel = new JPanel();
-        titlePanel.setBackground(new Color(49, 105, 198));
+        titlePanel.setBackground(Color.black);
         ImageIcon icon = Utilities.getImageIcon(Translator.getString("RDFEditor.Icon"));
         JLabel titleLabel = new JLabel(
                 Translator.getString("AttributeDialog.RDFPropertyAttribute.Text"), icon,
                 SwingConstants.LEFT);
         titleLabel.setForeground(Color.white);
-        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 13));
+        titleLabel.setFont(new Font("SansSerif", Font.BOLD, MR3Constants.TITLE_FONT_SIZE));
         titlePanel.setLayout(new BorderLayout());
         titlePanel.add(titleLabel, BorderLayout.WEST);
 

@@ -157,9 +157,9 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
 
     private JComponent getTitleField(String title) {
         JTextField titleField = new JTextField(title);
-        titleField.setBackground(new Color(49, 105, 198));
+        titleField.setBackground(Color.black);
         titleField.setForeground(Color.white);
-        titleField.setFont(new Font("SansSerif", Font.BOLD, 14));
+        titleField.setFont(new Font("SansSerif", Font.BOLD, MR3Constants.TITLE_FONT_SIZE));
         titleField.setEditable(false);
         return titleField;
     }

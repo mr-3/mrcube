@@ -48,6 +48,7 @@ public class MR3Constants {
     public static String LANG;
     public static String LABEL;
     public static String COMMENT;
+    public static final int TITLE_FONT_SIZE = 16;
     public static final ImageIcon SPLASH_LOGO = Utilities.getImageIcon(Translator.getString("SplashLogo"));
 
     public static void loadResourceBundle() {

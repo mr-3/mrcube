@@ -421,7 +421,7 @@ public class RDFGraph extends JGraph {
         return new GraphToolTip();
     }
 
-    private static final Color TOOLTIP_BACK_COLOR = new Color(240, 240, 200);
+    private static final Color TOOLTIP_BACK_COLOR = Color.white;
 
     class GraphToolTip extends JToolTip {
         public void paint(Graphics g) {
