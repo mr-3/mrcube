@@ -71,6 +71,7 @@ public class MR3CellMaker {
         if (GraphUtilities.defaultFont != null) {
             GraphConstants.setFont(map, GraphUtilities.defaultFont);
         }
+        GraphConstants.setForeground(map, RDFPropertyCell.fontColor);
         GraphConstants.setValue(edge.getAttributes(), Objects.requireNonNullElse(info, ""));
         return map;
     }
@@ -104,7 +105,7 @@ public class MR3CellMaker {
         }
 
         GraphConstants.setOpaque(map, false);
-        GraphConstants.setForeground(map, Color.blue);
+        GraphConstants.setForeground(map, TypeViewCell.fontColor);
 
         GraphConstants.setBounds(map, Objects.requireNonNullElseGet(rectangle, () -> new Rectangle(initRectangle)));
 
@@ -117,12 +118,8 @@ public class MR3CellMaker {
         if (GraphUtilities.defaultFont != null) {
             GraphConstants.setFont(map, GraphUtilities.defaultFont);
         }
-        if (GraphUtilities.isColor) {
-            GraphConstants.setBackground(map, cellColor);
-            GraphConstants.setOpaque(map, true);
-        } else {
-            GraphConstants.setOpaque(map, false);
-        }
+        GraphConstants.setBackground(map, cellColor);
+        GraphConstants.setOpaque(map, true);
 
         GraphConstants.setBorderColor(map, Color.black);
         GraphConstants.setLineWidth(map, 1);
@@ -159,8 +156,7 @@ public class MR3CellMaker {
         RDFResourceModel resInfo = (RDFResourceModel) GraphConstants.getValue(rdfCell.getAttributes());
         if (gmanager.isShowTypeCell()) {
             GraphCell typeViewCell = new TypeViewCell(resInfo.getTypeInfo());
-            AttributeMap typeViewMap = getTypeMap(GraphUtilities.getTypeCellRectangle(rdfCell, resInfo.getTypeInfo(),
-                    gmanager));
+            AttributeMap typeViewMap = getTypeMap(GraphUtilities.getTypeCellRectangle(rdfCell, resInfo.getTypeInfo(), gmanager));
             attributes.put(typeViewCell, typeViewMap);
             ParentMap parentMap = new ParentMap();
             DefaultGraphCell group = new DefaultGraphCell();

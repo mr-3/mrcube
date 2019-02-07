@@ -33,7 +33,7 @@ import java.awt.*;
  */
 public class RDFPropertyCell extends DefaultEdge implements RDFCellStyleChanger {
 
-    private static Color fontColor = Color.black;
+    public static Color fontColor = new Color(226,122,94);
     public static final Color borderColor = Color.black;
     private static Color selectedBorderColor = Color.red;
 

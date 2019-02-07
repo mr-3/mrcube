@@ -655,8 +655,7 @@ public class GraphManager {
                 if (isShowTypeCell) {
                     RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(cell.getAttributes());
                     RDFSModel typeInfo = (RDFSModel) GraphConstants.getValue(info.getTypeCell().getAttributes());
-                    Dimension typeDim = GraphUtilities.getAutoNodeDimension(this,
-                            getRDFSNodeValue(info.getType(), typeInfo));
+                    Dimension typeDim = GraphUtilities.getAutoNodeDimension(this, getRDFSNodeValue(info.getType(), typeInfo));
 
                     if (dim.getWidth() < typeDim.getWidth()) {
                         dim = typeDim;
@@ -669,9 +668,6 @@ public class GraphManager {
                 }
             } else {
                 dim = GraphUtilities.getAutoNodeDimension(this, value);
-            }
-            if (!GraphUtilities.isColor && RDFGraph.isRDFSCell(cell)) {
-                GraphConstants.setBorderColor(map, GraphUtilities.graphBackgroundColor);
             }
             setCellBounds(map, dim);
         }

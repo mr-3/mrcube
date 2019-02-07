@@ -63,7 +63,6 @@ public class PrefConstants {
 
     public static final String UILang = "UI Lang";
     public static final String DefaultLang = "Default Lang";
-    public static final String InputEncoding = "Input Encoding";
     public static final String OutputEncoding = "Output Encoding";
     public static final String BaseURI = "Base URI";
     public static final String Proxy = "Proxy";
@@ -87,15 +86,7 @@ public class PrefConstants {
     public static final String NODE_WIDTH = "NODE WIDTH";
     public static final String NODE_HEIGHT = "NODE HEIGHT";
 
-    public static final String RDFResourceColor = "RDF Resource Color";
-    public static final String LiteralColor = "Literal Color";
-    public static final String ClassColor = "Class Color";
-    public static final String PropertyColor = "Property Color";
-    public static final String SelectedColor = "Selected Color";
-    public static final String BackgroundColor = "Background Color";
-
     public static final String WorkDirectory = "DefaultWorkDirectory";
-    public static final String PluginsDirectory = "DefaultPluginsDirectory";
     public static final String ResourceDirectory = "DefaultResourceDirectory";
     public static final String isLogAvailable = "isLogAvailable";
     public static final String logFile = "DefaultLogFile";
