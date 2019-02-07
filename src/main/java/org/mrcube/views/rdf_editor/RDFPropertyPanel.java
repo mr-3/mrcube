@@ -25,7 +25,6 @@ package org.mrcube.views.rdf_editor;
 
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
-import org.apache.jena.vocabulary.RDF;
 import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphConstants;
 import org.mrcube.actions.EditRDFPropertyAction;
@@ -55,10 +54,7 @@ import java.util.*;
 public class RDFPropertyPanel extends JPanel implements ActionListener, ListSelectionListener {
 
     private final TypePropertyIDAction typePropertyIDAction;
-    private final JCheckBox isContainerBox;
-    private final JSpinner numSpinner;
 
-    private final JCheckBox propOnlyCheck;
     private final JComboBox uriPrefixBox;
     private final JTextField idField;
     private final JTextField findIDField;
@@ -84,31 +80,15 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
         gmanager = manager;
         editRDFPropertyAction = new EditRDFPropertyAction(gmanager);
 
-        isContainerBox = new JCheckBox(Translator.getString("IsContainer"));
-        isContainerBox.addActionListener(new ContainerBoxAction());
-        isContainerBox.setSelected(false);
-        numSpinner = new JSpinner(new SpinnerNumberModel(1, 1, 99, 1));
-        numSpinner.setEnabled(false);
-
-        propOnlyCheck = new JCheckBox(Translator.getString("ShowPropertyPrefixOnly"));
-        propOnlyCheck.addActionListener(this);
-        propOnlyCheck.setSelected(true);
-
-        JPanel containerPanel = new JPanel();
-        containerPanel.setLayout(new BoxLayout(containerPanel, BoxLayout.X_AXIS));
-        containerPanel.add(propOnlyCheck);
-        containerPanel.add(isContainerBox);
-        containerPanel.add(numSpinner);
-
         uriPrefixBox = new JComboBox();
         uriPrefixBox.addActionListener(new ChangePrefixAction());
-        JComponent uriPrefixBoxP = Utilities.createTitledPanel(uriPrefixBox, MR3Constants.PREFIX);
+        var uriPrefixBoxP = Utilities.createTitledPanel(uriPrefixBox, MR3Constants.PREFIX);
         idField = new JTextField();
         idField.addActionListener(this);
-        JComponent idFieldP = Utilities.createTitledPanel(idField, "ID");
+        var idFieldP = Utilities.createTitledPanel(idField, "ID");
         editRDFSPropertyButton = new JButton("RDFS" + Translator.getString("Property") + Translator.getString("Edit"));
         editRDFSPropertyButton.addActionListener(this);
-        JComponent editRDFSPropertyButtonP = Utilities.createTitledPanel(editRDFSPropertyButton, " ");
+        var editRDFSPropertyButtonP = Utilities.createTitledPanel(editRDFSPropertyButton, " ");
 
         JPanel uriPanel = new JPanel();
         uriPanel.setLayout(new GridLayout(1, 3, 5, 5));
@@ -121,7 +101,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
         typePropertyIDAction = new TypePropertyIDAction();
         findIDField = new JTextField();
         findIDField.getDocument().addDocumentListener(typePropertyIDAction);
-        JComponent findIDFieldP = Utilities.createTitledPanel(findIDField, Translator.getString("Filter"), FIELD_WIDTH, FIELD_HEIGHT);
+        JComponent findIDFieldP = Utilities.createTitledPanel(findIDField, "ID " + Translator.getString("Filter"), FIELD_WIDTH, FIELD_HEIGHT);
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         panel.add(nsLabelP, BorderLayout.CENTER);
@@ -129,7 +109,6 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        mainPanel.add(containerPanel);
         mainPanel.add(uriPanel);
         mainPanel.add(panel);
         mainPanel.add(getSelectPropertyPanel());
@@ -196,24 +175,12 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
     }
 
     private void setContainer(boolean t) {
-        numSpinner.setEnabled(t);
-        propOnlyCheck.setEnabled(!t);
         uriPrefixBox.setEnabled(!t);
         idField.setEnabled(!t);
         nsLabel.setEnabled(!t);
         findIDField.setEditable(!t);
         editRDFSPropertyButton.setEnabled(!t);
         localNameList.setEnabled(!t);
-    }
-
-    private boolean isContainer() {
-        return isContainerBox.isSelected();
-    }
-
-    class ContainerBoxAction extends AbstractAction {
-        public void actionPerformed(ActionEvent e) {
-            setContainer(isContainer());
-        }
     }
 
     class ChangePrefixAction extends AbstractAction {
@@ -235,11 +202,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
     private static final String NULL_LOCAL_NAME = "(Null)";
 
     private void setURIPrefixBoxModel() {
-        if (propList != null && propOnlyCheck.isSelected()) {
-            uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPropPrefixes(propList).toArray()));
-        } else {
-            uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
-        }
+        uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
     }
 
     private void setPrefix() {
@@ -287,7 +250,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 
     private void selectLocalNameList() {
         if (localNameList.getSelectedValue() != null) {
-            String ln = localNameList.getSelectedValue().toString();
+            String ln = localNameList.getSelectedValue();
             if (ln.equals(NULL_LOCAL_NAME)) {
                 ln = "";
             }
@@ -315,25 +278,20 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
             editRDFPropertyAction.setEdge(edge);
             editRDFPropertyAction.editRDFProperty();
         } else {
-            isContainerBox.setSelected(info.isContainer());
             setContainer(info.isContainer());
-            if (info.isContainer()) {
-                numSpinner.setValue(info.getNum());
-            } else {
-                // mr3:nilの場合には，名前空間はBaseURIとする
-                if (info.getURIStr().equals(MR3Resource.Nil.getURI())) {
-                    if (propList != null && !propList.isEmpty()) {
-                        GraphCell cell = propList.get(0);
-                        RDFSModel propInfo = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
-                        setNSLabel(propInfo.getURI().getNameSpace());
-                    } else {
-                        setNSLabel(gmanager.getBaseURI());
-                    }
-                    idField.setText("");
+            // mr3:nilの場合には，名前空間はBaseURIとする
+            if (info.getURIStr().equals(MR3Resource.Nil.getURI())) {
+                if (propList != null && !propList.isEmpty()) {
+                    GraphCell cell = propList.get(0);
+                    RDFSModel propInfo = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
+                    setNSLabel(propInfo.getURI().getNameSpace());
                 } else {
-                    setNSLabel(info.getNameSpace());
-                    idField.setText(info.getLocalName());
+                    setNSLabel(gmanager.getBaseURI());
                 }
+                idField.setText("");
+            } else {
+                setNSLabel(info.getNameSpace());
+                idField.setText(info.getLocalName());
             }
         }
         SwingUtilities.invokeLater(() -> idField.requestFocus());
@@ -372,15 +330,6 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
         }
     }
 
-    private void setContainerMemberProperty() {
-        Integer num = (Integer) numSpinner.getValue();
-        Resource resource = ResourceFactory.createResource(RDF.getURI() + "_" + num);
-        GraphCell propertyCell = gmanager.getPropertyCell(resource, false);
-        RDFSModel rdfsModel = (RDFSModel) GraphConstants.getValue(propertyCell.getAttributes());
-        GraphConstants.setValue(edge.getAttributes(), rdfsModel);
-        gmanager.getCurrentRDFGraph().getGraphLayoutCache().editCell(edge, edge.getAttributes());
-    }
-
     public void actionPerformed(ActionEvent e) {
         if (edge == null) {
             return;
@@ -388,21 +337,14 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
         if (e.getSource() == applyButton || e.getSource() == idField) {
             RDFSModel beforeRDFSModel = (RDFSModel) GraphConstants.getValue(edge.getAttributes());
             String beforeProperty = beforeRDFSModel.getURIStr();
-            if (isContainer()) {
-                setContainerMemberProperty();
-            } else {
-                editRDFPropertyAction.setURIString(getURI());
-                editRDFPropertyAction.setEdge(edge);
-                editRDFPropertyAction.editRDFProperty();
-                findIDField.setText("");
-                gmanager.selectRDFCell(edge);
-            }
+            editRDFPropertyAction.setURIString(getURI());
+            editRDFPropertyAction.setEdge(edge);
+            editRDFPropertyAction.editRDFProperty();
+            findIDField.setText("");
+            gmanager.selectRDFCell(edge);
             RDFSModel afterRDFSModel = (RDFSModel) GraphConstants.getValue(edge.getAttributes());
             String afterProperty = afterRDFSModel.getURIStr();
             HistoryManager.saveHistory(HistoryType.EDIT_PROPERTY_WITH_DIAGLOG, beforeProperty, afterProperty);
-        } else if (e.getSource() == propOnlyCheck) {
-            setURIPrefixBoxModel();
-            selectNameSpaceList();
         } else if (e.getSource() == editRDFSPropertyButton) {
             editRDFSProperty();
         } else if (e.getSource() == cancelButton) {
