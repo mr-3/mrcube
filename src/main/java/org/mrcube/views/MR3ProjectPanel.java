@@ -47,6 +47,7 @@ public class MR3ProjectPanel extends JPanel {
     private File currentProjectFile;
     private final RDFSModelMap rdfsModelMap;
 
+    private final GraphManager gmanager;
     private final RDFEditor rdfEditor;
     private final ClassEditor classEditor;
     private final PropertyEditor propertyEditor;
@@ -59,6 +60,7 @@ public class MR3ProjectPanel extends JPanel {
     private static final int HEADER_HEIGHT = 70;
 
     public MR3ProjectPanel(GraphManager gmanager) {
+        this.gmanager = gmanager;
         rdfsModelMap = new RDFSModelMap();
         currentProjectFile = new File(System.getProperty("user.dir"), Translator.getString("Menu.File.New.Text"));
 
@@ -86,6 +88,10 @@ public class MR3ProjectPanel extends JPanel {
 
         setLayout(new BorderLayout());
         add(desktopPane, BorderLayout.CENTER);
+    }
+
+    public GraphManager getGraphManager() {
+        return gmanager;
     }
 
     private JInternalFrame createEditorFrame(Editor editor, String title, ImageIcon imageIcon) {
