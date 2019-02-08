@@ -96,16 +96,8 @@ public class RDFGraph extends JGraph {
         return background;
     }
 
-    public void setPageFormat(PageFormat format) {
-        pageFormat = format;
-    }
-
     public PageFormat getPageFormat() {
         return pageFormat;
-    }
-
-    public void setPageVisible(boolean flag) {
-        pagevisible = flag;
     }
 
     public boolean isPageVisible() {
@@ -354,7 +346,7 @@ public class RDFGraph extends JGraph {
         ClassModel info = (ClassModel) GraphConstants.getValue(gcell.getAttributes());
         String msg = "<center><strong>Class</strong></center>";
         msg += getRDFSToolTipText(info);
-        msg += "<strong>SuperClasses: </strong>" + info.getSuperRDFS() + "<br>";
+        msg += "<strong>Super Classes: </strong>" + info.getSuperRDFS() + "<br>";
         return msg;
     }
 
@@ -365,7 +357,7 @@ public class RDFGraph extends JGraph {
         }
         String msg = "<center><strong>Property</strong></center>";
         msg += getRDFSToolTipText(info);
-        msg += "<strong>SuperProperties: </strong>" + info.getSuperRDFS() + "<br>";
+        msg += "<strong>Super Properties: </strong>" + info.getSuperRDFS() + "<br>";
         return msg;
     }
 
@@ -421,7 +413,7 @@ public class RDFGraph extends JGraph {
         return new GraphToolTip();
     }
 
-    private static final Color TOOLTIP_BACK_COLOR = new Color(240, 240, 200);
+    private static final Color TOOLTIP_BACK_COLOR = Color.white;
 
     class GraphToolTip extends JToolTip {
         public void paint(Graphics g) {

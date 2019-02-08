@@ -127,8 +127,7 @@ public class GraphLayoutUtilities {
                 Edge edge = (Edge) cell;
                 removeEdges.add(edge);
                 Object info = GraphConstants.getValue(edge.getAttributes());
-                cellMaker.connect((Port) graph.getModel().getTarget(edge), (Port) graph.getModel().getSource(edge),
-                        info, graph);
+                cellMaker.connect((Port) graph.getModel().getTarget(edge), (Port) graph.getModel().getSource(edge), info, graph);
             }
         }
         graph.getModel().remove(removeEdges.toArray());
@@ -333,10 +332,7 @@ public class GraphLayoutUtilities {
         rootCell.add(rootPort);
 
         Map attributes = new HashMap();
-        attributes.put(rootCell, cellMaker.getResourceMap(cellMaker.getRectangle(initPoint),
-                RDFResourceCell.backgroundColor));
-        // graph.getGraphLayoutCache().insert(new Object[] { rootCell},
-        // attributes, null, null, null);
+        attributes.put(rootCell, cellMaker.getResourceMap(cellMaker.getRectangle(initPoint), RDFResourceCell.backgroundColor));
         graph.getGraphLayoutCache().insert(new Object[]{rootCell}, attributes, null, null);
         GraphLayoutData rootData = new GraphLayoutData(rootCell, graph);
         rootData.setHasParent(false);
@@ -345,8 +341,6 @@ public class GraphLayoutUtilities {
             Port port = (Port) cell.getChildAt(0);
             DefaultEdge edge = new RDFPropertyCell("");
             ConnectionSet cs = new ConnectionSet(edge, rootPort, port);
-            // graph.getGraphLayoutCache().insert(new Object[] { edge}, null,
-            // cs, null, null);
             graph.getGraphLayoutCache().insert(new Object[]{edge}, null, cs, null);
             GraphLayoutData data = cellLayoutMap.get(cell);
             data.setHasParent(true);
@@ -416,8 +410,6 @@ public class GraphLayoutUtilities {
         } else if (MARGIN < startPoint.y) {
             revisePoint.y = MARGIN - startPoint.y;
         }
-        // System.out.println("s" + startPoint);
-        // System.out.println("rr" + revisePoint);
     }
 
     public static void centralizeGraph(Collection<GraphLayoutData> dataSet) {

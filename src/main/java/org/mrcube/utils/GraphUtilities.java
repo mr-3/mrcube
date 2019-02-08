@@ -30,6 +30,7 @@ import org.jgraph.graph.GraphConstants;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.jgraph.RDFCellStyleChanger;
 import org.mrcube.jgraph.RDFGraph;
+import org.mrcube.jgraph.RDFPropertyCell;
 import org.mrcube.models.ClassModel;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.NamespaceModel;
@@ -46,7 +47,6 @@ import java.util.*;
 public class GraphUtilities {
 
     public static Font defaultFont = null;
-    public static boolean isColor = true;
 
     private static Set<NamespaceModel> namespaceModelSet = new HashSet<>();
     public static final Color graphBackgroundColor = Color.white;
@@ -107,20 +107,14 @@ public class GraphUtilities {
             if (GraphConstants.getLineWidth(cell.getAttributes()) == EMPHASIS_WIDTH) {
                 lineWidth = EMPHASIS_WIDTH;
             }
-            if (isColor) {
-                GraphConstants.setLineWidth(map, lineWidth);
-                if (RDFGraph.isRDFPropertyCell(cell)) {
-                    GraphConstants.setLineColor(map, backGroundColor);
-                } else {
-                    GraphConstants.setBorderColor(map, borderColor);
-                    GraphConstants.setBackground(map, backGroundColor);
-                    GraphConstants.setOpaque(map, true);
-                }
+            GraphConstants.setLineWidth(map, lineWidth);
+            if (RDFGraph.isRDFPropertyCell(cell)) {
+                GraphConstants.setForeground(map, RDFPropertyCell.fontColor);
+                GraphConstants.setLineColor(map, backGroundColor);
             } else {
-                if (graph.getType() == GraphType.CLASS || graph.getType() == GraphType.PROPERTY) {
-                    GraphConstants.setBorderColor(map, graphBackgroundColor);
-                }
-                GraphConstants.setOpaque(map, false);
+                GraphConstants.setBorderColor(map, borderColor);
+                GraphConstants.setBackground(map, backGroundColor);
+                GraphConstants.setOpaque(map, true);
             }
 
             map = new AttributeMap(map);

@@ -23,6 +23,7 @@
 
 package org.mrcube;
 
+import org.apache.jena.graph.Graph;
 import org.apache.jena.sys.JenaSystem;
 import org.mrcube.actions.*;
 import org.mrcube.editors.ClassEditor;
@@ -460,9 +461,11 @@ public class MR3 extends JFrame implements ChangeListener {
         menu.add(showToolTips);
         menu.addSeparator();
 
-        menu.add(new GraphLayoutAction(gmanager, GraphType.RDF, GraphLayoutAction.layoutRDFGraphIcon));
-        menu.add(new GraphLayoutAction(gmanager, GraphType.CLASS, GraphLayoutAction.layoutClassGraphIcon));
-        menu.add(new GraphLayoutAction(gmanager, GraphType.PROPERTY, GraphLayoutAction.layoutPropertyGraphIcon));
+        menu.add(new GraphLayoutAction(gmanager, GraphType.RDF, GraphLayoutUtilities.LEFT_TO_RIGHT));
+        menu.add(new GraphLayoutAction(gmanager, GraphType.CLASS, GraphLayoutUtilities.LEFT_TO_RIGHT));
+        menu.add(new GraphLayoutAction(gmanager, GraphType.CLASS, GraphLayoutUtilities.UP_TO_DOWN));
+        menu.add(new GraphLayoutAction(gmanager, GraphType.PROPERTY, GraphLayoutUtilities.LEFT_TO_RIGHT));
+        menu.add(new GraphLayoutAction(gmanager, GraphType.PROPERTY, GraphLayoutUtilities.UP_TO_DOWN));
 
         return menu;
     }

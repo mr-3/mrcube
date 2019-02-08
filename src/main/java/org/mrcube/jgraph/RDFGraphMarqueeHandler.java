@@ -331,7 +331,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
         }
     }
 
-    private Set getSelectedResourcePorts() {
+    public Set getSelectedResourcePorts() {
         Object[] cells = graph.getSelectionCells();
         cells = graph.getDescendants(cells);
         Set<Object> selectedResourcePorts = new HashSet<>();
@@ -378,7 +378,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
         return targetCell;
     }
 
-    private void connectCells(Set selectedResourcePorts, Port targetPort) {
+    public void connectCells(Set selectedResourcePorts, Port targetPort) {
         for (Object selectedResourcePort : selectedResourcePorts) {
             Port sourcePort = (Port) selectedResourcePort;
             GraphCell rdfsPropCell = null;

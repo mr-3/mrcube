@@ -35,6 +35,7 @@ import org.mrcube.models.PrefConstants;
 import org.mrcube.utils.*;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -156,9 +157,9 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
 
     private JComponent getTitleField(String title) {
         JTextField titleField = new JTextField(title);
-        titleField.setBackground(new Color(49, 105, 198));
+        titleField.setBackground(Color.black);
         titleField.setForeground(Color.white);
-        titleField.setFont(new Font("SansSerif", Font.BOLD, 14));
+        titleField.setFont(new Font("SansSerif", Font.BOLD, MR3Constants.TITLE_FONT_SIZE));
         titleField.setEditable(false);
         return titleField;
     }
@@ -832,9 +833,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         }
     }
 
-    private static final int BUTTON_WIDTH = 200;
-    private static final int BUTTON_HEIGHT = 30;
-
     class LayoutPanel extends JPanel {
 
         private final JRadioButton autoSizeButton;
@@ -844,18 +842,8 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         private final JSpinner nodeHeightSpinner;
         private final JSpinner nodeWidthSpinner;
 
-        private final JLabel layoutTypeLabel;
-        private final JLabel rdfLayoutLabel;
-        private final JLabel classLayoutLabel;
-        private final JLabel propertyLayoutLabel;
-
         private final JLabel verticalSpaceLabel;
         private final JLabel horizontalSpaceLabel;
-
-        private final JComboBox layoutTypeBox;
-        private final JComboBox rdfLayoutDirectionBox;
-        private final JComboBox classLayoutDirectionBox;
-        private final JComboBox propertyLayoutDirectionBox;
 
         private final JSpinner rdfVerticalSpaceSpinner;
         private final JSpinner rdfHorizontalSpaceSpinner;
@@ -877,8 +865,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             JPanel nodeSizeButtonPanel = new JPanel();
             nodeSizeButtonPanel.add(autoSizeButton);
             nodeSizeButtonPanel.add(fixSizeButton);
-            nodeSizeButtonPanel.setBorder(BorderFactory.createTitledBorder(Translator
-                    .getString("OptionDialog.Layout.NodeSize")));
+            nodeSizeButtonPanel.setBorder(BorderFactory.createTitledBorder(Translator.getString("OptionDialog.Layout.NodeSize")));
 
             nodeWidthLabel = new JLabel(Translator.getString("OptionDialog.Layout.NodeWidth"));
             nodeWidthSpinner = new JSpinner(new SpinnerNumberModel(50, 0, 999, 1));
@@ -895,35 +882,22 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             nodeSizePanel.add(nodeHeightSpinner);
             nodeSizePanel.setBorder(BorderFactory.createEtchedBorder());
 
-            layoutTypeLabel = new JLabel(Translator.getString("OptionDialog.Layout.LayoutType"));
             verticalSpaceLabel = new JLabel(Translator.getString("OptionDialog.Layout.VerticalSpace"));
             verticalSpaceLabel.setHorizontalAlignment(JLabel.CENTER);
             horizontalSpaceLabel = new JLabel(Translator.getString("OptionDialog.Layout.HorizontalSpace"));
             horizontalSpaceLabel.setHorizontalAlignment(JLabel.CENTER);
 
-            rdfLayoutLabel = new JLabel(Translator.getString("OptionDialog.Layout.RDFLayoutDirection"));
-            classLayoutLabel = new JLabel(Translator.getString("OptionDialog.Layout.ClassLayoutDirection"));
-            propertyLayoutLabel = new JLabel(Translator.getString("OptionDialog.Layout.PropertyLayoutDirection"));
-
-            layoutTypeBox = new JComboBox(new Object[]{GraphLayoutUtilities.VGJ_TREE_LAYOUT,
-                    GraphLayoutUtilities.JGRAPH_TREE_LAYOUT});
             rdfVerticalSpaceSpinner = new JSpinner(new SpinnerNumberModel(50, 0, 999, 1));
             rdfHorizontalSpaceSpinner = new JSpinner(new SpinnerNumberModel(200, 0, 999, 1));
             classVerticalSpaceSpinner = new JSpinner(new SpinnerNumberModel(50, 0, 999, 1));
             classHorizontalSpaceSpinner = new JSpinner(new SpinnerNumberModel(200, 0, 999, 1));
             propertyVerticalSpaceSpinner = new JSpinner(new SpinnerNumberModel(50, 0, 999, 1));
             propertyHorizontalSpaceSpinner = new JSpinner(new SpinnerNumberModel(200, 0, 999, 1));
-            Object[] directionList = new Object[]{GraphLayoutUtilities.UP_TO_DOWN, GraphLayoutUtilities.LEFT_TO_RIGHT};
-            rdfLayoutDirectionBox = new JComboBox(directionList);
-            classLayoutDirectionBox = new JComboBox(directionList);
-            propertyLayoutDirectionBox = new JComboBox(directionList);
 
             JPanel mainPanel = new JPanel();
-            mainPanel.setPreferredSize(new Dimension(400, 350));
-            mainPanel.setLayout(new GridLayout(3, 1));
-            mainPanel.add(getLayoutDirectionPanel());
-            mainPanel.add(getLayoutSpacePanel());
-            mainPanel.add(nodeSizePanel);
+            mainPanel.setLayout(new BorderLayout());
+            mainPanel.add(getLayoutSpacePanel(), BorderLayout.CENTER);
+            mainPanel.add(nodeSizePanel, BorderLayout.SOUTH);
 
             setLayout(new BorderLayout());
             add(getTitledPanel(mainPanel, toString()), BorderLayout.NORTH);
@@ -935,36 +909,20 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         }
 
         void setConfig() {
-            userPrefs.put(PrefConstants.LAYOUT_TYPE, (String) layoutTypeBox.getSelectedItem());
-            GraphLayoutUtilities.LAYOUT_TYPE = (String) layoutTypeBox.getSelectedItem();
-            userPrefs.put(PrefConstants.RDF_LAYOUT_DIRECTION, (String) rdfLayoutDirectionBox.getSelectedItem());
-            GraphLayoutUtilities.RDF_LAYOUT_DIRECTION = (String) rdfLayoutDirectionBox.getSelectedItem();
-            userPrefs.put(PrefConstants.CLASS_LAYOUT_DIRECTION, (String) classLayoutDirectionBox.getSelectedItem());
-            GraphLayoutUtilities.CLASS_LAYOUT_DIRECTION = (String) classLayoutDirectionBox.getSelectedItem();
-            userPrefs.put(PrefConstants.PROPERTY_LAYOUT_DIRECTION,
-                    (String) propertyLayoutDirectionBox.getSelectedItem());
-            GraphLayoutUtilities.PROPERTY_LAYOUT_DIRECTION = (String) propertyLayoutDirectionBox.getSelectedItem();
-
             userPrefs.put(PrefConstants.RDF_VERTICAL_SPACE, rdfVerticalSpaceSpinner.getValue().toString());
             GraphLayoutUtilities.RDF_VERTICAL_SPACE = Integer.parseInt(rdfVerticalSpaceSpinner.getValue().toString());
             userPrefs.put(PrefConstants.RDF_HORIZONTAL_SPACE, rdfHorizontalSpaceSpinner.getValue().toString());
-            GraphLayoutUtilities.RDF_HORIZONTAL_SPACE = Integer.parseInt(rdfHorizontalSpaceSpinner.getValue()
-                    .toString());
+            GraphLayoutUtilities.RDF_HORIZONTAL_SPACE = Integer.parseInt(rdfHorizontalSpaceSpinner.getValue().toString());
 
             userPrefs.put(PrefConstants.CLASS_VERTICAL_SPACE, classVerticalSpaceSpinner.getValue().toString());
-            GraphLayoutUtilities.CLASS_VERTICAL_SPACE = Integer.parseInt(classVerticalSpaceSpinner.getValue()
-                    .toString());
+            GraphLayoutUtilities.CLASS_VERTICAL_SPACE = Integer.parseInt(classVerticalSpaceSpinner.getValue().toString());
             userPrefs.put(PrefConstants.CLASS_HORIZONTAL_SPACE, classHorizontalSpaceSpinner.getValue().toString());
-            GraphLayoutUtilities.CLASS_HORIZONTAL_SPACE = Integer.parseInt(classHorizontalSpaceSpinner.getValue()
-                    .toString());
+            GraphLayoutUtilities.CLASS_HORIZONTAL_SPACE = Integer.parseInt(classHorizontalSpaceSpinner.getValue().toString());
 
             userPrefs.put(PrefConstants.PROPERTY_VERTICAL_SPACE, propertyVerticalSpaceSpinner.getValue().toString());
-            GraphLayoutUtilities.PROPERTY_VERTICAL_SPACE = Integer.parseInt(propertyVerticalSpaceSpinner.getValue()
-                    .toString());
-            userPrefs
-                    .put(PrefConstants.PROPERTY_HORIZONTAL_SPACE, propertyHorizontalSpaceSpinner.getValue().toString());
-            GraphLayoutUtilities.PROPERTY_HORIZONTAL_SPACE = Integer.parseInt(propertyHorizontalSpaceSpinner.getValue()
-                    .toString());
+            GraphLayoutUtilities.PROPERTY_VERTICAL_SPACE = Integer.parseInt(propertyVerticalSpaceSpinner.getValue().toString());
+            userPrefs.put(PrefConstants.PROPERTY_HORIZONTAL_SPACE, propertyHorizontalSpaceSpinner.getValue().toString());
+            GraphLayoutUtilities.PROPERTY_HORIZONTAL_SPACE = Integer.parseInt(propertyHorizontalSpaceSpinner.getValue().toString());
 
             if (autoSizeButton.isSelected()) {
                 userPrefs.put(PrefConstants.NODE_SIZE, PrefConstants.NODE_SIZE_AUTO);
@@ -978,30 +936,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         }
 
         void resetConfig() {
-            String layoutType = userPrefs.get(PrefConstants.LAYOUT_TYPE, GraphLayoutUtilities.VGJ_TREE_LAYOUT);
-            layoutTypeBox.setSelectedItem(layoutType);
-            String direction = userPrefs.get(PrefConstants.RDF_LAYOUT_DIRECTION, GraphLayoutUtilities.LEFT_TO_RIGHT);
-            if (isValidLayoutDirection(rdfLayoutDirectionBox, direction)) {
-                rdfLayoutDirectionBox.setSelectedItem(direction);
-            } else {
-                direction = changeDirectionWithLanguage(direction, PrefConstants.RDF_LAYOUT_DIRECTION);
-                rdfLayoutDirectionBox.setSelectedItem(direction);
-            }
-            direction = userPrefs.get(PrefConstants.CLASS_LAYOUT_DIRECTION, GraphLayoutUtilities.LEFT_TO_RIGHT);
-            if (isValidLayoutDirection(classLayoutDirectionBox, direction)) {
-                classLayoutDirectionBox.setSelectedItem(direction);
-            } else {
-                direction = changeDirectionWithLanguage(direction, PrefConstants.CLASS_LAYOUT_DIRECTION);
-                classLayoutDirectionBox.setSelectedItem(direction);
-            }
-            direction = userPrefs.get(PrefConstants.PROPERTY_LAYOUT_DIRECTION, GraphLayoutUtilities.LEFT_TO_RIGHT);
-            if (isValidLayoutDirection(propertyLayoutDirectionBox, direction)) {
-                propertyLayoutDirectionBox.setSelectedItem(direction);
-            } else {
-                direction = changeDirectionWithLanguage(direction, PrefConstants.PROPERTY_LAYOUT_DIRECTION);
-                propertyLayoutDirectionBox.setSelectedItem(direction);
-            }
-
             rdfVerticalSpaceSpinner.setValue(Integer.valueOf(userPrefs.get(PrefConstants.RDF_VERTICAL_SPACE,
                     Integer.toString(GraphLayoutUtilities.VERTICAL_SPACE))));
             rdfHorizontalSpaceSpinner.setValue(Integer.valueOf(userPrefs.get(PrefConstants.RDF_HORIZONTAL_SPACE,
@@ -1027,31 +961,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
                     Integer.toString(MR3CellMaker.CELL_HEIGHT))));
             nodeWidthSpinner.setEnabled(fixSizeButton.isSelected());
             nodeHeightSpinner.setEnabled(fixSizeButton.isSelected());
-        }
-
-        private String changeDirectionWithLanguage(String direction, String type) {
-            if (direction.equals("上から下") || direction.equals("UP_TO_DOWN")) {
-                userPrefs.put(type, GraphLayoutUtilities.UP_TO_DOWN);
-            } else if (direction.equals("左から右") || direction.equals("LEFT_TO_RIGHT")) {
-                userPrefs.put(type, GraphLayoutUtilities.LEFT_TO_RIGHT);
-            }
-            return userPrefs.get(type, GraphLayoutUtilities.UP_TO_DOWN);
-        }
-
-        private JPanel getLayoutDirectionPanel() {
-            JPanel layoutDirectionPanel = new JPanel();
-            layoutDirectionPanel.setLayout(new GridLayout(4, 2, 5, 2));
-            layoutDirectionPanel.add(layoutTypeLabel);
-            layoutDirectionPanel.add(layoutTypeBox);
-            layoutDirectionPanel.add(rdfLayoutLabel);
-            layoutDirectionPanel.add(rdfLayoutDirectionBox);
-            layoutDirectionPanel.add(classLayoutLabel);
-            layoutDirectionPanel.add(classLayoutDirectionBox);
-            layoutDirectionPanel.add(propertyLayoutLabel);
-            layoutDirectionPanel.add(propertyLayoutDirectionBox);
-            layoutDirectionPanel.setBorder(BorderFactory.createEtchedBorder());
-
-            return layoutDirectionPanel;
         }
 
         private JPanel getLayoutSpacePanel() {
@@ -1094,7 +1003,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
                 nodeHeightSpinner.setEnabled(!t);
             }
         }
-
     }
 
     private static final int PREFIX_BOX_WIDTH = 120;
@@ -1103,10 +1011,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
     private void setText(JTextComponent jtc, String text) {
         jtc.setText(text);
         jtc.setToolTipText(text);
-    }
-
-    private boolean isValidLayoutDirection(JComboBox box, String direction) {
-        return (box.getModel().getElementAt(0).equals(direction) || box.getModel().getElementAt(1).equals(direction));
     }
 
     public void resetConfig() {

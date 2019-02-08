@@ -1,14 +1,14 @@
 package org.mrcube.utils;
 
+import org.apache.jena.rdf.model.ResourceFactory;
+import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphConstants;
+import org.jgraph.graph.Port;
 import org.junit.jupiter.api.*;
 import org.mrcube.MR3;
 import org.mrcube.jgraph.RDFGraph;
-import org.mrcube.models.MR3Constants;
-import org.mrcube.models.MR3Literal;
-import org.mrcube.models.RDFResourceModel;
-import org.mrcube.models.RDFSModel;
+import org.mrcube.models.*;
 
 import java.awt.*;
 
@@ -37,28 +37,28 @@ class MR3CellMakerTest {
     @Nested
     class InsertRDFResourceTest {
 
-        GraphCell cell;
-        String testURI = DEFAULT_URI + "test_resource";
+        GraphCell rdfResourceCell;
+        String testResourceURI = DEFAULT_URI + "test_resource";
 
         @BeforeEach
         void setUp() {
             var project = MR3.getCurrentProject();
             var rdfGraphHandler = project.getRDFEditor().getRdfGraphMarqueeHandler();
             var cellMaker = rdfGraphHandler.getCellMaker();
-            cell = cellMaker.insertRDFResource(new Point(30, 30), testURI, null, MR3Constants.URIType.URI);
+            rdfResourceCell = cellMaker.insertRDFResource(new Point(30, 30), testResourceURI, null, MR3Constants.URIType.URI);
         }
 
         @Test
         void isRDFResourceCell() {
             var expected = true;
-            var actual = RDFGraph.isRDFResourceCell(cell);
+            var actual = RDFGraph.isRDFResourceCell(rdfResourceCell);
             assertEquals(expected, actual);
         }
 
         @Test
         void testInsertedRDFResourceURI() {
-            var expected = testURI;
-            var model = (RDFResourceModel) GraphConstants.getValue(cell.getAttributes());
+            var expected = testResourceURI;
+            var model = (RDFResourceModel) GraphConstants.getValue(rdfResourceCell.getAttributes());
             var actual = model.getURIStr();
             assertEquals(expected, actual);
         }
@@ -68,8 +68,8 @@ class MR3CellMakerTest {
     @Nested
     class InsertRDFPropertyTest {
 
-        GraphCell cell;
-        String testURI = DEFAULT_URI + "test_property";
+        GraphCell rdfPropertyCell;
+        String testPropertyURI = DEFAULT_URI + "test_property";
 
         @BeforeEach
         void setUp() {
@@ -78,27 +78,29 @@ class MR3CellMakerTest {
             var cellMaker = rdfGraphHandler.getCellMaker();
             String testURI1 = DEFAULT_URI + "test_resource1";
             String testURI2 = DEFAULT_URI + "test_resource2";
-            var cell1 = cellMaker.insertRDFResource(new Point(30, 30), testURI1, null, MR3Constants.URIType.URI);
-            var cell2 = cellMaker.insertRDFResource(new Point(80, 30), testURI2, null, MR3Constants.URIType.URI);
-            // TODO refactoring and implement MR3CellMaker#connect(cell1, cell2)
+            var cell1 = cellMaker.insertRDFResource(new Point(100, 200), testURI1, null, MR3Constants.URIType.URI);
+            var cell2 = cellMaker.insertRDFResource(new Point(200, 300), testURI2, null, MR3Constants.URIType.URI);
+            var rdfsPropertyCell = cellMaker.insertProperty(new Point(50, 50), testPropertyURI);
+            project.getPropertyEditor().getGraph().setSelectionCell(rdfsPropertyCell);
+            project.getRDFEditor().getGraph().setSelectionCell(cell1);
+            var selectedPortSet = rdfGraphHandler.getSelectedResourcePorts();
+            var cell2Port = ((DefaultGraphCell) cell2).getChildAt(0);
+            rdfGraphHandler.connectCells(selectedPortSet, (Port) cell2Port);
+            rdfPropertyCell = (GraphCell) project.getGraphManager().getRDFPropertyCell(ResourceFactory.createResource(testPropertyURI));
         }
 
         @Test
         void isRDFPropertyCell() {
-            // TODO implement
             var expected = true;
-//            var actual = RDFGraph.isRDFPropertyCell(cell);
-            var actual = false;
+            var actual = RDFGraph.isRDFPropertyCell(rdfPropertyCell);
             assertEquals(expected, actual);
         }
 
         @Test
-        void testInsertedRDFResourceURI() {
-            // TODO implement
-            var expected = testURI;
-//            var model = (RDFResourceModel) GraphConstants.getValue(cell.getAttributes());
-//            var actual = model.getURIStr();
-            var actual = "";
+        void testInsertedRDFPropertyURI() {
+            var expected = testPropertyURI;
+            var model = (PropertyModel) GraphConstants.getValue(rdfPropertyCell.getAttributes());
+            var actual = model.getURIStr();
             assertEquals(expected, actual);
         }
 
@@ -107,7 +109,7 @@ class MR3CellMakerTest {
 
     @Nested
     class InsertRDFLiteralTest {
-        GraphCell cell;
+        GraphCell literalCell;
         String testLiteralString = "Test";
 
         @BeforeEach
@@ -117,20 +119,20 @@ class MR3CellMakerTest {
             var cellMaker = rdfGraphHandler.getCellMaker();
             var literal = new MR3Literal();
             literal.setString(testLiteralString);
-            cell = cellMaker.insertRDFLiteral(new Point(100, 100), literal);
+            literalCell = cellMaker.insertRDFLiteral(new Point(100, 100), literal);
         }
 
         @Test
         void isRDFLiteralCell() {
             var expected = true;
-            var actual = RDFGraph.isRDFLiteralCell(cell);
+            var actual = RDFGraph.isRDFLiteralCell(literalCell);
             assertEquals(expected, actual);
         }
 
         @Test
         void testInsertedRDFLiteral() {
             var expected = testLiteralString;
-            var literal = (MR3Literal) GraphConstants.getValue(cell.getAttributes());
+            var literal = (MR3Literal) GraphConstants.getValue(literalCell.getAttributes());
             var actual = literal.getString();
             assertEquals(expected, actual);
         }
@@ -139,28 +141,28 @@ class MR3CellMakerTest {
 
     @Nested
     class InsertRDFSClassTest {
-        GraphCell cell;
-        String testURI = DEFAULT_URI + "test_class";
+        GraphCell rdfsClassCell;
+        String testClassURI = DEFAULT_URI + "test_class";
 
         @BeforeEach
         void setUp() {
             var project = MR3.getCurrentProject();
             var classGraphHandler = project.getClassEditor().getClassGraphMarqueeHandler();
             var cellMaker = classGraphHandler.getCellMaker();
-            cell = cellMaker.insertClass(new Point(50, 50), testURI);
+            rdfsClassCell = cellMaker.insertClass(new Point(50, 50), testClassURI);
         }
 
         @Test
         void isRDFSClassCell() {
             var expected = true;
-            var actual = RDFGraph.isRDFSClassCell(cell);
+            var actual = RDFGraph.isRDFSClassCell(rdfsClassCell);
             assertEquals(expected, actual);
         }
 
         @Test
         void testInsertedRDFSClassURI() {
-            var expected = testURI;
-            var model = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
+            var expected = testClassURI;
+            var model = (RDFSModel) GraphConstants.getValue(rdfsClassCell.getAttributes());
             var actual = model.getURIStr();
             assertEquals(expected, actual);
         }
@@ -168,28 +170,28 @@ class MR3CellMakerTest {
 
     @Nested
     class InsertRDFSPropertyTest {
-        GraphCell cell;
-        String testURI = DEFAULT_URI + "test_property";
+        GraphCell rdfsPropertyCell;
+        String testRDFSPropertyURI = DEFAULT_URI + "test_property";
 
         @BeforeEach
         void setUp() {
             var project = MR3.getCurrentProject();
             var propertyGraphHandler = project.getPropertyEditor().getPropertyGraphMarqueeHandler();
             var cellMaker = propertyGraphHandler.getCellMaker();
-            cell = cellMaker.insertProperty(new Point(50, 50), testURI);
+            rdfsPropertyCell = cellMaker.insertProperty(new Point(50, 50), testRDFSPropertyURI);
         }
 
         @Test
         void isRDFSPropertyCell() {
             var expected = true;
-            var actual = RDFGraph.isRDFSPropertyCell(cell);
+            var actual = RDFGraph.isRDFSPropertyCell(rdfsPropertyCell);
             assertEquals(expected, actual);
         }
 
         @Test
         void testInsertedRDFSPropertyURI() {
-            var expected = testURI;
-            var model = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
+            var expected = testRDFSPropertyURI;
+            var model = (RDFSModel) GraphConstants.getValue(rdfsPropertyCell.getAttributes());
             var actual = model.getURIStr();
             assertEquals(expected, actual);
         }

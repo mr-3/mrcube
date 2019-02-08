@@ -37,9 +37,14 @@ public class TreeLayoutAlgorithm {
     private JGraph jgraph;
     private int orientation;
     private int childParentDistance;
-    private final int BORDER;
+    private int BORDER;
 
     public TreeLayoutAlgorithm(int orientation, int distance, int border) {
+        if (orientation == UP_TO_DOWN) {
+            var tmp = distance;
+            distance = border;
+            border = tmp;
+        }
         BORDER = border;
         setChildParentDistance(distance);
         setLayoutOrientation(orientation);
@@ -47,7 +52,7 @@ public class TreeLayoutAlgorithm {
 
     private void setLayoutOrientation(int orientation) {
         if (orientation < 0 && orientation > 1) {
-            orientation = DEFAULT_ORIENTATION;
+            this.orientation = DEFAULT_ORIENTATION;
         } else {
             this.orientation = orientation;
         }
@@ -338,8 +343,7 @@ public class TreeLayoutAlgorithm {
                 if (port == model.getSource(edge)) {
                     Object targetPort = model.getTarget(edge);
                     Object targetVertex = model.getParent(targetPort);
-                    VertexView targetVertexView = (VertexView) jgraph.getGraphLayoutCache().getMapping(targetVertex,
-                            false);
+                    VertexView targetVertexView = (VertexView) jgraph.getGraphLayoutCache().getMapping(targetVertex, false);
                     children.add(targetVertexView);
                 }
             }
@@ -449,7 +453,6 @@ public class TreeLayoutAlgorithm {
         TreeLayoutNode(VertexView node) {
             width = (int) node.getBounds().getWidth();
             height = (int) node.getBounds().getHeight();
-            // border = 5;
             border = BORDER;
             pos = new Point();
             offset = new Point();
