@@ -29,13 +29,16 @@ import org.mrcube.actions.CopyAction;
 import org.mrcube.actions.CutAction;
 import org.mrcube.actions.PasteAction;
 import org.mrcube.actions.SelectAllNodesAction;
-import org.mrcube.models.*;
 import org.mrcube.models.MR3Constants.GraphType;
+import org.mrcube.models.MR3Literal;
+import org.mrcube.models.RDFResourceModel;
+import org.mrcube.models.RDFSModel;
+import org.mrcube.models.RDFSModelMap;
 import org.mrcube.utils.GraphUtilities;
+import org.mrcube.utils.Translator;
 
 import javax.swing.*;
 import javax.swing.plaf.ActionMapUIResource;
-import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.print.PageFormat;
 import java.text.BreakIterator;
@@ -323,53 +326,61 @@ public class RDFGraph extends JGraph {
         }
     }
 
-    private String getRDFSToolTipText(RDFSModel info) {
-        String msg = "<dl><dt>URI: </dt><dd>" + info.getURI() + "</dd>";
-        MR3Literal literal = info.getFirstLabel();
-        if (literal != null) {
-            msg += "<dt>Label</dt><dd>Lang: " + literal.getLanguage() + "<br>"
-                    + literal.getString() + "</dd>";
-            msg += "<dt>Comment</dt>";
+    private String getLabelToolTipText(MR3Literal label) {
+        if (label != null) {
+            return String.format("<b>%s: </b>%s (%s)<br>",
+                    Translator.getString("Label"), label.getString(), label.getLanguage());
         }
-        literal = info.getFirstComment();
-        if (literal != null) {
-            String comment = literal.getString();
+        return "";
+    }
+
+    private String getCommentToolTipText(MR3Literal commentLiteral) {
+        if (commentLiteral != null) {
+            String comment = commentLiteral.getString();
             comment = insertLineFeed(comment);
             comment = comment.replaceAll("(\n|\r)+", "<br>");
-            msg += "<dd>" + "Lang: " + literal.getLanguage() + "<br>" + comment + "</dd></dt>";
+            return String.format("<b>%s: </b>%s (%s)<br>",
+                    Translator.getString("Comment"), comment, commentLiteral.getLanguage());
         }
-        return msg;
+        return "";
+    }
+
+    private String getRDFSToolTipText(Object cell, String rdfsTypeLabel, String superConceptLabel) {
+        GraphCell gcell = (GraphCell) cell;
+        RDFSModel info = (RDFSModel) GraphConstants.getValue(gcell.getAttributes());
+        StringBuilder toolTipTextBuilder = new StringBuilder();
+        toolTipTextBuilder.append(String.format("<h3>%s</h3>", rdfsTypeLabel));
+        toolTipTextBuilder.append(String.format("<b>URI: </b>%s<br>", info.getURI()));
+        toolTipTextBuilder.append(getLabelToolTipText(info.getFirstLabel()));
+        toolTipTextBuilder.append(getCommentToolTipText(info.getFirstComment()));
+        if (!info.getSuperRDFS().isEmpty()) {
+            toolTipTextBuilder.append(String.format("<b>%s: </b>%s<br>",
+                    superConceptLabel, info.getSuperRDFS()));
+        }
+        return toolTipTextBuilder.toString();
     }
 
     private String getClassToolTipText(Object cell) {
-        GraphCell gcell = (GraphCell) cell;
-        ClassModel info = (ClassModel) GraphConstants.getValue(gcell.getAttributes());
-        String msg = "<center><strong>Class</strong></center>";
-        msg += getRDFSToolTipText(info);
-        msg += "<strong>Super Classes: </strong>" + info.getSuperRDFS() + "<br>";
-        return msg;
+        return getRDFSToolTipText(cell, Translator.getString("Class"),
+                Translator.getString("SuperClasses"));
     }
 
     private String getPropertyToolTipText(GraphCell cell) {
-        PropertyModel info = (PropertyModel) GraphConstants.getValue(cell.getAttributes());
-        if (info == null) {
-            return "";
-        }
-        String msg = "<center><strong>Property</strong></center>";
-        msg += getRDFSToolTipText(info);
-        msg += "<strong>Super Properties: </strong>" + info.getSuperRDFS() + "<br>";
-        return msg;
+        return getRDFSToolTipText(cell, Translator.getString("Property"),
+                Translator.getString("SuperProperties"));
     }
 
     private String getRDFResourceToolTipText(GraphCell cell) {
-        String msg = "";
+        StringBuilder toolTipTextBuilder = new StringBuilder();
         RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(cell.getAttributes());
         if (info != null) {
-            msg += "<h3>Resource</h3>";
-            msg += "<strong>URI: </strong>" + info.getURI() + "<br>";
-            msg += "<strong>Type: </strong>" + info.getType() + "<br>";
+            toolTipTextBuilder.append(String.format("<h3>%s</h3>", Translator.getString("RDFResource")));
+            toolTipTextBuilder.append(String.format("<b>URI: </b>%s<br>", info.getURI()));
+            toolTipTextBuilder.append(String.format("<b>%s: </b>%s<br>", Translator.getString("ResourceType"), info.getType()));
+            toolTipTextBuilder.append(getLabelToolTipText(info.getFirstLabel()));
+            toolTipTextBuilder.append(getCommentToolTipText(info.getFirstComment()));
         }
-        return msg;
+        return toolTipTextBuilder.toString();
     }
 
     private String getRDFPropertyToolTipText(GraphCell cell) {
@@ -397,31 +408,20 @@ public class RDFGraph extends JGraph {
     }
 
     private String getRDFLiteralToolTipText(Object cell) {
-        String msg = "<h3>Literal</h3>";
-        MR3Literal literal = (MR3Literal) GraphConstants.getValue(((GraphCell) cell)
-                .getAttributes());
-        msg += "<strong>Lang: </strong>" + literal.getLanguage() + "<br>";
-        msg += "<strong>Datatype: </strong>" + literal.getDatatype() + "<br>";
-        msg += "<strong>Value: </strong><br>";
-        msg += insertLineFeed(literal.getString());
-        msg = msg.replaceAll("(\n|\r)+", "<br>");
-
-        return msg;
+        StringBuilder toolTipTextBuilder = new StringBuilder();
+        toolTipTextBuilder.append(String.format("<h3>%s</h3>", Translator.getString("Literal")));
+        MR3Literal literal = (MR3Literal) GraphConstants.getValue(((GraphCell) cell).getAttributes());
+        toolTipTextBuilder.append(String.format("<b>%s: </b>%s<br>",
+                Translator.getString("Lang"), literal.getLanguage()));
+        toolTipTextBuilder.append(String.format("<b>%s: </b>%s<br>",
+                Translator.getString("DataType"), literal.getDatatype()));
+        toolTipTextBuilder.append(String.format("<b>%s: </b><br>", Translator.getString("LiteralValue")));
+        toolTipTextBuilder.append(insertLineFeed(literal.getString()
+                .replaceAll("(\n|\r)+", "<br>")));
+        return toolTipTextBuilder.toString();
     }
 
-    public JToolTip createToolTip() {
-        return new GraphToolTip();
-    }
-
-    private static final Color TOOLTIP_BACK_COLOR = Color.white;
-
-    class GraphToolTip extends JToolTip {
-        public void paint(Graphics g) {
-            setBackground(TOOLTIP_BACK_COLOR);
-            super.paint(g);
-        }
-    }
-
+    @Override
     public String getToolTipText(MouseEvent event) {
         if (event != null) {
             GraphCell cell = (GraphCell) getFirstCellForLocation(event.getX(), event.getY());
@@ -452,7 +452,7 @@ public class RDFGraph extends JGraph {
                         msg = getPropertyToolTipText(cell);
                     }
                 }
-                return "<html>" + msg + "</html>";
+                return "<html><body>" + msg + "</body></html>";
             }
         }
         return null;

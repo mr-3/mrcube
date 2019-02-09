@@ -87,7 +87,7 @@ public class SelectResourceTypePanel extends SelectClassPanel {
         if (graph.getSelectionCount() == 1 && graph.getModel().getChildCount(cell) <= 1) {
             if (RDFGraph.isRDFSClassCell(cell)) {
                 GraphUtilities.changeDefaultCellStyle(graph, prevCell, OntClassCell.backgroundColor);
-                GraphUtilities.changeCellStyle(graph, cell, Color.red, GraphUtilities.graphBackgroundColor, 0);
+//                GraphUtilities.changeCellStyle(graph, cell, Color.red, GraphUtilities.graphBackgroundColor, 0);
                 RDFSModel info = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
                 if (info != null) {
                     dspURI.setText(info.getURIStr());

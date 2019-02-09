@@ -314,8 +314,7 @@ public class MR3Parser {
 
             if (cellLayoutMap != null) {
                 if (object instanceof Literal) {
-                    Resource tmp = ResourceFactory.createResource(subject.toString()
-                            + object.hashCode());
+                    Resource tmp = ResourceFactory.createResource(subject.toString() + object.hashCode());
                     data = cellLayoutMap.get(tmp);
                 } else {
                     data = cellLayoutMap.get(object);
@@ -327,8 +326,7 @@ public class MR3Parser {
             if (object instanceof Resource) {
                 targetCell = resourceMap.get(object);
                 if (targetCell == null) {
-                    targetCell = createResourceCell((Resource) object, resourceMap, attributes,
-                            data);
+                    targetCell = createResourceCell((Resource) object, resourceMap, attributes, data);
                     graphLayoutCache.insert(new Object[]{targetCell}, attributes, null, null);
                 }
             } else if (object instanceof Literal) {

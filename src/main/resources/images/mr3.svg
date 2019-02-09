@@ -1,57 +1,52 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20001102//EN"
-"http://www.w3.org/TR/2000/CR-SVG-20001102/DTD/svg-20001102.dtd">
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-  xml:lang="ja" width="512" height="512" viewBox="-100 -100 200 200" >
+<svg xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink"
+     xml:lang="ja" width="512" height="512" viewBox="-100 -100 200 200">
 
-  <defs>
-    <linearGradient id="blueGrad" gradientUnit="objectBoundingBox"
-		    x1="0" y1="0" x2="1.5" y2="1.5" spreadMethod="pad">
-      <stop stop-color="#0855d6" offset="0" />
-      <stop stop-color="white" offset="1" />
-    </linearGradient>
+    <defs>
+        <linearGradient id="blueGrad" x1="0" y1="0" x2="1.5" y2="1.5">
+            <stop stop-color="#0855d6" offset="0"/>
+            <stop stop-color="white" offset="1"/>
+        </linearGradient>
 
-    <linearGradient id="RblueGrad" gradientUnit="objectBoundingBox"
-		    x1="0" y1="0" x2="0.8" y2="0.8" spreadMethod="pad">
-      <stop stop-color="white" offset="0" />
-	<stop stop-color="#0855d6" offset="1" />
-    </linearGradient>
-    
-    <linearGradient id="blackGrad" gradientUnit="objectBoundingBox"
-		    x1="0" y1="0" x2="5" y2="5" spreadMethod="pad">
-      <stop stop-color="black" offset="0" />
-	<stop stop-color="gray" offset="1" />
-    </linearGradient>
+        <linearGradient id="RblueGrad" x1="0" y1="0" x2="0.8" y2="0.8">
+            <stop stop-color="white" offset="0"/>
+            <stop stop-color="#0855d6" offset="1"/>
+        </linearGradient>
 
-     <linearGradient id="RblackGrad" gradientUnit="objectBoundingBox"
-		    x1="0.1" y1="0.1" x2="0.1" y2="0.1" spreadMethod="pad">
-      <stop stop-color="black" offset="0" />
-	<stop stop-color="black" offset="1" />
-    </linearGradient>
+        <linearGradient id="blackGrad" x1="0" y1="0" x2="5" y2="5">
+            <stop stop-color="black" offset="0"/>
+            <stop stop-color="gray" offset="1"/>
+        </linearGradient>
 
-     <g id="mr3_logo">
+        <linearGradient id="RblackGrad" x1="0.1" y1="0.1" x2="0.1" y2="0.1">
+            <stop stop-color="black" offset="0"/>
+            <stop stop-color="black" offset="1"/>
+        </linearGradient>
 
-      <g id="topFace" >
-	<polygon points="-80,-40 0,-80 80,-40 0,0" fill="url(#blueGrad)"
-		 stroke="black" stroke-width="0.5"/>
-      </g>
+        <g id="mr3_logo">
 
-      <g id="leftFace" font-weight="bold" stroke-width="0.5"
-	 fill="url(#blackGrad)" stroke="white" font-family="Arial" font-size="90">
-	<polygon id="rhombus" points="-80,-40 -80,60 0,100 0,0"
-		 fill="url(#blueGrad)" stroke="black" stroke-width="0.5"/>
-	  <text x="-78" y="86" transform="skewY(29)">M</text>
-      </g>
-      
-      <g id="rightFace" font-weight="bold" stroke="white" font-family="Arial" font-size="90"
-	 stroke-width="0.5" fill="url(#RblackGrad)">
-	<polygon id="rhombus" points=" 80,-40  80,60 0,100 0,0"
-		 fill="url(#RblueGrad)" stroke="black" stroke-width="0.5"/>
-	  <text x="8" y="86" transform="skewY(-29)">R</text>
-      </g>
-    </g>
-  </defs>
+            <g id="topFace">
+                <polygon points="-80,-40 0,-80 80,-40 0,0" fill="url(#blueGrad)"
+                         stroke="black" stroke-width="0.5"/>
+            </g>
 
-  <use xlink:href="#mr3_logo" transform="translate(0,-10)" />
+            <g id="leftFace" font-weight="bold" stroke-width="0.5"
+               fill="url(#blackGrad)" stroke="white" font-family="Arial" font-size="90">
+                <polygon id="rhombus" points="-80,-40 -80,60 0,100 0,0"
+                         fill="url(#blueGrad)" stroke="black" stroke-width="0.5"/>
+                <text x="-78" y="86" transform="skewY(29)">M</text>
+            </g>
+
+            <g id="rightFace" font-weight="bold" stroke="white" font-family="Arial" font-size="90"
+               stroke-width="0.5" fill="url(#RblackGrad)">
+                <polygon id="rhombus" points=" 80,-40  80,60 0,100 0,0"
+                         fill="url(#RblueGrad)" stroke="black" stroke-width="0.5"/>
+                <text x="8" y="86" transform="skewY(-29)">R</text>
+            </g>
+        </g>
+    </defs>
+
+    <use xlink:href="#mr3_logo" transform="translate(0,-10)"/>
 </svg>

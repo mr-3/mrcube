@@ -33,9 +33,8 @@ import java.awt.*;
  */
 public class RDFLiteralCell extends DefaultGraphCell implements RDFCellStyleChanger {
 
-    public static Color borderColor = Color.black;
-    private static Color selectedBorderColor = Color.red;
-    public static Color backgroundColor = new Color(255, 255, 204);
+    public static Color backgroundColor = new Color(145, 145, 50);
+    private static Color selectedBackgroundColor = new Color(230, 180, 80);
 
     public RDFLiteralCell(Object userObject) {
         super(userObject);
@@ -46,7 +45,7 @@ public class RDFLiteralCell extends DefaultGraphCell implements RDFCellStyleChan
     }
 
     public void changeSelectedCellStyle(RDFGraph graph) {
-        GraphUtilities.changeCellStyle(graph, this, backgroundColor, selectedBorderColor, SELECTED_LINE_WIDTH);
+        GraphUtilities.changeCellStyle(graph, this, selectedBackgroundColor);
     }
 
 }

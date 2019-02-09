@@ -33,15 +33,15 @@ import java.awt.*;
  */
 public class RDFResourceCell extends DefaultGraphCell implements RDFCellStyleChanger {
 
-    private static Color selectedBorderColor = Color.red;
-    public static Color backgroundColor = new Color(255, 190, 190);
+    public static Color backgroundColor = new Color(31, 85, 142);
+    private static Color selectedBackgroundColor =  new Color(0, 149, 217);
 
     public void changeDefaultCellStyle(RDFGraph graph) {
         GraphUtilities.changeDefaultCellStyle(graph, this, backgroundColor);
     }
 
     public void changeSelectedCellStyle(RDFGraph graph) {
-        GraphUtilities.changeCellStyle(graph, this, backgroundColor, selectedBorderColor, SELECTED_LINE_WIDTH);
+        GraphUtilities.changeCellStyle(graph, this, selectedBackgroundColor);
     }
 
     public RDFResourceCell(Object userObject) {

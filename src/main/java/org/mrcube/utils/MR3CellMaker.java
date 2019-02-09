@@ -48,11 +48,11 @@ public class MR3CellMaker {
 
     private final GraphManager gmanager;
 
-    public static final int CELL_MARGIN = 20;
     public static int CELL_WIDTH = 100;
-    public static final int DEFAULT_CELL_WIDTH = 100;
     public static int CELL_HEIGHT = 25;
+    public static final int DEFAULT_CELL_WIDTH = 100;
     public static final int DEFAULT_CELL_HEIGHT = 25;
+    public static final int CELL_MARGIN = 30;
     private static final Dimension initDimension = new Dimension(CELL_WIDTH, CELL_HEIGHT);
     private static final Rectangle initRectangle = new Rectangle(new Point(0, 0), initDimension);
 
@@ -62,8 +62,6 @@ public class MR3CellMaker {
 
     public AttributeMap getEdgeMap(Object info, Edge edge) {
         AttributeMap map = new AttributeMap();
-        // GraphConstants.setRouting(map,
-        // JGraphParallelEdgeRouter.getSharedInstance());
         GraphConstants.setRouting(map, JGParallelEdgeRouter.getSharedInstance());
         GraphConstants.setLineStyle(map, GraphConstants.STYLE_BEZIER);
         GraphConstants.setLineEnd(map, GraphConstants.ARROW_TECHNICAL);
@@ -115,14 +113,12 @@ public class MR3CellMaker {
     public AttributeMap getResourceMap(Rectangle2D rectangle, Color cellColor) {
         AttributeMap map = new AttributeMap();
 
-        if (GraphUtilities.defaultFont != null) {
-            GraphConstants.setFont(map, GraphUtilities.defaultFont);
-        }
+        GraphConstants.setLineWidth(map, RDFCellStyleChanger.LINE_WIDTH);
+        GraphConstants.setForeground(map, Color.white);
+        GraphConstants.setBorderColor(map, cellColor);
         GraphConstants.setBackground(map, cellColor);
+        GraphConstants.setFont(map, new Font("SansSerif", Font.PLAIN, RDFCellStyleChanger.FONT_SIZE));
         GraphConstants.setOpaque(map, true);
-
-        GraphConstants.setBorderColor(map, Color.black);
-        GraphConstants.setLineWidth(map, 1);
 
         GraphConstants.setBounds(map, Objects.requireNonNullElseGet(rectangle, () -> new Rectangle(initRectangle)));
         return map;

@@ -111,7 +111,7 @@ public class RDFLiteralPanel extends JPanel implements ActionListener {
 
         setLayout(new BorderLayout());
         JPanel titlePanel = new JPanel();
-        titlePanel.setBackground(Color.black);
+        titlePanel.setBackground(MR3Constants.TITLE_BACKGROUND_COLOR);
         ImageIcon icon = Utilities.getImageIcon(Translator.getString("RDFEditor.Icon"));
         JLabel titleLabel = new JLabel(Translator.getString("AttributeDialog.RDFLiteralAttribute.Text"), icon, SwingConstants.LEFT);
         titleLabel.setForeground(Color.white);

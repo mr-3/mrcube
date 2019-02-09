@@ -78,12 +78,7 @@ public abstract class OntologyPanel extends JPanel implements ListSelectionListe
     public final JList instanceList;
     public final JScrollPane instanceListScroll;
 
-    public static final int LIST_WIDTH = 350;
-    public static final int FIELD_HEIGHT = 30;
-    public static final int LIST_HEIGHT = 80;
-    public static final int MENU_WIDTH = 90;
-
-    protected static Object[] ZERO = new Object[0];
+    public static final int MENU_WIDTH = 100;
 
     public OntologyPanel(RDFGraph g, GraphManager gm) {
         graph = g;

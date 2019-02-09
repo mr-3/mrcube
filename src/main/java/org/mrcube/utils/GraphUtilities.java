@@ -32,7 +32,6 @@ import org.mrcube.jgraph.RDFCellStyleChanger;
 import org.mrcube.jgraph.RDFGraph;
 import org.mrcube.jgraph.RDFPropertyCell;
 import org.mrcube.models.ClassModel;
-import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.NamespaceModel;
 import org.mrcube.models.RDFResourceModel;
 import org.mrcube.models.RDFSModel;
@@ -47,6 +46,7 @@ import java.util.*;
 public class GraphUtilities {
 
     public static Font defaultFont = null;
+    private static final float EMPHASIS_WIDTH = 3;
 
     private static Set<NamespaceModel> namespaceModelSet = new HashSet<>();
     public static final Color graphBackgroundColor = Color.white;
@@ -59,61 +59,25 @@ public class GraphUtilities {
         return Collections.unmodifiableSet(namespaceModelSet);
     }
 
-    public static void changeAllCellColor(GraphManager gmanager) {
-        RDFGraph rdfGraph = gmanager.getCurrentRDFGraph();
-        RDFGraph classGraph = gmanager.getCurrentClassGraph();
-        RDFGraph propertyGraph = gmanager.getCurrentPropertyGraph();
-
-        if (rdfGraph == null || classGraph == null || propertyGraph == null) {
-            return;
-        }
-
-        Object[] cells = rdfGraph.getAllCells();
-        for (Object cell2 : cells) {
-            if (cell2 instanceof RDFCellStyleChanger) {
-                RDFCellStyleChanger changer = (RDFCellStyleChanger) cell2;
-                changer.changeDefaultCellStyle(rdfGraph);
-            }
-        }
-
-        cells = classGraph.getAllCells();
-        for (Object cell1 : cells) {
-            if (cell1 instanceof RDFCellStyleChanger) {
-                RDFCellStyleChanger changer = (RDFCellStyleChanger) cell1;
-                changer.changeDefaultCellStyle(classGraph);
-            }
-        }
-
-        cells = propertyGraph.getAllCells();
-        for (Object cell : cells) {
-            if (cell instanceof RDFCellStyleChanger) {
-                RDFCellStyleChanger changer = (RDFCellStyleChanger) cell;
-                changer.changeDefaultCellStyle(propertyGraph);
-            }
-        }
-    }
-
     /**
      * セルの色を変更するためのメソッド
      *
      * @param graph
      * @param cell
      * @param backGroundColor
-     * @param borderColor
      */
-    public static void changeCellStyle(RDFGraph graph, GraphCell cell, Color backGroundColor, Color borderColor, float lineWidth) {
+    public static void changeCellStyle(RDFGraph graph, GraphCell cell, Color backGroundColor) {
         if (cell != null) {
             Map map = new AttributeMap();
-            if (GraphConstants.getLineWidth(cell.getAttributes()) == EMPHASIS_WIDTH) {
-                lineWidth = EMPHASIS_WIDTH;
-            }
-            GraphConstants.setLineWidth(map, lineWidth);
             if (RDFGraph.isRDFPropertyCell(cell)) {
                 GraphConstants.setForeground(map, RDFPropertyCell.fontColor);
                 GraphConstants.setLineColor(map, backGroundColor);
+                GraphConstants.setLineWidth(map, RDFCellStyleChanger.LINE_WIDTH);
             } else {
-                GraphConstants.setBorderColor(map, borderColor);
+                GraphConstants.setForeground(map, Color.white);
+                GraphConstants.setBorderColor(map, backGroundColor);
                 GraphConstants.setBackground(map, backGroundColor);
+                GraphConstants.setFont(map, new Font("SansSerif", Font.PLAIN, RDFCellStyleChanger.FONT_SIZE));
                 GraphConstants.setOpaque(map, true);
             }
 
@@ -126,7 +90,7 @@ public class GraphUtilities {
     }
 
     public static void changeDefaultCellStyle(RDFGraph graph, GraphCell cell, Color backGroundColor) {
-        changeCellStyle(graph, cell, backGroundColor, Color.black, RDFCellStyleChanger.LINE_WIDTH);
+        changeCellStyle(graph, cell, backGroundColor);
     }
 
     public static boolean isChangedSelectedColor = true;
@@ -282,14 +246,12 @@ public class GraphUtilities {
         return new Dimension(width, height);
     }
 
-    private static final float EMPHASIS_WIDTH = 3;
 
     public static void emphasisNodes(RDFGraph graph) {
         Object[] cells = graph.getSelectionCells();
         for (Object cell1 : cells) {
             GraphCell cell = (GraphCell) cell1;
             AttributeMap map = cell.getAttributes();
-            // GraphConstants.setLineWidth(map, EMPHASIS_WIDTH);
             editCell(cell, map, graph);
         }
     }
