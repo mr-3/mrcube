@@ -23,15 +23,12 @@
 
 package org.mrcube.jgraph;
 
-import java.awt.*;
-
 /**
  * @author Takeshi Morita
  */
 public interface RDFCellStyleChanger {
+    int FONT_SIZE = 14;
     float LINE_WIDTH = 1;
-    float SELECTED_LINE_WIDTH = 2;
-    Color borderColor = Color.black;
 
     void changeSelectedCellStyle(RDFGraph graph);
 

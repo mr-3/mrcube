@@ -83,7 +83,7 @@ public class PropertyPanel extends OntologyPanel {
 
         setLayout(new BorderLayout());
         JPanel titlePanel = new JPanel();
-        titlePanel.setBackground(Color.black);
+        titlePanel.setBackground(MR3Constants.TITLE_BACKGROUND_COLOR);
         ImageIcon icon = Utilities.getImageIcon(Translator.getString("PropertyEditor.Icon"));
         JLabel titleLabel = new JLabel(Translator.getString("AttributeDialog.OntPropertyAttribute.Text"), icon,
                 SwingConstants.LEFT);

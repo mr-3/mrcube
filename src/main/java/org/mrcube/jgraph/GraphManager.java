@@ -87,8 +87,6 @@ public class GraphManager {
     private String baseURI;
     private static Preferences userPrefs;
 
-    private static final String WARNING = Translator.getString("Warning");
-
     public static String CLASS_CLASS_LIST;
     public static String PROPERTY_CLASS_LIST;
 

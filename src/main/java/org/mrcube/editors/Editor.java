@@ -94,7 +94,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
     }
 
     void initEditor(RDFGraph g, GraphManager gm) {
-        graphFont = new Font("SansSerif", Font.PLAIN, 11); // デフォルト．
+        graphFont = new Font("SansSerif", Font.PLAIN, 14);
         graph = g;
         lastSelectionCells = new Object[0];
         initField(gm);

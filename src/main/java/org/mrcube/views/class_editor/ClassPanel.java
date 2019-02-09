@@ -1,29 +1,30 @@
 /*
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
- * 
+ *
  * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
- * 
+ *
  * This file is part of MR^3.
- * 
+ *
  * MR^3 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * MR^3 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  */
 
 package org.mrcube.views.class_editor;
 
 import org.jgraph.graph.GraphCell;
+import org.mrcube.MR3;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.models.MR3Constants;
 import org.mrcube.models.MR3Constants.GraphType;
@@ -36,9 +37,9 @@ import java.awt.*;
 import java.util.Set;
 
 /*
- * 
+ *
  * @author Takeshi Morita
- * 
+ *
  */
 public class ClassPanel extends OntologyPanel {
 
@@ -51,7 +52,7 @@ public class ClassPanel extends OntologyPanel {
 
         // setBorder(BorderFactory.createTitledBorder(Translator.getString("AttributeDialog.OntClassAttribute.Text")));
         supClasses = new JList();
-        menuList = new JList(new Object[] { basePanel.toString(), labelPanel.toString(), commentPanel.toString(),
+        menuList = new JList(new Object[]{basePanel.toString(), labelPanel.toString(), commentPanel.toString(),
                 Translator.getString("Instances"), Translator.getString("SuperClasses")});
         menuList.addListSelectionListener(this);
         cardLayout = new CardLayout();
@@ -67,10 +68,10 @@ public class ClassPanel extends OntologyPanel {
 
         setLayout(new BorderLayout());
         JPanel titlePanel = new JPanel();
-        titlePanel.setBackground(Color.black);
+        titlePanel.setBackground(MR3Constants.TITLE_BACKGROUND_COLOR);
         ImageIcon icon = Utilities.getImageIcon(Translator.getString("ClassEditor.Icon"));
-        JLabel titleLabel = new JLabel(Translator.getString("AttributeDialog.OntClassAttribute.Text"), icon,
-                SwingConstants.LEFT);
+        JLabel titleLabel = new JLabel(Translator.getString("AttributeDialog.OntClassAttribute.Text"),
+                icon, SwingConstants.LEFT);
         titleLabel.setForeground(Color.white);
         titleLabel.setFont(new Font("SansSerif", Font.BOLD, MR3Constants.TITLE_FONT_SIZE));
         titlePanel.setLayout(new BorderLayout());

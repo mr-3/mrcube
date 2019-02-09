@@ -21,6 +21,7 @@
 
 package org.mrcube.views;
 
+import org.mrcube.models.MR3Constants;
 import org.mrcube.utils.Translator;
 
 import javax.swing.*;
@@ -151,7 +152,7 @@ public class MR3LogConsole extends JDialog {
                 stderrText_mouseClicked(e);
             }
         });
-        stdoutText.setForeground(Color.black);
+        stdoutText.setForeground(MR3Constants.TITLE_BACKGROUND_COLOR);
         stdoutText.setEditable(false);
         stdoutText.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(MouseEvent e) {

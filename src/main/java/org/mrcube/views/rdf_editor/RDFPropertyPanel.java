@@ -126,7 +126,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 
         setLayout(new BorderLayout());
         JPanel titlePanel = new JPanel();
-        titlePanel.setBackground(Color.black);
+        titlePanel.setBackground(MR3Constants.TITLE_BACKGROUND_COLOR);
         ImageIcon icon = Utilities.getImageIcon(Translator.getString("RDFEditor.Icon"));
         JLabel titleLabel = new JLabel(
                 Translator.getString("AttributeDialog.RDFPropertyAttribute.Text"), icon,
