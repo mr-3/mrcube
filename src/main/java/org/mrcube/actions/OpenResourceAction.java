@@ -44,8 +44,10 @@ public class OpenResourceAction extends AbstractActionFile {
     }
 
     public void actionPerformed(ActionEvent e) {
-        confirmExitProject();
-        mr3.newProject();
-        openResource(MR3.ResourcePathTextField.getText());
+        var message = confirmExitProject();
+        if (message != JOptionPane.CANCEL_OPTION) {
+            mr3.newProject();
+            openResource(MR3.ResourcePathTextField.getText());
+        }
     }
 }

@@ -51,7 +51,10 @@ public class OpenFileAction extends OpenResourceAction {
     }
 
     public void actionPerformed(ActionEvent e) {
-        confirmExitProject();
+        var message = confirmExitProject();
+        if (message == JOptionPane.CANCEL_OPTION) {
+            return;
+        }
         File file = selectOpenFile();
         if (file == null) {
             return;

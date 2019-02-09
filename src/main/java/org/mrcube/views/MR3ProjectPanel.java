@@ -57,7 +57,7 @@ public class MR3ProjectPanel extends JPanel {
     private final JInternalFrame classEditorFrame;
     private final JInternalFrame propertyEditorFrame;
 
-    private static final int HEADER_HEIGHT = 70;
+    private static final int HEADER_HEIGHT = 100;
 
     public MR3ProjectPanel(GraphManager gmanager) {
         this.gmanager = gmanager;

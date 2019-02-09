@@ -53,8 +53,10 @@ public class NewProject extends AbstractActionFile {
     }
 
     public void actionPerformed(ActionEvent e) {
-        confirmExitProject();
-        mr3.newProject();
-        mr3.ResourcePathTextField.setText("");
+        var message = confirmExitProject();
+        if (message != JOptionPane.CANCEL_OPTION) {
+            mr3.newProject();
+            mr3.ResourcePathTextField.setText("");
+        }
     }
 }
