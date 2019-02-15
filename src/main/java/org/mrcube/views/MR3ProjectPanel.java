@@ -107,19 +107,22 @@ public class MR3ProjectPanel extends JPanel {
         return editorFrame;
     }
 
-    public void frontEditor(GraphType graphType) {
+    public void displayEditorInFront(GraphType graphType) {
         try {
             if (graphType == GraphType.RDF) {
                 if (!rdfEditorFrame.isSelected()) {
                     rdfEditorFrame.setSelected(true);
+                    rdfEditor.getGraph().requestFocusInWindow();
                 }
             } else if (graphType == GraphType.CLASS) {
                 if (!classEditorFrame.isSelected()) {
                     classEditorFrame.setSelected(true);
+                    classEditor.getGraph().requestFocusInWindow();
                 }
             } else if (graphType == GraphType.PROPERTY) {
                 if (!propertyEditorFrame.isSelected()) {
                     propertyEditorFrame.setSelected(true);
+                    propertyEditor.getGraph().requestFocusInWindow();
                 }
             }
         } catch (PropertyVetoException e) {

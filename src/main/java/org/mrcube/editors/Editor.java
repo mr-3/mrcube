@@ -215,8 +215,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
      * Create ToolBar
      */
     private JToolBar createToolBar() {
-        JToolBar toolbar = new JToolBar();
-        toolbar.setFloatable(false);
+        var toolbar = new JToolBar();
 
         if (graph.getType() == GraphType.RDF) {
             toolbar.add(new InsertEllipseResourceAction(RESOURCE_ICON));
@@ -273,6 +272,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
         toolbar.addSeparator();
 
         toolbar.add(new OpenSelectedResourceAction());
+        toolbar.setFloatable(false);
 
         return toolbar;
     }

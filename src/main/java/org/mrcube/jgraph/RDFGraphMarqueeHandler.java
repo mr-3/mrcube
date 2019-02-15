@@ -279,7 +279,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     Point insertPoint = new Point(10, 10);
 
     public void mouseMoved(MouseEvent event) {
-        MR3.getCurrentProject().frontEditor(graph.getType());
+        MR3.getCurrentProject().displayEditorInFront(graph.getType());
 
         insertPoint = event.getPoint();
         setCursor(event);
