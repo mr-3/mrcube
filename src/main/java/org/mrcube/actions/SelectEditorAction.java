@@ -38,7 +38,7 @@ import java.awt.event.KeyEvent;
 /**
  * @author Takeshi Morita
  */
-public class EditorSelect extends MR3AbstractAction {
+public class SelectEditorAction extends MR3AbstractAction {
 
     public static String RDF_EDITOR;
     public static String CLASS_EDITOR;
@@ -48,7 +48,7 @@ public class EditorSelect extends MR3AbstractAction {
     public static ImageIcon CLASS_EDITOR_ICON;
     public static ImageIcon PROPERTY_EDITOR_ICON;
 
-    public EditorSelect(MR3 mr3, String name, ImageIcon icon) {
+    public SelectEditorAction(MR3 mr3, String name, ImageIcon icon) {
         super(mr3, name, icon);
         loadResourceBundle();
         setValues();

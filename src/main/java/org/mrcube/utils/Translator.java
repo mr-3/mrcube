@@ -23,7 +23,7 @@
 
 package org.mrcube.utils;
 
-import org.mrcube.actions.EditorSelect;
+import org.mrcube.actions.SelectEditorAction;
 import org.mrcube.editors.RDFEditor;
 import org.mrcube.models.PrefConstants;
 import org.mrcube.views.OptionDialog;
@@ -116,7 +116,7 @@ public class Translator {
 
     private static void loadResourceBundle() {
         OptionDialog.loadResourceBundle();
-        EditorSelect.loadResourceBundle();
+        SelectEditorAction.loadResourceBundle();
 
         RDFEditor.updateComponents();
         if (OptionDialog.topLevelComponent != null) {

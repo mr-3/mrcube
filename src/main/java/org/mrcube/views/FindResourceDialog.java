@@ -24,7 +24,7 @@
 package org.mrcube.views;
 
 import org.jgraph.graph.GraphCell;
-import org.mrcube.editors.Editor;
+import org.mrcube.actions.SelectEditorAction;
 import org.mrcube.jgraph.*;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
@@ -123,12 +123,12 @@ public class FindResourceDialog extends JDialog {
     class ResourceListCellRenderer extends DefaultListCellRenderer {
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-            if (value instanceof RDFResourceCell) {
-                setIcon(Editor.RESOURCE_ICON);
+            if (value instanceof RDFResourceCell || value instanceof RDFPropertyCell) {
+                setIcon(SelectEditorAction.RDF_EDITOR_ICON);
             } else if (value instanceof OntClassCell) {
-                setIcon(Editor.RESOURCE_ICON);
+                setIcon(SelectEditorAction.CLASS_EDITOR_ICON);
             } else if (value instanceof OntPropertyCell) {
-                setIcon(Editor.RESOURCE_ICON);
+                setIcon(SelectEditorAction.PROPERTY_EDITOR_ICON);
             }
             return this;
         }
