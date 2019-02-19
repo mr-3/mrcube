@@ -598,8 +598,6 @@ public class MR3 extends JFrame implements ChangeListener {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            System.setProperty("swing.plaf.metal.controlFont", Translator.getString("ControlFont"));
-            System.setProperty("swing.plaf.windows.controlFont", Translator.getString("ControlFont"));
         } catch (Exception ex) {
             ex.printStackTrace();
         }
