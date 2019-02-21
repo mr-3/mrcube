@@ -24,10 +24,10 @@
 package org.mrcube.views;
 
 import org.jgraph.graph.GraphCell;
-import org.mrcube.actions.SelectEditorAction;
-import org.mrcube.jgraph.*;
+import org.mrcube.jgraph.GraphManager;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
+import org.mrcube.views.common.ResourceListCellRenderer;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -119,19 +119,4 @@ public class FindResourceDialog extends JDialog {
             gmanager.selectPropertyCell(cell);
         }
     }
-
-    class ResourceListCellRenderer extends DefaultListCellRenderer {
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-            if (value instanceof RDFResourceCell || value instanceof RDFPropertyCell) {
-                setIcon(SelectEditorAction.RDF_EDITOR_ICON);
-            } else if (value instanceof OntClassCell) {
-                setIcon(SelectEditorAction.CLASS_EDITOR_ICON);
-            } else if (value instanceof OntPropertyCell) {
-                setIcon(SelectEditorAction.PROPERTY_EDITOR_ICON);
-            }
-            return this;
-        }
-    }
-
 }

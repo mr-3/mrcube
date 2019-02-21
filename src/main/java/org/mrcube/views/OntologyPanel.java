@@ -40,6 +40,7 @@ import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
 import org.mrcube.views.common.CommentPanel;
 import org.mrcube.views.common.LabelPanel;
+import org.mrcube.views.common.ResourceListCellRenderer;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -75,10 +76,10 @@ public abstract class OntologyPanel extends JPanel implements ListSelectionListe
     protected RDFSModel rdfsModel;
     public final GraphManager gmanager;
 
-    public final JList instanceList;
+    public final JList instanceJList;
     public final JScrollPane instanceListScroll;
 
-    public static final int MENU_WIDTH = 100;
+    public static final int MENU_WIDTH = 110;
 
     public OntologyPanel(RDFGraph g, GraphManager gm) {
         graph = g;
@@ -87,9 +88,10 @@ public abstract class OntologyPanel extends JPanel implements ListSelectionListe
         basePanel = new BasePanel();
         labelPanel = new LabelPanel();
         commentPanel = new CommentPanel(gmanager.getRootFrame());
-        instanceList = new JList();
-        instanceList.addListSelectionListener(new InstanceAction());
-        instanceListScroll = new JScrollPane(instanceList);
+        instanceJList = new JList();
+        instanceJList.setCellRenderer(new ResourceListCellRenderer());
+        instanceJList.addListSelectionListener(new EditInstanceAction());
+        instanceListScroll = new JScrollPane(instanceJList);
 
         applyButton = new JButton(MR3Constants.APPLY);
         applyButton.setMnemonic('a');
@@ -213,19 +215,20 @@ public abstract class OntologyPanel extends JPanel implements ListSelectionListe
 
     /** スーパークラスまたは、スーパープロパティの名前のセットを返す */
     public Object[] getTargetInfo(Set<GraphCell> supCellSet) {
-        Set<String> result = new HashSet<>();
+        Set<GraphCell> result = new HashSet<>();
         for (GraphCell cell : supCellSet) {
-            RDFSModel supInfo = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
-            result.add(supInfo.getURIStr());
+            result.add(cell);
+//            RDFSModel supInfo = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
+//            result.add(supInfo.getURIStr());
         }
         return result.toArray();
     }
 
     protected abstract void setInstanceList();
 
-    class InstanceAction implements ListSelectionListener {
+    class EditInstanceAction implements ListSelectionListener {
         public void valueChanged(ListSelectionEvent e) {
-            Object cell = instanceList.getSelectedValue();
+            Object cell = instanceJList.getSelectedValue();
             gmanager.selectRDFCell(cell);
         }
     }

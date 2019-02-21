@@ -80,7 +80,7 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
     private final GraphManager gmanager;
 
     private static final String WARNING = Translator.getString("Warning");
-    private static final int MENU_WIDTH = 100;
+    private static final int MENU_WIDTH = 110;
 
     public RDFResourcePanel(GraphManager gm) {
         gmanager = gm;
