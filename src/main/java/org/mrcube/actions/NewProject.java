@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
  *
- * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
+ * Copyright (C) 2003-2019 Yamaguchi Laboratory, Keio University. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -38,8 +38,7 @@ import java.awt.event.KeyEvent;
 public class NewProject extends AbstractActionFile {
 
     private static final String TITLE = Translator.getString("Menu.File.New.Text");
-    private static final ImageIcon ICON = Utilities
-            .getImageIcon(Translator.getString("Menu.File.New.Icon"));
+    private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("Menu.File.New.Icon"));
 
     public NewProject(MR3 mr3) {
         super(mr3, TITLE, ICON);
@@ -53,8 +52,10 @@ public class NewProject extends AbstractActionFile {
     }
 
     public void actionPerformed(ActionEvent e) {
-        confirmExitProject();
-        mr3.newProject();
-        mr3.ResourcePathTextField.setText("");
+        var message = confirmExitProject();
+        if (message != JOptionPane.CANCEL_OPTION) {
+            mr3.newProject();
+            mr3.ResourcePathTextField.setText("");
+        }
     }
 }

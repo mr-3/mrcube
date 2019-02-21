@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
  *
- * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
+ * Copyright (C) 2003-2019 Yamaguchi Laboratory, Keio University. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -51,7 +51,10 @@ public class OpenFileAction extends OpenResourceAction {
     }
 
     public void actionPerformed(ActionEvent e) {
-        confirmExitProject();
+        var message = confirmExitProject();
+        if (message == JOptionPane.CANCEL_OPTION) {
+            return;
+        }
         File file = selectOpenFile();
         if (file == null) {
             return;

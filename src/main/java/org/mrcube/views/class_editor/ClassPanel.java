@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
  *
- * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
+ * Copyright (C) 2003-2019 Yamaguchi Laboratory, Keio University. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -24,15 +24,17 @@
 package org.mrcube.views.class_editor;
 
 import org.jgraph.graph.GraphCell;
-import org.mrcube.MR3;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.models.MR3Constants;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
 import org.mrcube.views.OntologyPanel;
+import org.mrcube.views.common.ResourceListCellRenderer;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.util.Set;
 
@@ -43,7 +45,7 @@ import java.util.Set;
  */
 public class ClassPanel extends OntologyPanel {
 
-    private final JList supClasses;
+    private final JList superClassJList;
 
     public ClassPanel(GraphManager gm) {
         super(gm.getCurrentClassGraph(), gm);
@@ -51,7 +53,10 @@ public class ClassPanel extends OntologyPanel {
         commentPanel.setGraphType(GraphType.CLASS);
 
         // setBorder(BorderFactory.createTitledBorder(Translator.getString("AttributeDialog.OntClassAttribute.Text")));
-        supClasses = new JList();
+        superClassJList = new JList();
+        superClassJList.setCellRenderer(new ResourceListCellRenderer());
+        superClassJList.addListSelectionListener(new EditRDFSClassAction());
+
         menuList = new JList(new Object[]{basePanel.toString(), labelPanel.toString(), commentPanel.toString(),
                 Translator.getString("Instances"), Translator.getString("SuperClasses")});
         menuList.addListSelectionListener(this);
@@ -62,7 +67,7 @@ public class ClassPanel extends OntologyPanel {
         menuPanel.add(labelPanel.toString(), labelPanel);
         menuPanel.add(commentPanel.toString(), commentPanel);
         menuPanel.add(Translator.getString("Instances"), instanceListScroll);
-        menuPanel.add(Translator.getString("SuperClasses"), new JScrollPane(supClasses));
+        menuPanel.add(Translator.getString("SuperClasses"), new JScrollPane(superClassJList));
 
         menuList.setSelectedIndex(0);
 
@@ -89,12 +94,19 @@ public class ClassPanel extends OntologyPanel {
     }
 
     public void setInstanceList() {
-        instanceList.setListData(gmanager.getClassInstanceSet(cell).toArray());
+        instanceJList.setListData(gmanager.getClassInstanceSet(cell).toArray());
+    }
+
+    class EditRDFSClassAction implements ListSelectionListener {
+        public void valueChanged(ListSelectionEvent e) {
+            Object cell = superClassJList.getSelectedValue();
+            gmanager.selectClassCell(cell);
+        }
     }
 
     public void setValue(Set<GraphCell> supCellSet) {
         super.setValue();
         basePanel.setMetaClassList(gmanager.getClassClassList());
-        supClasses.setListData(getTargetInfo(supCellSet));
+        superClassJList.setListData(getTargetInfo(supCellSet));
     }
 }

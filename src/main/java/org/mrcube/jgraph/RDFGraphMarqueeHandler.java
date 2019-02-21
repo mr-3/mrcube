@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
  *
- * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
+ * Copyright (C) 2003-2019 Yamaguchi Laboratory, Keio University. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -279,7 +279,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     Point insertPoint = new Point(10, 10);
 
     public void mouseMoved(MouseEvent event) {
-        MR3.getCurrentProject().frontEditor(graph.getType());
+        MR3.getCurrentProject().displayEditorInFront(graph.getType());
 
         insertPoint = event.getPoint();
         setCursor(event);

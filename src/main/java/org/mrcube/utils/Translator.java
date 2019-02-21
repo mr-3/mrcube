@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
  *
- * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
+ * Copyright (C) 2003-2019 Yamaguchi Laboratory, Keio University. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -23,7 +23,7 @@
 
 package org.mrcube.utils;
 
-import org.mrcube.actions.EditorSelect;
+import org.mrcube.actions.SelectEditorAction;
 import org.mrcube.editors.RDFEditor;
 import org.mrcube.models.PrefConstants;
 import org.mrcube.views.OptionDialog;
@@ -116,7 +116,7 @@ public class Translator {
 
     private static void loadResourceBundle() {
         OptionDialog.loadResourceBundle();
-        EditorSelect.loadResourceBundle();
+        SelectEditorAction.loadResourceBundle();
 
         RDFEditor.updateComponents();
         if (OptionDialog.topLevelComponent != null) {

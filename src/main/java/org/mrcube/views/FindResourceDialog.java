@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
  *
- * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
+ * Copyright (C) 2003-2019 Yamaguchi Laboratory, Keio University. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -24,10 +24,10 @@
 package org.mrcube.views;
 
 import org.jgraph.graph.GraphCell;
-import org.mrcube.editors.Editor;
-import org.mrcube.jgraph.*;
+import org.mrcube.jgraph.GraphManager;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
+import org.mrcube.views.common.ResourceListCellRenderer;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -119,19 +119,4 @@ public class FindResourceDialog extends JDialog {
             gmanager.selectPropertyCell(cell);
         }
     }
-
-    class ResourceListCellRenderer extends DefaultListCellRenderer {
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-            if (value instanceof RDFResourceCell) {
-                setIcon(Editor.RESOURCE_ICON);
-            } else if (value instanceof OntClassCell) {
-                setIcon(Editor.RESOURCE_ICON);
-            } else if (value instanceof OntPropertyCell) {
-                setIcon(Editor.RESOURCE_ICON);
-            }
-            return this;
-        }
-    }
-
 }

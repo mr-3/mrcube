@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
  * 
- * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
+ * Copyright (C) 2003-2019 Yamaguchi Laboratory, Keio University. All rights reserved.
  * 
  * This file is part of MR^3.
  * 
@@ -37,9 +37,9 @@ public class SplashWindow extends JWindow {
 
 	private static final int FONT_SIZE = 14;
 	private static final String TOOL_NAME = "Project Name: MR<sup>3</sup> <br>";
-	private static final String VERSION = "   Version: 1.0<br>";
+	private static final String VERSION = "   Version: 1.1.0<br>";
 	private static final String MR3_URL = " Project Website:   http://mrcube.org/<br>";
-	private static final String COPY_RIGHT = "   Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University.<br>";
+	private static final String COPY_RIGHT = "   Copyright (C) 2003-2019 Yamaguchi Laboratory, Keio University.<br>";
 	private static final String LICENSE = "License: GPL<br>";
 	private static final Color HELP_BACK_COLOR = Color.WHITE;
 

@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
  *
- * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
+ * Copyright (C) 2003-2019 Yamaguchi Laboratory, Keio University. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -131,6 +131,11 @@ abstract class AbstractActionFile extends MR3AbstractAction {
             var fileExtension = getExtension(file);
             var exportModel = ModelFactory.createDefaultModel();
             var rdfFormat = RDFFormat.TURTLE;
+
+            if (fileExtension == null) {
+                file = new File(file.getAbsolutePath() + ".mr3");
+                fileExtension = "mr3";
+            }
             if (fileExtension.equals("mr3")) {
                 exportModel = mr3.getMR3Writer().getProjectModel();
                 MR3.getCurrentProject().setCurrentProjectFile(file);
@@ -154,6 +159,8 @@ abstract class AbstractActionFile extends MR3AbstractAction {
             setNsPrefix(exportModel);
             RDFDataMgr.write(new FileOutputStream(file), exportModel, rdfFormat);
             MR3.STATUS_BAR.setText(SaveFileAction.SAVE_PROJECT + ": " + file.getAbsolutePath());
+            MR3.getCurrentProject().setCurrentProjectFile(file);
+            mr3.ResourcePathTextField.setText(file.getAbsolutePath());
         } catch (FileNotFoundException e2) {
             Utilities.showErrorMessageDialog("File Not Found");
         }
@@ -181,8 +188,6 @@ abstract class AbstractActionFile extends MR3AbstractAction {
         }
         saveFile(file);
         HistoryManager.saveHistory(HistoryType.SAVE_PROJECT_AS, file.getAbsolutePath());
-        MR3.getCurrentProject().setCurrentProjectFile(file);
-        mr3.ResourcePathTextField.setText(file.getAbsolutePath());
     }
 
     protected void quitProject() {
@@ -206,7 +211,7 @@ abstract class AbstractActionFile extends MR3AbstractAction {
     protected int confirmExitProject() {
         String title = MR3.getCurrentProject().getTitle();
         int messageType = JOptionPane.showConfirmDialog(MR3.getCurrentProject(), title + "\n" + Translator.getString("SaveChanges"),
-                "MR^3 - " + title, JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                "MR^3 - " + title, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
         if (messageType == JOptionPane.YES_OPTION) {
             quitProject();
         }

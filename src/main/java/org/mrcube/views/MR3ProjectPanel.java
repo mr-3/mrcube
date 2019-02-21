@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
  *
- * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
+ * Copyright (C) 2003-2019 Yamaguchi Laboratory, Keio University. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -57,7 +57,7 @@ public class MR3ProjectPanel extends JPanel {
     private final JInternalFrame classEditorFrame;
     private final JInternalFrame propertyEditorFrame;
 
-    private static final int HEADER_HEIGHT = 70;
+    private static final int HEADER_HEIGHT = 100;
 
     public MR3ProjectPanel(GraphManager gmanager) {
         this.gmanager = gmanager;
@@ -107,19 +107,22 @@ public class MR3ProjectPanel extends JPanel {
         return editorFrame;
     }
 
-    public void frontEditor(GraphType graphType) {
+    public void displayEditorInFront(GraphType graphType) {
         try {
             if (graphType == GraphType.RDF) {
                 if (!rdfEditorFrame.isSelected()) {
                     rdfEditorFrame.setSelected(true);
+                    rdfEditor.getGraph().requestFocusInWindow();
                 }
             } else if (graphType == GraphType.CLASS) {
                 if (!classEditorFrame.isSelected()) {
                     classEditorFrame.setSelected(true);
+                    classEditor.getGraph().requestFocusInWindow();
                 }
             } else if (graphType == GraphType.PROPERTY) {
                 if (!propertyEditorFrame.isSelected()) {
                     propertyEditorFrame.setSelected(true);
+                    propertyEditor.getGraph().requestFocusInWindow();
                 }
             }
         } catch (PropertyVetoException e) {

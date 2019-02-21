@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
  *
- * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
+ * Copyright (C) 2003-2019 Yamaguchi Laboratory, Keio University. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -38,7 +38,7 @@ import java.awt.event.KeyEvent;
 /**
  * @author Takeshi Morita
  */
-public class EditorSelect extends MR3AbstractAction {
+public class SelectEditorAction extends MR3AbstractAction {
 
     public static String RDF_EDITOR;
     public static String CLASS_EDITOR;
@@ -48,7 +48,7 @@ public class EditorSelect extends MR3AbstractAction {
     public static ImageIcon CLASS_EDITOR_ICON;
     public static ImageIcon PROPERTY_EDITOR_ICON;
 
-    public EditorSelect(MR3 mr3, String name, ImageIcon icon) {
+    public SelectEditorAction(MR3 mr3, String name, ImageIcon icon) {
         super(mr3, name, icon);
         loadResourceBundle();
         setValues();
@@ -81,11 +81,11 @@ public class EditorSelect extends MR3AbstractAction {
     public void actionPerformed(ActionEvent e) {
         MR3ProjectPanel project = MR3.getCurrentProject();
         if (getName().equals(RDF_EDITOR)) {
-            project.frontEditor(GraphType.RDF);
+            project.displayEditorInFront(GraphType.RDF);
         } else if (getName().equals(CLASS_EDITOR)) {
-            project.frontEditor(GraphType.CLASS);
+            project.displayEditorInFront(GraphType.CLASS);
         } else if (getName().equals(PROPERTY_EDITOR)) {
-            project.frontEditor(GraphType.PROPERTY);
+            project.displayEditorInFront(GraphType.PROPERTY);
         }
     }
 }

@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
  *
- * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
+ * Copyright (C) 2003-2019 Yamaguchi Laboratory, Keio University. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -37,6 +37,7 @@ import org.mrcube.utils.Utilities;
 import org.mrcube.views.HistoryManager;
 import org.mrcube.views.OntologyPanel;
 import org.mrcube.views.SelectRDFSDialog;
+import org.mrcube.views.common.ResourceListCellRenderer;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -54,7 +55,7 @@ import java.util.Set;
 public class PropertyPanel extends OntologyPanel {
 
     private final RegionPanel regionPanel;
-    private final JList supProperties;
+    private final JList superPropertyJList;
     private WeakReference selectRDFSDialogRef;
 
     public PropertyPanel(GraphManager manager) {
@@ -64,7 +65,9 @@ public class PropertyPanel extends OntologyPanel {
         selectRDFSDialogRef = new WeakReference<SelectRDFSDialog>(null);
 
         regionPanel = new RegionPanel();
-        supProperties = new JList();
+        superPropertyJList = new JList();
+        superPropertyJList.setCellRenderer(new ResourceListCellRenderer());
+        superPropertyJList.addListSelectionListener(new EditRDFSPropertyAction());
 
         menuList = new JList(new Object[]{basePanel.toString(), labelPanel.toString(), commentPanel.toString(),
                 regionPanel.toString(), Translator.getString("Instances"), Translator.getString("SuperProperties")});
@@ -78,7 +81,7 @@ public class PropertyPanel extends OntologyPanel {
         menuPanel.add(commentPanel.toString(), commentPanel);
         menuPanel.add(regionPanel.toString(), regionPanel);
         menuPanel.add(Translator.getString("Instances"), instanceListScroll);
-        menuPanel.add(Translator.getString("SuperProperties"), new JScrollPane(supProperties));
+        menuPanel.add(Translator.getString("SuperProperties"), new JScrollPane(superPropertyJList));
         menuList.setSelectedIndex(0);
 
         setLayout(new BorderLayout());
@@ -105,13 +108,20 @@ public class PropertyPanel extends OntologyPanel {
     }
 
     public void setInstanceList() {
-        instanceList.setListData(gmanager.getPropertyInstanceSet(cell).toArray());
+        instanceJList.setListData(gmanager.getPropertyInstanceSet(cell).toArray());
+    }
+
+    class EditRDFSPropertyAction implements ListSelectionListener {
+        public void valueChanged(ListSelectionEvent e) {
+            Object cell = superPropertyJList.getSelectedValue();
+            gmanager.selectPropertyCell(cell);
+        }
     }
 
     class RegionPanel extends JPanel implements ListSelectionListener {
 
-        private final JList domainList;
-        private final JList rangeList;
+        private final JList domainJList;
+        private final JList rangeJList;
 
         private JButton addDomainButton;
         private JButton addRangeButton;
@@ -121,14 +131,16 @@ public class PropertyPanel extends OntologyPanel {
         private final JScrollPane rangeListScroll;
 
         RegionPanel() {
-            domainList = new JList();
-            domainList.addListSelectionListener(this);
-            domainListScroll = new JScrollPane(domainList);
+            domainJList = new JList();
+            domainJList.setCellRenderer(new ResourceListCellRenderer());
+            domainJList.addListSelectionListener(this);
+            domainListScroll = new JScrollPane(domainJList);
             domainListScroll.setBorder(BorderFactory.createTitledBorder(Translator.getString("Domain")));
 
-            rangeList = new JList();
-            rangeList.addListSelectionListener(this);
-            rangeListScroll = new JScrollPane(rangeList);
+            rangeJList = new JList();
+            rangeJList.setCellRenderer(new ResourceListCellRenderer());
+            rangeJList.addListSelectionListener(this);
+            rangeListScroll = new JScrollPane(rangeJList);
             rangeListScroll.setBorder(BorderFactory.createTitledBorder(Translator.getString("Range")));
 
             JPanel regionListPanel = new JPanel();
@@ -142,13 +154,13 @@ public class PropertyPanel extends OntologyPanel {
         }
 
         public void valueChanged(ListSelectionEvent e) {
-            if (e.getSource() == domainList) {
-                if (!rangeList.isSelectionEmpty()) {
-                    rangeList.clearSelection();
+            if (e.getSource() == domainJList) {
+                if (!rangeJList.isSelectionEmpty()) {
+                    rangeJList.clearSelection();
                 }
-            } else if (e.getSource() == rangeList) {
-                if (!domainList.isSelectionEmpty()) {
-                    domainList.clearSelection();
+            } else if (e.getSource() == rangeJList) {
+                if (!domainJList.isSelectionEmpty()) {
+                    domainJList.clearSelection();
                 }
             }
         }
@@ -159,11 +171,11 @@ public class PropertyPanel extends OntologyPanel {
         }
 
         JList getDomainList() {
-            return domainList;
+            return domainJList;
         }
 
         JList getRangeList() {
-            return rangeList;
+            return rangeJList;
         }
 
         private JComponent getRegionButtonPanel() {
@@ -186,25 +198,25 @@ public class PropertyPanel extends OntologyPanel {
         class RemoveListAction implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 PropertyModel info = (PropertyModel) GraphConstants.getValue(cell.getAttributes());
-                if (!domainList.isSelectionEmpty()) {
+                if (!domainJList.isSelectionEmpty()) {
                     Set beforeDomainSet = new HashSet(info.getDomain());
-                    for (Object rd : domainList.getSelectedValuesList()) {
+                    for (Object rd : domainJList.getSelectedValuesList()) {
                         info.removeDomain(rd);
                     }
                     RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
                     rdfsModelMap.putURICellMap(info, cell);
-                    domainList.setListData(info.getDomain().toArray());
+                    domainJList.setListData(info.getDomain().toArray());
                     HistoryManager.saveHistory(HistoryType.DELETE_ONT_PROPERTY_DOMAIN, beforeDomainSet, info
                             .getDomain(), info.getURIStr());
                 }
-                if (!rangeList.isSelectionEmpty()) {
+                if (!rangeJList.isSelectionEmpty()) {
                     Set beforeRangeSet = new HashSet(info.getRange());
-                    for (Object rr : rangeList.getSelectedValuesList()) {
+                    for (Object rr : rangeJList.getSelectedValuesList()) {
                         info.removeRange(rr);
                     }
                     RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
                     rdfsModelMap.putURICellMap(info, cell);
-                    rangeList.setListData(info.getRange().toArray());
+                    rangeJList.setListData(info.getRange().toArray());
                     HistoryManager.saveHistory(HistoryType.DELETE_ONT_PROPERTY_RANGE, beforeRangeSet, info.getRange(),
                             info.getURIStr());
                 }
@@ -231,7 +243,7 @@ public class PropertyPanel extends OntologyPanel {
                     PropertyModel info = (PropertyModel) GraphConstants.getValue(cell.getAttributes());
                     Set<GraphCell> beforeDomainSet = new HashSet<>(info.getDomain());
                     info.addAllDomain(set);
-                    domainList.setListData(info.getDomain().toArray());
+                    domainJList.setListData(info.getDomain().toArray());
                     HistoryManager.saveHistory(HistoryType.ADD_ONT_PROPERTY_DOMAIN, beforeDomainSet, info.getDomain(),
                             info.getURIStr());
                 }
@@ -242,7 +254,7 @@ public class PropertyPanel extends OntologyPanel {
                     PropertyModel info = (PropertyModel) GraphConstants.getValue(cell.getAttributes());
                     Set<GraphCell> beforeRangeSet = new HashSet<>(info.getRange());
                     info.addAllRange(set);
-                    rangeList.setListData(info.getRange().toArray());
+                    rangeJList.setListData(info.getRange().toArray());
                     HistoryManager.saveHistory(HistoryType.ADD_ONT_PROPERTY_RANGE, beforeRangeSet, info.getRange(),
                             info.getURIStr());
                 }
@@ -270,7 +282,7 @@ public class PropertyPanel extends OntologyPanel {
         if (rdfsModelMap.isPropertyCell(MR3Resource.Property)) {
             supCellSet.remove(gmanager.getPropertyCell(MR3Resource.Property, false));
         }
-        supProperties.setListData(getTargetInfo(supCellSet));
+        superPropertyJList.setListData(getTargetInfo(supCellSet));
         regionPanel.getDomainList().setListData(propInfo.getDomain().toArray());
         regionPanel.getRangeList().setListData(propInfo.getRange().toArray());
     }

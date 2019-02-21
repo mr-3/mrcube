@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
  *
- * Copyright (C) 2003-2018 Yamaguchi Laboratory, Keio University. All rights reserved.
+ * Copyright (C) 2003-2019 Yamaguchi Laboratory, Keio University. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -598,8 +598,6 @@ public class MR3 extends JFrame implements ChangeListener {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            System.setProperty("swing.plaf.metal.controlFont", Translator.getString("ControlFont"));
-            System.setProperty("swing.plaf.windows.controlFont", Translator.getString("ControlFont"));
         } catch (Exception ex) {
             ex.printStackTrace();
         }
