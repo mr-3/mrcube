@@ -29,6 +29,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * @author Takeshi Morita
@@ -37,7 +39,8 @@ public class SplashWindow extends JWindow {
 
 	private static final int FONT_SIZE = 14;
 	private static final String TOOL_NAME = "Project Name: MR<sup>3</sup> <br>";
-	private static final String VERSION = "   Version: 1.1.0<br>";
+	private static final int MINOR_VERSION = 1;
+	private static final String VERSION = "   Version: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM_")) + MINOR_VERSION + "<br>";
 	private static final String MR3_URL = " Project Website:   http://mrcube.org/<br>";
 	private static final String COPY_RIGHT = "   Copyright (C) 2003-2019 Yamaguchi Laboratory, Keio University.<br>";
 	private static final String LICENSE = "License: GPL<br>";
