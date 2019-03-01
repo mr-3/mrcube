@@ -12,8 +12,7 @@ plugins {
 }
 
 group 'org.mrcube'
-def minor_version = 1
-version = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM_")) + minor_version
+version = '2019.03_1'
 mainClassName = 'org.mrcube.MR3'
 sourceCompatibility = targetCompatibility = '11'
 
