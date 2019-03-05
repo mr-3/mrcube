@@ -180,6 +180,7 @@ public class MR3 extends JFrame implements ChangeListener {
     private AbstractAction showLogConsoleAciton;
     private AbstractAction showOptionDialogAction;
     private AbstractAction showVersionInfoAction;
+    private AbstractAction showManualAction;
 
     private final ImageIcon CPR_ICON = Utilities.getImageIcon(Translator.getString("Menu.Window.DeployCPRWindows.Icon"));
     private final ImageIcon CR_ICON = Utilities.getImageIcon(Translator.getString("Menu.Window.DeployCRWindows.Icon"));
@@ -210,6 +211,7 @@ public class MR3 extends JFrame implements ChangeListener {
         showLogConsoleAciton = new ShowLogConsole(this);
         showOptionDialogAction = new ShowOptionDialog(this);
         showVersionInfoAction = new ShowVersionInfoAction(this);
+        showManualAction = new ShowManualAction(this);
     }
 
     private JToolBar createToolBar() {
@@ -506,6 +508,7 @@ public class MR3 extends JFrame implements ChangeListener {
         JMenu menu = new JMenu(Translator.getString("Menu.Help.Text") + "(H)");
         menu.setMnemonic('h');
         menu.add(showVersionInfoAction);
+        menu.add(showManualAction);
         return menu;
     }
 

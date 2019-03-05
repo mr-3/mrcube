@@ -26,6 +26,7 @@ package org.mrcube.actions;
 import org.mrcube.MR3;
 
 import javax.swing.*;
+import java.util.prefs.Preferences;
 
 /**
  * @author Takeshi Morita
@@ -63,4 +64,7 @@ abstract class MR3AbstractAction extends AbstractAction {
         return (String) getValue(NAME);
     }
 
+    protected Preferences getUserPrefs() {
+        return mr3.getUserPrefs();
+    }
 }
