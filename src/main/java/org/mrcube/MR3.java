@@ -23,7 +23,6 @@
 
 package org.mrcube;
 
-import org.apache.jena.graph.Graph;
 import org.apache.jena.sys.JenaSystem;
 import org.mrcube.actions.*;
 import org.mrcube.editors.ClassEditor;
@@ -80,7 +79,7 @@ public class MR3 extends JFrame implements ChangeListener {
     // private WeakReference<OntTreeEditor> ontTreeEditorRef;
     private WeakReference<OptionDialog> optionDialogRef;
     private WeakReference<RDFSourceCodeViewer> RDFSourceCodeViewerRef;
-    private WeakReference<HistoryManager> historyManagerRef;
+    private HistoryManager historyManager;
     private WeakReference<ValidatorDialog> validatorRef;
     private WeakReference<ProjectInfoDialog> projectInfoDialogRef;
     private final MR3LogConsole mr3LogConsole;
@@ -103,11 +102,10 @@ public class MR3 extends JFrame implements ChangeListener {
         initWeakReferences();
         mr3LogConsole = new MR3LogConsole(this, Translator.getString("LogConsole.Title"),
                 Utilities.getImageIcon("ic_message_black_18dp.png").getImage());
-
         gmanager = new GraphManager(userPrefs, this);
-
         mr3Reader = new MR3Reader(gmanager);
         mr3Writer = new MR3Writer(gmanager);
+        historyManager = new HistoryManager(this, this);
         initActions();
         getContentPane().add(createToolBar(), BorderLayout.NORTH);
 
@@ -153,7 +151,6 @@ public class MR3 extends JFrame implements ChangeListener {
         propertyEditorOverviewRef = new WeakReference<>(null);
         // ontTreeEditorRef = new WeakReference<OntTreeEditor>(null);
         RDFSourceCodeViewerRef = new WeakReference<>(null);
-        historyManagerRef = new WeakReference<>(null);
         validatorRef = new WeakReference<>(null);
         projectInfoDialogRef = new WeakReference<>(null);
         optionDialogRef = new WeakReference<>(null);
@@ -174,6 +171,7 @@ public class MR3 extends JFrame implements ChangeListener {
     private AbstractAction findResAction;
     private AbstractAction showProjectInfoAction;
     private AbstractAction showLogConsoleAciton;
+    private AbstractAction showHistoryManagerAciton;
     private AbstractAction showOptionDialogAction;
     private AbstractAction showVersionInfoAction;
     private AbstractAction showManualAction;
@@ -205,6 +203,7 @@ public class MR3 extends JFrame implements ChangeListener {
         findResAction = new FindResAction(null, gmanager);
         showProjectInfoAction = new ShowProjectInfoDialog(this);
         showLogConsoleAciton = new ShowLogConsole(this);
+        showHistoryManagerAciton = new ShowHistoryManager(this);
         showOptionDialogAction = new ShowOptionDialog(this);
         showVersionInfoAction = new ShowVersionInfoAction(this);
         showManualAction = new ShowManualAction(this);
@@ -228,6 +227,7 @@ public class MR3 extends JFrame implements ChangeListener {
         toolbar.add(deployWindowPRAction);
         toolbar.addSeparator();
         toolbar.add(showRDFSourceCodeViewer);
+//        toolbar.add(showHistoryManagerAciton);
         toolbar.add(showValidatorAction);
         toolbar.add(showProjectInfoAction);
         toolbar.add(showOptionDialogAction);
@@ -307,12 +307,7 @@ public class MR3 extends JFrame implements ChangeListener {
     }
 
     public HistoryManager getHistoryManager() {
-        HistoryManager result = historyManagerRef.get();
-        if (result == null) {
-            result = new HistoryManager(gmanager.getRootFrame(), this);
-            historyManagerRef = new WeakReference<>(result);
-        }
-        return result;
+        return historyManager;
     }
 
     public ValidatorDialog getValidator() {

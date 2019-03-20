@@ -53,6 +53,7 @@ import java.util.logging.*;
  */
 public class HistoryManager extends JDialog implements ActionListener {
 
+    private static MR3Writer mr3Writer;
     private static MR3Reader mr3Reader;
     private static Map<Date, HistoryModel> dateHistoryDataMap;
     private static DefaultTableModel historyTableModel;
@@ -140,7 +141,7 @@ public class HistoryManager extends JDialog implements ActionListener {
     public HistoryManager(Frame root, MR3 mr3) {
         super(root, "HistoryManager");
         mr3Reader = mr3.getMR3Reader();
-        MR3Writer mr3Writer = mr3.getMR3Writer();
+        mr3Writer = mr3.getMR3Writer();
         dateHistoryDataMap = new HashMap<>();
         historyTableModel = new DefaultTableModel(columnNames, 0);
         historyTable = new JTable(historyTableModel);
@@ -485,11 +486,9 @@ public class HistoryManager extends JDialog implements ActionListener {
                 logger.info(MODEL + "[" + historyType + "]\n");
                 break;
         }
-        // HistoryModel data = new HistoryModel(historyType,
-        // mr3Writer.getProjectModel());
-        // dateHistoryDataMap.put(data.getDate(), data);
-        // historyTableModel.insertRow(0, new Object[] { data.getDate(),
-        // data.getHistoryType()});
+        HistoryModel data = new HistoryModel(historyType, mr3Writer.getProjectModel());
+        dateHistoryDataMap.put(data.getDate(), data);
+        historyTableModel.insertRow(0, new Object[]{data.getDate(), data.getHistoryType()});
     }
 
     private void loadHistory() {

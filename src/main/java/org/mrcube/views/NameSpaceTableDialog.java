@@ -121,8 +121,6 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
 
     private String getKnownPrefix(Model model, String ns) {
         String prefix = model.getNsURIPrefix(ns);
-        // System.out.println(ns);
-        // System.out.println(prefix);
         if (prefix != null && (!prefix.equals(""))) {
             return prefix;
         }
