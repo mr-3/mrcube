@@ -142,11 +142,7 @@ public class MR3 extends JFrame implements ChangeListener {
         });
         setJMenuBar(createMenuBar());
         initOptions();
-
         HistoryManager.setGraphManager(gmanager);
-        String logFilePath = userPrefs.get(PrefConstants.logFile, System.getProperty("user.dir") + "/"
-                + HistoryManager.DEFAULT_LOG_FILE_NAME);
-        HistoryManager.initLogger(logFilePath);
         newProject();
     }
 
@@ -403,8 +399,8 @@ public class MR3 extends JFrame implements ChangeListener {
                 userPrefs.getInt(PrefConstants.WindowHeight, MAIN_FRAME_HEIGHT));
         setLocation(userPrefs.getInt(PrefConstants.WindowPositionX, 50), userPrefs.getInt(PrefConstants.WindowPositionY, 50));
 
-        HistoryManager.resetFileAppender(userPrefs.get(PrefConstants.logFile, System.getProperty("user.dir") + "\\"
-                + HistoryManager.DEFAULT_LOG_FILE_NAME));
+        String workDirPath = userPrefs.get(PrefConstants.WorkDirectory, System.getProperty("user.dir"));
+        HistoryManager.initLogger(workDirPath + File.separator + HistoryManager.DEFAULT_LOG_FILE_NAME);
 
         setTitle("MR^3");
         setVisible(true);

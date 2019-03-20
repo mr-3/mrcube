@@ -293,10 +293,6 @@ public class GraphManager {
         return isShowTypeCell;
     }
 
-    public static boolean isLogAvailable() {
-        return userPrefs.get(PrefConstants.isLogAvailable, "false").equals("true");
-    }
-
     public void setIsShowTypeCell(boolean t) {
         isShowTypeCell = t;
     }

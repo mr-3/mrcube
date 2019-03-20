@@ -35,10 +35,8 @@ import org.mrcube.models.PrefConstants;
 import org.mrcube.utils.*;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -82,23 +80,21 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         userPrefs = prefs;
         loadResourceBundle();
 
-        basePanel = new BasePanel();
         directoryPanel = new DirectoryPanel();
         proxyPanel = new ProxyPanel();
+        basePanel = new BasePanel();
         metaClassPanel = new MetaClassPanel();
         layoutPanel = new LayoutPanel();
 
-        menuList = new JList(new Object[]{basePanel, directoryPanel, proxyPanel, metaClassPanel, layoutPanel});
+        menuList = new JList(new Object[]{basePanel, metaClassPanel, layoutPanel});
         menuList.addListSelectionListener(this);
         JComponent menuListPanel = Utilities.createTitledPanel(menuList, "", 100, 100);
 
         mainPanel = new JPanel();
-        cardLayout = new CardLayout(5, 5);
+        cardLayout = new CardLayout(3, 5);
         mainPanel.setLayout(cardLayout);
 
         mainPanel.add(basePanel.toString(), basePanel);
-        mainPanel.add(directoryPanel.toString(), directoryPanel);
-        mainPanel.add(proxyPanel.toString(), proxyPanel);
         mainPanel.add(metaClassPanel.toString(), metaClassPanel);
         mainPanel.add(layoutPanel.toString(), layoutPanel);
 
@@ -110,9 +106,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         topLevelComponent = topLevelPanel;
 
         getContentPane().add(topLevelPanel);
-        // getContentPane().add(menuListPanel, BorderLayout.WEST);
-        // getContentPane().add(mainPanel, BorderLayout.CENTER);
-        // getContentPane().add(getButtonGroupPanel(), BorderLayout.SOUTH);
 
         menuList.setSelectedIndex(0);
 
@@ -176,12 +169,8 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
 
         private JTextField defaultLangField;
         private JComboBox uiLangBox;
-        private ComboBoxModel outputEncodingBoxModel;
         private JComboBox uriPrefixBox;
         private JLabel baseURILabel;
-        private JCheckBox isLogAvailableCheckBox;
-        private JTextField logFileField;
-        private JButton browseLogFileButton;
 
         BasePanel() {
             JPanel panel = new JPanel();
@@ -189,7 +178,8 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             panel.add(getLangPanel());
             panel.add(getUILangPanel());
             panel.add(getBaseURIPanel());
-            panel.add(getLogFilePanel());
+            panel.add(directoryPanel);
+            panel.add(proxyPanel);
             setLayout(new BorderLayout());
             add(getTitledPanel(panel, toString()), BorderLayout.NORTH);
             setBorder(BorderFactory.createEtchedBorder());
@@ -202,19 +192,10 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         void setConfig() {
             if (!userPrefs.get(PrefConstants.UILang, "en").equals(uiLangBox.getSelectedItem())) {
                 userPrefs.put(PrefConstants.UILang, (String) uiLangBox.getSelectedItem());
-                // Translator.loadResourceBundle(userPrefs);
             }
-
             userPrefs.put(PrefConstants.DefaultLang, defaultLangField.getText());
             userPrefs.put(PrefConstants.BaseURI, baseURILabel.getText());
             gmanager.setBaseURI(baseURILabel.getText());
-            if (isLogAvailableCheckBox.isSelected()) {
-                userPrefs.put(PrefConstants.isLogAvailable, "true");
-            } else {
-                userPrefs.put(PrefConstants.isLogAvailable, "false");
-            }
-            userPrefs.put(PrefConstants.logFile, logFileField.getText());
-            HistoryManager.resetFileAppender(logFileField.getText());
         }
 
         void resetConfig() {
@@ -223,15 +204,9 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             uiLangBox.setSelectedItem(userPrefs.get(PrefConstants.UILang, "en"));
             defaultLangField.setText(userPrefs.get(PrefConstants.DefaultLang, "ja"));
             baseURILabel.setText(userPrefs.get(PrefConstants.BaseURI, MR3Resource.DefaultURI.getURI()));
-            if (userPrefs.get(PrefConstants.isLogAvailable, "false").equals("true")) {
-                isLogAvailableCheckBox.setSelected(true);
-            } else {
-                isLogAvailableCheckBox.setSelected(false);
-            }
-            setText(logFileField,
-                    userPrefs.get(PrefConstants.logFile, System.getProperty("user.dir") + "/"
-                            + HistoryManager.DEFAULT_LOG_FILE_NAME));
-            HistoryManager.resetFileAppender(logFileField.getText());
+            directoryPanel.resetConfig();
+            proxyPanel.resetConfig();
+            HistoryManager.resetFileAppender(directoryPanel.workDirectoryField.getText() + File.separator + HistoryManager.DEFAULT_LOG_FILE_NAME);
         }
 
         class ChangePrefixAction extends AbstractAction {
@@ -311,58 +286,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             return baseURIPanel;
         }
 
-        class BrowseFile extends AbstractAction {
-            private final JTextField fileField;
-
-            BrowseFile(JTextField field) {
-                fileField = field;
-            }
-
-            private String getFileName() {
-                File currentFile = null;
-                if (fileField == logFileField) {
-                    currentFile = new File(userPrefs.get(PrefConstants.logFile, ""));
-                }
-
-                JFileChooser jfc = new JFileChooser(currentFile);
-                jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-                FileNameExtensionFilter filter = new FileNameExtensionFilter("*.txt", "txt");
-                jfc.addChoosableFileFilter(filter);
-                jfc.setDialogTitle("Select Log File");
-                int fd = jfc.showOpenDialog(gmanager.getRootFrame());
-                if (fd == JFileChooser.APPROVE_OPTION) {
-                    return jfc.getSelectedFile().toString();
-                }
-                return null;
-            }
-
-            public void actionPerformed(ActionEvent e) {
-                String fileName = getFileName();
-                if (fileName != null) {
-                    setText(fileField, fileName);
-                }
-            }
-        }
-
-        private JPanel getLogFilePanel() {
-            isLogAvailableCheckBox = new JCheckBox(Translator.getString("OptionDialog.Base.LogFile.check"),
-                    false);
-            logFileField = new JTextField(15);
-            logFileField.setEditable(false);
-            browseLogFileButton = new JButton(Translator.getString("OptionDialog.Directory.Browse") + "(L)");
-            browseLogFileButton.setMnemonic('l');
-            browseLogFileButton.addActionListener(new BrowseFile(logFileField));
-
-            JPanel logFilePanel = new JPanel();
-            logFilePanel.setLayout(new BorderLayout());
-            logFilePanel.setBorder(BorderFactory.createTitledBorder(Translator
-                    .getString("OptionDialog.Base.LogFile")));
-            logFilePanel.add(isLogAvailableCheckBox, BorderLayout.WEST);
-            logFilePanel.add(logFileField, BorderLayout.CENTER);
-            logFilePanel.add(browseLogFileButton, BorderLayout.EAST);
-            return logFilePanel;
-        }
-
         private void initPrefixBox() {
             PrefixNSUtil.setNamespaceModelSet(GraphUtilities.getNamespaceModelSet());
             uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
@@ -384,35 +307,20 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
 
         private JTextField workDirectoryField;
         private JButton browseWorkDirectoryButton;
-        private JTextField resourceDirectoryField;
-        private JButton browseResourceDirectoryButton;
 
         DirectoryPanel() {
             initWorkDirectoryField();
-            initResourceDirectoryField();
-
-            JPanel panel = new JPanel();
-            panel.setLayout(new GridLayout(2, 1, 10, 5));
-            panel.add(getWorkDirectoryPanel());
-            panel.add(getResourceDirectoryPanel());
             setLayout(new BorderLayout());
-            add(getTitledPanel(panel, toString()), BorderLayout.NORTH);
+            add(getWorkDirectoryPanel(), BorderLayout.CENTER);
             setBorder(BorderFactory.createEtchedBorder());
-        }
-
-        public String toString() {
-            return Translator.getString("OptionDialog.Directory");
         }
 
         void setConfig() {
             userPrefs.put(PrefConstants.WorkDirectory, workDirectoryField.getText());
-            userPrefs.put(PrefConstants.ResourceDirectory, resourceDirectoryField.getText());
         }
 
         void resetConfig() {
-            setText(workDirectoryField, userPrefs.get(PrefConstants.WorkDirectory, ""));
-            setText(resourceDirectoryField,
-                    userPrefs.get(PrefConstants.ResourceDirectory, System.getProperty("user.dir") + "\\resources"));
+            setText(workDirectoryField, userPrefs.get(PrefConstants.WorkDirectory, System.getProperty("user.dir")));
         }
 
         class BrowseDirectory extends AbstractAction {
@@ -425,9 +333,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             private String getDirectoryName() {
                 File currentDirectory = null;
                 if (directoryField == workDirectoryField) {
-                    currentDirectory = new File(userPrefs.get(PrefConstants.WorkDirectory, ""));
-                } else if (directoryField == resourceDirectoryField) {
-                    currentDirectory = new File(userPrefs.get(PrefConstants.ResourceDirectory, ""));
+                    currentDirectory = new File(userPrefs.get(PrefConstants.WorkDirectory, System.getProperty("user.dir")));
                 }
 
                 JFileChooser jfc = new JFileChooser(currentDirectory);
@@ -457,15 +363,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             browseWorkDirectoryButton.addActionListener(new BrowseDirectory(workDirectoryField));
         }
 
-        private void initResourceDirectoryField() {
-            resourceDirectoryField = new JTextField(15);
-            resourceDirectoryField.setEditable(false);
-            browseResourceDirectoryButton = new JButton(Translator.getString("OptionDialog.Directory.Browse")
-                    + "(R)");
-            browseResourceDirectoryButton.setMnemonic('r');
-            browseResourceDirectoryButton.addActionListener(new BrowseDirectory(resourceDirectoryField));
-        }
-
         private JPanel getWorkDirectoryPanel() {
             JPanel workDirectoryPanel = new JPanel();
             workDirectoryPanel.setLayout(new BoxLayout(workDirectoryPanel, BoxLayout.X_AXIS));
@@ -475,17 +372,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             workDirectoryPanel.add(browseWorkDirectoryButton);
 
             return workDirectoryPanel;
-        }
-
-        private JPanel getResourceDirectoryPanel() {
-            JPanel resourceDirectoryPanel = new JPanel();
-            resourceDirectoryPanel.setLayout(new BoxLayout(resourceDirectoryPanel, BoxLayout.X_AXIS));
-            resourceDirectoryPanel.setBorder(BorderFactory.createTitledBorder(Translator
-                    .getString("OptionDialog.Directory.ResourcesDirectory")));
-            resourceDirectoryPanel.add(resourceDirectoryField);
-            resourceDirectoryPanel.add(browseResourceDirectoryButton);
-
-            return resourceDirectoryPanel;
         }
 
     }
@@ -512,12 +398,8 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             panel.add(proxyHostP);
             panel.add(proxyPortP);
             setLayout(new BorderLayout());
-            add(getTitledPanel(panel, toString()), BorderLayout.NORTH);
+            add(panel, BorderLayout.NORTH);
             setBorder(BorderFactory.createEtchedBorder());
-        }
-
-        public String toString() {
-            return Translator.getString("OptionDialog.Proxy");
         }
 
         class CheckProxy extends AbstractAction {
@@ -1015,8 +897,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
 
     public void resetConfig() {
         basePanel.resetConfig();
-        directoryPanel.resetConfig();
-        proxyPanel.resetConfig();
         metaClassPanel.resetConfig();
         layoutPanel.resetConfig();
     }
