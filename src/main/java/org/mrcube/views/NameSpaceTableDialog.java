@@ -30,11 +30,13 @@ import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
+import org.mrcube.io.MR3Reader;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.models.MR3Constants;
 import org.mrcube.models.MR3Resource;
 import org.mrcube.models.NamespaceModel;
 import org.mrcube.utils.GraphUtilities;
+import org.mrcube.utils.PrefixNSUtil;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
 
@@ -109,14 +111,16 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
         if (!isValidPrefix(prefix)) {
             prefix = getMR3Prefix(addNS);
         }
-        if (isValidNS(addNS)) {
+        if (isValidNamespace(addNS)) {
             addNameSpaceTable(Boolean.TRUE, prefix, addNS);
         }
     }
 
     public void setDefaultNSPrefix() {
         addDefaultNS("mr3", MR3Resource.getURI());
-        addDefaultNS("base", gmanager.getBaseURI());
+        if (!MR3Resource.getURI().equals(gmanager.getBaseURI())) {
+            addDefaultNS("base", gmanager.getBaseURI());
+        }
         addDefaultNS("rdf", RDF.getURI());
         addDefaultNS("rdfs", RDFS.getURI());
         addDefaultNS("owl", OWL.NS);
@@ -169,7 +173,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
             }
         }
         for (String ns : nsSet) {
-            if (isValidNS(ns)) {
+            if (isValidNamespace(ns)) {
                 String knownPrefix = getKnownPrefix(model, ns);
                 if (isValidPrefix(knownPrefix) && (!knownPrefix.equals(PREFIX))) {
                     addNameSpaceTable(Boolean.TRUE, knownPrefix, ns);
@@ -192,7 +196,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
             Boolean isAvailable = (Boolean) model.getValueAt(i, 0);
             String prefix = (String) model.getValueAt(i, 1);
             String ns = (String) model.getValueAt(i, 2);
-            if (isValidPrefix(prefix) && isValidNS(ns)) {
+            if (isValidPrefix(prefix) && isValidNamespace(ns)) {
                 addNameSpaceTable(isAvailable, prefix, ns);
             }
         }
@@ -288,40 +292,40 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
         }
     }
 
-    private boolean isValidPrefix(String prefix) {
-        Set keySet = prefixNSMap.keySet();
-        return (!keySet.contains(prefix) && !prefix.equals(""));
-    }
-
-    private boolean isValidNS(String ns) {
-        Collection values = prefixNSMap.values();
-        return (ns != null && !ns.equals("") && !ns.equals("http://") && !values.contains(ns));
-    }
-
     /**
      * prefix が空でなくかつ，すでに登録されていない場合true
      */
-    private boolean isValidPrefixWithWarning(String prefix) {
-        if (isValidPrefix(prefix)) {
-            return true;
+    private boolean isValidPrefix(String prefix) {
+        if (prefix == null || prefix.equals("")) {
+            Utilities.showErrorMessageDialog(Translator.getString("Warning.Message13"));
+            return false;
         }
-        Utilities.showErrorMessageDialog(Translator.getString("Warning.Message5"));
-        return false;
+        if (prefixNSMap.keySet().contains(prefix)) {
+            Utilities.showErrorMessageDialog(Translator.getString("Warning.Message5"));
+            return false;
+        }
+        return true;
     }
 
     /**
-     * nsが空でもnullでもなく，すでに登録されてない場合 true
+     * 名前空間が以下の条件を満たしているか確認する
+     * - 空でもnullでもない
+     * - URI構文に準拠している
+     * - 名前空間テーブルに登録されてない
      */
-    private boolean isValidNSWithWarning(String ns) {
-        if (isValidNS(ns)) {
-            return true;
+    private boolean isValidNamespace(String ns) {
+        if (!PrefixNSUtil.isValidURI(ns)) {
+            return false;
         }
-        Utilities.showErrorMessageDialog(Translator.getString("Warning.Message6"));
-        return false;
+        if (prefixNSMap.values().contains(ns)) {
+            Utilities.showErrorMessageDialog(Translator.getString("Warning.Message6"));
+            return false;
+        }
+        return true;
     }
 
     public void addNameSpaceTable(Boolean isAvailable, String prefix, String ns) {
-        if (isValidPrefixWithWarning(prefix) && isValidNSWithWarning(ns)) {
+        if (isValidPrefix(prefix) && isValidNamespace(ns)) {
             prefixNSMap.put(prefix, ns);
             Object[] list = new Object[]{isAvailable, prefix, ns};
             nsTableModel.insertRow(nsTableModel.getRowCount(), list);
@@ -336,16 +340,16 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
         String orgNs = (String) nsTable.getValueAt(selectedRow, 2);
 
         if (orgPrefix.equals(prefix)) {
-            if (!isValidNSWithWarning(ns)) {
+            if (!isValidNamespace(ns)) {
                 return;
             }
         } else {
             if (orgNs.equals(ns)) {
-                if (!isValidPrefixWithWarning(prefix)) {
+                if (!isValidPrefix(prefix)) {
                     return;
                 }
             } else {
-                if (!isValidPrefixWithWarning(prefix) || !isValidNSWithWarning(ns)) {
+                if (!isValidPrefix(prefix) || !isValidNamespace(ns)) {
                     return;
                 }
             }
