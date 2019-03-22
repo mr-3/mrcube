@@ -512,14 +512,6 @@ public class GraphManager {
         return false;
     }
 
-    public boolean isEmptyURI(String uri) {
-        if (uri.equals("")) {
-            Utilities.showErrorMessageDialog(Translator.getString("Warning.Message4"));
-            return true;
-        }
-        return false;
-    }
-
     public boolean isDuplicatedWithDialog(String uri, Object cell, GraphType type) {
         if (isDuplicated(uri, cell, type)) {
             Utilities.showErrorMessageDialog(Translator.getString("Warning.Message1"));

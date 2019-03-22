@@ -31,6 +31,7 @@ import org.mrcube.actions.TransformElementAction;
 import org.mrcube.editors.Editor;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.MR3Constants.HistoryType;
+import org.mrcube.utils.PrefixNSUtil;
 import org.mrcube.utils.Translator;
 import org.mrcube.views.HistoryManager;
 import org.mrcube.views.InsertRDFSResourceDialog;
@@ -90,11 +91,10 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
             return null;
         }
         String uri = dialog.getURI();
-        if (uri == null || gmanager.isEmptyURI(uri)
-                || gmanager.isDuplicatedWithDialog(uri, null, GraphType.CLASS)) {
-            return null;
+        if (PrefixNSUtil.isValidURI(uri) && !gmanager.isDuplicatedWithDialog(uri, null, GraphType.CLASS)) {
+            return cellMaker.insertClass(pt, uri);
         }
-        return cellMaker.insertClass(pt, uri);
+        return null;
     }
 
     private GraphCell insertSubClass(Point pt, Object[] supCells) {
@@ -103,16 +103,14 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
             return null;
         }
         String uri = dialog.getURI();
-        if (uri == null || gmanager.isEmptyURI(uri)
-                || gmanager.isDuplicatedWithDialog(uri, null, GraphType.CLASS)) {
-            return null;
+        if (PrefixNSUtil.isValidURI(uri) && !gmanager.isDuplicatedWithDialog(uri, null, GraphType.CLASS)) {
+            DefaultGraphCell cell = cellMaker.insertClass(pt, uri);
+            Port subPort = (Port) cell.getChildAt(0);
+            cellMaker.connectSubToSups(subPort, supCells, graph);
+            graph.setSelectionCell(cell);
+            return cell;
         }
-        DefaultGraphCell cell = cellMaker.insertClass(pt, uri);
-        Port subPort = (Port) cell.getChildAt(0);
-        cellMaker.connectSubToSups(subPort, supCells, graph);
-        graph.setSelectionCell(cell);
-
-        return cell;
+        return null;
     }
 
     private void addTransformMenu(JPopupMenu menu, Object cell) {

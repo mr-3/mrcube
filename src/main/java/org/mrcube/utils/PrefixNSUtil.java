@@ -104,12 +104,12 @@ public class PrefixNSUtil {
     public static boolean isValidURI(String uri) {
         try {
             if (uri == null || uri.equals("")) {
-                Utilities.showErrorMessageDialog(Translator.getString("Warning.Message14"));
+                Utilities.showErrorMessageDialog(Translator.getString("Warning.Message4"));
                 return false;
             }
             new URI(uri);
         } catch (URISyntaxException e) {
-            Utilities.showErrorMessageDialog(Translator.getString("Warning.Message15"));
+            Utilities.showErrorMessageDialog(Translator.getString("Warning.Message14"));
             return false;
         }
         return true;
