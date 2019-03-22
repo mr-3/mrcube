@@ -247,7 +247,7 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
 
         private void editRDFSClass() {
             Resource uri = ResourceFactory.createResource(getResourceTypeURI());
-            if (gmanager.isEmptyURI(uri.getURI())) {
+            if (!PrefixNSUtil.isValidURI(uri.getURI())) {
                 return;
             }
             RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
@@ -342,17 +342,12 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
             return "URI";
         }
 
-        // URI�̏d���ƁC��̃`�F�b�N������D
         boolean isErrorResource() {
-            String uri = getResourceURI();
             if (isAnonBox.isSelected()) {
                 return false;
             }
-            if (isLocalDuplicated(uri) || gmanager.isEmptyURI(uri)
-                    || gmanager.isDuplicatedWithDialog(uri, cell, GraphType.RDF)) {
-                return true;
-            }
-            return false;
+            String uri = getResourceURI();
+            return !PrefixNSUtil.isValidURI(uri) || isLocalDuplicated(uri) || gmanager.isDuplicatedWithDialog(uri, cell, GraphType.RDF);
         }
 
         String getResourceURI() {
@@ -469,7 +464,7 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
         private GraphCell getResourceType() {
             GraphCell typeCell = null;
             Resource uri = ResourceFactory.createResource(typePanel.getResourceTypeURI());
-            if (gmanager.isEmptyURI(uri.getURI())) {
+            if (!PrefixNSUtil.isValidURI(uri.getURI())) {
                 return null;
             }
             RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();

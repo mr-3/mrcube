@@ -1,24 +1,24 @@
 /*
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
- * 
+ *
  * Copyright (C) 2003-2019 Yamaguchi Laboratory, Keio University. All rights reserved.
- * 
+ *
  * This file is part of MR^3.
- * 
+ *
  * MR^3 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * MR^3 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  */
 
 package org.mrcube.actions;
@@ -92,15 +92,15 @@ public class TransformElementAction extends AbstractAction {
         MR3CellMaker cellMaker = new MR3CellMaker(gmanager);
         for (String uri : uriSet) {
             switch (toGraphType) {
-            case RDF:
-                cellMaker.insertRDFResource(pt, uri, null, URIType.URI);
-                break;
-            case CLASS:
-                cellMaker.insertClass(pt, uri);
-                break;
-            case PROPERTY:
-                cellMaker.insertProperty(pt, uri);
-                break;
+                case RDF:
+                    cellMaker.insertRDFResource(pt, uri, null, URIType.URI);
+                    break;
+                case CLASS:
+                    cellMaker.insertClass(pt, uri);
+                    break;
+                case PROPERTY:
+                    cellMaker.insertProperty(pt, uri);
+                    break;
             }
             pt.x += 20;
             pt.y += 20;
@@ -126,7 +126,9 @@ public class TransformElementAction extends AbstractAction {
         for (Object cell : gmanager.getRemoveCells()) {
             if (gmanager.getCurrentRDFGraph().getModel().contains(cell)
                     || gmanager.getCurrentClassGraph().getModel().contains(cell)
-                    || gmanager.getCurrentPropertyGraph().getModel().contains(cell)) { return false; }
+                    || gmanager.getCurrentPropertyGraph().getModel().contains(cell)) {
+                return false;
+            }
         }
         return true;
     }

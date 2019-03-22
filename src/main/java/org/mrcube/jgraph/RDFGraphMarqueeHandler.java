@@ -36,6 +36,7 @@ import org.mrcube.models.PropertyModel;
 import org.mrcube.models.RDFResourceModel;
 import org.mrcube.models.RDFSModel;
 import org.mrcube.utils.MR3CellMaker;
+import org.mrcube.utils.PrefixNSUtil;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
 import org.mrcube.views.HistoryManager;
@@ -322,13 +323,12 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
         String uri = dialog.getURI();
         Object resTypeCell = dialog.getResourceType();
 
-        if (uri == null || gmanager.isDuplicatedWithDialog(uri, null, GraphType.RDF)) {
-            return null;
-        } else if (dialog.isAnonymous()) {
+        if (dialog.isAnonymous()) {
             return cellMaker.insertRDFResource(pt, uri, resTypeCell, URIType.ANONYMOUS);
-        } else {
+        } else if (PrefixNSUtil.isValidURI(uri) && !gmanager.isDuplicatedWithDialog(uri, null, GraphType.RDF)) {
             return cellMaker.insertRDFResource(pt, uri, resTypeCell, URIType.URI);
         }
+        return null;
     }
 
     public Set getSelectedResourcePorts() {

@@ -220,46 +220,4 @@ public class Utilities {
         return ResourceFactory.createTypedLiteral(value, dataType);
     }
 
-    public static void main(String[] args) {
-
-        System.out.println(Utilities.getNameSpace(ResourceFactory
-                .createResource("http://www.example.com/PACS/concepts#_100")));
-        System.out.println(Utilities.getNameSpace(ResourceFactory
-                .createResource("http://example.org/123")));
-        System.out.println(Utilities.getNameSpace(ResourceFactory
-                .createResource("http://example.org#123")));
-        System.out.println(Utilities.getNameSpace(ResourceFactory
-                .createResource("http://example.org/abc")));
-        System.out.println(Utilities.getNameSpace(ResourceFactory
-                .createResource("http://example.org#abc")));
-        System.out.println(Utilities.getNameSpace(ResourceFactory
-                .createResource("http://example.org/123abc")));
-        System.out.println(Utilities.getNameSpace(ResourceFactory
-                .createResource("http://example.org#123abc")));
-        System.out.println(Utilities.getNameSpace(ResourceFactory
-                .createResource("http://example.org/")));
-        System.out.println(Utilities.getNameSpace(ResourceFactory
-                .createResource("http://example.org#")));
-
-        System.out.println(Utilities.getLocalName(ResourceFactory
-                .createResource("http://www.example.com/PACS/concepts#_100")));
-        System.out.println(Utilities.getLocalName(ResourceFactory
-                .createResource("http://www.example.com/PACS/concepts#41.75.Fr")));
-        System.out.println(Utilities.getLocalName(ResourceFactory
-                .createResource("http://example.org/123")));
-        System.out.println(Utilities.getLocalName(ResourceFactory
-                .createResource("http://example.org#123")));
-        System.out.println(Utilities.getLocalName(ResourceFactory
-                .createResource("http://example.org/abc")));
-        System.out.println(Utilities.getLocalName(ResourceFactory
-                .createResource("http://example.org#abc")));
-        System.out.println(Utilities.getLocalName(ResourceFactory
-                .createResource("http://example.org/123abc")));
-        System.out.println(Utilities.getLocalName(ResourceFactory
-                .createResource("http://example.org#123abc")));
-        System.out.println(Utilities.getLocalName(ResourceFactory
-                .createResource("http://example.org/")));
-        System.out.println(Utilities.getLocalName(ResourceFactory
-                .createResource("http://example.org#")));
-    }
 }

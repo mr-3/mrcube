@@ -23,15 +23,20 @@
 
 package org.mrcube.views;
 
-import org.apache.jena.rdf.model.*;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.RDFNode;
+import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
+import org.mrcube.io.MR3Reader;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.models.MR3Constants;
 import org.mrcube.models.MR3Resource;
 import org.mrcube.models.NamespaceModel;
 import org.mrcube.utils.GraphUtilities;
+import org.mrcube.utils.PrefixNSUtil;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
 
@@ -62,6 +67,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
     private static final long serialVersionUID = 5974381131839067739L;
 
     transient private JButton addNSButton;
+    transient private JButton editNSButton;
     transient private JButton removeNSButton;
     transient private JButton cancelButton;
     transient private JTextField prefixField;
@@ -105,14 +111,16 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
         if (!isValidPrefix(prefix)) {
             prefix = getMR3Prefix(addNS);
         }
-        if (isValidNS(addNS)) {
+        if (isValidNamespace(addNS)) {
             addNameSpaceTable(Boolean.TRUE, prefix, addNS);
         }
     }
 
     public void setDefaultNSPrefix() {
         addDefaultNS("mr3", MR3Resource.getURI());
-        addDefaultNS("base", gmanager.getBaseURI());
+        if (!MR3Resource.getURI().equals(gmanager.getBaseURI())) {
+            addDefaultNS("base", gmanager.getBaseURI());
+        }
         addDefaultNS("rdf", RDF.getURI());
         addDefaultNS("rdfs", RDFS.getURI());
         addDefaultNS("owl", OWL.NS);
@@ -121,8 +129,6 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
 
     private String getKnownPrefix(Model model, String ns) {
         String prefix = model.getNsURIPrefix(ns);
-        // System.out.println(ns);
-        // System.out.println(prefix);
         if (prefix != null && (!prefix.equals(""))) {
             return prefix;
         }
@@ -167,7 +173,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
             }
         }
         for (String ns : nsSet) {
-            if (isValidNS(ns)) {
+            if (isValidNamespace(ns)) {
                 String knownPrefix = getKnownPrefix(model, ns);
                 if (isValidPrefix(knownPrefix) && (!knownPrefix.equals(PREFIX))) {
                     addNameSpaceTable(Boolean.TRUE, knownPrefix, ns);
@@ -190,7 +196,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
             Boolean isAvailable = (Boolean) model.getValueAt(i, 0);
             String prefix = (String) model.getValueAt(i, 1);
             String ns = (String) model.getValueAt(i, 2);
-            if (isValidPrefix(prefix) && isValidNS(ns)) {
+            if (isValidPrefix(prefix) && isValidNamespace(ns)) {
                 addNameSpaceTable(isAvailable, prefix, ns);
             }
         }
@@ -214,6 +220,15 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
         nsTableModel.addTableModelListener(this);
         nsTable = new JTable(nsTableModel);
         nsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        nsTable.getSelectionModel().addListSelectionListener(e -> {
+            int selectedRow = nsTable.getSelectedRow();
+            if (0 <= selectedRow) {
+                String selectedPrefix = (String) nsTable.getValueAt(selectedRow, 1);
+                String selectedNamespace = (String) nsTable.getValueAt(selectedRow, 2);
+                prefixField.setText(selectedPrefix);
+                nsField.setText(selectedNamespace);
+            }
+        });
         TableColumnModel tcModel = nsTable.getColumnModel();
         tcModel.getColumn(0).setPreferredWidth(50);
         tcModel.getColumn(1).setPreferredWidth(100);
@@ -246,6 +261,9 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
         addNSButton = new JButton(MR3Constants.ADD + "(A)");
         addNSButton.setMnemonic('a');
         addNSButton.addActionListener(this);
+        editNSButton = new JButton(MR3Constants.EDIT + "(E)");
+        editNSButton.setMnemonic('e');
+        editNSButton.addActionListener(this);
         removeNSButton = new JButton(MR3Constants.REMOVE + "(R)");
         removeNSButton.setMnemonic('r');
         removeNSButton.addActionListener(this);
@@ -253,8 +271,9 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
         cancelButton.setMnemonic('c');
         cancelButton.addActionListener(this);
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(1, 3, 5, 5));
+        buttonPanel.setLayout(new GridLayout(1, 4, 5, 5));
         buttonPanel.add(addNSButton);
+        buttonPanel.add(editNSButton);
         buttonPanel.add(removeNSButton);
         buttonPanel.add(cancelButton);
         return Utilities.createSouthPanel(buttonPanel);
@@ -264,6 +283,8 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
         if (e.getSource() == addNSButton) {
             addNameSpaceTable(Boolean.TRUE, prefixField.getText(), nsField.getText());
             setPrefixNSInfoSet();
+        } else if (e.getSource() == editNSButton) {
+            editNameSpaceTable(prefixField.getText(), nsField.getText());
         } else if (e.getSource() == removeNSButton) {
             removeNameSpaceTable();
         } else if (e.getSource() == cancelButton) {
@@ -271,40 +292,40 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
         }
     }
 
-    private boolean isValidPrefix(String prefix) {
-        Set keySet = prefixNSMap.keySet();
-        return (!keySet.contains(prefix) && !prefix.equals(""));
-    }
-
-    private boolean isValidNS(String ns) {
-        Collection values = prefixNSMap.values();
-        return (ns != null && !ns.equals("") && !ns.equals("http://") && !values.contains(ns));
-    }
-
     /**
      * prefix が空でなくかつ，すでに登録されていない場合true
      */
-    private boolean isValidPrefixWithWarning(String prefix) {
-        if (isValidPrefix(prefix)) {
-            return true;
+    private boolean isValidPrefix(String prefix) {
+        if (prefix == null || prefix.equals("")) {
+            Utilities.showErrorMessageDialog(Translator.getString("Warning.Message13"));
+            return false;
         }
-        Utilities.showErrorMessageDialog(Translator.getString("Warning.Message5"));
-        return false;
+        if (prefixNSMap.keySet().contains(prefix)) {
+            Utilities.showErrorMessageDialog(Translator.getString("Warning.Message5"));
+            return false;
+        }
+        return true;
     }
 
     /**
-     * nsが空でもnullでもなく，すでに登録されてない場合 true
+     * 名前空間が以下の条件を満たしているか確認する
+     * - 空でもnullでもない
+     * - URI構文に準拠している
+     * - 名前空間テーブルに登録されてない
      */
-    private boolean isValidNSWithWarning(String ns) {
-        if (isValidNS(ns)) {
-            return true;
+    private boolean isValidNamespace(String ns) {
+        if (!PrefixNSUtil.isValidURI(ns)) {
+            return false;
         }
-        Utilities.showErrorMessageDialog(Translator.getString("Warning.Message6"));
-        return false;
+        if (prefixNSMap.values().contains(ns)) {
+            Utilities.showErrorMessageDialog(Translator.getString("Warning.Message6"));
+            return false;
+        }
+        return true;
     }
 
     public void addNameSpaceTable(Boolean isAvailable, String prefix, String ns) {
-        if (isValidPrefixWithWarning(prefix) && isValidNSWithWarning(ns)) {
+        if (isValidPrefix(prefix) && isValidNamespace(ns)) {
             prefixNSMap.put(prefix, ns);
             Object[] list = new Object[]{isAvailable, prefix, ns};
             nsTableModel.insertRow(nsTableModel.getRowCount(), list);
@@ -313,11 +334,32 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
         }
     }
 
+    public void editNameSpaceTable(String prefix, String ns) {
+        int selectedRow = nsTable.getSelectedRow();
+        String orgPrefix = (String) nsTable.getValueAt(selectedRow, 1);
+        String orgNs = (String) nsTable.getValueAt(selectedRow, 2);
+
+        if (orgPrefix.equals(prefix)) {
+            if (!isValidNamespace(ns)) {
+                return;
+            }
+        } else {
+            if (orgNs.equals(ns)) {
+                if (!isValidPrefix(prefix)) {
+                    return;
+                }
+            } else {
+                if (!isValidPrefix(prefix) || !isValidNamespace(ns)) {
+                    return;
+                }
+            }
+        }
+        nsTableModel.editNamespace(selectedRow, orgPrefix, prefix, orgNs, ns);
+    }
+
     private void removeNameSpaceTable() {
         int[] removeList = nsTable.getSelectedRows();
         int length = removeList.length;
-        // どうやったら，複数のrowを消すせるのかがよくわからない．
-        // modelから消した時点でrow番号が変わってしまうのが原因
         if (length == 0) {
             return;
         }
@@ -394,11 +436,22 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
             return v.elementAt(column).getClass();
         }
 
+        public void editNamespace(int selectedRow, String orgPrefix, String prefix, String orgNs, String ns) {
+            prefixNSMap.remove(orgPrefix);
+            prefixNSMap.put(prefix, ns);
+            // TODO:  replace org namespaces with new namespaces in all editors.
+            super.setValueAt(prefix, selectedRow, 1);
+            super.setValueAt(ns, selectedRow, 2);
+            setPrefixNSInfoSet();
+            gmanager.refreshGraphs();
+            prefixField.setText("");
+            nsField.setText("");
+        }
+
         public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-            if (aValue instanceof String) {
+            if (aValue instanceof String && columnIndex == 1) {
                 String prefix = (String) aValue;
-                // 多分prefixのチェックはいらない．
-                String oldPrefix = (String) nsTableModel.getValueAt(rowIndex, columnIndex);
+                String oldPrefix = (String) nsTableModel.getValueAt(rowIndex, 1);
                 prefixNSMap.remove(oldPrefix);
                 String ns = (String) nsTableModel.getValueAt(rowIndex, 2);
                 prefixNSMap.put(prefix, ns);

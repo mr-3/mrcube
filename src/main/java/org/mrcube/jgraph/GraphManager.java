@@ -293,10 +293,6 @@ public class GraphManager {
         return isShowTypeCell;
     }
 
-    public static boolean isLogAvailable() {
-        return userPrefs.get(PrefConstants.isLogAvailable, "false").equals("true");
-    }
-
     public void setIsShowTypeCell(boolean t) {
         isShowTypeCell = t;
     }
@@ -513,14 +509,6 @@ public class GraphManager {
         // return true; }
         // }
         // }
-        return false;
-    }
-
-    public boolean isEmptyURI(String uri) {
-        if (uri.equals("")) {
-            Utilities.showErrorMessageDialog(Translator.getString("Warning.Message4"));
-            return true;
-        }
         return false;
     }
 

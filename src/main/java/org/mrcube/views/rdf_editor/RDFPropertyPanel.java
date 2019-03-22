@@ -318,7 +318,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
 
     private void editRDFSProperty() {
         Resource uri = ResourceFactory.createResource(nsLabel.getText() + idField.getText());
-        if (gmanager.isEmptyURI(uri.getURI())) {
+        if (!PrefixNSUtil.isValidURI(uri.getURI())) {
             return;
         }
         RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();

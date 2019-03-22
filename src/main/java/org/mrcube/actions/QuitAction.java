@@ -27,6 +27,7 @@ import org.mrcube.MR3;
 import org.mrcube.models.PrefConstants;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
+import org.mrcube.views.HistoryManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -55,10 +56,12 @@ public class QuitAction extends AbstractActionFile {
         if (messageType == JOptionPane.YES_OPTION) {
             confirmExitProject();
             saveWindows();
+            HistoryManager.closeLogFile();
             System.exit(0);
         } else if (messageType == JOptionPane.CANCEL_OPTION) {
         } else if (messageType == JOptionPane.NO_OPTION) {
             saveWindows();
+            HistoryManager.closeLogFile();
             System.exit(0);
         }
     }
