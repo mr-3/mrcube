@@ -86,7 +86,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
         idField = new JTextField();
         idField.addActionListener(this);
         var idFieldP = Utilities.createTitledPanel(idField, "ID");
-        editRDFSPropertyButton = new JButton("RDFS" + Translator.getString("Property") + Translator.getString("Edit"));
+        editRDFSPropertyButton = new JButton("RDFS" + Translator.getString("Property") + " " + Translator.getString("Edit"));
         editRDFSPropertyButton.addActionListener(this);
         var editRDFSPropertyButtonP = Utilities.createTitledPanel(editRDFSPropertyButton, " ");
 
