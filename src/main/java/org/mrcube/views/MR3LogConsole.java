@@ -28,6 +28,7 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.io.*;
@@ -54,7 +55,7 @@ public class MR3LogConsole extends JDialog {
     /**
      * Title of the Frame
      */
-    private String frameTitle = "";
+    private String frameTitle;
 
     /**
      * Card Layout for the Window
@@ -147,14 +148,14 @@ public class MR3LogConsole extends JDialog {
         stderrText.setForeground(Color.red);
         stderrText.setBackground(Color.white);
         stderrText.setEditable(false);
-        stderrText.addMouseListener(new java.awt.event.MouseAdapter() {
+        stderrText.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 stderrText_mouseClicked(e);
             }
         });
         stdoutText.setForeground(MR3Constants.TITLE_BACKGROUND_COLOR);
         stdoutText.setEditable(false);
-        stdoutText.addMouseListener(new java.awt.event.MouseAdapter() {
+        stdoutText.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 stdoutText_mouseClicked(e);
             }
@@ -201,19 +202,19 @@ public class MR3LogConsole extends JDialog {
         /**
          * the target for this printstream
          */
-        private JTextArea target = null;
+        private JTextArea target;
 
         /**
          * the original PrintStream to forward this stream to the original
          * stream
          */
-        private PrintStream orig = null;
+        private PrintStream orig;
 
         /**
          * Flag is true if the stream should forward the output to the original
          * stream
          */
-        private boolean showOrig = false;
+        private boolean showOrig;
 
         /**
          * creates an instance
@@ -477,11 +478,11 @@ class MyDocumentListener implements DocumentListener {
     /**
      * The Tabbed pane to switch the right one text area to front
      */
-    private JTabbedPane paneToSwitch = null;
+    private JTabbedPane paneToSwitch;
     /**
      * The component which is in front
      */
-    private Component componentInFront = null;
+    private Component componentInFront;
 
     /**
      * creats an instance of this listener
