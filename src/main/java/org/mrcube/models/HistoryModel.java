@@ -24,6 +24,7 @@
 package org.mrcube.models;
 
 import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
 import org.mrcube.models.MR3Constants.HistoryType;
 
 import java.util.Calendar;
@@ -38,14 +39,10 @@ public class HistoryModel {
     private final Model projectModel;
     private final HistoryType historyType;
 
-    /*
-     * 上記の他に，どのリソースを追加したとか，何を削除したなどの情報も 保存できるようにすべきだが，とりあえずは，履歴のタイプのみで
-     * あと，メタモデル管理に関わる変更かどうかも区別したい．
-     */
-
     public HistoryModel(HistoryType type, Model model) {
         savedTime = Calendar.getInstance().getTime();
-        projectModel = model;
+        // TODO: プロジェクトを開くと過去のHistoryModelのprojectModelが空になる不具合がある
+        projectModel = ModelFactory.createModelForGraph(model.getGraph());
         historyType = type;
     }
 

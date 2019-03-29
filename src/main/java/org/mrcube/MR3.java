@@ -227,7 +227,7 @@ public class MR3 extends JFrame implements ChangeListener {
         toolbar.add(deployWindowPRAction);
         toolbar.addSeparator();
         toolbar.add(showRDFSourceCodeViewer);
-//        toolbar.add(showHistoryManagerAciton);
+        toolbar.add(showHistoryManagerAciton);
         toolbar.add(showValidatorAction);
         toolbar.add(showProjectInfoAction);
         toolbar.add(showOptionDialogAction);
@@ -487,7 +487,7 @@ public class MR3 extends JFrame implements ChangeListener {
         menu.add(findResAction);
         menu.add(showValidatorAction);
         menu.add(showProjectInfoAction);
-        // menu.add(new ShowHistoryManager(this));
+        menu.add(showHistoryManagerAciton);
         menu.add(showLogConsoleAciton);
         menu.addSeparator();
         menu.add(showOptionDialogAction);

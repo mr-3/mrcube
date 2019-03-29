@@ -23,8 +23,6 @@
 
 package org.mrcube.views;
 
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.ModelFactory;
 import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphConstants;
 import org.mrcube.MR3;
@@ -34,6 +32,7 @@ import org.mrcube.jgraph.GraphManager;
 import org.mrcube.jgraph.RDFGraph;
 import org.mrcube.models.*;
 import org.mrcube.models.MR3Constants.HistoryType;
+import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
 
 import javax.swing.*;
@@ -53,6 +52,7 @@ import java.util.logging.*;
  */
 public class HistoryManager extends JDialog implements ActionListener {
 
+    private static MR3 mr3;
     private static MR3Writer mr3Writer;
     private static MR3Reader mr3Reader;
     private static Map<Date, HistoryModel> dateHistoryDataMap;
@@ -61,10 +61,10 @@ public class HistoryManager extends JDialog implements ActionListener {
 
     private static GraphManager gmanager;
 
-    private final JButton applyButton;
+    private final JButton openHistoryButton;
     private final JButton cancelButton;
 
-    private static final int WINDOW_WIDTH = 400;
+    private static final int WINDOW_WIDTH = 600;
     private static final int WINDOW_HEIGHT = 400;
 
     public static final String DEFAULT_LOG_FILE_NAME = "mr3_log.txt";
@@ -122,9 +122,20 @@ public class HistoryManager extends JDialog implements ActionListener {
         }
     }
 
-    public static void saveMessage(String message) {
+    public static void saveMessage(HistoryType historyType, String message) {
         logger.info(message);
         System.out.println(message);
+        switch (historyType) {
+            case OPEN_PROJECT:
+            case NEW_PROJECT:
+            case LOAD_HISTORY:
+                break;
+            default:
+                HistoryModel data = new HistoryModel(historyType, mr3Writer.getProjectModel());
+                dateHistoryDataMap.put(data.getDate(), data);
+                historyTableModel.insertRow(0, new Object[]{data.getDate(), data.getHistoryType()});
+                break;
+        }
     }
 
     public static void resetFileAppender(String logFilePath) {
@@ -141,10 +152,14 @@ public class HistoryManager extends JDialog implements ActionListener {
         }
     }
 
-    private static final Object[] columnNames = new Object[]{"Date", "History Type"};
+    private static final Object[] columnNames = new Object[]{
+            Translator.getString("HistoryManager.Date"),
+            Translator.getString("HistoryManager.Type")
+    };
 
     public HistoryManager(Frame root, MR3 mr3) {
-        super(root, "HistoryManager");
+        super(root, Translator.getString("HistoryManager.Title"));
+        this.mr3 = mr3;
         mr3Reader = mr3.getMR3Reader();
         mr3Writer = mr3.getMR3Writer();
         dateHistoryDataMap = new HashMap<>();
@@ -156,15 +171,15 @@ public class HistoryManager extends JDialog implements ActionListener {
         historyTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane historyTableScroll = new JScrollPane(historyTable);
 
-        applyButton = new JButton(MR3Constants.APPLY);
-        applyButton.setMnemonic('a');
-        applyButton.addActionListener(this);
+        openHistoryButton = new JButton(Translator.getString("HistoryManager.Open"));
+        openHistoryButton.setMnemonic('a');
+        openHistoryButton.addActionListener(this);
         cancelButton = new JButton(MR3Constants.CANCEL);
         cancelButton.setMnemonic('c');
         cancelButton.addActionListener(this);
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(1, 2, 5, 5));
-        buttonPanel.add(applyButton);
+        buttonPanel.add(openHistoryButton);
         buttonPanel.add(cancelButton);
 
         add(historyTableScroll, BorderLayout.CENTER);
@@ -180,7 +195,7 @@ public class HistoryManager extends JDialog implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == applyButton) {
+        if (e.getSource() == openHistoryButton) {
             loadHistory();
         } else if (e.getSource() == cancelButton) {
             setVisible(false);
@@ -204,7 +219,7 @@ public class HistoryManager extends JDialog implements ActionListener {
                     targetStr = String.format("Target: RDF Resource: %s\tRDF Resource Type: %s\n", resInfo.getURIStr(), resInfo.getType());
                 }
                 var message = String.format("%s[%s]\nInsert Property: %s\n%s%s", MODEL, historyType, info.getURIStr(), sourceStr, targetStr);
-                saveMessage(message);
+                saveMessage(historyType, message);
                 break;
             case CONNECT_SUP_SUB_CLASS:
                 RDFSModel subInfo = (RDFSModel) GraphConstants.getValue(sourceCell.getAttributes());
@@ -212,7 +227,7 @@ public class HistoryManager extends JDialog implements ActionListener {
                 RDFSModel supInfo = (RDFSModel) GraphConstants.getValue(targetCell.getAttributes());
                 String supStr = String.format("Super Class: %s\tMeta Class: %s\n", supInfo.getURIStr(), supInfo.getMetaClass());
                 message = String.format("%s[%s]\n%s%s", META_MODEL, historyType, subStr, supStr);
-                saveMessage(message);
+                saveMessage(historyType, message);
                 break;
             case CONNECT_SUP_SUB_PROPERTY:
                 subInfo = (RDFSModel) GraphConstants.getValue(sourceCell.getAttributes());
@@ -220,7 +235,7 @@ public class HistoryManager extends JDialog implements ActionListener {
                 supInfo = (RDFSModel) GraphConstants.getValue(targetCell.getAttributes());
                 supStr = String.format("Super Property: %s\tMeta Class: %s\n", supInfo.getURIStr(), supInfo.getMetaClass());
                 message = String.format("%s[%s]\n%s%s", META_MODEL, historyType, subStr, supStr);
-                saveMessage(message);
+                saveMessage(historyType, message);
                 break;
         }
     }
@@ -256,12 +271,12 @@ public class HistoryManager extends JDialog implements ActionListener {
         switch (historyType) {
             case DELETE_RDF:
                 var message = String.format("%s[%s]\n%s", MODEL, historyType, buf.toString());
-                saveMessage(message);
+                saveMessage(historyType, message);
                 break;
             case DELETE_CLASS:
             case DELETE_ONT_PROPERTY:
                 message = String.format("%s[%s]\n%s", META_MODEL, historyType, buf.toString());
-                saveMessage(message);
+                saveMessage(historyType, message);
                 break;
         }
     }
@@ -283,14 +298,14 @@ public class HistoryManager extends JDialog implements ActionListener {
             case DELETE_RESOURCE_LABEL:
                 var message = String.format("%s[%s]\nBefore Label: \n%sAfter Label: \n%s",
                         MODEL, historyType, beforeBuf.toString(), afterBuf.toString());
-                saveMessage(message);
+                saveMessage(historyType, message);
                 break;
             case EDIT_RESOURCE_COMMENT:
             case ADD_RESOURCE_COMMENT:
             case DELETE_RESOURCE_COMMENT:
                 message = String.format("%s[%s]\nBefore Comment: \n%sAfter Comment: \n%s",
                         MODEL, historyType, beforeBuf.toString(), afterBuf.toString());
-                saveMessage(message);
+                saveMessage(historyType, message);
                 break;
             case EDIT_CLASS_LABEL:
             case EDIT_CLASS_LABEL_WITH_GRAPH:
@@ -302,7 +317,7 @@ public class HistoryManager extends JDialog implements ActionListener {
             case DELETE_ONT_PROPERTY_LABEL:
                 message = String.format("%s[%s]\nBefore Label: \n%sAfter Label: \n%s",
                         META_MODEL, historyType, beforeBuf.toString(), afterBuf.toString());
-                saveMessage(message);
+                saveMessage(historyType, message);
                 break;
             case EDIT_CLASS_COMMENT:
             case ADD_CLASS_COMMENT:
@@ -312,7 +327,7 @@ public class HistoryManager extends JDialog implements ActionListener {
             case DELETE_ONT_PROPERTY_COMMENT:
                 message = String.format("%s[%s]\nBefore Comment: \n%sAfter Comment: \n%s",
                         META_MODEL, historyType, beforeBuf.toString(), afterBuf.toString());
-                saveMessage(message);
+                saveMessage(historyType, message);
                 break;
 
         }
@@ -329,7 +344,7 @@ public class HistoryManager extends JDialog implements ActionListener {
                                 "Before RDF Resource Type: %s\nAfter RDF Resource URI Type: %s\nAfter RDF Resource: %s\nAfter RDF Resource Type: %s\n",
                         MODEL, historyType, beforeInfo.getURIType(), beforeInfo.getURIStr(), beforeInfo.getType(),
                         afterInfo.getURIType(), afterInfo.getURIStr(), afterInfo.getType());
-                saveMessage(message);
+                saveMessage(historyType, message);
                 break;
         }
     }
@@ -343,7 +358,7 @@ public class HistoryManager extends JDialog implements ActionListener {
             case EDIT_PROPERTY_WITH_GRAPH:
                 var message = String.format("%s[%s]\nBefore Property: %s\nAfter Property: %s\n",
                         MODEL, historyType, beforeProperty, afterProperty);
-                saveMessage(message);
+                saveMessage(historyType, message);
                 break;
         }
     }
@@ -360,7 +375,7 @@ public class HistoryManager extends JDialog implements ActionListener {
                                 "\nAfter Language: %s\nAfter String: %s\nAfter Data type: %s\n",
                         MODEL, historyType, beforeLiteral.getLanguage(), beforeLiteral.getString(), beforeLiteral.getDatatype(),
                         afterLiteral.getLanguage(), afterLiteral.getString(), afterLiteral.getDatatype());
-                saveMessage(message);
+                saveMessage(historyType, message);
                 break;
         }
     }
@@ -372,14 +387,14 @@ public class HistoryManager extends JDialog implements ActionListener {
                 var message = String.format("%s[%s]\nOnt Property: %s\nBefore ONT Property Domain: %s\n" +
                                 "After ONT Property Domain: %s\n",
                         META_MODEL, historyType, uri, beforeRegion, afterRegion);
-                saveMessage(message);
+                saveMessage(historyType, message);
                 break;
             case ADD_ONT_PROPERTY_RANGE:
             case DELETE_ONT_PROPERTY_RANGE:
                 message = String.format("%s[%s]\nOnt Property: %s\nBefore ONT Property Range: %s\n" +
                                 "After ONT Property Range: %s\n",
                         META_MODEL, historyType, uri, beforeRegion, afterRegion);
-                saveMessage(message);
+                saveMessage(historyType, message);
                 break;
         }
     }
@@ -394,7 +409,7 @@ public class HistoryManager extends JDialog implements ActionListener {
                 var message = String.format("%s[%s]\nBefore ONT Class: %s\nBefore ONT Class Type: %s\nAfter ONT Class: %s" +
                                 "\nAfter ONT Class Type: %s\n", META_MODEL, historyType, beforeInfo.getURIStr(), beforeInfo.getMetaClass(),
                         afterInfo.getURIStr(), afterInfo.getMetaClass());
-                saveMessage(message);
+                saveMessage(historyType, message);
                 if (!MR3.OFF_META_MODEL_MANAGEMENT) {
                     ClassModel clsInfo = (ClassModel) afterInfo;
                     Set<RDFResourceModel> instanceInfoSet = gmanager.getClassInstanceInfoSet(clsInfo);
@@ -404,7 +419,7 @@ public class HistoryManager extends JDialog implements ActionListener {
                             instanceInfoStr.append("RDF Resource: ").append(resInfo.getURIStr()).append("\n");
                         }
                         message = String.format("%s[%s]\n%s", META_MODEL, HistoryType.META_MODEL_MANAGEMNET_REPLACE_CLASS, instanceInfoStr);
-                        saveMessage(message);
+                        saveMessage(historyType, message);
                     }
                 }
                 break;
@@ -413,7 +428,7 @@ public class HistoryManager extends JDialog implements ActionListener {
                 message = String.format("%s[%s]\nBefore ONT Property: %s\nBefore ONT Property Type: %s\nAfter ONT Property: %s" +
                                 "\nAfter ONT Property Type: %s\n", META_MODEL, historyType, beforeInfo.getURIStr(), beforeInfo.getMetaClass(),
                         afterInfo.getURIStr(), afterInfo.getMetaClass());
-                saveMessage(message);
+                saveMessage(historyType, message);
                 if (!MR3.OFF_META_MODEL_MANAGEMENT) {
                     PropertyModel propInfo = (PropertyModel) afterInfo;
                     Set instanceSet = gmanager.getPropertyInstanceInfoSet(propInfo);
@@ -425,7 +440,7 @@ public class HistoryManager extends JDialog implements ActionListener {
                         }
                         // TODO: 正確にやるなら，RDFプロパティのグラフセルのセットから，sourcevertex, targetvertexを得て，Source Resource, Target Resourceを表示するようにすべき
                         message = String.format("%s[%s]\n%s", META_MODEL, HistoryType.META_MODEL_MANAGEMNET_REPLACE_ONT_PROPERTY, instanceInfoStr);
-                        saveMessage(message);
+                        saveMessage(historyType, message);
                     }
                 }
                 break;
@@ -439,27 +454,27 @@ public class HistoryManager extends JDialog implements ActionListener {
                 RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(insertCell.getAttributes());
                 var message = String.format("%s[%s]\nRDF Resource URI Type: %s \nRDF Resource: %s \nRDF Resource Type: %s\n",
                         MODEL, historyType, info.getURIType(), info.getURIStr(), info.getType());
-                saveMessage(message);
+                saveMessage(historyType, message);
                 break;
             case INSERT_LITERAL:
             case INSERT_CONNECTED_LITERAL:
                 MR3Literal literal = (MR3Literal) GraphConstants.getValue(insertCell.getAttributes());
                 message = String.format("%s[%s]\nLanguage: %s \nString: %s \nData type: %s\n",
                         MODEL, historyType, literal.getLanguage(), literal.getString(), literal.getDatatype());
-                saveMessage(message);
+                saveMessage(historyType, message);
                 break;
             case INSERT_ONT_PROPERTY:
             case INSERT_CONNECTED_ONT_PROPERTY:
                 RDFSModel rdfsModel = (RDFSModel) GraphConstants.getValue(insertCell.getAttributes());
                 message = String.format("%s[%s]\nONT Property: %s\nONT Property Type: %s\n",
                         META_MODEL, historyType, rdfsModel.getURIStr(), rdfsModel.getMetaClass());
-                saveMessage(message);
+                saveMessage(historyType, message);
                 break;
             case INSERT_CLASS:
                 rdfsModel = (RDFSModel) GraphConstants.getValue(insertCell.getAttributes());
                 message = String.format("%s[%s]\nONT Class: %s\nONT Class Type: %s\n",
                         META_MODEL, historyType, rdfsModel.getURIStr(), rdfsModel.getMetaClass());
-                saveMessage(message);
+                saveMessage(historyType, message);
                 break;
         }
     }
@@ -470,7 +485,7 @@ public class HistoryManager extends JDialog implements ActionListener {
             case SAVE_PROJECT:
             case SAVE_PROJECT_AS:
                 var message = String.format("[---][%s]\nPath: %s\n", historyType, path);
-                saveMessage(message);
+                saveMessage(historyType, message);
                 break;
         }
     }
@@ -479,7 +494,7 @@ public class HistoryManager extends JDialog implements ActionListener {
         switch (historyType) {
             case NEW_PROJECT:
                 var message = String.format("[---] [%s]\n", historyType);
-                saveMessage(message);
+                saveMessage(historyType, message);
                 break;
             case COPY_CLASS_GRAPH:
             case CUT_CLASS_GRAPH:
@@ -488,7 +503,7 @@ public class HistoryManager extends JDialog implements ActionListener {
             case CUT_PROPERTY_GRAPH:
             case PASTE_PROPERTY_GRAPH:
                 message = String.format("%s[%s]\n", META_MODEL, historyType);
-                saveMessage(message);
+                saveMessage(historyType, message);
                 break;
             case META_MODEL_MANAGEMNET_REPLACE_RESOURCE_TYPE_WITH_CREATE_CLASS:
             case META_MODEL_MANAGEMNET_REPLACE_RESOURCE_TYPE_WITH_REPLACE_CLASS:
@@ -498,21 +513,17 @@ public class HistoryManager extends JDialog implements ActionListener {
             case CUT_RDF_GRAPH:
             case PASTE_RDF_GRAPH:
                 message = String.format("%s[%s]\n", MODEL, historyType);
-                saveMessage(message);
+                saveMessage(historyType, message);
                 break;
         }
-        HistoryModel data = new HistoryModel(historyType, mr3Writer.getProjectModel());
-        dateHistoryDataMap.put(data.getDate(), data);
-        historyTableModel.insertRow(0, new Object[]{data.getDate(), data.getHistoryType()});
     }
 
     private void loadHistory() {
         if (historyTable.getSelectedRowCount() == 1) {
             Date date = (Date) historyTableModel.getValueAt(historyTable.getSelectedRow(), 0);
             HistoryModel data = dateHistoryDataMap.get(date);
-            Model projectModel = ModelFactory.createDefaultModel();
-            projectModel = projectModel.union(data.getProjectModel());
-            mr3Reader.replaceProjectModel(projectModel);
+            mr3.newProject();
+            mr3Reader.replaceProjectModel(data.getProjectModel());
             saveHistory(HistoryType.LOAD_HISTORY);
         }
     }
