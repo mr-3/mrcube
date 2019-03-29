@@ -39,8 +39,8 @@ import java.awt.event.KeyEvent;
  */
 public class ShowHistoryManager extends MR3AbstractAction {
 
-    private static ImageIcon ICON = Utilities.getImageIcon(Translator.getString("RDFSourceCodeViewer.Icon"));
-    private static final String TITLE = "History Manager";
+    private static ImageIcon ICON = Utilities.getImageIcon(Translator.getString("HistoryManager.Icon"));
+    private static final String TITLE = Translator.getString("HistoryManager.Title");
 
     public ShowHistoryManager(MR3 mr3) {
         super(mr3, TITLE, ICON);

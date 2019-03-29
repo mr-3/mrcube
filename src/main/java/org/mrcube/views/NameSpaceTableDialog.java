@@ -296,6 +296,13 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
      * prefix が空でなくかつ，すでに登録されていない場合true
      */
     private boolean isValidPrefix(String prefix) {
+        return prefix != null && !prefix.equals("") && !prefixNSMap.keySet().contains(prefix);
+    }
+
+    /**
+     * prefix が空でなくかつ，すでに登録されていない場合true
+     */
+    private boolean isValidPrefixWithDialog(String prefix) {
         if (prefix == null || prefix.equals("")) {
             Utilities.showErrorMessageDialog(Translator.getString("Warning.Message13"));
             return false;
@@ -314,6 +321,16 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
      * - 名前空間テーブルに登録されてない
      */
     private boolean isValidNamespace(String ns) {
+        return PrefixNSUtil.isValidURI(ns) && !prefixNSMap.values().contains(ns);
+    }
+
+    /**
+     * 名前空間が以下の条件を満たしているか確認する
+     * - 空でもnullでもない
+     * - URI構文に準拠している
+     * - 名前空間テーブルに登録されてない
+     */
+    private boolean isValidNamespaceWithDialog(String ns) {
         if (!PrefixNSUtil.isValidURI(ns)) {
             return false;
         }
@@ -325,7 +342,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
     }
 
     public void addNameSpaceTable(Boolean isAvailable, String prefix, String ns) {
-        if (isValidPrefix(prefix) && isValidNamespace(ns)) {
+        if (isValidPrefixWithDialog(prefix) && isValidNamespaceWithDialog(ns)) {
             prefixNSMap.put(prefix, ns);
             Object[] list = new Object[]{isAvailable, prefix, ns};
             nsTableModel.insertRow(nsTableModel.getRowCount(), list);
@@ -340,16 +357,16 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
         String orgNs = (String) nsTable.getValueAt(selectedRow, 2);
 
         if (orgPrefix.equals(prefix)) {
-            if (!isValidNamespace(ns)) {
+            if (!isValidNamespaceWithDialog(ns)) {
                 return;
             }
         } else {
             if (orgNs.equals(ns)) {
-                if (!isValidPrefix(prefix)) {
+                if (!isValidPrefixWithDialog(prefix)) {
                     return;
                 }
             } else {
-                if (!isValidPrefix(prefix) || !isValidNamespace(ns)) {
+                if (!isValidPrefixWithDialog(prefix) || !isValidNamespaceWithDialog(ns)) {
                     return;
                 }
             }

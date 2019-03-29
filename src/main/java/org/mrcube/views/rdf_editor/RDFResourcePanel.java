@@ -204,7 +204,7 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
         private JComponent getTypeButtonPanel() {
             selectTypeButton = new JButton(Translator.getString("SelectType"));
             selectTypeButton.addActionListener(this);
-            editRDFSClassButton = new JButton(Translator.getString("Class") + Translator.getString("Edit"));
+            editRDFSClassButton = new JButton(Translator.getString("Class") + " " + Translator.getString("Edit"));
             editRDFSClassButton.addActionListener(this);
 
             selectTypeMode(false);
