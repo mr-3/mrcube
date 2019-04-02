@@ -42,8 +42,7 @@ public class HistoryModel {
 
     public HistoryModel(HistoryType type, Model model, String message) {
         savedTime = Calendar.getInstance().getTime();
-        // TODO: プロジェクトを開くと過去のHistoryModelのprojectModelが空になる不具合がある
-        projectModel = ModelFactory.createModelForGraph(model.getGraph());
+        projectModel = ModelFactory.createDefaultModel().add(model);
         historyType = type;
         this.message = message;
     }

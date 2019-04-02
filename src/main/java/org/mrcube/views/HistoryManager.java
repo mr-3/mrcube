@@ -23,6 +23,7 @@
 
 package org.mrcube.views;
 
+import org.apache.jena.rdf.model.ModelFactory;
 import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphConstants;
 import org.mrcube.MR3;
@@ -542,7 +543,8 @@ public class HistoryManager extends JDialog implements ActionListener {
             Date date = (Date) historyTableModel.getValueAt(historyTable.getSelectedRow(), 0);
             HistoryModel data = dateHistoryDataMap.get(date);
             mr3.newProject();
-            mr3Reader.replaceProjectModel(data.getProjectModel());
+            var copyModel = ModelFactory.createDefaultModel().add(data.getProjectModel());
+            mr3Reader.replaceProjectModel(copyModel);
             saveHistory(HistoryType.LOAD_HISTORY);
         }
     }

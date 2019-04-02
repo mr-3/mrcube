@@ -359,7 +359,11 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
         }
 
         if (graph.getType() == GraphType.RDF) {
-            HistoryManager.saveHistory(HistoryType.INSERT_CONNECTED_RESOURCE, targetCell);
+            if (selectedResourcePorts.size() == 0) {
+                HistoryManager.saveHistory(HistoryType.INSERT_RESOURCE, targetCell);
+            } else if (0 < selectedResourcePorts.size()) {
+                HistoryManager.saveHistory(HistoryType.INSERT_CONNECTED_RESOURCE, targetCell);
+            }
         } else {
             HistoryManager.saveHistory(HistoryType.INSERT_CONNECTED_ONT_PROPERTY, targetCell);
         }

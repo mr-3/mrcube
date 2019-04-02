@@ -248,7 +248,6 @@ public class JGParallelEdgeRouter implements Edge.Routing {
 	}
 
 	public int getPreferredLineStyle(EdgeView arg0) {
-		// TODO 自動生成されたメソッド・スタブ
 		return 0;
 	}
 
