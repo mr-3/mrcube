@@ -663,7 +663,7 @@ public class GraphManager {
     public String getRDFSNodeValue(Resource uri, RDFSModel info) {
         switch (cellViewType) {
             case URI:
-                return GraphUtilities.getNSPrefix(uri);
+                return GraphUtilities.getQName(uri);
             case ID:
                 if (uri.getLocalName().length() != 0) {
                     return uri.getLocalName();
@@ -679,7 +679,7 @@ public class GraphManager {
                 }
                 break;
         }
-        return GraphUtilities.getNSPrefix(uri);
+        return GraphUtilities.getQName(uri);
     }
 
     public String getRDFNodeValue(Resource uri, ResourceModel info) {
@@ -688,7 +688,7 @@ public class GraphManager {
         }
         switch (cellViewType) {
             case URI:
-                return GraphUtilities.getNSPrefix(uri);
+                return GraphUtilities.getQName(uri);
             case LABEL:
                 if (info != null) {
                     if (info.getDefaultLabel(getDefaultLang()) != null) {
@@ -704,7 +704,7 @@ public class GraphManager {
                 }
                 break;
         }
-        return GraphUtilities.getNSPrefix(uri);
+        return GraphUtilities.getQName(uri);
     }
 
     private Set<Resource> getSolitudeCells(RDFGraph graph) {

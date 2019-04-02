@@ -209,7 +209,7 @@ public class GraphUtilities {
         return new Dimension(width, height);
     }
 
-    public static String getNSPrefix(Resource uri) {
+    public static String getQName(Resource uri) {
         if (uri.isAnon()) {
             return "";
         }
