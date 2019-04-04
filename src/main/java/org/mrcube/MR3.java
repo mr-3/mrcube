@@ -80,6 +80,7 @@ public class MR3 extends JFrame implements ChangeListener {
     private WeakReference<OptionDialog> optionDialogRef;
     private WeakReference<RDFSourceCodeViewer> RDFSourceCodeViewerRef;
     private HistoryManager historyManager;
+    private SPARQLQueryDialog sparqlQueryDialog;
     private WeakReference<ValidatorDialog> validatorRef;
     private WeakReference<ProjectInfoDialog> projectInfoDialogRef;
     private final MR3LogConsole mr3LogConsole;
@@ -106,6 +107,7 @@ public class MR3 extends JFrame implements ChangeListener {
         mr3Reader = new MR3Reader(gmanager);
         mr3Writer = new MR3Writer(gmanager);
         historyManager = new HistoryManager(this, this);
+        sparqlQueryDialog = new SPARQLQueryDialog(mr3Writer, gmanager);
         initActions();
         getContentPane().add(createToolBar(), BorderLayout.NORTH);
 
@@ -169,6 +171,7 @@ public class MR3 extends JFrame implements ChangeListener {
     private AbstractAction showNSTableDialogAction;
     private AbstractAction showRDFSourceCodeViewer;
     private AbstractAction findResAction;
+    private AbstractAction showSPARQLQueryDialogAction;
     private AbstractAction showProjectInfoAction;
     private AbstractAction showLogConsoleAciton;
     private AbstractAction showHistoryManagerAciton;
@@ -201,6 +204,7 @@ public class MR3 extends JFrame implements ChangeListener {
         showNSTableDialogAction = new ShowNSTableDialog(this);
         showRDFSourceCodeViewer = new ShowRDFSourceCodeViewer(this, Translator.getString("RDFSourceCodeViewer.Title"));
         findResAction = new FindResAction(null, gmanager);
+        showSPARQLQueryDialogAction = new ShowSPARQLQueryDialog(this, "SPARQL Query Dialog");
         showProjectInfoAction = new ShowProjectInfoDialog(this);
         showLogConsoleAciton = new ShowLogConsole(this);
         showHistoryManagerAciton = new ShowHistoryManager(this);
@@ -218,6 +222,7 @@ public class MR3 extends JFrame implements ChangeListener {
         toolbar.add(saveFileAsAction);
         toolbar.addSeparator();
         toolbar.add(findResAction);
+        toolbar.add(showSPARQLQueryDialogAction);
         toolbar.addSeparator();
         toolbar.add(showAttrDialogAction);
         toolbar.add(showNSTableDialogAction);
@@ -308,6 +313,10 @@ public class MR3 extends JFrame implements ChangeListener {
 
     public HistoryManager getHistoryManager() {
         return historyManager;
+    }
+
+    public SPARQLQueryDialog getSparqlQueryDialog() {
+        return sparqlQueryDialog;
     }
 
     public ValidatorDialog getValidator() {
@@ -485,6 +494,7 @@ public class MR3 extends JFrame implements ChangeListener {
         menu.setMnemonic('t');
         menu.add(showRDFSourceCodeViewer);
         menu.add(findResAction);
+        menu.add(showSPARQLQueryDialogAction);
         menu.add(showValidatorAction);
         menu.add(showProjectInfoAction);
         menu.add(showHistoryManagerAciton);
