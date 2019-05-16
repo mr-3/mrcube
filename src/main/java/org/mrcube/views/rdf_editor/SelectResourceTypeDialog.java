@@ -25,6 +25,7 @@ package org.mrcube.views.rdf_editor;
 
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.jgraph.OntClassCell;
+import org.mrcube.jgraph.OntPropertyCell;
 import org.mrcube.jgraph.RDFGraph;
 import org.mrcube.models.MR3Constants;
 import org.mrcube.utils.GraphUtilities;
@@ -73,10 +74,10 @@ public class SelectResourceTypeDialog extends JDialog implements ActionListener 
         if (panel.getPrevCell() != null) {
             if (isConfirmed) {
                 isConfirmed = false;
-                GraphUtilities.changeDefaultCellStyle(panel.getGraph(), panel.getPrevCell(), OntClassCell.backgroundColor);
+                GraphUtilities.changeCellStyle(panel.getGraph(), panel.getPrevCell(), OntPropertyCell.foregroundColor, OntClassCell.backgroundColor, OntClassCell.borderColor);
                 return panel.getURI();
             }
-            GraphUtilities.changeDefaultCellStyle(panel.getGraph(), panel.getPrevCell(), OntClassCell.backgroundColor);
+            GraphUtilities.changeCellStyle(panel.getGraph(), panel.getPrevCell(), OntClassCell.foregroundColor, OntClassCell.backgroundColor, OntClassCell.borderColor);
         }
         return null;
     }

@@ -188,12 +188,12 @@ public abstract class SelectClassPanel extends JPanel implements GraphSelectionL
         return graph;
     }
 
-    void changeAllCellColor(Color color) {
+    void changeAllCellColor(Color fgColor, Color bgColor, Color borderColor) {
         Object[] cells = graph.getAllCells();
         for (Object cell1 : cells) {
             GraphCell cell = (GraphCell) cell1;
             if (RDFGraph.isRDFSCell(cell)) {
-                GraphUtilities.changeDefaultCellStyle(graph, cell, color);
+                GraphUtilities.changeCellStyle(graph, cell, fgColor, bgColor, borderColor);
             }
         }
     }

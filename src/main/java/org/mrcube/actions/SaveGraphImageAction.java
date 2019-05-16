@@ -22,14 +22,23 @@
  */
 package org.mrcube.actions;
 
+import org.apache.batik.dom.GenericDOMImplementation;
+import org.apache.batik.svggen.SVGGraphics2D;
+import org.jgraph.JGraph;
+import org.jgraph.graph.GraphLayoutCache;
+import org.jgraph.plaf.basic.BasicGraphUI;
 import org.mrcube.MR3;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.models.MR3Constants;
 import org.mrcube.utils.GPConverter;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
+import org.mrcube.utils.file_filter.JPGFileFilter;
 import org.mrcube.utils.file_filter.MR3FileFilter;
 import org.mrcube.utils.file_filter.PNGFileFilter;
+import org.mrcube.utils.file_filter.SVGFileFilter;
+import org.w3c.dom.DOMImplementation;
+import org.w3c.dom.Document;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -37,9 +46,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 public class SaveGraphImageAction extends AbstractAction {
 
@@ -47,7 +56,8 @@ public class SaveGraphImageAction extends AbstractAction {
     private MR3Constants.GraphType graphType;
     protected JFileChooser imageFileChooser;
     private static final PNGFileFilter pngFileFilter = new PNGFileFilter();
-    private static final String IMAGE_FILE_TYPE = "png";
+    private static final JPGFileFilter jpgFileFilter = new JPGFileFilter();
+    private static final SVGFileFilter svgFileFilter = new SVGFileFilter();
     private static final String TITLE = Translator.getString("Action.SaveGraphImage.Text");
     private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("Action.SaveGraphImage.Icon"));
 
@@ -57,6 +67,8 @@ public class SaveGraphImageAction extends AbstractAction {
         this.gmanager = gmanager;
         imageFileChooser = new JFileChooser();
         imageFileChooser.setFileFilter(pngFileFilter);
+        imageFileChooser.setFileFilter(jpgFileFilter);
+        imageFileChooser.setFileFilter(svgFileFilter);
         setValues();
     }
 
@@ -87,10 +99,22 @@ public class SaveGraphImageAction extends AbstractAction {
     private String addFileExtension(String defaultPath, String extension) {
         String ext = (extension != null) ? "." + extension.toLowerCase() : "";
         if (extension != null && !defaultPath.toLowerCase().endsWith(".png")
-        ) {
+                && !defaultPath.toLowerCase().endsWith(".jpg") && !defaultPath.toLowerCase().endsWith(".svg")) {
             defaultPath += ext;
         }
         return defaultPath;
+    }
+
+
+    private String getExtension(File f) {
+        String ext = null;
+        String s = f.getName();
+        int i = s.lastIndexOf('.');
+
+        if (i > 0 && i < s.length() - 1) {
+            ext = s.substring(i + 1).toLowerCase();
+        }
+        return ext;
     }
 
     @Override
@@ -99,21 +123,47 @@ public class SaveGraphImageAction extends AbstractAction {
         if (file == null) {
             return;
         }
+        String ext = getExtension(file);
         try {
             BufferedImage img = null;
+            JGraph graph = null;
             switch (graphType) {
                 case RDF:
                     img = GPConverter.toImage(gmanager.getCurrentRDFGraph());
+                    graph = gmanager.getCurrentRDFGraph();
                     break;
                 case CLASS:
                     img = GPConverter.toImage(gmanager.getCurrentClassGraph());
+                    graph = gmanager.getCurrentClassGraph();
                     break;
                 case PROPERTY:
                     img = GPConverter.toImage(gmanager.getCurrentPropertyGraph());
+                    graph = gmanager.getCurrentPropertyGraph();
                     break;
             }
             if (img != null) {
-                ImageIO.write(img, IMAGE_FILE_TYPE, file);
+                switch (ext) {
+                    case "png":
+                    case "jpg":
+                        ImageIO.write(img, ext, file);
+                        break;
+                    case "svg":
+                        // acknowledgement
+                        // http://devdocs.inightmare.org/2012/06/28/exporting-jgraph-to-svg/
+                        Object[] cells = graph.getRoots();
+                        Rectangle2D bounds = graph.toScreen(graph.getCellBounds(cells));
+                        System.out.println(bounds);
+                        DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
+                        Document document = domImpl.createDocument("http://mrcube.org", "svg", null);
+                        SVGGraphics2D svgGraphics = new SVGGraphics2D(document);
+                        svgGraphics.setSVGCanvasSize(new Dimension((int) Math.round(bounds.getWidth()), (int) Math.round(bounds.getHeight())));
+                        RepaintManager repaintManager = RepaintManager.currentManager(graph);
+                        repaintManager.setDoubleBufferingEnabled(true);
+                        BasicGraphUI gui = (BasicGraphUI) graph.getUI();
+                        gui.drawGraph(svgGraphics, bounds);
+                        svgGraphics.stream(new OutputStreamWriter(new FileOutputStream(file)), false);
+                        break;
+                }
             }
         } catch (IOException ioe) {
             ioe.printStackTrace();

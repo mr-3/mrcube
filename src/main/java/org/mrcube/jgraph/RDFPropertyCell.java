@@ -33,16 +33,20 @@ import java.awt.*;
  */
 public class RDFPropertyCell extends DefaultEdge implements RDFCellStyleChanger {
 
-    public static Color fontColor = OntPropertyCell.backgroundColor;
-    public static final Color borderColor = new Color(43, 43, 43);
-    private static Color selectedBorderColor =  new Color(15, 35, 80);
+    public static final Color DEFAULT_FG_COLOR = OntPropertyCell.DEFAULT_BG_COLOR;
+    public static final Color DEFAULT_BORDER_COLOR = new Color(43, 43, 43);
+    public static final Color DEFAULT_SELECTED_BORDER_COLOR =  new Color(15, 35, 80);
+
+    public static Color foregroundColor = OntPropertyCell.backgroundColor;
+    public static Color borderColor = new Color(43, 43, 43);
+    public static Color selectedBorderColor = new Color(15, 35, 80);
 
     public void changeDefaultCellStyle(RDFGraph graph) {
-        GraphUtilities.changeDefaultCellStyle(graph, this, borderColor);
+        GraphUtilities.changeCellStyle(graph, this, foregroundColor, null, borderColor);
     }
 
     public void changeSelectedCellStyle(RDFGraph graph) {
-        GraphUtilities.changeCellStyle(graph, this, selectedBorderColor);
+        GraphUtilities.changeCellStyle(graph, this, foregroundColor, null, selectedBorderColor);
     }
 
     public RDFPropertyCell() {

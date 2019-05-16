@@ -33,19 +33,28 @@ import java.awt.*;
  */
 public class OntPropertyCell extends DefaultGraphCell implements RDFCellStyleChanger {
 
+    public static final Color DEFAULT_FG_COLOR = Color.white;
+    public static final Color DEFAULT_BG_COLOR =  new Color(136, 33, 17);
+    public static final Color DEFAULT_BORDER_COLOR =  new Color(136, 33, 17);
+    public static final Color DEFAULT_SELECTED_BACKGROUND_COLOR =  new Color(230, 100, 90);
+    public static final Color DEFAULT_SELECTED_BORDER_COLOR =  new Color(230, 100, 90);
+
+    public static Color foregroundColor = Color.white;
     public static Color backgroundColor = new Color(136, 33, 17);
+    public static Color borderColor = new Color(136, 33, 17);
     public static Color selectedBackgroundColor = new Color(230, 100, 90);
+    public static Color selectedBorderColor = new Color(230, 100, 90);
 
     public OntPropertyCell(Object userObject) {
         super(userObject);
     }
 
     public void changeDefaultCellStyle(RDFGraph graph) {
-        GraphUtilities.changeDefaultCellStyle(graph, this, backgroundColor);
+        GraphUtilities.changeCellStyle(graph, this, foregroundColor, backgroundColor, borderColor);
     }
 
     public void changeSelectedCellStyle(RDFGraph graph) {
-        GraphUtilities.changeCellStyle(graph, this, selectedBackgroundColor);
+        GraphUtilities.changeCellStyle(graph, this, foregroundColor, selectedBackgroundColor, selectedBorderColor);
     }
 
 }

@@ -30,8 +30,7 @@ import org.mrcube.editors.PropertyEditor;
 import org.mrcube.editors.RDFEditor;
 import org.mrcube.io.MR3Reader;
 import org.mrcube.io.MR3Writer;
-import org.mrcube.jgraph.GraphManager;
-import org.mrcube.jgraph.RDFGraph;
+import org.mrcube.jgraph.*;
 import org.mrcube.layout.GraphLayoutUtilities;
 import org.mrcube.models.MR3Constants;
 import org.mrcube.models.MR3Constants.CellViewType;
@@ -395,6 +394,36 @@ public class MR3 extends JFrame implements ChangeListener {
                 PrefConstants.PROPERTY_VERTICAL_SPACE, Integer.toString(GraphLayoutUtilities.VERTICAL_SPACE)));
         GraphLayoutUtilities.PROPERTY_HORIZONTAL_SPACE = Integer.parseInt(userPrefs.get(
                 PrefConstants.PROPERTY_HORIZONTAL_SPACE, Integer.toString(GraphLayoutUtilities.HORIZONTAL_SPACE)));
+
+
+        RDFResourceCell.foregroundColor = new Color(userPrefs.getInt(PrefConstants.RDFResourceForegroundColor, RDFResourceCell.DEFAULT_FG_COLOR.getRGB()));
+        RDFPropertyCell.foregroundColor = new Color(userPrefs.getInt(PrefConstants.RDFPropertyForegroundColor, RDFPropertyCell.DEFAULT_FG_COLOR.getRGB()));
+        RDFLiteralCell.foregroundColor = new Color(userPrefs.getInt(PrefConstants.RDFLiteralForegroundColor, RDFLiteralCell.DEFAULT_FG_COLOR.getRGB()));
+        OntClassCell.foregroundColor = new Color(userPrefs.getInt(PrefConstants.ClassForegroundColor, OntClassCell.DEFAULT_FG_COLOR.getRGB()));
+        OntPropertyCell.foregroundColor = new Color(userPrefs.getInt(PrefConstants.PropertyForegroundColor, OntPropertyCell.DEFAULT_FG_COLOR.getRGB()));
+
+        RDFResourceCell.backgroundColor = new Color(userPrefs.getInt(PrefConstants.RDFResourceBackgroundColor, RDFResourceCell.DEFAULT_BG_COLOR.getRGB()));
+        RDFLiteralCell.backgroundColor = new Color(userPrefs.getInt(PrefConstants.RDFLiteralBackgroundColor, RDFLiteralCell.DEFAULT_BG_COLOR.getRGB()));
+        OntClassCell.backgroundColor = new Color(userPrefs.getInt(PrefConstants.ClassBackgroundColor, OntClassCell.DEFAULT_BG_COLOR.getRGB()));
+        OntPropertyCell.backgroundColor = new Color(userPrefs.getInt(PrefConstants.PropertyBackgroundColor, OntPropertyCell.DEFAULT_BG_COLOR.getRGB()));
+
+        RDFResourceCell.borderColor = new Color(userPrefs.getInt(PrefConstants.RDFResourceBorderColor, RDFResourceCell.DEFAULT_BORDER_COLOR.getRGB()));
+        RDFPropertyCell.borderColor = new Color(userPrefs.getInt(PrefConstants.RDFPropertyBorderColor, RDFPropertyCell.DEFAULT_BORDER_COLOR.getRGB()));
+        RDFLiteralCell.borderColor = new Color(userPrefs.getInt(PrefConstants.RDFLiteralBorderColor, RDFLiteralCell.DEFAULT_BORDER_COLOR.getRGB()));
+        OntClassCell.borderColor = new Color(userPrefs.getInt(PrefConstants.ClassBorderColor, OntClassCell.DEFAULT_BORDER_COLOR.getRGB()));
+        OntPropertyCell.borderColor = new Color(userPrefs.getInt(PrefConstants.PropertyBorderColor, OntPropertyCell.DEFAULT_BORDER_COLOR.getRGB()));
+
+        RDFResourceCell.selectedBackgroundColor = new Color(userPrefs.getInt(PrefConstants.RDFResourceSelectedBackgroundColor, RDFResourceCell.DEFAULT_SELECTED_BACKGROUND_COLOR.getRGB()));
+        RDFLiteralCell.selectedBackgroundColor = new Color(userPrefs.getInt(PrefConstants.RDFLiteralSelectedBackgroundColor, RDFLiteralCell.DEFAULT_SELECTED_BACKGROUND_COLOR.getRGB()));
+        OntClassCell.selectedBackgroundColor = new Color(userPrefs.getInt(PrefConstants.ClassSelectedBackgroundColor, OntClassCell.DEFAULT_SELECTED_BACKGROUND_COLOR.getRGB()));
+        OntPropertyCell.selectedBackgroundColor = new Color(userPrefs.getInt(PrefConstants.PropertySelectedBackgroundColor, OntPropertyCell.DEFAULT_SELECTED_BACKGROUND_COLOR.getRGB()));
+
+        RDFResourceCell.selectedBorderColor = new Color(userPrefs.getInt(PrefConstants.RDFResourceSelectedBorderColor, RDFResourceCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()));
+        RDFPropertyCell.selectedBorderColor = new Color(userPrefs.getInt(PrefConstants.RDFPropertySelectedBorderColor, RDFPropertyCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()));
+        RDFLiteralCell.selectedBorderColor = new Color(userPrefs.getInt(PrefConstants.RDFLiteralSelectedBorderColor, RDFLiteralCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()));
+        OntClassCell.selectedBorderColor = new Color(userPrefs.getInt(PrefConstants.ClassSelectedBorderColor, OntClassCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()));
+        OntPropertyCell.selectedBorderColor = new Color(userPrefs.getInt(PrefConstants.PropertySelectedBorderColor, OntPropertyCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()));
+        GraphUtilities.isBlackAndWhite = userPrefs.getBoolean(PrefConstants.BlackAndWhite, true);
 
         MR3CellMaker.CELL_WIDTH = Integer.parseInt(userPrefs.get(PrefConstants.NODE_WIDTH, Integer.toString(MR3CellMaker.CELL_WIDTH)));
         MR3CellMaker.CELL_HEIGHT = Integer.parseInt(userPrefs.get(PrefConstants.NODE_HEIGHT, Integer.toString(MR3CellMaker.CELL_HEIGHT)));

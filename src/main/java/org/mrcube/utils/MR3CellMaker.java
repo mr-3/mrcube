@@ -62,15 +62,20 @@ public class MR3CellMaker {
 
     public AttributeMap getEdgeMap(Object info, Edge edge) {
         AttributeMap map = new AttributeMap();
-        GraphConstants.setRouting(map, JGParallelEdgeRouter.getSharedInstance());
         GraphConstants.setLineStyle(map, GraphConstants.STYLE_BEZIER);
         GraphConstants.setLineEnd(map, GraphConstants.ARROW_TECHNICAL);
-        GraphConstants.setLineColor(map, RDFPropertyCell.borderColor);
+        GraphConstants.setRouting(map, JGParallelEdgeRouter.getSharedInstance());
         if (GraphUtilities.defaultFont != null) {
             GraphConstants.setFont(map, GraphUtilities.defaultFont);
         }
-        GraphConstants.setForeground(map, RDFPropertyCell.fontColor);
         GraphConstants.setValue(edge.getAttributes(), Objects.requireNonNullElse(info, ""));
+        if (GraphUtilities.isBlackAndWhite) {
+            GraphConstants.setLineColor(map, GraphUtilities.graphForegroundColor);
+            GraphConstants.setForeground(map, GraphUtilities.graphForegroundColor);
+        } else {
+            GraphConstants.setLineColor(map, RDFPropertyCell.borderColor);
+            GraphConstants.setForeground(map, RDFPropertyCell.foregroundColor);
+        }
         return map;
     }
 
@@ -103,7 +108,11 @@ public class MR3CellMaker {
         }
 
         GraphConstants.setOpaque(map, false);
-        GraphConstants.setForeground(map, TypeViewCell.fontColor);
+        if (GraphUtilities.isBlackAndWhite) {
+            GraphConstants.setForeground(map, GraphUtilities.graphForegroundColor);
+        } else {
+            GraphConstants.setForeground(map, TypeViewCell.fontColor);
+        }
 
         GraphConstants.setBounds(map, Objects.requireNonNullElseGet(rectangle, () -> new Rectangle(initRectangle)));
 
@@ -112,13 +121,20 @@ public class MR3CellMaker {
 
     public AttributeMap getResourceMap(Rectangle2D rectangle, Color cellColor) {
         AttributeMap map = new AttributeMap();
-
-        GraphConstants.setLineWidth(map, RDFCellStyleChanger.LINE_WIDTH);
-        GraphConstants.setForeground(map, Color.white);
-        GraphConstants.setBorderColor(map, cellColor);
-        GraphConstants.setBackground(map, cellColor);
-        GraphConstants.setFont(map, new Font("SansSerif", Font.PLAIN, RDFCellStyleChanger.FONT_SIZE));
-        GraphConstants.setOpaque(map, true);
+        if (GraphUtilities.isBlackAndWhite) {
+            GraphConstants.setLineWidth(map, RDFCellStyleChanger.LINE_WIDTH);
+            GraphConstants.setForeground(map, GraphUtilities.graphForegroundColor);
+            GraphConstants.setBorderColor(map, GraphUtilities.graphForegroundColor);
+            GraphConstants.setBackground(map, GraphUtilities.graphBackgroundColor);
+            GraphConstants.setOpaque(map, false);
+        } else {
+            GraphConstants.setLineWidth(map, RDFCellStyleChanger.LINE_WIDTH);
+            GraphConstants.setForeground(map, Color.white);
+            GraphConstants.setBorderColor(map, cellColor);
+            GraphConstants.setBackground(map, cellColor);
+            GraphConstants.setFont(map, new Font("SansSerif", Font.PLAIN, RDFCellStyleChanger.FONT_SIZE));
+            GraphConstants.setOpaque(map, true);
+        }
 
         GraphConstants.setBounds(map, Objects.requireNonNullElseGet(rectangle, () -> new Rectangle(initRectangle)));
         return map;
