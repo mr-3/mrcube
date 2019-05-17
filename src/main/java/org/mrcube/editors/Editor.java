@@ -78,6 +78,9 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
     public static final ImageIcon RESOURCE_ICON = Utilities.getImageIcon("resource.png");
     public static final ImageIcon LITERAL_ICON = Utilities.getImageIcon("literal.png");
 
+    public static final Color DEFAUlT_BACKGROUND_COLOR = Color.white;
+    public static Color backgroundColor = DEFAUlT_BACKGROUND_COLOR;
+
     Editor() {
     }
 

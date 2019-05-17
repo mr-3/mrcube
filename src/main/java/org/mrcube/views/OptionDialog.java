@@ -26,6 +26,7 @@ package org.mrcube.views;
 import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
+import org.mrcube.editors.Editor;
 import org.mrcube.jgraph.*;
 import org.mrcube.layout.GraphLayoutUtilities;
 import org.mrcube.models.MR3Constants;
@@ -892,7 +893,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
     }
 
 
-    public enum RenderingResourceType {RDFResource, RDFProperty, RDFLiteral, Class, Property}
+    public enum RenderingResourceType {RDFResource, RDFProperty, RDFLiteral, Class, Property, Editor}
 
     public enum RenderingType {Foreground, Background, Border, SelectedBackground, SelectedBorder}
 
@@ -908,26 +909,35 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         private ResourceColorPanel rdfLiteralColorPanel;
         private ResourceColorPanel classColorPanel;
         private ResourceColorPanel propertyColorPanel;
+        private ResourceColorPanel editorColorPanel;
 
         RenderingPanel() {
             setDefaultColorsButton = new JButton(Translator.getString("PreferenceDialog.RenderingTab.SetDefaultColors"));
             setDefaultColorsButton.addActionListener(this);
 
             rdfResourceColorPanel = new ResourceColorPanel(Translator.getString("PreferenceDialog.RenderingTab.RDFResourceColor"),
-                    RenderingResourceType.RDFResource, RDFResourceCell.foregroundColor, RDFResourceCell.backgroundColor, RDFResourceCell.borderColor,
+                    RenderingResourceType.RDFResource, RDFResourceCell.foregroundColor,
+                    RDFResourceCell.backgroundColor, RDFResourceCell.borderColor,
                     RDFResourceCell.selectedBackgroundColor, RDFResourceCell.selectedBorderColor);
             rdfPropertyColorPanel = new ResourceColorPanel(Translator.getString("PreferenceDialog.RenderingTab.RDFPropertyColor"),
-                    RenderingResourceType.RDFProperty, RDFPropertyCell.foregroundColor, null, RDFPropertyCell.borderColor,
+                    RenderingResourceType.RDFProperty, RDFPropertyCell.foregroundColor,
+                    null, RDFPropertyCell.borderColor,
                     null, RDFPropertyCell.selectedBorderColor);
             rdfLiteralColorPanel = new ResourceColorPanel(Translator.getString("PreferenceDialog.RenderingTab.RDFLiteralColor"),
-                    RenderingResourceType.RDFLiteral, RDFLiteralCell.foregroundColor, RDFLiteralCell.backgroundColor, RDFLiteralCell.borderColor,
+                    RenderingResourceType.RDFLiteral, RDFLiteralCell.foregroundColor,
+                    RDFLiteralCell.backgroundColor, RDFLiteralCell.borderColor,
                     RDFLiteralCell.selectedBackgroundColor, RDFLiteralCell.selectedBorderColor);
             classColorPanel = new ResourceColorPanel(Translator.getString("PreferenceDialog.RenderingTab.ClassColor"),
-                    RenderingResourceType.Class, OntClassCell.foregroundColor, OntClassCell.backgroundColor, OntClassCell.borderColor,
+                    RenderingResourceType.Class, OntClassCell.foregroundColor,
+                    OntClassCell.backgroundColor, OntClassCell.borderColor,
                     OntClassCell.selectedBackgroundColor, OntClassCell.selectedBorderColor);
             propertyColorPanel = new ResourceColorPanel(Translator.getString("PreferenceDialog.RenderingTab.PropertyColor"),
-                    RenderingResourceType.Property, OntPropertyCell.foregroundColor, OntPropertyCell.backgroundColor, OntPropertyCell.borderColor,
+                    RenderingResourceType.Property, OntPropertyCell.foregroundColor,
+                    OntPropertyCell.backgroundColor, OntPropertyCell.borderColor,
                     OntPropertyCell.selectedBackgroundColor, OntPropertyCell.selectedBorderColor);
+            editorColorPanel = new ResourceColorPanel(Translator.getString("PreferenceDialog.RenderingTab.EditorColor"),
+                    RenderingResourceType.Editor, null, Editor.backgroundColor,
+                    null, null, null);
 
             isBlackAndWhiteBox = new JCheckBox(Translator.getString("PreferenceDialog.RenderingTab.Option.BlackAndWhite"), true);
             isAntialiasBox = new JCheckBox(Translator.getString("PreferenceDialog.RenderingTab.Option.Antialias"), false);
@@ -939,6 +949,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             colorPanel.add(rdfLiteralColorPanel);
             colorPanel.add(classColorPanel);
             colorPanel.add(propertyColorPanel);
+            colorPanel.add(editorColorPanel);
             JPanel optionPanel = new JPanel();
             optionPanel.setBorder(BorderFactory.createTitledBorder(Translator.getString("PreferenceDialog.RenderingTab.Option")));
             optionPanel.add(isBlackAndWhiteBox);
@@ -1014,9 +1025,13 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             userPrefs.putInt(PrefConstants.PropertySelectedBorderColor, propertyColorPanel.getSelectedBorderColor().getRGB());
             OntPropertyCell.selectedBorderColor = propertyColorPanel.getSelectedBorderColor();
 
+            userPrefs.putInt(PrefConstants.EditorBackgroundColor, editorColorPanel.getBgColor().getRGB());
+            Editor.backgroundColor = editorColorPanel.getBgColor();
+
             userPrefs.putBoolean(PrefConstants.BlackAndWhite, isBlackAndWhiteBox.isSelected());
             GraphUtilities.isBlackAndWhite = isBlackAndWhiteBox.isSelected();
             GraphUtilities.changeAllCellColor(gmanager);
+            GraphUtilities.resetEditorBackgroudColor(gmanager);
 
             userPrefs.putBoolean(PrefConstants.Antialias, isAntialiasBox.isSelected());
             gmanager.setAntialias();
@@ -1120,6 +1135,11 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
                             OntPropertyCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()))
             );
 
+            editorColorPanel.setBgColor(
+                    new Color(userPrefs.getInt(PrefConstants.EditorBackgroundColor,
+                            Editor.DEFAUlT_BACKGROUND_COLOR.getRGB()))
+            );
+
             isBlackAndWhiteBox.setSelected(userPrefs.getBoolean(PrefConstants.BlackAndWhite, false));
             isAntialiasBox.setSelected(userPrefs.getBoolean(PrefConstants.Antialias, true));
         }
@@ -1154,11 +1174,14 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             classColorPanel.setSelectedBorderColor(OntClassCell.DEFAULT_SELECTED_BORDER_COLOR);
             propertyColorPanel.setSelectedBorderColor(OntPropertyCell.DEFAULT_SELECTED_BORDER_COLOR);
 
+            editorColorPanel.setBgColor(Editor.DEFAUlT_BACKGROUND_COLOR);
+
             rdfResourceColorPanel.repaint();
             rdfPropertyColorPanel.repaint();
             rdfLiteralColorPanel.repaint();
             classColorPanel.repaint();
             propertyColorPanel.repaint();
+            editorColorPanel.repaint();
         }
     }
 

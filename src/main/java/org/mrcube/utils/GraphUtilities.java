@@ -27,6 +27,7 @@ import org.apache.jena.rdf.model.Resource;
 import org.jgraph.graph.AttributeMap;
 import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphConstants;
+import org.mrcube.editors.Editor;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.jgraph.RDFCellStyleChanger;
 import org.mrcube.jgraph.RDFGraph;
@@ -266,6 +267,18 @@ public class GraphUtilities {
             GraphCell cell = (GraphCell) cell1;
             AttributeMap map = cell.getAttributes();
             editCell(cell, map, graph);
+        }
+    }
+
+    public static void resetEditorBackgroudColor(GraphManager gmanager) {
+        if (GraphUtilities.isBlackAndWhite) {
+            gmanager.getCurrentRDFGraph().setBackground(Editor.DEFAUlT_BACKGROUND_COLOR);
+            gmanager.getCurrentClassGraph().setBackground(Editor.DEFAUlT_BACKGROUND_COLOR);
+            gmanager.getCurrentPropertyGraph().setBackground(Editor.DEFAUlT_BACKGROUND_COLOR);
+        } else {
+            gmanager.getCurrentRDFGraph().resetBackground();
+            gmanager.getCurrentClassGraph().resetBackground();
+            gmanager.getCurrentPropertyGraph().resetBackground();
         }
     }
 

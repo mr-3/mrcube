@@ -26,6 +26,7 @@ package org.mrcube;
 import org.apache.jena.sys.JenaSystem;
 import org.mrcube.actions.*;
 import org.mrcube.editors.ClassEditor;
+import org.mrcube.editors.Editor;
 import org.mrcube.editors.PropertyEditor;
 import org.mrcube.editors.RDFEditor;
 import org.mrcube.io.MR3Reader;
@@ -439,7 +440,11 @@ public class MR3 extends JFrame implements ChangeListener {
         RDFLiteralCell.selectedBorderColor = new Color(userPrefs.getInt(PrefConstants.RDFLiteralSelectedBorderColor, RDFLiteralCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()));
         OntClassCell.selectedBorderColor = new Color(userPrefs.getInt(PrefConstants.ClassSelectedBorderColor, OntClassCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()));
         OntPropertyCell.selectedBorderColor = new Color(userPrefs.getInt(PrefConstants.PropertySelectedBorderColor, OntPropertyCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()));
+
+        Editor.backgroundColor = new Color(userPrefs.getInt(PrefConstants.EditorBackgroundColor, Editor.DEFAUlT_BACKGROUND_COLOR.getRGB()));
         GraphUtilities.isBlackAndWhite = userPrefs.getBoolean(PrefConstants.BlackAndWhite, false);
+
+        GraphUtilities.resetEditorBackgroudColor(gmanager);
 
         MR3CellMaker.CELL_WIDTH = Integer.parseInt(userPrefs.get(PrefConstants.NODE_WIDTH, Integer.toString(MR3CellMaker.CELL_WIDTH)));
         MR3CellMaker.CELL_HEIGHT = Integer.parseInt(userPrefs.get(PrefConstants.NODE_HEIGHT, Integer.toString(MR3CellMaker.CELL_HEIGHT)));

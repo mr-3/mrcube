@@ -60,7 +60,14 @@ public class ResourceColorPanel extends JPanel {
         selectedBorderColorButton = initColorButton(OptionDialog.RenderingType.SelectedBorder);
 
         setBorder(BorderFactory.createTitledBorder(resourceType));
-        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        if (renderingResourceType == OptionDialog.RenderingResourceType.Editor) {
+            JPanel bgColorPanel = new JPanel();
+            bgColorPanel.add(bgColorLabel);
+            bgColorPanel.add(bgColorButton);
+            add(bgColorPanel);
+            return;
+        }
         JPanel fgColorPanel = new JPanel();
         fgColorPanel.add(fgColorLabel);
         fgColorPanel.add(fgColorButton);
@@ -76,6 +83,7 @@ public class ResourceColorPanel extends JPanel {
             add(selectedBgColorPanel);
         }
         JPanel borderColorPanel = new JPanel();
+        borderColorButton.setAlignmentY(0f);
         borderColorPanel.add(borderColorLabel);
         borderColorPanel.add(borderColorButton);
         add(borderColorPanel);

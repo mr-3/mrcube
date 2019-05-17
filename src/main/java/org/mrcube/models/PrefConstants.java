@@ -114,7 +114,7 @@ public class PrefConstants {
     public static final String ClassSelectedBorderColor = "Class Selected Border Color";
     public static final String PropertySelectedBorderColor = "Property Selected Border Color";
 
-    public static final String EditorBackgroundColor = "Background Color";
+    public static final String EditorBackgroundColor = "Editor Background Color";
 
     public static final String WorkDirectory = "DefaultWorkDirectory";
     public static final String ResourceDirectory = "DefaultResourceDirectory";

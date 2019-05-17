@@ -29,6 +29,7 @@ import org.mrcube.actions.CopyAction;
 import org.mrcube.actions.CutAction;
 import org.mrcube.actions.PasteAction;
 import org.mrcube.actions.SelectAllNodesAction;
+import org.mrcube.editors.Editor;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.MR3Literal;
 import org.mrcube.models.RDFResourceModel;
@@ -39,6 +40,7 @@ import org.mrcube.utils.Translator;
 
 import javax.swing.*;
 import javax.swing.plaf.ActionMapUIResource;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.print.PageFormat;
 import java.text.BreakIterator;
@@ -147,6 +149,11 @@ public class RDFGraph extends JGraph {
         RDFGraphUI rgui = new RDFGraphUI(this, gmanager);
         setUI(rgui);
         setTransferHandler(rgui.createTransferHandler());
+        setBackground(Editor.backgroundColor);
+    }
+
+    public void resetBackground() {
+        setBackground(Editor.backgroundColor);
     }
 
     public boolean isContains(Object c) {
