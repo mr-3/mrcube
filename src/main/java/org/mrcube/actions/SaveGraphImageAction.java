@@ -25,10 +25,10 @@ package org.mrcube.actions;
 import org.apache.batik.dom.GenericDOMImplementation;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.jgraph.JGraph;
-import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.plaf.basic.BasicGraphUI;
 import org.mrcube.MR3;
 import org.mrcube.jgraph.GraphManager;
+import org.mrcube.jgraph.RDFGraph;
 import org.mrcube.models.MR3Constants;
 import org.mrcube.utils.GPConverter;
 import org.mrcube.utils.Translator;
@@ -48,7 +48,10 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 public class SaveGraphImageAction extends AbstractAction {
 
@@ -117,53 +120,60 @@ public class SaveGraphImageAction extends AbstractAction {
         return ext;
     }
 
+    private RDFGraph getRDFGraph(MR3Constants.GraphType graphType) {
+        switch (graphType) {
+            case RDF:
+                return gmanager.getCurrentRDFGraph();
+            case CLASS:
+                return gmanager.getCurrentClassGraph();
+            case PROPERTY:
+                return gmanager.getCurrentPropertyGraph();
+            default:
+                return gmanager.getCurrentRDFGraph();
+        }
+    }
+
+    private BufferedImage getGraphImage() {
+        return GPConverter.toImage(getRDFGraph(graphType));
+    }
+
+    private Dimension getSVGCanvasDimension(Rectangle2D bounds) {
+        return new Dimension((int) Math.round(bounds.getX() + bounds.getWidth()),
+                (int) Math.round(bounds.getY() + bounds.getHeight()));
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        File file = selectSaveImageFile();
-        if (file == null) {
+        File imgFile = selectSaveImageFile();
+        if (imgFile == null) {
             return;
         }
-        String ext = getExtension(file);
+        String ext = getExtension(imgFile);
         try {
-            BufferedImage img = null;
-            JGraph graph = null;
-            switch (graphType) {
-                case RDF:
-                    img = GPConverter.toImage(gmanager.getCurrentRDFGraph());
-                    graph = gmanager.getCurrentRDFGraph();
+            switch (ext) {
+                case "png":
+                case "jpg":
+                    BufferedImage graphImage = getGraphImage();
+                    if (graphImage != null) {
+                        ImageIO.write(graphImage, ext, imgFile);
+                    }
                     break;
-                case CLASS:
-                    img = GPConverter.toImage(gmanager.getCurrentClassGraph());
-                    graph = gmanager.getCurrentClassGraph();
+                case "svg":
+                    JGraph graph = getRDFGraph(graphType);
+                    // Acknowledgement:
+                    // http://devdocs.inightmare.org/2012/06/28/exporting-jgraph-to-svg/
+                    Object[] cells = graph.getRoots();
+                    Rectangle2D bounds = graph.toScreen(graph.getCellBounds(cells));
+                    DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
+                    Document document = domImpl.createDocument("http://mrcube.org/", "svg", null);
+                    SVGGraphics2D svgGraphics = new SVGGraphics2D(document);
+                    svgGraphics.setSVGCanvasSize(getSVGCanvasDimension(bounds));
+                    RepaintManager repaintManager = RepaintManager.currentManager(graph);
+                    repaintManager.setDoubleBufferingEnabled(true);
+                    BasicGraphUI gui = (BasicGraphUI) graph.getUI();
+                    gui.drawGraph(svgGraphics, bounds);
+                    svgGraphics.stream(new OutputStreamWriter(new FileOutputStream(imgFile)), false);
                     break;
-                case PROPERTY:
-                    img = GPConverter.toImage(gmanager.getCurrentPropertyGraph());
-                    graph = gmanager.getCurrentPropertyGraph();
-                    break;
-            }
-            if (img != null) {
-                switch (ext) {
-                    case "png":
-                    case "jpg":
-                        ImageIO.write(img, ext, file);
-                        break;
-                    case "svg":
-                        // acknowledgement
-                        // http://devdocs.inightmare.org/2012/06/28/exporting-jgraph-to-svg/
-                        Object[] cells = graph.getRoots();
-                        Rectangle2D bounds = graph.toScreen(graph.getCellBounds(cells));
-                        System.out.println(bounds);
-                        DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
-                        Document document = domImpl.createDocument("http://mrcube.org", "svg", null);
-                        SVGGraphics2D svgGraphics = new SVGGraphics2D(document);
-                        svgGraphics.setSVGCanvasSize(new Dimension((int) Math.round(bounds.getWidth()), (int) Math.round(bounds.getHeight())));
-                        RepaintManager repaintManager = RepaintManager.currentManager(graph);
-                        repaintManager.setDoubleBufferingEnabled(true);
-                        BasicGraphUI gui = (BasicGraphUI) graph.getUI();
-                        gui.drawGraph(svgGraphics, bounds);
-                        svgGraphics.stream(new OutputStreamWriter(new FileOutputStream(file)), false);
-                        break;
-                }
             }
         } catch (IOException ioe) {
             ioe.printStackTrace();

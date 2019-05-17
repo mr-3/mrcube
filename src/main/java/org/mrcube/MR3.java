@@ -423,7 +423,7 @@ public class MR3 extends JFrame implements ChangeListener {
         RDFLiteralCell.selectedBorderColor = new Color(userPrefs.getInt(PrefConstants.RDFLiteralSelectedBorderColor, RDFLiteralCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()));
         OntClassCell.selectedBorderColor = new Color(userPrefs.getInt(PrefConstants.ClassSelectedBorderColor, OntClassCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()));
         OntPropertyCell.selectedBorderColor = new Color(userPrefs.getInt(PrefConstants.PropertySelectedBorderColor, OntPropertyCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()));
-        GraphUtilities.isBlackAndWhite = userPrefs.getBoolean(PrefConstants.BlackAndWhite, true);
+        GraphUtilities.isBlackAndWhite = userPrefs.getBoolean(PrefConstants.BlackAndWhite, false);
 
         MR3CellMaker.CELL_WIDTH = Integer.parseInt(userPrefs.get(PrefConstants.NODE_WIDTH, Integer.toString(MR3CellMaker.CELL_WIDTH)));
         MR3CellMaker.CELL_HEIGHT = Integer.parseInt(userPrefs.get(PrefConstants.NODE_HEIGHT, Integer.toString(MR3CellMaker.CELL_HEIGHT)));
