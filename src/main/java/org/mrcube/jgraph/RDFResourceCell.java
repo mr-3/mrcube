@@ -39,11 +39,11 @@ public class RDFResourceCell extends DefaultGraphCell implements RDFCellStyleCha
     public static final Color DEFAULT_SELECTED_BACKGROUND_COLOR = new Color(0, 149, 217);
     public static final Color DEFAULT_SELECTED_BORDER_COLOR = new Color(0, 149, 217);
 
-    public static Color foregroundColor = Color.white;
-    public static Color backgroundColor = new Color(31, 85, 142);
-    public static Color borderColor = new Color(31, 85, 142);
-    public static Color selectedBackgroundColor = new Color(0, 149, 217);
-    public static Color selectedBorderColor = new Color(0, 149, 217);
+    public static Color foregroundColor = DEFAULT_FG_COLOR;
+    public static Color backgroundColor = DEFAULT_BG_COLOR;
+    public static Color borderColor = DEFAULT_BORDER_COLOR;
+    public static Color selectedBackgroundColor = DEFAULT_SELECTED_BACKGROUND_COLOR;
+    public static Color selectedBorderColor = DEFAULT_SELECTED_BORDER_COLOR;
 
     public void changeDefaultCellStyle(RDFGraph graph) {
         GraphUtilities.changeCellStyle(graph, this, foregroundColor, backgroundColor, borderColor);

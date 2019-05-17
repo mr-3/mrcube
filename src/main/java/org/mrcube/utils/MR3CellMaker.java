@@ -73,8 +73,13 @@ public class MR3CellMaker {
             GraphConstants.setLineColor(map, GraphUtilities.graphForegroundColor);
             GraphConstants.setForeground(map, GraphUtilities.graphForegroundColor);
         } else {
-            GraphConstants.setLineColor(map, RDFPropertyCell.borderColor);
-            GraphConstants.setForeground(map, RDFPropertyCell.foregroundColor);
+            if (gmanager.getCurrentRDFGraph().isContains(edge)) {
+                GraphConstants.setLineColor(map, RDFPropertyCell.borderColor);
+                GraphConstants.setForeground(map, RDFPropertyCell.foregroundColor);
+            } else {
+                GraphConstants.setLineColor(map, Color.BLACK);
+                GraphConstants.setForeground(map, Color.BLACK);
+            }
         }
         return map;
     }

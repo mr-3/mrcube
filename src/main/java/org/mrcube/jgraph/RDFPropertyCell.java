@@ -37,9 +37,9 @@ public class RDFPropertyCell extends DefaultEdge implements RDFCellStyleChanger 
     public static final Color DEFAULT_BORDER_COLOR = new Color(43, 43, 43);
     public static final Color DEFAULT_SELECTED_BORDER_COLOR =  new Color(15, 35, 80);
 
-    public static Color foregroundColor = OntPropertyCell.backgroundColor;
-    public static Color borderColor = new Color(43, 43, 43);
-    public static Color selectedBorderColor = new Color(15, 35, 80);
+    public static Color foregroundColor = DEFAULT_FG_COLOR;
+    public static Color borderColor = DEFAULT_BORDER_COLOR;
+    public static Color selectedBorderColor = DEFAULT_SELECTED_BORDER_COLOR;
 
     public void changeDefaultCellStyle(RDFGraph graph) {
         GraphUtilities.changeCellStyle(graph, this, foregroundColor, null, borderColor);

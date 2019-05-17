@@ -896,7 +896,9 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
 
     public enum RenderingType {Foreground, Background, Border, SelectedBackground, SelectedBorder}
 
-    class RenderingPanel extends JPanel {
+    class RenderingPanel extends JPanel implements ActionListener {
+
+        private JButton setDefaultColorsButton;
 
         private final JCheckBox isAntialiasBox;
         private final JCheckBox isBlackAndWhiteBox;
@@ -908,6 +910,9 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         private ResourceColorPanel propertyColorPanel;
 
         RenderingPanel() {
+            setDefaultColorsButton = new JButton(Translator.getString("PreferenceDialog.RenderingTab.SetDefaultColors"));
+            setDefaultColorsButton.addActionListener(this);
+
             rdfResourceColorPanel = new ResourceColorPanel(Translator.getString("PreferenceDialog.RenderingTab.RDFResourceColor"),
                     RenderingResourceType.RDFResource, RDFResourceCell.foregroundColor, RDFResourceCell.backgroundColor, RDFResourceCell.borderColor,
                     RDFResourceCell.selectedBackgroundColor, RDFResourceCell.selectedBorderColor);
@@ -946,6 +951,10 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             setLayout(new BorderLayout());
             add(getTitleField(toString()), BorderLayout.NORTH);
             add(Utilities.createNorthPanel(panel), BorderLayout.WEST);
+            JPanel southPanel = new JPanel();
+            southPanel.setLayout(new BorderLayout());
+            southPanel.add(setDefaultColorsButton, BorderLayout.WEST);
+            add(southPanel, BorderLayout.SOUTH);
             setBorder(BorderFactory.createEtchedBorder());
         }
 
@@ -977,7 +986,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             userPrefs.putInt(PrefConstants.RDFResourceBorderColor, rdfResourceColorPanel.getBorderColor().getRGB());
             RDFResourceCell.borderColor = rdfResourceColorPanel.getBorderColor();
             userPrefs.putInt(PrefConstants.RDFPropertyBorderColor, rdfPropertyColorPanel.getBorderColor().getRGB());
-            RDFPropertyCell.borderColor = rdfResourceColorPanel.getBorderColor();
+            RDFPropertyCell.borderColor = rdfPropertyColorPanel.getBorderColor();
             userPrefs.putInt(PrefConstants.RDFLiteralBorderColor, rdfLiteralColorPanel.getBorderColor().getRGB());
             RDFLiteralCell.borderColor = rdfLiteralColorPanel.getBorderColor();
             userPrefs.putInt(PrefConstants.ClassBorderColor, classColorPanel.getBorderColor().getRGB());
@@ -997,7 +1006,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             userPrefs.putInt(PrefConstants.RDFResourceSelectedBorderColor, rdfResourceColorPanel.getSelectedBorderColor().getRGB());
             RDFResourceCell.selectedBorderColor = rdfResourceColorPanel.getSelectedBorderColor();
             userPrefs.putInt(PrefConstants.RDFPropertySelectedBorderColor, rdfPropertyColorPanel.getSelectedBorderColor().getRGB());
-            RDFPropertyCell.selectedBorderColor = rdfResourceColorPanel.getSelectedBorderColor();
+            RDFPropertyCell.selectedBorderColor = rdfPropertyColorPanel.getSelectedBorderColor();
             userPrefs.putInt(PrefConstants.RDFLiteralSelectedBorderColor, rdfLiteralColorPanel.getSelectedBorderColor().getRGB());
             RDFLiteralCell.selectedBorderColor = rdfLiteralColorPanel.getSelectedBorderColor();
             userPrefs.putInt(PrefConstants.ClassSelectedBorderColor, classColorPanel.getSelectedBorderColor().getRGB());
@@ -1015,81 +1024,141 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
 
         void resetConfig() {
             rdfResourceColorPanel.setFgColor(
-                    new Color(userPrefs.getInt(PrefConstants.RDFResourceForegroundColor, RDFResourceCell.DEFAULT_FG_COLOR.getRGB()))
+                    new Color(userPrefs.getInt(PrefConstants.RDFResourceForegroundColor,
+                            RDFResourceCell.DEFAULT_FG_COLOR.getRGB()))
             );
             rdfPropertyColorPanel.setFgColor(
-                    new Color(userPrefs.getInt(PrefConstants.RDFPropertyForegroundColor, RDFPropertyCell.DEFAULT_FG_COLOR.getRGB()))
+                    new Color(userPrefs.getInt(PrefConstants.RDFPropertyForegroundColor,
+                            RDFPropertyCell.DEFAULT_FG_COLOR.getRGB()))
             );
             rdfLiteralColorPanel.setFgColor(
-                    new Color(userPrefs.getInt(PrefConstants.RDFLiteralForegroundColor, RDFLiteralCell.DEFAULT_FG_COLOR.getRGB()))
+                    new Color(userPrefs.getInt(PrefConstants.RDFLiteralForegroundColor,
+                            RDFLiteralCell.DEFAULT_FG_COLOR.getRGB()))
             );
             classColorPanel.setFgColor(
-                    new Color(userPrefs.getInt(PrefConstants.ClassForegroundColor, OntClassCell.DEFAULT_FG_COLOR.getRGB()))
+                    new Color(userPrefs.getInt(PrefConstants.ClassForegroundColor,
+                            OntClassCell.DEFAULT_FG_COLOR.getRGB()))
             );
             propertyColorPanel.setFgColor(
-                    new Color(userPrefs.getInt(PrefConstants.PropertyForegroundColor, OntPropertyCell.DEFAULT_FG_COLOR.getRGB()))
+                    new Color(userPrefs.getInt(PrefConstants.PropertyForegroundColor,
+                            OntPropertyCell.DEFAULT_FG_COLOR.getRGB()))
             );
 
             rdfResourceColorPanel.setBgColor(
-                    new Color(userPrefs.getInt(PrefConstants.RDFResourceBackgroundColor, RDFResourceCell.DEFAULT_BG_COLOR.getRGB()))
+                    new Color(userPrefs.getInt(PrefConstants.RDFResourceBackgroundColor,
+                            RDFResourceCell.DEFAULT_BG_COLOR.getRGB()))
             );
             rdfLiteralColorPanel.setBgColor(
-                    new Color(userPrefs.getInt(PrefConstants.RDFLiteralBackgroundColor, RDFLiteralCell.DEFAULT_BG_COLOR.getRGB()))
+                    new Color(userPrefs.getInt(PrefConstants.RDFLiteralBackgroundColor,
+                            RDFLiteralCell.DEFAULT_BG_COLOR.getRGB()))
             );
             classColorPanel.setBgColor(
-                    new Color(userPrefs.getInt(PrefConstants.ClassBackgroundColor, OntClassCell.DEFAULT_BG_COLOR.getRGB()))
+                    new Color(userPrefs.getInt(PrefConstants.ClassBackgroundColor,
+                            OntClassCell.DEFAULT_BG_COLOR.getRGB()))
             );
             propertyColorPanel.setBgColor(
-                    new Color(userPrefs.getInt(PrefConstants.PropertyBackgroundColor, OntPropertyCell.DEFAULT_BG_COLOR.getRGB()))
+                    new Color(userPrefs.getInt(PrefConstants.PropertyBackgroundColor,
+                            OntPropertyCell.DEFAULT_BG_COLOR.getRGB()))
             );
 
             rdfResourceColorPanel.setBorderColor(
-                    new Color(userPrefs.getInt(PrefConstants.RDFResourceBorderColor, RDFResourceCell.DEFAULT_BORDER_COLOR.getRGB()))
+                    new Color(userPrefs.getInt(PrefConstants.RDFResourceBorderColor,
+                            RDFResourceCell.DEFAULT_BORDER_COLOR.getRGB()))
             );
             rdfPropertyColorPanel.setBorderColor(
-                    new Color(userPrefs.getInt(PrefConstants.RDFPropertyBorderColor, RDFPropertyCell.DEFAULT_BORDER_COLOR.getRGB()))
+                    new Color(userPrefs.getInt(PrefConstants.RDFPropertyBorderColor,
+                            RDFPropertyCell.DEFAULT_BORDER_COLOR.getRGB()))
             );
             rdfLiteralColorPanel.setBorderColor(
-                    new Color(userPrefs.getInt(PrefConstants.RDFLiteralBorderColor, RDFLiteralCell.DEFAULT_BORDER_COLOR.getRGB()))
+                    new Color(userPrefs.getInt(PrefConstants.RDFLiteralBorderColor,
+                            RDFLiteralCell.DEFAULT_BORDER_COLOR.getRGB()))
             );
             classColorPanel.setBorderColor(
-                    new Color(userPrefs.getInt(PrefConstants.ClassBorderColor, OntClassCell.DEFAULT_BORDER_COLOR.getRGB()))
+                    new Color(userPrefs.getInt(PrefConstants.ClassBorderColor,
+                            OntClassCell.DEFAULT_BORDER_COLOR.getRGB()))
             );
             propertyColorPanel.setBorderColor(
-                    new Color(userPrefs.getInt(PrefConstants.PropertyBorderColor, OntPropertyCell.DEFAULT_BORDER_COLOR.getRGB()))
+                    new Color(userPrefs.getInt(PrefConstants.PropertyBorderColor,
+                            OntPropertyCell.DEFAULT_BORDER_COLOR.getRGB()))
             );
 
             rdfResourceColorPanel.setSelectedBgColor(
-                    new Color(userPrefs.getInt(PrefConstants.RDFResourceSelectedBackgroundColor, RDFResourceCell.DEFAULT_SELECTED_BACKGROUND_COLOR.getRGB()))
+                    new Color(userPrefs.getInt(PrefConstants.RDFResourceSelectedBackgroundColor,
+                            RDFResourceCell.DEFAULT_SELECTED_BACKGROUND_COLOR.getRGB()))
             );
             rdfLiteralColorPanel.setSelectedBgColor(
-                    new Color(userPrefs.getInt(PrefConstants.RDFLiteralSelectedBackgroundColor, RDFLiteralCell.DEFAULT_SELECTED_BACKGROUND_COLOR.getRGB()))
+                    new Color(userPrefs.getInt(PrefConstants.RDFLiteralSelectedBackgroundColor,
+                            RDFLiteralCell.DEFAULT_SELECTED_BACKGROUND_COLOR.getRGB()))
             );
             classColorPanel.setSelectedBgColor(
-                    new Color(userPrefs.getInt(PrefConstants.ClassSelectedBackgroundColor, OntClassCell.DEFAULT_SELECTED_BACKGROUND_COLOR.getRGB()))
+                    new Color(userPrefs.getInt(PrefConstants.ClassSelectedBackgroundColor,
+                            OntClassCell.DEFAULT_SELECTED_BACKGROUND_COLOR.getRGB()))
             );
             propertyColorPanel.setSelectedBgColor(
-                    new Color(userPrefs.getInt(PrefConstants.PropertySelectedBackgroundColor, OntPropertyCell.DEFAULT_SELECTED_BACKGROUND_COLOR.getRGB()))
+                    new Color(userPrefs.getInt(PrefConstants.PropertySelectedBackgroundColor,
+                            OntPropertyCell.DEFAULT_SELECTED_BACKGROUND_COLOR.getRGB()))
             );
 
             rdfResourceColorPanel.setSelectedBorderColor(
-                    new Color(userPrefs.getInt(PrefConstants.RDFResourceSelectedBorderColor, RDFResourceCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()))
+                    new Color(userPrefs.getInt(PrefConstants.RDFResourceSelectedBorderColor,
+                            RDFResourceCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()))
             );
             rdfPropertyColorPanel.setSelectedBorderColor(
-                    new Color(userPrefs.getInt(PrefConstants.RDFPropertySelectedBorderColor, RDFPropertyCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()))
+                    new Color(userPrefs.getInt(PrefConstants.RDFPropertySelectedBorderColor,
+                            RDFPropertyCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()))
             );
             rdfLiteralColorPanel.setSelectedBorderColor(
-                    new Color(userPrefs.getInt(PrefConstants.RDFLiteralSelectedBorderColor, RDFLiteralCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()))
+                    new Color(userPrefs.getInt(PrefConstants.RDFLiteralSelectedBorderColor,
+                            RDFLiteralCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()))
             );
             classColorPanel.setSelectedBorderColor(
-                    new Color(userPrefs.getInt(PrefConstants.ClassSelectedBorderColor, OntClassCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()))
+                    new Color(userPrefs.getInt(PrefConstants.ClassSelectedBorderColor,
+                            OntClassCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()))
             );
             propertyColorPanel.setSelectedBorderColor(
-                    new Color(userPrefs.getInt(PrefConstants.PropertySelectedBorderColor, OntPropertyCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()))
+                    new Color(userPrefs.getInt(PrefConstants.PropertySelectedBorderColor,
+                            OntPropertyCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()))
             );
 
-            isBlackAndWhiteBox.setSelected(userPrefs.getBoolean(PrefConstants.BlackAndWhite, true));
+            isBlackAndWhiteBox.setSelected(userPrefs.getBoolean(PrefConstants.BlackAndWhite, false));
             isAntialiasBox.setSelected(userPrefs.getBoolean(PrefConstants.Antialias, true));
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            rdfResourceColorPanel.setFgColor(RDFResourceCell.DEFAULT_FG_COLOR);
+            rdfPropertyColorPanel.setFgColor(RDFPropertyCell.DEFAULT_FG_COLOR);
+            rdfLiteralColorPanel.setFgColor(RDFLiteralCell.DEFAULT_FG_COLOR);
+            classColorPanel.setFgColor(OntClassCell.DEFAULT_FG_COLOR);
+            propertyColorPanel.setFgColor(OntPropertyCell.DEFAULT_FG_COLOR);
+
+            rdfResourceColorPanel.setBgColor(RDFResourceCell.DEFAULT_BG_COLOR);
+            rdfLiteralColorPanel.setBgColor(RDFLiteralCell.DEFAULT_BG_COLOR);
+            classColorPanel.setBgColor(OntClassCell.DEFAULT_BG_COLOR);
+            propertyColorPanel.setBgColor(OntPropertyCell.DEFAULT_BG_COLOR);
+
+            rdfResourceColorPanel.setBorderColor(RDFResourceCell.DEFAULT_BORDER_COLOR);
+            rdfPropertyColorPanel.setBorderColor(RDFPropertyCell.DEFAULT_BORDER_COLOR);
+            rdfLiteralColorPanel.setBorderColor(RDFLiteralCell.DEFAULT_BORDER_COLOR);
+            classColorPanel.setBorderColor(OntClassCell.DEFAULT_BORDER_COLOR);
+            propertyColorPanel.setBorderColor(OntPropertyCell.DEFAULT_BORDER_COLOR);
+
+            rdfResourceColorPanel.setSelectedBgColor(RDFResourceCell.DEFAULT_SELECTED_BACKGROUND_COLOR);
+            rdfLiteralColorPanel.setSelectedBgColor(RDFLiteralCell.DEFAULT_SELECTED_BACKGROUND_COLOR);
+            classColorPanel.setSelectedBgColor(OntClassCell.DEFAULT_SELECTED_BACKGROUND_COLOR);
+            propertyColorPanel.setSelectedBgColor(OntPropertyCell.DEFAULT_SELECTED_BACKGROUND_COLOR);
+
+            rdfResourceColorPanel.setSelectedBorderColor(RDFResourceCell.DEFAULT_SELECTED_BORDER_COLOR);
+            rdfPropertyColorPanel.setSelectedBorderColor(RDFPropertyCell.DEFAULT_SELECTED_BORDER_COLOR);
+            rdfLiteralColorPanel.setSelectedBorderColor(RDFLiteralCell.DEFAULT_SELECTED_BORDER_COLOR);
+            classColorPanel.setSelectedBorderColor(OntClassCell.DEFAULT_SELECTED_BORDER_COLOR);
+            propertyColorPanel.setSelectedBorderColor(OntPropertyCell.DEFAULT_SELECTED_BORDER_COLOR);
+
+            rdfResourceColorPanel.repaint();
+            rdfPropertyColorPanel.repaint();
+            rdfLiteralColorPanel.repaint();
+            classColorPanel.repaint();
+            propertyColorPanel.repaint();
         }
     }
 
