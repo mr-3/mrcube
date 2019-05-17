@@ -75,6 +75,16 @@ public class SaveGraphImageAction extends AbstractAction {
         setValues();
     }
 
+    public SaveGraphImageAction(GraphManager gmanager, MR3Constants.GraphType graphType, String title, Icon icon) {
+        super(title, icon);
+        this.graphType = graphType;
+        this.gmanager = gmanager;
+        imageFileChooser = new JFileChooser();
+        imageFileChooser.setFileFilter(pngFileFilter);
+        imageFileChooser.setFileFilter(jpgFileFilter);
+        imageFileChooser.setFileFilter(svgFileFilter);
+    }
+
     private void setValues() {
         putValue(SHORT_DESCRIPTION, TITLE);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_C,

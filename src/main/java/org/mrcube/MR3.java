@@ -162,6 +162,9 @@ public class MR3 extends JFrame implements ChangeListener {
     private OpenResourceAction openResourceAction;
     private AbstractAction saveFileAction;
     private AbstractAction saveFileAsAction;
+    private AbstractAction saveRDFGraphAsImageFileAction;
+    private AbstractAction saveClassGraphAsImageFileAction;
+    private AbstractAction savePropertyGraphAsImageFileAction;
     private AbstractAction showValidatorAction;
     private AbstractAction deployWindowCPRAction;
     private AbstractAction deployWindowCRAction;
@@ -188,8 +191,16 @@ public class MR3 extends JFrame implements ChangeListener {
         openFileAction = new OpenFileAction(this);
         saveFileAction = new SaveFileAction(this, SaveFileAction.SAVE_PROJECT, SaveFileAction.SAVE_PROJECT_ICON);
         saveFileAsAction = new SaveFileAction(this, SaveFileAction.SAVE_AS_PROJECT, SaveFileAction.SAVE_AS_PROJECT_ICON);
+        saveRDFGraphAsImageFileAction = new SaveGraphImageAction(gmanager, GraphType.RDF,
+                Translator.getString("Menu.File.SaveRDFGraphAsImageFile.Text"),
+                Utilities.getImageIcon(Translator.getString("RDFEditor.Icon")));
+        saveClassGraphAsImageFileAction = new SaveGraphImageAction(gmanager, GraphType.CLASS,
+                Translator.getString("Menu.File.SaveClassGraphAsImageFile.Text"),
+                Utilities.getImageIcon(Translator.getString("ClassEditor.Icon")));
+        savePropertyGraphAsImageFileAction = new SaveGraphImageAction(gmanager, GraphType.PROPERTY,
+                Translator.getString("Menu.File.SavePropertyGraphAsImageFile.Text"),
+                Utilities.getImageIcon(Translator.getString("PropertyEditor.Icon")));
         showValidatorAction = new ShowValidator(this);
-
         deployWindowCPRAction = new DeployWindows(this, Translator.getString("Menu.Window.DeployCPRWindows.Text"),
                 CPR_ICON, DeployType.CPR,
                 KeyStroke.getKeyStroke(KeyEvent.VK_1, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
@@ -362,6 +373,11 @@ public class MR3 extends JFrame implements ChangeListener {
         menu.addSeparator();
         menu.add(saveFileAction);
         menu.add(saveFileAsAction);
+        JMenu saveGraphAsImageMenu = new JMenu(Translator.getString("Menu.File.SaveGraphAsImageFile.Text"));
+        saveGraphAsImageMenu.add(saveRDFGraphAsImageFileAction);
+        saveGraphAsImageMenu.add(saveClassGraphAsImageFileAction);
+        saveGraphAsImageMenu.add(savePropertyGraphAsImageFileAction);
+        menu.add(saveGraphAsImageMenu);
         menu.addSeparator();
         menu.add(quitAction);
 
