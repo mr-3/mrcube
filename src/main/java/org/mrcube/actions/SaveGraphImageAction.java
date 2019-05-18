@@ -92,11 +92,11 @@ public class SaveGraphImageAction extends AbstractAction {
     }
 
     protected File selectSaveImageFile() {
-        File currentProjectFile = MR3.getCurrentProject().getCurrentProjectFile();
+        File currentProjectFile = MR3.getProjectPanel().getProjectFile();
         if (currentProjectFile != null) {
             imageFileChooser.setCurrentDirectory(currentProjectFile.getParentFile());
         }
-        if (imageFileChooser.showSaveDialog(MR3.getCurrentProject()) == JFileChooser.APPROVE_OPTION) {
+        if (imageFileChooser.showSaveDialog(MR3.getProjectPanel()) == JFileChooser.APPROVE_OPTION) {
             File selectedFile = imageFileChooser.getSelectedFile();
             if (imageFileChooser.getFileFilter() instanceof MR3FileFilter) {
                 MR3FileFilter filter = (MR3FileFilter) imageFileChooser.getFileFilter();
@@ -133,13 +133,13 @@ public class SaveGraphImageAction extends AbstractAction {
     private RDFGraph getRDFGraph(MR3Constants.GraphType graphType) {
         switch (graphType) {
             case RDF:
-                return gmanager.getCurrentRDFGraph();
+                return gmanager.getRDFGraph();
             case CLASS:
-                return gmanager.getCurrentClassGraph();
+                return gmanager.getClassGraph();
             case PROPERTY:
-                return gmanager.getCurrentPropertyGraph();
+                return gmanager.getPropertyGraph();
             default:
-                return gmanager.getCurrentRDFGraph();
+                return gmanager.getRDFGraph();
         }
     }
 

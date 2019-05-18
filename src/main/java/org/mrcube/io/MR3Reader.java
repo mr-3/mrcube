@@ -95,7 +95,7 @@ public class MR3Reader {
 		Model rdfModel = mr3Generator.getRDFModel(false);
 		rdfModel.add(newModel);
 		nsTableDialog.setCurrentNSPrefix(rdfModel);
-		gmanager.getCurrentRDFGraph().removeAllCells();
+		gmanager.getRDFGraph().removeAllCells();
 		if (ProjectManager.getLayoutMap() != null) {
 			mr3Parser.replaceProjectRDFGraph(rdfModel);
 		} else {
@@ -108,7 +108,7 @@ public class MR3Reader {
 	}
 
 	private void resetPropertyInfo() {
-		RDFGraph rdfGraph = gmanager.getCurrentRDFGraph();
+		RDFGraph rdfGraph = gmanager.getRDFGraph();
 		Object[] cells = rdfGraph.getAllCells();
 		for (Object cell1 : cells) {
 			GraphCell cell = (GraphCell) cell1;
@@ -179,7 +179,7 @@ public class MR3Reader {
 		GraphCell targetCell = (GraphCell) graph.getTargetVertex(edge);
 		RDFSModel targetInfo = (RDFSModel) GraphConstants.getValue(targetCell.getAttributes());
 		Resource targetRes = targetInfo.getURI();
-		RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+		RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
 		Model model = rdfsModelMap.getPropertyLabelModel();
 		for (Statement stmt: model.listStatements().toList()) {
 			Resource subject = stmt.getSubject();
@@ -193,7 +193,7 @@ public class MR3Reader {
 	}
 
 	private void setPropertyLabels() {
-		RDFGraph classGraph = gmanager.getCurrentClassGraph();
+		RDFGraph classGraph = gmanager.getClassGraph();
 		for (Object cell : classGraph.getAllCells()) {
 			if (RDFGraph.isEdge(cell)) {
 				setPropertyLabel(classGraph, cell);
@@ -211,9 +211,9 @@ public class MR3Reader {
 		} else {
 			mr3Parser.createClassGraph(VGJTreeLayout.getVGJClassCellLayoutMap());
 		}
-		RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+		RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
 		rdfsModelMap.clearTemporaryObject();
-		gmanager.getCurrentClassGraph().clearSelection();
+		gmanager.getClassGraph().clearSelection();
 	}
 
 	private void mergePropertyModel(Model model) {
@@ -226,15 +226,15 @@ public class MR3Reader {
 		} else {
 			mr3Parser.createPropertyGraph(VGJTreeLayout.getVGJPropertyCellLayoutMap());
 		}
-		RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+		RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
 		rdfsModelMap.clearTemporaryObject();
-		gmanager.getCurrentPropertyGraph().clearSelection();
+		gmanager.getPropertyGraph().clearSelection();
 	}
 
 	private void replaceRDF(Model model) {
 		if (model != null) {
 			nsTableDialog.setCurrentNSPrefix(model);
-			gmanager.getCurrentRDFGraph().removeAllCells();
+			gmanager.getRDFGraph().removeAllCells();
 			// replaceGraph(mr3Parser.createRDFGraph(model,
 			// VGJTreeLayout.getVGJRDFCellLayoutMap(model)));
 			mr3Parser.replaceDefaultRDFGraph(model);
@@ -255,9 +255,9 @@ public class MR3Reader {
 			return;
 		}
 		new Thread(() -> {
-			if (gmanager.getCurrentRDFGraph().getAllCells().length == 0) {
-				gmanager.getCurrentClassGraph().removeAllCells();
-				gmanager.getCurrentPropertyGraph().removeAllCells();
+			if (gmanager.getRDFGraph().getAllCells().length == 0) {
+				gmanager.getClassGraph().removeAllCells();
+				gmanager.getPropertyGraph().removeAllCells();
 				gmanager.importing(true);
 				replaceRDFS(model);
 				performRDFSTreeLayout();
@@ -342,7 +342,7 @@ public class MR3Reader {
 			return;
 		}
 		new Thread(() -> {
-			File currentProjectFile = MR3.getCurrentProject().getCurrentProjectFile(); // NewProjectよりも前のを保存
+			File currentProjectFile = MR3.getProjectPanel().getProjectFile(); // NewProjectよりも前のを保存
 			gmanager.importing(true);
 			ProjectManager projectManager = new ProjectManager(gmanager);
 			Model projectModel1 = projectManager.extractProjectModel(model);
@@ -354,7 +354,7 @@ public class MR3Reader {
 			gmanager.refreshGraphs();
 			gmanager.importing(false);
 			if (currentProjectFile != null) {
-				MR3.getCurrentProject().setCurrentProjectFile(currentProjectFile);
+				MR3.getProjectPanel().setProjectFile(currentProjectFile);
 				HistoryManager.saveHistory(HistoryType.OPEN_PROJECT, currentProjectFile.getAbsolutePath());
 			}
 		}).start();

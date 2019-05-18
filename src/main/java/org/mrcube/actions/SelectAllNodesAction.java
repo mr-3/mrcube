@@ -54,11 +54,11 @@ public class SelectAllNodesAction extends MR3AbstractAction {
 
     public void actionPerformed(ActionEvent e) {
         if (graphType == GraphType.RDF) {
-            graphManager.getCurrentRDFGraph().selectAllNodes();
+            graphManager.getRDFGraph().selectAllNodes();
         } else if (graphType == GraphType.CLASS) {
-            graphManager.getCurrentClassGraph().selectAllNodes();
+            graphManager.getClassGraph().selectAllNodes();
         } else if (graphType == GraphType.PROPERTY) {
-            graphManager.getCurrentPropertyGraph().selectAllNodes();
+            graphManager.getPropertyGraph().selectAllNodes();
         }
     }
 

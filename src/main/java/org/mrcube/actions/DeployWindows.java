@@ -45,7 +45,7 @@ public class DeployWindows extends MR3AbstractAction {
     }
 
     public void actionPerformed(ActionEvent e) {
-        MR3ProjectPanel project = MR3.getCurrentProject();
+        MR3ProjectPanel project = MR3.getProjectPanel();
         if (project == null) {
             return;
         }

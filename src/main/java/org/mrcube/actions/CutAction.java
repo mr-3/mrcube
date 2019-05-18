@@ -63,7 +63,7 @@ public class CutAction extends AbstractAction {
         if (graph.getType() == GraphType.RDF) {
             HistoryManager.saveHistory(HistoryType.CUT_RDF_GRAPH);
         } else if (graph.getType() == GraphType.CLASS) {
-            RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+            RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
             for (Object cell : graph.getSelectionCells()) {
                 GraphCell gcell = (GraphCell) cell;
                 if (RDFGraph.isRDFSClassCell(gcell)) {
@@ -74,7 +74,7 @@ public class CutAction extends AbstractAction {
             }
             HistoryManager.saveHistory(HistoryType.CUT_CLASS_GRAPH);
         } else if (graph.getType() == GraphType.PROPERTY) {
-            RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+            RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
             for (Object cell : graph.getSelectionCells()) {
                 GraphCell gcell = (GraphCell) cell;
                 if (RDFGraph.isRDFSPropertyCell(gcell)) {

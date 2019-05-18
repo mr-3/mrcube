@@ -254,12 +254,12 @@ public class MR3 extends JFrame implements ChangeListener {
     public void showRDFEditorOverview() {
         OverviewDialog result = rdfEditorOverviewRef.get();
         if (result == null) {
-            RDFEditor editor = getCurrentProject().getRDFEditor();
+            RDFEditor editor = getProjectPanel().getRDFEditor();
             result = new OverviewDialog(this, OverviewDialog.RDF_EDITOR_OVERVIEW, editor);
             result.setIconImage(OverviewDialog.RDF_EDITOR_ICON.getImage());
             rdfEditorOverviewRef = new WeakReference<>(result);
         } else {
-            result.setEditor(getCurrentProject().getRDFEditor());
+            result.setEditor(getProjectPanel().getRDFEditor());
         }
         result.setVisible(true);
     }
@@ -267,12 +267,12 @@ public class MR3 extends JFrame implements ChangeListener {
     public void showClassEditorOverview() {
         OverviewDialog result = classEditorOverviewRef.get();
         if (result == null) {
-            ClassEditor editor = getCurrentProject().getClassEditor();
+            ClassEditor editor = getProjectPanel().getClassEditor();
             result = new OverviewDialog(this, OverviewDialog.CLASS_EDITOR_OVERVIEW, editor);
             result.setIconImage(OverviewDialog.CLASS_EDITOR_ICON.getImage());
             classEditorOverviewRef = new WeakReference<>(result);
         } else {
-            result.setEditor(getCurrentProject().getClassEditor());
+            result.setEditor(getProjectPanel().getClassEditor());
         }
         result.setVisible(true);
     }
@@ -293,12 +293,12 @@ public class MR3 extends JFrame implements ChangeListener {
     public void showPropertyEditorOverview() {
         OverviewDialog result = propertyEditorOverviewRef.get();
         if (result == null) {
-            PropertyEditor editor = getCurrentProject().getPropertyEditor();
+            PropertyEditor editor = getProjectPanel().getPropertyEditor();
             result = new OverviewDialog(this, OverviewDialog.PROPERTY_EDITOR_OVERVIEW, editor);
             result.setIconImage(OverviewDialog.PROPERTY_EDITOR_ICON.getImage());
             propertyEditorOverviewRef = new WeakReference<>(result);
         } else {
-            result.setEditor(getCurrentProject().getPropertyEditor());
+            result.setEditor(getProjectPanel().getPropertyEditor());
         }
         result.setVisible(true);
     }
@@ -469,7 +469,7 @@ public class MR3 extends JFrame implements ChangeListener {
         return userPrefs.get(type, GraphLayoutUtilities.UP_TO_DOWN);
     }
 
-    public static MR3ProjectPanel getCurrentProject() {
+    public static MR3ProjectPanel getProjectPanel() {
         return mr3ProjectPanel;
     }
 
@@ -606,7 +606,7 @@ public class MR3 extends JFrame implements ChangeListener {
         gmanager.getAttrDialog().setNullPanel();
         gmanager.getNSTableDialog().setDefaultNSPrefix();
         var newFile = new File(Translator.getString("Menu.File.New.Text"));
-        MR3.getCurrentProject().setCurrentProjectFile(newFile);
+        MR3.getProjectPanel().setProjectFile(newFile);
         HistoryManager.saveHistory(HistoryType.NEW_PROJECT);
         mr3ProjectPanel.resetEditors();
         mr3ProjectPanel.deployCPR();
@@ -621,15 +621,15 @@ public class MR3 extends JFrame implements ChangeListener {
     }
 
     public RDFGraph getRDFGraph() {
-        return gmanager.getCurrentRDFGraph();
+        return gmanager.getRDFGraph();
     }
 
     public RDFGraph getClassGraph() {
-        return gmanager.getCurrentClassGraph();
+        return gmanager.getClassGraph();
     }
 
     public RDFGraph getPropertyGraph() {
-        return gmanager.getCurrentPropertyGraph();
+        return gmanager.getPropertyGraph();
     }
 
     public String getBaseURI() {

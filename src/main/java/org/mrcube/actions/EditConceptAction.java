@@ -84,7 +84,7 @@ public class EditConceptAction extends AbstractAction {
         }
 
         // ここで，URIとセルのマッピングを削除する
-        RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+        RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
         rdfsModelMap.removeURICellMap(rdfsModel);
         rdfsModel.setURI(uri);
         GraphUtilities.resizeRDFSResourceCell(gmanager, rdfsModel, graphCell);

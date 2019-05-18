@@ -122,23 +122,23 @@ public class GraphManager {
         return cellMaker;
     }
 
-    public RDFSModelMap getCurrentRDFSInfoMap() {
+    public RDFSModelMap getRDFSInfoMap() {
         return mr3ProjectPanel.getRDFSInfoMap();
     }
 
-    public RDFEditor getCurrentRDFEditor() {
+    public RDFEditor getRDFEditor() {
         return mr3ProjectPanel.getRDFEditor();
     }
 
-    private ClassEditor getCurrentClassEditor() {
+    private ClassEditor getClassEditor() {
         return mr3ProjectPanel.getClassEditor();
     }
 
-    private PropertyEditor getCurrentPropertyEditor() {
+    private PropertyEditor getPropertyEditor() {
         return mr3ProjectPanel.getPropertyEditor();
     }
 
-    public RDFGraph getCurrentRDFGraph() {
+    public RDFGraph getRDFGraph() {
         if (mr3ProjectPanel != null) {
             return (RDFGraph) mr3ProjectPanel.getRDFEditor().getGraph();
         } else {
@@ -146,7 +146,7 @@ public class GraphManager {
         }
     }
 
-    public RDFGraph getCurrentPropertyGraph() {
+    public RDFGraph getPropertyGraph() {
         if (mr3ProjectPanel != null) {
             return (RDFGraph) mr3ProjectPanel.getPropertyEditor().getGraph();
         } else {
@@ -154,7 +154,7 @@ public class GraphManager {
         }
     }
 
-    public RDFGraph getCurrentClassGraph() {
+    public RDFGraph getClassGraph() {
         if (mr3ProjectPanel != null) {
             return (RDFGraph) mr3ProjectPanel.getClassEditor().getGraph();
         } else {
@@ -176,7 +176,7 @@ public class GraphManager {
 
     public Set<GraphCell> findRDFResourceSet(String keyword) {
         Set<GraphCell> rdfResourceSet = new HashSet<>();
-        RDFGraph rdfGraph = getCurrentRDFGraph();
+        RDFGraph rdfGraph = getRDFGraph();
         for (Object cell1 : rdfGraph.getAllCells()) {
             GraphCell cell = (GraphCell) cell1;
             if (RDFGraph.isRDFResourceCell(cell) || RDFGraph.isRDFPropertyCell(cell)) {
@@ -242,9 +242,9 @@ public class GraphManager {
     // }
 
     private void setVisibleEditors(boolean t) {
-        getCurrentRDFEditor().setVisible(!t);
-        getCurrentClassEditor().setVisible(!t);
-        getCurrentPropertyEditor().setVisible(!t);
+        getRDFEditor().setVisible(!t);
+        getClassEditor().setVisible(!t);
+        getPropertyEditor().setVisible(!t);
         // rdfsTreeEditor.setVisible(!t);
     }
 
@@ -260,7 +260,7 @@ public class GraphManager {
             }
             Object rootCell = getPropertyCell(MR3Resource.Property);
             if (rootCell != null) {
-                RDFGraph propGraph = getCurrentPropertyGraph();
+                RDFGraph propGraph = getPropertyGraph();
                 propGraph.removeCellsWithEdges(propGraph.getDescendants(new Object[]{rootCell}));
             }
             setVisibleEditors(t);
@@ -269,7 +269,7 @@ public class GraphManager {
     }
 
     public void showRDFPropertyLabel(boolean t) {
-        RDFGraph rdfGraph = getCurrentRDFGraph();
+        RDFGraph rdfGraph = getRDFGraph();
         Object[] cells = rdfGraph.getAllCells();
         for (Object cell1 : cells) {
             if (RDFGraph.isRDFPropertyCell(cell1)) {
@@ -298,21 +298,21 @@ public class GraphManager {
     }
 
     public boolean isRDFGraph(Object graph) {
-        return graph == getCurrentRDFGraph();
+        return graph == getRDFGraph();
     }
 
     public boolean isClassGraph(Object graph) {
-        return graph == getCurrentClassGraph();
+        return graph == getClassGraph();
     }
 
     public boolean isPropertyGraph(Object graph) {
-        return graph == getCurrentPropertyGraph();
+        return graph == getPropertyGraph();
     }
 
     public void clearSelection() {
-        getCurrentRDFGraph().clearSelection();
-        getCurrentClassGraph().clearSelection();
-        getCurrentPropertyGraph().clearSelection();
+        getRDFGraph().clearSelection();
+        getClassGraph().clearSelection();
+        getPropertyGraph().clearSelection();
     }
 
     private Set<Resource> getMetaClassList(String[] list) {
@@ -396,10 +396,10 @@ public class GraphManager {
 
     public void setAntialias() {
         boolean isAntialias = userPrefs.getBoolean(PrefConstants.Antialias, true);
-        if (getCurrentRDFGraph() != null) {
-            getCurrentRDFGraph().setAntiAliased(isAntialias);
-            getCurrentClassGraph().setAntiAliased(isAntialias);
-            getCurrentPropertyGraph().setAntiAliased(isAntialias);
+        if (getRDFGraph() != null) {
+            getRDFGraph().setAntiAliased(isAntialias);
+            getClassGraph().setAntiAliased(isAntialias);
+            getPropertyGraph().setAntiAliased(isAntialias);
         }
     }
 
@@ -413,7 +413,7 @@ public class GraphManager {
 
     public Set<String> getClassSet() {
         Set<String> classSet = new HashSet<>();
-        for (Object cell : getCurrentClassGraph().getAllCells()) {
+        for (Object cell : getClassGraph().getAllCells()) {
             if (RDFGraph.isRDFSClassCell(cell)) {
                 RDFSModel info = (RDFSModel) GraphConstants.getValue(((GraphCell) cell).getAttributes());
                 classSet.add(info.getURIStr());
@@ -424,7 +424,7 @@ public class GraphManager {
 
     public Set<String> getPropertySet() {
         Set<String> propertySet = new HashSet<>();
-        for (Object cell : getCurrentPropertyGraph().getAllCells()) {
+        for (Object cell : getPropertyGraph().getAllCells()) {
             if (RDFGraph.isRDFSPropertyCell(cell)) {
                 RDFSModel info = (RDFSModel) GraphConstants.getValue(((GraphCell) cell).getAttributes());
                 propertySet.add(info.getURIStr());
@@ -445,7 +445,7 @@ public class GraphManager {
             clearSelection();
             return;
         }
-        for (Object rdfCell : getCurrentRDFGraph().getAllCells()) {
+        for (Object rdfCell : getRDFGraph().getAllCells()) {
             if (RDFGraph.isRDFResourceCell(rdfCell)) {
                 cellMaker.addTypeCell((GraphCell) rdfCell, new AttributeMap());
             }
@@ -454,7 +454,7 @@ public class GraphManager {
     }
 
     public void removeTypeCells() {
-        Object[] rdfCells = getCurrentRDFGraph().getAllCells();
+        Object[] rdfCells = getRDFGraph().getAllCells();
         List<GraphCell> typeCellList = new ArrayList<>();
         for (Object rdfCell : rdfCells) {
             GraphCell cell = (GraphCell) rdfCell;
@@ -462,11 +462,11 @@ public class GraphManager {
                 typeCellList.add(cell);
             }
         }
-        getCurrentRDFGraph().removeCellsWithEdges(typeCellList.toArray());
+        getRDFGraph().removeCellsWithEdges(typeCellList.toArray());
     }
 
     private boolean isRDFResourceDuplicated(String uri, Object cell, GraphType type) {
-        Object[] rdfCells = getCurrentRDFGraph().getAllCells();
+        Object[] rdfCells = getRDFGraph().getAllCells();
         for (Object rdfCell1 : rdfCells) {
             GraphCell rdfCell = (GraphCell) rdfCell1;
             if (rdfCell instanceof RDFResourceCell) {
@@ -521,7 +521,7 @@ public class GraphManager {
     }
 
     public boolean isDuplicated(String uri, Object cell, GraphType type) {
-        return (getCurrentRDFSInfoMap().isDuplicated(uri, cell, type) || isRDFResourceDuplicated(uri, cell, type));
+        return (getRDFSInfoMap().isDuplicated(uri, cell, type) || isRDFResourceDuplicated(uri, cell, type));
     }
 
     /**
@@ -550,7 +550,7 @@ public class GraphManager {
     private Set<String> getRDFNameSpaceSet() {
         Set<String> nameSpaces = new HashSet<>();
 
-        Object[] rdfCells = getCurrentRDFGraph().getAllCells();
+        Object[] rdfCells = getRDFGraph().getAllCells();
         for (Object rdfCell : rdfCells) {
             GraphCell cell = (GraphCell) rdfCell;
             if (RDFGraph.isRDFResourceCell(cell)) {
@@ -565,7 +565,7 @@ public class GraphManager {
     private Set<String> getClassNameSpaceSet() {
         Set<String> nameSpaces = new HashSet<>();
 
-        Object[] classCells = getCurrentClassGraph().getAllCells();
+        Object[] classCells = getClassGraph().getAllCells();
         for (Object classCell : classCells) {
             GraphCell cell = (GraphCell) classCell;
             if (RDFGraph.isRDFSClassCell(cell)) {
@@ -579,7 +579,7 @@ public class GraphManager {
 
     private Set<String> getPropertyNameSpaceSet() {
         Set<String> nameSpaces = new HashSet<>();
-        for (Object cell : getCurrentPropertyGraph().getAllCells()) {
+        for (Object cell : getPropertyGraph().getAllCells()) {
             if (RDFGraph.isRDFSPropertyCell(cell)) {
                 RDFSModel info = (RDFSModel) GraphConstants.getValue(((GraphCell) cell).getAttributes());
                 Resource uri = info.getURI();
@@ -591,7 +591,7 @@ public class GraphManager {
 
     public void setNodeBounds(Map<Resource, MR3Literal> uriNodeInfoMap) {
         MR3.STATUS_BAR.initNormal(uriNodeInfoMap.keySet().size());
-        RDFSModelMap rdfsModelMap = getCurrentRDFSInfoMap();
+        RDFSModelMap rdfsModelMap = getRDFSInfoMap();
 
         for (Entry<Resource, MR3Literal> entry : uriNodeInfoMap.entrySet()) {
             Resource uri = entry.getKey();
@@ -616,7 +616,7 @@ public class GraphManager {
                 if (propCell != null) {
                     RDFSModel info = (RDFSModel) GraphConstants.getValue(propCell.getAttributes());
                     cellMaker.connect((Port) source.getChildAt(0), (Port) litCell.getChildAt(0), info,
-                            getCurrentRDFGraph());
+                            getRDFGraph());
                 }
             }
             MR3.STATUS_BAR.addValue();
@@ -725,7 +725,7 @@ public class GraphManager {
 
     public List<GraphCell> getPropertyList() {
         List<GraphCell> list = new ArrayList<>();
-        Object[] cells = getCurrentPropertyGraph().getAllCells();
+        Object[] cells = getPropertyGraph().getAllCells();
         for (Object cell1 : cells) {
             GraphCell cell = (GraphCell) cell1;
             if (RDFGraph.isRDFSPropertyCell(cell)) {
@@ -736,7 +736,7 @@ public class GraphManager {
     }
 
     public Object getRDFResourceCell(Resource uri) {
-        Object[] cells = getCurrentRDFGraph().getAllCells();
+        Object[] cells = getRDFGraph().getAllCells();
         for (Object cell1 : cells) {
             if (RDFGraph.isRDFResourceCell(cell1)) {
                 GraphCell cell = (GraphCell) cell1;
@@ -755,7 +755,7 @@ public class GraphManager {
     }
 
     public Object getRDFPropertyCell(Resource uri) {
-        Object[] cells = getCurrentRDFGraph().getAllCells();
+        Object[] cells = getRDFGraph().getAllCells();
         for (Object cell1 : cells) {
             if (RDFGraph.isRDFPropertyCell(cell1)) {
                 GraphCell cell = (GraphCell) cell1;
@@ -774,14 +774,14 @@ public class GraphManager {
     private static final Point INSERT_POINT = new Point(50, 50);
 
     public Object getClassCell(Resource uri, Map<RDFNode, GraphLayoutData> cellLayoutMap) {
-        RDFSModelMap rdfsModelMap = getCurrentRDFSInfoMap();
+        RDFSModelMap rdfsModelMap = getRDFSInfoMap();
         GraphCell cell = rdfsModelMap.getClassCell(uri);
         GraphLayoutData data = null;
         if (cellLayoutMap != null) {
             data = cellLayoutMap.get(uri);
         }
         if (cell != null) {
-            moveCell(cell, data, getCurrentClassGraph());
+            moveCell(cell, data, getClassGraph());
             return cell;
         }
         if (data != null) {
@@ -791,14 +791,14 @@ public class GraphManager {
     }
 
     public Object getClassCell(Resource uri) {
-        return getCurrentRDFSInfoMap().getClassCell(uri);
+        return getRDFSInfoMap().getClassCell(uri);
     }
 
     public GraphCell getClassCell(Resource uri, boolean isCheck) {
-        GraphCell cell = getCurrentRDFSInfoMap().getClassCell(uri);
+        GraphCell cell = getRDFSInfoMap().getClassCell(uri);
         if (cell != null) {
             return cell;
-        } else if (isCheck && isDuplicated(uri.getURI(), null, getCurrentClassGraph().getType())) {
+        } else if (isCheck && isDuplicated(uri.getURI(), null, getClassGraph().getType())) {
             return null;
         } else {
             return cellMaker.insertClass(INSERT_POINT, uri.getURI());
@@ -833,13 +833,13 @@ public class GraphManager {
     }
 
     public Object getPropertyCell(Resource uri, Map<RDFNode, GraphLayoutData> cellLayoutMap) {
-        GraphCell cell = (GraphCell) getCurrentRDFSInfoMap().getPropertyCell(uri);
+        GraphCell cell = (GraphCell) getRDFSInfoMap().getPropertyCell(uri);
         GraphLayoutData data = null;
         if (cellLayoutMap != null) {
             data = cellLayoutMap.get(uri);
         }
         if (cell != null) {
-            moveCell(cell, data, getCurrentPropertyGraph());
+            moveCell(cell, data, getPropertyGraph());
             return cell;
         }
         if (data != null) {
@@ -849,14 +849,14 @@ public class GraphManager {
     }
 
     public Object getPropertyCell(Resource uri) {
-        return getCurrentRDFSInfoMap().getPropertyCell(uri);
+        return getRDFSInfoMap().getPropertyCell(uri);
     }
 
     public GraphCell getPropertyCell(Resource uri, boolean isCheck) {
-        GraphCell cell = (GraphCell) getCurrentRDFSInfoMap().getPropertyCell(uri);
+        GraphCell cell = (GraphCell) getRDFSInfoMap().getPropertyCell(uri);
         if (cell != null) {
             return cell;
-        } else if (isCheck && isDuplicated(uri.getURI(), null, getCurrentPropertyGraph().getType())) {
+        } else if (isCheck && isDuplicated(uri.getURI(), null, getPropertyGraph().getType())) {
             return null;
         } else {
             if (MR3.OFF_META_MODEL_MANAGEMENT) {
@@ -869,7 +869,7 @@ public class GraphManager {
 
     public Set getClassInstanceSet(Object type) {
         Set<Object> instanceSet = new HashSet<>();
-        Object[] cells = getCurrentRDFGraph().getAllCells();
+        Object[] cells = getRDFGraph().getAllCells();
         for (Object cell1 : cells) {
             if (RDFGraph.isRDFResourceCell(cell1)) {
                 GraphCell cell = (GraphCell) cell1;
@@ -884,7 +884,7 @@ public class GraphManager {
 
     public Set<RDFResourceModel> getClassInstanceInfoSet(RDFSModel clsInfo) {
         Set<RDFResourceModel> instanceInfoSet = new HashSet<>();
-        Object[] cells = getCurrentRDFGraph().getAllCells();
+        Object[] cells = getRDFGraph().getAllCells();
         for (Object cell1 : cells) {
             if (RDFGraph.isRDFResourceCell(cell1)) {
                 GraphCell cell = (GraphCell) cell1;
@@ -900,8 +900,8 @@ public class GraphManager {
     public Set getPropertyInstanceSet(Object rdfsPropCell) {
         // TreeSet を使うためにはcompratorを適切に実装しないといけない．
         Set instanceSet = new HashSet();
-        Object[] cells = getCurrentRDFGraph().getAllCells();
-        RDFGraph rdfGraph = getCurrentRDFGraph();
+        Object[] cells = getRDFGraph().getAllCells();
+        RDFGraph rdfGraph = getRDFGraph();
         for (Object cell1 : cells) {
             GraphCell cell = (GraphCell) cell1;
             if (RDFGraph.isRDFPropertyCell(cell)) {
@@ -920,7 +920,7 @@ public class GraphManager {
     public Set getPropertyInstanceInfoSet(RDFSModel propInfo) {
         // TreeSet を使うためにはcompratorを適切に実装しないといけない．
         Set instanceSet = new HashSet();
-        RDFGraph rdfGraph = getCurrentRDFGraph();
+        RDFGraph rdfGraph = getRDFGraph();
         Object[] cells = rdfGraph.getAllCells();
         for (Object cell1 : cells) {
             GraphCell cell = (GraphCell) cell1;
@@ -943,7 +943,7 @@ public class GraphManager {
             return;
         }
         graph.scrollCellToVisible(cell);
-        if (graph == getCurrentRDFGraph()) {
+        if (graph == getRDFGraph()) {
             Object parent = graph.getModel().getParent(cell);
             if (parent == null) {
                 graph.setSelectionCell(cell);
@@ -956,15 +956,15 @@ public class GraphManager {
     }
 
     public void selectRDFCell(Object cell) {
-        selectCell(cell, getCurrentRDFGraph());
+        selectCell(cell, getRDFGraph());
     }
 
     public void selectClassCell(Object cell) {
-        selectCell(cell, getCurrentClassGraph());
+        selectCell(cell, getClassGraph());
     }
 
     public void selectPropertyCell(Object cell) {
-        selectCell(cell, getCurrentPropertyGraph());
+        selectCell(cell, getPropertyGraph());
     }
 
     private Map checkUnRemovablePropertyCells(Object[] cells, List notRmCells, Set notRmList, Object graph) {
@@ -974,7 +974,7 @@ public class GraphManager {
         }
 
         for (Object cell : cells) {
-            Object[] propCells = getCurrentPropertyGraph().getAllCells();
+            Object[] propCells = getPropertyGraph().getAllCells();
             Set<GraphCell> propSet = new HashSet<>();
 
             if (RDFGraph.isRDFSClassCell(cell)) { // 削除したクラスのセル
@@ -1007,7 +1007,7 @@ public class GraphManager {
         Map classRDFMap = new HashMap();
 
         for (Object cell : cells) {
-            Object[] rdfCells = getCurrentRDFGraph().getAllCells();
+            Object[] rdfCells = getRDFGraph().getAllCells();
             Set<GraphCell> rdfSet = new HashSet<>();
             for (Object rdfCell1 : rdfCells) {
                 GraphCell rdfCell = (GraphCell) rdfCell1;
@@ -1018,7 +1018,7 @@ public class GraphManager {
                     }
                 } else if (RDFGraph.isEdge(rdfCell)) {
                     RDFSModel info = (RDFSModel) GraphConstants.getValue(rdfCell.getAttributes());
-                    Object propCell = getCurrentRDFSInfoMap().getPropertyCell(info.getURI());
+                    Object propCell = getRDFSInfoMap().getPropertyCell(info.getURI());
                     if (propCell == cell) {
                         rdfSet.add(rdfCell);
                     }
@@ -1038,9 +1038,9 @@ public class GraphManager {
     }
 
     public void setEnabled(boolean t) {
-        getCurrentRDFGraph().setEnabled(t);
-        getCurrentClassGraph().setEnabled(t);
-        getCurrentPropertyGraph().setEnabled(t);
+        getRDFGraph().setEnabled(t);
+        getClassGraph().setEnabled(t);
+        getPropertyGraph().setEnabled(t);
     }
 
     private Object[] removeCells;
@@ -1061,19 +1061,19 @@ public class GraphManager {
     }
 
     public void repaintRDFGraph() {
-        RDFGraph rdfGraph = getCurrentRDFGraph();
+        RDFGraph rdfGraph = getRDFGraph();
         rdfGraph.getGraphLayoutCache().reload();
         rdfGraph.repaint();
     }
 
     private void repaintClassGrpah() {
-        RDFGraph classGraph = getCurrentClassGraph();
+        RDFGraph classGraph = getClassGraph();
         classGraph.getGraphLayoutCache().reload();
         classGraph.repaint();
     }
 
     private void repaintPropertyGraph() {
-        RDFGraph propGraph = getCurrentPropertyGraph();
+        RDFGraph propGraph = getPropertyGraph();
         propGraph.getGraphLayoutCache().reload();
         propGraph.repaint();
     }
@@ -1197,7 +1197,7 @@ public class GraphManager {
     private void applyVGJPropertyLayout(RDFSModelExtraction extractRDFS) {
         extractRDFS.extractPropertyModel(mr3Writer.getPropertyModel());
         Map<RDFNode, GraphLayoutData> cellLayoutMap = VGJTreeLayout.getVGJPropertyCellLayoutMap();
-        RDFGraph propGraph = getCurrentPropertyGraph();
+        RDFGraph propGraph = getPropertyGraph();
         Object[] cells = propGraph.getAllCells();
         for (Object cell1 : cells) {
             GraphCell cell = (GraphCell) cell1;
@@ -1211,7 +1211,7 @@ public class GraphManager {
     }
 
     private void applyJGraphPropertyLayout() {
-        RDFGraph propGraph = getCurrentPropertyGraph();
+        RDFGraph propGraph = getPropertyGraph();
         GraphLayoutUtilities.reverseArc(cellMaker, propGraph);
         treeLayout.performJGraphTreeLayout(propGraph, GraphLayoutUtilities.getJGraphPropertyLayoutDirection(),
                 GraphLayoutUtilities.PROPERTY_VERTICAL_SPACE, GraphLayoutUtilities.PROPERTY_HORIZONTAL_SPACE);
@@ -1225,7 +1225,7 @@ public class GraphManager {
     private void applyVGJClassLayout(RDFSModelExtraction extractRDFS) {
         extractRDFS.extractClassModel(mr3Writer.getClassModel());
         Map<RDFNode, GraphLayoutData> cellLayoutMap = VGJTreeLayout.getVGJClassCellLayoutMap();
-        RDFGraph classGraph = getCurrentClassGraph();
+        RDFGraph classGraph = getClassGraph();
         Object[] cells = classGraph.getAllCells();
         for (Object cell1 : cells) {
             GraphCell cell = (GraphCell) cell1;
@@ -1239,7 +1239,7 @@ public class GraphManager {
     }
 
     private void applyJGraphClassLayout() {
-        RDFGraph classGraph = getCurrentClassGraph();
+        RDFGraph classGraph = getClassGraph();
         GraphLayoutUtilities.reverseArc(cellMaker, classGraph);
         treeLayout.performJGraphTreeLayout(classGraph, GraphLayoutUtilities.getJGraphClassLayoutDirection(),
                 GraphLayoutUtilities.CLASS_VERTICAL_SPACE, GraphLayoutUtilities.CLASS_HORIZONTAL_SPACE);
@@ -1253,7 +1253,7 @@ public class GraphManager {
     private void applyVGJRDFLayout(GraphType graphType) {
         removeTypeCells();
         Map<RDFNode, GraphLayoutData> cellLayoutMap = VGJTreeLayout.getVGJRDFCellLayoutMap(mr3Writer.getRDFModel());
-        RDFGraph rdfGraph = getCurrentRDFGraph();
+        RDFGraph rdfGraph = getRDFGraph();
         Object[] cells = rdfGraph.getAllCells();
         for (Object cell1 : cells) {
             GraphCell cell = (GraphCell) cell1;
@@ -1289,7 +1289,7 @@ public class GraphManager {
 
     private void applyJGraphRDFLayout() {
         removeTypeCells();
-        treeLayout.performJGraphTreeLayout(getCurrentRDFGraph(), GraphLayoutUtilities.getJGraphRDFLayoutDirection(),
+        treeLayout.performJGraphTreeLayout(getRDFGraph(), GraphLayoutUtilities.getJGraphRDFLayoutDirection(),
                 GraphLayoutUtilities.RDF_VERTICAL_SPACE, GraphLayoutUtilities.RDF_HORIZONTAL_SPACE);
         addTypeCells();
     }
@@ -1304,7 +1304,7 @@ public class GraphManager {
 
     public void selectChangedRDFCells(RDFSModel rdfsModel) {
         Set selectedCellSet = new HashSet();
-        RDFGraph rdfGraph = getCurrentRDFGraph();
+        RDFGraph rdfGraph = getRDFGraph();
         for (Object cell : rdfGraph.getAllCells()) {
             if (RDFGraph.isRDFResourceCell(cell)) {
                 RDFResourceCell rdfCell = (RDFResourceCell) cell;
@@ -1338,9 +1338,9 @@ public class GraphManager {
      */
     public void refreshGraphs() {
         try {
-            selectCells(getCurrentRDFGraph());
-            selectCells(getCurrentClassGraph());
-            selectCells(getCurrentPropertyGraph());
+            selectCells(getRDFGraph());
+            selectCells(getClassGraph());
+            selectCells(getPropertyGraph());
         } catch (NullPointerException npe) {
             npe.printStackTrace();
         }

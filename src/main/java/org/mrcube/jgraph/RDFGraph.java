@@ -40,7 +40,6 @@ import org.mrcube.utils.Translator;
 
 import javax.swing.*;
 import javax.swing.plaf.ActionMapUIResource;
-import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.print.PageFormat;
 import java.text.BreakIterator;
@@ -312,7 +311,7 @@ public class RDFGraph extends JGraph {
      * @param cells
      */
     public void removeCellsWithEdges(Object[] cells) {
-        RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+        RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
         Set removeCells = new HashSet();
         for (Object cell1 : cells) {
             GraphCell cell = (GraphCell) cell1;

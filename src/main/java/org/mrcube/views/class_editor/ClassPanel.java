@@ -48,7 +48,7 @@ public class ClassPanel extends OntologyPanel {
     private final JList superClassJList;
 
     public ClassPanel(GraphManager gm) {
-        super(gm.getCurrentClassGraph(), gm);
+        super(gm.getClassGraph(), gm);
         labelPanel.setGraphType(GraphType.CLASS);
         commentPanel.setGraphType(GraphType.CLASS);
 

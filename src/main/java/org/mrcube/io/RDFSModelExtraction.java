@@ -72,7 +72,7 @@ public class RDFSModelExtraction {
     // subPropertyOfが省略されたプロパティは，Propertyクラスのサブクラスとみなす、
     private void setDefaultSubPropertyOf(Resource property) {
         if (!property.hasProperty(RDFS.subPropertyOf)) {
-            RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+            RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
             rdfsModelMap.addRootProperties(property);
         }
     }
@@ -143,7 +143,7 @@ public class RDFSModelExtraction {
         }
 
         info.setURI(metaResource.toString());
-        RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+        RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
         rdfsModelMap.putResourceInfo(metaResource, info);
 
         return removeModel;
@@ -156,7 +156,7 @@ public class RDFSModelExtraction {
             ClassModel supResInfo = getClassResInfo(RDFS.Resource);
             supResInfo.addSubClass(rdfsResource);
             info.addSupClass(RDFS.Resource);
-            RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+            RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
             rdfsModelMap.putResourceInfo(RDFS.Resource, supResInfo);
         }
     }
@@ -176,7 +176,7 @@ public class RDFSModelExtraction {
             ClassModel supResInfo = getClassResInfo((Resource) object);
             supResInfo.addSubClass(subject);
             info.addSupClass((Resource) object);
-            RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+            RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
             rdfsModelMap.putResourceInfo((Resource) object, supResInfo);
         } else {
             return false;
@@ -211,7 +211,7 @@ public class RDFSModelExtraction {
             PropertyModel supResInfo = getPropertyResInfo(objectResource);
             // rdfsModelMap.addRootProperties((Resource)object); //一時しのぎ
             supResInfo.addSubProperty(subject);
-            RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+            RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
             rdfsModelMap.putResourceInfo(objectResource, supResInfo);
             info.addSupProperty(object);
         } else {
@@ -234,7 +234,7 @@ public class RDFSModelExtraction {
             info.setMetaClass(object.toString());
         } else if (predicate.getURI().matches(MR3Resource.conceptLabel.getURI() + ".*")) {
             // subClassOfやsubPropertyOfと同時に使った場合にのみ有効
-            RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+            RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
             rdfsModelMap.addPropertyLabelModel(stmt);
         } else {
             return false;
@@ -253,7 +253,7 @@ public class RDFSModelExtraction {
     }
 
     private ClassModel getClassResInfo(Resource resource) {
-        RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+        RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
         ClassModel info = (ClassModel) rdfsModelMap.getResourceInfo(resource);
         if (info == null)
             info = new ClassModel("");
@@ -261,7 +261,7 @@ public class RDFSModelExtraction {
     }
 
     private PropertyModel getPropertyResInfo(Resource resource) {
-        RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+        RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
         PropertyModel info = (PropertyModel) rdfsModelMap.getResourceInfo(resource);
         if (info == null)
             info = new PropertyModel("");

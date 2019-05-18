@@ -291,7 +291,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
         if (graph.getType() == GraphType.RDF) {
             return;
         }
-        RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+        RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
         Object[] newAllCells = graph.getAllCells();
         Set<GraphCell> newRDFSCellSet = new HashSet<>();
         for (Object newAllCell : newAllCells) { // undo/redo前よりもセル数が増えた場合

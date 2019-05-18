@@ -187,7 +187,7 @@ public class GraphLayoutUtilities {
         GraphLayoutData rootData = new GraphLayoutData(MR3Resource.Property, dim);
         rootData.setHasParent(false);
         cellLayoutMap.put(MR3Resource.Property, rootData);
-        RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+        RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
         for (Resource property : rdfsModelMap.getRootProperties()) {
             if (!isNumProperty(property)) {
                 GraphLayoutData childData = cellLayoutMap.get(property);
@@ -210,7 +210,7 @@ public class GraphLayoutUtilities {
 
     public static void initClassGraphLayoutData(Map<RDFNode, GraphLayoutData> cellLayoutMap) {
         duplicateResourceSet = new HashSet<>();
-        RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+        RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
         RDFSModel rootInfo = rdfsModelMap.getResourceInfo(RDFS.Resource);
         if (rootInfo != null && rootInfo.getRDFSSubList().size() > 0) {
             Dimension dim = GraphUtilities.getAutoNodeDimension(gmanager, gmanager
@@ -225,7 +225,7 @@ public class GraphLayoutUtilities {
     private static void initRDFSGraphLayoutData(Map<RDFNode, GraphLayoutData> cellLayoutMap, RDFSModel supInfo,
                                                 GraphLayoutData parentData) {
         for (Resource resource : supInfo.getRDFSSubList()) {
-            RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+            RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
             if (!isNumProperty(resource)) {
                 GraphLayoutData childData = cellLayoutMap.get(resource);
                 if (childData == null) {

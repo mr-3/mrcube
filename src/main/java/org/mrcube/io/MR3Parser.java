@@ -61,12 +61,12 @@ public class MR3Parser {
 
     public void createClassGraph(Map<RDFNode, GraphLayoutData> cellLayoutMap) {
         duplicateSubInfo = new HashSet<>();
-        RDFGraph graph = gmanager.getCurrentClassGraph();
+        RDFGraph graph = gmanager.getClassGraph();
         graph.removeEdges();
         DefaultGraphCell rootCell = (DefaultGraphCell) gmanager.getClassCell(RDFS.Resource, cellLayoutMap);
         Port rootPort = (Port) rootCell.getChildAt(0);
 
-        RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+        RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
         ClassModel rootInfo = (ClassModel) rdfsModelMap.getResourceInfo(RDFS.Resource);
         if (rootInfo != null) {
             GraphConstants.setValue(rootCell.getAttributes(), rootInfo);
@@ -79,9 +79,9 @@ public class MR3Parser {
     }
 
     public void createPropertyGraph(Map<RDFNode, GraphLayoutData> cellLayoutMap) {
-        RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+        RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
         duplicateSubInfo = new HashSet<>();
-        RDFGraph graph = gmanager.getCurrentPropertyGraph();
+        RDFGraph graph = gmanager.getPropertyGraph();
         graph.removeEdges();
 
         DefaultGraphCell rootCell = (DefaultGraphCell) gmanager.getPropertyCell(
@@ -119,7 +119,7 @@ public class MR3Parser {
     private void createRDFSGraph(GraphLayoutCache graphLayoutCache, RDFSModel supInfo,
                                  GraphCell supCell, Port supPort, Map<RDFNode, GraphLayoutData> cellLayoutMap) {
         Map<Object, AttributeMap> attributes = new HashMap<>();
-        RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+        RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
         for (Resource subRes : supInfo.getRDFSSubList()) {
             RDFSModel subInfo = rdfsModelMap.getResourceInfo(subRes);
 
@@ -178,7 +178,7 @@ public class MR3Parser {
         RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(subjectCell.getAttributes());
         if (predicate.equals(RDF.type)) {
             GraphCell cell = gmanager.getClassCell((Resource) object, false);
-            info.setTypeCell(cell, gmanager.getCurrentRDFGraph());
+            info.setTypeCell(cell, gmanager.getRDFGraph());
         } else if (predicate.equals(RDFS.label)) {
             MR3Literal literal = new MR3Literal((Literal) object);
             info.addLabel(literal);
@@ -230,7 +230,7 @@ public class MR3Parser {
     }
 
     private void replaceGraph(RDFGraph newGraph) {
-        gmanager.getCurrentRDFGraph().setModel(newGraph.getModel());
+        gmanager.getRDFGraph().setModel(newGraph.getModel());
     }
 
     public void replaceDefaultRDFGraph(Model model) {

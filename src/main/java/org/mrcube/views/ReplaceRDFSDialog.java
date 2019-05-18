@@ -181,7 +181,7 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
         rdfsModelExtraction.extractPropertyModel(replaceModel);
 
         setListData(currentClassListModel, gmanager.getClassSet());
-        RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+        RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
         setListData(replaceClassListModel, rdfsModelMap.getClassSet(new HashSet<>(), RDFS.Resource));
         setListData(currentPropertyListModel, gmanager.getPropertySet());
         Set replacePropertySet = new HashSet();
@@ -292,10 +292,10 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
         RDFSModel rdfsModel = resInfo.getTypeInfo();
         String res = (String) currentReplaceMap.get(rdfsModel.getURIStr());
         if (res.equals(NULL)) {
-            resInfo.setTypeCell(null, gmanager.getCurrentRDFGraph());
+            resInfo.setTypeCell(null, gmanager.getRDFGraph());
         } else {
             Resource resource = ResourceFactory.createResource(res);
-            resInfo.setTypeCell(gmanager.getClassCell(resource, false), gmanager.getCurrentRDFGraph());
+            resInfo.setTypeCell(gmanager.getClassCell(resource, false), gmanager.getRDFGraph());
         }
     }
 
@@ -314,7 +314,7 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
     }
     private void replaceClassList() {
         Map currentReplaceMap = getCurrentReplaceMap(currentClassListModel, replaceClassListModel);
-        RDFGraph graph = gmanager.getCurrentRDFGraph();
+        RDFGraph graph = gmanager.getRDFGraph();
         for (Object cell : graph.getAllCells()) {
             if (RDFGraph.isRDFResourceCell(cell)) {
                 replaceRDFResourceType((GraphCell) cell, currentReplaceMap);
@@ -324,7 +324,7 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
 
     private void replacePropertyList() {
         Map currentReplaceMap = getCurrentReplaceMap(currentPropertyListModel, replacePropertyListModel);
-        RDFGraph graph = gmanager.getCurrentRDFGraph();
+        RDFGraph graph = gmanager.getRDFGraph();
         Object[] cells = graph.getAllCells();
         for (Object cell1 : cells) {
             GraphCell cell = (GraphCell) cell1;
@@ -339,7 +339,7 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
     }
 
     private void removeCurrentClass() {
-        RDFGraph graph = gmanager.getCurrentClassGraph();
+        RDFGraph graph = gmanager.getClassGraph();
         Object[] cells = graph.getAllCells();
         graph.clearSelection();
         for (Object cell1 : cells) {
@@ -360,7 +360,7 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
     }
 
     private void removeCurrentProperty() {
-        RDFGraph graph = gmanager.getCurrentPropertyGraph();
+        RDFGraph graph = gmanager.getPropertyGraph();
         Object[] cells = graph.getAllCells();
         graph.clearSelection();
         for (Object cell1 : cells) {
@@ -402,7 +402,7 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
     public void setVisible(boolean flag) {
         super.setVisible(flag);
         if (!flag) {
-            RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+            RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
             rdfsModelMap.clearTemporaryObject();
         }
     }

@@ -83,7 +83,7 @@ abstract class AbstractActionFile extends MR3AbstractAction {
     protected File selectOpenFile() {
         Preferences userPrefs = mr3.getUserPrefs();
         fileChooser.setCurrentDirectory(new File(userPrefs.get(PrefConstants.WorkDirectory, "")));
-        if (fileChooser.showOpenDialog(MR3.getCurrentProject()) == JFileChooser.APPROVE_OPTION) {
+        if (fileChooser.showOpenDialog(MR3.getProjectPanel()) == JFileChooser.APPROVE_OPTION) {
             return fileChooser.getSelectedFile();
         } else {
             return null;
@@ -94,7 +94,7 @@ abstract class AbstractActionFile extends MR3AbstractAction {
     protected File selectSaveFile() {
         Preferences userPrefs = mr3.getUserPrefs();
         fileChooser.setCurrentDirectory(new File(userPrefs.get(PrefConstants.WorkDirectory, "")));
-        if (fileChooser.showSaveDialog(MR3.getCurrentProject()) == JFileChooser.APPROVE_OPTION) {
+        if (fileChooser.showSaveDialog(MR3.getProjectPanel()) == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
             if (fileChooser.getFileFilter() instanceof MR3FileFilter) {
                 MR3FileFilter filter = (MR3FileFilter) fileChooser.getFileFilter();
@@ -138,7 +138,7 @@ abstract class AbstractActionFile extends MR3AbstractAction {
             }
             if (fileExtension.equals("mr3")) {
                 exportModel = mr3.getMR3Writer().getProjectModel();
-                MR3.getCurrentProject().setCurrentProjectFile(file);
+                MR3.getProjectPanel().setProjectFile(file);
             } else {
                 exportModel = getModel();
                 switch (fileExtension) {
@@ -159,7 +159,7 @@ abstract class AbstractActionFile extends MR3AbstractAction {
             setNsPrefix(exportModel);
             RDFDataMgr.write(new FileOutputStream(file), exportModel, rdfFormat);
             MR3.STATUS_BAR.setText(SaveFileAction.SAVE_PROJECT + ": " + file.getAbsolutePath());
-            MR3.getCurrentProject().setCurrentProjectFile(file);
+            MR3.getProjectPanel().setProjectFile(file);
             mr3.ResourcePathTextField.setText(file.getAbsolutePath());
         } catch (FileNotFoundException e2) {
             Utilities.showErrorMessageDialog("File Not Found");
@@ -191,26 +191,26 @@ abstract class AbstractActionFile extends MR3AbstractAction {
     }
 
     protected void quitProject() {
-        File currentProjectFile = MR3.getCurrentProject().getCurrentProjectFile();
-        if (isNewProjectFile(MR3.getCurrentProject())) {
+        File projectFile = MR3.getProjectPanel().getProjectFile();
+        if (isNewProjectFile(MR3.getProjectPanel())) {
             saveFileAs();
-            HistoryManager.saveHistory(HistoryType.SAVE_PROJECT_AS, currentProjectFile.getAbsolutePath());
+            HistoryManager.saveHistory(HistoryType.SAVE_PROJECT_AS, projectFile.getAbsolutePath());
         } else {
-            saveFile(currentProjectFile);
-            HistoryManager.saveHistory(HistoryType.SAVE_PROJECT, currentProjectFile.getAbsolutePath());
+            saveFile(projectFile);
+            HistoryManager.saveHistory(HistoryType.SAVE_PROJECT, projectFile.getAbsolutePath());
         }
     }
 
-    protected boolean isNewProjectFile(MR3ProjectPanel currentProject) {
+    protected boolean isNewProjectFile(MR3ProjectPanel projectPanel) {
         String basePath = null;
         File newFile = new File(basePath, Translator.getString("Menu.File.New.Text"));
-        File currentProjectFile = currentProject.getCurrentProjectFile();
-        return newFile.getAbsolutePath().equals(currentProjectFile.getAbsolutePath());
+        File projectFile = projectPanel.getProjectFile();
+        return newFile.getAbsolutePath().equals(projectFile.getAbsolutePath());
     }
 
     protected int confirmExitProject() {
-        String title = MR3.getCurrentProject().getTitle();
-        int messageType = JOptionPane.showConfirmDialog(MR3.getCurrentProject(), title + "\n" + Translator.getString("SaveChanges"),
+        String title = MR3.getProjectPanel().getTitle();
+        int messageType = JOptionPane.showConfirmDialog(MR3.getProjectPanel(), title + "\n" + Translator.getString("SaveChanges"),
                 "MR^3 - " + title, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
         if (messageType == JOptionPane.YES_OPTION) {
             quitProject();
