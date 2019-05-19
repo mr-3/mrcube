@@ -4,10 +4,11 @@ import org.apache.jena.query.*;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.RDFNode;
-import org.jgraph.graph.GraphCell;
 import org.mrcube.io.MR3Writer;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.models.MR3Constants;
+import org.mrcube.models.SPARQLQueryResultTableCellRenderer;
+import org.mrcube.utils.GraphUtilities;
 import org.mrcube.utils.Utilities;
 
 import javax.swing.*;
@@ -15,6 +16,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -25,6 +27,7 @@ public class SPARQLQueryDialog extends JDialog {
     private JTextArea queryTextArea;
     private JTable queryResultsTable;
     private DefaultTableModel queryResultsTableModel;
+    private SPARQLQueryResultTableCellRenderer sparqlTableCellRenderer;
     private JButton runQueryButton;
     private JButton cancelButton;
 
@@ -39,31 +42,14 @@ public class SPARQLQueryDialog extends JDialog {
         var scrollAbleQueryTextArea = new JScrollPane(queryTextArea);
         scrollAbleQueryTextArea.setBorder(BorderFactory.createTitledBorder("SPARQL Query Text"));
         queryResultsTableModel = new DefaultTableModel();
+        sparqlTableCellRenderer = new SPARQLQueryResultTableCellRenderer();
         queryResultsTable = new JTable(queryResultsTableModel);
         queryResultsTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 int row = queryResultsTable.getSelectedRow();
                 int col = queryResultsTable.getSelectedColumn();
                 RDFNode selectedNode = (RDFNode) queryResultsTable.getValueAt(row, col);
-                Set<GraphCell> cellSet = new HashSet<>();
-                if (selectedNode.isResource()) {
-                    cellSet.addAll(gmanager.findRDFResourceSet(selectedNode.asResource().getURI()));
-                    cellSet.addAll(gmanager.findRDFSResourceSet(selectedNode.asResource().getURI(),
-                            gmanager.getClassGraph()));
-                    cellSet.addAll(gmanager.findRDFSResourceSet(selectedNode.asResource().getURI(),
-                            gmanager.getPropertyGraph()));
-                } else if (selectedNode.isLiteral()) {
-                    cellSet.addAll(gmanager.findRDFResourceSet(selectedNode.asLiteral().getString()));
-                    cellSet.addAll(gmanager.findRDFSResourceSet(selectedNode.asLiteral().getString(),
-                            gmanager.getClassGraph()));
-                    cellSet.addAll(gmanager.findRDFSResourceSet(selectedNode.asLiteral().getString(),
-                            gmanager.getPropertyGraph()));
-                }
-                cellSet.stream().forEach(c -> {
-                    gmanager.selectCell(c, gmanager.getRDFGraph());
-                    gmanager.selectCell(c, gmanager.getClassGraph());
-                    gmanager.selectCell(c, gmanager.getPropertyGraph());
-                });
+                GraphUtilities.selectCellSet(gmanager, new HashSet<>(Arrays.asList(selectedNode)));
             }
         });
 
@@ -87,6 +73,7 @@ public class SPARQLQueryDialog extends JDialog {
                 }
                 ResultSet results = qexec.execSelect();
                 java.util.List<String> resultVarList = results.getResultVars();
+                Set<RDFNode> nodeSet = new HashSet<>();
                 queryResultsTableModel.setColumnIdentifiers(resultVarList.toArray());
                 while (results.hasNext()) {
                     QuerySolution solution = results.nextSolution();
@@ -94,7 +81,11 @@ public class SPARQLQueryDialog extends JDialog {
                             .map(n -> solution.get(n))
                             .collect(Collectors.toList());
                     queryResultsTableModel.addRow(nodeList.toArray());
+                    nodeSet.addAll(nodeList);
                 }
+                resultVarList.stream().forEach(id ->
+                        queryResultsTable.getColumn(id).setCellRenderer(sparqlTableCellRenderer)
+                );
             } finally {
                 qexec.close();
             }

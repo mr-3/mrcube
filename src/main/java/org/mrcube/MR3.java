@@ -233,7 +233,6 @@ public class MR3 extends JFrame implements ChangeListener {
         toolbar.add(saveFileAsAction);
         toolbar.addSeparator();
         toolbar.add(findResAction);
-        toolbar.add(showSPARQLQueryDialogAction);
         toolbar.addSeparator();
         toolbar.add(showAttrDialogAction);
         toolbar.add(showNSTableDialogAction);

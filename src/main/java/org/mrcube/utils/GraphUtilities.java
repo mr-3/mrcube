@@ -23,6 +23,7 @@
 
 package org.mrcube.utils;
 
+import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.jgraph.graph.AttributeMap;
 import org.jgraph.graph.GraphCell;
@@ -317,6 +318,33 @@ public class GraphUtilities {
             gmanager.removeTypeCells();
             gmanager.addTypeCells();
         }
+    }
+
+    public static void selectCellSet(GraphManager gmanager, Set<RDFNode> rdfNodeSet) {
+        gmanager.getRDFGraph().clearSelection();
+        gmanager.getClassGraph().clearSelection();
+        gmanager.getPropertyGraph().clearSelection();
+        Set<GraphCell> cellSet = new HashSet<>();
+        for (RDFNode node : rdfNodeSet) {
+            if (node.isResource()) {
+                cellSet.addAll(gmanager.findRDFResourceSet(node.asResource().getURI()));
+                cellSet.addAll(gmanager.findRDFSResourceSet(node.asResource().getURI(),
+                        gmanager.getClassGraph()));
+                cellSet.addAll(gmanager.findRDFSResourceSet(node.asResource().getURI(),
+                        gmanager.getPropertyGraph()));
+            } else if (node.isLiteral()) {
+                cellSet.addAll(gmanager.findRDFResourceSet(node.asLiteral().getString()));
+                cellSet.addAll(gmanager.findRDFSResourceSet(node.asLiteral().getString(),
+                        gmanager.getClassGraph()));
+                cellSet.addAll(gmanager.findRDFSResourceSet(node.asLiteral().getString(),
+                        gmanager.getPropertyGraph()));
+            }
+        }
+        cellSet.stream().forEach(c -> {
+            gmanager.selectCell(c, gmanager.getRDFGraph());
+            gmanager.selectCell(c, gmanager.getClassGraph());
+            gmanager.selectCell(c, gmanager.getPropertyGraph());
+        });
     }
 
 }
