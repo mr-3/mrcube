@@ -9,6 +9,7 @@ import org.mrcube.jgraph.GraphManager;
 import org.mrcube.models.MR3Constants;
 import org.mrcube.models.SPARQLQueryResultTableCellRenderer;
 import org.mrcube.utils.GraphUtilities;
+import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
 
 import javax.swing.*;
@@ -34,13 +35,13 @@ public class SPARQLQueryDialog extends JDialog {
     private static final int WIDTH = 500;
     private static final int HEIGHT = 500;
 
-
     public SPARQLQueryDialog(MR3Writer mr3Writer, GraphManager gmanager) {
         this.mr3Writer = mr3Writer;
         this.gmanager = gmanager;
         queryTextArea = new JTextArea();
         var scrollAbleQueryTextArea = new JScrollPane(queryTextArea);
-        scrollAbleQueryTextArea.setBorder(BorderFactory.createTitledBorder("SPARQL Query Text"));
+        scrollAbleQueryTextArea.setBorder(
+                BorderFactory.createTitledBorder(Translator.getString("SPARQLQueryDialog.QueryText")));
         queryResultsTableModel = new DefaultTableModel();
         sparqlTableCellRenderer = new SPARQLQueryResultTableCellRenderer();
         queryResultsTable = new JTable(queryResultsTableModel);
@@ -54,21 +55,22 @@ public class SPARQLQueryDialog extends JDialog {
         });
 
         var scrollAbleQueryResultsTable = new JScrollPane(queryResultsTable);
-        scrollAbleQueryResultsTable.setBorder(BorderFactory.createTitledBorder("Query Results"));
+        scrollAbleQueryResultsTable.setBorder(BorderFactory.createTitledBorder(
+                Translator.getString("SPARQLQueryDialog.QueryResults")));
 
         var centerPanel = new JPanel();
         centerPanel.setLayout(new GridLayout(2, 1));
         centerPanel.add(scrollAbleQueryTextArea);
         centerPanel.add(scrollAbleQueryResultsTable);
 
-        runQueryButton = new JButton("Run Query");
+        runQueryButton = new JButton(Translator.getString("SPARQLQueryDialog.RunQuery"));
         runQueryButton.addActionListener(l -> {
             queryResultsTableModel.setRowCount(0);
             Query query = QueryFactory.create(queryTextArea.getText());
             QueryExecution qexec = QueryExecutionFactory.create(query, getModel());
             try {
                 if (query.getQueryType() != Query.QueryTypeSelect) {
-                    Utilities.showErrorMessageDialog("It supports only select query.");
+                    Utilities.showErrorMessageDialog(Translator.getString("SPARQLQueryDialog.Warning"));
                     return;
                 }
                 ResultSet results = qexec.execSelect();
@@ -98,8 +100,8 @@ public class SPARQLQueryDialog extends JDialog {
 
         getContentPane().add(centerPanel, BorderLayout.CENTER);
         getContentPane().add(buttonPanel, BorderLayout.SOUTH);
-        setLocationRelativeTo(this.gmanager.getRootFrame());
         setSize(new Dimension(WIDTH, HEIGHT));
+        setLocationRelativeTo(gmanager.getRootFrame());
     }
 
     private Model getModel() {

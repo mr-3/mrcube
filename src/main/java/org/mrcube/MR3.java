@@ -213,9 +213,11 @@ public class MR3 extends JFrame implements ChangeListener {
                 KeyStroke.getKeyStroke(KeyEvent.VK_3, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         showAttrDialogAction = new ShowAttrDialog(this);
         showNSTableDialogAction = new ShowNSTableDialog(this);
-        showRDFSourceCodeViewer = new ShowRDFSourceCodeViewer(this, Translator.getString("RDFSourceCodeViewer.Title"));
+        showRDFSourceCodeViewer = new ShowRDFSourceCodeViewer(this,
+                Translator.getString("RDFSourceCodeViewer.Title"));
         findResAction = new FindResAction(null, gmanager);
-        showSPARQLQueryDialogAction = new ShowSPARQLQueryDialog(this, "SPARQL Query Dialog");
+        showSPARQLQueryDialogAction = new ShowSPARQLQueryDialog(this,
+                Translator.getString("SPARQLQueryDialog.Title"));
         showProjectInfoAction = new ShowProjectInfoDialog(this);
         showLogConsoleAciton = new ShowLogConsole(this);
         showHistoryManagerAciton = new ShowHistoryManager(this);
