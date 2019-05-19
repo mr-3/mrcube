@@ -42,7 +42,7 @@ class MR3CellMakerTest {
 
         @BeforeEach
         void setUp() {
-            var project = MR3.getCurrentProject();
+            var project = MR3.getProjectPanel();
             var rdfGraphHandler = project.getRDFEditor().getRdfGraphMarqueeHandler();
             var cellMaker = rdfGraphHandler.getCellMaker();
             rdfResourceCell = cellMaker.insertRDFResource(new Point(30, 30), testResourceURI, null, MR3Constants.URIType.URI);
@@ -73,7 +73,7 @@ class MR3CellMakerTest {
 
         @BeforeEach
         void setUp() {
-            var project = MR3.getCurrentProject();
+            var project = MR3.getProjectPanel();
             var rdfGraphHandler = project.getRDFEditor().getRdfGraphMarqueeHandler();
             var cellMaker = rdfGraphHandler.getCellMaker();
             String testURI1 = DEFAULT_URI + "test_resource1";
@@ -114,7 +114,7 @@ class MR3CellMakerTest {
 
         @BeforeEach
         void setUp() {
-            var project = MR3.getCurrentProject();
+            var project = MR3.getProjectPanel();
             var rdfGraphHandler = project.getRDFEditor().getRdfGraphMarqueeHandler();
             var cellMaker = rdfGraphHandler.getCellMaker();
             var literal = new MR3Literal();
@@ -146,7 +146,7 @@ class MR3CellMakerTest {
 
         @BeforeEach
         void setUp() {
-            var project = MR3.getCurrentProject();
+            var project = MR3.getProjectPanel();
             var classGraphHandler = project.getClassEditor().getClassGraphMarqueeHandler();
             var cellMaker = classGraphHandler.getCellMaker();
             rdfsClassCell = cellMaker.insertClass(new Point(50, 50), testClassURI);
@@ -175,7 +175,7 @@ class MR3CellMakerTest {
 
         @BeforeEach
         void setUp() {
-            var project = MR3.getCurrentProject();
+            var project = MR3.getProjectPanel();
             var propertyGraphHandler = project.getPropertyEditor().getPropertyGraphMarqueeHandler();
             var cellMaker = propertyGraphHandler.getCellMaker();
             rdfsPropertyCell = cellMaker.insertProperty(new Point(50, 50), testRDFSPropertyURI);

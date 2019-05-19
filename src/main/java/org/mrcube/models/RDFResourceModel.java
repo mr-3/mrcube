@@ -131,6 +131,10 @@ public class RDFResourceModel extends ResourceModel implements Serializable {
         return getTypeInfo().getURI();
     }
 
+    public String getTypeQName() {
+        return GraphUtilities.getQName(getTypeInfo().getURI());
+    }
+
     public GraphCell getTypeCell() {
         return typeCell;
     }
@@ -170,6 +174,10 @@ public class RDFResourceModel extends ResourceModel implements Serializable {
         return uri;
     }
 
+    public String getQName() {
+        return GraphUtilities.getQName(getURI());
+    }
+
     public String getStatus() {
         String msg = "URIType: " + uriType + "\n";
         msg += "URI: " + uri + "\n";
@@ -196,8 +204,8 @@ public class RDFResourceModel extends ResourceModel implements Serializable {
                 }
                 break;
             case URI:
-                return "　" + GraphUtilities.getNSPrefix(getURI()) + "　";
+                return "　" + GraphUtilities.getQName(getURI()) + "　";
         }
-        return "　" + GraphUtilities.getNSPrefix(getURI()) + " ";
+        return "　" + GraphUtilities.getQName(getURI()) + " ";
     }
 }

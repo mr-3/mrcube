@@ -37,14 +37,9 @@ import org.mrcube.views.HistoryManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -145,7 +140,7 @@ public class PasteAction extends AbstractAction {
     }
 
     private void cloneRDFSCell(GraphCell cell, RDFSModel newInfo) {
-        RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+        RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
         rdfsModelMap.putURICellMap(newInfo, cell);
         GraphConstants.setValue(cell.getAttributes(), newInfo);
         graph.getGraphLayoutCache().editCell(cell, cell.getAttributes());

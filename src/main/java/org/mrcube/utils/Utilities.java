@@ -43,7 +43,7 @@ public class Utilities {
     private static final String WARNING = Translator.getString("Warning");
 
     public static void showErrorMessageDialog(String message) {
-        JOptionPane.showMessageDialog(MR3.getCurrentProject(),
+        JOptionPane.showMessageDialog(MR3.getProjectPanel(),
                 message, WARNING, JOptionPane.ERROR_MESSAGE);
     }
 

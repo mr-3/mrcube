@@ -48,7 +48,7 @@ public class JGraphTreeLayout {
 
     public void performJGraphTreeLayout() {
         gmanager.removeTypeCells();
-        performJGraphTreeLayout(gmanager.getCurrentRDFGraph(),
+        performJGraphTreeLayout(gmanager.getRDFGraph(),
                 GraphLayoutUtilities.getJGraphRDFLayoutDirection(),
                 GraphLayoutUtilities.RDF_VERTICAL_SPACE, GraphLayoutUtilities.RDF_HORIZONTAL_SPACE);
         gmanager.addTypeCells();
@@ -56,8 +56,8 @@ public class JGraphTreeLayout {
     }
 
     public void performJGraphRDFSTreeLayout() {
-        RDFGraph classGraph = gmanager.getCurrentClassGraph();
-        RDFGraph propGraph = gmanager.getCurrentPropertyGraph();
+        RDFGraph classGraph = gmanager.getClassGraph();
+        RDFGraph propGraph = gmanager.getPropertyGraph();
         GraphLayoutUtilities.reverseArc(cellMaker, classGraph);
         GraphLayoutUtilities.reverseArc(cellMaker, propGraph);
         performJGraphTreeLayout(classGraph, GraphLayoutUtilities.getJGraphClassLayoutDirection(),
@@ -83,7 +83,7 @@ public class JGraphTreeLayout {
                 rootCells.add(cell);
             }
         }
-        RDFGraph rdfGraph = gmanager.getCurrentRDFGraph();
+        RDFGraph rdfGraph = gmanager.getRDFGraph();
 
         Object tmpRoot = null;
         if (rootCells.size() != 1) {

@@ -1,24 +1,24 @@
 /*
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
- * 
+ *
  * Copyright (C) 2003-2019 Yamaguchi Laboratory, Keio University. All rights reserved.
- * 
+ *
  * This file is part of MR^3.
- * 
+ *
  * MR^3 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * MR^3 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with MR^3.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  */
 
 package org.mrcube.models;
@@ -58,7 +58,7 @@ public class PrefConstants {
     public static final String DefaultPropertyClass = "Default Property Class";
     public static final String PropClassList = "Property Class List";
 
-    public static final String Color = "Color";
+    public static final String BlackAndWhite = "Black and White";
     public static final String Antialias = "Antialias";
 
     public static final String UILang = "UI Lang";
@@ -85,6 +85,36 @@ public class PrefConstants {
     public static final String NODE_SIZE = "NODE SIZE";
     public static final String NODE_WIDTH = "NODE WIDTH";
     public static final String NODE_HEIGHT = "NODE HEIGHT";
+
+    public static final String RDFResourceForegroundColor = "RDF Resource Foreground Color";
+    public static final String RDFPropertyForegroundColor = "RDF Property Foreground Color";
+    public static final String RDFLiteralForegroundColor = "RDF Literal Foreground Color";
+    public static final String ClassForegroundColor = "Class Foreground Color";
+    public static final String PropertyForegroundColor = "Property Foreground Color";
+
+    public static final String RDFResourceBackgroundColor = "RDF Resource Background Color";
+    public static final String RDFLiteralBackgroundColor = "RDF Literal Background Color";
+    public static final String ClassBackgroundColor = "Class Background Color";
+    public static final String PropertyBackgroundColor = "Property Background Color";
+
+    public static final String RDFResourceBorderColor = "RDF Resource Selected Color";
+    public static final String RDFPropertyBorderColor = "RDF Property Selected Color";
+    public static final String RDFLiteralBorderColor = "RDF Literal Selected Color";
+    public static final String ClassBorderColor = "Class Selected Color";
+    public static final String PropertyBorderColor = "Property Selected Color";
+
+    public static final String RDFResourceSelectedBackgroundColor = "RDF Resource Selected Background Color";
+    public static final String RDFLiteralSelectedBackgroundColor = "RDF Literal Selected Background Color";
+    public static final String ClassSelectedBackgroundColor = "Class Selected Background Color";
+    public static final String PropertySelectedBackgroundColor = "Property Selected Background Color";
+
+    public static final String RDFResourceSelectedBorderColor = "RDF Resource Selected Border Color";
+    public static final String RDFPropertySelectedBorderColor = "RDF Property Selected Border Color";
+    public static final String RDFLiteralSelectedBorderColor = "RDF Literal Selected Border Color";
+    public static final String ClassSelectedBorderColor = "Class Selected Border Color";
+    public static final String PropertySelectedBorderColor = "Property Selected Border Color";
+
+    public static final String EditorBackgroundColor = "Editor Background Color";
 
     public static final String WorkDirectory = "DefaultWorkDirectory";
     public static final String ResourceDirectory = "DefaultResourceDirectory";

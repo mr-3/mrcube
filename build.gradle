@@ -9,7 +9,7 @@ plugins {
 }
 
 group 'org.mrcube'
-version = '2019.04_1'
+version = '2019.05_1'
 mainClassName = 'org.mrcube.MR3'
 sourceCompatibility = targetCompatibility = '11'
 
@@ -81,9 +81,11 @@ tasks.runtime.doLast {
 
 dependencies {
     compile 'jgraph:jgraph:5.13.0.0'
-    compile 'org.apache.jena:jena-core:3.10.0'
-    compile 'org.apache.jena:jena-arq:3.10.0'
+    compile 'org.apache.jena:jena-core:3.11.0'
+    compile 'org.apache.jena:jena-arq:3.11.0'
     compile 'org.slf4j:slf4j-simple:1.7.25'
+    compile 'org.apache.xmlgraphics:batik-svg-dom:1.11'
+    compile 'org.apache.xmlgraphics:batik-svggen:1.11'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.2'
 }

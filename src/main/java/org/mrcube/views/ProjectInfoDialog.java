@@ -139,18 +139,18 @@ public class ProjectInfoDialog extends JDialog {
 
     public void resetStatus() {
         String newProjectText = Translator.getString("Menu.File.New.Text");
-        if (MR3.getCurrentProject() == null || MR3.getCurrentProject().getTitle().equals(newProjectText)) {
+        if (MR3.getProjectPanel() == null || MR3.getProjectPanel().getTitle().equals(newProjectText)) {
             currentProjectValue.setText(newProjectText);
         } else {
-            currentProjectValue.setText(MR3.getCurrentProject().getTitle());
+            currentProjectValue.setText(MR3.getProjectPanel().getTitle());
         }
         lastImportTimeValue.setText(Double.toString(MR3.STATUS_BAR.getProgressTime()));
 
         modelResourceCntValue.setText(Integer.toString(calcResourceCnt(mr3Writer.getRDFModel())));
         modelLiteralCntValue.setText(Integer.toString(calcLiteralCnt(mr3Writer.getRDFModel())));
         modelStatementCntValue.setText(Integer.toString(calcStatementCnt(mr3Writer.getRDFModel())));
-        ontClassCntValue.setText(Integer.toString(calcOntCnt(gmanager.getCurrentClassGraph())));
-        ontPropertyCntValue.setText(Integer.toString(calcOntCnt(gmanager.getCurrentPropertyGraph())));
+        ontClassCntValue.setText(Integer.toString(calcOntCnt(gmanager.getClassGraph())));
+        ontPropertyCntValue.setText(Integer.toString(calcOntCnt(gmanager.getPropertyGraph())));
         allResourceCntValue.setText(Integer.toString(calcAllResourceCnt()));
         allLiteralCntValue.setText(Integer.toString(calcAllLiteralCnt()));
         allStatementCntValue.setText(Integer.toString(calcAllStatementCnt()));

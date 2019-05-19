@@ -33,19 +33,28 @@ import java.awt.*;
  */
 public class RDFLiteralCell extends DefaultGraphCell implements RDFCellStyleChanger {
 
-    public static Color backgroundColor = new Color(145, 145, 50);
-    private static Color selectedBackgroundColor = new Color(230, 180, 80);
+    public static final Color DEFAULT_FG_COLOR = Color.white;
+    public static final Color DEFAULT_BG_COLOR = new Color(145, 145, 50);
+    public static final Color DEFAULT_BORDER_COLOR = new Color(145, 145, 50);
+    public static final Color DEFAULT_SELECTED_BACKGROUND_COLOR = new Color(230, 180, 80);
+    public static final Color DEFAULT_SELECTED_BORDER_COLOR = new Color(230, 180, 80);
+
+    public static Color foregroundColor = DEFAULT_FG_COLOR;
+    public static Color backgroundColor = DEFAULT_BG_COLOR;
+    public static Color borderColor = DEFAULT_BORDER_COLOR;
+    public static Color selectedBackgroundColor = DEFAULT_SELECTED_BACKGROUND_COLOR;
+    public static Color selectedBorderColor = DEFAULT_SELECTED_BORDER_COLOR;
 
     public RDFLiteralCell(Object userObject) {
         super(userObject);
     }
 
     public void changeDefaultCellStyle(RDFGraph graph) {
-        GraphUtilities.changeDefaultCellStyle(graph, this, backgroundColor);
+        GraphUtilities.changeCellStyle(graph, this, foregroundColor, backgroundColor, borderColor);
     }
 
     public void changeSelectedCellStyle(RDFGraph graph) {
-        GraphUtilities.changeCellStyle(graph, this, selectedBackgroundColor);
+        GraphUtilities.changeCellStyle(graph, this, foregroundColor, selectedBackgroundColor, selectedBorderColor);
     }
 
 }

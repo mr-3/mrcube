@@ -60,7 +60,7 @@ public class OpenFileAction extends OpenResourceAction {
             return;
         }
         openResource(file.getAbsolutePath());
-        MR3.getCurrentProject().setCurrentProjectFile(file);
+        MR3.getProjectPanel().setProjectFile(file);
         mr3.ResourcePathTextField.setText(file.getAbsolutePath());
     }
 }

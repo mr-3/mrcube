@@ -23,14 +23,15 @@
 
 package org.mrcube.utils;
 
+import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.jgraph.graph.AttributeMap;
 import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphConstants;
+import org.mrcube.editors.Editor;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.jgraph.RDFCellStyleChanger;
 import org.mrcube.jgraph.RDFGraph;
-import org.mrcube.jgraph.RDFPropertyCell;
 import org.mrcube.models.ClassModel;
 import org.mrcube.models.NamespaceModel;
 import org.mrcube.models.RDFResourceModel;
@@ -45,11 +46,13 @@ import java.util.*;
  */
 public class GraphUtilities {
 
+    public static boolean isBlackAndWhite;
     public static Font defaultFont = null;
     private static final float EMPHASIS_WIDTH = 3;
 
     private static Set<NamespaceModel> namespaceModelSet = new HashSet<>();
-    public static final Color graphBackgroundColor = Color.white;
+    public static Color graphForegroundColor = Color.black;
+    public static Color graphBackgroundColor = Color.white;
 
     public static void setNamespaceModelSet(Set<NamespaceModel> infoSet) {
         namespaceModelSet = infoSet;
@@ -64,21 +67,36 @@ public class GraphUtilities {
      *
      * @param graph
      * @param cell
-     * @param backGroundColor
+     * @param fgColor
+     * @param bgColor
+     * @param borderColor
      */
-    public static void changeCellStyle(RDFGraph graph, GraphCell cell, Color backGroundColor) {
+    public static void changeCellStyle(RDFGraph graph, GraphCell cell, Color fgColor, Color bgColor, Color borderColor) {
         if (cell != null) {
             Map map = new AttributeMap();
-            if (RDFGraph.isRDFPropertyCell(cell)) {
-                GraphConstants.setForeground(map, RDFPropertyCell.fontColor);
-                GraphConstants.setLineColor(map, backGroundColor);
-                GraphConstants.setLineWidth(map, RDFCellStyleChanger.LINE_WIDTH);
+            if (isBlackAndWhite) {
+                if (RDFGraph.isRDFPropertyCell(cell)) {
+                    GraphConstants.setForeground(map, graphForegroundColor);
+                    GraphConstants.setLineColor(map, graphForegroundColor);
+                    GraphConstants.setLineWidth(map, RDFCellStyleChanger.LINE_WIDTH);
+                } else {
+                    GraphConstants.setForeground(map, graphForegroundColor);
+                    GraphConstants.setBackground(map, graphBackgroundColor);
+                    GraphConstants.setBorderColor(map, graphForegroundColor);
+                    GraphConstants.setOpaque(map, false);
+                }
             } else {
-                GraphConstants.setForeground(map, Color.white);
-                GraphConstants.setBorderColor(map, backGroundColor);
-                GraphConstants.setBackground(map, backGroundColor);
-                GraphConstants.setFont(map, new Font("SansSerif", Font.PLAIN, RDFCellStyleChanger.FONT_SIZE));
-                GraphConstants.setOpaque(map, true);
+                if (RDFGraph.isRDFPropertyCell(cell)) {
+                    GraphConstants.setForeground(map, fgColor);
+                    GraphConstants.setLineColor(map, borderColor);
+                    GraphConstants.setLineWidth(map, RDFCellStyleChanger.LINE_WIDTH);
+                } else {
+                    GraphConstants.setForeground(map, fgColor);
+                    GraphConstants.setBorderColor(map, borderColor);
+                    GraphConstants.setBackground(map, bgColor);
+                    GraphConstants.setFont(map, new Font("SansSerif", Font.PLAIN, RDFCellStyleChanger.FONT_SIZE));
+                    GraphConstants.setOpaque(map, true);
+                }
             }
 
             map = new AttributeMap(map);
@@ -87,10 +105,6 @@ public class GraphUtilities {
 
             graph.getGraphLayoutCache().edit(new Object[]{cell}, map);
         }
-    }
-
-    public static void changeDefaultCellStyle(RDFGraph graph, GraphCell cell, Color backGroundColor) {
-        changeCellStyle(graph, cell, backGroundColor);
     }
 
     public static boolean isChangedSelectedColor = true;
@@ -128,7 +142,7 @@ public class GraphUtilities {
     private static final int ANON_NODE_WIDTH = 50;
 
     public static void resizeAllRDFResourceCell(GraphManager gm) {
-        RDFGraph graph = gm.getCurrentRDFGraph();
+        RDFGraph graph = gm.getRDFGraph();
         Object[] cells = graph.getAllCells();
         for (Object cell1 : cells) {
             GraphCell cell = (GraphCell) cell1;
@@ -140,7 +154,7 @@ public class GraphUtilities {
     }
 
     public static void resizeAllRDFSResourceCell(GraphManager gm) {
-        Object[] cells = gm.getCurrentClassGraph().getAllCells();
+        Object[] cells = gm.getClassGraph().getAllCells();
         for (Object cell2 : cells) {
             GraphCell cell = (GraphCell) cell2;
             if (RDFGraph.isRDFSCell(cell)) {
@@ -148,7 +162,7 @@ public class GraphUtilities {
                 resizeRDFSResourceCell(gm, info, cell);
             }
         }
-        cells = gm.getCurrentPropertyGraph().getAllCells();
+        cells = gm.getPropertyGraph().getAllCells();
         for (Object cell1 : cells) {
             GraphCell cell = (GraphCell) cell1;
             if (RDFGraph.isRDFSCell(cell)) {
@@ -162,16 +176,16 @@ public class GraphUtilities {
         String value = gm.getRDFSNodeValue(rdfsModel.getURI(), rdfsModel);
         Dimension size = GraphUtilities.getAutoNodeDimension(gm, value);
         if (rdfsModel instanceof ClassModel) {
-            GraphUtilities.resizeCell(size, gm.getCurrentClassGraph(), cell);
+            GraphUtilities.resizeCell(size, gm.getClassGraph(), cell);
         } else {
-            GraphUtilities.resizeCell(size, gm.getCurrentPropertyGraph(), cell);
+            GraphUtilities.resizeCell(size, gm.getPropertyGraph(), cell);
         }
     }
 
     public static void resizeRDFResourceCell(GraphManager gm, RDFResourceModel resInfo, GraphCell cell) {
         String value = gm.getRDFNodeValue(resInfo.getURI(), resInfo);
         Dimension size = GraphUtilities.getAutoNodeDimension(gm, value);
-        GraphUtilities.resizeCell(size, gm.getCurrentRDFGraph(), cell);
+        GraphUtilities.resizeCell(size, gm.getRDFGraph(), cell);
     }
 
     public static void resizeCell(Dimension size, RDFGraph graph, GraphCell cell) {
@@ -189,12 +203,12 @@ public class GraphUtilities {
             return new Dimension(MR3CellMaker.CELL_WIDTH, MR3CellMaker.CELL_HEIGHT);
         }
         if (defaultFont == null) {
-            defaultFont = gmanager.getCurrentRDFGraph().getFont();
+            defaultFont = gmanager.getRDFGraph().getFont();
         }
         StringTokenizer tokenizer = new StringTokenizer(value, "\n");
         int width = MR3CellMaker.DEFAULT_CELL_WIDTH / 3;
         int height = MR3CellMaker.CELL_MARGIN;
-        FontMetrics fm = gmanager.getCurrentRDFGraph().getFontMetrics(defaultFont);
+        FontMetrics fm = gmanager.getRDFGraph().getFontMetrics(defaultFont);
         while (tokenizer.hasMoreTokens()) {
             String token = tokenizer.nextToken();
             if (width < fm.stringWidth(token)) {
@@ -209,7 +223,7 @@ public class GraphUtilities {
         return new Dimension(width, height);
     }
 
-    public static String getNSPrefix(Resource uri) {
+    public static String getQName(Resource uri) {
         if (uri.isAnon()) {
             return "";
         }
@@ -235,9 +249,9 @@ public class GraphUtilities {
             return new Dimension(MR3CellMaker.CELL_WIDTH, MR3CellMaker.CELL_HEIGHT);
         }
         if (defaultFont == null) {
-            defaultFont = gmanager.getCurrentRDFGraph().getFont();
+            defaultFont = gmanager.getRDFGraph().getFont();
         }
-        FontMetrics fm = gmanager.getCurrentRDFGraph().getFontMetrics(defaultFont);
+        FontMetrics fm = gmanager.getRDFGraph().getFontMetrics(defaultFont);
         int width = fm.stringWidth(value) * 2;
         if (value.length() == 0) {
             width = ANON_NODE_WIDTH;
@@ -255,4 +269,82 @@ public class GraphUtilities {
             editCell(cell, map, graph);
         }
     }
+
+    public static void resetEditorBackgroudColor(GraphManager gmanager) {
+        if (GraphUtilities.isBlackAndWhite) {
+            gmanager.getRDFGraph().setBackground(Editor.DEFAUlT_BACKGROUND_COLOR);
+            gmanager.getClassGraph().setBackground(Editor.DEFAUlT_BACKGROUND_COLOR);
+            gmanager.getPropertyGraph().setBackground(Editor.DEFAUlT_BACKGROUND_COLOR);
+        } else {
+            gmanager.getRDFGraph().resetBackground();
+            gmanager.getClassGraph().resetBackground();
+            gmanager.getPropertyGraph().resetBackground();
+        }
+    }
+
+    public static void changeAllCellColor(GraphManager gmanager) {
+        RDFGraph rdfGraph = gmanager.getRDFGraph();
+        RDFGraph classGraph = gmanager.getClassGraph();
+        RDFGraph propertyGraph = gmanager.getPropertyGraph();
+
+        if (rdfGraph == null || classGraph == null || propertyGraph == null) {
+            return;
+        }
+
+        Object[] cells = rdfGraph.getAllCells();
+        for (Object cell2 : cells) {
+            if (cell2 instanceof RDFCellStyleChanger) {
+                RDFCellStyleChanger changer = (RDFCellStyleChanger) cell2;
+                changer.changeDefaultCellStyle(rdfGraph);
+            }
+        }
+
+        cells = classGraph.getAllCells();
+        for (Object cell1 : cells) {
+            if (cell1 instanceof RDFCellStyleChanger) {
+                RDFCellStyleChanger changer = (RDFCellStyleChanger) cell1;
+                changer.changeDefaultCellStyle(classGraph);
+            }
+        }
+
+        cells = propertyGraph.getAllCells();
+        for (Object cell : cells) {
+            if (cell instanceof RDFCellStyleChanger) {
+                RDFCellStyleChanger changer = (RDFCellStyleChanger) cell;
+                changer.changeDefaultCellStyle(propertyGraph);
+            }
+        }
+        if (gmanager.isShowTypeCell()) {
+            gmanager.removeTypeCells();
+            gmanager.addTypeCells();
+        }
+    }
+
+    public static void selectCellSet(GraphManager gmanager, Set<RDFNode> rdfNodeSet) {
+        gmanager.getRDFGraph().clearSelection();
+        gmanager.getClassGraph().clearSelection();
+        gmanager.getPropertyGraph().clearSelection();
+        Set<GraphCell> cellSet = new HashSet<>();
+        for (RDFNode node : rdfNodeSet) {
+            if (node.isResource()) {
+                cellSet.addAll(gmanager.findRDFResourceSet(node.asResource().getURI()));
+                cellSet.addAll(gmanager.findRDFSResourceSet(node.asResource().getURI(),
+                        gmanager.getClassGraph()));
+                cellSet.addAll(gmanager.findRDFSResourceSet(node.asResource().getURI(),
+                        gmanager.getPropertyGraph()));
+            } else if (node.isLiteral()) {
+                cellSet.addAll(gmanager.findRDFResourceSet(node.asLiteral().getString()));
+                cellSet.addAll(gmanager.findRDFSResourceSet(node.asLiteral().getString(),
+                        gmanager.getClassGraph()));
+                cellSet.addAll(gmanager.findRDFSResourceSet(node.asLiteral().getString(),
+                        gmanager.getPropertyGraph()));
+            }
+        }
+        cellSet.stream().forEach(c -> {
+            gmanager.selectCell(c, gmanager.getRDFGraph());
+            gmanager.selectCell(c, gmanager.getClassGraph());
+            gmanager.selectCell(c, gmanager.getPropertyGraph());
+        });
+    }
+
 }

@@ -179,7 +179,7 @@ public class MR3TreePanel extends JPanel {
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
         if (node != null) {
             Object cell = node.getUserObject();
-            if (gmanager.getCurrentClassGraph().isContains(cell)) {
+            if (gmanager.getClassGraph().isContains(cell)) {
                 gmanager.selectClassCell(cell);
             } else {
                 gmanager.selectPropertyCell(cell);

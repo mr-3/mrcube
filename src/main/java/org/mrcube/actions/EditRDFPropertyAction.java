@@ -65,7 +65,7 @@ public class EditRDFPropertyAction {
     public boolean editRDFProperty() {
         GraphCell propertyCell = null;
         Resource uri = ResourceFactory.createResource(uriStr);
-        RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+        RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
         if (rdfsModelMap.isPropertyCell(uri) || uri.equals(MR3Resource.Nil)) {
             propertyCell = gmanager.getPropertyCell(uri, false);
         } else {
@@ -78,10 +78,10 @@ public class EditRDFPropertyAction {
 
             RDFSModel propInfo = (RDFSModel) GraphConstants.getValue(edge.getAttributes());
             if (propInfo.getURI().equals(MR3Resource.Nil)) {
-                int ans = JOptionPane.showConfirmDialog(MR3.getCurrentProject(),
+                int ans = JOptionPane.showConfirmDialog(MR3.getProjectPanel(),
                         Translator.getString("Warning.Message10"), WARNING, JOptionPane.YES_NO_OPTION);
                 if (ans == JOptionPane.YES_OPTION) {
-                    propertyCell = (GraphCell) gmanager.insertSubRDFS(uri, null, gmanager.getCurrentPropertyGraph());
+                    propertyCell = (GraphCell) gmanager.insertSubRDFS(uri, null, gmanager.getPropertyGraph());
                     HistoryManager.saveHistory(HistoryType.META_MODEL_MANAGEMNET_REPLACE_PROPERTY_WITH_CREATE_ONT_PROPERTY);
                 }
             } else {
@@ -97,7 +97,7 @@ public class EditRDFPropertyAction {
                     // Set supProps = dialog.getSupRDFSSet();
                     // propertyCell = (GraphCell) gmanager.insertSubRDFS(uri,
                     // supProps, gmanager.getPropertyGraph());
-                    propertyCell = (GraphCell) gmanager.insertSubRDFS(uri, null, gmanager.getCurrentPropertyGraph());
+                    propertyCell = (GraphCell) gmanager.insertSubRDFS(uri, null, gmanager.getPropertyGraph());
                     HistoryManager
                             .saveHistory(HistoryType.META_MODEL_MANAGEMNET_REPLACE_PROPERTY_WITH_CREATE_ONT_PROPERTY);
                 } else if (createType == CreateRDFSType.RENAME) {
@@ -125,7 +125,7 @@ public class EditRDFPropertyAction {
             propInfo = new PropertyModel(propInfo.getURIStr());
         }
         GraphConstants.setValue(edge.getAttributes(), propInfo);
-        GraphUtilities.editCell(edge, edge.getAttributes(), gmanager.getCurrentRDFGraph());
+        GraphUtilities.editCell(edge, edge.getAttributes(), gmanager.getRDFGraph());
         return true;
     }
 }

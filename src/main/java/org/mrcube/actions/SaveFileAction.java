@@ -65,7 +65,7 @@ public class SaveFileAction extends AbstractActionFile {
 
     public void actionPerformed(ActionEvent e) {
         if (getName().equals(SAVE_PROJECT)) {
-            File currentProjectFile = MR3.getCurrentProject().getCurrentProjectFile();
+            File currentProjectFile = MR3.getProjectPanel().getProjectFile();
             String basePath = null;
             File newFile = new File(basePath, Translator.getString("Menu.File.New.Text"));
             if (newFile.getAbsolutePath().equals(currentProjectFile.getAbsolutePath())) {

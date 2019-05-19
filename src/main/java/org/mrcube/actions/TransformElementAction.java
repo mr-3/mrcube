@@ -124,9 +124,9 @@ public class TransformElementAction extends AbstractAction {
 
     private boolean isRmCellsRemoved() {
         for (Object cell : gmanager.getRemoveCells()) {
-            if (gmanager.getCurrentRDFGraph().getModel().contains(cell)
-                    || gmanager.getCurrentClassGraph().getModel().contains(cell)
-                    || gmanager.getCurrentPropertyGraph().getModel().contains(cell)) {
+            if (gmanager.getRDFGraph().getModel().contains(cell)
+                    || gmanager.getClassGraph().getModel().contains(cell)
+                    || gmanager.getPropertyGraph().getModel().contains(cell)) {
                 return false;
             }
         }

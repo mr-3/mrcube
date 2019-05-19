@@ -26,12 +26,12 @@ package org.mrcube;
 import org.apache.jena.sys.JenaSystem;
 import org.mrcube.actions.*;
 import org.mrcube.editors.ClassEditor;
+import org.mrcube.editors.Editor;
 import org.mrcube.editors.PropertyEditor;
 import org.mrcube.editors.RDFEditor;
 import org.mrcube.io.MR3Reader;
 import org.mrcube.io.MR3Writer;
-import org.mrcube.jgraph.GraphManager;
-import org.mrcube.jgraph.RDFGraph;
+import org.mrcube.jgraph.*;
 import org.mrcube.layout.GraphLayoutUtilities;
 import org.mrcube.models.MR3Constants;
 import org.mrcube.models.MR3Constants.CellViewType;
@@ -80,6 +80,7 @@ public class MR3 extends JFrame implements ChangeListener {
     private WeakReference<OptionDialog> optionDialogRef;
     private WeakReference<RDFSourceCodeViewer> RDFSourceCodeViewerRef;
     private HistoryManager historyManager;
+    private SPARQLQueryDialog sparqlQueryDialog;
     private WeakReference<ValidatorDialog> validatorRef;
     private WeakReference<ProjectInfoDialog> projectInfoDialogRef;
     private final MR3LogConsole mr3LogConsole;
@@ -106,6 +107,7 @@ public class MR3 extends JFrame implements ChangeListener {
         mr3Reader = new MR3Reader(gmanager);
         mr3Writer = new MR3Writer(gmanager);
         historyManager = new HistoryManager(this, this);
+        sparqlQueryDialog = new SPARQLQueryDialog(mr3Writer, gmanager);
         initActions();
         getContentPane().add(createToolBar(), BorderLayout.NORTH);
 
@@ -161,6 +163,9 @@ public class MR3 extends JFrame implements ChangeListener {
     private OpenResourceAction openResourceAction;
     private AbstractAction saveFileAction;
     private AbstractAction saveFileAsAction;
+    private AbstractAction saveRDFGraphAsImageFileAction;
+    private AbstractAction saveClassGraphAsImageFileAction;
+    private AbstractAction savePropertyGraphAsImageFileAction;
     private AbstractAction showValidatorAction;
     private AbstractAction deployWindowCPRAction;
     private AbstractAction deployWindowCRAction;
@@ -169,6 +174,7 @@ public class MR3 extends JFrame implements ChangeListener {
     private AbstractAction showNSTableDialogAction;
     private AbstractAction showRDFSourceCodeViewer;
     private AbstractAction findResAction;
+    private AbstractAction showSPARQLQueryDialogAction;
     private AbstractAction showProjectInfoAction;
     private AbstractAction showLogConsoleAciton;
     private AbstractAction showHistoryManagerAciton;
@@ -186,8 +192,16 @@ public class MR3 extends JFrame implements ChangeListener {
         openFileAction = new OpenFileAction(this);
         saveFileAction = new SaveFileAction(this, SaveFileAction.SAVE_PROJECT, SaveFileAction.SAVE_PROJECT_ICON);
         saveFileAsAction = new SaveFileAction(this, SaveFileAction.SAVE_AS_PROJECT, SaveFileAction.SAVE_AS_PROJECT_ICON);
+        saveRDFGraphAsImageFileAction = new SaveGraphImageAction(gmanager, GraphType.RDF,
+                Translator.getString("Menu.File.SaveRDFGraphAsImageFile.Text"),
+                Utilities.getImageIcon(Translator.getString("RDFEditor.Icon")));
+        saveClassGraphAsImageFileAction = new SaveGraphImageAction(gmanager, GraphType.CLASS,
+                Translator.getString("Menu.File.SaveClassGraphAsImageFile.Text"),
+                Utilities.getImageIcon(Translator.getString("ClassEditor.Icon")));
+        savePropertyGraphAsImageFileAction = new SaveGraphImageAction(gmanager, GraphType.PROPERTY,
+                Translator.getString("Menu.File.SavePropertyGraphAsImageFile.Text"),
+                Utilities.getImageIcon(Translator.getString("PropertyEditor.Icon")));
         showValidatorAction = new ShowValidator(this);
-
         deployWindowCPRAction = new DeployWindows(this, Translator.getString("Menu.Window.DeployCPRWindows.Text"),
                 CPR_ICON, DeployType.CPR,
                 KeyStroke.getKeyStroke(KeyEvent.VK_1, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
@@ -199,8 +213,11 @@ public class MR3 extends JFrame implements ChangeListener {
                 KeyStroke.getKeyStroke(KeyEvent.VK_3, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         showAttrDialogAction = new ShowAttrDialog(this);
         showNSTableDialogAction = new ShowNSTableDialog(this);
-        showRDFSourceCodeViewer = new ShowRDFSourceCodeViewer(this, Translator.getString("RDFSourceCodeViewer.Title"));
+        showRDFSourceCodeViewer = new ShowRDFSourceCodeViewer(this,
+                Translator.getString("RDFSourceCodeViewer.Title"));
         findResAction = new FindResAction(null, gmanager);
+        showSPARQLQueryDialogAction = new ShowSPARQLQueryDialog(this,
+                Translator.getString("SPARQLQueryDialog.Title"));
         showProjectInfoAction = new ShowProjectInfoDialog(this);
         showLogConsoleAciton = new ShowLogConsole(this);
         showHistoryManagerAciton = new ShowHistoryManager(this);
@@ -238,12 +255,12 @@ public class MR3 extends JFrame implements ChangeListener {
     public void showRDFEditorOverview() {
         OverviewDialog result = rdfEditorOverviewRef.get();
         if (result == null) {
-            RDFEditor editor = getCurrentProject().getRDFEditor();
+            RDFEditor editor = getProjectPanel().getRDFEditor();
             result = new OverviewDialog(this, OverviewDialog.RDF_EDITOR_OVERVIEW, editor);
             result.setIconImage(OverviewDialog.RDF_EDITOR_ICON.getImage());
             rdfEditorOverviewRef = new WeakReference<>(result);
         } else {
-            result.setEditor(getCurrentProject().getRDFEditor());
+            result.setEditor(getProjectPanel().getRDFEditor());
         }
         result.setVisible(true);
     }
@@ -251,12 +268,12 @@ public class MR3 extends JFrame implements ChangeListener {
     public void showClassEditorOverview() {
         OverviewDialog result = classEditorOverviewRef.get();
         if (result == null) {
-            ClassEditor editor = getCurrentProject().getClassEditor();
+            ClassEditor editor = getProjectPanel().getClassEditor();
             result = new OverviewDialog(this, OverviewDialog.CLASS_EDITOR_OVERVIEW, editor);
             result.setIconImage(OverviewDialog.CLASS_EDITOR_ICON.getImage());
             classEditorOverviewRef = new WeakReference<>(result);
         } else {
-            result.setEditor(getCurrentProject().getClassEditor());
+            result.setEditor(getProjectPanel().getClassEditor());
         }
         result.setVisible(true);
     }
@@ -277,12 +294,12 @@ public class MR3 extends JFrame implements ChangeListener {
     public void showPropertyEditorOverview() {
         OverviewDialog result = propertyEditorOverviewRef.get();
         if (result == null) {
-            PropertyEditor editor = getCurrentProject().getPropertyEditor();
+            PropertyEditor editor = getProjectPanel().getPropertyEditor();
             result = new OverviewDialog(this, OverviewDialog.PROPERTY_EDITOR_OVERVIEW, editor);
             result.setIconImage(OverviewDialog.PROPERTY_EDITOR_ICON.getImage());
             propertyEditorOverviewRef = new WeakReference<>(result);
         } else {
-            result.setEditor(getCurrentProject().getPropertyEditor());
+            result.setEditor(getProjectPanel().getPropertyEditor());
         }
         result.setVisible(true);
     }
@@ -308,6 +325,10 @@ public class MR3 extends JFrame implements ChangeListener {
 
     public HistoryManager getHistoryManager() {
         return historyManager;
+    }
+
+    public SPARQLQueryDialog getSparqlQueryDialog() {
+        return sparqlQueryDialog;
     }
 
     public ValidatorDialog getValidator() {
@@ -354,6 +375,11 @@ public class MR3 extends JFrame implements ChangeListener {
         menu.addSeparator();
         menu.add(saveFileAction);
         menu.add(saveFileAsAction);
+        JMenu saveGraphAsImageMenu = new JMenu(Translator.getString("Menu.File.SaveGraphAsImageFile.Text"));
+        saveGraphAsImageMenu.add(saveRDFGraphAsImageFileAction);
+        saveGraphAsImageMenu.add(saveClassGraphAsImageFileAction);
+        saveGraphAsImageMenu.add(savePropertyGraphAsImageFileAction);
+        menu.add(saveGraphAsImageMenu);
         menu.addSeparator();
         menu.add(quitAction);
 
@@ -387,6 +413,40 @@ public class MR3 extends JFrame implements ChangeListener {
         GraphLayoutUtilities.PROPERTY_HORIZONTAL_SPACE = Integer.parseInt(userPrefs.get(
                 PrefConstants.PROPERTY_HORIZONTAL_SPACE, Integer.toString(GraphLayoutUtilities.HORIZONTAL_SPACE)));
 
+
+        RDFResourceCell.foregroundColor = new Color(userPrefs.getInt(PrefConstants.RDFResourceForegroundColor, RDFResourceCell.DEFAULT_FG_COLOR.getRGB()));
+        RDFPropertyCell.foregroundColor = new Color(userPrefs.getInt(PrefConstants.RDFPropertyForegroundColor, RDFPropertyCell.DEFAULT_FG_COLOR.getRGB()));
+        RDFLiteralCell.foregroundColor = new Color(userPrefs.getInt(PrefConstants.RDFLiteralForegroundColor, RDFLiteralCell.DEFAULT_FG_COLOR.getRGB()));
+        OntClassCell.foregroundColor = new Color(userPrefs.getInt(PrefConstants.ClassForegroundColor, OntClassCell.DEFAULT_FG_COLOR.getRGB()));
+        OntPropertyCell.foregroundColor = new Color(userPrefs.getInt(PrefConstants.PropertyForegroundColor, OntPropertyCell.DEFAULT_FG_COLOR.getRGB()));
+
+        RDFResourceCell.backgroundColor = new Color(userPrefs.getInt(PrefConstants.RDFResourceBackgroundColor, RDFResourceCell.DEFAULT_BG_COLOR.getRGB()));
+        RDFLiteralCell.backgroundColor = new Color(userPrefs.getInt(PrefConstants.RDFLiteralBackgroundColor, RDFLiteralCell.DEFAULT_BG_COLOR.getRGB()));
+        OntClassCell.backgroundColor = new Color(userPrefs.getInt(PrefConstants.ClassBackgroundColor, OntClassCell.DEFAULT_BG_COLOR.getRGB()));
+        OntPropertyCell.backgroundColor = new Color(userPrefs.getInt(PrefConstants.PropertyBackgroundColor, OntPropertyCell.DEFAULT_BG_COLOR.getRGB()));
+
+        RDFResourceCell.borderColor = new Color(userPrefs.getInt(PrefConstants.RDFResourceBorderColor, RDFResourceCell.DEFAULT_BORDER_COLOR.getRGB()));
+        RDFPropertyCell.borderColor = new Color(userPrefs.getInt(PrefConstants.RDFPropertyBorderColor, RDFPropertyCell.DEFAULT_BORDER_COLOR.getRGB()));
+        RDFLiteralCell.borderColor = new Color(userPrefs.getInt(PrefConstants.RDFLiteralBorderColor, RDFLiteralCell.DEFAULT_BORDER_COLOR.getRGB()));
+        OntClassCell.borderColor = new Color(userPrefs.getInt(PrefConstants.ClassBorderColor, OntClassCell.DEFAULT_BORDER_COLOR.getRGB()));
+        OntPropertyCell.borderColor = new Color(userPrefs.getInt(PrefConstants.PropertyBorderColor, OntPropertyCell.DEFAULT_BORDER_COLOR.getRGB()));
+
+        RDFResourceCell.selectedBackgroundColor = new Color(userPrefs.getInt(PrefConstants.RDFResourceSelectedBackgroundColor, RDFResourceCell.DEFAULT_SELECTED_BACKGROUND_COLOR.getRGB()));
+        RDFLiteralCell.selectedBackgroundColor = new Color(userPrefs.getInt(PrefConstants.RDFLiteralSelectedBackgroundColor, RDFLiteralCell.DEFAULT_SELECTED_BACKGROUND_COLOR.getRGB()));
+        OntClassCell.selectedBackgroundColor = new Color(userPrefs.getInt(PrefConstants.ClassSelectedBackgroundColor, OntClassCell.DEFAULT_SELECTED_BACKGROUND_COLOR.getRGB()));
+        OntPropertyCell.selectedBackgroundColor = new Color(userPrefs.getInt(PrefConstants.PropertySelectedBackgroundColor, OntPropertyCell.DEFAULT_SELECTED_BACKGROUND_COLOR.getRGB()));
+
+        RDFResourceCell.selectedBorderColor = new Color(userPrefs.getInt(PrefConstants.RDFResourceSelectedBorderColor, RDFResourceCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()));
+        RDFPropertyCell.selectedBorderColor = new Color(userPrefs.getInt(PrefConstants.RDFPropertySelectedBorderColor, RDFPropertyCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()));
+        RDFLiteralCell.selectedBorderColor = new Color(userPrefs.getInt(PrefConstants.RDFLiteralSelectedBorderColor, RDFLiteralCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()));
+        OntClassCell.selectedBorderColor = new Color(userPrefs.getInt(PrefConstants.ClassSelectedBorderColor, OntClassCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()));
+        OntPropertyCell.selectedBorderColor = new Color(userPrefs.getInt(PrefConstants.PropertySelectedBorderColor, OntPropertyCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()));
+
+        Editor.backgroundColor = new Color(userPrefs.getInt(PrefConstants.EditorBackgroundColor, Editor.DEFAUlT_BACKGROUND_COLOR.getRGB()));
+        GraphUtilities.isBlackAndWhite = userPrefs.getBoolean(PrefConstants.BlackAndWhite, false);
+
+        GraphUtilities.resetEditorBackgroudColor(gmanager);
+
         MR3CellMaker.CELL_WIDTH = Integer.parseInt(userPrefs.get(PrefConstants.NODE_WIDTH, Integer.toString(MR3CellMaker.CELL_WIDTH)));
         MR3CellMaker.CELL_HEIGHT = Integer.parseInt(userPrefs.get(PrefConstants.NODE_HEIGHT, Integer.toString(MR3CellMaker.CELL_HEIGHT)));
 
@@ -410,7 +470,7 @@ public class MR3 extends JFrame implements ChangeListener {
         return userPrefs.get(type, GraphLayoutUtilities.UP_TO_DOWN);
     }
 
-    public static MR3ProjectPanel getCurrentProject() {
+    public static MR3ProjectPanel getProjectPanel() {
         return mr3ProjectPanel;
     }
 
@@ -485,6 +545,7 @@ public class MR3 extends JFrame implements ChangeListener {
         menu.setMnemonic('t');
         menu.add(showRDFSourceCodeViewer);
         menu.add(findResAction);
+        menu.add(showSPARQLQueryDialogAction);
         menu.add(showValidatorAction);
         menu.add(showProjectInfoAction);
         menu.add(showHistoryManagerAciton);
@@ -546,7 +607,7 @@ public class MR3 extends JFrame implements ChangeListener {
         gmanager.getAttrDialog().setNullPanel();
         gmanager.getNSTableDialog().setDefaultNSPrefix();
         var newFile = new File(Translator.getString("Menu.File.New.Text"));
-        MR3.getCurrentProject().setCurrentProjectFile(newFile);
+        MR3.getProjectPanel().setProjectFile(newFile);
         HistoryManager.saveHistory(HistoryType.NEW_PROJECT);
         mr3ProjectPanel.resetEditors();
         mr3ProjectPanel.deployCPR();
@@ -561,15 +622,15 @@ public class MR3 extends JFrame implements ChangeListener {
     }
 
     public RDFGraph getRDFGraph() {
-        return gmanager.getCurrentRDFGraph();
+        return gmanager.getRDFGraph();
     }
 
     public RDFGraph getClassGraph() {
-        return gmanager.getCurrentClassGraph();
+        return gmanager.getClassGraph();
     }
 
     public RDFGraph getPropertyGraph() {
-        return gmanager.getCurrentPropertyGraph();
+        return gmanager.getPropertyGraph();
     }
 
     public String getBaseURI() {

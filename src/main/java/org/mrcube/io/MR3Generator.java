@@ -49,7 +49,7 @@ public class MR3Generator {
 	}
 
 	public Model getPropertyModel(boolean isSelected) {
-		RDFGraph graph = gmanager.getCurrentPropertyGraph();
+		RDFGraph graph = gmanager.getPropertyGraph();
 		Object[] cells = null;
 		if (isSelected) {
 			cells = graph.getAllSelectedCells();
@@ -76,7 +76,7 @@ public class MR3Generator {
 	}
 
 	public Model getClassModel(boolean isSelected) {
-		RDFGraph graph = gmanager.getCurrentClassGraph();
+		RDFGraph graph = gmanager.getClassGraph();
 		Object[] cells = null;
 		if (isSelected) {
 			cells = graph.getAllSelectedCells();
@@ -129,7 +129,7 @@ public class MR3Generator {
 	public Model getRDFModel(boolean isSelected) {
 		Object[] edges = null;
 		Object[] cells = null;
-		RDFGraph graph = gmanager.getCurrentRDFGraph();
+		RDFGraph graph = gmanager.getRDFGraph();
 		Model rdfModel = ModelFactory.createDefaultModel();
 		if (isSelected) {
 			edges = getEdges(rdfModel, graph.getAllSelectedCells());

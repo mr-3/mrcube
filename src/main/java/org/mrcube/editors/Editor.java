@@ -78,6 +78,9 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
     public static final ImageIcon RESOURCE_ICON = Utilities.getImageIcon("resource.png");
     public static final ImageIcon LITERAL_ICON = Utilities.getImageIcon("literal.png");
 
+    public static final Color DEFAUlT_BACKGROUND_COLOR = Color.white;
+    public static Color backgroundColor = DEFAUlT_BACKGROUND_COLOR;
+
     Editor() {
     }
 
@@ -288,7 +291,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
         if (graph.getType() == GraphType.RDF) {
             return;
         }
-        RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+        RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
         Object[] newAllCells = graph.getAllCells();
         Set<GraphCell> newRDFSCellSet = new HashSet<>();
         for (Object newAllCell : newAllCells) { // undo/redo前よりもセル数が増えた場合

@@ -250,7 +250,7 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
             if (!PrefixNSUtil.isValidURI(uri.getURI())) {
                 return;
             }
-            RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+            RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
             if (rdfsModelMap.isClassCell(uri)) {
                 Object classCell = rdfsModelMap.getClassCell(uri);
                 gmanager.selectClassCell(classCell);
@@ -453,7 +453,7 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
             result = new SelectResourceTypeDialog(gmanager);
             selectResTypeDialogRef = new WeakReference<>(result);
         }
-        result.replaceGraph(gmanager.getCurrentClassGraph());
+        result.replaceGraph(gmanager.getClassGraph());
         result.setInitCell(resInfo.getTypeCell());
         result.setVisible(true);
         return result;
@@ -467,7 +467,7 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
             if (!PrefixNSUtil.isValidURI(uri.getURI())) {
                 return null;
             }
-            RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+            RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
             if (rdfsModelMap.isClassCell(uri)) {
                 typeCell = gmanager.getClassCell(uri, false);
             } else {
@@ -478,15 +478,15 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
                     return null;
                 }
                 if (resInfo.getTypeCell() == null) {
-                    int ans = JOptionPane.showConfirmDialog(MR3.getCurrentProject(),
+                    int ans = JOptionPane.showConfirmDialog(MR3.getProjectPanel(),
                             Translator.getString("Warning.Message2"), WARNING, JOptionPane.YES_NO_OPTION);
                     if (ans == JOptionPane.YES_OPTION) {
-                        Set supClasses = gmanager.getSupRDFS(gmanager.getCurrentClassGraph(),
+                        Set supClasses = gmanager.getSupRDFS(gmanager.getClassGraph(),
                                 Translator.getString("SelectSupClassesDialog.Title"));
                         if (supClasses == null) {
                             return null;
                         }
-                        typeCell = (GraphCell) gmanager.insertSubRDFS(uri, supClasses, gmanager.getCurrentClassGraph());
+                        typeCell = (GraphCell) gmanager.insertSubRDFS(uri, supClasses, gmanager.getClassGraph());
                         HistoryManager
                                 .saveHistory(HistoryType.META_MODEL_MANAGEMNET_REPLACE_RESOURCE_TYPE_WITH_CREATE_CLASS);
                     }
@@ -500,7 +500,7 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
                     CreateRDFSType createType = dialog.getCreateRDFSType();
                     if (createType == CreateRDFSType.CREATE) {
                         // Set supClasses = dialog.getSupRDFSSet();
-                        typeCell = (GraphCell) gmanager.insertSubRDFS(uri, null, gmanager.getCurrentClassGraph());
+                        typeCell = (GraphCell) gmanager.insertSubRDFS(uri, null, gmanager.getClassGraph());
                         HistoryManager
                                 .saveHistory(HistoryType.META_MODEL_MANAGEMNET_REPLACE_RESOURCE_TYPE_WITH_CREATE_CLASS);
                     } else if (createType == CreateRDFSType.RENAME) {
@@ -522,7 +522,7 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
         }
 
         private void setResourceType(GraphCell typeCell) {
-            resInfo.setTypeCell(typeCell, gmanager.getCurrentRDFGraph());
+            resInfo.setTypeCell(typeCell, gmanager.getRDFGraph());
             typePanel.setResourceTypeField(resInfo.getType().getURI());
         }
 
@@ -530,7 +530,7 @@ public class RDFResourcePanel extends JPanel implements ListSelectionListener {
             if (e.getSource() == applyButton) {
                 apply();
             } else if (e.getSource() == resetButton) {
-                gmanager.getCurrentRDFGraph().setSelectionCell(cell);
+                gmanager.getRDFGraph().setSelectionCell(cell);
             } else if (e.getSource() == cancelButton) {
                 gmanager.setVisibleAttrDialog(false);
             }

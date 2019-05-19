@@ -171,7 +171,7 @@ public class RDFLiteralPanel extends JPanel implements ActionListener {
                     typeMapper.getTypeByName(dataType));
             GraphConstants.setValue(cell.getAttributes(), literal);
             Dimension size = GraphUtilities.getAutoLiteralNodeDimention(gmanager, str);
-            RDFGraph graph = gmanager.getCurrentRDFGraph();
+            RDFGraph graph = gmanager.getRDFGraph();
             GraphUtilities.resizeCell(size, graph, cell);
             HistoryManager.saveHistory(HistoryType.EDIT_LITERAL_WITH_DIAGLOG, beforeLiteral,
                     literal);

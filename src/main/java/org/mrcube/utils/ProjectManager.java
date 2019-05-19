@@ -64,7 +64,7 @@ public class ProjectManager {
      */
     private void addRDFProjectModel(Model projectModel) {
         int literal_cnt = 0;
-        RDFGraph graph = gmanager.getCurrentRDFGraph();
+        RDFGraph graph = gmanager.getRDFGraph();
         Object[] cells = graph.getAllCells();
         for (Object cell1 : cells) {
             GraphCell cell = (GraphCell) cell1;
@@ -100,7 +100,7 @@ public class ProjectManager {
      */
     private int addRDFLiteralProjectModel(Model projectModel, int literal_cnt, GraphCell cell) {
         Edge edge = (Edge) cell;
-        RDFGraph graph = gmanager.getCurrentRDFGraph();
+        RDFGraph graph = gmanager.getRDFGraph();
         GraphCell sourceCell = (GraphCell) graph.getSourceVertex(edge);
         GraphCell targetCell = (GraphCell) graph.getTargetVertex(edge);
         if (RDFGraph.isRDFLiteralCell(targetCell)) {
@@ -180,8 +180,8 @@ public class ProjectManager {
 
         addDefaultLangModel(projectModel);
         addRDFProjectModel(projectModel);
-        addRDFSProjectModel(projectModel, gmanager.getCurrentClassGraph());
-        addRDFSProjectModel(projectModel, gmanager.getCurrentPropertyGraph());
+        addRDFSProjectModel(projectModel, gmanager.getClassGraph());
+        addRDFSProjectModel(projectModel, gmanager.getPropertyGraph());
         addPrefixNSProjectModel(projectModel);
 
         return projectModel;
@@ -252,20 +252,20 @@ public class ProjectManager {
     }
 
     public void removeEmptyClass() {
-        RDFGraph graph = gmanager.getCurrentRDFGraph();
+        RDFGraph graph = gmanager.getRDFGraph();
         Object[] cells = graph.getAllCells();
         for (Object cell1 : cells) {
             GraphCell cell = (GraphCell) cell1;
             if (RDFGraph.isRDFResourceCell(cell)) {
                 RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(cell.getAttributes());
                 if (info.getType().equals(MR3Resource.Empty)) {
-                    info.setTypeCell(null, gmanager.getCurrentRDFGraph());
+                    info.setTypeCell(null, gmanager.getRDFGraph());
                     GraphConstants.setValue(cell.getAttributes(), info);
                 }
             }
         }
-        graph = gmanager.getCurrentClassGraph();
-        RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+        graph = gmanager.getClassGraph();
+        RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
         Object cell = rdfsModelMap.getClassCell(MR3Resource.Empty);
         graph.clearSelection();
         graph.setSelectionCell(cell);

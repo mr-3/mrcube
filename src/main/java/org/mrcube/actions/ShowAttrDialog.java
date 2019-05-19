@@ -58,7 +58,7 @@ public class ShowAttrDialog extends MR3AbstractAction {
     public void actionPerformed(ActionEvent e) {
         RDFGraph graph = null;
         Object selectionCell = null;
-        MR3ProjectPanel project = MR3.getCurrentProject();
+        MR3ProjectPanel project = MR3.getProjectPanel();
         if (project == null) {
             return;
         }

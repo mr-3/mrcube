@@ -111,6 +111,10 @@ public abstract class RDFSModel extends ResourceModel implements Serializable {
         return metaClass;
     }
 
+    public String getMetaClassQName() {
+        return GraphUtilities.getQName(ResourceFactory.createResource(metaClass));
+    }
+
     public void setSuperRDFS(Set<GraphCell> set) {
         superRDFS.clear();
         if (set != null) {
@@ -136,6 +140,11 @@ public abstract class RDFSModel extends ResourceModel implements Serializable {
 
     public String getURIStr() {
         return uri;
+    }
+
+    public String getQName() {
+        Resource resource = ResourceFactory.createResource(uri);
+        return GraphUtilities.getQName(resource);
     }
 
     public String getNameSpace() {
@@ -168,8 +177,8 @@ public abstract class RDFSModel extends ResourceModel implements Serializable {
                 }
                 break;
             case URI:
-                return "　" + GraphUtilities.getNSPrefix(resource) + "　";
+                return "　" + GraphUtilities.getQName(resource) + "　";
         }
-        return "　" + GraphUtilities.getNSPrefix(resource) + "　";
+        return "　" + GraphUtilities.getQName(resource) + "　";
     }
 }

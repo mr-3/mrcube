@@ -59,7 +59,7 @@ public class PropertyPanel extends OntologyPanel {
     private WeakReference selectRDFSDialogRef;
 
     public PropertyPanel(GraphManager manager) {
-        super(manager.getCurrentPropertyGraph(), manager);
+        super(manager.getPropertyGraph(), manager);
         labelPanel.setGraphType(GraphType.PROPERTY);
         commentPanel.setGraphType(GraphType.PROPERTY);
         selectRDFSDialogRef = new WeakReference<SelectRDFSDialog>(null);
@@ -203,7 +203,7 @@ public class PropertyPanel extends OntologyPanel {
                     for (Object rd : domainJList.getSelectedValuesList()) {
                         info.removeDomain(rd);
                     }
-                    RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+                    RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
                     rdfsModelMap.putURICellMap(info, cell);
                     domainJList.setListData(info.getDomain().toArray());
                     HistoryManager.saveHistory(HistoryType.DELETE_ONT_PROPERTY_DOMAIN, beforeDomainSet, info
@@ -214,7 +214,7 @@ public class PropertyPanel extends OntologyPanel {
                     for (Object rr : rangeJList.getSelectedValuesList()) {
                         info.removeRange(rr);
                     }
-                    RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+                    RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
                     rdfsModelMap.putURICellMap(info, cell);
                     rangeJList.setListData(info.getRange().toArray());
                     HistoryManager.saveHistory(HistoryType.DELETE_ONT_PROPERTY_RANGE, beforeRangeSet, info.getRange(),
@@ -268,7 +268,7 @@ public class PropertyPanel extends OntologyPanel {
             result = new SelectRDFSDialog(Translator.getString("SelectRegionDialog.Title"), gmanager);
             selectRDFSDialogRef = new WeakReference<>(result);
         }
-        result.replaceGraph(gmanager.getCurrentClassGraph());
+        result.replaceGraph(gmanager.getClassGraph());
         result.setRegionSet(regionSet);
         result.setVisible(true);
         return result;
@@ -278,7 +278,7 @@ public class PropertyPanel extends OntologyPanel {
         PropertyModel propInfo = (PropertyModel) rdfsModel;
         super.setValue();
         basePanel.setMetaClassList(gmanager.getPropertyClassList());
-        RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+        RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
         if (rdfsModelMap.isPropertyCell(MR3Resource.Property)) {
             supCellSet.remove(gmanager.getPropertyCell(MR3Resource.Property, false));
         }

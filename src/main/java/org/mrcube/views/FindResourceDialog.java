@@ -86,8 +86,8 @@ public class FindResourceDialog extends JDialog {
     private Set<GraphCell> findResourceSet(String keyword) {
         Set<GraphCell> resourceSet = new HashSet<>();
         resourceSet.addAll(gmanager.findRDFResourceSet(keyword));
-        resourceSet.addAll(gmanager.findRDFSResourceSet(keyword, gmanager.getCurrentClassGraph()));
-        resourceSet.addAll(gmanager.findRDFSResourceSet(keyword, gmanager.getCurrentPropertyGraph()));
+        resourceSet.addAll(gmanager.findRDFSResourceSet(keyword, gmanager.getClassGraph()));
+        resourceSet.addAll(gmanager.findRDFSResourceSet(keyword, gmanager.getPropertyGraph()));
         return resourceSet;
     }
 

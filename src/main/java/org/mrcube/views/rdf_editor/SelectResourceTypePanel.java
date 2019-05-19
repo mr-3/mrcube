@@ -63,7 +63,7 @@ public class SelectResourceTypePanel extends SelectClassPanel {
             GraphCell cell = (GraphCell) cell1;
             if (RDFGraph.isRDFSClassCell(cell)) {
                 if (cell == typeCell) {
-                    GraphUtilities.changeDefaultCellStyle(graph, cell, GraphUtilities.graphBackgroundColor);
+                    GraphUtilities.changeCellStyle(graph, cell, OntClassCell.foregroundColor, GraphUtilities.graphBackgroundColor, null);
                     prevCell = cell;
                     graph.setSelectionCell(cell);
                     break;
@@ -73,7 +73,7 @@ public class SelectResourceTypePanel extends SelectClassPanel {
     }
 
     public void setInitCell(Object typeCell) {
-        changeAllCellColor(OntClassCell.backgroundColor);
+        changeAllCellColor(OntClassCell.foregroundColor, OntClassCell.backgroundColor, OntClassCell.borderColor);
         if (typeCell == null) {
             prevCell = null;
             dspURI.setText("");
@@ -86,8 +86,7 @@ public class SelectResourceTypePanel extends SelectClassPanel {
         GraphCell cell = (GraphCell) graph.getSelectionCell();
         if (graph.getSelectionCount() == 1 && graph.getModel().getChildCount(cell) <= 1) {
             if (RDFGraph.isRDFSClassCell(cell)) {
-                GraphUtilities.changeDefaultCellStyle(graph, prevCell, OntClassCell.backgroundColor);
-//                GraphUtilities.changeCellStyle(graph, cell, Color.red, GraphUtilities.graphBackgroundColor, 0);
+                GraphUtilities.changeCellStyle(graph, prevCell, OntClassCell.foregroundColor, OntClassCell.backgroundColor, OntClassCell.borderColor);
                 RDFSModel info = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
                 if (info != null) {
                     dspURI.setText(info.getURIStr());

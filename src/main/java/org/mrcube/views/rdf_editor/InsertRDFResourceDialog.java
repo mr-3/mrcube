@@ -131,7 +131,7 @@ public class InsertRDFResourceDialog extends JDialog implements ItemListener {
         PrefixNSUtil.setNamespaceModelSet(GraphUtilities.getNamespaceModelSet());
         uriPrefixBox.setModel(new DefaultComboBoxModel(PrefixNSUtil.getPrefixes().toArray()));
         resTypeBox.setModel(new DefaultComboBoxModel(cells));
-        Object[] typeCells = gmanager.getCurrentClassGraph().getSelectionCells();
+        Object[] typeCells = gmanager.getClassGraph().getSelectionCells();
         if (typeCells.length == 1) {
             resTypeBox.setSelectedItem(typeCells[0]);
         }

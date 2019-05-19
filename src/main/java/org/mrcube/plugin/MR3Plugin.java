@@ -306,7 +306,7 @@ public abstract class MR3Plugin {
         Set selectionCells = new HashSet();
         RDFGraph graph = mr3.getClassGraph();
         graph.clearSelection();
-        RDFSModelMap rdfsModelMap = mr3.getGraphManager().getCurrentRDFSInfoMap();
+        RDFSModelMap rdfsModelMap = mr3.getGraphManager().getRDFSInfoMap();
         for (Object node : nodes) {
             Object cell = rdfsModelMap.getClassCell(ResourceFactory.createResource((String) node));
             if (cell != null) {
@@ -325,7 +325,7 @@ public abstract class MR3Plugin {
         Set selectionCells = new HashSet();
         RDFGraph graph = mr3.getPropertyGraph();
         graph.clearSelection();
-        RDFSModelMap rdfsModelMap = mr3.getGraphManager().getCurrentRDFSInfoMap();
+        RDFSModelMap rdfsModelMap = mr3.getGraphManager().getRDFSInfoMap();
         for (Object node : nodes) {
             Object cell = rdfsModelMap.getPropertyCell(ResourceFactory.createResource((String) node));
             if (cell != null) {

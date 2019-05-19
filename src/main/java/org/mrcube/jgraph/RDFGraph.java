@@ -29,6 +29,7 @@ import org.mrcube.actions.CopyAction;
 import org.mrcube.actions.CutAction;
 import org.mrcube.actions.PasteAction;
 import org.mrcube.actions.SelectAllNodesAction;
+import org.mrcube.editors.Editor;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.MR3Literal;
 import org.mrcube.models.RDFResourceModel;
@@ -147,6 +148,11 @@ public class RDFGraph extends JGraph {
         RDFGraphUI rgui = new RDFGraphUI(this, gmanager);
         setUI(rgui);
         setTransferHandler(rgui.createTransferHandler());
+        setBackground(Editor.backgroundColor);
+    }
+
+    public void resetBackground() {
+        setBackground(Editor.backgroundColor);
     }
 
     public boolean isContains(Object c) {
@@ -305,7 +311,7 @@ public class RDFGraph extends JGraph {
      * @param cells
      */
     public void removeCellsWithEdges(Object[] cells) {
-        RDFSModelMap rdfsModelMap = gmanager.getCurrentRDFSInfoMap();
+        RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
         Set removeCells = new HashSet();
         for (Object cell1 : cells) {
             GraphCell cell = (GraphCell) cell1;

@@ -280,7 +280,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     Point insertPoint = new Point(10, 10);
 
     public void mouseMoved(MouseEvent event) {
-        MR3.getCurrentProject().displayEditorInFront(graph.getType());
+        MR3.getProjectPanel().displayEditorInFront(graph.getType());
 
         insertPoint = event.getPoint();
         setCursor(event);
@@ -310,7 +310,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     public GraphCell insertResourceCell(Point pt) {
         List<Object> list = new ArrayList<>();
         list.add(null); // リソースのタイプが空の場合
-        for (Object cell : gmanager.getCurrentClassGraph().getAllCells()) {
+        for (Object cell : gmanager.getClassGraph().getAllCells()) {
             if (RDFGraph.isRDFSClassCell(cell)) {
                 list.add(cell);
             }
@@ -359,7 +359,11 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
         }
 
         if (graph.getType() == GraphType.RDF) {
-            HistoryManager.saveHistory(HistoryType.INSERT_CONNECTED_RESOURCE, targetCell);
+            if (selectedResourcePorts.size() == 0) {
+                HistoryManager.saveHistory(HistoryType.INSERT_RESOURCE, targetCell);
+            } else if (0 < selectedResourcePorts.size()) {
+                HistoryManager.saveHistory(HistoryType.INSERT_CONNECTED_RESOURCE, targetCell);
+            }
         } else {
             HistoryManager.saveHistory(HistoryType.INSERT_CONNECTED_ONT_PROPERTY, targetCell);
         }
@@ -382,7 +386,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
         for (Object selectedResourcePort : selectedResourcePorts) {
             Port sourcePort = (Port) selectedResourcePort;
             GraphCell rdfsPropCell = null;
-            Object[] rdfsPropertyCells = gmanager.getCurrentPropertyGraph().getSelectionCells();
+            Object[] rdfsPropertyCells = gmanager.getPropertyGraph().getSelectionCells();
 
             RDFSModel info = null;
             if (rdfsPropertyCells.length == 1 && RDFGraph.isRDFSPropertyCell(rdfsPropertyCells[0])) {
@@ -492,7 +496,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 
 
     private Object[] getSelectedRDFResourceCells() {
-        RDFGraph rdfGraph = gmanager.getCurrentRDFGraph();
+        RDFGraph rdfGraph = gmanager.getRDFGraph();
         Set<Object> resourceCells = new HashSet<>();
         for (Object rdfCell : rdfGraph.getDescendants(rdfGraph.getSelectionCells())) {
             if (RDFGraph.isRDFResourceCell(rdfCell)) {
@@ -503,7 +507,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     }
 
     private Object[] getSelectedRDFPropertyCells() {
-        RDFGraph rdfGraph = gmanager.getCurrentRDFGraph();
+        RDFGraph rdfGraph = gmanager.getRDFGraph();
         Set<Object> rdfPropCells = new HashSet<>();
 
         for (Object rdfCell : rdfGraph.getDescendants(rdfGraph.getSelectionCells())) {
@@ -515,17 +519,17 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     }
 
     private void addChangeResourceTypeMenu(JPopupMenu menu) {
-        Object[] classCells = gmanager.getCurrentClassGraph().getSelectionCells();
+        Object[] classCells = gmanager.getClassGraph().getSelectionCells();
         Object[] resCells = getSelectedRDFResourceCells();
         if (resCells.length != 0 && classCells.length == 1) {
             menu.addSeparator();
             menu.add(new AbstractAction(Translator.getString("Action.ChangeResourceType.Text")) {
                 public void actionPerformed(ActionEvent ev) {
-                    GraphCell typeCell = (GraphCell) gmanager.getCurrentClassGraph().getSelectionCell();
+                    GraphCell typeCell = (GraphCell) gmanager.getClassGraph().getSelectionCell();
                     Object[] resCells = getSelectedRDFResourceCells();
                     for (Object resCell : resCells) {
                         RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(((GraphCell) resCell).getAttributes());
-                        info.setTypeCell(typeCell, gmanager.getCurrentRDFGraph());
+                        info.setTypeCell(typeCell, gmanager.getRDFGraph());
                     }
                     gmanager.repaintRDFGraph();
                 }
@@ -534,13 +538,13 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     }
 
     private void addChangePropertyMenu(JPopupMenu menu) {
-        Object[] rdfsPropCells = gmanager.getCurrentPropertyGraph().getSelectionCells();
+        Object[] rdfsPropCells = gmanager.getPropertyGraph().getSelectionCells();
         Object[] rdfPropCells = getSelectedRDFPropertyCells();
         if (rdfPropCells.length != 0 && rdfsPropCells.length == 1) {
             menu.addSeparator();
             menu.add(new AbstractAction(Translator.getString("Action.ChangeProperty.Text")) {
                 public void actionPerformed(ActionEvent ev) {
-                    GraphCell rdfsPropCell = (GraphCell) gmanager.getCurrentPropertyGraph().getSelectionCell();
+                    GraphCell rdfsPropCell = (GraphCell) gmanager.getPropertyGraph().getSelectionCell();
                     Object[] rdfPropCells = getSelectedRDFPropertyCells();
                     for (Object rdfPropCell1 : rdfPropCells) {
                         GraphCell rdfPropCell = (GraphCell) rdfPropCell1;
