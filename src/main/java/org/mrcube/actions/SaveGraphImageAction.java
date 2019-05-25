@@ -182,7 +182,7 @@ public class SaveGraphImageAction extends AbstractAction {
                     repaintManager.setDoubleBufferingEnabled(true);
                     BasicGraphUI gui = (BasicGraphUI) graph.getUI();
                     gui.drawGraph(svgGraphics, bounds);
-                    svgGraphics.stream(new OutputStreamWriter(new FileOutputStream(imgFile)), false);
+                    svgGraphics.stream(new OutputStreamWriter(new FileOutputStream(imgFile), "UTF-8"), false);
                     break;
             }
         } catch (IOException ioe) {
