@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
  *
- * Copyright (C) 2003-2019 Yamaguchi Laboratory, Keio University. All rights reserved.
+ * Copyright (C) 2003-2020 Takeshi Morita. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -43,6 +43,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.*;
@@ -126,7 +128,6 @@ public class HistoryManager extends JDialog implements ActionListener {
 
     public static void saveMessage(HistoryType historyType, String message) {
         logger.info(message);
-        System.out.println(message);
         switch (historyType) {
             case OPEN_PROJECT:
             case NEW_PROJECT:
@@ -146,6 +147,9 @@ public class HistoryManager extends JDialog implements ActionListener {
             logger.removeHandler(logFileHandler);
         }
         try {
+            if (!Files.exists(Paths.get(logFilePath).getParent())) {
+                Files.createDirectory(Paths.get(logFilePath).getParent());
+            }
             logFileHandler = new FileHandler(logFilePath, true);
             logFileHandler.setFormatter(new CustomLogFormatter());
             logger.addHandler(logFileHandler);

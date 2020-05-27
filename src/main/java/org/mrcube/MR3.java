@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
  *
- * Copyright (C) 2003-2019 Yamaguchi Laboratory, Keio University. All rights reserved.
+ * Copyright (C) 2003-2020 Takeshi Morita. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -23,6 +23,7 @@
 
 package org.mrcube;
 
+import com.formdev.flatlaf.FlatLightLaf;
 import org.apache.jena.sys.JenaSystem;
 import org.mrcube.actions.*;
 import org.mrcube.editors.ClassEditor;
@@ -134,6 +135,7 @@ public class MR3 extends JFrame implements ChangeListener {
                 });
             }
         }
+        setIconImage(MR3Constants.SPLASH_LOGO.getImage());
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -638,24 +640,11 @@ public class MR3 extends JFrame implements ChangeListener {
     }
 
     public static void initialize(Class cls) {
+        FlatLightLaf.install();
         JenaSystem.init();
         userPrefs = Preferences.userNodeForPackage(cls);
         Translator.loadResourceBundle(userPrefs);
         UIManager.put("TitledBorder.border", new LineBorder(new Color(200, 200, 200), 1));
-        try {
-            try {
-                for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                    if ("Nimbus".equals(info.getName())) {
-                        UIManager.setLookAndFeel(info.getClassName());
-                        break;
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
         StringSelection ss = new StringSelection("");
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(ss, null);

@@ -36,6 +36,7 @@ MR<sup>3</sup> is Free Software; you may redistribute it and/or modify it under 
 ## Acknowledgements
 MR<sup>3</sup> uses the following libraries.
 
+* [FlatLaf - Flat Look and Feel](https://www.formdev.com/flatlaf/)([License](http://www.apache.org/licenses/LICENSE-2.0))
 * [JGraph and JGraphAddons](http://www.jgraph.com/)([License](https://github.com/jgraph/legacy-jgraph5/blob/master/LICENSE)]
 * [Apache Jena](https://jena.apache.org/)([License](http://www.apache.org/licenses/LICENSE-2.0))
 * [Apache Batik SVG Toolkit](https://xmlgraphics.apache.org/batik/)([License](https://xmlgraphics.apache.org/batik/license.html))
@@ -43,11 +44,11 @@ MR<sup>3</sup> uses the following libraries.
 * [Material Design icons by Google](https://github.com/google/material-design-icons)([License](https://www.apache.org/licenses/LICENSE-2.0.txt))
 
 ## Project Member
-* Takeshi Morita (Faculty of Science and Technology, Keio University, Japan)
+* Takeshi Morita (College of Science and Engineering, Aoyama Gakuin University, Japan)
 * Naoki Fukuta (Department of Computer Science, Shizuoka University, Japan)
 * Noriaki Izumi (National Institute of Advanced Industrial Science and Technology, Japan)
 * Takahira Yamaguchi (Faculty of Science and Technology, Keio University, Japan)
 
 ## Contact
-* Takeshi Morita (t_morita@keio.jp)
+* Takeshi Morita (morita@it.aoyama.ac.jp)
 
