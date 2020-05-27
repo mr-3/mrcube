@@ -54,7 +54,7 @@ shadowJar {
     manifest {
         attributes 'Main-Class': 'org.mrcube.MR3'
     }
-    archiveName = "mrcube.jar"
+    archiveFileName = "mrcube-${version}.jar"
 }
 
 runtime {
@@ -62,6 +62,19 @@ runtime {
     modules = ['java.desktop', 'java.logging']
     imageDir = file("$buildDir/mrcube-${version}")
     imageZip = file("$buildDir/mrcube-${version}.zip")
+
+    jpackage {
+        jpackageHome = '/Library/Java/JavaVirtualMachines/jdk-14.0.1.jdk/Contents/Home'
+        outputDir = 'my-packaging'
+        mainJar = "mrcube-${version}.jar"
+        imageName = "mrcube-${version}"
+        imageOptions = ['--icon', './src/main/resources/images/mr3.icns']
+        skipInstaller = false
+        installerName = "mrcube-${version}"
+//        imageOptions = ['--win-console']
+//        installerType = 'msi'
+//        installerOptions = ['--win-menu', '--win-shortcut']
+    }
 }
 
 tasks.runtime.doLast {
@@ -140,3 +153,4 @@ bintray {
         }
     }
 }
+
