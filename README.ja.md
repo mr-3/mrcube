@@ -37,6 +37,7 @@ MR<sup>3</sup>には主に以下の3つの特徴があります．
 MR<sup>3</sup>はフリーソフトウェアです．Free Software Foundation による [GNU Generic Public License](http://www.gnu.org/copyleft/gpl.html) のバージョン2 （または，それ以降のバージョン）に従う限り自由に変更し再配布することができます．
 
 ## 利用ライブラリとライセンス
+* [FlatLaf - Flat Look and Feel](https://www.formdev.com/flatlaf/)([License](http://www.apache.org/licenses/LICENSE-2.0))
 * [JGraph and JGraphAddons](http://www.jgraph.com/)([License](https://github.com/jgraph/legacy-jgraph5/blob/master/LICENSE)]
 * [Apache Jena](https://jena.apache.org/)([License](http://www.apache.org/licenses/LICENSE-2.0))
 * [Apache Batik SVG Toolkit](https://xmlgraphics.apache.org/batik/)([License](https://xmlgraphics.apache.org/batik/license.html))
@@ -44,11 +45,11 @@ MR<sup>3</sup>はフリーソフトウェアです．Free Software Foundation �
 * [Material Design icons by Google](https://github.com/google/material-design-icons)([License](https://www.apache.org/licenses/LICENSE-2.0.txt))
 
 ## プロジェクトメンバー
-* 森田 武史 (慶應義塾大学 理工学部)
-* 福田 直樹 (静岡大学 情報学部)
-* 和泉 憲明 (産業技術総合研究所)
-* 山口 高平 (慶應義塾大学 理工学部)
+* 森田武史 (青山学院大学理工学部)
+* 福田直樹 (静岡大学情報学部)
+* 和泉憲明 (産業技術総合研究所)
+* 山口高平 (慶應義塾大学理工学部)
 
 ## 連絡先
-* 森田 武史 (t_morita@keio.jp)
+* 森田武史 (morita@it.aoyama.ac.jp)
 

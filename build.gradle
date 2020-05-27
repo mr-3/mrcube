@@ -2,14 +2,14 @@ plugins {
     id 'java'
     id 'application'
     id "com.github.johnrengelman.shadow" version "5.2.0"
-    id "org.beryx.runtime" version "1.8.0"
+    id "org.beryx.runtime" version "1.8.4"
     id "com.jfrog.bintray" version "1.8.4"
     id 'maven-publish'
     id 'idea'
 }
 
 group 'org.mrcube'
-version = '19.12.1'
+version = '20.5.1'
 mainClassName = 'org.mrcube.MR3'
 sourceCompatibility = targetCompatibility = '11'
 
@@ -24,7 +24,7 @@ repositories {
 }
 
 wrapper {
-    gradleVersion = '6.0.1'
+    gradleVersion = '6.4.1'
 }
 
 jar {
@@ -80,14 +80,15 @@ tasks.runtime.doLast {
 }
 
 dependencies {
+    compile 'com.formdev:flatlaf:0.35'
     compile 'jgraph:jgraph:5.13.0.0'
-    compile 'org.apache.jena:jena-core:3.13.1'
-    compile 'org.apache.jena:jena-arq:3.13.1'
-    compile 'org.slf4j:slf4j-simple:1.7.25'
-    compile 'org.apache.xmlgraphics:batik-svg-dom:1.12'
-    compile 'org.apache.xmlgraphics:batik-svggen:1.12'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.5.2'
+    compile 'org.apache.jena:jena-core:3.15.0'
+    compile 'org.apache.jena:jena-arq:3.15.0'
+    compile 'org.slf4j:slf4j-simple:1.7.30'
+    compile 'org.apache.xmlgraphics:batik-svg-dom:1.13'
+    compile 'org.apache.xmlgraphics:batik-svggen:1.13'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
 }
 
 publishing {
@@ -111,7 +112,7 @@ publishing {
                     developer {
                         id = 't-morita'
                         name = 'Takeshi Morita'
-                        email = 't_morita@ae.keio.ac.jp'
+                        email = 'morita@it.aoyama.ac.jp'
                     }
                 }
             }
