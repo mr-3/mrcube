@@ -64,16 +64,19 @@ runtime {
     imageZip = file("$buildDir/mrcube-${version}.zip")
 
     jpackage {
-        jpackageHome = '/Library/Java/JavaVirtualMachines/jdk-14.0.1.jdk/Contents/Home'
+        // macOS
+//        jpackageHome = '/Library/Java/JavaVirtualMachines/jdk-14.0.1.jdk/Contents/Home'
+//        imageOptions = ['--icon', './src/main/resources/images/mr3.icns']
         outputDir = 'my-packaging'
         mainJar = "mrcube-${version}.jar"
         imageName = "mrcube-${version}"
-        imageOptions = ['--icon', './src/main/resources/images/mr3.icns']
         skipInstaller = false
-        installerName = "mrcube-${version}"
-//        imageOptions = ['--win-console']
-//        installerType = 'msi'
-//        installerOptions = ['--win-menu', '--win-shortcut']
+        installerName = "mrcube"
+        // Windows
+        jpackageHome = 'C://jdk-14.0.1'
+        installerType = 'msi'
+        imageOptions = ['--icon', './src/main/resources/images/mr3.ico']
+        installerOptions = ['--vendor', 'Takeshi Morita', '--win-shortcut']
     }
 }
 
