@@ -65,18 +65,19 @@ runtime {
 
     jpackage {
         // macOS
-//        jpackageHome = '/Library/Java/JavaVirtualMachines/jdk-14.0.1.jdk/Contents/Home'
-//        imageOptions = ['--icon', './src/main/resources/images/mr3.icns']
+        jpackageHome = '/Library/Java/JavaVirtualMachines/jdk-14.0.1.jdk/Contents/Home'
+//        imageOptions = ['--verbose', '--icon', './src/main/resources/images/mr3.icns', '--mac-sign']
+        imageOptions = ['--verbose', '--icon', './src/main/resources/images/mr3.icns']
         outputDir = 'my-packaging'
         mainJar = "mrcube-${version}.jar"
         imageName = "mrcube-${version}"
         skipInstaller = false
         installerName = "mrcube"
         // Windows
-        jpackageHome = 'C://jdk-14.0.1'
-        installerType = 'msi'
-        imageOptions = ['--icon', './src/main/resources/images/mr3.ico']
-        installerOptions = ['--vendor', 'Takeshi Morita', '--win-shortcut']
+//        jpackageHome = 'C://jdk-14.0.1'
+//        installerType = 'msi'
+//        imageOptions = ['--icon', './src/main/resources/images/mr3.ico']
+//        installerOptions = ['--vendor', 'Takeshi Morita', '--win-shortcut']
     }
 }
 
