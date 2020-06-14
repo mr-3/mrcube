@@ -92,7 +92,9 @@ public class GraphUtilities {
                     GraphConstants.setLineWidth(map, RDFCellStyleChanger.LINE_WIDTH);
                 } else {
                     GraphConstants.setForeground(map, fgColor);
-                    GraphConstants.setBorderColor(map, borderColor);
+                    if (borderColor != null) {
+                        GraphConstants.setBorderColor(map, borderColor);
+                    }
                     GraphConstants.setBackground(map, bgColor);
                     GraphConstants.setFont(map, new Font("SansSerif", Font.PLAIN, RDFCellStyleChanger.FONT_SIZE));
                     GraphConstants.setOpaque(map, true);
