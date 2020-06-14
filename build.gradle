@@ -9,7 +9,7 @@ plugins {
 }
 
 group 'org.mrcube'
-version = '20.5.1'
+version = '20.6.1'
 mainClassName = 'org.mrcube.MR3'
 sourceCompatibility = targetCompatibility = '11'
 
