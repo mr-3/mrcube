@@ -2,14 +2,14 @@ plugins {
     id 'java'
     id 'application'
     id "com.github.johnrengelman.shadow" version "5.2.0"
-    id "org.beryx.runtime" version "1.8.4"
+    id "org.beryx.runtime" version "1.12.4"
     id "com.jfrog.bintray" version "1.8.4"
     id 'maven-publish'
     id 'idea'
 }
 
 group 'org.mrcube'
-version = '20.6.1'
+version = '21.5.1'
 mainClassName = 'org.mrcube.MR3'
 sourceCompatibility = targetCompatibility = '11'
 
@@ -20,11 +20,11 @@ project.ext {
 }
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 wrapper {
-    gradleVersion = '6.4.1'
+    gradleVersion = '6.9'
 }
 
 jar {
@@ -65,7 +65,7 @@ runtime {
 
     jpackage {
         // macOS
-        jpackageHome = '/Library/Java/JavaVirtualMachines/jdk-14.0.1.jdk/Contents/Home'
+        jpackageHome = '/Library/Java/JavaVirtualMachines/jdk-16.0.1.jdk/Contents/Home'
 //        imageOptions = ['--verbose', '--icon', './src/main/resources/images/mr3.icns', '--mac-sign']
         imageOptions = ['--verbose', '--icon', './src/main/resources/images/mr3.icns']
         outputDir = 'my-packaging'
@@ -74,7 +74,7 @@ runtime {
         skipInstaller = false
         installerName = "mrcube"
         // Windows
-//        jpackageHome = 'C://jdk-14.0.1'
+//        jpackageHome = 'C://jdk-16.0.1'
 //        installerType = 'msi'
 //        imageOptions = ['--icon', './src/main/resources/images/mr3.ico']
 //        installerOptions = ['--vendor', 'Takeshi Morita', '--win-shortcut']
@@ -97,15 +97,15 @@ tasks.runtime.doLast {
 }
 
 dependencies {
-    compile 'com.formdev:flatlaf:0.35'
-    compile 'jgraph:jgraph:5.13.0.0'
-    compile 'org.apache.jena:jena-core:3.15.0'
-    compile 'org.apache.jena:jena-arq:3.15.0'
-    compile 'org.slf4j:slf4j-simple:1.7.30'
-    compile 'org.apache.xmlgraphics:batik-svg-dom:1.13'
-    compile 'org.apache.xmlgraphics:batik-svggen:1.13'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
+    implementation 'com.formdev:flatlaf:1.1.2'
+    implementation 'jgraph:jgraph:5.13.0.0'
+    implementation 'org.apache.jena:jena-core:4.0.0'
+    implementation 'org.apache.jena:jena-arq:4.0.0'
+    implementation 'org.slf4j:slf4j-simple:1.7.30'
+    implementation 'org.apache.xmlgraphics:batik-svg-dom:1.14'
+    implementation 'org.apache.xmlgraphics:batik-svggen:1.14'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.1'
 }
 
 publishing {

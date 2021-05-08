@@ -69,7 +69,7 @@ public class SPARQLQueryDialog extends JDialog {
             Query query = QueryFactory.create(queryTextArea.getText());
             QueryExecution qexec = QueryExecutionFactory.create(query, getModel());
             try {
-                if (query.getQueryType() != Query.QueryTypeSelect) {
+                if (query.queryType() != QueryType.SELECT) {
                     Utilities.showErrorMessageDialog(Translator.getString("SPARQLQueryDialog.Warning"));
                     return;
                 }
