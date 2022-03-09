@@ -342,7 +342,7 @@ public class GraphUtilities {
                         gmanager.getPropertyGraph()));
             }
         }
-        cellSet.stream().forEach(c -> {
+        cellSet.forEach(c -> {
             gmanager.selectCell(c, gmanager.getRDFGraph());
             gmanager.selectCell(c, gmanager.getClassGraph());
             gmanager.selectCell(c, gmanager.getPropertyGraph());

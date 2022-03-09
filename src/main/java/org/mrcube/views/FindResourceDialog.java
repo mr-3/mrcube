@@ -45,9 +45,9 @@ public class FindResourceDialog extends JDialog {
 
     private final GraphManager gmanager;
 
-    private JTextField keywordField;
+    private final JTextField keywordField;
     private final JList<GraphCell> resourceList;
-    private DefaultListModel<GraphCell> resourceListModel;
+    private final DefaultListModel<GraphCell> resourceListModel;
 
     private static final int LIST_WIDTH = 400;
     private static final int LIST_HEIGHT = 300;

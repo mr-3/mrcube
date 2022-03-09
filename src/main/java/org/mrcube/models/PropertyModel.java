@@ -195,16 +195,16 @@ public class PropertyModel extends RDFSModel {
 		String msg = super.toString();
 
 		if (domainSet.size() > 0) {
-			msg += "domain: " + domainSet.toString() + "\n";
+			msg += "domain: " + domainSet + "\n";
 		}
 		if (rangeSet.size() > 0) {
-			msg += "range: " + rangeSet.toString() + "\n";
+			msg += "range: " + rangeSet + "\n";
 		}
 		if (subProperties.size() > 0) {
-			msg += "SubProperty: " + subProperties.toString() + "\n";
+			msg += "SubProperty: " + subProperties + "\n";
 		}
 		if (supProperties.size() > 0) {
-			msg += "SuperProperty: " + supProperties.toString() + "\n";
+			msg += "SuperProperty: " + supProperties + "\n";
 		}
 		msg += getModelString();
 		return msg;

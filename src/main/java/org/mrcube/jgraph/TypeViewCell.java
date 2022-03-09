@@ -31,7 +31,7 @@ import java.awt.*;
  * @author Takeshi Morita
  */
 public class TypeViewCell extends DefaultGraphCell {
-    public static Color fontColor = OntClassCell.backgroundColor;
+    public static final Color fontColor = OntClassCell.backgroundColor;
 
     public TypeViewCell(Object userObject) {
         super(userObject);

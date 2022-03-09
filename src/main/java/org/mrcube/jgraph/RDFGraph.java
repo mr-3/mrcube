@@ -58,8 +58,8 @@ public class RDFGraph extends JGraph {
     private final PasteAction pasteAction;
     private final SelectAllNodesAction selectAllNodesAction;
 
-    private boolean pagevisible = false;
-    private transient PageFormat pageFormat = new PageFormat();
+    private final boolean pagevisible = false;
+    private final transient PageFormat pageFormat = new PageFormat();
 
     private ImageIcon background;
 

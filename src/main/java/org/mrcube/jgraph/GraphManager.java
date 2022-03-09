@@ -77,10 +77,10 @@ public class GraphManager {
     private final MR3CellMaker cellMaker;
     private final JGraphTreeLayout treeLayout;
 
-    private AttributeDialog attributeDialog;
-    private FindResourceDialog findResourceDialog;
-    private NameSpaceTableDialog nameSpaceTableDialog;
-    private RemoveDialog removeDialog;
+    private final AttributeDialog attributeDialog;
+    private final FindResourceDialog findResourceDialog;
+    private final NameSpaceTableDialog nameSpaceTableDialog;
+    private final RemoveDialog removeDialog;
 
     public static CellViewType cellViewType;
 

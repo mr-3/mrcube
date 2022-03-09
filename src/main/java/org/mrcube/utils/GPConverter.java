@@ -180,12 +180,12 @@ public class GPConverter {
         String from = "";
         if (model.getSource(edge) != null) {
             Object source = hash.get(model.getParent(model.getSource(edge)));
-            if (source != null) from = "node" + source.toString();
+            if (source != null) from = "node" + source;
         }
         String to = "";
         if (model.getTarget(edge) != null) {
             Object target = hash.get(model.getParent(model.getTarget(edge)));
-            if (target != null) to = "node" + target.toString();
+            if (target != null) to = "node" + target;
         }
         if (from != null && to != null) {
             String label = graph.convertValueToString(edge);
@@ -233,7 +233,7 @@ public class GPConverter {
         if (id == null) return "";
         String label = graph.convertValueToString(vertex);
         if (label == null) label = "";
-        return "\n\t" + id.toString() + " [label=\"" + label + "\", " + "shape=\"box\"];";
+        return "\n\t" + id + " [label=\"" + label + "\", " + "shape=\"box\"];";
     }
 
     private static String edgeGraphviz(RDFGraph graph, Object id, Object edge) {

@@ -899,17 +899,17 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
 
     class RenderingPanel extends JPanel implements ActionListener {
 
-        private JButton setDefaultColorsButton;
+        private final JButton setDefaultColorsButton;
 
         private final JCheckBox isAntialiasBox;
         private final JCheckBox isBlackAndWhiteBox;
 
-        private ResourceColorPanel rdfResourceColorPanel;
-        private ResourceColorPanel rdfPropertyColorPanel;
-        private ResourceColorPanel rdfLiteralColorPanel;
-        private ResourceColorPanel classColorPanel;
-        private ResourceColorPanel propertyColorPanel;
-        private ResourceColorPanel editorColorPanel;
+        private final ResourceColorPanel rdfResourceColorPanel;
+        private final ResourceColorPanel rdfPropertyColorPanel;
+        private final ResourceColorPanel rdfLiteralColorPanel;
+        private final ResourceColorPanel classColorPanel;
+        private final ResourceColorPanel propertyColorPanel;
+        private final ResourceColorPanel editorColorPanel;
 
         RenderingPanel() {
             setDefaultColorsButton = new JButton(Translator.getString("PreferenceDialog.RenderingTab.SetDefaultColors"));

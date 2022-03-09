@@ -34,9 +34,7 @@ public class ShowManualAction extends MR3AbstractAction {
                         Desktop.getDesktop().browse(new URI("http://docs.mrcube.org/en/latest/"));
 
                 }
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            } catch (URISyntaxException e1) {
+            } catch (IOException | URISyntaxException e1) {
                 e1.printStackTrace();
             }
         }

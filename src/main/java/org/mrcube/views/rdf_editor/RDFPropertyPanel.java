@@ -155,7 +155,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
                     list.add(localNameListModel.getElementAt(i));
                 }
             }
-            localNameList.setListData(list.stream().toArray(String[]::new));
+            localNameList.setListData(list.toArray(String[]::new));
             if (0 < list.size()) {
                 localNameList.setSelectedIndex(0);
             }

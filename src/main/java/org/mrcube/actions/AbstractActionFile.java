@@ -47,7 +47,7 @@ import java.util.prefs.Preferences;
  */
 abstract class AbstractActionFile extends MR3AbstractAction {
 
-    private MR3Writer mr3Writer;
+    private final MR3Writer mr3Writer;
     protected JFileChooser fileChooser;
 
     protected void initializeJFileChooser() {

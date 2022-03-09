@@ -334,7 +334,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     public Set getSelectedResourcePorts() {
         Object[] cells = graph.getSelectionCells();
         cells = graph.getDescendants(cells);
-        Set<Object> selectedResourcePorts = new HashSet<>();
+        Set selectedResourcePorts = new HashSet<>();
         for (Object cell : cells) {
             if (RDFGraph.isRDFResourceCell(cell)) {
                 DefaultGraphCell gcell = (DefaultGraphCell) cell;
@@ -345,7 +345,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     }
 
     private void insertConnectedResource(Point pt) {
-        Set selectedResourcePorts = getSelectedResourcePorts();
+        Set<Object> selectedResourcePorts = getSelectedResourcePorts();
         DefaultGraphCell targetCell = (DefaultGraphCell) insertResourceCell(pt);
         if (targetCell == null) {
             return;
@@ -385,10 +385,10 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     public void connectCells(Set selectedResourcePorts, Port targetPort) {
         for (Object selectedResourcePort : selectedResourcePorts) {
             Port sourcePort = (Port) selectedResourcePort;
-            GraphCell rdfsPropCell = null;
+            GraphCell rdfsPropCell;
             Object[] rdfsPropertyCells = gmanager.getPropertyGraph().getSelectionCells();
 
-            RDFSModel info = null;
+            RDFSModel info;
             if (rdfsPropertyCells.length == 1 && RDFGraph.isRDFSPropertyCell(rdfsPropertyCells[0])) {
                 rdfsPropCell = (GraphCell) rdfsPropertyCells[0];
                 info = (RDFSModel) GraphConstants.getValue(rdfsPropCell.getAttributes());

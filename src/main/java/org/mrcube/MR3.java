@@ -80,8 +80,8 @@ public class MR3 extends JFrame implements ChangeListener {
     // private WeakReference<OntTreeEditor> ontTreeEditorRef;
     private WeakReference<OptionDialog> optionDialogRef;
     private WeakReference<RDFSourceCodeViewer> RDFSourceCodeViewerRef;
-    private HistoryManager historyManager;
-    private SPARQLQueryDialog sparqlQueryDialog;
+    private final HistoryManager historyManager;
+    private final SPARQLQueryDialog sparqlQueryDialog;
     private WeakReference<ValidatorDialog> validatorRef;
     private WeakReference<ProjectInfoDialog> projectInfoDialogRef;
     private final MR3LogConsole mr3LogConsole;
@@ -640,7 +640,7 @@ public class MR3 extends JFrame implements ChangeListener {
     }
 
     public static void initialize(Class cls) {
-        FlatLightLaf.install();
+        FlatLightLaf.setup();
         JenaSystem.init();
         userPrefs = Preferences.userNodeForPackage(cls);
         Translator.loadResourceBundle(userPrefs);

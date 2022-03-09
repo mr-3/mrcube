@@ -37,7 +37,7 @@ import java.awt.event.ActionEvent;
  */
 public class GraphLayoutAction extends AbstractAction {
 
-    private String direction;
+    private final String direction;
     private final GraphType graphType;
     private final GraphManager gmanager;
     private static final String TITLE = Translator.getString("Menu.View.ApplyLayout.Text");

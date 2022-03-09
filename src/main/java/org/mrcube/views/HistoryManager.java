@@ -294,12 +294,12 @@ public class HistoryManager extends JDialog implements ActionListener {
 
         switch (historyType) {
             case DELETE_RDF:
-                var message = String.format("%s[%s]\n%s", MODEL, historyType, buf.toString());
+                var message = String.format("%s[%s]\n%s", MODEL, historyType, buf);
                 saveMessage(historyType, message);
                 break;
             case DELETE_CLASS:
             case DELETE_ONT_PROPERTY:
-                message = String.format("%s[%s]\n%s", META_MODEL, historyType, buf.toString());
+                message = String.format("%s[%s]\n%s", META_MODEL, historyType, buf);
                 saveMessage(historyType, message);
                 break;
         }
@@ -321,14 +321,14 @@ public class HistoryManager extends JDialog implements ActionListener {
             case ADD_RESOURCE_LABEL:
             case DELETE_RESOURCE_LABEL:
                 var message = String.format("%s[%s]\nBefore Label: \n%sAfter Label: \n%s",
-                        MODEL, historyType, beforeBuf.toString(), afterBuf.toString());
+                        MODEL, historyType, beforeBuf, afterBuf);
                 saveMessage(historyType, message);
                 break;
             case EDIT_RESOURCE_COMMENT:
             case ADD_RESOURCE_COMMENT:
             case DELETE_RESOURCE_COMMENT:
                 message = String.format("%s[%s]\nBefore Comment: \n%sAfter Comment: \n%s",
-                        MODEL, historyType, beforeBuf.toString(), afterBuf.toString());
+                        MODEL, historyType, beforeBuf, afterBuf);
                 saveMessage(historyType, message);
                 break;
             case EDIT_CLASS_LABEL:
@@ -340,7 +340,7 @@ public class HistoryManager extends JDialog implements ActionListener {
             case ADD_ONT_PROPERTY_LABEL:
             case DELETE_ONT_PROPERTY_LABEL:
                 message = String.format("%s[%s]\nBefore Label: \n%sAfter Label: \n%s",
-                        META_MODEL, historyType, beforeBuf.toString(), afterBuf.toString());
+                        META_MODEL, historyType, beforeBuf, afterBuf);
                 saveMessage(historyType, message);
                 break;
             case EDIT_CLASS_COMMENT:
@@ -350,7 +350,7 @@ public class HistoryManager extends JDialog implements ActionListener {
             case ADD_ONT_PROPERTY_COMMENT:
             case DELETE_ONT_PROPERTY_COMMENT:
                 message = String.format("%s[%s]\nBefore Comment: \n%sAfter Comment: \n%s",
-                        META_MODEL, historyType, beforeBuf.toString(), afterBuf.toString());
+                        META_MODEL, historyType, beforeBuf, afterBuf);
                 saveMessage(historyType, message);
                 break;
 

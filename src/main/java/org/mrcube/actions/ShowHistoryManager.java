@@ -39,7 +39,7 @@ import java.awt.event.KeyEvent;
  */
 public class ShowHistoryManager extends MR3AbstractAction {
 
-    private static ImageIcon ICON = Utilities.getImageIcon(Translator.getString("HistoryManager.Icon"));
+    private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("HistoryManager.Icon"));
     private static final String TITLE = Translator.getString("HistoryManager.Title");
 
     public ShowHistoryManager(MR3 mr3) {

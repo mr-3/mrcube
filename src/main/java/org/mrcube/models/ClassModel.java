@@ -100,10 +100,10 @@ public class ClassModel extends RDFSModel {
 		String msg = super.toString();
 
 		if (subClasses.size() > 0) {
-			msg += "SubClasses: " + subClasses.toString() + "\n";
+			msg += "SubClasses: " + subClasses + "\n";
 		}
 		if (supClasses.size() > 0) {
-			msg += "SuperClasses: " + supClasses.toString() + "\n";
+			msg += "SuperClasses: " + supClasses + "\n";
 		}
 		msg += getModelString();
 

@@ -295,7 +295,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
      * prefix が空でなくかつ，すでに登録されていない場合true
      */
     private boolean isValidPrefix(String prefix) {
-        return prefix != null && !prefix.equals("") && !prefixNSMap.keySet().contains(prefix);
+        return prefix != null && !prefix.equals("") && !prefixNSMap.containsKey(prefix);
     }
 
     /**
@@ -306,7 +306,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
             Utilities.showErrorMessageDialog(Translator.getString("Warning.Message13"));
             return false;
         }
-        if (prefixNSMap.keySet().contains(prefix)) {
+        if (prefixNSMap.containsKey(prefix)) {
             Utilities.showErrorMessageDialog(Translator.getString("Warning.Message5"));
             return false;
         }
@@ -320,7 +320,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
      * - 名前空間テーブルに登録されてない
      */
     private boolean isValidNamespace(String ns) {
-        return PrefixNSUtil.isValidURI(ns) && !prefixNSMap.values().contains(ns);
+        return PrefixNSUtil.isValidURI(ns) && !prefixNSMap.containsValue(ns);
     }
 
     /**
@@ -333,7 +333,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
         if (!PrefixNSUtil.isValidURI(ns)) {
             return false;
         }
-        if (prefixNSMap.values().contains(ns)) {
+        if (prefixNSMap.containsValue(ns)) {
             Utilities.showErrorMessageDialog(Translator.getString("Warning.Message6"));
             return false;
         }

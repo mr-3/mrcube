@@ -37,7 +37,7 @@ public class TreeLayoutAlgorithm {
     private JGraph jgraph;
     private int orientation;
     private int childParentDistance;
-    private int BORDER;
+    private final int BORDER;
 
     public TreeLayoutAlgorithm(int orientation, int distance, int border) {
         if (orientation == UP_TO_DOWN) {
@@ -198,10 +198,7 @@ public class TreeLayoutAlgorithm {
             d = b2 - (p2 + a2);
         }
 
-        if (d > 0) {
-            return d;
-        }
-        return 0;
+        return Math.max(d, 0);
     }
 
     private PolyLine bridge(PolyLine line1, int x1, int y1, PolyLine line2, int x2, int y2) {

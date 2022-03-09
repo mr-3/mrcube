@@ -27,7 +27,7 @@ public class ResourceColorPanel extends JPanel {
     private Color selectedBgColor;
     private Color selectedBorderColor;
 
-    private ChangeColorAction changeColorAction;
+    private final ChangeColorAction changeColorAction;
 
     private static final int LABEL_WIDTH = 120;
     private static final int LABEL_HEIGHT = 25;

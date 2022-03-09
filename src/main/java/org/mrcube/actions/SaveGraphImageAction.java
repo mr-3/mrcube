@@ -52,11 +52,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 
 public class SaveGraphImageAction extends AbstractAction {
 
-    private GraphManager gmanager;
-    private MR3Constants.GraphType graphType;
+    private final GraphManager gmanager;
+    private final MR3Constants.GraphType graphType;
     protected JFileChooser imageFileChooser;
     private static final PNGFileFilter pngFileFilter = new PNGFileFilter();
     private static final JPGFileFilter jpgFileFilter = new JPGFileFilter();
@@ -182,7 +183,7 @@ public class SaveGraphImageAction extends AbstractAction {
                     repaintManager.setDoubleBufferingEnabled(true);
                     BasicGraphUI gui = (BasicGraphUI) graph.getUI();
                     gui.drawGraph(svgGraphics, bounds);
-                    svgGraphics.stream(new OutputStreamWriter(new FileOutputStream(imgFile), "UTF-8"), false);
+                    svgGraphics.stream(new OutputStreamWriter(new FileOutputStream(imgFile), StandardCharsets.UTF_8), false);
                     break;
             }
         } catch (IOException ioe) {
