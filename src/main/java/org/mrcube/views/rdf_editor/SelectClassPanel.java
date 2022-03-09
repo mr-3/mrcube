@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
  *
- * Copyright (C) 2003-2020 Takeshi Morita. All rights reserved.
+ * Copyright (C) 2003-2022 Takeshi Morita. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -28,7 +28,6 @@ import org.jgraph.event.GraphSelectionListener;
 import org.jgraph.graph.BasicMarqueeHandler;
 import org.jgraph.graph.GraphCell;
 import org.mrcube.jgraph.GraphManager;
-import org.mrcube.jgraph.RDFCellStyleChanger;
 import org.mrcube.jgraph.RDFGraph;
 import org.mrcube.jgraph.RDFGraphModel;
 import org.mrcube.models.MR3Constants;

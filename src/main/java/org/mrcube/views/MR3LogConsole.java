@@ -401,9 +401,9 @@ public class MR3LogConsole extends JDialog {
 
             target.append(s);
             target.setCaretPosition(target.getText().length());
-            if (orig == stderr) {
-                setVisible(true);
-            }
+//            if (orig == stderr) {
+//                setVisible(true);
+//            }
         }
 
         /**
@@ -414,9 +414,9 @@ public class MR3LogConsole extends JDialog {
 
             target.append(s + "\n");
             target.setCaretPosition(target.getText().length());
-            if (orig == stderr) {
-                setVisible(true);
-            }
+//            if (orig == stderr) {
+//                setVisible(true);
+//            }
         }
 
         /**

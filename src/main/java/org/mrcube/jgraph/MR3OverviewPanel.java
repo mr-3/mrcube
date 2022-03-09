@@ -97,6 +97,7 @@ public class MR3OverviewPanel extends JPanel implements ComponentListener, Graph
     //
     // invoked when user changes zoom in graphpad
     public void propertyChange(PropertyChangeEvent evt) {
+        System.out.println("######");
         double newScale = (Double) evt.getNewValue();
         // v.scaleChanged(newScale);
         componentResized(null);

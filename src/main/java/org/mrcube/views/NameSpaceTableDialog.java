@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
  *
- * Copyright (C) 2003-2020 Takeshi Morita. All rights reserved.
+ * Copyright (C) 2003-2022 Takeshi Morita. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -30,7 +30,6 @@ import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
-import org.mrcube.io.MR3Reader;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.models.MR3Constants;
 import org.mrcube.models.MR3Resource;
