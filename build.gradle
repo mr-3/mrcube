@@ -9,7 +9,6 @@ plugins {
 
 group 'org.mrcube'
 version = '22.3.1'
-sourceCompatibility = targetCompatibility = '11'
 
 application {
     mainClass = 'org.mrcube.MR3'
@@ -26,7 +25,7 @@ repositories {
 }
 
 wrapper {
-    gradleVersion = '7.4'
+    gradleVersion = '7.4.1'
 }
 
 jar {
@@ -37,6 +36,14 @@ jar {
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
+}
+
+tasks.withType(Test) {
+    systemProperty 'file.encoding', 'UTF-8'
+}
+
+tasks.withType(JavaExec) {
+    systemProperty 'file.encoding', 'UTF-8'
 }
 
 idea {
@@ -67,7 +74,7 @@ runtime {
 
     jpackage {
         // macOS
-        jpackageHome = '/Library/Java/JavaVirtualMachines/jdk-16.0.1.jdk/Contents/Home'
+        jpackageHome = '/Library/Java/JavaVirtualMachines/jdk-18.jdk/Contents/Home'
 //        imageOptions = ['--verbose', '--icon', './src/main/resources/images/mr3.icns', '--mac-sign']
         imageOptions = ['--verbose', '--icon', './src/main/resources/images/mr3.icns']
         outputDir = 'my-packaging'
@@ -76,7 +83,7 @@ runtime {
         skipInstaller = false
         installerName = "mrcube"
         // Windows
-//        jpackageHome = 'C://jdk-16.0.1'
+//        jpackageHome = 'C://jdk-18'
 //        installerType = 'msi'
 //        imageOptions = ['--icon', './src/main/resources/images/mr3.ico']
 //        installerOptions = ['--vendor', 'Takeshi Morita', '--win-shortcut']

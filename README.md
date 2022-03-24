@@ -44,7 +44,7 @@ MR<sup>3</sup> uses the following libraries.
 * [Material Design icons by Google](https://github.com/google/material-design-icons)([License](https://www.apache.org/licenses/LICENSE-2.0.txt))
 
 ## Project Member
-* Takeshi Morita (College of Science and Engineering, Aoyama Gakuin University, Japan)
+* Takeshi Morita (College of Science and Engineering, Aoyama Gakuin University, Japan)
 * Naoki Fukuta (Department of Computer Science, Shizuoka University, Japan)
 * Noriaki Izumi (National Institute of Advanced Industrial Science and Technology, Japan)
 * Takahira Yamaguchi (Faculty of Science and Technology, Keio University, Japan)

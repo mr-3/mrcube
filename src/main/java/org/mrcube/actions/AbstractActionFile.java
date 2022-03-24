@@ -142,18 +142,10 @@ abstract class AbstractActionFile extends MR3AbstractAction {
             } else {
                 exportModel = getModel();
                 switch (fileExtension) {
-                    case "ttl":
-                        rdfFormat = RDFFormat.TURTLE;
-                        break;
-                    case "jsonld":
-                        rdfFormat = RDFFormat.JSONLD;
-                        break;
-                    case "rdf":
-                        rdfFormat = RDFFormat.RDFXML_ABBREV;
-                        break;
-                    case "n3":
-                        rdfFormat = RDFFormat.NTRIPLES_UTF8;
-                        break;
+                    case "ttl" -> rdfFormat = RDFFormat.TURTLE;
+                    case "jsonld" -> rdfFormat = RDFFormat.JSONLD;
+                    case "rdf" -> rdfFormat = RDFFormat.RDFXML_ABBREV;
+                    case "n3" -> rdfFormat = RDFFormat.NTRIPLES_UTF8;
                 }
             }
             setNsPrefix(exportModel);

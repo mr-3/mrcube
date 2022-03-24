@@ -216,7 +216,7 @@ public class ProjectManager {
     public Model extractProjectModel(Model model) {
         Model extractModel = ModelFactory.createDefaultModel();
         model.listStatements().toList().stream()
-                .filter(stmt -> hasProjectPredicate(stmt))
+                .filter(this::hasProjectPredicate)
                 .forEach(extractModel::add);
         model.remove(extractModel);
 

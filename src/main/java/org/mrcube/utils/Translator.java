@@ -45,7 +45,7 @@ public class Translator {
 
     private static ResourceBundle resourceBundle;
 
-    public static final String getString(String sKey) {
+    public static String getString(String sKey) {
         try {
             return resourceBundle.getString(sKey);
         } catch (Exception e) {

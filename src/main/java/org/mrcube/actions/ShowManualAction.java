@@ -26,13 +26,10 @@ public class ShowManualAction extends MR3AbstractAction {
         if (Desktop.isDesktopSupported()) {
             try {
                 String uiLang = getUserPrefs().get(PrefConstants.UILang, "en");
-                switch (uiLang) {
-                    case "ja":
-                        Desktop.getDesktop().browse(new URI("http://docs.mrcube.org/ja/latest/"));
-                        break;
-                    default:
-                        Desktop.getDesktop().browse(new URI("http://docs.mrcube.org/en/latest/"));
-
+                if ("ja".equals(uiLang)) {
+                    Desktop.getDesktop().browse(new URI("http://docs.mrcube.org/ja/latest/"));
+                } else {
+                    Desktop.getDesktop().browse(new URI("http://docs.mrcube.org/en/latest/"));
                 }
             } catch (IOException | URISyntaxException e1) {
                 e1.printStackTrace();

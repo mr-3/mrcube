@@ -92,15 +92,9 @@ public class TransformElementAction extends AbstractAction {
         MR3CellMaker cellMaker = new MR3CellMaker(gmanager);
         for (String uri : uriSet) {
             switch (toGraphType) {
-                case RDF:
-                    cellMaker.insertRDFResource(pt, uri, null, URIType.URI);
-                    break;
-                case CLASS:
-                    cellMaker.insertClass(pt, uri);
-                    break;
-                case PROPERTY:
-                    cellMaker.insertProperty(pt, uri);
-                    break;
+                case RDF -> cellMaker.insertRDFResource(pt, uri, null, URIType.URI);
+                case CLASS -> cellMaker.insertClass(pt, uri);
+                case PROPERTY -> cellMaker.insertProperty(pt, uri);
             }
             pt.x += 20;
             pt.y += 20;

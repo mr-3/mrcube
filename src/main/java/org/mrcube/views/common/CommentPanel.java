@@ -257,7 +257,7 @@ public class CommentPanel extends JPanel implements ActionListener {
 	public static void main(String[] args) {
 		JFrame frame = new JFrame();
 		CommentPanel commentPanel = new CommentPanel(new JFrame());
-		ResourceModel info = new ClassModel("http://mrcube.org#test");
+		ResourceModel info = new ClassModel("https://mrcube.org#test");
 		info.addLabel(new MR3Literal("日本語コメントのテスト", "ja", null));
 		info.addLabel(new MR3Literal("english comment test", "en", null));
 		commentPanel.setResourceInfo(info);

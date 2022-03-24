@@ -93,15 +93,9 @@ class RDFGraphUI extends BasicGraphUI {
             }
         } else if (stopEditingInCompleteEditing) {
             switch (GraphManager.cellViewType) {
-                case LABEL:
-                    editLabel(cell, info);
-                    break;
-                case URI:
-                    editURI(cell, info);
-                    break;
-                case ID:
-                    editID(cell, info);
-                    break;
+                case LABEL -> editLabel(cell, info);
+                case URI -> editURI(cell, info);
+                case ID -> editID(cell, info);
             }
         }
     }

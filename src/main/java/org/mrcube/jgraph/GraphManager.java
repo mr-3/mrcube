@@ -1160,32 +1160,20 @@ public class GraphManager {
         switch (graphType) {
             case RDF:
                 switch (GraphLayoutUtilities.LAYOUT_TYPE) {
-                    case GraphLayoutUtilities.VGJ_TREE_LAYOUT:
-                        applyVGJRDFLayout(graphType);
-                        break;
-                    case GraphLayoutUtilities.JGRAPH_TREE_LAYOUT:
-                        applyJGraphRDFLayout();
-                        break;
+                    case GraphLayoutUtilities.VGJ_TREE_LAYOUT -> applyVGJRDFLayout(graphType);
+                    case GraphLayoutUtilities.JGRAPH_TREE_LAYOUT -> applyJGraphRDFLayout();
                 }
                 break;
             case CLASS:
                 switch (GraphLayoutUtilities.LAYOUT_TYPE) {
-                    case GraphLayoutUtilities.VGJ_TREE_LAYOUT:
-                        applyVGJClassLayout(extractRDFS);
-                        break;
-                    case GraphLayoutUtilities.JGRAPH_TREE_LAYOUT:
-                        applyJGraphClassLayout();
-                        break;
+                    case GraphLayoutUtilities.VGJ_TREE_LAYOUT -> applyVGJClassLayout(extractRDFS);
+                    case GraphLayoutUtilities.JGRAPH_TREE_LAYOUT -> applyJGraphClassLayout();
                 }
                 break;
             case PROPERTY:
                 switch (GraphLayoutUtilities.LAYOUT_TYPE) {
-                    case GraphLayoutUtilities.VGJ_TREE_LAYOUT:
-                        applyVGJPropertyLayout(extractRDFS);
-                        break;
-                    case GraphLayoutUtilities.JGRAPH_TREE_LAYOUT:
-                        applyJGraphPropertyLayout();
-                        break;
+                    case GraphLayoutUtilities.VGJ_TREE_LAYOUT -> applyVGJPropertyLayout(extractRDFS);
+                    case GraphLayoutUtilities.JGRAPH_TREE_LAYOUT -> applyJGraphPropertyLayout();
                 }
                 break;
         }

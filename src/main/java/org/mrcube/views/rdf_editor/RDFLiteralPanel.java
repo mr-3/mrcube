@@ -156,7 +156,7 @@ public class RDFLiteralPanel extends JPanel implements ActionListener {
             literalValueArea.setText(literal.getString());
         }
 
-        SwingUtilities.invokeLater(() -> literalValueArea.requestFocus());
+        SwingUtilities.invokeLater(literalValueArea::requestFocus);
     }
 
     private void apply() {

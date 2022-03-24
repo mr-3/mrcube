@@ -132,16 +132,12 @@ public class SaveGraphImageAction extends AbstractAction {
     }
 
     private RDFGraph getRDFGraph(MR3Constants.GraphType graphType) {
-        switch (graphType) {
-            case RDF:
-                return gmanager.getRDFGraph();
-            case CLASS:
-                return gmanager.getClassGraph();
-            case PROPERTY:
-                return gmanager.getPropertyGraph();
-            default:
-                return gmanager.getRDFGraph();
-        }
+        return switch (graphType) {
+            case RDF -> gmanager.getRDFGraph();
+            case CLASS -> gmanager.getClassGraph();
+            case PROPERTY -> gmanager.getPropertyGraph();
+            default -> gmanager.getRDFGraph();
+        };
     }
 
     private BufferedImage getGraphImage() {
@@ -162,14 +158,13 @@ public class SaveGraphImageAction extends AbstractAction {
         String ext = getExtension(imgFile);
         try {
             switch (ext) {
-                case "png":
-                case "jpg":
+                case "png", "jpg" -> {
                     BufferedImage graphImage = getGraphImage();
                     if (graphImage != null) {
                         ImageIO.write(graphImage, ext, imgFile);
                     }
-                    break;
-                case "svg":
+                }
+                case "svg" -> {
                     JGraph graph = getRDFGraph(graphType);
                     // Acknowledgement:
                     // http://devdocs.inightmare.org/2012/06/28/exporting-jgraph-to-svg/
@@ -184,7 +179,7 @@ public class SaveGraphImageAction extends AbstractAction {
                     BasicGraphUI gui = (BasicGraphUI) graph.getUI();
                     gui.drawGraph(svgGraphics, bounds);
                     svgGraphics.stream(new OutputStreamWriter(new FileOutputStream(imgFile), StandardCharsets.UTF_8), false);
-                    break;
+                }
             }
         } catch (IOException ioe) {
             ioe.printStackTrace();

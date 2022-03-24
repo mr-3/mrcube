@@ -79,7 +79,7 @@ public class SPARQLQueryDialog extends JDialog {
                 while (results.hasNext()) {
                     QuerySolution solution = results.nextSolution();
                     java.util.List<RDFNode> nodeList = resultVarList.stream()
-                            .map(n -> solution.get(n))
+                            .map(solution::get)
                             .collect(Collectors.toList());
                     queryResultsTableModel.addRow(nodeList.toArray());
                     nodeSet.addAll(nodeList);

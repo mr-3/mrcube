@@ -416,21 +416,11 @@ public class MR3OverviewPanel extends JPanel implements ComponentListener, Graph
         private int convertDragPointToCursor(int dragPoint) {
 
             // for now, we are only interested in se corner
-            int cursor = Cursor.DEFAULT_CURSOR;
-            switch (dragPoint) {
-            case UPPER_HORIZONTAL:
-            case LOWER_HORIZONTAL:
-            case LEFT_VERTICAL:
-            case RIGHT_VERTICAL:
-            case SW_CORNER:
-            case NW_CORNER:
-            case NE_CORNER:
-                cursor = Cursor.DEFAULT_CURSOR;
-                break;
-            case SE_CORNER:
-                cursor = Cursor.SE_RESIZE_CURSOR;
-                break;
-            }
+            int cursor = switch (dragPoint) {
+                case UPPER_HORIZONTAL, LOWER_HORIZONTAL, LEFT_VERTICAL, RIGHT_VERTICAL, SW_CORNER, NW_CORNER, NE_CORNER -> Cursor.DEFAULT_CURSOR;
+                case SE_CORNER -> Cursor.SE_RESIZE_CURSOR;
+                default -> Cursor.DEFAULT_CURSOR;
+            };
             return cursor;
         }
 

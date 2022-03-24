@@ -294,7 +294,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
                 idField.setText(info.getLocalName());
             }
         }
-        SwingUtilities.invokeLater(() -> idField.requestFocus());
+        SwingUtilities.invokeLater(idField::requestFocus);
     }
 
     public void setPropertyList(List<GraphCell> plist) {

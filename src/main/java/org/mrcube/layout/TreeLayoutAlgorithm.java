@@ -358,14 +358,9 @@ public class TreeLayoutAlgorithm {
             layout(root, nodeSet);
             Point rootPos = view.getBounds().getBounds().getLocation();
             switch (orientation) {
-                case LEFT_TO_RIGHT:
-                    leftRightNodeLayout(root, rootPos.x, rootPos.y);
-                    break;
-                case UP_TO_DOWN:
-                    upDownNodeLayout(root, rootPos.x, rootPos.y);
-                    break;
-                default:
-                    leftRightNodeLayout(root, rootPos.x, rootPos.y);
+                case LEFT_TO_RIGHT -> leftRightNodeLayout(root, rootPos.x, rootPos.y);
+                case UP_TO_DOWN -> upDownNodeLayout(root, rootPos.x, rootPos.y);
+                default -> leftRightNodeLayout(root, rootPos.x, rootPos.y);
             }
         }
     }

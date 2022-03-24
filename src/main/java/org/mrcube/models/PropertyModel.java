@@ -107,11 +107,7 @@ public class PropertyModel extends RDFSModel {
 	}
 
 	public void removeNullDomain() {
-		for (GraphCell cell : domainSet) {
-			if (GraphConstants.getValue(cell.getAttributes()) == null) {
-				domainSet.remove(cell);
-			}
-		}
+		domainSet.removeIf(cell -> GraphConstants.getValue(cell.getAttributes()) == null);
 	}
 
 	public void removeDomain(Object obj) {
@@ -135,12 +131,8 @@ public class PropertyModel extends RDFSModel {
 	}
 
 	public void removeNullRange() {
-		for (GraphCell cell : rangeSet) {
-			// if (rdfsInfoMap.getCellInfo(cell) == null) {
-			if (cell.getAttributes() == null) {
-				rangeSet.remove(cell);
-			}
-		}
+		// if (rdfsInfoMap.getCellInfo(cell) == null) {
+		rangeSet.removeIf(cell -> cell.getAttributes() == null);
 	}
 
 	public void removeRange(Object obj) {
