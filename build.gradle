@@ -67,7 +67,7 @@ runtime {
 
     jpackage {
         if (OperatingSystem.current().isWindows()) {
-            jpackageHome = 'C://jdk-18.0.1.1'
+            jpackageHome = 'C:\\Program Files\\Java\\jdk-18.0.1.1'
             imageOptions = ['--icon', './src/main/resources/images/mr3.ico']
             installerType = 'msi'
             installerOptions = ['--vendor', 'Takeshi Morita', '--win-shortcut']
