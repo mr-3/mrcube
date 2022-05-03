@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
  *
- * Copyright (C) 2003-2020 Takeshi Morita. All rights reserved.
+ * Copyright (C) 2003-2022 Takeshi Morita. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -50,15 +50,9 @@ public class DeployWindows extends MR3AbstractAction {
             return;
         }
         switch (deployType) {
-            case CPR:
-                project.deployCPR();
-                break;
-            case CR:
-                project.deployCR();
-                break;
-            case PR:
-                project.deployPR();
-                break;
+            case CPR -> project.deployCPR();
+            case CR -> project.deployCR();
+            case PR -> project.deployPR();
         }
     }
 

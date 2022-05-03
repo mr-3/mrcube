@@ -23,14 +23,14 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class SPARQLQueryDialog extends JDialog {
-    private MR3Writer mr3Writer;
-    private GraphManager gmanager;
-    private JTextArea queryTextArea;
-    private JTable queryResultsTable;
-    private DefaultTableModel queryResultsTableModel;
-    private SPARQLQueryResultTableCellRenderer sparqlTableCellRenderer;
-    private JButton runQueryButton;
-    private JButton cancelButton;
+    private final MR3Writer mr3Writer;
+    private final GraphManager gmanager;
+    private final JTextArea queryTextArea;
+    private final JTable queryResultsTable;
+    private final DefaultTableModel queryResultsTableModel;
+    private final SPARQLQueryResultTableCellRenderer sparqlTableCellRenderer;
+    private final JButton runQueryButton;
+    private final JButton cancelButton;
 
     private static final int WIDTH = 500;
     private static final int HEIGHT = 500;
@@ -67,9 +67,8 @@ public class SPARQLQueryDialog extends JDialog {
         runQueryButton.addActionListener(l -> {
             queryResultsTableModel.setRowCount(0);
             Query query = QueryFactory.create(queryTextArea.getText());
-            QueryExecution qexec = QueryExecutionFactory.create(query, getModel());
-            try {
-                if (query.getQueryType() != Query.QueryTypeSelect) {
+            try (QueryExecution qexec = QueryExecutionFactory.create(query, getModel())) {
+                if (query.queryType() != QueryType.SELECT) {
                     Utilities.showErrorMessageDialog(Translator.getString("SPARQLQueryDialog.Warning"));
                     return;
                 }
@@ -80,16 +79,14 @@ public class SPARQLQueryDialog extends JDialog {
                 while (results.hasNext()) {
                     QuerySolution solution = results.nextSolution();
                     java.util.List<RDFNode> nodeList = resultVarList.stream()
-                            .map(n -> solution.get(n))
+                            .map(solution::get)
                             .collect(Collectors.toList());
                     queryResultsTableModel.addRow(nodeList.toArray());
                     nodeSet.addAll(nodeList);
                 }
-                resultVarList.stream().forEach(id ->
+                resultVarList.forEach(id ->
                         queryResultsTable.getColumn(id).setCellRenderer(sparqlTableCellRenderer)
                 );
-            } finally {
-                qexec.close();
             }
         });
         cancelButton = new JButton(MR3Constants.CANCEL);

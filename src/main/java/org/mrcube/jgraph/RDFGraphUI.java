@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
  *
- * Copyright (C) 2003-2020 Takeshi Morita. All rights reserved.
+ * Copyright (C) 2003-2022 Takeshi Morita. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -93,15 +93,9 @@ class RDFGraphUI extends BasicGraphUI {
             }
         } else if (stopEditingInCompleteEditing) {
             switch (GraphManager.cellViewType) {
-                case LABEL:
-                    editLabel(cell, info);
-                    break;
-                case URI:
-                    editURI(cell, info);
-                    break;
-                case ID:
-                    editID(cell, info);
-                    break;
+                case LABEL -> editLabel(cell, info);
+                case URI -> editURI(cell, info);
+                case ID -> editID(cell, info);
             }
         }
     }

@@ -1,17 +1,18 @@
+import org.gradle.internal.os.OperatingSystem
+
 plugins {
     id 'java'
     id 'application'
-    id "com.github.johnrengelman.shadow" version "5.2.0"
-    id "org.beryx.runtime" version "1.8.4"
-    id "com.jfrog.bintray" version "1.8.4"
-    id 'maven-publish'
-    id 'idea'
+    id "com.github.johnrengelman.shadow" version "7.1.2"
+    id "org.beryx.runtime" version "1.12.7"
 }
 
 group 'org.mrcube'
-version = '20.6.1'
-mainClassName = 'org.mrcube.MR3'
-sourceCompatibility = targetCompatibility = '11'
+version = '22.5.1'
+
+application {
+    mainClass.set('org.mrcube.MR3')
+}
 
 project.ext {
     moduleName = 'org.mrcube.mrcube'
@@ -20,11 +21,11 @@ project.ext {
 }
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 wrapper {
-    gradleVersion = '6.4.1'
+    gradleVersion = '7.4.2'
 }
 
 jar {
@@ -37,12 +38,12 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-idea {
-    module {
-        inheritOutputDirs = true
-        outputDir = compileJava.destinationDir
-        testOutputDir = compileTestJava.destinationDir
-    }
+tasks.withType(Test) {
+    systemProperty 'file.encoding', 'UTF-8'
+}
+
+tasks.withType(JavaExec) {
+    systemProperty 'file.encoding', 'UTF-8'
 }
 
 test {
@@ -54,8 +55,9 @@ shadowJar {
     manifest {
         attributes 'Main-Class': 'org.mrcube.MR3'
     }
-    archiveFileName = "mrcube-${version}.jar"
+    archiveFileName = "${project.name}-${project.version}.jar"
 }
+
 
 runtime {
     options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
@@ -64,20 +66,21 @@ runtime {
     imageZip = file("$buildDir/mrcube-${version}.zip")
 
     jpackage {
-        // macOS
-        jpackageHome = '/Library/Java/JavaVirtualMachines/jdk-14.0.1.jdk/Contents/Home'
-//        imageOptions = ['--verbose', '--icon', './src/main/resources/images/mr3.icns', '--mac-sign']
-        imageOptions = ['--verbose', '--icon', './src/main/resources/images/mr3.icns']
+        if (OperatingSystem.current().isWindows()) {
+            jpackageHome = 'C:\\Program Files\\Java\\jdk-18.0.1.1'
+            imageOptions = ['--icon', './src/main/resources/images/mr3.ico']
+            installerType = 'msi'
+            installerOptions = ['--vendor', 'Takeshi Morita', '--win-shortcut']
+        } else if (OperatingSystem.current().isMacOsX()) {
+            jpackageHome = '/Library/Java/JavaVirtualMachines/jdk-18.0.1.1.jdk/Contents/Home'
+            imageOptions = ['--verbose', '--icon', './src/main/resources/images/mr3.icns']
+        }
+
         outputDir = 'my-packaging'
         mainJar = "mrcube-${version}.jar"
         imageName = "mrcube-${version}"
         skipInstaller = false
         installerName = "mrcube"
-        // Windows
-//        jpackageHome = 'C://jdk-14.0.1'
-//        installerType = 'msi'
-//        imageOptions = ['--icon', './src/main/resources/images/mr3.ico']
-//        installerOptions = ['--vendor', 'Takeshi Morita', '--win-shortcut']
     }
 }
 
@@ -97,64 +100,14 @@ tasks.runtime.doLast {
 }
 
 dependencies {
-    compile 'com.formdev:flatlaf:0.35'
-    compile 'jgraph:jgraph:5.13.0.0'
-    compile 'org.apache.jena:jena-core:3.15.0'
-    compile 'org.apache.jena:jena-arq:3.15.0'
-    compile 'org.slf4j:slf4j-simple:1.7.30'
-    compile 'org.apache.xmlgraphics:batik-svg-dom:1.13'
-    compile 'org.apache.xmlgraphics:batik-svggen:1.13'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
-}
-
-publishing {
-    publications {
-        MyPublication(MavenPublication) {
-            groupId = 'org.mrcube'
-            artifactId = 'mrcube'
-
-            from components.java
-            pom {
-                name = 'MRCube'
-                description = 'Meta-Model Management based on RDFs Revision Reflection'
-                url = 'http://mrcube.org/'
-                licenses {
-                    license {
-                        name = 'GNU GENERAL PUBLIC LICENSE, Version 3'
-                        url = 'http://www.gnu.org/licenses/gpl-3.0.html'
-                    }
-                }
-                developers {
-                    developer {
-                        id = 't-morita'
-                        name = 'Takeshi Morita'
-                        email = 'morita@it.aoyama.ac.jp'
-                    }
-                }
-            }
-        }
-    }
-}
-
-def siteUrl = 'https://mrcube.org/'
-def githubUrl = 'https://github.com/mr-3/mrcube'
-bintray {
-    user = project.getProperty('bintray_user')
-    key = project.getProperty('bintray_api_key')
-    publications = ['MyPublication']
-    override = true
-    pkg {
-        repo = 'maven'
-        name = project.group + ':' + project.ext.artifactId
-        userOrg = 'mrcube'
-        licenses = ['GPL']
-        websiteUrl = siteUrl
-        vcsUrl = githubUrl + '.git'
-        issueTrackerUrl = githubUrl + '/issues'
-        version {
-            name = project.version
-        }
-    }
+    implementation 'com.formdev:flatlaf:2.2'
+    implementation 'jgraph:jgraph:5.13.0.0'
+    implementation 'org.apache.jena:jena-core:4.4.0'
+    implementation 'org.apache.jena:jena-arq:4.4.0'
+    implementation 'org.slf4j:slf4j-simple:1.7.36'
+    implementation 'org.apache.xmlgraphics:batik-svg-dom:1.14'
+    implementation 'org.apache.xmlgraphics:batik-svggen:1.14'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
 }
 

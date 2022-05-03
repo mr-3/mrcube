@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
  *
- * Copyright (C) 2003-2020 Takeshi Morita. All rights reserved.
+ * Copyright (C) 2003-2022 Takeshi Morita. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -155,7 +155,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
                     list.add(localNameListModel.getElementAt(i));
                 }
             }
-            localNameList.setListData(list.stream().toArray(String[]::new));
+            localNameList.setListData(list.toArray(String[]::new));
             if (0 < list.size()) {
                 localNameList.setSelectedIndex(0);
             }
@@ -294,7 +294,7 @@ public class RDFPropertyPanel extends JPanel implements ActionListener, ListSele
                 idField.setText(info.getLocalName());
             }
         }
-        SwingUtilities.invokeLater(() -> idField.requestFocus());
+        SwingUtilities.invokeLater(idField::requestFocus);
     }
 
     public void setPropertyList(List<GraphCell> plist) {

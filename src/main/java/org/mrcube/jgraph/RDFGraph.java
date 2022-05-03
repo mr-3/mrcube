@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
  *
- * Copyright (C) 2003-2020 Takeshi Morita. All rights reserved.
+ * Copyright (C) 2003-2022 Takeshi Morita. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -58,8 +58,8 @@ public class RDFGraph extends JGraph {
     private final PasteAction pasteAction;
     private final SelectAllNodesAction selectAllNodesAction;
 
-    private boolean pagevisible = false;
-    private transient PageFormat pageFormat = new PageFormat();
+    private final boolean pagevisible = false;
+    private final transient PageFormat pageFormat = new PageFormat();
 
     private ImageIcon background;
 

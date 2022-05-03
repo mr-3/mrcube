@@ -37,7 +37,7 @@ import java.awt.event.ActionEvent;
  */
 public class GraphLayoutAction extends AbstractAction {
 
-    private String direction;
+    private final String direction;
     private final GraphType graphType;
     private final GraphManager gmanager;
     private static final String TITLE = Translator.getString("Menu.View.ApplyLayout.Text");
@@ -70,15 +70,9 @@ public class GraphLayoutAction extends AbstractAction {
 
     public void actionPerformed(ActionEvent arg0) {
         switch (graphType) {
-            case RDF:
-                GraphLayoutUtilities.RDF_LAYOUT_DIRECTION = direction;
-                break;
-            case CLASS:
-                GraphLayoutUtilities.CLASS_LAYOUT_DIRECTION = direction;
-                break;
-            case PROPERTY:
-                GraphLayoutUtilities.PROPERTY_LAYOUT_DIRECTION = direction;
-                break;
+            case RDF -> GraphLayoutUtilities.RDF_LAYOUT_DIRECTION = direction;
+            case CLASS -> GraphLayoutUtilities.CLASS_LAYOUT_DIRECTION = direction;
+            case PROPERTY -> GraphLayoutUtilities.PROPERTY_LAYOUT_DIRECTION = direction;
         }
         gmanager.applyLayout(graphType);
     }

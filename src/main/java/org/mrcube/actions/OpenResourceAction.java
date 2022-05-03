@@ -35,7 +35,7 @@ import java.awt.event.ActionEvent;
 
 public class OpenResourceAction extends AbstractActionFile {
 
-    private MR3Reader mr3Reader;
+    private final MR3Reader mr3Reader;
     public static final String TITLE = Translator.getString("Menu.File.Open.Text");
     public static final ImageIcon ICON = Utilities.getImageIcon("baseline_open_in_browser_black_18dp.png");
 

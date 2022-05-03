@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
  * 
- * Copyright (C) 2003-2020 Takeshi Morita. All rights reserved.
+ * Copyright (C) 2003-2022 Takeshi Morita. All rights reserved.
  * 
  * This file is part of MR^3.
  * 
@@ -43,11 +43,12 @@ public class AttributeDialog extends JDialog {
 	public AttributeDialog(Frame frame) {
 		super(frame, Translator.getString("AttributeDialog.Title"), false);
 		setIconImage(ICON.getImage());
-		int DIALOG_WIDTH = 500;
+		int DIALOG_WIDTH = 550;
 		int DIALOG_HEIGHT = 300;
 		setSize(new Dimension(DIALOG_WIDTH, DIALOG_HEIGHT));
+		setMinimumSize(new Dimension(DIALOG_WIDTH, DIALOG_HEIGHT));
 		setLocationRelativeTo(frame);
-		setResizable(false);
+		setResizable(true);
 		setVisible(false);
 	}
 

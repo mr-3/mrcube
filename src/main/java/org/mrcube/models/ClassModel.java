@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
  * 
- * Copyright (C) 2003-2020 Takeshi Morita. All rights reserved.
+ * Copyright (C) 2003-2022 Takeshi Morita. All rights reserved.
  * 
  * This file is part of MR^3.
  * 
@@ -100,10 +100,10 @@ public class ClassModel extends RDFSModel {
 		String msg = super.toString();
 
 		if (subClasses.size() > 0) {
-			msg += "SubClasses: " + subClasses.toString() + "\n";
+			msg += "SubClasses: " + subClasses + "\n";
 		}
 		if (supClasses.size() > 0) {
-			msg += "SuperClasses: " + supClasses.toString() + "\n";
+			msg += "SuperClasses: " + supClasses + "\n";
 		}
 		msg += getModelString();
 

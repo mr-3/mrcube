@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
  *
- * Copyright (C) 2003-2020 Takeshi Morita. All rights reserved.
+ * Copyright (C) 2003-2022 Takeshi Morita. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -25,7 +25,7 @@ package org.mrcube.views;
 
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.rdf.model.RDFWriter;
+import org.apache.jena.rdf.model.RDFWriterI;
 import org.mrcube.io.MR3Writer;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.models.NamespaceModel;
@@ -101,7 +101,7 @@ public class RDFSourceCodeViewer extends JDialog implements ActionListener {
 
     private void writeModel(Model model, Writer writer) {
         String convertType = getConvertType();
-        RDFWriter rdfWriter = model.getWriter(convertType);
+        RDFWriterI rdfWriter = model.getWriter(convertType);
         setNsPrefix(model);
         if (convertType.equals("RDF/XML") || convertType.equals("RDF/XML-ABBREV")) {
             rdfWriter.setProperty("showXmlDeclaration", Boolean.TRUE);

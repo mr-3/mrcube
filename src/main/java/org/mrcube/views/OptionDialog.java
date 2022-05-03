@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
  *
- * Copyright (C) 2003-2020 Takeshi Morita. All rights reserved.
+ * Copyright (C) 2003-2022 Takeshi Morita. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -899,17 +899,17 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
 
     class RenderingPanel extends JPanel implements ActionListener {
 
-        private JButton setDefaultColorsButton;
+        private final JButton setDefaultColorsButton;
 
         private final JCheckBox isAntialiasBox;
         private final JCheckBox isBlackAndWhiteBox;
 
-        private ResourceColorPanel rdfResourceColorPanel;
-        private ResourceColorPanel rdfPropertyColorPanel;
-        private ResourceColorPanel rdfLiteralColorPanel;
-        private ResourceColorPanel classColorPanel;
-        private ResourceColorPanel propertyColorPanel;
-        private ResourceColorPanel editorColorPanel;
+        private final ResourceColorPanel rdfResourceColorPanel;
+        private final ResourceColorPanel rdfPropertyColorPanel;
+        private final ResourceColorPanel rdfLiteralColorPanel;
+        private final ResourceColorPanel classColorPanel;
+        private final ResourceColorPanel propertyColorPanel;
+        private final ResourceColorPanel editorColorPanel;
 
         RenderingPanel() {
             setDefaultColorsButton = new JButton(Translator.getString("PreferenceDialog.RenderingTab.SetDefaultColors"));

@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
  *
- * Copyright (C) 2003-2020 Takeshi Morita. All rights reserved.
+ * Copyright (C) 2003-2022 Takeshi Morita. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -99,8 +99,11 @@ public class InsertRDFResourceDialog extends JDialog implements ItemListener {
         setFocusTraversalPolicy(Utilities.getMyFocusTraversalPolicy(order, 3));
 
         contentPane.add(panel);
-        pack();
-        setResizable(false);
+        int DIALOG_WIDTH = 400;
+        int DIALOG_HEIGHT = 200;
+        setSize(new Dimension(DIALOG_WIDTH, DIALOG_HEIGHT));
+        setMinimumSize(new Dimension(DIALOG_WIDTH, DIALOG_HEIGHT));
+        setResizable(true);
         setVisible(false);
     }
 

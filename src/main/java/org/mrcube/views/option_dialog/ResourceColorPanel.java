@@ -27,7 +27,7 @@ public class ResourceColorPanel extends JPanel {
     private Color selectedBgColor;
     private Color selectedBorderColor;
 
-    private ChangeColorAction changeColorAction;
+    private final ChangeColorAction changeColorAction;
 
     private static final int LABEL_WIDTH = 120;
     private static final int LABEL_HEIGHT = 25;
@@ -165,21 +165,11 @@ public class ResourceColorPanel extends JPanel {
             g.fillRect(x, y, getIconWidth(), getIconHeight());
 
             switch (renderingType) {
-                case Foreground:
-                    g.setColor(fgColor);
-                    break;
-                case Background:
-                    g.setColor(bgColor);
-                    break;
-                case Border:
-                    g.setColor(borderColor);
-                    break;
-                case SelectedBackground:
-                    g.setColor(selectedBgColor);
-                    break;
-                case SelectedBorder:
-                    g.setColor(selectedBorderColor);
-                    break;
+                case Foreground -> g.setColor(fgColor);
+                case Background -> g.setColor(bgColor);
+                case Border -> g.setColor(borderColor);
+                case SelectedBackground -> g.setColor(selectedBgColor);
+                case SelectedBorder -> g.setColor(selectedBorderColor);
             }
             g.fillRect(x + 2, y + 2, getIconWidth() - 4, getIconHeight() - 4);
         }

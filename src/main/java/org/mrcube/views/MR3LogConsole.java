@@ -84,7 +84,7 @@ public class MR3LogConsole extends JDialog {
     /**
      * Icon for the Window
      */
-    private Image myIcon;
+    private final Image myIcon;
     /**
      * PopUpMenu for save and clear the output textareas
      */
@@ -202,19 +202,19 @@ public class MR3LogConsole extends JDialog {
         /**
          * the target for this printstream
          */
-        private JTextArea target;
+        private final JTextArea target;
 
         /**
          * the original PrintStream to forward this stream to the original
          * stream
          */
-        private PrintStream orig;
+        private final PrintStream orig;
 
         /**
          * Flag is true if the stream should forward the output to the original
          * stream
          */
-        private boolean showOrig;
+        private final boolean showOrig;
 
         /**
          * creates an instance
@@ -401,9 +401,9 @@ public class MR3LogConsole extends JDialog {
 
             target.append(s);
             target.setCaretPosition(target.getText().length());
-            if (orig == stderr) {
-                setVisible(true);
-            }
+//            if (orig == stderr) {
+//                setVisible(true);
+//            }
         }
 
         /**
@@ -414,9 +414,9 @@ public class MR3LogConsole extends JDialog {
 
             target.append(s + "\n");
             target.setCaretPosition(target.getText().length());
-            if (orig == stderr) {
-                setVisible(true);
-            }
+//            if (orig == stderr) {
+//                setVisible(true);
+//            }
         }
 
         /**
@@ -478,11 +478,11 @@ class MyDocumentListener implements DocumentListener {
     /**
      * The Tabbed pane to switch the right one text area to front
      */
-    private JTabbedPane paneToSwitch;
+    private final JTabbedPane paneToSwitch;
     /**
      * The component which is in front
      */
-    private Component componentInFront;
+    private final Component componentInFront;
 
     /**
      * creats an instance of this listener

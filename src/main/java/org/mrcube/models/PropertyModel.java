@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
  * 
- * Copyright (C) 2003-2020 Takeshi Morita. All rights reserved.
+ * Copyright (C) 2003-2022 Takeshi Morita. All rights reserved.
  * 
  * This file is part of MR^3.
  * 
@@ -107,11 +107,7 @@ public class PropertyModel extends RDFSModel {
 	}
 
 	public void removeNullDomain() {
-		for (GraphCell cell : domainSet) {
-			if (GraphConstants.getValue(cell.getAttributes()) == null) {
-				domainSet.remove(cell);
-			}
-		}
+		domainSet.removeIf(cell -> GraphConstants.getValue(cell.getAttributes()) == null);
 	}
 
 	public void removeDomain(Object obj) {
@@ -135,12 +131,8 @@ public class PropertyModel extends RDFSModel {
 	}
 
 	public void removeNullRange() {
-		for (GraphCell cell : rangeSet) {
-			// if (rdfsInfoMap.getCellInfo(cell) == null) {
-			if (cell.getAttributes() == null) {
-				rangeSet.remove(cell);
-			}
-		}
+		// if (rdfsInfoMap.getCellInfo(cell) == null) {
+		rangeSet.removeIf(cell -> cell.getAttributes() == null);
 	}
 
 	public void removeRange(Object obj) {
@@ -195,16 +187,16 @@ public class PropertyModel extends RDFSModel {
 		String msg = super.toString();
 
 		if (domainSet.size() > 0) {
-			msg += "domain: " + domainSet.toString() + "\n";
+			msg += "domain: " + domainSet + "\n";
 		}
 		if (rangeSet.size() > 0) {
-			msg += "range: " + rangeSet.toString() + "\n";
+			msg += "range: " + rangeSet + "\n";
 		}
 		if (subProperties.size() > 0) {
-			msg += "SubProperty: " + subProperties.toString() + "\n";
+			msg += "SubProperty: " + subProperties + "\n";
 		}
 		if (supProperties.size() > 0) {
-			msg += "SuperProperty: " + supProperties.toString() + "\n";
+			msg += "SuperProperty: " + supProperties + "\n";
 		}
 		msg += getModelString();
 		return msg;

@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
  *
- * Copyright (C) 2003-2020 Takeshi Morita. All rights reserved.
+ * Copyright (C) 2003-2022 Takeshi Morita. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -216,7 +216,7 @@ public class ProjectManager {
     public Model extractProjectModel(Model model) {
         Model extractModel = ModelFactory.createDefaultModel();
         model.listStatements().toList().stream()
-                .filter(stmt -> hasProjectPredicate(stmt))
+                .filter(this::hasProjectPredicate)
                 .forEach(extractModel::add);
         model.remove(extractModel);
 

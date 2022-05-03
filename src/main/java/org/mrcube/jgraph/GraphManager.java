@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
  *
- * Copyright (C) 2003-2020 Takeshi Morita. All rights reserved.
+ * Copyright (C) 2003-2022 Takeshi Morita. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -77,10 +77,10 @@ public class GraphManager {
     private final MR3CellMaker cellMaker;
     private final JGraphTreeLayout treeLayout;
 
-    private AttributeDialog attributeDialog;
-    private FindResourceDialog findResourceDialog;
-    private NameSpaceTableDialog nameSpaceTableDialog;
-    private RemoveDialog removeDialog;
+    private final AttributeDialog attributeDialog;
+    private final FindResourceDialog findResourceDialog;
+    private final NameSpaceTableDialog nameSpaceTableDialog;
+    private final RemoveDialog removeDialog;
 
     public static CellViewType cellViewType;
 
@@ -1160,32 +1160,20 @@ public class GraphManager {
         switch (graphType) {
             case RDF:
                 switch (GraphLayoutUtilities.LAYOUT_TYPE) {
-                    case GraphLayoutUtilities.VGJ_TREE_LAYOUT:
-                        applyVGJRDFLayout(graphType);
-                        break;
-                    case GraphLayoutUtilities.JGRAPH_TREE_LAYOUT:
-                        applyJGraphRDFLayout();
-                        break;
+                    case GraphLayoutUtilities.VGJ_TREE_LAYOUT -> applyVGJRDFLayout(graphType);
+                    case GraphLayoutUtilities.JGRAPH_TREE_LAYOUT -> applyJGraphRDFLayout();
                 }
                 break;
             case CLASS:
                 switch (GraphLayoutUtilities.LAYOUT_TYPE) {
-                    case GraphLayoutUtilities.VGJ_TREE_LAYOUT:
-                        applyVGJClassLayout(extractRDFS);
-                        break;
-                    case GraphLayoutUtilities.JGRAPH_TREE_LAYOUT:
-                        applyJGraphClassLayout();
-                        break;
+                    case GraphLayoutUtilities.VGJ_TREE_LAYOUT -> applyVGJClassLayout(extractRDFS);
+                    case GraphLayoutUtilities.JGRAPH_TREE_LAYOUT -> applyJGraphClassLayout();
                 }
                 break;
             case PROPERTY:
                 switch (GraphLayoutUtilities.LAYOUT_TYPE) {
-                    case GraphLayoutUtilities.VGJ_TREE_LAYOUT:
-                        applyVGJPropertyLayout(extractRDFS);
-                        break;
-                    case GraphLayoutUtilities.JGRAPH_TREE_LAYOUT:
-                        applyJGraphPropertyLayout();
-                        break;
+                    case GraphLayoutUtilities.VGJ_TREE_LAYOUT -> applyVGJPropertyLayout(extractRDFS);
+                    case GraphLayoutUtilities.JGRAPH_TREE_LAYOUT -> applyJGraphPropertyLayout();
                 }
                 break;
         }

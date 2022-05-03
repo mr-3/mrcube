@@ -117,8 +117,8 @@ public class JGParallelEdgeRouter implements Edge.Routing {
 		// Looking for position of source/target nodes (edge=>port=>vertex)
 		VertexView nodeFrom = (VertexView) edge.getSource().getParentView();
 		VertexView nodeTo = (VertexView) edge.getTarget().getParentView();
-		Point2D from = nodeFrom.getCenterPoint();
-		Point2D to = nodeTo.getCenterPoint();
+		Point2D from = AbstractCellView.getCenterPoint(nodeFrom);
+		Point2D to = AbstractCellView.getCenterPoint(nodeTo);
 
 		if (from != null && to != null) {
 			double dy = from.getY() - to.getY();
@@ -290,8 +290,8 @@ public class JGParallelEdgeRouter implements Edge.Routing {
 		// Looking for position of source/target nodes (edge=>port=>vertex)
 		VertexView nodeFrom = (VertexView) edge.getSource().getParentView();
 		VertexView nodeTo = (VertexView) edge.getTarget().getParentView();
-		Point2D from = nodeFrom.getCenterPoint();
-		Point2D to = nodeTo.getCenterPoint();
+		Point2D from = AbstractCellView.getCenterPoint(nodeFrom);
+		Point2D to = AbstractCellView.getCenterPoint(nodeTo);
 
 		if (from != null && to != null) {
 			double dy = from.getY() - to.getY();

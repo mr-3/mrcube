@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: http://mrcube.org/
  *
- * Copyright (C) 2003-2020 Takeshi Morita. All rights reserved.
+ * Copyright (C) 2003-2022 Takeshi Morita. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -45,7 +45,7 @@ public class Translator {
 
     private static ResourceBundle resourceBundle;
 
-    public static final String getString(String sKey) {
+    public static String getString(String sKey) {
         try {
             return resourceBundle.getString(sKey);
         } catch (Exception e) {
