@@ -1,16 +1,17 @@
+import org.gradle.internal.os.OperatingSystem
+
 plugins {
     id 'java'
     id 'application'
     id "com.github.johnrengelman.shadow" version "7.1.2"
     id "org.beryx.runtime" version "1.12.7"
-    id 'idea'
 }
 
 group 'org.mrcube'
 version = '22.5.1'
 
 application {
-    mainClass = 'org.mrcube.MR3'
+    mainClass.set('org.mrcube.MR3')
 }
 
 project.ext {
@@ -45,14 +46,6 @@ tasks.withType(JavaExec) {
     systemProperty 'file.encoding', 'UTF-8'
 }
 
-idea {
-    module {
-        inheritOutputDirs = true
-        outputDir = compileJava.destinationDirectory
-        testOutputDir = compileTestJava.destinationDirectory
-    }
-}
-
 test {
     useJUnitPlatform()
 }
@@ -65,6 +58,7 @@ shadowJar {
     archiveFileName = "${project.name}-${project.version}.jar"
 }
 
+
 runtime {
     options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
     modules = ['java.desktop', 'java.logging']
@@ -72,15 +66,15 @@ runtime {
     imageZip = file("$buildDir/mrcube-${version}.zip")
 
     jpackage {
-        // Windows
-//        jpackageHome = 'C://jdk-18.0.1.1'
-//        imageOptions = ['--icon', './src/main/resources/images/mr3.ico']
-//        installerType = 'msi'
-//        installerOptions = ['--vendor', 'Takeshi Morita', '--win-shortcut']
-
-        // macOS
-        jpackageHome = '/Library/Java/JavaVirtualMachines/jdk-18.0.1.1.jdk/Contents/Home'
-        imageOptions = ['--verbose', '--icon', './src/main/resources/images/mr3.icns']
+        if (OperatingSystem.current().isWindows()) {
+            jpackageHome = 'C://jdk-18.0.1.1'
+            imageOptions = ['--icon', './src/main/resources/images/mr3.ico']
+            installerType = 'msi'
+            installerOptions = ['--vendor', 'Takeshi Morita', '--win-shortcut']
+        } else if (OperatingSystem.current().isMacOsX()) {
+            jpackageHome = '/Library/Java/JavaVirtualMachines/jdk-18.0.1.1.jdk/Contents/Home'
+            imageOptions = ['--verbose', '--icon', './src/main/resources/images/mr3.icns']
+        }
 
         outputDir = 'my-packaging'
         mainJar = "mrcube-${version}.jar"
