@@ -48,8 +48,8 @@ tasks.withType(JavaExec) {
 idea {
     module {
         inheritOutputDirs = true
-        outputDir = compileJava.destinationDir
-        testOutputDir = compileTestJava.destinationDir
+        outputDir = compileJava.destinationDirectory
+        testOutputDir = compileTestJava.destinationDirectory
     }
 }
 
@@ -72,13 +72,14 @@ runtime {
     imageZip = file("$buildDir/mrcube-${version}.zip")
 
     jpackage {
-        // win
-//        jpackageHome = 'C://jdk-18'
+        // Windows
+//        jpackageHome = 'C://jdk-18.0.1.1'
 //        imageOptions = ['--icon', './src/main/resources/images/mr3.ico']
 //        installerType = 'msi'
 //        installerOptions = ['--vendor', 'Takeshi Morita', '--win-shortcut']
-        // mac
-        jpackageHome = '/Library/Java/JavaVirtualMachines/jdk-18.jdk/Contents/Home'
+
+        // macOS
+        jpackageHome = '/Library/Java/JavaVirtualMachines/jdk-18.0.1.1.jdk/Contents/Home'
         imageOptions = ['--verbose', '--icon', './src/main/resources/images/mr3.icns']
 
         outputDir = 'my-packaging'
