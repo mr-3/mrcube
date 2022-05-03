@@ -3,12 +3,11 @@ plugins {
     id 'application'
     id "com.github.johnrengelman.shadow" version "7.1.2"
     id "org.beryx.runtime" version "1.12.7"
-    id 'maven-publish'
     id 'idea'
 }
 
 group 'org.mrcube'
-version = '22.3.1'
+version = '22.5.1'
 
 application {
     mainClass = 'org.mrcube.MR3'
@@ -25,7 +24,7 @@ repositories {
 }
 
 wrapper {
-    gradleVersion = '7.4.1'
+    gradleVersion = '7.4.2'
 }
 
 jar {
@@ -63,7 +62,7 @@ shadowJar {
     manifest {
         attributes 'Main-Class': 'org.mrcube.MR3'
     }
-    archiveFileName = "mrcube-${archiveVersion}.jar"
+    archiveFileName = "${project.name}-${project.version}.jar"
 }
 
 runtime {
@@ -73,20 +72,20 @@ runtime {
     imageZip = file("$buildDir/mrcube-${version}.zip")
 
     jpackage {
-        // macOS
+        // win
+//        jpackageHome = 'C://jdk-18'
+//        imageOptions = ['--icon', './src/main/resources/images/mr3.ico']
+//        installerType = 'msi'
+//        installerOptions = ['--vendor', 'Takeshi Morita', '--win-shortcut']
+        // mac
         jpackageHome = '/Library/Java/JavaVirtualMachines/jdk-18.jdk/Contents/Home'
-//        imageOptions = ['--verbose', '--icon', './src/main/resources/images/mr3.icns', '--mac-sign']
         imageOptions = ['--verbose', '--icon', './src/main/resources/images/mr3.icns']
+
         outputDir = 'my-packaging'
         mainJar = "mrcube-${version}.jar"
         imageName = "mrcube-${version}"
         skipInstaller = false
         installerName = "mrcube"
-        // Windows
-//        jpackageHome = 'C://jdk-18'
-//        installerType = 'msi'
-//        imageOptions = ['--icon', './src/main/resources/images/mr3.ico']
-//        installerOptions = ['--vendor', 'Takeshi Morita', '--win-shortcut']
     }
 }
 
@@ -106,7 +105,7 @@ tasks.runtime.doLast {
 }
 
 dependencies {
-    implementation 'com.formdev:flatlaf:2.0.2'
+    implementation 'com.formdev:flatlaf:2.2'
     implementation 'jgraph:jgraph:5.13.0.0'
     implementation 'org.apache.jena:jena-core:4.4.0'
     implementation 'org.apache.jena:jena-arq:4.4.0'
@@ -115,34 +114,5 @@ dependencies {
     implementation 'org.apache.xmlgraphics:batik-svggen:1.14'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
-}
-
-publishing {
-    publications {
-        MyPublication(MavenPublication) {
-            groupId = 'org.mrcube'
-            artifactId = 'mrcube'
-
-            from components.java
-            pom {
-                name = 'MRCube'
-                description = 'Meta-Model Management based on RDFs Revision Reflection'
-                url = 'http://mrcube.org/'
-                licenses {
-                    license {
-                        name = 'GNU GENERAL PUBLIC LICENSE, Version 3'
-                        url = 'http://www.gnu.org/licenses/gpl-3.0.html'
-                    }
-                }
-                developers {
-                    developer {
-                        id = 't-morita'
-                        name = 'Takeshi Morita'
-                        email = 'morita@it.aoyama.ac.jp'
-                    }
-                }
-            }
-        }
-    }
 }
 

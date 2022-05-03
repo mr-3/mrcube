@@ -49,7 +49,7 @@ public class InsertRDFLiteralDialog extends JDialog implements ActionListener {
 
     private final JTextField langField;
     private final JCheckBox typedLiteralCheckBox;
-    private final JComboBox dataTypeComboBox;
+    private final JComboBox<String> dataTypeComboBox;
     private final JTextArea literalValueArea;
     private final TypeMapper typeMapper;
 
@@ -71,25 +71,28 @@ public class InsertRDFLiteralDialog extends JDialog implements ActionListener {
         typedLiteralCheckBox = new JCheckBox(Translator.getString("DataType"));
         typedLiteralCheckBox.addActionListener(this);
         typedLiteralCheckBox.setSelected(false);
-        dataTypeComboBox = new JComboBox();
+        dataTypeComboBox = new JComboBox<>();
         dataTypeComboBox.setEnabled(false);
 
-        JPanel selectLitTypePanel = new JPanel();
-        selectLitTypePanel.setLayout(new BoxLayout(selectLitTypePanel, BoxLayout.X_AXIS));
-        selectLitTypePanel.add(typedLiteralCheckBox);
-        selectLitTypePanel.add(dataTypeComboBox);
+        var literalDataTypePanel = new JPanel();
+        literalDataTypePanel.add(typedLiteralCheckBox);
+        literalDataTypePanel.add(dataTypeComboBox);
 
         literalValueArea = new JTextArea();
         literalValueArea.setLineWrap(true);
         JScrollPane valueScroll = new JScrollPane(literalValueArea);
         Utilities.initComponent(valueScroll, Translator.getString("Literal"), LABEL_WIDTH, LABEL_HEIGHT);
 
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        var langTypePanel = new JPanel();
+        langTypePanel.setLayout(new BoxLayout(langTypePanel, BoxLayout.Y_AXIS));
+        langTypePanel.add(langPanel);
+        langTypePanel.add(literalDataTypePanel);
+
+        var mainPanel = new JPanel();
         mainPanel.setBorder(BorderFactory.createTitledBorder(Translator.getString("AttributeDialog.RDFLiteralAttribute.Text")));
-        mainPanel.add(langPanel);
-        mainPanel.add(selectLitTypePanel);
-        mainPanel.add(valueScroll);
+        mainPanel.setLayout(new BorderLayout());
+        mainPanel.add(langTypePanel, BorderLayout.NORTH);
+        mainPanel.add(valueScroll, BorderLayout.CENTER);
 
         JButton confirmButton = new JButton(confirmAction);
         confirmButton.setMnemonic('o');
@@ -110,7 +113,9 @@ public class InsertRDFLiteralDialog extends JDialog implements ActionListener {
                 cancelButton};
         setFocusTraversalPolicy(Utilities.getMyFocusTraversalPolicy(order, 3));
 
-        pack();
+        int DIALOG_WIDTH = 550;
+        int DIALOG_HEIGHT = 300;
+        setSize(new Dimension(DIALOG_WIDTH, DIALOG_HEIGHT));
         setLocationRelativeTo(rootFrame);
     }
 
@@ -129,7 +134,7 @@ public class InsertRDFLiteralDialog extends JDialog implements ActionListener {
         literalValueArea.setText("");
         dataTypeComboBox.setEnabled(false);
         typedLiteralCheckBox.setSelected(false);
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
         Set<String> sortedSet = new TreeSet<>();
         for (Iterator i = typeMapper.listTypes(); i.hasNext(); ) {
             sortedSet.add(((RDFDatatype) i.next()).getURI());
@@ -144,7 +149,7 @@ public class InsertRDFLiteralDialog extends JDialog implements ActionListener {
 
     public MR3Literal getLiteral() {
         if (typedLiteralCheckBox.isSelected()) {
-            String dataType = (String) dataTypeComboBox.getSelectedItem();
+            String dataType = dataTypeComboBox.getItemAt(dataTypeComboBox.getSelectedIndex());
             return new MR3Literal(literalValueArea.getText(), langField.getText(), typeMapper.getTypeByName(dataType));
         }
         return new MR3Literal(literalValueArea.getText(), langField.getText(), null);

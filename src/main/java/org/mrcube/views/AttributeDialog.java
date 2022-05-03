@@ -43,11 +43,12 @@ public class AttributeDialog extends JDialog {
 	public AttributeDialog(Frame frame) {
 		super(frame, Translator.getString("AttributeDialog.Title"), false);
 		setIconImage(ICON.getImage());
-		int DIALOG_WIDTH = 500;
+		int DIALOG_WIDTH = 550;
 		int DIALOG_HEIGHT = 300;
 		setSize(new Dimension(DIALOG_WIDTH, DIALOG_HEIGHT));
+		setMinimumSize(new Dimension(DIALOG_WIDTH, DIALOG_HEIGHT));
 		setLocationRelativeTo(frame);
-		setResizable(false);
+		setResizable(true);
 		setVisible(false);
 	}
 
