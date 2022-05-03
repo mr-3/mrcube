@@ -99,8 +99,11 @@ public class InsertRDFResourceDialog extends JDialog implements ItemListener {
         setFocusTraversalPolicy(Utilities.getMyFocusTraversalPolicy(order, 3));
 
         contentPane.add(panel);
-        pack();
-        setResizable(false);
+        int DIALOG_WIDTH = 400;
+        int DIALOG_HEIGHT = 200;
+        setSize(new Dimension(DIALOG_WIDTH, DIALOG_HEIGHT));
+        setMinimumSize(new Dimension(DIALOG_WIDTH, DIALOG_HEIGHT));
+        setResizable(true);
         setVisible(false);
     }
 

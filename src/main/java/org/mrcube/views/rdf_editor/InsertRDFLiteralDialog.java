@@ -116,6 +116,8 @@ public class InsertRDFLiteralDialog extends JDialog implements ActionListener {
         int DIALOG_WIDTH = 550;
         int DIALOG_HEIGHT = 300;
         setSize(new Dimension(DIALOG_WIDTH, DIALOG_HEIGHT));
+        setMinimumSize(new Dimension(DIALOG_WIDTH, DIALOG_HEIGHT));
+        setResizable(true);
         setLocationRelativeTo(rootFrame);
     }
 

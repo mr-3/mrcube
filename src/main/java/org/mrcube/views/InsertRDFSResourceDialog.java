@@ -82,7 +82,12 @@ public class InsertRDFSResourceDialog extends JDialog {
         panel.add(nsLabelP);
         panel.add(getButtonPanel());
         getContentPane().add(panel);
-        setResizable(false);
+
+        int DIALOG_WIDTH = 400;
+        int DIALOG_HEIGHT = 150;
+        setSize(new Dimension(DIALOG_WIDTH, DIALOG_HEIGHT));
+        setMinimumSize(new Dimension(DIALOG_WIDTH, DIALOG_HEIGHT));
+        setResizable(true);
         setVisible(false);
     }
 
