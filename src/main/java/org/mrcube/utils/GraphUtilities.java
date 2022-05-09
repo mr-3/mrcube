@@ -200,7 +200,7 @@ public class GraphUtilities {
         }
     }
 
-    public static Dimension getAutoLiteralNodeDimention(GraphManager gmanager, String value) {
+    public static Dimension getAutoLiteralNodeDimension(GraphManager gmanager, String value) {
         if (!gmanager.isAutoNodeSize()) {
             return new Dimension(MR3CellMaker.CELL_WIDTH, MR3CellMaker.CELL_HEIGHT);
         }

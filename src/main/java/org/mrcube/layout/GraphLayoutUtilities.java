@@ -268,7 +268,7 @@ public class GraphLayoutUtilities {
             rdfNode = stmt.getObject();
             if (!nodeSet.contains(rdfNode) && !stmt.getPredicate().equals(RDF.type)) {
                 if (rdfNode instanceof Literal) {
-                    Dimension dim = GraphUtilities.getAutoLiteralNodeDimention(gmanager, rdfNode.toString());
+                    Dimension dim = GraphUtilities.getAutoLiteralNodeDimension(gmanager, rdfNode.toString());
                     // 同じ文字列のリテラルをレイアウトするための処理.
                     // getSubject().getURIでは無名ノードの処理ができない
                     rdfNode = ResourceFactory.createResource(stmt.getSubject().toString() + rdfNode.hashCode());

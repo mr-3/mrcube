@@ -33,6 +33,7 @@ import org.mrcube.layout.GraphLayoutData;
 import org.mrcube.layout.VGJTreeLayout;
 import org.mrcube.models.*;
 import org.mrcube.models.MR3Constants.URIType;
+import org.mrcube.utils.GraphUtilities;
 import org.mrcube.utils.MR3CellMaker;
 import org.mrcube.utils.ProjectManager;
 
@@ -222,6 +223,8 @@ public class MR3Parser {
         Rectangle rectangle = null;
         if (data != null) {
             rectangle = data.getRectangle();
+            Dimension cellDimension = GraphUtilities.getAutoLiteralNodeDimension(gmanager, literal.getString());
+            rectangle = new Rectangle(rectangle.getLocation(), cellDimension);
         }
         attr.put(litCell, cellMaker.getLiteralMap(rectangle, RDFLiteralCell.backgroundColor));
         GraphConstants.setValue(litCell.getAttributes(), literal);

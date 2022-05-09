@@ -635,7 +635,7 @@ public class GraphManager {
         if (isAutoNodeSize()) {
             Dimension dim;
             if (RDFGraph.isRDFLiteralCell(cell)) {
-                dim = GraphUtilities.getAutoLiteralNodeDimention(this, value);
+                dim = GraphUtilities.getAutoLiteralNodeDimension(this, value);
             } else if (RDFGraph.isRDFResourceCell(cell)) {
                 dim = GraphUtilities.getAutoNodeDimension(this, value);
                 if (isShowTypeCell) {
