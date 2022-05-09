@@ -97,7 +97,7 @@ public class MR3CellMaker {
     }
 
     private Rectangle2D getRectangle(Point2D point, String value) {
-        Dimension size = GraphUtilities.getAutoLiteralNodeDimention(gmanager, value);
+        Dimension size = GraphUtilities.getAutoLiteralNodeDimension(gmanager, value);
         return new Rectangle2D.Double(point.getX(), point.getY(), size.getWidth(), size.getHeight());
     }
 

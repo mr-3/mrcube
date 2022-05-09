@@ -105,7 +105,7 @@ class RDFGraphUI extends BasicGraphUI {
         MR3Literal newLiteral = new MR3Literal(cell.toString(), literal.getLanguage(),
                 literal.getDatatype());
         GraphConstants.setValue(cell.getAttributes(), newLiteral);
-        Dimension size = GraphUtilities.getAutoLiteralNodeDimention(gmanager, cell.toString());
+        Dimension size = GraphUtilities.getAutoLiteralNodeDimension(gmanager, cell.toString());
         GraphUtilities.resizeCell(size, graph, cell);
         HistoryManager.saveHistory(HistoryType.EDIT_LITERAL_WITH_GRAPH, beforeLiteral, newLiteral);
     }
