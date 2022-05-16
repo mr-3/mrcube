@@ -264,21 +264,15 @@ public class MR3Parser {
             if (stmt.getPredicate().equals(RDFS.label)) {
                 GraphCell cell = (GraphCell) gmanager.getRDFResourceCell(stmt.getSubject());
                 ResourceModel info = (ResourceModel) GraphConstants.getValue(cell.getAttributes());
-                if (info == null) {
-                    // ラベルまたは，コメント以外の関係をもたないリソースがくる．
-                    // 無視している
-                    continue;
+                if (info != null) {
+                    info.addLabel(new MR3Literal((Literal) stmt.getObject()));
                 }
-                info.addLabel(new MR3Literal((Literal) stmt.getObject()));
             } else if (stmt.getPredicate().equals(RDFS.comment)) {
                 GraphCell cell = (GraphCell) gmanager.getRDFResourceCell(stmt.getSubject());
                 ResourceModel info = (ResourceModel) GraphConstants.getValue(cell.getAttributes());
-                if (info == null) {
-                    // ラベルまたは，コメント以外の関係をもたないリソースがくる．
-                    // 無視している
-                    continue;
+                if (info != null) {
+                    info.addComment(new MR3Literal((Literal) stmt.getObject()));
                 }
-                info.addComment(new MR3Literal((Literal) stmt.getObject()));
             }
         }
     }
