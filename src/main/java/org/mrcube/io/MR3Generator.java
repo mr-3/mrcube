@@ -156,11 +156,10 @@ public class MR3Generator {
 
     private Property getRDFProperty(Edge edge) {
         if (edge.getAttributes() == null
-                || !(GraphConstants.getValue(edge.getAttributes()) instanceof RDFSModel)) {
+                || !(GraphConstants.getValue(edge.getAttributes()) instanceof RDFSModel propInfo)) {
             return MR3Resource.Nil;
         }
 
-        RDFSModel propInfo = (RDFSModel) GraphConstants.getValue(edge.getAttributes());
         Property property = null;
         if (propInfo == null) {
             property = MR3Resource.Nil;

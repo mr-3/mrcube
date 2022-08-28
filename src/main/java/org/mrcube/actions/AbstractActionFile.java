@@ -96,8 +96,7 @@ abstract class AbstractActionFile extends MR3AbstractAction {
         fileChooser.setCurrentDirectory(new File(userPrefs.get(PrefConstants.WorkDirectory, "")));
         if (fileChooser.showSaveDialog(MR3.getProjectPanel()) == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
-            if (fileChooser.getFileFilter() instanceof MR3FileFilter) {
-                MR3FileFilter filter = (MR3FileFilter) fileChooser.getFileFilter();
+            if (fileChooser.getFileFilter() instanceof MR3FileFilter filter) {
                 return new File(addFileExtension(selectedFile.getAbsolutePath(), filter.getExtension()));
             } else {
                 return selectedFile;

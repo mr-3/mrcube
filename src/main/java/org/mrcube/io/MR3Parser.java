@@ -326,8 +326,7 @@ public class MR3Parser {
                     targetCell = createResourceCell((Resource) object, resourceMap, attributes, data);
                     graphLayoutCache.insert(new Object[]{targetCell}, attributes, null, null);
                 }
-            } else if (object instanceof Literal) {
-                Literal literal = (Literal) object;
+            } else if (object instanceof Literal literal) {
                 targetCell = createLiteralCell(new MR3Literal(literal), attributes, data);
                 graphLayoutCache.insert(new Object[]{targetCell}, attributes, null, null);
             }

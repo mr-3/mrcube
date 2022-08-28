@@ -119,16 +119,14 @@ public class GraphUtilities {
             return lastSelectionCells;
         }
         for (Object lastSelectionCell : lastSelectionCells) {
-            if (lastSelectionCell instanceof RDFCellStyleChanger) {
-                RDFCellStyleChanger changer = (RDFCellStyleChanger) lastSelectionCell;
+            if (lastSelectionCell instanceof RDFCellStyleChanger changer) {
                 changer.changeDefaultCellStyle(graph);
             }
         }
         Object[] cells = graph.getSelectionCells();
         cells = graph.getDescendants(cells);
         for (Object cell : cells) {
-            if (cell instanceof RDFCellStyleChanger) {
-                RDFCellStyleChanger changer = (RDFCellStyleChanger) cell;
+            if (cell instanceof RDFCellStyleChanger changer) {
                 changer.changeSelectedCellStyle(graph);
             }
         }
@@ -295,24 +293,21 @@ public class GraphUtilities {
 
         Object[] cells = rdfGraph.getAllCells();
         for (Object cell2 : cells) {
-            if (cell2 instanceof RDFCellStyleChanger) {
-                RDFCellStyleChanger changer = (RDFCellStyleChanger) cell2;
+            if (cell2 instanceof RDFCellStyleChanger changer) {
                 changer.changeDefaultCellStyle(rdfGraph);
             }
         }
 
         cells = classGraph.getAllCells();
         for (Object cell1 : cells) {
-            if (cell1 instanceof RDFCellStyleChanger) {
-                RDFCellStyleChanger changer = (RDFCellStyleChanger) cell1;
+            if (cell1 instanceof RDFCellStyleChanger changer) {
                 changer.changeDefaultCellStyle(classGraph);
             }
         }
 
         cells = propertyGraph.getAllCells();
         for (Object cell : cells) {
-            if (cell instanceof RDFCellStyleChanger) {
-                RDFCellStyleChanger changer = (RDFCellStyleChanger) cell;
+            if (cell instanceof RDFCellStyleChanger changer) {
                 changer.changeDefaultCellStyle(propertyGraph);
             }
         }
