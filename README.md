@@ -30,6 +30,22 @@ The above function consisted of the following sub-functions.
 * Reflecting the change of RDF resource type to the RDFS class and domains and ranges of RDFS property.
 * Reflecting changes of RDF property to RDFS property.
 
+## Paper
+Takeshi Morita, Noriaki Izumi, Naoki Fukuta, Takahira Yamaguchi, “A Graphical RDF-based Meta-Model Management Tool”, IEICE Transactions on Information and Systems, Special Issue on Knowledge-Based Software Engineering Vol.E89-D No.4 pp.1368-1377, (2006), DOI: [10.1093/ietisy/e89-d.4.1368](http://doi.org/10.1093/ietisy/e89-d.4.1368)
+
+```
+@article{Morita2006,
+  title={A Graphical RDF-based Meta-Model Management Tool},
+  author={Takeshi MORITA and Naoki FUKUTA and Noriaki IZUMI and Takahira YAMAGUCHI},
+  journal={IEICE Transactions on Information and Systems},
+  volume={E89.D},
+  number={4},
+  pages={1368-1377},
+  year={2006},
+  doi={10.1093/ietisy/e89-d.4.1368}
+}
+```
+
 ## License
 MR<sup>3</sup> is Free Software; you may redistribute it and/or modify it under the terms of the [GNU Generic Public License](http://www.gnu.org/copyleft/gpl.html) as published by the Free Software Foundation; either version 2, or (at your option) any later version. 
 
