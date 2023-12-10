@@ -163,8 +163,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
                 nsSet.add(ns);
             }
             RDFNode object = stmt.getObject();
-            if (object instanceof Resource) {
-                Resource res = (Resource) object;
+            if (object instanceof Resource res) {
                 ns = Utilities.getNameSpace(res);
                 if (ns != null) {
                     nsSet.add(ns);
@@ -465,8 +464,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
         }
 
         public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-            if (aValue instanceof String && columnIndex == 1) {
-                String prefix = (String) aValue;
+            if (aValue instanceof String prefix && columnIndex == 1) {
                 String oldPrefix = (String) nsTableModel.getValueAt(rowIndex, 1);
                 prefixNSMap.remove(oldPrefix);
                 String ns = (String) nsTableModel.getValueAt(rowIndex, 2);

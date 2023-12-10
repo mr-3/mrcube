@@ -99,8 +99,7 @@ public class SaveGraphImageAction extends AbstractAction {
         }
         if (imageFileChooser.showSaveDialog(MR3.getProjectPanel()) == JFileChooser.APPROVE_OPTION) {
             File selectedFile = imageFileChooser.getSelectedFile();
-            if (imageFileChooser.getFileFilter() instanceof MR3FileFilter) {
-                MR3FileFilter filter = (MR3FileFilter) imageFileChooser.getFileFilter();
+            if (imageFileChooser.getFileFilter() instanceof MR3FileFilter filter) {
                 return new File(addFileExtension(selectedFile.getAbsolutePath(), filter.getExtension()));
             } else {
                 return selectedFile;
