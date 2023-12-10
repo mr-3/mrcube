@@ -1,11 +1,8 @@
 MR<sup>3</sup>
 ==========
 
-## Web Site
-* <http://mrcube.org/>
-
 ## What is MR<sup>3</sup> ?
-MR<sup>3</sup> (Meta-Model Management based on RDFs Revision Reflection) is an editing tool of RDF-based contents developed for managing a relationship between RDF and RDFS contents.
+[MR<sup>3</sup>](https://mrcube.org/) (Meta-Model Management based on RDFs Revision Reflection) is an editing tool of RDF-based contents developed for managing a relationship between RDF and RDFS contents.
 
 ### Introduction
 The Semantic Web is one of the most promised candidates as the Web tomorrow, whose basis is on RDF and RDF Schema recommended by the World Wide Web Consortium. The purpose of the idea is to make the data on the Web available not only for displaying but also for automation, integration and reuse of data across various applications. At the moment, a number of supporting environment have been developed as the adopted tools of traditional knowledge engineering based ontologies. These products are mostly concentrating on creating ontologies and managing ontology-based semantic markup. From the standpoint of a significance of information lifecycle on the Semantic Web, in this work, an editing tool of RDF-based contents is developed for managing a relationship between RDF and RDFS contents.
@@ -59,12 +56,6 @@ MR<sup>3</sup> uses the following libraries.
 * [Drawing Graphs with VGJ](http://www.eng.auburn.edu/department/cse/research/graph_drawing/graph_drawing.html)([License](http://www.eng.auburn.edu/department/cse/research/graph_drawing/COPYING))
 * [Material Design icons by Google](https://github.com/google/material-design-icons)([License](https://www.apache.org/licenses/LICENSE-2.0.txt))
 
-## Project Member
-* Takeshi Morita (College of Science and Engineering, Aoyama Gakuin University, Japan)
-* Naoki Fukuta (Department of Computer Science, Shizuoka University, Japan)
-* Noriaki Izumi (National Institute of Advanced Industrial Science and Technology, Japan)
-* Takahira Yamaguchi (Faculty of Science and Technology, Keio University, Japan)
-
 ## Contact
-* Takeshi Morita (morita@it.aoyama.ac.jp)
+* Takeshi Morita (morita [at] it.aoyama.ac.jp)
 
