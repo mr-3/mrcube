@@ -1,7 +1,6 @@
 MR<sup>3</sup>
 ==========
 
-## What is MR<sup>3</sup> ?
 [MR<sup>3</sup>](https://mrcube.org/) (Meta-Model Management based on RDFs Revision Reflection) is an editing tool of RDF-based contents developed for managing a relationship between RDF and RDFS contents.
 
 ### Introduction
