@@ -27,9 +27,9 @@ public class ShowManualAction extends MR3AbstractAction {
             try {
                 String uiLang = getUserPrefs().get(PrefConstants.UILang, "en");
                 if ("ja".equals(uiLang)) {
-                    Desktop.getDesktop().browse(new URI("http://docs.mrcube.org/ja/latest/"));
+                    Desktop.getDesktop().browse(new URI("https://mrcube.readthedocs.io/ja/latest/index.html"));
                 } else {
-                    Desktop.getDesktop().browse(new URI("http://docs.mrcube.org/en/latest/"));
+                    Desktop.getDesktop().browse(new URI("https://mrcube.readthedocs.io/en/latest/index.html"));
                 }
             } catch (IOException | URISyntaxException e1) {
                 e1.printStackTrace();

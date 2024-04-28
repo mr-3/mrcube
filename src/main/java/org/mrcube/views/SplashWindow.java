@@ -37,9 +37,9 @@ public class SplashWindow extends JWindow {
 
 	private static final int FONT_SIZE = 14;
 	private static final String TOOL_NAME = "Project Name: MR<sup>3</sup> <br>";
-	private static final String VERSION = "   Version: 22.5.2 <br>";
-	private static final String MR3_URL = " Project Website:   http://mrcube.org/<br>";
-	private static final String COPY_RIGHT = "   Copyright (C) 2003-2022 Takeshi Morita.<br>";
+	private static final String VERSION = "   Version: 24.4.2 <br>";
+	private static final String MR3_URL = " Project Website:   https://mr-3.github.io/<br>";
+	private static final String COPY_RIGHT = "   Copyright (C) 2003-2024 Takeshi Morita.<br>";
 	private static final String LICENSE = "License: GPL<br>";
 	private static final Color HELP_BACK_COLOR = Color.WHITE;
 
