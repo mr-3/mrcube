@@ -190,8 +190,7 @@ class RDFGraphUI extends BasicGraphUI {
                 resInfo.setURI(resource.getURI());
                 GraphConstants.setValue(cell.getAttributes(), resInfo);
                 GraphUtilities.resizeRDFResourceCell(gmanager, resInfo, cell);
-                HistoryManager.saveHistory(HistoryType.EDIT_RESOURCE_WITH_GRAPH, beforeInfo,
-                        resInfo);
+                HistoryManager.saveHistory(HistoryType.EDIT_RESOURCE_WITH_GRAPH, beforeInfo, resInfo);
             } else {
                 cancelAction(cell);
             }
@@ -219,8 +218,7 @@ class RDFGraphUI extends BasicGraphUI {
             if (isValidResource(uri, resInfo.getURIStr())) {
                 RDFResourceModel beforeInfo = new RDFResourceModel(resInfo);
                 resInfo.setURI(uri);
-                HistoryManager.saveHistory(HistoryType.EDIT_RESOURCE_WITH_GRAPH, beforeInfo,
-                        resInfo);
+                HistoryManager.saveHistory(HistoryType.EDIT_RESOURCE_WITH_GRAPH, beforeInfo, resInfo);
             }
             GraphConstants.setValue(cell.getAttributes(), info);
             GraphUtilities.resizeRDFResourceCell(gmanager, resInfo, cell);

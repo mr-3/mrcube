@@ -468,7 +468,7 @@ public class RDFGraph extends JGraph {
         return cutAction;
     }
 
-    public CopyAction getCopyAction() {
+public CopyAction getCopyAction() {
         return copyAction;
     }
 

@@ -94,7 +94,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
         insertResourceAction = new InsertResourceAction();
         insertLiteralAction = new InsertLiteralAction();
         removeAction = new RemoveAction(graph, gmanager);
-        setAction(graph);
+        setAction();
     }
 
     public MR3CellMaker getCellMaker() {
@@ -114,11 +114,11 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
                 graph.getPasteAction().getValue(Action.NAME));
     }
 
-    private void setAction(JComponent panel) {
-        ActionMap actionMap = panel.getActionMap();
+    private void setAction() {
+        ActionMap actionMap = graph.getActionMap();
         actionMap.put(insertResourceAction.getValue(Action.NAME), insertResourceAction);
         actionMap.put(insertLiteralAction.getValue(Action.NAME), insertLiteralAction);
-        InputMap inputMap = panel.getInputMap(JComponent.WHEN_FOCUSED);
+        InputMap inputMap = graph.getInputMap(JComponent.WHEN_FOCUSED);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_I, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
                 insertResourceAction.getValue(Action.NAME));
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_L, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),

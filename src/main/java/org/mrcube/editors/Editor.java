@@ -214,9 +214,6 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
         }
     }
 
-    /**
-     * Create ToolBar
-     */
     private JToolBar createToolBar() {
         var toolbar = new JToolBar();
 

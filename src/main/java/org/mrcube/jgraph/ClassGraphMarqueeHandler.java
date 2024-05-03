@@ -55,13 +55,13 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
     public ClassGraphMarqueeHandler(GraphManager gm, RDFGraph classGraph) {
         super(gm, classGraph);
         insertClassAction = new InsertClassAction();
-        setAction(graph);
+        setAction();
     }
 
-    private void setAction(JComponent panel) {
-        ActionMap actionMap = panel.getActionMap();
+    private void setAction() {
+        ActionMap actionMap = graph.getActionMap();
         actionMap.put(insertClassAction.getValue(Action.NAME), insertClassAction);
-        InputMap inputMap = panel.getInputMap(JComponent.WHEN_FOCUSED);
+        InputMap inputMap = graph.getInputMap(JComponent.WHEN_FOCUSED);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_I, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
                 insertClassAction.getValue(Action.NAME));
         setCopyCutPasteAction(actionMap, inputMap);
@@ -124,8 +124,8 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
     class InsertClassAction extends AbstractAction {
         InsertClassAction() {
             super(INSERT_CLASS_TITLE, Editor.RESOURCE_ICON);
-            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_I,
-                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
+//            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_I,
+//                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         }
 
         public void actionPerformed(ActionEvent ev) {
@@ -138,18 +138,12 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
         }
     }
 
-    /**
-     * create PopupMenu
-     */
     public JPopupMenu createPopupMenu(final Point pt, final Object cell) {
         JPopupMenu menu = new JPopupMenu();
-
         menu.add(insertClassAction);
-
         addTransformMenu(menu, cell);
         addEditMenu(menu, cell);
         menu.add(new ShowAttrDialog());
-
         return menu;
     }
 }

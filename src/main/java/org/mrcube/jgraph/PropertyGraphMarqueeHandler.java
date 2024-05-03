@@ -53,13 +53,13 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
     public PropertyGraphMarqueeHandler(GraphManager gm, RDFGraph propGraph) {
         super(gm, propGraph);
         insertPropertyAction = new InsertPropertyAction();
-        setAction(graph);
+        setAction();
     }
 
-    private void setAction(JComponent panel) {
-        ActionMap actionMap = panel.getActionMap();
+    private void setAction() {
+        ActionMap actionMap = graph.getActionMap();
         actionMap.put(insertPropertyAction.getValue(Action.NAME), insertPropertyAction);
-        InputMap inputMap = panel.getInputMap(JComponent.WHEN_FOCUSED);
+        InputMap inputMap = graph.getInputMap(JComponent.WHEN_FOCUSED);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_I, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
                 insertPropertyAction.getValue(Action.NAME));
         setCopyCutPasteAction(actionMap, inputMap);
@@ -123,8 +123,8 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
     class InsertPropertyAction extends AbstractAction {
         InsertPropertyAction() {
             super(INSERT_PROPERTY_TITLE, Editor.RESOURCE_ICON);
-            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_I,
-                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
+//            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_I,
+//                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         }
 
         public void actionPerformed(ActionEvent ev) {
@@ -137,9 +137,6 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
         }
     }
 
-    /**
-     * create PopupMenu
-     */
     public JPopupMenu createPopupMenu(final Point pt, final Object cell) {
         JPopupMenu menu = new JPopupMenu();
 
