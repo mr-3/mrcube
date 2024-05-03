@@ -192,20 +192,20 @@ public class RDFResourceModel extends ResourceModel implements Serializable {
         switch (GraphManager.cellViewType) {
             case LABEL:
                 if (getDefaultLabel(GraphManager.getDefaultLang()) != null) {
-                    return "　" + getDefaultLabel(GraphManager.getDefaultLang()).getString() + "　";
+                    return getDefaultLabel(GraphManager.getDefaultLang()).getString();
                 } else if (getFirstLabel() != null) {
-                    return "　" + getFirstLabel().getString() + "　";
+                    return getFirstLabel().getString();
                 }
                 break;
             case ID:
                 Resource resource = getURI();
                 if (resource.getLocalName().length() != 0) {
-                    return "　" + resource.getLocalName() + "　";
+                    return resource.getLocalName();
                 }
                 break;
             case URI:
-                return "　" + GraphUtilities.getQName(getURI()) + "　";
+                return GraphUtilities.getQName(getURI());
         }
-        return "　" + GraphUtilities.getQName(getURI()) + " ";
+        return GraphUtilities.getQName(getURI());
     }
 }

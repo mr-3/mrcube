@@ -111,7 +111,7 @@ class RDFGraphUI extends BasicGraphUI {
     }
 
     private void changeResourceLabel(ResourceModel info, GraphCell cell) {
-        String label = cell.toString().replaceAll("　", "");
+        String label = cell.toString();
         MR3Literal literal = info.getDefaultLabel(GraphManager.getDefaultLang());
         if (literal == null) {
             literal = new MR3Literal(label, GraphManager.getDefaultLang(), null);
@@ -178,7 +178,7 @@ class RDFGraphUI extends BasicGraphUI {
             cancelAction(cell);
             return;
         }
-        Resource resource = getResource(cell.toString().replaceAll("　", ""));
+        Resource resource = getResource(cell.toString());
         if (resource == null) {
             cancelAction(cell);
             return;
@@ -214,7 +214,7 @@ class RDFGraphUI extends BasicGraphUI {
     private void editID(GraphCell cell, Object info) {
         if (RDFGraph.isRDFResourceCell(cell)) {
             RDFResourceModel resInfo = (RDFResourceModel) info;
-            String uri = resInfo.getURI().getNameSpace() + cell.toString().replaceAll("　", "");
+            String uri = resInfo.getURI().getNameSpace() + cell.toString();
             if (isValidResource(uri, resInfo.getURIStr())) {
                 RDFResourceModel beforeInfo = new RDFResourceModel(resInfo);
                 resInfo.setURI(uri);
@@ -225,7 +225,7 @@ class RDFGraphUI extends BasicGraphUI {
         } else if (RDFGraph.isRDFPropertyCell(cell)) {
             // IDだけでは判別は困難なので何もしない
         } else if (RDFGraph.isRDFSCell(cell)) {
-            String uri = gmanager.getBaseURI() + cell.toString().replaceAll("　", "");
+            String uri = gmanager.getBaseURI() + cell.toString();
             editConceptAction.editWithGraph(uri, (RDFSModel) info, cell);
         }
     }

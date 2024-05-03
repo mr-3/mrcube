@@ -166,19 +166,19 @@ public abstract class RDFSModel extends ResourceModel implements Serializable {
         switch (GraphManager.cellViewType) {
             case ID:
                 if (resource.getLocalName().length() != 0) {
-                    return "　" + resource.getLocalName() + "　";
+                    return resource.getLocalName();
                 }
                 break;
             case LABEL:
                 if (getDefaultLabel(GraphManager.getDefaultLang()) != null) {
-                    return "　" + getDefaultLabel(GraphManager.getDefaultLang()).getString() + "　";
+                    return getDefaultLabel(GraphManager.getDefaultLang()).getString();
                 } else if (getFirstLabel() != null) {
-                    return "　" + getFirstLabel().getString() + "　";
+                    return getFirstLabel().getString();
                 }
                 break;
             case URI:
-                return "　" + GraphUtilities.getQName(resource) + "　";
+                return GraphUtilities.getQName(resource);
         }
-        return "　" + GraphUtilities.getQName(resource) + "　";
+        return GraphUtilities.getQName(resource);
     }
 }
