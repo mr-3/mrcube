@@ -36,7 +36,7 @@ import org.mrcube.jgraph.*;
 import org.mrcube.layout.GraphLayoutUtilities;
 import org.mrcube.models.MR3Constants;
 import org.mrcube.models.MR3Constants.CellViewType;
-import org.mrcube.models.MR3Constants.DeployType;
+import org.mrcube.models.MR3Constants.ArrangeWindowsType;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.MR3Constants.HistoryType;
 import org.mrcube.models.PrefConstants;
@@ -169,9 +169,9 @@ public class MR3 extends JFrame implements ChangeListener {
     private AbstractAction saveClassGraphAsImageFileAction;
     private AbstractAction savePropertyGraphAsImageFileAction;
     private AbstractAction showValidatorAction;
-    private AbstractAction deployWindowCPRAction;
-    private AbstractAction deployWindowCRAction;
-    private AbstractAction deployWindowPRAction;
+    private AbstractAction arrangeWindowsCPIAction;
+    private AbstractAction arrangeWindowsCIAction;
+    private AbstractAction arrangeWindowsPIAction;
     private AbstractAction showAttrDialogAction;
     private AbstractAction showNSTableDialogAction;
     private AbstractAction showRDFSourceCodeViewer;
@@ -183,10 +183,6 @@ public class MR3 extends JFrame implements ChangeListener {
     private AbstractAction showOptionDialogAction;
     private AbstractAction showVersionInfoAction;
     private AbstractAction showManualAction;
-
-    private final ImageIcon CPI_ICON = Utilities.getImageIcon(Translator.getString("Menu.Window.DeployCPIWindows.Icon"));
-    private final ImageIcon CI_ICON = Utilities.getImageIcon(Translator.getString("Menu.Window.DeployCIWindows.Icon"));
-    private final ImageIcon PI_ICON = Utilities.getImageIcon(Translator.getString("Menu.Window.DeployPIWindows.Icon"));
 
     private void initActions() {
         newProjectAction = new NewProject(this);
@@ -204,14 +200,14 @@ public class MR3 extends JFrame implements ChangeListener {
                 Translator.getString("Menu.File.SavePropertyGraphAsImageFile.Text"),
                 Utilities.getImageIcon(Translator.getString("PropertyEditor.Icon")));
         showValidatorAction = new ShowValidator(this);
-        deployWindowCPRAction = new DeployWindows(this, Translator.getString("Menu.Window.DeployCPIWindows.Text"),
-                CPI_ICON, DeployType.CPI,
+        arrangeWindowsCPIAction = new ArrangeWindows(this, Translator.getString("Menu.Window.ArrangeCPIWindows.Text"),
+                ArrangeWindowsType.CPI,
                 KeyStroke.getKeyStroke(KeyEvent.VK_1, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
-        deployWindowCRAction = new DeployWindows(this, Translator.getString("Menu.Window.DeployCIWindows.Text"),
-                CI_ICON, DeployType.CI,
+        arrangeWindowsCIAction = new ArrangeWindows(this, Translator.getString("Menu.Window.ArrangeCIWindows.Text"),
+                ArrangeWindowsType.CI,
                 KeyStroke.getKeyStroke(KeyEvent.VK_2, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
-        deployWindowPRAction = new DeployWindows(this, Translator.getString("Menu.Window.DeployPIWindows.Text"),
-                PI_ICON, DeployType.PI,
+        arrangeWindowsPIAction = new ArrangeWindows(this, Translator.getString("Menu.Window.ArrangePIWindows.Text"),
+                ArrangeWindowsType.PI,
                 KeyStroke.getKeyStroke(KeyEvent.VK_3, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         showAttrDialogAction = new ShowAttrDialog(this);
         showNSTableDialogAction = new ShowNSTableDialog(this);
@@ -236,14 +232,10 @@ public class MR3 extends JFrame implements ChangeListener {
         toolbar.add(saveFileAction);
         toolbar.add(saveFileAsAction);
         toolbar.addSeparator();
-        toolbar.add(findResAction);
-        toolbar.addSeparator();
         toolbar.add(showAttrDialogAction);
         toolbar.add(showNSTableDialogAction);
         toolbar.addSeparator();
-        toolbar.add(deployWindowCPRAction);
-        toolbar.add(deployWindowCRAction);
-        toolbar.add(deployWindowPRAction);
+        toolbar.add(findResAction);
         toolbar.addSeparator();
         toolbar.add(showRDFSourceCodeViewer);
         toolbar.add(showHistoryManagerAciton);
@@ -535,9 +527,9 @@ public class MR3 extends JFrame implements ChangeListener {
         menu.add(showAttrDialogAction);
         menu.add(showNSTableDialogAction);
         menu.addSeparator();
-        menu.add(deployWindowCPRAction);
-        menu.add(deployWindowCRAction);
-        menu.add(deployWindowPRAction);
+        menu.add(arrangeWindowsCPIAction);
+        menu.add(arrangeWindowsCIAction);
+        menu.add(arrangeWindowsPIAction);
 
         return menu;
     }
@@ -612,7 +604,7 @@ public class MR3 extends JFrame implements ChangeListener {
         MR3.getProjectPanel().setProjectFile(newFile);
         HistoryManager.saveHistory(HistoryType.NEW_PROJECT);
         mr3ProjectPanel.resetEditors();
-        mr3ProjectPanel.deployCPR();
+        mr3ProjectPanel.arrangeWindowsCPI();
     }
 
     public MR3Reader getMR3Reader() {

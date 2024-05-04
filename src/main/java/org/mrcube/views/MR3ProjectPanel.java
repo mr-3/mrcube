@@ -130,7 +130,7 @@ public class MR3ProjectPanel extends JPanel {
         }
     }
 
-    public void deployCPR() {
+    public void arrangeWindowsCPI() {
         int rootWindowWidth = getRootPane().getWidth();
         int rootWindowHeight = getRootPane().getHeight() - HEADER_HEIGHT;
         try {
@@ -148,7 +148,7 @@ public class MR3ProjectPanel extends JPanel {
         rdfEditorFrame.setLocation(new Point(0, rootWindowHeight / 2));
     }
 
-    public void deployCR() {
+    public void arrangeWindowsCI() {
         int rootWindowWidth = getRootPane().getWidth();
         int rootWindowHeight = getRootPane().getHeight() - HEADER_HEIGHT;
         try {
@@ -164,7 +164,7 @@ public class MR3ProjectPanel extends JPanel {
         propertyEditorFrame.toBack();
     }
 
-    public void deployPR() {
+    public void arrangeWindowsPI() {
         int rootWindowWidth = getRootPane().getWidth();
         int rootWindowHeight = getRootPane().getHeight() - HEADER_HEIGHT;
         try {

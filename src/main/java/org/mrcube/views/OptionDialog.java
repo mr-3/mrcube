@@ -180,7 +180,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         BasePanel() {
             JPanel panel = new JPanel();
             panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-            panel.add(getLangPanel());
+            panel.add(getDefaultLanguageTagPanel());
             panel.add(getUILangPanel());
             panel.add(getBaseURIPanel());
             panel.add(directoryPanel);
@@ -220,15 +220,15 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             }
         }
 
-        private JComponent getLangPanel() {
+        private JComponent getDefaultLanguageTagPanel() {
             defaultLangField = new JTextField();
             defaultLangField.setPreferredSize(new Dimension(PREFIX_BOX_WIDTH, PREFIX_BOX_HEIGHT));
-            JPanel defaultLangPanel = new JPanel();
-            defaultLangPanel.setLayout(new GridLayout(1, 2, 5, 5));
-            defaultLangPanel.add(new JLabel(Translator.getString("Lang") + ": "));
-            defaultLangPanel.add(defaultLangField);
+            JPanel defaultLangTagPanel = new JPanel();
+            defaultLangTagPanel.setLayout(new GridLayout(1, 2, 5, 5));
+            defaultLangTagPanel.add(new JLabel(Translator.getString("OptionDialog.Base.DefaultLanguageTag") + ": "));
+            defaultLangTagPanel.add(defaultLangField);
 
-            return Utilities.createWestPanel(defaultLangPanel);
+            return Utilities.createWestPanel(defaultLangTagPanel);
         }
 
         private Object[] getLanguages(File resourceDir) {
@@ -267,7 +267,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             uiLangBox.setPreferredSize(new Dimension(PREFIX_BOX_WIDTH, PREFIX_BOX_HEIGHT));
             JPanel uiLangPanel = new JPanel();
             uiLangPanel.setLayout(new GridLayout(1, 2, 5, 5));
-            uiLangPanel.add(new JLabel("UI" + Translator.getString("Lang") + ": "));
+            uiLangPanel.add(new JLabel("UI " + Translator.getString("Lang") + ": "));
             uiLangPanel.add(uiLangBox);
 
             return Utilities.createWestPanel(uiLangPanel);

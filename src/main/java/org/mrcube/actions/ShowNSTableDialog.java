@@ -40,7 +40,7 @@ public class ShowNSTableDialog extends MR3AbstractAction {
 
 	private static final String TITLE = Translator.getString("Menu.Window.NSTable.Text");
 	private static final ImageIcon ICON = Utilities.getImageIcon(Translator
-			.getString("NameSpaceTable.Icon"));
+			.getString("NamespaceTable.Icon"));
 
 	public ShowNSTableDialog(MR3 mr3) {
 		super(mr3, TITLE, ICON);

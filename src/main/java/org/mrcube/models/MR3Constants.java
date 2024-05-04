@@ -58,7 +58,7 @@ public class MR3Constants {
         OK = Translator.getString("OK") + "(O)";
         CANCEL = Translator.getString("Cancel") + "(C)";
         PREFIX = Translator.getString("Prefix");
-        NAME_SPACE = Translator.getString("NameSpace");
+        NAME_SPACE = Translator.getString("Namespace");
         RELOAD = Translator.getString("Reload");
         RESET = Translator.getString("Reset") + "(S)";
         EXEC = Translator.getString("Exec");
@@ -77,7 +77,7 @@ public class MR3Constants {
         Instance, Class, Property
     }
 
-    public enum DeployType {
+    public enum ArrangeWindowsType {
         CPI, CI, PI
     }
 
