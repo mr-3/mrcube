@@ -126,7 +126,7 @@ public abstract class OntologyPanel extends JPanel implements ListSelectionListe
 
         BasePanel() {
             metaClassBox = new JComboBox();
-            JComponent metaClassBoxP = Utilities.createTitledPanel(metaClassBox, Translator.getString("ResourceType"));
+            JComponent metaClassBoxP = Utilities.createTitledPanel(metaClassBox, Translator.getString("Type"));
 
             uriPrefixBox = new JComboBox();
             uriPrefixBox.addActionListener(new ChangePrefixAction());

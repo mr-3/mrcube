@@ -101,7 +101,7 @@ public class MR3Generator {
     }
 
     private void setResourceType(Model rdfModel, GraphCell cell) {
-        RDFResourceModel resInfo = (RDFResourceModel) GraphConstants.getValue(cell.getAttributes());
+        InstanceModel resInfo = (InstanceModel) GraphConstants.getValue(cell.getAttributes());
         if (resInfo.hasType()) {
             rdfModel.add(rdfModel.createStatement(resInfo.getURI(), RDF.type, resInfo.getType()));
         }
@@ -147,7 +147,7 @@ public class MR3Generator {
     private void addRDFModel(Object[] cells, Model rdfModel) {
         for (Object cell : cells) {
             if (RDFGraph.isRDFResourceCell(cell)) {
-                RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(((GraphCell) cell)
+                InstanceModel info = (InstanceModel) GraphConstants.getValue(((GraphCell) cell)
                         .getAttributes());
                 rdfModel.add(info.getModel(info.getURI()));
             }
@@ -196,14 +196,14 @@ public class MR3Generator {
         for (Object edge1 : edges) {
             Edge edge = (Edge) edge1;
             GraphCell sourceCell = (GraphCell) graph.getSourceVertex(edge);
-            RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(sourceCell.getAttributes());
+            InstanceModel info = (InstanceModel) GraphConstants.getValue(sourceCell.getAttributes());
             Resource subject = info.getURI();
             Property property = getRDFProperty(edge);
             property = getRDFLIProperty(subject, property, containerNumMap);
             GraphCell targetCell = (GraphCell) graph.getTargetVertex(edge);
 
             if (RDFGraph.isRDFResourceCell(targetCell)) {
-                info = (RDFResourceModel) GraphConstants.getValue(targetCell.getAttributes());
+                info = (InstanceModel) GraphConstants.getValue(targetCell.getAttributes());
                 rdfModel.add(rdfModel.createStatement(subject, property, info.getURI()));
             } else if (RDFGraph.isRDFLiteralCell(targetCell)) {
                 // MR3Literal to Literal

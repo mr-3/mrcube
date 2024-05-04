@@ -60,7 +60,7 @@ public class CutAction extends AbstractAction {
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (graph.getType() == GraphType.RDF) {
+        if (graph.getType() == GraphType.INSTANCE) {
             HistoryManager.saveHistory(HistoryType.CUT_RDF_GRAPH);
         } else if (graph.getType() == GraphType.CLASS) {
             RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();

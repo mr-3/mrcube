@@ -60,8 +60,8 @@ public class VGJTreeLayout {
         }
 
         treeAlgorithm.setOrientation(GraphLayoutUtilities.getVGJRDFLayoutDirection());
-        treeAlgorithm.setSeparation(GraphType.RDF);
-        treeAlgorithm.applyTreeAlgorithm(dataSet, null, GraphType.RDF);
+        treeAlgorithm.setSeparation(GraphType.INSTANCE);
+        treeAlgorithm.applyTreeAlgorithm(dataSet, null, GraphType.INSTANCE);
         dataSet.remove(cellLayoutMap.get(tmpRoot));
         GraphLayoutUtilities.removeTemporaryRoot(model, tmpRoot);
         GraphLayoutUtilities.centralizeGraph(dataSet);

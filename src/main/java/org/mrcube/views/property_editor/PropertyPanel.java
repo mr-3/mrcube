@@ -36,7 +36,7 @@ import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
 import org.mrcube.views.HistoryManager;
 import org.mrcube.views.OntologyPanel;
-import org.mrcube.views.SelectRDFSDialog;
+import org.mrcube.views.SelectRDFSResourceDialog;
 import org.mrcube.views.common.ResourceListCellRenderer;
 
 import javax.swing.*;
@@ -62,7 +62,7 @@ public class PropertyPanel extends OntologyPanel {
         super(manager.getPropertyGraph(), manager);
         labelPanel.setGraphType(GraphType.PROPERTY);
         commentPanel.setGraphType(GraphType.PROPERTY);
-        selectRDFSDialogRef = new WeakReference<SelectRDFSDialog>(null);
+        selectRDFSDialogRef = new WeakReference<SelectRDFSResourceDialog>(null);
 
         regionPanel = new RegionPanel();
         superPropertyJList = new JList();
@@ -230,10 +230,10 @@ public class PropertyPanel extends OntologyPanel {
                     return;
                 }
                 if (e.getSource() == addDomainButton) {
-                    SelectRDFSDialog regionDialog = getSelectRDFSDialog(info.getDomain());
+                    SelectRDFSResourceDialog regionDialog = getSelectRDFSDialog(info.getDomain());
                     setDomainList((Set) regionDialog.getValue());
                 } else if (e.getSource() == addRangeButton) {
-                    SelectRDFSDialog regionDialog = getSelectRDFSDialog(info.getRange());
+                    SelectRDFSResourceDialog regionDialog = getSelectRDFSDialog(info.getRange());
                     setRangeList((Set) regionDialog.getValue());
                 }
             }
@@ -262,10 +262,10 @@ public class PropertyPanel extends OntologyPanel {
         }
     }
 
-    private SelectRDFSDialog getSelectRDFSDialog(Set regionSet) {
-        SelectRDFSDialog result = (SelectRDFSDialog) selectRDFSDialogRef.get();
+    private SelectRDFSResourceDialog getSelectRDFSDialog(Set regionSet) {
+        SelectRDFSResourceDialog result = (SelectRDFSResourceDialog) selectRDFSDialogRef.get();
         if (result == null) {
-            result = new SelectRDFSDialog(Translator.getString("SelectRegionDialog.Title"), gmanager);
+            result = new SelectRDFSResourceDialog(Translator.getString("SelectRegionDialog.Title"), gmanager);
             selectRDFSDialogRef = new WeakReference<>(result);
         }
         result.replaceGraph(gmanager.getClassGraph());

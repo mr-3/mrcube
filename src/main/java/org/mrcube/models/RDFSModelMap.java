@@ -144,11 +144,11 @@ public class RDFSModelMap {
     }
 
     private boolean isRDFDucplicatedCheck(MR3Constants.GraphType type, GraphCell cell) {
-        if (type == MR3Constants.GraphType.RDF) {
+        if (type == MR3Constants.GraphType.INSTANCE) {
             if (cell == null) {
                 return true;
             }
-            RDFResourceModel resInfo = (RDFResourceModel) GraphConstants.getValue(cell
+            InstanceModel resInfo = (InstanceModel) GraphConstants.getValue(cell
                     .getAttributes());
             // 今から作ろうとしてるRDFCellの場合，resInfoは存在しない．
             // 名前を変更しようとしているCellの場合は，resInfoが存在する

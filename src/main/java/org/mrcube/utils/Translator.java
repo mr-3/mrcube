@@ -24,7 +24,7 @@
 package org.mrcube.utils;
 
 import org.mrcube.actions.SelectEditorAction;
-import org.mrcube.editors.RDFEditor;
+import org.mrcube.editors.InstanceEditor;
 import org.mrcube.models.PrefConstants;
 import org.mrcube.views.OptionDialog;
 
@@ -118,7 +118,7 @@ public class Translator {
         OptionDialog.loadResourceBundle();
         SelectEditorAction.loadResourceBundle();
 
-        RDFEditor.updateComponents();
+        InstanceEditor.updateComponents();
         if (OptionDialog.topLevelComponent != null) {
             SwingUtilities.updateComponentTreeUI(OptionDialog.topLevelComponent);
         }

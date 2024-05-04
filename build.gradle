@@ -8,7 +8,7 @@ plugins {
 }
 
 group 'org.mrcube'
-version = '24.4.1'
+version = '24.5.1'
 
 application {
     mainClass.set('org.mrcube.MR3')

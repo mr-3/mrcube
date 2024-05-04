@@ -55,11 +55,11 @@ public class SelectEditorAction extends MR3AbstractAction {
     }
 
     public static void loadResourceBundle() {
-        RDF_EDITOR = Translator.getString("Menu.Window.RDFEditor.Text");
+        RDF_EDITOR = Translator.getString("Menu.Window.InstanceEditor.Text");
         CLASS_EDITOR = Translator.getString("Menu.Window.ClassEditor.Text");
         PROPERTY_EDITOR = Translator.getString("Menu.Window.PropertyEditor.Text");
 
-        RDF_EDITOR_ICON = Utilities.getImageIcon(Translator.getString("RDFEditor.Icon"));
+        RDF_EDITOR_ICON = Utilities.getImageIcon(Translator.getString("InstanceEditor.Icon"));
         CLASS_EDITOR_ICON = Utilities.getImageIcon(Translator.getString("ClassEditor.Icon"));
         PROPERTY_EDITOR_ICON = Utilities.getImageIcon(Translator.getString("PropertyEditor.Icon"));
     }
@@ -81,7 +81,7 @@ public class SelectEditorAction extends MR3AbstractAction {
     public void actionPerformed(ActionEvent e) {
         MR3ProjectPanel project = MR3.getProjectPanel();
         if (getName().equals(RDF_EDITOR)) {
-            project.displayEditorInFront(GraphType.RDF);
+            project.displayEditorInFront(GraphType.INSTANCE);
         } else if (getName().equals(CLASS_EDITOR)) {
             project.displayEditorInFront(GraphType.CLASS);
         } else if (getName().equals(PROPERTY_EDITOR)) {

@@ -34,7 +34,7 @@ import org.mrcube.jgraph.RDFCellStyleChanger;
 import org.mrcube.jgraph.RDFGraph;
 import org.mrcube.models.ClassModel;
 import org.mrcube.models.NamespaceModel;
-import org.mrcube.models.RDFResourceModel;
+import org.mrcube.models.InstanceModel;
 import org.mrcube.models.RDFSModel;
 
 import java.awt.*;
@@ -147,7 +147,7 @@ public class GraphUtilities {
         for (Object cell1 : cells) {
             GraphCell cell = (GraphCell) cell1;
             if (RDFGraph.isRDFResourceCell(cell)) {
-                RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(cell.getAttributes());
+                InstanceModel info = (InstanceModel) GraphConstants.getValue(cell.getAttributes());
                 resizeRDFResourceCell(gm, info, cell);
             }
         }
@@ -182,7 +182,7 @@ public class GraphUtilities {
         }
     }
 
-    public static void resizeRDFResourceCell(GraphManager gm, RDFResourceModel resInfo, GraphCell cell) {
+    public static void resizeRDFResourceCell(GraphManager gm, InstanceModel resInfo, GraphCell cell) {
         String value = gm.getRDFNodeValue(resInfo.getURI(), resInfo);
         Dimension size = GraphUtilities.getAutoNodeDimension(gm, value);
         GraphUtilities.resizeCell(size, gm.getRDFGraph(), cell);

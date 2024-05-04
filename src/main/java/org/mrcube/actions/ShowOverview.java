@@ -36,11 +36,11 @@ import java.awt.event.ActionEvent;
 public class ShowOverview extends MR3AbstractAction {
 
     private final String type;
-    public static final String RDF_EDITOR_OVERVIEW = Translator.getString("Menu.Window.RDFEditorOverview.Text");
+    public static final String RDF_EDITOR_OVERVIEW = Translator.getString("Menu.Window.InstanceEditorOverview.Text");
     public static final String CLASS_EDITOR_OVERVIEW = Translator.getString("Menu.Window.ClassEditorOverview.Text");
     public static final String PROPERTY_EDITOR_OVERVIEW = Translator.getString("Menu.Window.PropertyEditorOverview.Text");
 
-    public static final ImageIcon RDF_EDITOR_OVERVIEW_ICON = Utilities.getImageIcon(Translator.getString("RDFEditorOverview.Icon"));
+    public static final ImageIcon RDF_EDITOR_OVERVIEW_ICON = Utilities.getImageIcon(Translator.getString("InstanceEditorOverview.Icon"));
     public static final ImageIcon CLASS_EDITOR_OVERVIEW_ICON = Utilities.getImageIcon(Translator.getString("ClassEditorOverview.Icon"));
     public static final ImageIcon PROPERTY_EDITOR_OVERVIEW_ICON = Utilities.getImageIcon(Translator.getString("PropertyEditorOverview.Icon"));
 

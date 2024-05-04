@@ -70,15 +70,15 @@ public class PrefConstants {
     public static final String ProxyPort = "Proxy Port";
 
     public static final String LAYOUT_TYPE = "LAYOUT TYPE";
-    public static final String RDF_VERTICAL_SPACE = "RDF VERTICAL SPACE";
-    public static final String RDF_HORIZONTAL_SPACE = "RDF HORIZONTAL SPACE";
-    public static final String CLASS_VERTICAL_SPACE = "CLASS VERTICAL SPACE";
-    public static final String CLASS_HORIZONTAL_SPACE = "CLASS HORIZONTAL SPACE";
-    public static final String PROPERTY_VERTICAL_SPACE = "PROPERTY VERTICAL SPACE";
-    public static final String PROPERTY_HORIZONTAL_SPACE = "PROPERTY HORIZONTAL SPACE";
-    public static final String RDF_LAYOUT_DIRECTION = "RDF LAYOUT DIRECTION";
-    public static final String CLASS_LAYOUT_DIRECTION = "CLASS LAYOUT DIRECTION";
-    public static final String PROPERTY_LAYOUT_DIRECTION = "PROPERTY LAYOUT DIRECTION";
+    public static final String INSTANCE_NODE_VERTICAL_SPACE = "INSTANCE NODE VERTICAL SPACE";
+    public static final String INSTANCE_NODE_HORIZONTAL_SPACE = "INSTANCE NODE HORIZONTAL SPACE";
+    public static final String CLASS_NODE_VERTICAL_SPACE = "CLASS NODE VERTICAL SPACE";
+    public static final String CLASS_NODE_HORIZONTAL_SPACE = "CLASS NODE HORIZONTAL SPACE";
+    public static final String PROPERTY_NODE_VERTICAL_SPACE = "PROPERTY NODE VERTICAL SPACE";
+    public static final String PROPERTY_NODE_HORIZONTAL_SPACE = "PROPERTY NODE HORIZONTAL SPACE";
+    public static final String INSTANCE_GRAPH_LAYOUT_DIRECTION = "INSTANCE GRAPH LAYOUT DIRECTION";
+    public static final String CLASS_GRAPH_LAYOUT_DIRECTION = "CLASS GRAPH LAYOUT DIRECTION";
+    public static final String PROPERTY_GRAPH_LAYOUT_DIRECTION = "PROPERTY GRAPH LAYOUT DIRECTION";
 
     public static final String NODE_SIZE_AUTO = "AUTO";
     public static final String NODE_SIZE_FIX = "FIX";
@@ -86,33 +86,33 @@ public class PrefConstants {
     public static final String NODE_WIDTH = "NODE WIDTH";
     public static final String NODE_HEIGHT = "NODE HEIGHT";
 
-    public static final String RDFResourceForegroundColor = "RDF Resource Foreground Color";
-    public static final String RDFPropertyForegroundColor = "RDF Property Foreground Color";
-    public static final String RDFLiteralForegroundColor = "RDF Literal Foreground Color";
-    public static final String ClassForegroundColor = "Class Foreground Color";
-    public static final String PropertyForegroundColor = "Property Foreground Color";
+    public static final String InstanceNodeForegroundColor = "Instance Node Foreground Color";
+    public static final String InstancePropertyForegroundColor = "Instance Property Foreground Color";
+    public static final String LiteralNodeForegroundColor = "Literal Node Foreground Color";
+    public static final String ClassNodeForegroundColor = "Class Node Foreground Color";
+    public static final String PropertyNodeForegroundColor = "Property Node Foreground Color";
 
-    public static final String RDFResourceBackgroundColor = "RDF Resource Background Color";
-    public static final String RDFLiteralBackgroundColor = "RDF Literal Background Color";
-    public static final String ClassBackgroundColor = "Class Background Color";
-    public static final String PropertyBackgroundColor = "Property Background Color";
+    public static final String InstanceNodeBackgroundColor = "Instance Node Background Color";
+    public static final String LiteralNodeBackgroundColor = "Literal Node Background Color";
+    public static final String ClassNodeBackgroundColor = "Class Node Background Color";
+    public static final String PropertyNodeBackgroundColor = "Property Node Background Color";
 
-    public static final String RDFResourceBorderColor = "RDF Resource Selected Color";
-    public static final String RDFPropertyBorderColor = "RDF Property Selected Color";
-    public static final String RDFLiteralBorderColor = "RDF Literal Selected Color";
-    public static final String ClassBorderColor = "Class Selected Color";
-    public static final String PropertyBorderColor = "Property Selected Color";
+    public static final String InstanceNodeBorderColor = "Instance Node Border Color";
+    public static final String InstancePropertyBorderColor = "Instance Property Border Color";
+    public static final String LiteralNodeBorderColor = "Literal Node Border Color";
+    public static final String ClassNodeBorderColor = "Class Node Border Color";
+    public static final String PropertyNodeBorderColor = "Property Node Border Color";
 
-    public static final String RDFResourceSelectedBackgroundColor = "RDF Resource Selected Background Color";
-    public static final String RDFLiteralSelectedBackgroundColor = "RDF Literal Selected Background Color";
-    public static final String ClassSelectedBackgroundColor = "Class Selected Background Color";
-    public static final String PropertySelectedBackgroundColor = "Property Selected Background Color";
+    public static final String InstanceNodeSelectedBackgroundColor = "Instance Node Selected Background Color";
+    public static final String LiteralNodeSelectedBackgroundColor = "Literal Node Selected Background Color";
+    public static final String ClassNodeSelectedBackgroundColor = "Class Node Selected Background Color";
+    public static final String PropertyNodeSelectedBackgroundColor = "Property Node Selected Background Color";
 
-    public static final String RDFResourceSelectedBorderColor = "RDF Resource Selected Border Color";
-    public static final String RDFPropertySelectedBorderColor = "RDF Property Selected Border Color";
-    public static final String RDFLiteralSelectedBorderColor = "RDF Literal Selected Border Color";
-    public static final String ClassSelectedBorderColor = "Class Selected Border Color";
-    public static final String PropertySelectedBorderColor = "Property Selected Border Color";
+    public static final String InstanceNodeSelectedBorderColor = "Instance Node Selected Border Color";
+    public static final String InstancePropertySelectedBorderColor = "Instance Property Selected Border Color";
+    public static final String LiteralNodeSelectedBorderColor = "Literal Node Selected Border Color";
+    public static final String ClassNodeSelectedBorderColor = "Class Node Selected Border Color";
+    public static final String PropertyNodeSelectedBorderColor = "Property Node Selected Border Color";
 
     public static final String EditorBackgroundColor = "Editor Background Color";
 

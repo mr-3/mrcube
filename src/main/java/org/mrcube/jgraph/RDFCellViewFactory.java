@@ -35,10 +35,10 @@ import java.awt.event.MouseEvent;
 class RDFCellViewFactory extends DefaultCellViewFactory {
 
     public VertexView createVertexView(Object v) {
-        if (v instanceof RDFResourceCell || v instanceof OntClassCell || v instanceof OntPropertyCell) {
+        if (v instanceof InstanceCell || v instanceof OntClassCell || v instanceof OntPropertyCell) {
             return new JGraphEllipseView(v);
         }
-        if (v instanceof RDFLiteralCell) {
+        if (v instanceof LiteralCell) {
             return new JGraphMultilineView(v);
         }
         return super.createVertexView(v);

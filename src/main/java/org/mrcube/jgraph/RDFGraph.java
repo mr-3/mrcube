@@ -32,7 +32,7 @@ import org.mrcube.actions.SelectAllNodesAction;
 import org.mrcube.editors.Editor;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.MR3Literal;
-import org.mrcube.models.RDFResourceModel;
+import org.mrcube.models.InstanceModel;
 import org.mrcube.models.RDFSModel;
 import org.mrcube.models.RDFSModelMap;
 import org.mrcube.utils.GraphUtilities;
@@ -204,7 +204,7 @@ public class RDFGraph extends JGraph {
     }
 
     public static boolean isRDFResourceCell(Object object) {
-        return (object instanceof RDFResourceCell);
+        return (object instanceof InstanceCell);
     }
 
     public static boolean isRDFPropertyCell(Object object) {
@@ -212,7 +212,7 @@ public class RDFGraph extends JGraph {
     }
 
     public static boolean isRDFLiteralCell(Object object) {
-        return (object instanceof RDFLiteralCell);
+        return (object instanceof LiteralCell);
     }
 
     public static boolean isRDFSClassCell(Object object) {
@@ -378,11 +378,11 @@ public class RDFGraph extends JGraph {
 
     private String getRDFResourceToolTipText(GraphCell cell) {
         StringBuilder toolTipTextBuilder = new StringBuilder();
-        RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(cell.getAttributes());
+        InstanceModel info = (InstanceModel) GraphConstants.getValue(cell.getAttributes());
         if (info != null) {
-            toolTipTextBuilder.append(String.format("<h3>%s</h3>", Translator.getString("RDFResource")));
+            toolTipTextBuilder.append(String.format("<h3>%s</h3>", Translator.getString("Instance")));
             toolTipTextBuilder.append(String.format("<b>URI: </b>%s<br>", info.getURI()));
-            toolTipTextBuilder.append(String.format("<b>%s: </b>%s<br>", Translator.getString("ResourceType"), info.getType()));
+            toolTipTextBuilder.append(String.format("<b>%s: </b>%s<br>", Translator.getString("InstanceType"), info.getType()));
             toolTipTextBuilder.append(getLabelToolTipText(info.getFirstLabel()));
             toolTipTextBuilder.append(getCommentToolTipText(info.getFirstComment()));
         }
@@ -433,7 +433,7 @@ public class RDFGraph extends JGraph {
             GraphCell cell = (GraphCell) getFirstCellForLocation(event.getX(), event.getY());
             if (cell != null) {
                 String msg = "";
-                if (type == GraphType.RDF) {
+                if (type == GraphType.INSTANCE) {
                     if (isRDFLiteralCell(cell)) {
                         msg = getRDFLiteralToolTipText(cell);
                     } else if (isRDFResourceCell(cell)) {

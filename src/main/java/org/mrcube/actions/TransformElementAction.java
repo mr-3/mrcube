@@ -29,7 +29,7 @@ import org.mrcube.jgraph.GraphManager;
 import org.mrcube.jgraph.RDFGraph;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.MR3Constants.URIType;
-import org.mrcube.models.RDFResourceModel;
+import org.mrcube.models.InstanceModel;
 import org.mrcube.models.RDFSModel;
 import org.mrcube.utils.MR3CellMaker;
 import org.mrcube.utils.Translator;
@@ -67,8 +67,8 @@ public class TransformElementAction extends AbstractAction {
         for (Object cell1 : cells) {
             GraphCell cell = (GraphCell) cell1;
 
-            if (fromGraphType == GraphType.RDF && RDFGraph.isRDFResourceCell(cell)) {
-                RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(cell.getAttributes());
+            if (fromGraphType == GraphType.INSTANCE && RDFGraph.isRDFResourceCell(cell)) {
+                InstanceModel info = (InstanceModel) GraphConstants.getValue(cell.getAttributes());
                 uriSet.add(info.getURIStr());
             } else if (fromGraphType == GraphType.CLASS && RDFGraph.isRDFSClassCell(cell)) {
                 RDFSModel info = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
@@ -92,7 +92,7 @@ public class TransformElementAction extends AbstractAction {
         MR3CellMaker cellMaker = new MR3CellMaker(gmanager);
         for (String uri : uriSet) {
             switch (toGraphType) {
-                case RDF -> cellMaker.insertRDFResource(pt, uri, null, URIType.URI);
+                case INSTANCE -> cellMaker.insertRDFResource(pt, uri, null, URIType.URI);
                 case CLASS -> cellMaker.insertClass(pt, uri);
                 case PROPERTY -> cellMaker.insertProperty(pt, uri);
             }

@@ -64,7 +64,7 @@ public class CommentPanel extends JPanel implements ActionListener {
 
 	public CommentPanel(Frame frame) {
 		rootFrame = frame;
-		graphType = GraphType.RDF;
+		graphType = GraphType.INSTANCE;
 		editCommentDialogRef = new WeakReference<>(null);
 
 		commentTableModel = new CommentTableModel(new Object[] { MR3Constants.LANG,
@@ -153,7 +153,7 @@ public class CommentPanel extends JPanel implements ActionListener {
 					resInfo.getCommentList());
 			setCommentList();
 			List<MR3Literal> afterMR3CommentList = resInfo.getCommentList();
-			if (graphType == GraphType.RDF) {
+			if (graphType == GraphType.INSTANCE) {
 				HistoryManager.saveHistory(HistoryType.ADD_RESOURCE_COMMENT, beforeMR3CommentList,
 						afterMR3CommentList);
 			} else if (graphType == GraphType.CLASS) {
@@ -173,7 +173,7 @@ public class CommentPanel extends JPanel implements ActionListener {
 					resInfo.getCommentList());
 			setCommentList();
 			List<MR3Literal> afterMR3CommentList = resInfo.getCommentList();
-			if (graphType == GraphType.RDF) {
+			if (graphType == GraphType.INSTANCE) {
 				HistoryManager.saveHistory(HistoryType.DELETE_RESOURCE_COMMENT,
 						beforeMR3CommentList, afterMR3CommentList);
 			} else if (graphType == GraphType.CLASS) {
@@ -239,7 +239,7 @@ public class CommentPanel extends JPanel implements ActionListener {
 							resInfo.getCommentList());
 					setCommentList();
 					List<MR3Literal> afterMR3CommentList = resInfo.getCommentList();
-					if (graphType == GraphType.RDF) {
+					if (graphType == GraphType.INSTANCE) {
 						HistoryManager.saveHistory(HistoryType.EDIT_RESOURCE_COMMENT,
 								beforeMR3CommentList, afterMR3CommentList);
 					} else if (graphType == GraphType.CLASS) {

@@ -74,11 +74,11 @@ public class MR3Constants {
     public static boolean IS_SHOW_PROPERTY_LABEL = true;
 
     public enum GraphType {
-        RDF, CLASS, PROPERTY
+        INSTANCE, CLASS, PROPERTY
     }
 
     public enum DeployType {
-        CPR, CR, PR
+        CPI, CI, PI
     }
 
     public enum CellViewType {

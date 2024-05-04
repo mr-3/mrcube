@@ -29,7 +29,7 @@ import org.mrcube.jgraph.GraphManager;
 import org.mrcube.jgraph.RDFGraph;
 import org.mrcube.models.MR3Resource;
 import org.mrcube.models.PropertyModel;
-import org.mrcube.models.RDFResourceModel;
+import org.mrcube.models.InstanceModel;
 import org.mrcube.utils.Translator;
 import org.mrcube.utils.Utilities;
 
@@ -75,7 +75,7 @@ class ReferenceListPanel extends JPanel {
         setLayout(new BorderLayout());
 
         tab = new JTabbedPane();
-        setTableLayout(rdfRefTable, Translator.getString("RDFEditor.Title"));
+        setTableLayout(rdfRefTable, Translator.getString("InstanceEditor"));
         setTableLayout(propRefTable, Translator.getString("PropertyEditor.Title"));
         add(tab, BorderLayout.CENTER);
         add(getButtonPanel(), BorderLayout.SOUTH);
@@ -229,7 +229,7 @@ class ReferenceListPanel extends JPanel {
             if (isAvailable(tableModel, i, 0)) {
                 GraphCell rdfCell = (GraphCell) tableModel.getValueAt(i, 1);
                 if (RDFGraph.isRDFResourceCell(rdfCell)) {
-                    RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(rdfCell.getAttributes());
+                    InstanceModel info = (InstanceModel) GraphConstants.getValue(rdfCell.getAttributes());
                     info.setTypeCell(null, gmanager.getRDFGraph()); // Typeをnullに変更
                 } else if (RDFGraph.isRDFPropertyCell(rdfCell)) {
                     GraphConstants.setValue(rdfCell.getAttributes(), new PropertyModel(MR3Resource.Nil.getURI()));

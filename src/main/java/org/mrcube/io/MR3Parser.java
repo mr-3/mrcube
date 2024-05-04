@@ -154,7 +154,7 @@ public class MR3Parser {
 
     private Edge getEdge(Map<Object, AttributeMap> attributes, Resource predicate) {
         if (predicate == null) {
-            DefaultEdge edge = new RDFPropertyCell("");
+            DefaultEdge edge = new InstancePropertyCell("");
             AttributeMap edgeMap = cellMaker.getEdgeMap(null, edge);
             attributes.put(edge, edgeMap);
             return edge;
@@ -168,7 +168,7 @@ public class MR3Parser {
                 rdfsModel = (RDFSModel) GraphConstants.getValue(propertyCell.getAttributes());
             }
         }
-        DefaultEdge edge = new RDFPropertyCell(rdfsModel);
+        DefaultEdge edge = new InstancePropertyCell(rdfsModel);
         AttributeMap edgeMap = cellMaker.getEdgeMap(rdfsModel, edge);
         attributes.put(edge, edgeMap);
 
@@ -176,7 +176,7 @@ public class MR3Parser {
     }
 
     private boolean isExtractProperty(GraphCell subjectCell, Property predicate, RDFNode object) {
-        RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(subjectCell.getAttributes());
+        InstanceModel info = (InstanceModel) GraphConstants.getValue(subjectCell.getAttributes());
         if (predicate.equals(RDF.type)) {
             GraphCell cell = gmanager.getClassCell((Resource) object, false);
             info.setTypeCell(cell, gmanager.getRDFGraph());
@@ -194,14 +194,14 @@ public class MR3Parser {
 
     private DefaultGraphCell createResourceCell(Resource uri, Map<Object, DefaultGraphCell> resMap,
                                                 Map<Object, AttributeMap> attr, GraphLayoutData data) {
-        RDFResourceModel resInfo = null;
+        InstanceModel resInfo = null;
         if (uri.isAnon()) {
-            resInfo = new RDFResourceModel(URIType.ANONYMOUS, uri.getId().toString());
+            resInfo = new InstanceModel(URIType.ANONYMOUS, uri.getId().toString());
         } else {
-            resInfo = new RDFResourceModel(URIType.URI, uri.toString());
+            resInfo = new InstanceModel(URIType.URI, uri.toString());
         }
 
-        DefaultGraphCell resCell = new RDFResourceCell(resInfo);
+        DefaultGraphCell resCell = new InstanceCell(resInfo);
         DefaultPort port = new DefaultPort();
         resCell.add(port);
         resMap.put(uri, resCell);
@@ -209,7 +209,7 @@ public class MR3Parser {
         if (data != null) {
             rectangle = data.getRectangle();
         }
-        attr.put(resCell, cellMaker.getResourceMap(rectangle, RDFResourceCell.backgroundColor));
+        attr.put(resCell, cellMaker.getResourceMap(rectangle, InstanceCell.backgroundColor));
         GraphConstants.setValue(resCell.getAttributes(), resInfo);
 
         return resCell;
@@ -217,7 +217,7 @@ public class MR3Parser {
 
     private DefaultGraphCell createLiteralCell(MR3Literal literal, Map<Object, AttributeMap> attr,
                                                GraphLayoutData data) {
-        DefaultGraphCell litCell = new RDFLiteralCell(literal);
+        DefaultGraphCell litCell = new LiteralCell(literal);
         DefaultPort tp = new DefaultPort();
         litCell.add(tp);
         Rectangle rectangle = null;
@@ -226,7 +226,7 @@ public class MR3Parser {
             Dimension cellDimension = GraphUtilities.getAutoLiteralNodeDimension(gmanager, literal.getString());
             rectangle = new Rectangle(rectangle.getLocation(), cellDimension);
         }
-        attr.put(litCell, cellMaker.getLiteralMap(rectangle, RDFLiteralCell.backgroundColor));
+        attr.put(litCell, cellMaker.getLiteralMap(rectangle, LiteralCell.backgroundColor));
         GraphConstants.setValue(litCell.getAttributes(), literal);
 
         return litCell;

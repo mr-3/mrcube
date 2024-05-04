@@ -53,7 +53,7 @@ public class CopyAction extends AbstractAction {
 
     public void actionPerformed(ActionEvent e) {
         TransferHandler.getCopyAction().actionPerformed(new ActionEvent(graph, e.getID(), e.getActionCommand()));
-        if (graph.getType() == GraphType.RDF) {
+        if (graph.getType() == GraphType.INSTANCE) {
             HistoryManager.saveHistory(HistoryType.COPY_RDF_GRAPH);
         } else if (graph.getType() == GraphType.CLASS) {
             HistoryManager.saveHistory(HistoryType.COPY_CLASS_GRAPH);

@@ -57,7 +57,7 @@ class TreeAlgorithm {
 
     public void setSeparation(GraphType graphType) {
         switch (graphType) {
-            case RDF:
+            case INSTANCE:
                 if (rootOrient_ == 'u') {
                     levelSeparation_ = GraphLayoutUtilities.RDF_VERTICAL_SPACE;
                     subtreeSeparation_ = siblingSeparation_ = GraphLayoutUtilities.RDF_HORIZONTAL_SPACE;

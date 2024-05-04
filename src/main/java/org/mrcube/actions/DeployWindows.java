@@ -50,9 +50,9 @@ public class DeployWindows extends MR3AbstractAction {
             return;
         }
         switch (deployType) {
-            case CPR -> project.deployCPR();
-            case CR -> project.deployCR();
-            case PR -> project.deployPR();
+            case CPI -> project.deployCPR();
+            case CI -> project.deployCR();
+            case PI -> project.deployPR();
         }
     }
 

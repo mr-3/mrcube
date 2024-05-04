@@ -58,7 +58,7 @@ class MR3CellMakerTest {
         @Test
         void testInsertedRDFResourceURI() {
             var expected = testResourceURI;
-            var model = (RDFResourceModel) GraphConstants.getValue(rdfResourceCell.getAttributes());
+            var model = (InstanceModel) GraphConstants.getValue(rdfResourceCell.getAttributes());
             var actual = model.getURIStr();
             assertEquals(expected, actual);
         }

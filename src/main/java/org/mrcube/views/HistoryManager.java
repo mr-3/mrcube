@@ -232,14 +232,14 @@ public class HistoryManager extends JDialog implements ActionListener {
     public synchronized static void saveHistory(HistoryType historyType, RDFSModel info, GraphCell sourceCell, GraphCell targetCell) {
         switch (historyType) {
             case INSERT_PROPERTY:
-                RDFResourceModel resInfo = (RDFResourceModel) GraphConstants.getValue(sourceCell.getAttributes());
+                InstanceModel resInfo = (InstanceModel) GraphConstants.getValue(sourceCell.getAttributes());
                 String sourceStr = String.format("Source: RDF Resource: %s\tRDF Resource Type: %s\n", resInfo.getQName(), resInfo.getTypeQName());
                 String targetStr;
                 if (RDFGraph.isRDFLiteralCell(targetCell)) {
                     MR3Literal literal = (MR3Literal) GraphConstants.getValue(targetCell.getAttributes());
                     targetStr = String.format("Target: Language: %s\tDatatype: %s\tString: %s\n", literal.getLanguage(), literal.getDatatype(), literal.getString());
                 } else {
-                    resInfo = (RDFResourceModel) GraphConstants.getValue(targetCell.getAttributes());
+                    resInfo = (InstanceModel) GraphConstants.getValue(targetCell.getAttributes());
                     targetStr = String.format("Target: RDF Resource: %s\tRDF Resource Type: %s\n", resInfo.getQName(), resInfo.getTypeQName());
                 }
                 var message = String.format("%s[%s]\nInsert Property: %s\n%s%s", MODEL, historyType, info.getQName(), sourceStr, targetStr);
@@ -269,7 +269,7 @@ public class HistoryManager extends JDialog implements ActionListener {
         for (Object removeCell : removeCells) {
             GraphCell cell = (GraphCell) removeCell;
             if (RDFGraph.isRDFResourceCell(cell)) {
-                RDFResourceModel resInfo = (RDFResourceModel) GraphConstants.getValue(cell.getAttributes());
+                InstanceModel resInfo = (InstanceModel) GraphConstants.getValue(cell.getAttributes());
                 buf.append("RDF Resource: ").append(resInfo.getQName()).append("\t");
                 buf.append("RDF Resource Type: ").append(resInfo.getTypeQName()).append("\n");
             } else if (historyType == HistoryType.DELETE_RDF && RDFGraph.isRDFPropertyCell(cell)) {
@@ -357,7 +357,7 @@ public class HistoryManager extends JDialog implements ActionListener {
         }
     }
 
-    public synchronized static void saveHistory(HistoryType historyType, RDFResourceModel beforeInfo, RDFResourceModel afterInfo) {
+    public synchronized static void saveHistory(HistoryType historyType, InstanceModel beforeInfo, InstanceModel afterInfo) {
         if (beforeInfo.isSameInfo(afterInfo)) {
             return;
         }
@@ -460,10 +460,10 @@ public class HistoryManager extends JDialog implements ActionListener {
                 saveMessage(historyType, message);
                 if (!MR3.OFF_META_MODEL_MANAGEMENT) {
                     ClassModel clsInfo = (ClassModel) afterInfo;
-                    Set<RDFResourceModel> instanceInfoSet = gmanager.getClassInstanceInfoSet(clsInfo);
+                    Set<InstanceModel> instanceInfoSet = gmanager.getClassInstanceInfoSet(clsInfo);
                     if (0 < instanceInfoSet.size()) {
                         StringBuilder instanceInfoStr = new StringBuilder();
-                        for (RDFResourceModel resInfo : instanceInfoSet) {
+                        for (InstanceModel resInfo : instanceInfoSet) {
                             instanceInfoStr.append("RDF Resource: ").append(resInfo.getQName()).append("\n");
                         }
                         message = String.format("%s[%s]\n%s", META_MODEL, HistoryType.META_MODEL_MANAGEMNET_REPLACE_CLASS, instanceInfoStr);
@@ -488,7 +488,7 @@ public class HistoryManager extends JDialog implements ActionListener {
                     if (0 < instanceSet.size()) {
                         StringBuilder instanceInfoStr = new StringBuilder();
                         for (Object cell : instanceSet) {
-                            RDFResourceModel resInfo = (RDFResourceModel) GraphConstants.getValue(((GraphCell) cell).getAttributes());
+                            InstanceModel resInfo = (InstanceModel) GraphConstants.getValue(((GraphCell) cell).getAttributes());
                             instanceInfoStr.append("Source RDF Resource: ").append(resInfo.getQName()).append("\n");
                         }
                         // TODO: 正確にやるなら，RDFプロパティのグラフセルのセットから，sourcevertex, targetvertexを得て，Source Resource, Target Resourceを表示するようにすべき
@@ -504,7 +504,7 @@ public class HistoryManager extends JDialog implements ActionListener {
         switch (historyType) {
             case INSERT_RESOURCE:
             case INSERT_CONNECTED_RESOURCE:
-                RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(insertCell.getAttributes());
+                InstanceModel info = (InstanceModel) GraphConstants.getValue(insertCell.getAttributes());
                 var message = String.format("%s[%s]\nRDF Resource URI Type: %s \nRDF Resource: %s \nRDF Resource Type: %s\n",
                         MODEL, historyType, info.getURIType(), info.getQName(), info.getTypeQName());
                 saveMessage(historyType, message);

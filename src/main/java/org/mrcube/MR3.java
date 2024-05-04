@@ -29,7 +29,7 @@ import org.mrcube.actions.*;
 import org.mrcube.editors.ClassEditor;
 import org.mrcube.editors.Editor;
 import org.mrcube.editors.PropertyEditor;
-import org.mrcube.editors.RDFEditor;
+import org.mrcube.editors.InstanceEditor;
 import org.mrcube.io.MR3Reader;
 import org.mrcube.io.MR3Writer;
 import org.mrcube.jgraph.*;
@@ -184,9 +184,9 @@ public class MR3 extends JFrame implements ChangeListener {
     private AbstractAction showVersionInfoAction;
     private AbstractAction showManualAction;
 
-    private final ImageIcon CPR_ICON = Utilities.getImageIcon(Translator.getString("Menu.Window.DeployCPRWindows.Icon"));
-    private final ImageIcon CR_ICON = Utilities.getImageIcon(Translator.getString("Menu.Window.DeployCRWindows.Icon"));
-    private final ImageIcon PR_ICON = Utilities.getImageIcon(Translator.getString("Menu.Window.DeployPRWindows.Icon"));
+    private final ImageIcon CPI_ICON = Utilities.getImageIcon(Translator.getString("Menu.Window.DeployCPIWindows.Icon"));
+    private final ImageIcon CI_ICON = Utilities.getImageIcon(Translator.getString("Menu.Window.DeployCIWindows.Icon"));
+    private final ImageIcon PI_ICON = Utilities.getImageIcon(Translator.getString("Menu.Window.DeployPIWindows.Icon"));
 
     private void initActions() {
         newProjectAction = new NewProject(this);
@@ -194,9 +194,9 @@ public class MR3 extends JFrame implements ChangeListener {
         openFileAction = new OpenFileAction(this);
         saveFileAction = new SaveFileAction(this, SaveFileAction.SAVE_PROJECT, SaveFileAction.SAVE_PROJECT_ICON);
         saveFileAsAction = new SaveFileAction(this, SaveFileAction.SAVE_AS_PROJECT, SaveFileAction.SAVE_AS_PROJECT_ICON);
-        saveRDFGraphAsImageFileAction = new SaveGraphImageAction(gmanager, GraphType.RDF,
-                Translator.getString("Menu.File.SaveRDFGraphAsImageFile.Text"),
-                Utilities.getImageIcon(Translator.getString("RDFEditor.Icon")));
+        saveRDFGraphAsImageFileAction = new SaveGraphImageAction(gmanager, GraphType.INSTANCE,
+                Translator.getString("Menu.File.SaveInstanceGraphAsImageFile.Text"),
+                Utilities.getImageIcon(Translator.getString("InstanceEditor.Icon")));
         saveClassGraphAsImageFileAction = new SaveGraphImageAction(gmanager, GraphType.CLASS,
                 Translator.getString("Menu.File.SaveClassGraphAsImageFile.Text"),
                 Utilities.getImageIcon(Translator.getString("ClassEditor.Icon")));
@@ -204,14 +204,14 @@ public class MR3 extends JFrame implements ChangeListener {
                 Translator.getString("Menu.File.SavePropertyGraphAsImageFile.Text"),
                 Utilities.getImageIcon(Translator.getString("PropertyEditor.Icon")));
         showValidatorAction = new ShowValidator(this);
-        deployWindowCPRAction = new DeployWindows(this, Translator.getString("Menu.Window.DeployCPRWindows.Text"),
-                CPR_ICON, DeployType.CPR,
+        deployWindowCPRAction = new DeployWindows(this, Translator.getString("Menu.Window.DeployCPIWindows.Text"),
+                CPI_ICON, DeployType.CPI,
                 KeyStroke.getKeyStroke(KeyEvent.VK_1, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
-        deployWindowCRAction = new DeployWindows(this, Translator.getString("Menu.Window.DeployCRWindows.Text"),
-                CR_ICON, DeployType.CR,
+        deployWindowCRAction = new DeployWindows(this, Translator.getString("Menu.Window.DeployCIWindows.Text"),
+                CI_ICON, DeployType.CI,
                 KeyStroke.getKeyStroke(KeyEvent.VK_2, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
-        deployWindowPRAction = new DeployWindows(this, Translator.getString("Menu.Window.DeployPRWindows.Text"),
-                PR_ICON, DeployType.PR,
+        deployWindowPRAction = new DeployWindows(this, Translator.getString("Menu.Window.DeployPIWindows.Text"),
+                PI_ICON, DeployType.PI,
                 KeyStroke.getKeyStroke(KeyEvent.VK_3, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         showAttrDialogAction = new ShowAttrDialog(this);
         showNSTableDialogAction = new ShowNSTableDialog(this);
@@ -257,7 +257,7 @@ public class MR3 extends JFrame implements ChangeListener {
     public void showRDFEditorOverview() {
         OverviewDialog result = rdfEditorOverviewRef.get();
         if (result == null) {
-            RDFEditor editor = getProjectPanel().getRDFEditor();
+            InstanceEditor editor = getProjectPanel().getRDFEditor();
             result = new OverviewDialog(this, OverviewDialog.RDF_EDITOR_OVERVIEW, editor);
             result.setIconImage(OverviewDialog.RDF_EDITOR_ICON.getImage());
             rdfEditorOverviewRef = new WeakReference<>(result);
@@ -390,59 +390,59 @@ public class MR3 extends JFrame implements ChangeListener {
 
     private void initOptions() {
         GraphLayoutUtilities.LAYOUT_TYPE = userPrefs.get(PrefConstants.LAYOUT_TYPE, GraphLayoutUtilities.LAYOUT_TYPE);
-        GraphLayoutUtilities.RDF_LAYOUT_DIRECTION = userPrefs.get(PrefConstants.RDF_LAYOUT_DIRECTION,
+        GraphLayoutUtilities.RDF_LAYOUT_DIRECTION = userPrefs.get(PrefConstants.INSTANCE_GRAPH_LAYOUT_DIRECTION,
                 GraphLayoutUtilities.RDF_LAYOUT_DIRECTION);
         GraphLayoutUtilities.RDF_LAYOUT_DIRECTION = changeDirectionWithLanguage(
                 GraphLayoutUtilities.RDF_LAYOUT_DIRECTION, GraphLayoutUtilities.RDF_LAYOUT_DIRECTION);
-        GraphLayoutUtilities.CLASS_LAYOUT_DIRECTION = userPrefs.get(PrefConstants.CLASS_LAYOUT_DIRECTION,
+        GraphLayoutUtilities.CLASS_LAYOUT_DIRECTION = userPrefs.get(PrefConstants.CLASS_GRAPH_LAYOUT_DIRECTION,
                 GraphLayoutUtilities.CLASS_LAYOUT_DIRECTION);
         GraphLayoutUtilities.CLASS_LAYOUT_DIRECTION = changeDirectionWithLanguage(
                 GraphLayoutUtilities.CLASS_LAYOUT_DIRECTION, GraphLayoutUtilities.CLASS_LAYOUT_DIRECTION);
-        GraphLayoutUtilities.PROPERTY_LAYOUT_DIRECTION = userPrefs.get(PrefConstants.PROPERTY_LAYOUT_DIRECTION,
+        GraphLayoutUtilities.PROPERTY_LAYOUT_DIRECTION = userPrefs.get(PrefConstants.PROPERTY_GRAPH_LAYOUT_DIRECTION,
                 GraphLayoutUtilities.PROPERTY_LAYOUT_DIRECTION);
         GraphLayoutUtilities.PROPERTY_LAYOUT_DIRECTION = changeDirectionWithLanguage(
                 GraphLayoutUtilities.PROPERTY_LAYOUT_DIRECTION, GraphLayoutUtilities.PROPERTY_LAYOUT_DIRECTION);
-        GraphLayoutUtilities.RDF_VERTICAL_SPACE = Integer.parseInt(userPrefs.get(PrefConstants.RDF_VERTICAL_SPACE,
+        GraphLayoutUtilities.RDF_VERTICAL_SPACE = Integer.parseInt(userPrefs.get(PrefConstants.INSTANCE_NODE_VERTICAL_SPACE,
                 Integer.toString(GraphLayoutUtilities.VERTICAL_SPACE)));
-        GraphLayoutUtilities.RDF_HORIZONTAL_SPACE = Integer.parseInt(userPrefs.get(PrefConstants.RDF_HORIZONTAL_SPACE,
+        GraphLayoutUtilities.RDF_HORIZONTAL_SPACE = Integer.parseInt(userPrefs.get(PrefConstants.INSTANCE_NODE_HORIZONTAL_SPACE,
                 Integer.toString(GraphLayoutUtilities.HORIZONTAL_SPACE)));
-        GraphLayoutUtilities.CLASS_VERTICAL_SPACE = Integer.parseInt(userPrefs.get(PrefConstants.CLASS_VERTICAL_SPACE,
+        GraphLayoutUtilities.CLASS_VERTICAL_SPACE = Integer.parseInt(userPrefs.get(PrefConstants.CLASS_NODE_VERTICAL_SPACE,
                 Integer.toString(GraphLayoutUtilities.VERTICAL_SPACE)));
         GraphLayoutUtilities.CLASS_HORIZONTAL_SPACE = Integer.parseInt(userPrefs.get(
-                PrefConstants.CLASS_HORIZONTAL_SPACE, Integer.toString(GraphLayoutUtilities.HORIZONTAL_SPACE)));
+                PrefConstants.CLASS_NODE_HORIZONTAL_SPACE, Integer.toString(GraphLayoutUtilities.HORIZONTAL_SPACE)));
         GraphLayoutUtilities.PROPERTY_VERTICAL_SPACE = Integer.parseInt(userPrefs.get(
-                PrefConstants.PROPERTY_VERTICAL_SPACE, Integer.toString(GraphLayoutUtilities.VERTICAL_SPACE)));
+                PrefConstants.PROPERTY_NODE_VERTICAL_SPACE, Integer.toString(GraphLayoutUtilities.VERTICAL_SPACE)));
         GraphLayoutUtilities.PROPERTY_HORIZONTAL_SPACE = Integer.parseInt(userPrefs.get(
-                PrefConstants.PROPERTY_HORIZONTAL_SPACE, Integer.toString(GraphLayoutUtilities.HORIZONTAL_SPACE)));
+                PrefConstants.PROPERTY_NODE_HORIZONTAL_SPACE, Integer.toString(GraphLayoutUtilities.HORIZONTAL_SPACE)));
 
 
-        RDFResourceCell.foregroundColor = new Color(userPrefs.getInt(PrefConstants.RDFResourceForegroundColor, RDFResourceCell.DEFAULT_FG_COLOR.getRGB()));
-        RDFPropertyCell.foregroundColor = new Color(userPrefs.getInt(PrefConstants.RDFPropertyForegroundColor, RDFPropertyCell.DEFAULT_FG_COLOR.getRGB()));
-        RDFLiteralCell.foregroundColor = new Color(userPrefs.getInt(PrefConstants.RDFLiteralForegroundColor, RDFLiteralCell.DEFAULT_FG_COLOR.getRGB()));
-        OntClassCell.foregroundColor = new Color(userPrefs.getInt(PrefConstants.ClassForegroundColor, OntClassCell.DEFAULT_FG_COLOR.getRGB()));
-        OntPropertyCell.foregroundColor = new Color(userPrefs.getInt(PrefConstants.PropertyForegroundColor, OntPropertyCell.DEFAULT_FG_COLOR.getRGB()));
+        InstanceCell.foregroundColor = new Color(userPrefs.getInt(PrefConstants.InstanceNodeForegroundColor, InstanceCell.DEFAULT_FG_COLOR.getRGB()));
+        InstancePropertyCell.foregroundColor = new Color(userPrefs.getInt(PrefConstants.InstancePropertyForegroundColor, InstancePropertyCell.DEFAULT_FG_COLOR.getRGB()));
+        LiteralCell.foregroundColor = new Color(userPrefs.getInt(PrefConstants.LiteralNodeForegroundColor, LiteralCell.DEFAULT_FG_COLOR.getRGB()));
+        OntClassCell.foregroundColor = new Color(userPrefs.getInt(PrefConstants.ClassNodeForegroundColor, OntClassCell.DEFAULT_FG_COLOR.getRGB()));
+        OntPropertyCell.foregroundColor = new Color(userPrefs.getInt(PrefConstants.PropertyNodeForegroundColor, OntPropertyCell.DEFAULT_FG_COLOR.getRGB()));
 
-        RDFResourceCell.backgroundColor = new Color(userPrefs.getInt(PrefConstants.RDFResourceBackgroundColor, RDFResourceCell.DEFAULT_BG_COLOR.getRGB()));
-        RDFLiteralCell.backgroundColor = new Color(userPrefs.getInt(PrefConstants.RDFLiteralBackgroundColor, RDFLiteralCell.DEFAULT_BG_COLOR.getRGB()));
-        OntClassCell.backgroundColor = new Color(userPrefs.getInt(PrefConstants.ClassBackgroundColor, OntClassCell.DEFAULT_BG_COLOR.getRGB()));
-        OntPropertyCell.backgroundColor = new Color(userPrefs.getInt(PrefConstants.PropertyBackgroundColor, OntPropertyCell.DEFAULT_BG_COLOR.getRGB()));
+        InstanceCell.backgroundColor = new Color(userPrefs.getInt(PrefConstants.InstanceNodeBackgroundColor, InstanceCell.DEFAULT_BG_COLOR.getRGB()));
+        LiteralCell.backgroundColor = new Color(userPrefs.getInt(PrefConstants.LiteralNodeBackgroundColor, LiteralCell.DEFAULT_BG_COLOR.getRGB()));
+        OntClassCell.backgroundColor = new Color(userPrefs.getInt(PrefConstants.ClassNodeBackgroundColor, OntClassCell.DEFAULT_BG_COLOR.getRGB()));
+        OntPropertyCell.backgroundColor = new Color(userPrefs.getInt(PrefConstants.PropertyNodeBackgroundColor, OntPropertyCell.DEFAULT_BG_COLOR.getRGB()));
 
-        RDFResourceCell.borderColor = new Color(userPrefs.getInt(PrefConstants.RDFResourceBorderColor, RDFResourceCell.DEFAULT_BORDER_COLOR.getRGB()));
-        RDFPropertyCell.borderColor = new Color(userPrefs.getInt(PrefConstants.RDFPropertyBorderColor, RDFPropertyCell.DEFAULT_BORDER_COLOR.getRGB()));
-        RDFLiteralCell.borderColor = new Color(userPrefs.getInt(PrefConstants.RDFLiteralBorderColor, RDFLiteralCell.DEFAULT_BORDER_COLOR.getRGB()));
-        OntClassCell.borderColor = new Color(userPrefs.getInt(PrefConstants.ClassBorderColor, OntClassCell.DEFAULT_BORDER_COLOR.getRGB()));
-        OntPropertyCell.borderColor = new Color(userPrefs.getInt(PrefConstants.PropertyBorderColor, OntPropertyCell.DEFAULT_BORDER_COLOR.getRGB()));
+        InstanceCell.borderColor = new Color(userPrefs.getInt(PrefConstants.InstanceNodeBorderColor, InstanceCell.DEFAULT_BORDER_COLOR.getRGB()));
+        InstancePropertyCell.borderColor = new Color(userPrefs.getInt(PrefConstants.InstancePropertyBorderColor, InstancePropertyCell.DEFAULT_BORDER_COLOR.getRGB()));
+        LiteralCell.borderColor = new Color(userPrefs.getInt(PrefConstants.LiteralNodeBorderColor, LiteralCell.DEFAULT_BORDER_COLOR.getRGB()));
+        OntClassCell.borderColor = new Color(userPrefs.getInt(PrefConstants.ClassNodeBorderColor, OntClassCell.DEFAULT_BORDER_COLOR.getRGB()));
+        OntPropertyCell.borderColor = new Color(userPrefs.getInt(PrefConstants.PropertyNodeBorderColor, OntPropertyCell.DEFAULT_BORDER_COLOR.getRGB()));
 
-        RDFResourceCell.selectedBackgroundColor = new Color(userPrefs.getInt(PrefConstants.RDFResourceSelectedBackgroundColor, RDFResourceCell.DEFAULT_SELECTED_BACKGROUND_COLOR.getRGB()));
-        RDFLiteralCell.selectedBackgroundColor = new Color(userPrefs.getInt(PrefConstants.RDFLiteralSelectedBackgroundColor, RDFLiteralCell.DEFAULT_SELECTED_BACKGROUND_COLOR.getRGB()));
-        OntClassCell.selectedBackgroundColor = new Color(userPrefs.getInt(PrefConstants.ClassSelectedBackgroundColor, OntClassCell.DEFAULT_SELECTED_BACKGROUND_COLOR.getRGB()));
-        OntPropertyCell.selectedBackgroundColor = new Color(userPrefs.getInt(PrefConstants.PropertySelectedBackgroundColor, OntPropertyCell.DEFAULT_SELECTED_BACKGROUND_COLOR.getRGB()));
+        InstanceCell.selectedBackgroundColor = new Color(userPrefs.getInt(PrefConstants.InstanceNodeSelectedBackgroundColor, InstanceCell.DEFAULT_SELECTED_BACKGROUND_COLOR.getRGB()));
+        LiteralCell.selectedBackgroundColor = new Color(userPrefs.getInt(PrefConstants.LiteralNodeSelectedBackgroundColor, LiteralCell.DEFAULT_SELECTED_BACKGROUND_COLOR.getRGB()));
+        OntClassCell.selectedBackgroundColor = new Color(userPrefs.getInt(PrefConstants.ClassNodeSelectedBackgroundColor, OntClassCell.DEFAULT_SELECTED_BACKGROUND_COLOR.getRGB()));
+        OntPropertyCell.selectedBackgroundColor = new Color(userPrefs.getInt(PrefConstants.PropertyNodeSelectedBackgroundColor, OntPropertyCell.DEFAULT_SELECTED_BACKGROUND_COLOR.getRGB()));
 
-        RDFResourceCell.selectedBorderColor = new Color(userPrefs.getInt(PrefConstants.RDFResourceSelectedBorderColor, RDFResourceCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()));
-        RDFPropertyCell.selectedBorderColor = new Color(userPrefs.getInt(PrefConstants.RDFPropertySelectedBorderColor, RDFPropertyCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()));
-        RDFLiteralCell.selectedBorderColor = new Color(userPrefs.getInt(PrefConstants.RDFLiteralSelectedBorderColor, RDFLiteralCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()));
-        OntClassCell.selectedBorderColor = new Color(userPrefs.getInt(PrefConstants.ClassSelectedBorderColor, OntClassCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()));
-        OntPropertyCell.selectedBorderColor = new Color(userPrefs.getInt(PrefConstants.PropertySelectedBorderColor, OntPropertyCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()));
+        InstanceCell.selectedBorderColor = new Color(userPrefs.getInt(PrefConstants.InstanceNodeSelectedBorderColor, InstanceCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()));
+        InstancePropertyCell.selectedBorderColor = new Color(userPrefs.getInt(PrefConstants.InstancePropertySelectedBorderColor, InstancePropertyCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()));
+        LiteralCell.selectedBorderColor = new Color(userPrefs.getInt(PrefConstants.LiteralNodeSelectedBorderColor, LiteralCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()));
+        OntClassCell.selectedBorderColor = new Color(userPrefs.getInt(PrefConstants.ClassNodeSelectedBorderColor, OntClassCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()));
+        OntPropertyCell.selectedBorderColor = new Color(userPrefs.getInt(PrefConstants.PropertyNodeSelectedBorderColor, OntPropertyCell.DEFAULT_SELECTED_BORDER_COLOR.getRGB()));
 
         Editor.backgroundColor = new Color(userPrefs.getInt(PrefConstants.EditorBackgroundColor, Editor.DEFAUlT_BACKGROUND_COLOR.getRGB()));
         GraphUtilities.isBlackAndWhite = userPrefs.getBoolean(PrefConstants.BlackAndWhite, false);
@@ -500,12 +500,12 @@ public class MR3 extends JFrame implements ChangeListener {
         menu.add(idView);
         menu.add(labelView);
         menu.addSeparator();
-        showTypeCellBox = new JCheckBoxMenuItem(Translator.getString("Menu.View.Type.Text"), true);
+        showTypeCellBox = new JCheckBoxMenuItem(Translator.getString("Menu.View.InstanceType.Text"), true);
         gmanager.setIsShowTypeCell(true);
         showTypeCellBox.addActionListener(new ShowTypeCellAction());
         menu.add(showTypeCellBox);
 
-        showRDFPropertyLabelBox = new JCheckBoxMenuItem(Translator.getString("Menu.View.RDFPropertyLabel.Text"),
+        showRDFPropertyLabelBox = new JCheckBoxMenuItem(Translator.getString("Menu.View.InstancePropertyLabel.Text"),
                 true);
         showRDFPropertyLabelBox.addActionListener(new ShowRDFPropertyLabelAction());
         menu.add(showRDFPropertyLabelBox);
@@ -516,7 +516,7 @@ public class MR3 extends JFrame implements ChangeListener {
         menu.add(showToolTips);
         menu.addSeparator();
 
-        menu.add(new GraphLayoutAction(gmanager, GraphType.RDF, GraphLayoutUtilities.LEFT_TO_RIGHT));
+        menu.add(new GraphLayoutAction(gmanager, GraphType.INSTANCE, GraphLayoutUtilities.LEFT_TO_RIGHT));
         menu.add(new GraphLayoutAction(gmanager, GraphType.CLASS, GraphLayoutUtilities.LEFT_TO_RIGHT));
         menu.add(new GraphLayoutAction(gmanager, GraphType.CLASS, GraphLayoutUtilities.UP_TO_DOWN));
         menu.add(new GraphLayoutAction(gmanager, GraphType.PROPERTY, GraphLayoutUtilities.LEFT_TO_RIGHT));

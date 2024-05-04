@@ -39,7 +39,7 @@ import org.mrcube.jgraph.RDFGraphMarqueeHandler;
 import org.mrcube.layout.GraphLayoutUtilities;
 import org.mrcube.models.MR3Constants.GraphType;
 import org.mrcube.models.MR3Constants.HistoryType;
-import org.mrcube.models.RDFResourceModel;
+import org.mrcube.models.InstanceModel;
 import org.mrcube.models.RDFSModel;
 import org.mrcube.models.RDFSModelMap;
 import org.mrcube.utils.Translator;
@@ -157,7 +157,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
             RDFGraphMarqueeHandler mh = (RDFGraphMarqueeHandler) graph.getMarqueeHandler();
             GraphCell insertCell = mh.insertResourceCell(INSERT_POINT);
             if (insertCell != null) {
-                if (graph.getType() == GraphType.RDF) {
+                if (graph.getType() == GraphType.INSTANCE) {
                     HistoryManager.saveHistory(HistoryType.INSERT_RESOURCE, insertCell);
                 } else {
                     HistoryManager.saveHistory(HistoryType.INSERT_ONT_PROPERTY, insertCell);
@@ -199,10 +199,10 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
         public void actionPerformed(ActionEvent e) {
             if (graph.getSelectionCount() == 1) {
                 Object selectedCell = graph.getSelectionCell();
-                if (graph.getType() == GraphType.RDF) {
+                if (graph.getType() == GraphType.INSTANCE) {
                     for (Object cell : graph.getAllSelectedCells()) {
                         if (RDFGraph.isRDFResourceCell(cell)) {
-                            RDFResourceModel model = (RDFResourceModel) GraphConstants.getValue(((GraphCell) cell).getAttributes());
+                            InstanceModel model = (InstanceModel) GraphConstants.getValue(((GraphCell) cell).getAttributes());
                             MR3.ResourcePathTextField.setText(model.getURIStr());
                         }
                     }
@@ -217,7 +217,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
     private JToolBar createToolBar() {
         var toolbar = new JToolBar();
 
-        if (graph.getType() == GraphType.RDF) {
+        if (graph.getType() == GraphType.INSTANCE) {
             toolbar.add(new InsertEllipseResourceAction(RESOURCE_ICON));
             toolbar.add(new InsertRectangleResourceAction(LITERAL_ICON));
         } else if (graph.getType() == GraphType.CLASS) {
@@ -260,7 +260,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
         toolbar.add(new SaveGraphImageAction(gmanager, graph.getType()));
 
         toolbar.addSeparator();
-        if (graph.getType() == GraphType.RDF) {
+        if (graph.getType() == GraphType.INSTANCE) {
             toolbar.add(new GraphLayoutAction(gmanager, graph.getType(), GraphLayoutUtilities.LEFT_TO_RIGHT));
         } else if (graph.getType() == GraphType.CLASS) {
             toolbar.add(new GraphLayoutAction(gmanager, graph.getType(), GraphLayoutUtilities.LEFT_TO_RIGHT));
@@ -285,7 +285,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
     }
 
     private void uriConsistencyCheck(Object[] orgAllCells) {
-        if (graph.getType() == GraphType.RDF) {
+        if (graph.getType() == GraphType.INSTANCE) {
             return;
         }
         RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();

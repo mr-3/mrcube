@@ -62,7 +62,7 @@ public class LabelPanel extends JPanel implements ActionListener {
 	private GraphType graphType;
 
 	public LabelPanel() {
-		graphType = GraphType.RDF;
+		graphType = GraphType.INSTANCE;
 		labelTableModel = new LabelTableModel(
 				new Object[] { MR3Constants.LANG, MR3Constants.LABEL }, 0);
 		labelTable = new JTable(labelTableModel);
@@ -127,7 +127,7 @@ public class LabelPanel extends JPanel implements ActionListener {
 			List<MR3Literal> beforeMR3LabelList = new ArrayList<>(resInfo.getLabelList());
 			setLabelList();
 			List<MR3Literal> afterMR3LabelList = resInfo.getLabelList();
-			if (graphType == GraphType.RDF) {
+			if (graphType == GraphType.INSTANCE) {
 				HistoryManager.saveHistory(HistoryType.ADD_RESOURCE_LABEL, beforeMR3LabelList,
 						afterMR3LabelList);
 			} else if (graphType == GraphType.CLASS) {
@@ -146,7 +146,7 @@ public class LabelPanel extends JPanel implements ActionListener {
 			List<MR3Literal> beforeMR3LabelList = new ArrayList<>(resInfo.getLabelList());
 			setLabelList();
 			List<MR3Literal> afterMR3LabelList = resInfo.getLabelList();
-			if (graphType == GraphType.RDF) {
+			if (graphType == GraphType.INSTANCE) {
 				HistoryManager.saveHistory(HistoryType.DELETE_RESOURCE_LABEL, beforeMR3LabelList,
 						afterMR3LabelList);
 			} else if (graphType == GraphType.CLASS) {
@@ -216,7 +216,7 @@ public class LabelPanel extends JPanel implements ActionListener {
 							resInfo.getLabelList());
 					setLabelList();
 					List<MR3Literal> afterMR3LabelList = resInfo.getLabelList();
-					if (graphType == GraphType.RDF) {
+					if (graphType == GraphType.INSTANCE) {
 						HistoryManager.saveHistory(HistoryType.EDIT_RESOURCE_LABEL,
 								beforeMR3LabelList, afterMR3LabelList);
 					} else if (graphType == GraphType.CLASS) {

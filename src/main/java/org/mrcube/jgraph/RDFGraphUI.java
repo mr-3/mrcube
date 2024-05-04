@@ -124,11 +124,11 @@ class RDFGraphUI extends BasicGraphUI {
 
     private void editLabel(GraphCell cell, Object info) {
         if (RDFGraph.isRDFResourceCell(cell)) {
-            RDFResourceModel beforeInfo = new RDFResourceModel((RDFResourceModel) info);
+            InstanceModel beforeInfo = new InstanceModel((InstanceModel) info);
             changeResourceLabel((ResourceModel) info, cell);
-            GraphUtilities.resizeRDFResourceCell(gmanager, (RDFResourceModel) info, cell);
+            GraphUtilities.resizeRDFResourceCell(gmanager, (InstanceModel) info, cell);
             HistoryManager.saveHistory(HistoryType.EDIT_RESOURCE_LABEL_WITH_GRAPH,
-                    beforeInfo.getLabelList(), ((RDFResourceModel) info).getLabelList());
+                    beforeInfo.getLabelList(), ((InstanceModel) info).getLabelList());
         } else if (RDFGraph.isRDFPropertyCell(cell)) {
             // ラベルだけでは判別は困難なので何もしない
         } else if (RDFGraph.isRDFSClassCell(cell)) {
@@ -184,9 +184,9 @@ class RDFGraphUI extends BasicGraphUI {
             return;
         }
         if (RDFGraph.isRDFResourceCell(cell)) {
-            RDFResourceModel resInfo = (RDFResourceModel) info;
+            InstanceModel resInfo = (InstanceModel) info;
             if (isValidResource(resource.getURI(), resInfo.getURIStr())) {
-                RDFResourceModel beforeInfo = new RDFResourceModel(resInfo);
+                InstanceModel beforeInfo = new InstanceModel(resInfo);
                 resInfo.setURI(resource.getURI());
                 GraphConstants.setValue(cell.getAttributes(), resInfo);
                 GraphUtilities.resizeRDFResourceCell(gmanager, resInfo, cell);
@@ -213,10 +213,10 @@ class RDFGraphUI extends BasicGraphUI {
 
     private void editID(GraphCell cell, Object info) {
         if (RDFGraph.isRDFResourceCell(cell)) {
-            RDFResourceModel resInfo = (RDFResourceModel) info;
+            InstanceModel resInfo = (InstanceModel) info;
             String uri = resInfo.getURI().getNameSpace() + cell.toString();
             if (isValidResource(uri, resInfo.getURIStr())) {
-                RDFResourceModel beforeInfo = new RDFResourceModel(resInfo);
+                InstanceModel beforeInfo = new InstanceModel(resInfo);
                 resInfo.setURI(uri);
                 HistoryManager.saveHistory(HistoryType.EDIT_RESOURCE_WITH_GRAPH, beforeInfo, resInfo);
             }

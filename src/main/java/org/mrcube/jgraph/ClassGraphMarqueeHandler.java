@@ -34,7 +34,7 @@ import org.mrcube.models.MR3Constants.HistoryType;
 import org.mrcube.utils.PrefixNSUtil;
 import org.mrcube.utils.Translator;
 import org.mrcube.views.HistoryManager;
-import org.mrcube.views.InsertRDFSResourceDialog;
+import org.mrcube.views.InsertInstanceDialog;
 
 import javax.swing.*;
 import java.awt.*;
@@ -86,7 +86,7 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
     }
 
     public GraphCell insertResourceCell(Point pt) {
-        InsertRDFSResourceDialog dialog = getInsertRDFSResDialog(INSERT_CLASS_TITLE);
+        InsertInstanceDialog dialog = getInsertRDFSResDialog(INSERT_CLASS_TITLE);
         if (!dialog.isConfirm()) {
             return null;
         }
@@ -98,7 +98,7 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
     }
 
     private GraphCell insertSubClass(Point pt, Object[] supCells) {
-        InsertRDFSResourceDialog dialog = getInsertRDFSResDialog(INSERT_CLASS_TITLE);
+        InsertInstanceDialog dialog = getInsertRDFSResDialog(INSERT_CLASS_TITLE);
         if (!dialog.isConfirm()) {
             return null;
         }
@@ -116,7 +116,7 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
     private void addTransformMenu(JPopupMenu menu, Object cell) {
         if (isCellSelected(cell)) {
             menu.addSeparator();
-            menu.add(new TransformElementAction(graph, gmanager, GraphType.CLASS, GraphType.RDF));
+            menu.add(new TransformElementAction(graph, gmanager, GraphType.CLASS, GraphType.INSTANCE));
             menu.add(new TransformElementAction(graph, gmanager, GraphType.CLASS, GraphType.PROPERTY));
         }
     }

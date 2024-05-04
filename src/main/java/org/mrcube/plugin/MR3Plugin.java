@@ -283,7 +283,7 @@ public abstract class MR3Plugin {
     private void addRDFNode(RDFGraph graph, String uri, Set selectionCells) {
         for (Object cell : graph.getAllCells()) {
             if (RDFGraph.isRDFResourceCell(cell)) {
-                RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(((GraphCell) cell).getAttributes());
+                InstanceModel info = (InstanceModel) GraphConstants.getValue(((GraphCell) cell).getAttributes());
                 if (uri.equals(info.getURIStr())) {
                     selectionCells.add(cell);
                 }

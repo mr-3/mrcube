@@ -30,11 +30,11 @@ import org.jgraph.graph.*;
 import org.mrcube.MR3;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.jgraph.RDFGraph;
-import org.mrcube.jgraph.RDFPropertyCell;
-import org.mrcube.jgraph.RDFResourceCell;
+import org.mrcube.jgraph.InstancePropertyCell;
+import org.mrcube.jgraph.InstanceCell;
 import org.mrcube.models.MR3Constants.URIType;
 import org.mrcube.models.MR3Resource;
-import org.mrcube.models.RDFResourceModel;
+import org.mrcube.models.InstanceModel;
 import org.mrcube.models.RDFSModel;
 import org.mrcube.models.RDFSModelMap;
 import org.mrcube.utils.GraphUtilities;
@@ -326,20 +326,20 @@ public class GraphLayoutUtilities {
 
     public static Object collectRoot(RDFGraph graph, MR3CellMaker cellMaker, Set<DefaultGraphCell> rootCells,
                                      Set<GraphLayoutData> dataSet, Map<Object, GraphLayoutData> cellLayoutMap) {
-        RDFResourceModel rootInfo = new RDFResourceModel(URIType.ANONYMOUS, new AnonId().toString());
-        DefaultGraphCell rootCell = new RDFResourceCell(rootInfo);
+        InstanceModel rootInfo = new InstanceModel(URIType.ANONYMOUS, new AnonId().toString());
+        DefaultGraphCell rootCell = new InstanceCell(rootInfo);
         DefaultPort rootPort = new DefaultPort();
         rootCell.add(rootPort);
 
         Map attributes = new HashMap();
-        attributes.put(rootCell, cellMaker.getResourceMap(cellMaker.getRectangle(initPoint), RDFResourceCell.backgroundColor));
+        attributes.put(rootCell, cellMaker.getResourceMap(cellMaker.getRectangle(initPoint), InstanceCell.backgroundColor));
         graph.getGraphLayoutCache().insert(new Object[]{rootCell}, attributes, null, null);
         GraphLayoutData rootData = new GraphLayoutData(rootCell, graph);
         rootData.setHasParent(false);
 
         for (DefaultGraphCell cell : rootCells) {
             Port port = (Port) cell.getChildAt(0);
-            DefaultEdge edge = new RDFPropertyCell("");
+            DefaultEdge edge = new InstancePropertyCell("");
             ConnectionSet cs = new ConnectionSet(edge, rootPort, port);
             graph.getGraphLayoutCache().insert(new Object[]{edge}, null, cs, null);
             GraphLayoutData data = cellLayoutMap.get(cell);

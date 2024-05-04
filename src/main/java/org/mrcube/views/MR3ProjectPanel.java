@@ -26,7 +26,7 @@ package org.mrcube.views;
 import org.mrcube.editors.ClassEditor;
 import org.mrcube.editors.Editor;
 import org.mrcube.editors.PropertyEditor;
-import org.mrcube.editors.RDFEditor;
+import org.mrcube.editors.InstanceEditor;
 import org.mrcube.jgraph.GraphManager;
 import org.mrcube.jgraph.RDFGraph;
 import org.mrcube.models.MR3Constants.GraphType;
@@ -48,7 +48,7 @@ public class MR3ProjectPanel extends JPanel {
     private final RDFSModelMap rdfsModelMap;
 
     private final GraphManager gmanager;
-    private final RDFEditor rdfEditor;
+    private final InstanceEditor rdfEditor;
     private final ClassEditor classEditor;
     private final PropertyEditor propertyEditor;
 
@@ -68,12 +68,12 @@ public class MR3ProjectPanel extends JPanel {
         classEditor.setBackground(Color.WHITE);
         propertyEditor = new PropertyEditor(gmanager);
         propertyEditor.setBackground(Color.WHITE);
-        rdfEditor = new RDFEditor(gmanager);
+        rdfEditor = new InstanceEditor(gmanager);
         rdfEditor.setBackground(Color.WHITE);
         registerComponent();
 
-        rdfEditorFrame = createEditorFrame(rdfEditor, Translator.getString("RDFEditor.Title"),
-                Utilities.getImageIcon(Translator.getString("RDFEditor.Icon")));
+        rdfEditorFrame = createEditorFrame(rdfEditor, Translator.getString("InstanceEditor"),
+                Utilities.getImageIcon(Translator.getString("InstanceEditor.Icon")));
 
         classEditorFrame = createEditorFrame(classEditor, Translator.getString("ClassEditor.Title"),
                 Utilities.getImageIcon(Translator.getString("ClassEditor.Icon")));
@@ -109,7 +109,7 @@ public class MR3ProjectPanel extends JPanel {
 
     public void displayEditorInFront(GraphType graphType) {
         try {
-            if (graphType == GraphType.RDF) {
+            if (graphType == GraphType.INSTANCE) {
                 if (!rdfEditorFrame.isSelected()) {
                     rdfEditorFrame.setSelected(true);
                     rdfEditor.getGraph().requestFocusInWindow();
@@ -188,16 +188,16 @@ public class MR3ProjectPanel extends JPanel {
 
     public GraphType getFocusedEditorType() {
         if (desktopPane.getSelectedFrame() == null) {
-            return GraphType.RDF;
+            return GraphType.INSTANCE;
         }
         if (desktopPane.getSelectedFrame().equals(rdfEditorFrame)) {
-            return GraphType.RDF;
+            return GraphType.INSTANCE;
         } else if (desktopPane.getSelectedFrame().equals(classEditorFrame)) {
             return GraphType.CLASS;
         } else if (desktopPane.getSelectedFrame().equals(propertyEditorFrame)) {
             return GraphType.PROPERTY;
         }
-        return GraphType.RDF;
+        return GraphType.INSTANCE;
     }
 
     public void resetEditors() {
@@ -206,7 +206,7 @@ public class MR3ProjectPanel extends JPanel {
         ((RDFGraph) propertyEditor.getGraph()).removeAllCells();
     }
 
-    public RDFEditor getRDFEditor() {
+    public InstanceEditor getRDFEditor() {
         return rdfEditor;
     }
 

@@ -85,11 +85,11 @@ public class ProjectInfoDialog extends JDialog {
         importPanel.add(lastImportTimeLabel);
         importPanel.add(lastImportTimeValue);
 
-        JLabel modelResourceCntLabel = new JLabel(Translator.getString("Menu.Tools.ProjectInfo.NumberOfRDFResources"));
+        JLabel modelResourceCntLabel = new JLabel(Translator.getString("Menu.Tools.ProjectInfo.NumberOfInstances"));
         modelResourceCntValue = new JLabel();
-        JLabel modelLiteralCntLabel = new JLabel(Translator.getString("Menu.Tools.ProjectInfo.NumberOfRDFLiterals"));
+        JLabel modelLiteralCntLabel = new JLabel(Translator.getString("Menu.Tools.ProjectInfo.NumberOfInstanceLiterals"));
         modelLiteralCntValue = new JLabel();
-        JLabel modelStatementCntLabel = new JLabel(Translator.getString("Menu.Tools.ProjectInfo.NumberOfRDFStatements"));
+        JLabel modelStatementCntLabel = new JLabel(Translator.getString("Menu.Tools.ProjectInfo.NumberOfInstanceStatements"));
         modelStatementCntValue = new JLabel();
 
         JLabel ontClassCntLabel = new JLabel(Translator.getString("Menu.Tools.ProjectInfo.NumberOfClasses"));
@@ -105,7 +105,7 @@ public class ProjectInfoDialog extends JDialog {
         allStatementCntValue = new JLabel();
 
         JPanel cntPanel = new JPanel();
-        cntPanel.setBorder(BorderFactory.createTitledBorder(Translator.getString("Menu.Tools.ProjectInfo.OntologyMetrics")));
+        cntPanel.setBorder(BorderFactory.createTitledBorder(Translator.getString("Menu.Tools.ProjectInfo.Statistics")));
         cntPanel.setLayout(new GridLayout(8, 2, 60, 10));
         cntPanel.add(modelResourceCntLabel);
         cntPanel.add(modelResourceCntValue);

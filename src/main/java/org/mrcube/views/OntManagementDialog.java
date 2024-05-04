@@ -45,13 +45,13 @@ class OntManagementDialog extends JDialog implements ActionListener {
 	private JButton cancelButton;
 	private JRadioButton renameButton;
 	private JRadioButton createButton;
-	private final SelectRDFSPanel panel;
+	private final SelectRDFSResourcePanel panel;
 	private static final String TITLE = Translator.getString("MetaModelManagementDialog.Title");
 
 	public OntManagementDialog(GraphManager gm) {
 		super(gm.getRootFrame(), TITLE, true);
 		getContentPane().add(getChooseOnePanel(), BorderLayout.NORTH);
-		panel = new SelectRDFSPanel(gm);
+		panel = new SelectRDFSResourcePanel(gm);
 		getContentPane().add(panel, BorderLayout.CENTER);
 		JPanel inlinePanel = new JPanel();
 		initButton();

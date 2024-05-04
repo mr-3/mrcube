@@ -39,11 +39,11 @@ public class OverviewDialog extends JDialog {
     private final MR3OverviewPanel overviewPanel;
     private static final int LENGH = 200;
 
-    public static final String RDF_EDITOR_OVERVIEW = Translator.getString("RDFEditorOverview.Title");
+    public static final String RDF_EDITOR_OVERVIEW = Translator.getString("InstanceEditorOverview.Title");
     public static final String CLASS_EDITOR_OVERVIEW = Translator.getString("ClassEditorOverview.Title");
     public static final String PROPERTY_EDITOR_OVERVIEW = Translator.getString("PropertyEditorOverview.Title");
 
-    public static final ImageIcon RDF_EDITOR_ICON = Utilities.getImageIcon(Translator.getString("RDFEditor.Icon"));
+    public static final ImageIcon RDF_EDITOR_ICON = Utilities.getImageIcon(Translator.getString("InstanceEditor.Icon"));
     public static final ImageIcon CLASS_EDITOR_ICON = Utilities.getImageIcon(Translator.getString("ClassEditor.Icon"));
     public static final ImageIcon PROPERTY_EDITOR_ICON = Utilities.getImageIcon(Translator
             .getString("PropertyEditor.Icon"));

@@ -81,7 +81,7 @@ public class ProjectManager {
      */
     private void addRDFResourceProjectModel(Model projectModel, GraphCell cell) {
         Rectangle2D rec = GraphConstants.getBounds(cell.getAttributes());
-        RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(cell.getAttributes());
+        InstanceModel info = (InstanceModel) GraphConstants.getValue(cell.getAttributes());
         Literal x = ResourceFactory.createPlainLiteral(String.valueOf(rec.getX()));
         projectModel.add(info.getURI(), MR3Resource.PointX, x);
         Literal y = ResourceFactory.createPlainLiteral(String.valueOf(rec.getY()));
@@ -104,7 +104,7 @@ public class ProjectManager {
         GraphCell sourceCell = (GraphCell) graph.getSourceVertex(edge);
         GraphCell targetCell = (GraphCell) graph.getTargetVertex(edge);
         if (RDFGraph.isRDFLiteralCell(targetCell)) {
-            RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(sourceCell.getAttributes());
+            InstanceModel info = (InstanceModel) GraphConstants.getValue(sourceCell.getAttributes());
 
             RDFSModel propInfo = (RDFSModel) GraphConstants.getValue(edge.getAttributes());
             Resource litRes = ResourceFactory.createResource(MR3Resource.Literal + Integer.toString(literal_cnt++));
@@ -257,7 +257,7 @@ public class ProjectManager {
         for (Object cell1 : cells) {
             GraphCell cell = (GraphCell) cell1;
             if (RDFGraph.isRDFResourceCell(cell)) {
-                RDFResourceModel info = (RDFResourceModel) GraphConstants.getValue(cell.getAttributes());
+                InstanceModel info = (InstanceModel) GraphConstants.getValue(cell.getAttributes());
                 if (info.getType().equals(MR3Resource.Empty)) {
                     info.setTypeCell(null, gmanager.getRDFGraph());
                     GraphConstants.setValue(cell.getAttributes(), info);

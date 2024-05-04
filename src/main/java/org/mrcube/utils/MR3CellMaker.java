@@ -74,8 +74,8 @@ public class MR3CellMaker {
             GraphConstants.setForeground(map, GraphUtilities.graphForegroundColor);
         } else {
             if (gmanager.getRDFGraph().isContains(edge)) {
-                GraphConstants.setLineColor(map, RDFPropertyCell.borderColor);
-                GraphConstants.setForeground(map, RDFPropertyCell.foregroundColor);
+                GraphConstants.setLineColor(map, InstancePropertyCell.borderColor);
+                GraphConstants.setForeground(map, InstancePropertyCell.foregroundColor);
             } else {
                 GraphConstants.setLineColor(map, Color.BLACK);
                 GraphConstants.setForeground(map, Color.BLACK);
@@ -155,9 +155,9 @@ public class MR3CellMaker {
 
     public GraphCell insertRDFLiteral(Rectangle2D rect, MR3Literal literal) {
         JGraph graph = gmanager.getRDFGraph();
-        AttributeMap map = getLiteralMap(rect, RDFLiteralCell.backgroundColor);
+        AttributeMap map = getLiteralMap(rect, LiteralCell.backgroundColor);
 
-        DefaultGraphCell vertex = new RDFLiteralCell(literal);
+        DefaultGraphCell vertex = new LiteralCell(literal);
         setCell(graph, vertex, map);
         if (literal == null) {
             GraphConstants.setValue(vertex.getAttributes(), Utilities.createLiteral("", "", null));
@@ -170,7 +170,7 @@ public class MR3CellMaker {
 
     public void addTypeCell(GraphCell rdfCell, AttributeMap attributes) {
         RDFGraph graph = gmanager.getRDFGraph();
-        RDFResourceModel resInfo = (RDFResourceModel) GraphConstants.getValue(rdfCell.getAttributes());
+        InstanceModel resInfo = (InstanceModel) GraphConstants.getValue(rdfCell.getAttributes());
         if (gmanager.isShowTypeCell()) {
             GraphCell typeViewCell = new TypeViewCell(resInfo.getTypeInfo());
             AttributeMap typeViewMap = getTypeMap(GraphUtilities.getTypeCellRectangle(rdfCell, resInfo.getTypeInfo(), gmanager));
@@ -189,15 +189,15 @@ public class MR3CellMaker {
         AttributeMap attributes = new AttributeMap();
         point = graph.snap(new Point2D.Double(point.getX(), point.getY()));
 
-        RDFResourceModel model = null;
+        InstanceModel model = null;
         if (type == URIType.ANONYMOUS) {
-            model = new RDFResourceModel(type, ResourceFactory.createResource().toString());
+            model = new InstanceModel(type, ResourceFactory.createResource().toString());
         } else {
-            model = new RDFResourceModel(type, uri);
+            model = new InstanceModel(type, uri);
         }
-        RDFResourceCell rdfCell = new RDFResourceCell(model);
+        InstanceCell rdfCell = new InstanceCell(model);
         rdfCell.add(new DefaultPort());
-        AttributeMap resMap = getResourceMap(getRDFNodeRectangle(point, uri), RDFResourceCell.backgroundColor);
+        AttributeMap resMap = getResourceMap(getRDFNodeRectangle(point, uri), InstanceCell.backgroundColor);
         attributes.put(rdfCell, resMap);
         model.setTypeCell((GraphCell) resTypeCell, gmanager.getRDFGraph());
         GraphConstants.setValue(rdfCell.getAttributes(), model);
@@ -252,7 +252,7 @@ public class MR3CellMaker {
     }
 
     public Edge connect(Port source, Port target, Object info, RDFGraph graph) {
-        DefaultEdge edge = new RDFPropertyCell();
+        DefaultEdge edge = new InstancePropertyCell();
         ConnectionSet cs = new ConnectionSet(edge, source, target);
         AttributeMap attributes = new AttributeMap();
         AttributeMap map = getEdgeMap(info, edge);
@@ -272,7 +272,7 @@ public class MR3CellMaker {
     }
 
     public void selfConnect(Port port, String edgeName, RDFGraph graph) {
-        DefaultEdge edge = new RDFPropertyCell(edgeName);
+        DefaultEdge edge = new InstancePropertyCell(edgeName);
         ConnectionSet cs = new ConnectionSet(edge, port, port);
         AttributeMap attributes = new AttributeMap();
 

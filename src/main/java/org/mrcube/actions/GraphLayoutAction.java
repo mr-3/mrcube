@@ -63,14 +63,15 @@ public class GraphLayoutAction extends AbstractAction {
             return Translator.getString("Class");
         } else if (type == GraphType.PROPERTY) {
             return Translator.getString("Property");
-        } else {
-            return type.toString();
+        } else if (type == GraphType.INSTANCE){
+            return Translator.getString("Instance");
         }
+        return Translator.getString("Instance");
     }
 
     public void actionPerformed(ActionEvent arg0) {
         switch (graphType) {
-            case RDF -> GraphLayoutUtilities.RDF_LAYOUT_DIRECTION = direction;
+            case INSTANCE -> GraphLayoutUtilities.RDF_LAYOUT_DIRECTION = direction;
             case CLASS -> GraphLayoutUtilities.CLASS_LAYOUT_DIRECTION = direction;
             case PROPERTY -> GraphLayoutUtilities.PROPERTY_LAYOUT_DIRECTION = direction;
         }

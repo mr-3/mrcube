@@ -80,7 +80,7 @@ public class PasteAction extends AbstractAction {
                 pasteGraphCellSet.add(cell);
                 cloneRDFSPropertyCell(cell);
                 gmanager.selectPropertyCell(cell);
-            } else if (graph.getType() == GraphType.RDF) {
+            } else if (graph.getType() == GraphType.INSTANCE) {
                 if (RDFGraph.isRDFResourceCell(cell)) {
                     pasteGraphCellSet.add(cell);
                     cloneRDFResourceCell(cell);
@@ -107,7 +107,7 @@ public class PasteAction extends AbstractAction {
         }
         graph.getGraphLayoutCache().remove(removeGraphCellSet.toArray());
         gmanager.resetTypeCells();
-        if (graph.getType() == GraphType.RDF) {
+        if (graph.getType() == GraphType.INSTANCE) {
             HistoryManager.saveHistory(HistoryType.PASTE_RDF_GRAPH);
         } else if (graph.getType() == GraphType.CLASS) {
             HistoryManager.saveHistory(HistoryType.PASTE_CLASS_GRAPH);
@@ -130,8 +130,8 @@ public class PasteAction extends AbstractAction {
      * @param cell
      */
     private void cloneRDFResourceCell(GraphCell cell) {
-        RDFResourceModel orgInfo = (RDFResourceModel) GraphConstants.getValue(cell.getAttributes());
-        RDFResourceModel newInfo = new RDFResourceModel(orgInfo);
+        InstanceModel orgInfo = (InstanceModel) GraphConstants.getValue(cell.getAttributes());
+        InstanceModel newInfo = new InstanceModel(orgInfo);
         newInfo.setURI(cloneRDFURI(newInfo));
         GraphConstants.setValue(cell.getAttributes(), newInfo);
         graph.getGraphLayoutCache().editCell(cell, cell.getAttributes());
@@ -182,11 +182,11 @@ public class PasteAction extends AbstractAction {
     /*
      * リソースが重複しないように，-copy番号をローカル名に追加する
      */
-    private String cloneRDFURI(RDFResourceModel info) {
-        if (gmanager.isDuplicated(info.getURIStr(), null, GraphType.RDF)) {
+    private String cloneRDFURI(InstanceModel info) {
+        if (gmanager.isDuplicated(info.getURIStr(), null, GraphType.INSTANCE)) {
             for (int j = 1; true; j++) {
                 String compURI = info.getURIStr() + "-copy" + j;
-                if (!gmanager.isDuplicated(compURI, null, GraphType.RDF)) {
+                if (!gmanager.isDuplicated(compURI, null, GraphType.INSTANCE)) {
                     return info.getURIStr() + "-copy" + j;
                 }
             }

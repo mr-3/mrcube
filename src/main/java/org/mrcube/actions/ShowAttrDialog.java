@@ -63,7 +63,7 @@ public class ShowAttrDialog extends MR3AbstractAction {
             return;
         }
 
-        if (project.getFocusedEditorType() == GraphType.RDF) {
+        if (project.getFocusedEditorType() == GraphType.INSTANCE) {
             graph = mr3.getRDFGraph();
             selectionCell = graph.getSelectionCell();
         } else if (project.getFocusedEditorType() == GraphType.CLASS) {
