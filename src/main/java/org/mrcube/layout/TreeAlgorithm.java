@@ -57,7 +57,7 @@ class TreeAlgorithm {
 
     public void setSeparation(GraphType graphType) {
         switch (graphType) {
-            case INSTANCE:
+            case Instance:
                 if (rootOrient_ == 'u') {
                     levelSeparation_ = GraphLayoutUtilities.RDF_VERTICAL_SPACE;
                     subtreeSeparation_ = siblingSeparation_ = GraphLayoutUtilities.RDF_HORIZONTAL_SPACE;
@@ -66,7 +66,7 @@ class TreeAlgorithm {
                     subtreeSeparation_ = siblingSeparation_ = GraphLayoutUtilities.RDF_VERTICAL_SPACE;
                 }
                 break;
-            case CLASS:
+            case Class:
                 if (rootOrient_ == 'u') {
                     levelSeparation_ = GraphLayoutUtilities.CLASS_VERTICAL_SPACE;
                     subtreeSeparation_ = siblingSeparation_ = GraphLayoutUtilities.CLASS_HORIZONTAL_SPACE;
@@ -75,7 +75,7 @@ class TreeAlgorithm {
                     subtreeSeparation_ = siblingSeparation_ = GraphLayoutUtilities.CLASS_VERTICAL_SPACE;
                 }
                 break;
-            case PROPERTY:
+            case Property:
                 if (rootOrient_ == 'u') {
                     levelSeparation_ = GraphLayoutUtilities.PROPERTY_VERTICAL_SPACE;
                     subtreeSeparation_ = siblingSeparation_ = GraphLayoutUtilities.PROPERTY_HORIZONTAL_SPACE;

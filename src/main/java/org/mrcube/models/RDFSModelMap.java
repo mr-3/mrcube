@@ -144,7 +144,7 @@ public class RDFSModelMap {
     }
 
     private boolean isRDFDucplicatedCheck(MR3Constants.GraphType type, GraphCell cell) {
-        if (type == MR3Constants.GraphType.INSTANCE) {
+        if (type == MR3Constants.GraphType.Instance) {
             if (cell == null) {
                 return true;
             }

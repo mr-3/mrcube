@@ -33,6 +33,7 @@ import org.mrcube.models.InstanceModel;
 import org.mrcube.models.RDFSModel;
 import org.mrcube.utils.MR3CellMaker;
 import org.mrcube.utils.Translator;
+import org.mrcube.utils.Utilities;
 
 import javax.swing.*;
 import java.awt.*;
@@ -50,11 +51,12 @@ public class TransformElementAction extends AbstractAction {
     private final GraphType fromGraphType;
     private final GraphType toGraphType;
     private final GraphManager gmanager;
+    private static final ImageIcon ICON = Utilities.getImageIcon("transform.png");
 
     // private RDFSModelMap rdfsInfoMap = RDFSModelMap.getInstance();
 
     public TransformElementAction(RDFGraph g, GraphManager gm, GraphType fromType, GraphType toType) {
-        super(Translator.getString("Action.TransformElement." + fromType + "To" + toType + ".Text"));
+        super(Translator.getString("Action.TransformElement." + fromType + "To" + toType + ".Text"), ICON);
         graph = g;
         gmanager = gm;
         fromGraphType = fromType;
@@ -67,13 +69,13 @@ public class TransformElementAction extends AbstractAction {
         for (Object cell1 : cells) {
             GraphCell cell = (GraphCell) cell1;
 
-            if (fromGraphType == GraphType.INSTANCE && RDFGraph.isRDFResourceCell(cell)) {
+            if (fromGraphType == GraphType.Instance && RDFGraph.isRDFResourceCell(cell)) {
                 InstanceModel info = (InstanceModel) GraphConstants.getValue(cell.getAttributes());
                 uriSet.add(info.getURIStr());
-            } else if (fromGraphType == GraphType.CLASS && RDFGraph.isRDFSClassCell(cell)) {
+            } else if (fromGraphType == GraphType.Class && RDFGraph.isRDFSClassCell(cell)) {
                 RDFSModel info = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
                 uriSet.add(info.getURIStr());
-            } else if (fromGraphType == GraphType.PROPERTY && RDFGraph.isRDFSPropertyCell(cell)) {
+            } else if (fromGraphType == GraphType.Property && RDFGraph.isRDFSPropertyCell(cell)) {
                 RDFSModel info = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
                 uriSet.add(info.getURIStr());
             }
@@ -92,9 +94,9 @@ public class TransformElementAction extends AbstractAction {
         MR3CellMaker cellMaker = new MR3CellMaker(gmanager);
         for (String uri : uriSet) {
             switch (toGraphType) {
-                case INSTANCE -> cellMaker.insertRDFResource(pt, uri, null, URIType.URI);
-                case CLASS -> cellMaker.insertClass(pt, uri);
-                case PROPERTY -> cellMaker.insertProperty(pt, uri);
+                case Instance -> cellMaker.insertRDFResource(pt, uri, null, URIType.URI);
+                case Class -> cellMaker.insertClass(pt, uri);
+                case Property -> cellMaker.insertProperty(pt, uri);
             }
             pt.x += 20;
             pt.y += 20;

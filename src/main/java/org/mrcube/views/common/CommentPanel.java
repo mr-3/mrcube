@@ -64,7 +64,7 @@ public class CommentPanel extends JPanel implements ActionListener {
 
 	public CommentPanel(Frame frame) {
 		rootFrame = frame;
-		graphType = GraphType.INSTANCE;
+		graphType = GraphType.Instance;
 		editCommentDialogRef = new WeakReference<>(null);
 
 		commentTableModel = new CommentTableModel(new Object[] { MR3Constants.LANG,
@@ -153,13 +153,13 @@ public class CommentPanel extends JPanel implements ActionListener {
 					resInfo.getCommentList());
 			setCommentList();
 			List<MR3Literal> afterMR3CommentList = resInfo.getCommentList();
-			if (graphType == GraphType.INSTANCE) {
+			if (graphType == GraphType.Instance) {
 				HistoryManager.saveHistory(HistoryType.ADD_RESOURCE_COMMENT, beforeMR3CommentList,
 						afterMR3CommentList);
-			} else if (graphType == GraphType.CLASS) {
+			} else if (graphType == GraphType.Class) {
 				HistoryManager.saveHistory(HistoryType.ADD_CLASS_COMMENT, beforeMR3CommentList,
 						afterMR3CommentList);
-			} else if (graphType == GraphType.PROPERTY) {
+			} else if (graphType == GraphType.Property) {
 				HistoryManager.saveHistory(HistoryType.ADD_ONT_PROPERTY_COMMENT,
 						beforeMR3CommentList, afterMR3CommentList);
 			}
@@ -173,13 +173,13 @@ public class CommentPanel extends JPanel implements ActionListener {
 					resInfo.getCommentList());
 			setCommentList();
 			List<MR3Literal> afterMR3CommentList = resInfo.getCommentList();
-			if (graphType == GraphType.INSTANCE) {
+			if (graphType == GraphType.Instance) {
 				HistoryManager.saveHistory(HistoryType.DELETE_RESOURCE_COMMENT,
 						beforeMR3CommentList, afterMR3CommentList);
-			} else if (graphType == GraphType.CLASS) {
+			} else if (graphType == GraphType.Class) {
 				HistoryManager.saveHistory(HistoryType.DELETE_CLASS_COMMENT, beforeMR3CommentList,
 						afterMR3CommentList);
-			} else if (graphType == GraphType.PROPERTY) {
+			} else if (graphType == GraphType.Property) {
 				HistoryManager.saveHistory(HistoryType.DELETE_ONT_PROPERTY_COMMENT,
 						beforeMR3CommentList, afterMR3CommentList);
 			}
@@ -239,13 +239,13 @@ public class CommentPanel extends JPanel implements ActionListener {
 							resInfo.getCommentList());
 					setCommentList();
 					List<MR3Literal> afterMR3CommentList = resInfo.getCommentList();
-					if (graphType == GraphType.INSTANCE) {
+					if (graphType == GraphType.Instance) {
 						HistoryManager.saveHistory(HistoryType.EDIT_RESOURCE_COMMENT,
 								beforeMR3CommentList, afterMR3CommentList);
-					} else if (graphType == GraphType.CLASS) {
+					} else if (graphType == GraphType.Class) {
 						HistoryManager.saveHistory(HistoryType.EDIT_CLASS_COMMENT,
 								beforeMR3CommentList, afterMR3CommentList);
-					} else if (graphType == GraphType.PROPERTY) {
+					} else if (graphType == GraphType.Property) {
 						HistoryManager.saveHistory(HistoryType.EDIT_ONT_PROPERTY_COMMENT,
 								beforeMR3CommentList, afterMR3CommentList);
 					}

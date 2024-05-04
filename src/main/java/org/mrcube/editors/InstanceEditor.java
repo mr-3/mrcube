@@ -56,7 +56,7 @@ public class InstanceEditor extends Editor {
     private static WeakReference<LiteralPanel> litPanelRef;
 
     public InstanceEditor(GraphManager gm) {
-        graph = new RDFGraph(gm, new RDFGraphModel(), GraphType.INSTANCE);
+        graph = new RDFGraph(gm, new RDFGraphModel(), GraphType.Instance);
         graph.setFont(graphFont);
         graph.getSelectionModel().setChildrenSelectable(false);
         rdfGraphMarqueeHandler = new RDFGraphMarqueeHandler(gm, graph);

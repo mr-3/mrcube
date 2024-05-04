@@ -53,7 +53,7 @@ public class MetaModelManagementDialog extends JDialog implements ActionListener
 		getContentPane().add(inlinePanel, BorderLayout.SOUTH);
 
 		setLocationRelativeTo(gm.getRootFrame());
-		setSize(new Dimension(200, 150));
+		setSize(new Dimension(300, 150));
 		setVisible(false);
 	}
 

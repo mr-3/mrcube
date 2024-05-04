@@ -91,9 +91,9 @@ public class InstancePanel extends JPanel implements ListSelectionListener {
         uriPanel = new URIPanel();
         typePanel = new TypePanel();
         labelPanel = new LabelPanel();
-        labelPanel.setGraphType(GraphType.INSTANCE);
+        labelPanel.setGraphType(GraphType.Instance);
         commentPanel = new CommentPanel(gmanager.getRootFrame());
-        commentPanel.setGraphType(GraphType.INSTANCE);
+        commentPanel.setGraphType(GraphType.Instance);
 
         menuList = new JList(new Object[]{uriPanel.toString(), typePanel.toString(), MR3Constants.LABEL,
                 MR3Constants.COMMENT});
@@ -347,7 +347,7 @@ public class InstancePanel extends JPanel implements ListSelectionListener {
                 return false;
             }
             String uri = getResourceURI();
-            return !PrefixNSUtil.isValidURI(uri) || isLocalDuplicated(uri) || gmanager.isDuplicatedWithDialog(uri, cell, GraphType.INSTANCE);
+            return !PrefixNSUtil.isValidURI(uri) || isLocalDuplicated(uri) || gmanager.isDuplicatedWithDialog(uri, cell, GraphType.Instance);
         }
 
         String getResourceURI() {
@@ -471,7 +471,7 @@ public class InstancePanel extends JPanel implements ListSelectionListener {
             if (rdfsModelMap.isClassCell(uri)) {
                 typeCell = gmanager.getClassCell(uri, false);
             } else {
-                if (gmanager.isDuplicatedWithDialog(uri.getURI(), null, GraphType.CLASS)) {
+                if (gmanager.isDuplicatedWithDialog(uri.getURI(), null, GraphType.Class)) {
                     return null;
                 }
                 if (MR3.OFF_META_MODEL_MANAGEMENT) {

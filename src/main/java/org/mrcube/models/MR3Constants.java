@@ -74,7 +74,7 @@ public class MR3Constants {
     public static boolean IS_SHOW_PROPERTY_LABEL = true;
 
     public enum GraphType {
-        INSTANCE, CLASS, PROPERTY
+        Instance, Class, Property
     }
 
     public enum DeployType {

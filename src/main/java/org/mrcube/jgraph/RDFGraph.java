@@ -433,7 +433,7 @@ public class RDFGraph extends JGraph {
             GraphCell cell = (GraphCell) getFirstCellForLocation(event.getX(), event.getY());
             if (cell != null) {
                 String msg = "";
-                if (type == GraphType.INSTANCE) {
+                if (type == GraphType.Instance) {
                     if (isRDFLiteralCell(cell)) {
                         msg = getRDFLiteralToolTipText(cell);
                     } else if (isRDFResourceCell(cell)) {
@@ -449,11 +449,11 @@ public class RDFGraph extends JGraph {
                             }
                         }
                     }
-                } else if (type == GraphType.CLASS) {
+                } else if (type == GraphType.Class) {
                     if (isRDFSClassCell(cell)) {
                         msg = getClassToolTipText(cell);
                     }
-                } else if (type == GraphType.PROPERTY) {
+                } else if (type == GraphType.Property) {
                     if (isRDFSPropertyCell(cell)) {
                         msg = getPropertyToolTipText(cell);
                     }

@@ -69,7 +69,7 @@ public class EditRDFPropertyAction {
         if (rdfsModelMap.isPropertyCell(uri) || uri.equals(MR3Resource.Nil)) {
             propertyCell = gmanager.getPropertyCell(uri, false);
         } else {
-            if (gmanager.isDuplicatedWithDialog(uri.getURI(), null, GraphType.PROPERTY)) {
+            if (gmanager.isDuplicatedWithDialog(uri.getURI(), null, GraphType.Property)) {
                 return false;
             }
             if (MR3.OFF_META_MODEL_MANAGEMENT) {

@@ -132,9 +132,9 @@ public class SaveGraphImageAction extends AbstractAction {
 
     private RDFGraph getRDFGraph(MR3Constants.GraphType graphType) {
         return switch (graphType) {
-            case INSTANCE -> gmanager.getRDFGraph();
-            case CLASS -> gmanager.getClassGraph();
-            case PROPERTY -> gmanager.getPropertyGraph();
+            case Instance -> gmanager.getRDFGraph();
+            case Class -> gmanager.getClassGraph();
+            case Property -> gmanager.getPropertyGraph();
             default -> gmanager.getRDFGraph();
         };
     }

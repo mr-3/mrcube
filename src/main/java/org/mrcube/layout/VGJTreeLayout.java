@@ -60,8 +60,8 @@ public class VGJTreeLayout {
         }
 
         treeAlgorithm.setOrientation(GraphLayoutUtilities.getVGJRDFLayoutDirection());
-        treeAlgorithm.setSeparation(GraphType.INSTANCE);
-        treeAlgorithm.applyTreeAlgorithm(dataSet, null, GraphType.INSTANCE);
+        treeAlgorithm.setSeparation(GraphType.Instance);
+        treeAlgorithm.applyTreeAlgorithm(dataSet, null, GraphType.Instance);
         dataSet.remove(cellLayoutMap.get(tmpRoot));
         GraphLayoutUtilities.removeTemporaryRoot(model, tmpRoot);
         GraphLayoutUtilities.centralizeGraph(dataSet);
@@ -75,7 +75,7 @@ public class VGJTreeLayout {
         }
         Map<RDFNode, GraphLayoutData> cellLayoutMap = new HashMap<>();
         GraphLayoutUtilities.initPropertyGraphLayoutData(cellLayoutMap);
-        return getVGJCellLayoutMap(cellLayoutMap, GraphLayoutUtilities.getVGJPropertyLayoutDirection(), GraphType.PROPERTY);
+        return getVGJCellLayoutMap(cellLayoutMap, GraphLayoutUtilities.getVGJPropertyLayoutDirection(), GraphType.Property);
     }
 
     public static Map<RDFNode, GraphLayoutData> getVGJClassCellLayoutMap() {
@@ -84,7 +84,7 @@ public class VGJTreeLayout {
         }
         Map<RDFNode, GraphLayoutData> cellLayoutMap = new HashMap<>();
         GraphLayoutUtilities.initClassGraphLayoutData(cellLayoutMap);
-        return getVGJCellLayoutMap(cellLayoutMap, GraphLayoutUtilities.getVGJClassLayoutDirection(), GraphType.CLASS);
+        return getVGJCellLayoutMap(cellLayoutMap, GraphLayoutUtilities.getVGJClassLayoutDirection(), GraphType.Class);
     }
 
     private static Map<RDFNode, GraphLayoutData> getVGJCellLayoutMap(Map<RDFNode, GraphLayoutData> cellLayoutMap, char orientation, GraphType type) {

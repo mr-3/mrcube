@@ -481,7 +481,7 @@ public class GraphManager {
                     }
                     RDFSModel rdfsModel = resInfo.getTypeInfo();
                     // RDFエディタ内のクラス定義は，重複とみなさないようにする．
-                    return (!(type == GraphType.CLASS && rdfsModel.getURI().equals(RDFS.Class) || type == GraphType.PROPERTY
+                    return (!(type == GraphType.Class && rdfsModel.getURI().equals(RDFS.Class) || type == GraphType.Property
                             && rdfsModel.getURI().equals(RDF.Property)));
                 }
             }
@@ -528,11 +528,11 @@ public class GraphManager {
      * 名前空間のリストを返す
      */
     public Set<String> getNameSpaceSet(GraphType type) {
-        if (type == GraphType.INSTANCE) {
+        if (type == GraphType.Instance) {
             return getRDFNameSpaceSet();
-        } else if (type == GraphType.CLASS) {
+        } else if (type == GraphType.Class) {
             return getClassNameSpaceSet();
-        } else if (type == GraphType.PROPERTY) {
+        } else if (type == GraphType.Property) {
             return getPropertyNameSpaceSet();
         }
         return new HashSet<>();
@@ -1158,19 +1158,19 @@ public class GraphManager {
     public void applyLayout(GraphType graphType) {
         RDFSModelExtraction extractRDFS = new RDFSModelExtraction(this);
         switch (graphType) {
-            case INSTANCE:
+            case Instance:
                 switch (GraphLayoutUtilities.LAYOUT_TYPE) {
                     case GraphLayoutUtilities.VGJ_TREE_LAYOUT -> applyVGJRDFLayout(graphType);
                     case GraphLayoutUtilities.JGRAPH_TREE_LAYOUT -> applyJGraphRDFLayout();
                 }
                 break;
-            case CLASS:
+            case Class:
                 switch (GraphLayoutUtilities.LAYOUT_TYPE) {
                     case GraphLayoutUtilities.VGJ_TREE_LAYOUT -> applyVGJClassLayout(extractRDFS);
                     case GraphLayoutUtilities.JGRAPH_TREE_LAYOUT -> applyJGraphClassLayout();
                 }
                 break;
-            case PROPERTY:
+            case Property:
                 switch (GraphLayoutUtilities.LAYOUT_TYPE) {
                     case GraphLayoutUtilities.VGJ_TREE_LAYOUT -> applyVGJPropertyLayout(extractRDFS);
                     case GraphLayoutUtilities.JGRAPH_TREE_LAYOUT -> applyJGraphPropertyLayout();
@@ -1270,7 +1270,7 @@ public class GraphManager {
                 moveCell(targetCell, data, rdfGraph);
             }
         }
-        if (graphType == GraphType.INSTANCE && isShowTypeCell()) {
+        if (graphType == GraphType.Instance && isShowTypeCell()) {
             addTypeCells();
         }
     }

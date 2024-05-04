@@ -60,8 +60,8 @@ public class PropertyPanel extends OntologyPanel {
 
     public PropertyPanel(GraphManager manager) {
         super(manager.getPropertyGraph(), manager);
-        labelPanel.setGraphType(GraphType.PROPERTY);
-        commentPanel.setGraphType(GraphType.PROPERTY);
+        labelPanel.setGraphType(GraphType.Property);
+        commentPanel.setGraphType(GraphType.Property);
         selectRDFSDialogRef = new WeakReference<SelectRDFSResourceDialog>(null);
 
         regionPanel = new RegionPanel();

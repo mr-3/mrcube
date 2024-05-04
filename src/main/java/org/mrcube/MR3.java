@@ -103,7 +103,7 @@ public class MR3 extends JFrame implements ChangeListener {
         MR3Constants.loadResourceBundle();
         initWeakReferences();
         mr3LogConsole = new MR3LogConsole(this, Translator.getString("LogConsole.Title"),
-                Utilities.getImageIcon("ic_message_black_18dp.png").getImage());
+                Utilities.getImageIcon("log.png").getImage());
         gmanager = new GraphManager(userPrefs, this);
         mr3Reader = new MR3Reader(gmanager);
         mr3Writer = new MR3Writer(gmanager);
@@ -194,13 +194,13 @@ public class MR3 extends JFrame implements ChangeListener {
         openFileAction = new OpenFileAction(this);
         saveFileAction = new SaveFileAction(this, SaveFileAction.SAVE_PROJECT, SaveFileAction.SAVE_PROJECT_ICON);
         saveFileAsAction = new SaveFileAction(this, SaveFileAction.SAVE_AS_PROJECT, SaveFileAction.SAVE_AS_PROJECT_ICON);
-        saveRDFGraphAsImageFileAction = new SaveGraphImageAction(gmanager, GraphType.INSTANCE,
+        saveRDFGraphAsImageFileAction = new SaveGraphImageAction(gmanager, GraphType.Instance,
                 Translator.getString("Menu.File.SaveInstanceGraphAsImageFile.Text"),
                 Utilities.getImageIcon(Translator.getString("InstanceEditor.Icon")));
-        saveClassGraphAsImageFileAction = new SaveGraphImageAction(gmanager, GraphType.CLASS,
+        saveClassGraphAsImageFileAction = new SaveGraphImageAction(gmanager, GraphType.Class,
                 Translator.getString("Menu.File.SaveClassGraphAsImageFile.Text"),
                 Utilities.getImageIcon(Translator.getString("ClassEditor.Icon")));
-        savePropertyGraphAsImageFileAction = new SaveGraphImageAction(gmanager, GraphType.PROPERTY,
+        savePropertyGraphAsImageFileAction = new SaveGraphImageAction(gmanager, GraphType.Property,
                 Translator.getString("Menu.File.SavePropertyGraphAsImageFile.Text"),
                 Utilities.getImageIcon(Translator.getString("PropertyEditor.Icon")));
         showValidatorAction = new ShowValidator(this);
@@ -516,11 +516,11 @@ public class MR3 extends JFrame implements ChangeListener {
         menu.add(showToolTips);
         menu.addSeparator();
 
-        menu.add(new GraphLayoutAction(gmanager, GraphType.INSTANCE, GraphLayoutUtilities.LEFT_TO_RIGHT));
-        menu.add(new GraphLayoutAction(gmanager, GraphType.CLASS, GraphLayoutUtilities.LEFT_TO_RIGHT));
-        menu.add(new GraphLayoutAction(gmanager, GraphType.CLASS, GraphLayoutUtilities.UP_TO_DOWN));
-        menu.add(new GraphLayoutAction(gmanager, GraphType.PROPERTY, GraphLayoutUtilities.LEFT_TO_RIGHT));
-        menu.add(new GraphLayoutAction(gmanager, GraphType.PROPERTY, GraphLayoutUtilities.UP_TO_DOWN));
+        menu.add(new GraphLayoutAction(gmanager, GraphType.Instance, GraphLayoutUtilities.LEFT_TO_RIGHT));
+        menu.add(new GraphLayoutAction(gmanager, GraphType.Class, GraphLayoutUtilities.LEFT_TO_RIGHT));
+        menu.add(new GraphLayoutAction(gmanager, GraphType.Class, GraphLayoutUtilities.UP_TO_DOWN));
+        menu.add(new GraphLayoutAction(gmanager, GraphType.Property, GraphLayoutUtilities.LEFT_TO_RIGHT));
+        menu.add(new GraphLayoutAction(gmanager, GraphType.Property, GraphLayoutUtilities.UP_TO_DOWN));
 
         return menu;
     }

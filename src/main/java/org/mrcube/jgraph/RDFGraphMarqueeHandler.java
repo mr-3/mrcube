@@ -324,7 +324,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 
         if (dialog.isAnonymous()) {
             return cellMaker.insertRDFResource(pt, uri, resTypeCell, URIType.ANONYMOUS);
-        } else if (PrefixNSUtil.isValidURI(uri) && !gmanager.isDuplicatedWithDialog(uri, null, GraphType.INSTANCE)) {
+        } else if (PrefixNSUtil.isValidURI(uri) && !gmanager.isDuplicatedWithDialog(uri, null, GraphType.Instance)) {
             return cellMaker.insertRDFResource(pt, uri, resTypeCell, URIType.URI);
         }
         return null;
@@ -357,7 +357,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
             graph.setSelectionCell(targetCell);
         }
 
-        if (graph.getType() == GraphType.INSTANCE) {
+        if (graph.getType() == GraphType.Instance) {
             if (selectedResourcePorts.size() == 0) {
                 HistoryManager.saveHistory(HistoryType.INSERT_RESOURCE, targetCell);
             } else if (0 < selectedResourcePorts.size()) {
@@ -420,8 +420,8 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     private void addTransformMenu(JPopupMenu menu, Object cell) {
         if (isCellSelected(cell)) {
             menu.addSeparator();
-            menu.add(new TransformElementAction(graph, gmanager, GraphType.INSTANCE, GraphType.CLASS));
-            menu.add(new TransformElementAction(graph, gmanager, GraphType.INSTANCE, GraphType.PROPERTY));
+            menu.add(new TransformElementAction(graph, gmanager, GraphType.Instance, GraphType.Class));
+            menu.add(new TransformElementAction(graph, gmanager, GraphType.Instance, GraphType.Property));
         }
     }
 

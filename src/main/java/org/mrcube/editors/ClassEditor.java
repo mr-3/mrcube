@@ -49,7 +49,7 @@ public class ClassEditor extends Editor {
     private ClassGraphMarqueeHandler classGraphMarqueeHandler;
 
     public ClassEditor(GraphManager gm) {
-        graph = new RDFGraph(gm, new RDFGraphModel(), GraphType.CLASS);
+        graph = new RDFGraph(gm, new RDFGraphModel(), GraphType.Class);
         graph.setFont(graphFont);
         graph.setDisconnectable(false);
         initEditor(graph, gm);

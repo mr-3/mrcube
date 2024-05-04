@@ -63,13 +63,13 @@ public class ShowAttrDialog extends MR3AbstractAction {
             return;
         }
 
-        if (project.getFocusedEditorType() == GraphType.INSTANCE) {
+        if (project.getFocusedEditorType() == GraphType.Instance) {
             graph = mr3.getRDFGraph();
             selectionCell = graph.getSelectionCell();
-        } else if (project.getFocusedEditorType() == GraphType.CLASS) {
+        } else if (project.getFocusedEditorType() == GraphType.Class) {
             graph = mr3.getClassGraph();
             selectionCell = graph.getSelectionCell();
-        } else if (project.getFocusedEditorType() == GraphType.PROPERTY) {
+        } else if (project.getFocusedEditorType() == GraphType.Property) {
             graph = mr3.getPropertyGraph();
             selectionCell = graph.getSelectionCell();
         }

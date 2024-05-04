@@ -109,17 +109,17 @@ public class MR3ProjectPanel extends JPanel {
 
     public void displayEditorInFront(GraphType graphType) {
         try {
-            if (graphType == GraphType.INSTANCE) {
+            if (graphType == GraphType.Instance) {
                 if (!rdfEditorFrame.isSelected()) {
                     rdfEditorFrame.setSelected(true);
                     rdfEditor.getGraph().requestFocusInWindow();
                 }
-            } else if (graphType == GraphType.CLASS) {
+            } else if (graphType == GraphType.Class) {
                 if (!classEditorFrame.isSelected()) {
                     classEditorFrame.setSelected(true);
                     classEditor.getGraph().requestFocusInWindow();
                 }
-            } else if (graphType == GraphType.PROPERTY) {
+            } else if (graphType == GraphType.Property) {
                 if (!propertyEditorFrame.isSelected()) {
                     propertyEditorFrame.setSelected(true);
                     propertyEditor.getGraph().requestFocusInWindow();
@@ -188,16 +188,16 @@ public class MR3ProjectPanel extends JPanel {
 
     public GraphType getFocusedEditorType() {
         if (desktopPane.getSelectedFrame() == null) {
-            return GraphType.INSTANCE;
+            return GraphType.Instance;
         }
         if (desktopPane.getSelectedFrame().equals(rdfEditorFrame)) {
-            return GraphType.INSTANCE;
+            return GraphType.Instance;
         } else if (desktopPane.getSelectedFrame().equals(classEditorFrame)) {
-            return GraphType.CLASS;
+            return GraphType.Class;
         } else if (desktopPane.getSelectedFrame().equals(propertyEditorFrame)) {
-            return GraphType.PROPERTY;
+            return GraphType.Property;
         }
-        return GraphType.INSTANCE;
+        return GraphType.Instance;
     }
 
     public void resetEditors() {

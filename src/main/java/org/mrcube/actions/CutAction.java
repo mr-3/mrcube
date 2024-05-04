@@ -60,9 +60,9 @@ public class CutAction extends AbstractAction {
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (graph.getType() == GraphType.INSTANCE) {
+        if (graph.getType() == GraphType.Instance) {
             HistoryManager.saveHistory(HistoryType.CUT_RDF_GRAPH);
-        } else if (graph.getType() == GraphType.CLASS) {
+        } else if (graph.getType() == GraphType.Class) {
             RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
             for (Object cell : graph.getSelectionCells()) {
                 GraphCell gcell = (GraphCell) cell;
@@ -73,7 +73,7 @@ public class CutAction extends AbstractAction {
                 }
             }
             HistoryManager.saveHistory(HistoryType.CUT_CLASS_GRAPH);
-        } else if (graph.getType() == GraphType.PROPERTY) {
+        } else if (graph.getType() == GraphType.Property) {
             RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
             for (Object cell : graph.getSelectionCells()) {
                 GraphCell gcell = (GraphCell) cell;

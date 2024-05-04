@@ -89,7 +89,7 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
             return null;
         }
         String uri = dialog.getURI();
-        if (PrefixNSUtil.isValidURI(uri) && !gmanager.isDuplicatedWithDialog(uri, null, GraphType.PROPERTY)) {
+        if (PrefixNSUtil.isValidURI(uri) && !gmanager.isDuplicatedWithDialog(uri, null, GraphType.Property)) {
             return cellMaker.insertProperty(pt, uri);
         }
         return null;
@@ -101,7 +101,7 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
             return null;
         }
         String uri = dialog.getURI();
-        if (PrefixNSUtil.isValidURI(uri) && !gmanager.isDuplicatedWithDialog(uri, null, GraphType.PROPERTY)) {
+        if (PrefixNSUtil.isValidURI(uri) && !gmanager.isDuplicatedWithDialog(uri, null, GraphType.Property)) {
             DefaultGraphCell cell = cellMaker.insertProperty(pt, uri);
             Port subPort = (Port) cell.getChildAt(0);
             cellMaker.connectSubToSups(subPort, supCells, graph);
@@ -114,9 +114,9 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
     private void addTransformMenu(JPopupMenu menu, Object cell) {
         if (isCellSelected(cell)) {
             menu.addSeparator();
-            menu.add(new TransformElementAction(graph, gmanager, GraphType.PROPERTY, GraphType.INSTANCE));
-            menu.add(new TransformElementAction(graph, gmanager, GraphType.PROPERTY,
-                    GraphType.CLASS));
+            menu.add(new TransformElementAction(graph, gmanager, GraphType.Property, GraphType.Instance));
+            menu.add(new TransformElementAction(graph, gmanager, GraphType.Property,
+                    GraphType.Class));
         }
     }
 

@@ -102,9 +102,9 @@ public class EditConceptAction extends AbstractAction {
             }
             RDFSModel beforeRDFSModel = editConcept();
             rdfsModel.setMetaClass(basePanel.getMetaClassString());
-            if (graph.getType() == GraphType.CLASS) {
+            if (graph.getType() == GraphType.Class) {
                 HistoryManager.saveHistory(HistoryType.EDIT_CLASS_WITH_DIAGLOG, beforeRDFSModel, rdfsModel);
-            } else if (graph.getType() == GraphType.PROPERTY) {
+            } else if (graph.getType() == GraphType.Property) {
                 HistoryManager.saveHistory(HistoryType.EDIT_ONT_PROPERTY_WITH_DIAGLOG, beforeRDFSModel, rdfsModel);
             }
             graph.clearSelection();

@@ -157,7 +157,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
             RDFGraphMarqueeHandler mh = (RDFGraphMarqueeHandler) graph.getMarqueeHandler();
             GraphCell insertCell = mh.insertResourceCell(INSERT_POINT);
             if (insertCell != null) {
-                if (graph.getType() == GraphType.INSTANCE) {
+                if (graph.getType() == GraphType.Instance) {
                     HistoryManager.saveHistory(HistoryType.INSERT_RESOURCE, insertCell);
                 } else {
                     HistoryManager.saveHistory(HistoryType.INSERT_ONT_PROPERTY, insertCell);
@@ -199,7 +199,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
         public void actionPerformed(ActionEvent e) {
             if (graph.getSelectionCount() == 1) {
                 Object selectedCell = graph.getSelectionCell();
-                if (graph.getType() == GraphType.INSTANCE) {
+                if (graph.getType() == GraphType.Instance) {
                     for (Object cell : graph.getAllSelectedCells()) {
                         if (RDFGraph.isRDFResourceCell(cell)) {
                             InstanceModel model = (InstanceModel) GraphConstants.getValue(((GraphCell) cell).getAttributes());
@@ -217,12 +217,12 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
     private JToolBar createToolBar() {
         var toolbar = new JToolBar();
 
-        if (graph.getType() == GraphType.INSTANCE) {
+        if (graph.getType() == GraphType.Instance) {
             toolbar.add(new InsertEllipseResourceAction(RESOURCE_ICON));
             toolbar.add(new InsertRectangleResourceAction(LITERAL_ICON));
-        } else if (graph.getType() == GraphType.CLASS) {
+        } else if (graph.getType() == GraphType.Class) {
             toolbar.add(new InsertRectangleResourceAction(RESOURCE_ICON));
-        } else if (graph.getType() == GraphType.PROPERTY) {
+        } else if (graph.getType() == GraphType.Property) {
             toolbar.add(new InsertEllipseResourceAction(RESOURCE_ICON));
         }
 
@@ -260,12 +260,12 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
         toolbar.add(new SaveGraphImageAction(gmanager, graph.getType()));
 
         toolbar.addSeparator();
-        if (graph.getType() == GraphType.INSTANCE) {
+        if (graph.getType() == GraphType.Instance) {
             toolbar.add(new GraphLayoutAction(gmanager, graph.getType(), GraphLayoutUtilities.LEFT_TO_RIGHT));
-        } else if (graph.getType() == GraphType.CLASS) {
+        } else if (graph.getType() == GraphType.Class) {
             toolbar.add(new GraphLayoutAction(gmanager, graph.getType(), GraphLayoutUtilities.LEFT_TO_RIGHT));
             toolbar.add(new GraphLayoutAction(gmanager, graph.getType(), GraphLayoutUtilities.UP_TO_DOWN));
-        } else if (graph.getType() == GraphType.PROPERTY) {
+        } else if (graph.getType() == GraphType.Property) {
             toolbar.add(new GraphLayoutAction(gmanager, graph.getType(), GraphLayoutUtilities.LEFT_TO_RIGHT));
             toolbar.add(new GraphLayoutAction(gmanager, graph.getType(), GraphLayoutUtilities.UP_TO_DOWN));
         }
@@ -285,7 +285,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
     }
 
     private void uriConsistencyCheck(Object[] orgAllCells) {
-        if (graph.getType() == GraphType.INSTANCE) {
+        if (graph.getType() == GraphType.Instance) {
             return;
         }
         RDFSModelMap rdfsModelMap = gmanager.getRDFSInfoMap();
@@ -296,9 +296,9 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
             if (RDFGraph.isRDFSCell(cell)) {
                 newRDFSCellSet.add(cell);
                 RDFSModel info = (RDFSModel) GraphConstants.getValue(cell.getAttributes());
-                if (graph.getType() == GraphType.CLASS && !rdfsModelMap.isClassCell(info.getURI())) {
+                if (graph.getType() == GraphType.Class && !rdfsModelMap.isClassCell(info.getURI())) {
                     rdfsModelMap.putURICellMap(info, cell);
-                } else if (graph.getType() == GraphType.PROPERTY
+                } else if (graph.getType() == GraphType.Property
                         && !rdfsModelMap.isPropertyCell(info.getURI())) {
                     rdfsModelMap.putURICellMap(info, cell);
                 }

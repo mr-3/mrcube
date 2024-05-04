@@ -72,15 +72,15 @@ public class PasteAction extends AbstractAction {
         Set<GraphCell> removeGraphCellSet = new HashSet<>();
         for (Object copyCell : copyCells) {
             GraphCell cell = (GraphCell) copyCell;
-            if (graph.getType() == GraphType.CLASS && RDFGraph.isRDFSClassCell(cell)) {
+            if (graph.getType() == GraphType.Class && RDFGraph.isRDFSClassCell(cell)) {
                 pasteGraphCellSet.add(cell);
                 cloneRDFSClassCell(cell);
                 gmanager.selectClassCell(cell);
-            } else if (graph.getType() == GraphType.PROPERTY && RDFGraph.isRDFSPropertyCell(cell)) {
+            } else if (graph.getType() == GraphType.Property && RDFGraph.isRDFSPropertyCell(cell)) {
                 pasteGraphCellSet.add(cell);
                 cloneRDFSPropertyCell(cell);
                 gmanager.selectPropertyCell(cell);
-            } else if (graph.getType() == GraphType.INSTANCE) {
+            } else if (graph.getType() == GraphType.Instance) {
                 if (RDFGraph.isRDFResourceCell(cell)) {
                     pasteGraphCellSet.add(cell);
                     cloneRDFResourceCell(cell);
@@ -107,11 +107,11 @@ public class PasteAction extends AbstractAction {
         }
         graph.getGraphLayoutCache().remove(removeGraphCellSet.toArray());
         gmanager.resetTypeCells();
-        if (graph.getType() == GraphType.INSTANCE) {
+        if (graph.getType() == GraphType.Instance) {
             HistoryManager.saveHistory(HistoryType.PASTE_RDF_GRAPH);
-        } else if (graph.getType() == GraphType.CLASS) {
+        } else if (graph.getType() == GraphType.Class) {
             HistoryManager.saveHistory(HistoryType.PASTE_CLASS_GRAPH);
-        } else if (graph.getType() == GraphType.PROPERTY) {
+        } else if (graph.getType() == GraphType.Property) {
             HistoryManager.saveHistory(HistoryType.PASTE_PROPERTY_GRAPH);
         }
     }
@@ -153,7 +153,7 @@ public class PasteAction extends AbstractAction {
     private void cloneRDFSPropertyCell(GraphCell cell) {
         PropertyModel orgInfo = (PropertyModel) GraphConstants.getValue(cell.getAttributes());
         PropertyModel newInfo = new PropertyModel(orgInfo);
-        newInfo.setURI(cloneRDFSURI(newInfo, GraphType.PROPERTY));
+        newInfo.setURI(cloneRDFSURI(newInfo, GraphType.Property));
         cloneRDFSCell(cell, newInfo);
     }
 
@@ -163,7 +163,7 @@ public class PasteAction extends AbstractAction {
     private void cloneRDFSClassCell(GraphCell cell) {
         ClassModel orgInfo = (ClassModel) GraphConstants.getValue(cell.getAttributes());
         ClassModel newInfo = new ClassModel(orgInfo);
-        newInfo.setURI(cloneRDFSURI(newInfo, GraphType.CLASS));
+        newInfo.setURI(cloneRDFSURI(newInfo, GraphType.Class));
         cloneRDFSCell(cell, newInfo);
     }
 
@@ -183,10 +183,10 @@ public class PasteAction extends AbstractAction {
      * リソースが重複しないように，-copy番号をローカル名に追加する
      */
     private String cloneRDFURI(InstanceModel info) {
-        if (gmanager.isDuplicated(info.getURIStr(), null, GraphType.INSTANCE)) {
+        if (gmanager.isDuplicated(info.getURIStr(), null, GraphType.Instance)) {
             for (int j = 1; true; j++) {
                 String compURI = info.getURIStr() + "-copy" + j;
-                if (!gmanager.isDuplicated(compURI, null, GraphType.INSTANCE)) {
+                if (!gmanager.isDuplicated(compURI, null, GraphType.Instance)) {
                     return info.getURIStr() + "-copy" + j;
                 }
             }

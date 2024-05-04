@@ -44,7 +44,7 @@ public class PropertyEditor extends Editor {
     private PropertyGraphMarqueeHandler propertyGraphMarqueeHandler;
 
     public PropertyEditor(GraphManager gm) {
-        graph = new RDFGraph(gm, new RDFGraphModel(), GraphType.PROPERTY);
+        graph = new RDFGraph(gm, new RDFGraphModel(), GraphType.Property);
         graph.setFont(graphFont);
         graph.setDisconnectable(false);
         initEditor(graph, gm);

@@ -68,7 +68,7 @@ public class ProjectInfoDialog extends JDialog {
 
     public ProjectInfoDialog(GraphManager gm, Frame frame) {
         super(frame, Translator.getString("Menu.Tools.ProjectInfo.Text"));
-        setIconImage(Utilities.getImageIcon("baseline_info_black_18dp.png").getImage());
+        setIconImage(Utilities.getImageIcon("info.png").getImage());
         mr3Writer = new MR3Writer(gm);
         gmanager = gm;
 

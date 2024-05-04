@@ -55,7 +55,7 @@ public class ValidatorDialog extends JDialog {
 
 	public ValidatorDialog(Frame frame, GraphManager gm) {
 		super(frame, TITLE);
-		setIconImage(Utilities.getImageIcon("baseline_check_circle_black_18dp.png").getImage());
+		setIconImage(Utilities.getImageIcon("verified.png").getImage());
 		mr3Writer = new MR3Writer(gm);
 		gmanager = gm;
 

@@ -59,11 +59,11 @@ public class GraphLayoutAction extends AbstractAction {
     }
 
     private static String getString(GraphType type) {
-        if (type == GraphType.CLASS) {
+        if (type == GraphType.Class) {
             return Translator.getString("Class");
-        } else if (type == GraphType.PROPERTY) {
+        } else if (type == GraphType.Property) {
             return Translator.getString("Property");
-        } else if (type == GraphType.INSTANCE){
+        } else if (type == GraphType.Instance){
             return Translator.getString("Instance");
         }
         return Translator.getString("Instance");
@@ -71,9 +71,9 @@ public class GraphLayoutAction extends AbstractAction {
 
     public void actionPerformed(ActionEvent arg0) {
         switch (graphType) {
-            case INSTANCE -> GraphLayoutUtilities.RDF_LAYOUT_DIRECTION = direction;
-            case CLASS -> GraphLayoutUtilities.CLASS_LAYOUT_DIRECTION = direction;
-            case PROPERTY -> GraphLayoutUtilities.PROPERTY_LAYOUT_DIRECTION = direction;
+            case Instance -> GraphLayoutUtilities.RDF_LAYOUT_DIRECTION = direction;
+            case Class -> GraphLayoutUtilities.CLASS_LAYOUT_DIRECTION = direction;
+            case Property -> GraphLayoutUtilities.PROPERTY_LAYOUT_DIRECTION = direction;
         }
         gmanager.applyLayout(graphType);
     }
