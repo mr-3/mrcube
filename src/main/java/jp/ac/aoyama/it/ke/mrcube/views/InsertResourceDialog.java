@@ -24,6 +24,7 @@
 package jp.ac.aoyama.it.ke.mrcube.views;
 
 import jp.ac.aoyama.it.ke.mrcube.jgraph.GraphManager;
+import jp.ac.aoyama.it.ke.mrcube.jgraph.RDFGraph;
 import jp.ac.aoyama.it.ke.mrcube.models.MR3Constants;
 import jp.ac.aoyama.it.ke.mrcube.utils.GraphUtilities;
 import jp.ac.aoyama.it.ke.mrcube.utils.PrefixNSUtil;
@@ -36,7 +37,7 @@ import java.awt.event.ActionEvent;
 /**
  * @author Takeshi Morita
  */
-public class InsertInstanceDialog extends JDialog {
+public class InsertResourceDialog extends JDialog {
 
     private final JComboBox uriPrefixBox;
     private final JTextField idField;
@@ -53,8 +54,13 @@ public class InsertInstanceDialog extends JDialog {
     private static final int FIELD_WIDTH = 300;
     private static final int FIELD_HEIGHT = 30;
 
-    public InsertInstanceDialog(GraphManager gm) {
+    public InsertResourceDialog(GraphManager gm, RDFGraph graph) {
         super(gm.getRootFrame(), true);
+        if (gm.isClassGraph(graph)) {
+            setIconImage(Utilities.getImageIcon("class_node.png").getImage());
+        } else if (gm.isPropertyGraph(graph)) {
+            setIconImage(Utilities.getImageIcon("property_node.png").getImage());
+        }
         gmanager = gm;
         confirmAction = new ConfirmAction();
         cancelAction = new CancelAction();

@@ -29,6 +29,7 @@ import jp.ac.aoyama.it.ke.mrcube.actions.TransformElementAction;
 import jp.ac.aoyama.it.ke.mrcube.editors.Editor;
 import jp.ac.aoyama.it.ke.mrcube.models.*;
 import jp.ac.aoyama.it.ke.mrcube.views.HistoryManager;
+import jp.ac.aoyama.it.ke.mrcube.views.InsertResourceDialog;
 import jp.ac.aoyama.it.ke.mrcube.views.instance_editor.InsertInstanceDialog;
 import jp.ac.aoyama.it.ke.mrcube.views.instance_editor.InsertLiteralDialog;
 import org.jgraph.graph.*;
@@ -70,7 +71,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 
     private WeakReference<InsertInstanceDialog> insertRDFResDialogRef;
     private WeakReference<InsertLiteralDialog> insertRDFLiteralDialogRef;
-    private WeakReference<jp.ac.aoyama.it.ke.mrcube.views.InsertInstanceDialog> insertRDFSResDialogRef;
+    private WeakReference<InsertResourceDialog> insertRDFSResDialogRef;
 
     protected boolean isConnectMode;
 
@@ -147,10 +148,10 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
         return result;
     }
 
-    jp.ac.aoyama.it.ke.mrcube.views.InsertInstanceDialog getInsertRDFSResDialog(String title) {
-        jp.ac.aoyama.it.ke.mrcube.views.InsertInstanceDialog result = insertRDFSResDialogRef.get();
+    InsertResourceDialog getInsertRDFSResDialog(String title) {
+        InsertResourceDialog result = insertRDFSResDialogRef.get();
         if (result == null) {
-            result = new jp.ac.aoyama.it.ke.mrcube.views.InsertInstanceDialog(gmanager);
+            result = new InsertResourceDialog(gmanager, graph);
             insertRDFSResDialogRef = new WeakReference<>(result);
         }
         result.initData(title);

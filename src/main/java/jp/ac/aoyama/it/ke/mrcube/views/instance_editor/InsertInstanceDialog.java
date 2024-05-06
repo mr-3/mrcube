@@ -59,7 +59,8 @@ public class InsertInstanceDialog extends JDialog implements ItemListener {
     private static final int FIELD_HEIGHT = 30;
 
     public InsertInstanceDialog(GraphManager gm) {
-        super(gm.getRootFrame(), Translator.getString("InsertInstanceDialog.Title"), true);
+        super(gm.getRootFrame(), Translator.getString("InsertInstanceDialog.Title"),  true);
+        setIconImage(Utilities.getImageIcon("instance_node.png").getImage());
         gmanager = gm;
         confirmAction = new ConfirmAction();
         cancelAction = new CancelAction();

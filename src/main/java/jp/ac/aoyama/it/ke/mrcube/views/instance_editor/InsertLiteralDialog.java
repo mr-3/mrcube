@@ -58,6 +58,7 @@ public class InsertLiteralDialog extends JDialog implements ActionListener {
 
     public InsertLiteralDialog(Frame rootFrame) {
         super(rootFrame, Translator.getString("InsertLiteralDialog.Title"), true);
+        setIconImage(Utilities.getImageIcon("literal_node.png").getImage());
         confirmAction = new ConfirmAction();
         cancelAction = new CancelAction();
         typeMapper = TypeMapper.getInstance();

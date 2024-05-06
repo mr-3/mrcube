@@ -27,7 +27,7 @@ import jp.ac.aoyama.it.ke.mrcube.actions.TransformElementAction;
 import jp.ac.aoyama.it.ke.mrcube.editors.Editor;
 import jp.ac.aoyama.it.ke.mrcube.models.MR3Constants;
 import jp.ac.aoyama.it.ke.mrcube.views.HistoryManager;
-import jp.ac.aoyama.it.ke.mrcube.views.InsertInstanceDialog;
+import jp.ac.aoyama.it.ke.mrcube.views.InsertResourceDialog;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultPort;
 import org.jgraph.graph.GraphCell;
@@ -61,7 +61,6 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
         InputMap inputMap = graph.getInputMap(JComponent.WHEN_FOCUSED);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_I, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
                 insertPropertyAction.getValue(Action.NAME));
-//        setCopyCutPasteAction(actionMap, inputMap);
     }
 
     // 接続するかどうか
@@ -83,7 +82,7 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
     }
 
     public GraphCell insertResourceCell(Point pt) {
-        InsertInstanceDialog dialog = getInsertRDFSResDialog(INSERT_PROPERTY_TITLE);
+        InsertResourceDialog dialog = getInsertRDFSResDialog(INSERT_PROPERTY_TITLE);
         if (!dialog.isConfirm()) {
             return null;
         }
@@ -95,7 +94,7 @@ public class PropertyGraphMarqueeHandler extends RDFGraphMarqueeHandler {
     }
 
     private GraphCell insertSubProperty(Point pt, Object[] supCells) {
-        InsertInstanceDialog dialog = getInsertRDFSResDialog(INSERT_PROPERTY_TITLE);
+        InsertResourceDialog dialog = getInsertRDFSResDialog(INSERT_PROPERTY_TITLE);
         if (!dialog.isConfirm()) {
             return null;
         }

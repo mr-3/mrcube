@@ -56,6 +56,7 @@ public class RemoveDialog extends JDialog implements ListSelectionListener, Acti
 
     public RemoveDialog(GraphManager manager) {
         super(manager.getRootFrame(), Translator.getString("RemoveDialog.Title"));
+        setIconImage(Utilities.getImageIcon("delete.png").getImage());
         gmanager = manager;
 
         removeRDFSList = new JList();

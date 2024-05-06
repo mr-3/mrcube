@@ -48,6 +48,7 @@ public class SelectInstanceTypeDialog extends JDialog implements ActionListener 
 
     SelectInstanceTypeDialog(GraphManager gm) {
         super(gm.getRootFrame(), Translator.getString("SelectInstanceTypeDialog.Title"), true);
+        setIconImage(Utilities.getImageIcon("class_node.png").getImage());
         panel = new SelectInstanceTypePanel(gm);
         getContentPane().add(panel, BorderLayout.CENTER);
         getContentPane().add(getButtonPanel(), BorderLayout.SOUTH);

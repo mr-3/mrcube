@@ -294,16 +294,16 @@ public class GraphManager {
         isShowTypeCell = t;
     }
 
-    public boolean isInstanceGraph(Object graph) {
-        return graph == getInstanceGraph();
+    public boolean isInstanceGraph(RDFGraph graph) {
+        return graph.getType() == MR3Constants.GraphType.Instance;
     }
 
-    public boolean isClassGraph(Object graph) {
-        return graph == getClassGraph();
+    public boolean isClassGraph(RDFGraph graph) {
+        return graph.getType() == MR3Constants.GraphType.Class;
     }
 
-    public boolean isPropertyGraph(Object graph) {
-        return graph == getPropertyGraph();
+    public boolean isPropertyGraph(RDFGraph graph) {
+        return graph.getType() == MR3Constants.GraphType.Property;
     }
 
     public void clearSelection() {
@@ -966,7 +966,7 @@ public class GraphManager {
 
     private Map checkUnRemovablePropertyCells(Object[] cells, List notRmCells, Set notRmList, Object graph) {
         Map classPropMap = new HashMap();
-        if (isPropertyGraph(graph)) {
+        if (isPropertyGraph((RDFGraph) graph)) {
             return classPropMap;
         }
 

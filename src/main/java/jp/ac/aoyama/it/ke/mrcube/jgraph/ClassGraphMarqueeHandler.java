@@ -27,7 +27,7 @@ import jp.ac.aoyama.it.ke.mrcube.actions.TransformElementAction;
 import jp.ac.aoyama.it.ke.mrcube.editors.Editor;
 import jp.ac.aoyama.it.ke.mrcube.models.MR3Constants;
 import jp.ac.aoyama.it.ke.mrcube.views.HistoryManager;
-import jp.ac.aoyama.it.ke.mrcube.views.InsertInstanceDialog;
+import jp.ac.aoyama.it.ke.mrcube.views.InsertResourceDialog;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultPort;
 import org.jgraph.graph.GraphCell;
@@ -63,9 +63,7 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
         InputMap inputMap = graph.getInputMap(JComponent.WHEN_FOCUSED);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_I, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
                 insertClassAction.getValue(Action.NAME));
-//        setCopyCutPasteAction(actionMap, inputMap);
     }
-
 
     // connectするかどうかをここで制御
     public void mouseReleased(MouseEvent e) {
@@ -86,7 +84,7 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
     }
 
     public GraphCell insertResourceCell(Point pt) {
-        InsertInstanceDialog dialog = getInsertRDFSResDialog(INSERT_CLASS_TITLE);
+        InsertResourceDialog dialog = getInsertRDFSResDialog(INSERT_CLASS_TITLE);
         if (!dialog.isConfirm()) {
             return null;
         }
@@ -98,7 +96,7 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
     }
 
     private GraphCell insertSubClass(Point pt, Object[] supCells) {
-        InsertInstanceDialog dialog = getInsertRDFSResDialog(INSERT_CLASS_TITLE);
+        InsertResourceDialog dialog = getInsertRDFSResDialog(INSERT_CLASS_TITLE);
         if (!dialog.isConfirm()) {
             return null;
         }
@@ -127,7 +125,6 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
             putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_I,
                     Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         }
-
 
         public void actionPerformed(ActionEvent ev) {
             Object[] supCells = graph.getSelectionCells();
