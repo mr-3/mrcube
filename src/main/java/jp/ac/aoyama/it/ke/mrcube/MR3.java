@@ -616,7 +616,7 @@ public class MR3 extends JFrame implements ChangeListener {
     }
 
     public RDFGraph getRDFGraph() {
-        return gmanager.getRDFGraph();
+        return gmanager.getInstanceGraph();
     }
 
     public RDFGraph getClassGraph() {

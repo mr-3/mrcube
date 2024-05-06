@@ -112,10 +112,11 @@ public class LiteralPanel extends JPanel implements ActionListener {
         setLayout(new BorderLayout());
         JPanel titlePanel = new JPanel();
         titlePanel.setBackground(MR3Constants.TITLE_BACKGROUND_COLOR);
-        ImageIcon icon = Utilities.getImageIcon(Translator.getString("InstanceEditor.Icon"));
+        ImageIcon icon = Utilities.getImageIcon("literal_node.png");
         JLabel titleLabel = new JLabel(Translator.getString("AttributeDialog.LiteralAttribute.Text"), icon, SwingConstants.LEFT);
         titleLabel.setForeground(Color.white);
         titleLabel.setFont(new Font("SansSerif", Font.BOLD, MR3Constants.TITLE_FONT_SIZE));
+        titleLabel.setPreferredSize(new Dimension(250, 30));
         titlePanel.setLayout(new BorderLayout());
         titlePanel.add(titleLabel, BorderLayout.WEST);
 
@@ -171,7 +172,7 @@ public class LiteralPanel extends JPanel implements ActionListener {
                     typeMapper.getTypeByName(dataType));
             GraphConstants.setValue(cell.getAttributes(), literal);
             Dimension size = GraphUtilities.getAutoLiteralNodeDimension(gmanager, str);
-            RDFGraph graph = gmanager.getRDFGraph();
+            RDFGraph graph = gmanager.getInstanceGraph();
             GraphUtilities.resizeCell(size, graph, cell);
             HistoryManager.saveHistory(HistoryType.EDIT_LITERAL_WITH_DIAGLOG, beforeLiteral,
                     literal);

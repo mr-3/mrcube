@@ -97,7 +97,7 @@ public class InstancePropertyPanel extends JPanel implements ActionListener, Lis
         uriPanel.add(editRDFSPropertyButtonP);
 
         nsLabel = new JLabel();
-        JComponent nsLabelP = Utilities.createTitledPanel(nsLabel, MR3Constants.NAME_SPACE);
+        JComponent nsLabelP = Utilities.createTitledPanel(nsLabel, MR3Constants.NAMESPACE);
         typePropertyIDAction = new TypePropertyIDAction();
         findIDField = new JTextField();
         findIDField.getDocument().addDocumentListener(typePropertyIDAction);
@@ -127,12 +127,13 @@ public class InstancePropertyPanel extends JPanel implements ActionListener, Lis
         setLayout(new BorderLayout());
         JPanel titlePanel = new JPanel();
         titlePanel.setBackground(MR3Constants.TITLE_BACKGROUND_COLOR);
-        ImageIcon icon = Utilities.getImageIcon(Translator.getString("InstanceEditor.Icon"));
+        ImageIcon icon = Utilities.getImageIcon(Translator.getString("PropertyEditor.Icon"));
         JLabel titleLabel = new JLabel(
                 Translator.getString("AttributeDialog.InstancePropertyAttribute.Text"), icon,
                 SwingConstants.LEFT);
         titleLabel.setForeground(Color.white);
         titleLabel.setFont(new Font("SansSerif", Font.BOLD, MR3Constants.TITLE_FONT_SIZE));
+        titleLabel.setPreferredSize(new Dimension(250, 30));
         titlePanel.setLayout(new BorderLayout());
         titlePanel.add(titleLabel, BorderLayout.WEST);
 

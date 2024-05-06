@@ -95,7 +95,7 @@ public class MR3Reader {
 		Model rdfModel = mr3Generator.getRDFModel(false);
 		rdfModel.add(newModel);
 		nsTableDialog.setCurrentNSPrefix(rdfModel);
-		gmanager.getRDFGraph().removeAllCells();
+		gmanager.getInstanceGraph().removeAllCells();
 		if (ProjectManager.getLayoutMap() != null) {
 			mr3Parser.replaceProjectRDFGraph(rdfModel);
 		} else {
@@ -108,7 +108,7 @@ public class MR3Reader {
 	}
 
 	private void resetPropertyInfo() {
-		RDFGraph rdfGraph = gmanager.getRDFGraph();
+		RDFGraph rdfGraph = gmanager.getInstanceGraph();
 		Object[] cells = rdfGraph.getAllCells();
 		for (Object cell1 : cells) {
 			GraphCell cell = (GraphCell) cell1;
@@ -234,7 +234,7 @@ public class MR3Reader {
 	private void replaceRDF(Model model) {
 		if (model != null) {
 			nsTableDialog.setCurrentNSPrefix(model);
-			gmanager.getRDFGraph().removeAllCells();
+			gmanager.getInstanceGraph().removeAllCells();
 			// replaceGraph(mr3Parser.createRDFGraph(model,
 			// VGJTreeLayout.getVGJRDFCellLayoutMap(model)));
 			mr3Parser.replaceDefaultRDFGraph(model);
@@ -255,7 +255,7 @@ public class MR3Reader {
 			return;
 		}
 		new Thread(() -> {
-			if (gmanager.getRDFGraph().getAllCells().length == 0) {
+			if (gmanager.getInstanceGraph().getAllCells().length == 0) {
 				gmanager.getClassGraph().removeAllCells();
 				gmanager.getPropertyGraph().removeAllCells();
 				gmanager.importing(true);

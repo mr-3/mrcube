@@ -92,6 +92,7 @@ public class PropertyPanel extends OntologyPanel {
                 SwingConstants.LEFT);
         titleLabel.setForeground(Color.white);
         titleLabel.setFont(new Font("SansSerif", Font.BOLD, MR3Constants.TITLE_FONT_SIZE));
+        titleLabel.setPreferredSize(new Dimension(250, 30));
         titlePanel.setLayout(new BorderLayout());
         titlePanel.add(titleLabel, BorderLayout.WEST);
 
@@ -166,7 +167,7 @@ public class PropertyPanel extends OntologyPanel {
         }
 
         public String toString() {
-            return Translator.getString("Domain") + "/" +
+            return Translator.getString("Domain") + " / " +
                     Translator.getString("Range");
         }
 

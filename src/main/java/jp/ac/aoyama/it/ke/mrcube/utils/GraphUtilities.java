@@ -142,7 +142,7 @@ public class GraphUtilities {
     private static final int ANON_NODE_WIDTH = 50;
 
     public static void resizeAllRDFResourceCell(GraphManager gm) {
-        RDFGraph graph = gm.getRDFGraph();
+        RDFGraph graph = gm.getInstanceGraph();
         Object[] cells = graph.getAllCells();
         for (Object cell1 : cells) {
             GraphCell cell = (GraphCell) cell1;
@@ -185,7 +185,7 @@ public class GraphUtilities {
     public static void resizeRDFResourceCell(GraphManager gm, InstanceModel resInfo, GraphCell cell) {
         String value = gm.getRDFNodeValue(resInfo.getURI(), resInfo);
         Dimension size = GraphUtilities.getAutoNodeDimension(gm, value);
-        GraphUtilities.resizeCell(size, gm.getRDFGraph(), cell);
+        GraphUtilities.resizeCell(size, gm.getInstanceGraph(), cell);
     }
 
     public static void resizeCell(Dimension size, RDFGraph graph, GraphCell cell) {
@@ -203,12 +203,12 @@ public class GraphUtilities {
             return new Dimension(MR3CellMaker.CELL_WIDTH, MR3CellMaker.CELL_HEIGHT);
         }
         if (defaultFont == null) {
-            defaultFont = gmanager.getRDFGraph().getFont();
+            defaultFont = gmanager.getInstanceGraph().getFont();
         }
         StringTokenizer tokenizer = new StringTokenizer(value, "\n");
         int width = MR3CellMaker.DEFAULT_CELL_WIDTH / 3;
         int height = MR3CellMaker.CELL_MARGIN;
-        FontMetrics fm = gmanager.getRDFGraph().getFontMetrics(defaultFont);
+        FontMetrics fm = gmanager.getInstanceGraph().getFontMetrics(defaultFont);
         while (tokenizer.hasMoreTokens()) {
             String token = tokenizer.nextToken();
             if (width < fm.stringWidth(token)) {
@@ -249,9 +249,9 @@ public class GraphUtilities {
             return new Dimension(MR3CellMaker.CELL_WIDTH, MR3CellMaker.CELL_HEIGHT);
         }
         if (defaultFont == null) {
-            defaultFont = gmanager.getRDFGraph().getFont();
+            defaultFont = gmanager.getInstanceGraph().getFont();
         }
-        FontMetrics fm = gmanager.getRDFGraph().getFontMetrics(defaultFont);
+        FontMetrics fm = gmanager.getInstanceGraph().getFontMetrics(defaultFont);
         int width = fm.stringWidth(value) * 2;
         if (value.length() == 0) {
             width = ANON_NODE_WIDTH;
@@ -272,18 +272,18 @@ public class GraphUtilities {
 
     public static void resetEditorBackgroudColor(GraphManager gmanager) {
         if (GraphUtilities.isBlackAndWhite) {
-            gmanager.getRDFGraph().setBackground(Editor.DEFAUlT_BACKGROUND_COLOR);
+            gmanager.getInstanceGraph().setBackground(Editor.DEFAUlT_BACKGROUND_COLOR);
             gmanager.getClassGraph().setBackground(Editor.DEFAUlT_BACKGROUND_COLOR);
             gmanager.getPropertyGraph().setBackground(Editor.DEFAUlT_BACKGROUND_COLOR);
         } else {
-            gmanager.getRDFGraph().resetBackground();
+            gmanager.getInstanceGraph().resetBackground();
             gmanager.getClassGraph().resetBackground();
             gmanager.getPropertyGraph().resetBackground();
         }
     }
 
     public static void changeAllCellColor(GraphManager gmanager) {
-        RDFGraph rdfGraph = gmanager.getRDFGraph();
+        RDFGraph rdfGraph = gmanager.getInstanceGraph();
         RDFGraph classGraph = gmanager.getClassGraph();
         RDFGraph propertyGraph = gmanager.getPropertyGraph();
 
@@ -318,7 +318,7 @@ public class GraphUtilities {
     }
 
     public static void selectCellSet(GraphManager gmanager, Set<RDFNode> rdfNodeSet) {
-        gmanager.getRDFGraph().clearSelection();
+        gmanager.getInstanceGraph().clearSelection();
         gmanager.getClassGraph().clearSelection();
         gmanager.getPropertyGraph().clearSelection();
         Set<GraphCell> cellSet = new HashSet<>();
@@ -338,7 +338,7 @@ public class GraphUtilities {
             }
         }
         cellSet.forEach(c -> {
-            gmanager.selectCell(c, gmanager.getRDFGraph());
+            gmanager.selectCell(c, gmanager.getInstanceGraph());
             gmanager.selectCell(c, gmanager.getClassGraph());
             gmanager.selectCell(c, gmanager.getPropertyGraph());
         });

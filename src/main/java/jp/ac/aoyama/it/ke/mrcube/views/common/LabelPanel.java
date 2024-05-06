@@ -69,7 +69,7 @@ public class LabelPanel extends JPanel implements ActionListener {
 		labelTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		setTableColumn(labelTable.getColumnModel());
 
-		langField = new JTextField(5);
+		langField = new JTextField(8);
 		JComponent langFieldP = Utilities.createTitledPanel(langField, MR3Constants.LANGUAGE_TAG);
 		labelField = new JTextField(20);
 		JComponent labelFieldP = Utilities.createTitledPanel(labelField, MR3Constants.LABEL);

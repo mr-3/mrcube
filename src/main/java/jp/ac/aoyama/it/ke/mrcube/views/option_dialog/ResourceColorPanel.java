@@ -29,7 +29,7 @@ public class ResourceColorPanel extends JPanel {
 
     private final ChangeColorAction changeColorAction;
 
-    private static final int LABEL_WIDTH = 120;
+    private static final int LABEL_WIDTH = 150;
     private static final int LABEL_HEIGHT = 25;
     private static final int BUTTON_WIDTH = 40;
     private static final int BUTTON_HEIGHT = 25;

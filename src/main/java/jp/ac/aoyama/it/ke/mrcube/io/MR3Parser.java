@@ -179,7 +179,7 @@ public class MR3Parser {
         InstanceModel info = (InstanceModel) GraphConstants.getValue(subjectCell.getAttributes());
         if (predicate.equals(RDF.type)) {
             GraphCell cell = gmanager.getClassCell((Resource) object, false);
-            info.setTypeCell(cell, gmanager.getRDFGraph());
+            info.setTypeCell(cell, gmanager.getInstanceGraph());
         } else if (predicate.equals(RDFS.label)) {
             MR3Literal literal = new MR3Literal((Literal) object);
             info.addLabel(literal);
@@ -233,7 +233,7 @@ public class MR3Parser {
     }
 
     private void replaceGraph(RDFGraph newGraph) {
-        gmanager.getRDFGraph().setModel(newGraph.getModel());
+        gmanager.getInstanceGraph().setModel(newGraph.getModel());
     }
 
     public void replaceDefaultRDFGraph(Model model) {

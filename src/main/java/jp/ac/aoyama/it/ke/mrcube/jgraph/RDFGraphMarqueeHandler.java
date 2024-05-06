@@ -113,13 +113,15 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 
     private void setAction() {
         ActionMap actionMap = graph.getActionMap();
-        actionMap.put(insertResourceAction.getValue(Action.NAME), insertResourceAction);
-        actionMap.put(insertLiteralAction.getValue(Action.NAME), insertLiteralAction);
         InputMap inputMap = graph.getInputMap(JComponent.WHEN_FOCUSED);
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_I, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
-                insertResourceAction.getValue(Action.NAME));
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_L, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
-                insertLiteralAction.getValue(Action.NAME));
+        if (gmanager.isInstanceGraph(graph)) {
+            actionMap.put(insertResourceAction.getValue(Action.NAME), insertResourceAction);
+            actionMap.put(insertLiteralAction.getValue(Action.NAME), insertLiteralAction);
+            inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_I, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
+                    insertResourceAction.getValue(Action.NAME));
+            inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_L, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
+                    insertLiteralAction.getValue(Action.NAME));
+        }
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
                 graph.getSelectAllNodesAction().getValue(Action.NAME));
         setCopyCutPasteAction(actionMap, inputMap);
@@ -493,7 +495,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 
 
     private Object[] getSelectedRDFResourceCells() {
-        RDFGraph rdfGraph = gmanager.getRDFGraph();
+        RDFGraph rdfGraph = gmanager.getInstanceGraph();
         Set<Object> resourceCells = new HashSet<>();
         for (Object rdfCell : rdfGraph.getDescendants(rdfGraph.getSelectionCells())) {
             if (RDFGraph.isRDFResourceCell(rdfCell)) {
@@ -504,7 +506,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
     }
 
     private Object[] getSelectedRDFPropertyCells() {
-        RDFGraph rdfGraph = gmanager.getRDFGraph();
+        RDFGraph rdfGraph = gmanager.getInstanceGraph();
         Set<Object> rdfPropCells = new HashSet<>();
 
         for (Object rdfCell : rdfGraph.getDescendants(rdfGraph.getSelectionCells())) {
@@ -526,7 +528,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
                     Object[] resCells = getSelectedRDFResourceCells();
                     for (Object resCell : resCells) {
                         InstanceModel info = (InstanceModel) GraphConstants.getValue(((GraphCell) resCell).getAttributes());
-                        info.setTypeCell(typeCell, gmanager.getRDFGraph());
+                        info.setTypeCell(typeCell, gmanager.getInstanceGraph());
                     }
                     gmanager.repaintRDFGraph();
                 }

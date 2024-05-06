@@ -230,10 +230,10 @@ class ReferenceListPanel extends JPanel {
                 GraphCell rdfCell = (GraphCell) tableModel.getValueAt(i, 1);
                 if (RDFGraph.isRDFResourceCell(rdfCell)) {
                     InstanceModel info = (InstanceModel) GraphConstants.getValue(rdfCell.getAttributes());
-                    info.setTypeCell(null, gmanager.getRDFGraph()); // Typeをnullに変更
+                    info.setTypeCell(null, gmanager.getInstanceGraph()); // Typeをnullに変更
                 } else if (RDFGraph.isRDFPropertyCell(rdfCell)) {
                     GraphConstants.setValue(rdfCell.getAttributes(), new PropertyModel(MR3Resource.Nil.getURI()));
-                    gmanager.getRDFGraph().getGraphLayoutCache().editCell(rdfCell, rdfCell.getAttributes());
+                    gmanager.getInstanceGraph().getGraphLayoutCache().editCell(rdfCell, rdfCell.getAttributes());
                 }
             }
         }

@@ -245,7 +245,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
         JComponent prefixFieldP = Utilities.createTitledPanel(prefixField, MR3Constants.PREFIX);
 
         nsField = new JTextField(30);
-        JComponent nsFieldP = Utilities.createTitledPanel(nsField, MR3Constants.NAME_SPACE);
+        JComponent nsFieldP = Utilities.createTitledPanel(nsField, MR3Constants.NAMESPACE);
 
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new BorderLayout());

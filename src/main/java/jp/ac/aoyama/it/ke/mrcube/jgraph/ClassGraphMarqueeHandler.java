@@ -63,8 +63,9 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
         InputMap inputMap = graph.getInputMap(JComponent.WHEN_FOCUSED);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_I, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
                 insertClassAction.getValue(Action.NAME));
-        setCopyCutPasteAction(actionMap, inputMap);
+//        setCopyCutPasteAction(actionMap, inputMap);
     }
+
 
     // connectするかどうかをここで制御
     public void mouseReleased(MouseEvent e) {
@@ -123,9 +124,10 @@ public class ClassGraphMarqueeHandler extends RDFGraphMarqueeHandler {
     class InsertClassAction extends AbstractAction {
         InsertClassAction() {
             super(INSERT_CLASS_TITLE, Editor.CLASS_NODE_ICON);
-//            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_I,
-//                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
+            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_I,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         }
+
 
         public void actionPerformed(ActionEvent ev) {
             Object[] supCells = graph.getSelectionCells();

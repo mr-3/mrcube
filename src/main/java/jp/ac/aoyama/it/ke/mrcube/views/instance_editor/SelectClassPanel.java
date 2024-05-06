@@ -143,7 +143,7 @@ public abstract class SelectClassPanel extends JPanel implements GraphSelectionL
         findButton = new JButton(Translator.getString("Find"));
         findButton.addActionListener(findAction);
         nsLabel = new JLabel("");
-        JComponent nsLabelP = Utilities.createTitledPanel(nsLabel, MR3Constants.NAME_SPACE);
+        JComponent nsLabelP = Utilities.createTitledPanel(nsLabel, MR3Constants.NAMESPACE);
         uriPrefixBox.setSelectedItem(PrefixNSUtil.getBaseURIPrefix(gmanager.getBaseURI()));
 
         JPanel findPanel = new JPanel();

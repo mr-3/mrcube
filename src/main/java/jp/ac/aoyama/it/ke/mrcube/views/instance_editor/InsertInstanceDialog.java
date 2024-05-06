@@ -73,7 +73,7 @@ public class InsertInstanceDialog extends JDialog implements ItemListener {
         resTypeBoxP.setBorder(BorderFactory.createTitledBorder(Translator.getString("InstanceType")));
 
         uriField = new JTextField();
-        JComponent uriFieldP = Utilities.createTitledPanel(uriField, Translator.getString("Instance"), FIELD_WIDTH, FIELD_HEIGHT);
+        JComponent uriFieldP = Utilities.createTitledPanel(uriField, "URI", FIELD_WIDTH, FIELD_HEIGHT);
 
         isAnonBox = new JCheckBox(Translator.getString("BlankNode"));
         isAnonBox.addActionListener(new IsAnonAction());

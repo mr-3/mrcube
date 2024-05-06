@@ -70,7 +70,7 @@ public class InsertInstanceDialog extends JDialog {
         uriPanel.add(idFieldP);
 
         nsLabel = new JLabel("");
-        JComponent nsLabelP = Utilities.createTitledPanel(nsLabel, MR3Constants.NAME_SPACE, FIELD_WIDTH, FIELD_HEIGHT);
+        JComponent nsLabelP = Utilities.createTitledPanel(nsLabel, MR3Constants.NAMESPACE, FIELD_WIDTH, FIELD_HEIGHT);
 
         Component[] order = new Component[]{uriPrefixBox, idField, confirmButton, cancelButton};
         setFocusTraversalPolicy(Utilities.getMyFocusTraversalPolicy(order, 1));
@@ -84,8 +84,8 @@ public class InsertInstanceDialog extends JDialog {
         getContentPane().add(panel);
 
         int DIALOG_WIDTH = 400;
-        int DIALOG_HEIGHT = 150;
-        setSize(new Dimension(DIALOG_WIDTH, DIALOG_HEIGHT));
+        int DIALOG_HEIGHT = 160;
+        setPreferredSize(new Dimension(DIALOG_WIDTH, DIALOG_HEIGHT));
         setMinimumSize(new Dimension(DIALOG_WIDTH, DIALOG_HEIGHT));
         setResizable(true);
         setVisible(false);

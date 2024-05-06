@@ -128,7 +128,7 @@ public class EditRDFPropertyAction {
             propInfo = new PropertyModel(propInfo.getURIStr());
         }
         GraphConstants.setValue(edge.getAttributes(), propInfo);
-        GraphUtilities.editCell(edge, edge.getAttributes(), gmanager.getRDFGraph());
+        GraphUtilities.editCell(edge, edge.getAttributes(), gmanager.getInstanceGraph());
         return true;
     }
 }

@@ -54,7 +54,7 @@ class EditCommentDialog extends JDialog implements ActionListener {
 
         literal = new MR3Literal();
 
-        langField = new JTextField(5);
+        langField = new JTextField(8);
         JComponent langFieldP = Utilities.createTitledPanel(langField, MR3Constants.LANGUAGE_TAG, 50, 30);
         commentArea = new JTextArea(5, 20);
         commentArea.setLineWrap(true);

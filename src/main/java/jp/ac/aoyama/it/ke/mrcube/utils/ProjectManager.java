@@ -64,7 +64,7 @@ public class ProjectManager {
      */
     private void addRDFProjectModel(Model projectModel) {
         int literal_cnt = 0;
-        RDFGraph graph = gmanager.getRDFGraph();
+        RDFGraph graph = gmanager.getInstanceGraph();
         Object[] cells = graph.getAllCells();
         for (Object cell1 : cells) {
             GraphCell cell = (GraphCell) cell1;
@@ -100,7 +100,7 @@ public class ProjectManager {
      */
     private int addRDFLiteralProjectModel(Model projectModel, int literal_cnt, GraphCell cell) {
         Edge edge = (Edge) cell;
-        RDFGraph graph = gmanager.getRDFGraph();
+        RDFGraph graph = gmanager.getInstanceGraph();
         GraphCell sourceCell = (GraphCell) graph.getSourceVertex(edge);
         GraphCell targetCell = (GraphCell) graph.getTargetVertex(edge);
         if (RDFGraph.isRDFLiteralCell(targetCell)) {
@@ -252,14 +252,14 @@ public class ProjectManager {
     }
 
     public void removeEmptyClass() {
-        RDFGraph graph = gmanager.getRDFGraph();
+        RDFGraph graph = gmanager.getInstanceGraph();
         Object[] cells = graph.getAllCells();
         for (Object cell1 : cells) {
             GraphCell cell = (GraphCell) cell1;
             if (RDFGraph.isRDFResourceCell(cell)) {
                 InstanceModel info = (InstanceModel) GraphConstants.getValue(cell.getAttributes());
                 if (info.getType().equals(MR3Resource.Empty)) {
-                    info.setTypeCell(null, gmanager.getRDFGraph());
+                    info.setTypeCell(null, gmanager.getInstanceGraph());
                     GraphConstants.setValue(cell.getAttributes(), info);
                 }
             }

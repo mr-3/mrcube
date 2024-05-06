@@ -79,7 +79,7 @@ public abstract class OntologyPanel extends JPanel implements ListSelectionListe
     public final JList instanceJList;
     public final JScrollPane instanceListScroll;
 
-    public static final int MENU_WIDTH = 110;
+    public static final int MENU_WIDTH = 120;
 
     public OntologyPanel(RDFGraph g, GraphManager gm) {
         graph = g;
@@ -140,7 +140,7 @@ public abstract class OntologyPanel extends JPanel implements ListSelectionListe
             uriPanel.add(idFieldP);
 
             nsLabel = new JLabel("");
-            JComponent nsLabelP = Utilities.createTitledPanel(nsLabel, MR3Constants.NAME_SPACE);
+            JComponent nsLabelP = Utilities.createTitledPanel(nsLabel, MR3Constants.NAMESPACE);
 
             JPanel basePanel = new JPanel();
             basePanel.setLayout(new GridLayout(3, 1, 5, 0));
@@ -161,7 +161,7 @@ public abstract class OntologyPanel extends JPanel implements ListSelectionListe
         }
 
         public String toString() {
-            return Translator.getString("Base");
+            return "URI";
         }
 
         public void setMetaClassList(Set<Resource> metaClassList) {

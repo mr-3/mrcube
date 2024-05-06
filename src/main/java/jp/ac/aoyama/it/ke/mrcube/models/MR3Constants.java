@@ -38,7 +38,7 @@ public class MR3Constants {
     public static String APPLY;
     public static String CANCEL;
     public static String PREFIX;
-    public static String NAME_SPACE;
+    public static String NAMESPACE;
     public static String RELOAD;
     public static String RESET;
     public static String EXEC;
@@ -58,7 +58,7 @@ public class MR3Constants {
         OK = Translator.getString("OK") + "(O)";
         CANCEL = Translator.getString("Cancel") + "(C)";
         PREFIX = Translator.getString("Prefix");
-        NAME_SPACE = Translator.getString("Namespace");
+        NAMESPACE = Translator.getString("Namespace");
         RELOAD = Translator.getString("Reload");
         RESET = Translator.getString("Reset") + "(S)";
         EXEC = Translator.getString("Exec");

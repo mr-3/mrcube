@@ -48,7 +48,7 @@ public class JGraphTreeLayout {
 
     public void performJGraphTreeLayout() {
         gmanager.removeTypeCells();
-        performJGraphTreeLayout(gmanager.getRDFGraph(),
+        performJGraphTreeLayout(gmanager.getInstanceGraph(),
                 GraphLayoutUtilities.getJGraphRDFLayoutDirection(),
                 GraphLayoutUtilities.RDF_VERTICAL_SPACE, GraphLayoutUtilities.RDF_HORIZONTAL_SPACE);
         gmanager.addTypeCells();
@@ -83,7 +83,7 @@ public class JGraphTreeLayout {
                 rootCells.add(cell);
             }
         }
-        RDFGraph rdfGraph = gmanager.getRDFGraph();
+        RDFGraph rdfGraph = gmanager.getInstanceGraph();
 
         Object tmpRoot = null;
         if (rootCells.size() != 1) {

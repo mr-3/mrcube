@@ -129,7 +129,7 @@ public class MR3Generator {
     public Model getRDFModel(boolean isSelected) {
         Object[] edges = null;
         Object[] cells = null;
-        RDFGraph graph = gmanager.getRDFGraph();
+        RDFGraph graph = gmanager.getInstanceGraph();
         Model rdfModel = ModelFactory.createDefaultModel();
         if (isSelected) {
             edges = getEdges(rdfModel, graph.getAllSelectedCells());

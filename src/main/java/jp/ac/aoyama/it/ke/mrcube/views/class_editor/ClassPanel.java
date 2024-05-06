@@ -52,7 +52,6 @@ public class ClassPanel extends OntologyPanel {
         labelPanel.setGraphType(GraphType.Class);
         commentPanel.setGraphType(GraphType.Class);
 
-        // setBorder(BorderFactory.createTitledBorder(Translator.getString("AttributeDialog.OntClassAttribute.Text")));
         superClassJList = new JList();
         superClassJList.setCellRenderer(new ResourceListCellRenderer());
         superClassJList.addListSelectionListener(new EditRDFSClassAction());
@@ -79,6 +78,7 @@ public class ClassPanel extends OntologyPanel {
                 icon, SwingConstants.LEFT);
         titleLabel.setForeground(Color.white);
         titleLabel.setFont(new Font("SansSerif", Font.BOLD, MR3Constants.TITLE_FONT_SIZE));
+        titleLabel.setPreferredSize(new Dimension(250, 30));
         titlePanel.setLayout(new BorderLayout());
         titlePanel.add(titleLabel, BorderLayout.WEST);
 

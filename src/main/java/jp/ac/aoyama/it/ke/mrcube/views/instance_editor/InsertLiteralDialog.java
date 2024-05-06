@@ -62,7 +62,7 @@ public class InsertLiteralDialog extends JDialog implements ActionListener {
         cancelAction = new CancelAction();
         typeMapper = TypeMapper.getInstance();
 
-        langField = new JTextField(5);
+        langField = new JTextField(8);
         JComponent langFieldP = Utilities.createTitledPanel(langField, Translator.getString("LanguageTag"));
         JPanel langPanel = new JPanel();
         langPanel.setLayout(new BorderLayout());

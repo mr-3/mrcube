@@ -73,7 +73,7 @@ public class MR3CellMaker {
             GraphConstants.setLineColor(map, GraphUtilities.graphForegroundColor);
             GraphConstants.setForeground(map, GraphUtilities.graphForegroundColor);
         } else {
-            if (gmanager.getRDFGraph().isContains(edge)) {
+            if (gmanager.getInstanceGraph().isContains(edge)) {
                 GraphConstants.setLineColor(map, InstancePropertyCell.borderColor);
                 GraphConstants.setForeground(map, InstancePropertyCell.foregroundColor);
             } else {
@@ -154,7 +154,7 @@ public class MR3CellMaker {
     }
 
     public GraphCell insertRDFLiteral(Rectangle2D rect, MR3Literal literal) {
-        JGraph graph = gmanager.getRDFGraph();
+        JGraph graph = gmanager.getInstanceGraph();
         AttributeMap map = getLiteralMap(rect, LiteralCell.backgroundColor);
 
         DefaultGraphCell vertex = new LiteralCell(literal);
@@ -169,7 +169,7 @@ public class MR3CellMaker {
     }
 
     public void addTypeCell(GraphCell rdfCell, AttributeMap attributes) {
-        RDFGraph graph = gmanager.getRDFGraph();
+        RDFGraph graph = gmanager.getInstanceGraph();
         InstanceModel resInfo = (InstanceModel) GraphConstants.getValue(rdfCell.getAttributes());
         if (gmanager.isShowTypeCell()) {
             GraphCell typeViewCell = new TypeViewCell(resInfo.getTypeInfo());
@@ -185,7 +185,7 @@ public class MR3CellMaker {
     }
 
     public GraphCell insertRDFResource(Point2D point, String uri, Object resTypeCell, URIType type) {
-        JGraph graph = gmanager.getRDFGraph();
+        JGraph graph = gmanager.getInstanceGraph();
         AttributeMap attributes = new AttributeMap();
         point = graph.snap(new Point2D.Double(point.getX(), point.getY()));
 
@@ -199,7 +199,7 @@ public class MR3CellMaker {
         rdfCell.add(new DefaultPort());
         AttributeMap resMap = getResourceMap(getRDFNodeRectangle(point, uri), InstanceCell.backgroundColor);
         attributes.put(rdfCell, resMap);
-        model.setTypeCell((GraphCell) resTypeCell, gmanager.getRDFGraph());
+        model.setTypeCell((GraphCell) resTypeCell, gmanager.getInstanceGraph());
         GraphConstants.setValue(rdfCell.getAttributes(), model);
         graph.getGraphLayoutCache().insert(new Object[]{rdfCell}, attributes, null, null);
         GraphUtilities.resizeRDFResourceCell(gmanager, model, rdfCell);

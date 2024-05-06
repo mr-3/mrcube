@@ -54,7 +54,7 @@ public class SelectAllNodesAction extends MR3AbstractAction {
 
     public void actionPerformed(ActionEvent e) {
         if (graphType == GraphType.Instance) {
-            graphManager.getRDFGraph().selectAllNodes();
+            graphManager.getInstanceGraph().selectAllNodes();
         } else if (graphType == GraphType.Class) {
             graphManager.getClassGraph().selectAllNodes();
         } else if (graphType == GraphType.Property) {

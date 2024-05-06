@@ -131,6 +131,7 @@ public class InstancePanel extends JPanel implements ListSelectionListener {
         JLabel titleLabel = new JLabel(Translator.getString("AttributeDialog.InstanceAttribute.Text"), icon, SwingConstants.LEFT);
         titleLabel.setForeground(Color.white);
         titleLabel.setFont(new Font("SansSerif", Font.BOLD, MR3Constants.TITLE_FONT_SIZE));
+        titleLabel.setPreferredSize(new Dimension(250, 30));
         titlePanel.setLayout(new BorderLayout());
         titlePanel.add(titleLabel, BorderLayout.WEST);
 
@@ -178,7 +179,7 @@ public class InstancePanel extends JPanel implements ListSelectionListener {
             resTypePanel.add(isTypeCellCheckBox);
 
             resTypeNSLabel = new JLabel();
-            JComponent resTypeNSLabelP = Utilities.createTitledPanel(resTypeNSLabel, MR3Constants.NAME_SPACE);
+            JComponent resTypeNSLabelP = Utilities.createTitledPanel(resTypeNSLabel, MR3Constants.NAMESPACE);
 
             JPanel panel = new JPanel();
             panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -306,7 +307,7 @@ public class InstancePanel extends JPanel implements ListSelectionListener {
 
             uriField = new JTextField();
             uriField.addActionListener(decideAction);
-            JComponent uriFieldP = Utilities.createTitledPanel(uriField, Translator.getString("Instance"));
+            JComponent uriFieldP = Utilities.createTitledPanel(uriField, "URI");
 
             JPanel panel = new JPanel();
             panel.setLayout(new GridLayout(2, 1, 5, 10));
@@ -523,7 +524,7 @@ public class InstancePanel extends JPanel implements ListSelectionListener {
         }
 
         private void setResourceType(GraphCell typeCell) {
-            resInfo.setTypeCell(typeCell, gmanager.getRDFGraph());
+            resInfo.setTypeCell(typeCell, gmanager.getInstanceGraph());
             typePanel.setResourceTypeField(resInfo.getType().getURI());
         }
 
@@ -531,7 +532,7 @@ public class InstancePanel extends JPanel implements ListSelectionListener {
             if (e.getSource() == applyButton) {
                 apply();
             } else if (e.getSource() == resetButton) {
-                gmanager.getRDFGraph().setSelectionCell(cell);
+                gmanager.getInstanceGraph().setSelectionCell(cell);
             } else if (e.getSource() == cancelButton) {
                 gmanager.setVisibleAttrDialog(false);
             }

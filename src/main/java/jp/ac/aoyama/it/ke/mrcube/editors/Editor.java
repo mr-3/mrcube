@@ -178,7 +178,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
 
         public void actionPerformed(ActionEvent e) {
             RDFGraphMarqueeHandler mh = (RDFGraphMarqueeHandler) graph.getMarqueeHandler();
-            if (gmanager.isRDFGraph(graph)) {
+            if (gmanager.isInstanceGraph(graph)) {
                 GraphCell cell = mh.insertLiteralCell(INSERT_POINT);
                 if (cell != null) {
                     HistoryManager.saveHistory(HistoryType.INSERT_LITERAL, cell);
