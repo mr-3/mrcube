@@ -36,6 +36,8 @@ public class SPARQLQueryDialog extends JDialog {
     private static final int HEIGHT = 500;
 
     public SPARQLQueryDialog(MR3Writer mr3Writer, GraphManager gmanager) {
+        super(gmanager.getRootFrame(), Translator.getString("SPARQLQueryDialog.Title"), false);
+        setIconImage(Utilities.getImageIcon(Translator.getString("SPARQLQueryDialog.Icon")).getImage());
         this.mr3Writer = mr3Writer;
         this.gmanager = gmanager;
         queryTextArea = new JTextArea();
