@@ -64,13 +64,13 @@ public class LabelPanel extends JPanel implements ActionListener {
 	public LabelPanel() {
 		graphType = GraphType.Instance;
 		labelTableModel = new LabelTableModel(
-				new Object[] { MR3Constants.LANG, MR3Constants.LABEL }, 0);
+				new Object[] { MR3Constants.LANGUAGE_TAG, MR3Constants.LABEL }, 0);
 		labelTable = new JTable(labelTableModel);
 		labelTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		setTableColumn(labelTable.getColumnModel());
 
 		langField = new JTextField(5);
-		JComponent langFieldP = Utilities.createTitledPanel(langField, MR3Constants.LANG);
+		JComponent langFieldP = Utilities.createTitledPanel(langField, MR3Constants.LANGUAGE_TAG);
 		labelField = new JTextField(20);
 		JComponent labelFieldP = Utilities.createTitledPanel(labelField, MR3Constants.LABEL);
 		JPanel textFieldPanel = new JPanel();

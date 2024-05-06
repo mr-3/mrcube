@@ -67,7 +67,7 @@ public class CommentPanel extends JPanel implements ActionListener {
 		graphType = GraphType.Instance;
 		editCommentDialogRef = new WeakReference<>(null);
 
-		commentTableModel = new CommentTableModel(new Object[] { MR3Constants.LANG,
+		commentTableModel = new CommentTableModel(new Object[] { MR3Constants.LANGUAGE_TAG,
 				MR3Constants.COMMENT }, 0);
 		commentTable = new JTable(commentTableModel);
 		commentTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

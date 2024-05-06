@@ -46,7 +46,7 @@ public class MR3Constants {
     public static String ADD;
     public static String REMOVE;
     public static String CLEAR;
-    public static String LANG;
+    public static String LANGUAGE_TAG;
     public static String LABEL;
     public static String COMMENT;
     public static Color TITLE_BACKGROUND_COLOR = new Color(43, 43, 43);
@@ -62,7 +62,7 @@ public class MR3Constants {
         RELOAD = Translator.getString("Reload");
         RESET = Translator.getString("Reset") + "(S)";
         EXEC = Translator.getString("Exec");
-        LANG = Translator.getString("Lang");
+        LANGUAGE_TAG = Translator.getString("LanguageTag");
         LABEL = Translator.getString("Label");
         COMMENT = Translator.getString("Comment");
         EDIT = Translator.getString("Edit");
