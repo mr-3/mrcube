@@ -7,6 +7,11 @@ plugins {
     id "org.beryx.runtime" version "1.13.1"
 }
 
+java {
+    sourceCompatibility = '17'
+    targetCompatibility = '17'
+}
+
 group 'jp.ac.aoyama.it.ke.mrcube'
 version = '24.5.1'
 
@@ -60,8 +65,8 @@ shadowJar {
 runtime {
     enableCds()
     options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
-    imageDir = file("${layout.buildDirectory}/mrcube-${version}")
-    imageZip = file("${layout.buildDirectory}/mrcube-${version}.zip")
+    imageDir = layout.buildDirectory.dir("mrcube-${version}")
+    imageZip = layout.buildDirectory.file("mrcube-${version}.zip")
 
     jpackage {
         if (OperatingSystem.current().isWindows()) {
@@ -83,15 +88,15 @@ runtime {
 tasks.runtime.doLast {
     copy {
         from('./README.md')
-        into("${layout.buildDirectory}/mrcube-${version}")
+        into(layout.buildDirectory.file("mrcube-${version}"))
     }
     copy {
         from('./README.ja.md')
-        into("${layout.buildDirectory}/mrcube-${version}")
+        into(layout.buildDirectory.file("mrcube-${version}"))
     }
     copy {
         from('./LICENSE')
-        into("${layout.buildDirectory}/mrcube-${version}")
+        into(layout.buildDirectory.file("mrcube-${version}"))
     }
 }
 
