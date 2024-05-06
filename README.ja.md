@@ -33,6 +33,22 @@ MR<sup>3</sup>には主に以下の3つの特徴があります．
 * RDFプロパティの変更をRDFSプロパティに反映させる機能
 * RDFSクラス及びプロパティの変更をRDFリソースのタイプ及びプロパティに反映させる機能
 
+# 発表論文
+Takeshi Morita, Noriaki Izumi, Naoki Fukuta, Takahira Yamaguchi, “A Graphical RDF-based Meta-Model Management Tool”, IEICE Transactions on Information and Systems, Special Issue on Knowledge-Based Software Engineering Vol.E89-D No.4 pp.1368-1377, (2006), DOI: [10.1093/ietisy/e89-d.4.1368](http://doi.org/10.1093/ietisy/e89-d.4.1368)
+
+```
+@article{Morita2006,
+  title={A Graphical RDF-based Meta-Model Management Tool},
+  author={Takeshi MORITA and Naoki FUKUTA and Noriaki IZUMI and Takahira YAMAGUCHI},
+  journal={IEICE Transactions on Information and Systems},
+  volume={E89.D},
+  number={4},
+  pages={1368-1377},
+  year={2006},
+  doi={10.1093/ietisy/e89-d.4.1368}
+}
+```
+
 ## ライセンス
 MR<sup>3</sup>はフリーソフトウェアです．Free Software Foundation による [GNU Generic Public License](http://www.gnu.org/copyleft/gpl.html) のバージョン2 （または，それ以降のバージョン）に従う限り自由に変更し再配布することができます．
 
@@ -44,11 +60,6 @@ MR<sup>3</sup>はフリーソフトウェアです．Free Software Foundation �
 * [Drawing Graphs with VGJ](http://www.eng.auburn.edu/department/cse/research/graph_drawing/graph_drawing.html)([License](http://www.eng.auburn.edu/department/cse/research/graph_drawing/COPYING))
 * [Material Design icons by Google](https://github.com/google/material-design-icons)([License](https://www.apache.org/licenses/LICENSE-2.0.txt))
 
-## プロジェクトメンバー
-* 森田武史 (青山学院大学理工学部)
-* 福田直樹 (静岡大学情報学部)
-* 和泉憲明 (産業技術総合研究所)
-* 山口高平 (慶應義塾大学理工学部)
 
 ## 連絡先
 * 森田武史 (morita@it.aoyama.ac.jp)

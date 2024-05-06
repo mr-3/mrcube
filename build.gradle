@@ -7,15 +7,15 @@ plugins {
     id "org.beryx.runtime" version "1.13.1"
 }
 
-group 'org.mrcube'
+group 'jp.ac.aoyama.it.ke.mrcube'
 version = '24.5.1'
 
 application {
-    mainClass.set('org.mrcube.MR3')
+    mainClass.set('jp.ac.aoyama.it.ke.mrcube.MR3')
 }
 
 project.ext {
-    moduleName = 'org.mrcube.mrcube'
+    moduleName = 'jp.ac.aoyama.it.ke'
     artifactId = 'mrcube'
     defaultEncoding = 'UTF-8'
 }
@@ -30,7 +30,7 @@ wrapper {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'org.mrcube.MR3'
+        attributes 'Main-Class': 'jp.ac.aoyama.it.ke.mrcube.MR3'
     }
 }
 
@@ -53,7 +53,7 @@ test {
 shadowJar {
     mergeServiceFiles()
     manifest {
-        attributes 'Main-Class': 'org.mrcube.MR3'
+        attributes 'Main-Class': 'jp.ac.aoyama.it.ke.mrcube.MR3'
     }
 }
 
