@@ -206,7 +206,7 @@ abstract class AbstractActionFile extends MR3AbstractAction {
     protected int confirmExitProject() {
         String title = MR3.getProjectPanel().getTitle();
         int messageType = JOptionPane.showConfirmDialog(MR3.getProjectPanel(), title + "\n" + Translator.getString("SaveChanges"),
-                "MR^3 - " + title, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                "MR^3 - " + title, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, Utilities.getImageIcon("open.png"));
         if (messageType == JOptionPane.YES_OPTION) {
             quitProject();
         }

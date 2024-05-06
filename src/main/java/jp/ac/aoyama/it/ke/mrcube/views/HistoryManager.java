@@ -165,6 +165,7 @@ public class HistoryManager extends JDialog implements ActionListener {
 
     public HistoryManager(Frame root, MR3 mr3) {
         super(root, Translator.getString("HistoryManager.Title"));
+        setIconImage(Utilities.getImageIcon("history.png").getImage());
         this.mr3 = mr3;
         mr3Reader = mr3.getMR3Reader();
         mr3Writer = mr3.getMR3Writer();
