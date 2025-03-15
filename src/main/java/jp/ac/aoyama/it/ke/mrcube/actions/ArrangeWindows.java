@@ -28,6 +28,7 @@ import jp.ac.aoyama.it.ke.mrcube.views.MR3ProjectPanel;
 import jp.ac.aoyama.it.ke.mrcube.models.MR3Constants.ArrangeWindowsType;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 
 /**
@@ -37,8 +38,8 @@ public class ArrangeWindows extends MR3AbstractAction {
 
     private final ArrangeWindowsType arrangeWindowsType;
 
-    public ArrangeWindows(MR3 mr3, String title, ArrangeWindowsType type, KeyStroke keyStroke) {
-        super(mr3, title);
+    public ArrangeWindows(MR3 mr3, String title, ArrangeWindowsType type, KeyStroke keyStroke, ImageIcon icon) {
+        super(mr3, title, icon);
         arrangeWindowsType = type;
         putValue(SHORT_DESCRIPTION, title);
         putValue(ACCELERATOR_KEY, keyStroke);

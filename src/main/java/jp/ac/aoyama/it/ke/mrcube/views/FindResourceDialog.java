@@ -55,7 +55,7 @@ public class FindResourceDialog extends JDialog {
 
     public FindResourceDialog(GraphManager gm) {
         super(gm.getRootFrame(), Translator.getString("FindResourceDialog.Title"), false);
-        setIconImage(Utilities.getImageIcon(Translator.getString("FindResourceDialog.Icon")).getImage());
+        setIconImage(Utilities.getSVGIcon(Translator.getString("FindResourceDialog.Icon")).getImage());
 
         gmanager = gm;
         keywordField = new JTextField();

@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: https://mr-3.github.io/
  *
- * Copyright (C) 2003-2024 Takeshi Morita. All rights reserved.
+ * Copyright (C) 2003-2025 Takeshi Morita. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -41,7 +41,7 @@ public class ShowValidator extends MR3AbstractAction {
     private static final String TITLE = Translator.getString("Menu.Tools.Validator.Text");
 
     public ShowValidator(MR3 mr3) {
-        super(mr3, TITLE, Utilities.getImageIcon("verified.png"));
+        super(mr3, TITLE, Utilities.getSVGIcon("verified.svg"));
         setValues();
     }
 

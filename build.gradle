@@ -104,6 +104,7 @@ tasks.runtime.doLast {
 
 dependencies {
     implementation 'com.formdev:flatlaf:3.5.4'
+    implementation 'com.formdev:flatlaf-extras:3.5.4'
     implementation 'jgraph:jgraph:5.13.0.0'
     implementation 'org.apache.jena:jena-core:5.3.0'
     implementation 'org.apache.jena:jena-arq:5.3.0'

@@ -73,13 +73,13 @@ public class MR3ProjectPanel extends JPanel {
         registerComponent();
 
         instanceEditorFrame = createEditorFrame(instanceEditor, Translator.getString("InstanceEditor"),
-                Utilities.getImageIcon(Translator.getString("InstanceEditor.Icon")));
+                Utilities.getSVGIcon(Translator.getString("InstanceEditor.Icon")));
 
         classEditorFrame = createEditorFrame(classEditor, Translator.getString("ClassEditor.Title"),
-                Utilities.getImageIcon(Translator.getString("ClassEditor.Icon")));
+                Utilities.getSVGIcon(Translator.getString("ClassEditor.Icon")));
 
         propertyEditorFrame = createEditorFrame(propertyEditor, Translator.getString("PropertyEditor.Title"),
-                Utilities.getImageIcon(Translator.getString("PropertyEditor.Icon")));
+                Utilities.getSVGIcon(Translator.getString("PropertyEditor.Icon")));
 
         desktopPane = new JDesktopPane();
         desktopPane.add(instanceEditorFrame);

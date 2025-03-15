@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: https://mr-3.github.io/
  *
- * Copyright (C) 2003-2024 Takeshi Morita. All rights reserved.
+ * Copyright (C) 2003-2025 Takeshi Morita. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -41,7 +41,7 @@ import java.util.prefs.Preferences;
 public class QuitAction extends AbstractActionFile {
 
     private static final String TITLE = Translator.getString("Menu.File.Quit.Text");
-    private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("Menu.File.Quit.Icon"));
+    private static final ImageIcon ICON = Utilities.getSVGIcon(Translator.getString("Menu.File.Quit.Icon"));
 
     public QuitAction(MR3 mr3) {
         super(mr3, TITLE, ICON);
@@ -52,7 +52,7 @@ public class QuitAction extends AbstractActionFile {
         mr3.getGraphManager().closeAllDialogs();
         int messageType = JOptionPane.showConfirmDialog(mr3, Translator.getString("SaveChanges"), "MR^3 - "
                         + Translator.getString("Menu.File.Quit.Text"), JOptionPane.YES_NO_CANCEL_OPTION,
-                JOptionPane.INFORMATION_MESSAGE, Utilities.getImageIcon("exit.png"));
+                JOptionPane.INFORMATION_MESSAGE, Utilities.getSVGIcon("exit.svg"));
         if (messageType == JOptionPane.YES_OPTION) {
             confirmExitProject();
             saveWindows();

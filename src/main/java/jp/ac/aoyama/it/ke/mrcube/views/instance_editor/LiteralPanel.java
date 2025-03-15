@@ -112,7 +112,7 @@ public class LiteralPanel extends JPanel implements ActionListener {
         setLayout(new BorderLayout());
         JPanel titlePanel = new JPanel();
         titlePanel.setBackground(MR3Constants.TITLE_BACKGROUND_COLOR);
-        ImageIcon icon = Utilities.getImageIcon("literal_node.png");
+        ImageIcon icon = Utilities.getSVGIcon("literal_node.svg");
         JLabel titleLabel = new JLabel(Translator.getString("AttributeDialog.LiteralAttribute.Text"), icon, SwingConstants.LEFT);
         titleLabel.setForeground(Color.white);
         titleLabel.setFont(new Font("SansSerif", Font.BOLD, MR3Constants.TITLE_FONT_SIZE));

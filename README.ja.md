@@ -59,7 +59,8 @@ MR<sup>3</sup>はフリーソフトウェアです．Free Software Foundation �
 * [Apache Batik SVG Toolkit](https://xmlgraphics.apache.org/batik/)([License](https://xmlgraphics.apache.org/batik/license.html))
 * [Drawing Graphs with VGJ](http://www.eng.auburn.edu/department/cse/research/graph_drawing/graph_drawing.html)([License](http://www.eng.auburn.edu/department/cse/research/graph_drawing/COPYING))
 * [Material Design icons by Google](https://github.com/google/material-design-icons)([License](https://www.apache.org/licenses/LICENSE-2.0.txt))
-
+* [Badass Runtime Plugin](https://github.com/beryx/badass-runtime-plugin)([License](https://www.apache.org/licenses/LICENSE-2.0.txt))
+* [Shadow](https://github.com/GradleUp/shadow)([License](https://www.apache.org/licenses/LICENSE-2.0.txt))
 
 ## 連絡先
 * 森田武史 (morita@it.aoyama.ac.jp)

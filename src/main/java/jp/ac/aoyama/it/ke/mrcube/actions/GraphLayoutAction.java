@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: https://mr-3.github.io/
  *
- * Copyright (C) 2003-2024 Takeshi Morita. All rights reserved.
+ * Copyright (C) 2003-2025 Takeshi Morita. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -41,8 +41,8 @@ public class GraphLayoutAction extends AbstractAction {
     private final GraphType graphType;
     private final GraphManager gmanager;
     private static final String TITLE = Translator.getString("Menu.View.ApplyLayout.Text");
-    private static final ImageIcon LEFT_TO_RIGHT_LAYOUT_GRAPH_ICON = Utilities.getImageIcon("left_to_right_ic_share_black_18dp.png");
-    private static final ImageIcon UP_TO_DOWN_LAYOUT_GRAPH_ICON = Utilities.getImageIcon("up_to_down_ic_share_black_18dp.png");
+    private static final ImageIcon LEFT_TO_RIGHT_LAYOUT_GRAPH_ICON = Utilities.getSVGIcon("left_to_right.svg");
+    private static final ImageIcon UP_TO_DOWN_LAYOUT_GRAPH_ICON = Utilities.getSVGIcon("up_to_down.svg");
 
     public GraphLayoutAction(GraphManager gm, GraphType type, String direction) {
         super(getString(type) + TITLE + " (" + direction + ")");

@@ -40,7 +40,7 @@ public class OpenFileAction extends OpenResourceAction {
 
     public OpenFileAction(MR3 mr3) {
         super(mr3);
-        putValue(Action.SMALL_ICON, Utilities.getImageIcon(Translator.getString("Menu.File.Open.Icon")));
+        putValue(Action.SMALL_ICON, Utilities.getSVGIcon(Translator.getString("Menu.File.Open.Icon")));
         setValues();
     }
 

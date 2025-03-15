@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="24px"
+   height="24px"
+   viewBox="0 0 113 112"
+   version="1.1"
+   id="svg2"
+   sodipodi:docname="instance_node.svg"
+   inkscape:export-filename="instance_node.svg"
+   inkscape:export-xdpi="15.292035"
+   inkscape:export-ydpi="15.292035"
+   inkscape:version="1.4 (e7c3feb1, 2024-10-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview2"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="pt"
+     inkscape:zoom="6.7566964"
+     inkscape:cx="75.332673"
+     inkscape:cy="74.666667"
+     inkscape:window-width="1200"
+     inkscape:window-height="1186"
+     inkscape:window-x="71"
+     inkscape:window-y="25"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg2" />
+  <defs
+     id="defs1">
+    <g
+       id="g1">
+      <g
+         id="glyph-0-0">
+        <path
+           d="M 28.328125 0 L 5.359375 0 L 5.359375 -5.9375 L 12.96875 -5.9375 L 12.96875 -52.234375 L 5.359375 -52.234375 L 5.359375 -58.171875 L 28.328125 -58.171875 L 28.328125 -52.234375 L 20.703125 -52.234375 L 20.703125 -5.9375 L 28.328125 -5.9375 Z M 28.328125 0 "
+           id="path1" />
+      </g>
+    </g>
+  </defs>
+  <rect
+     x="-11.3"
+     y="-11.2"
+     width="135.6"
+     height="134.4"
+     fill="rgb(100%, 100%, 100%)"
+     fill-opacity="1"
+     id="rect1" />
+  <path
+     fill-rule="nonzero"
+     fill="rgb(0%, 32.940674%, 57.647705%)"
+     fill-opacity="1"
+     stroke-width="10"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     stroke="rgb(0%, 32.940674%, 57.647705%)"
+     stroke-opacity="1"
+     stroke-miterlimit="10"
+     d="M 551.855469 382.644531 C 571.382812 402.171875 571.382812 433.828125 551.855469 453.355469 C 532.328125 472.882812 500.671875 472.882812 481.144531 453.355469 C 461.617188 433.828125 461.617188 402.171875 481.144531 382.644531 C 500.671875 363.117188 532.328125 363.117188 551.855469 382.644531 "
+     transform="matrix(1, 0, 0, 1, -460, -362)"
+     id="path2" />
+  <g
+     fill="rgb(100%, 100%, 100%)"
+     fill-opacity="1"
+     id="g2">
+    <use
+       xlink:href="#glyph-0-0"
+       x="39.66406"
+       y="87.5"
+       id="use2" />
+  </g>
+</svg>

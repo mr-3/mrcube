@@ -51,7 +51,7 @@ public class MR3Constants {
     public static String COMMENT;
     public static Color TITLE_BACKGROUND_COLOR = new Color(43, 43, 43);
     public static final int TITLE_FONT_SIZE = 14;
-    public static final ImageIcon SPLASH_LOGO = Utilities.getImageIcon(Translator.getString("SplashLogo"));
+    public static final ImageIcon SPLASH_LOGO = Utilities.getSVGIcon(Translator.getString("SplashLogo"));
 
     public static void loadResourceBundle() {
         APPLY = Translator.getString("Apply") + "(A)";

@@ -11,7 +11,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 public class ShowSPARQLQueryDialog extends MR3AbstractAction {
-    private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("FindResourceDialog.Icon"));
+    private static final ImageIcon ICON = Utilities.getSVGIcon(Translator.getString("FindResourceDialog.Icon"));
 
     public ShowSPARQLQueryDialog(MR3 mr3, String title) {
         super(mr3, title, ICON);

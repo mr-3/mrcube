@@ -79,8 +79,8 @@ public class ReplaceRDFSDialog extends JDialog implements ListSelectionListener,
 
     private static final String NULL = "NULL";
 
-    private static final ImageIcon UP_ICON = Utilities.getImageIcon(Translator.getString("ReplaceRDFSDialog.Icon.up"));
-    private static final ImageIcon DOWN_ICON = Utilities.getImageIcon(Translator
+    private static final ImageIcon UP_ICON = Utilities.getSVGIcon(Translator.getString("ReplaceRDFSDialog.Icon.up"));
+    private static final ImageIcon DOWN_ICON = Utilities.getSVGIcon(Translator
             .getString("ReplaceRDFSDialog.Icon.down"));
 
     public ReplaceRDFSDialog(GraphManager gm) {

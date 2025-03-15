@@ -41,7 +41,7 @@ public class ShowVersionInfoAction extends MR3AbstractAction {
     private final Frame rootFrame;
     private WeakReference<VersionInfoDialog> versionInfoDialogRef;
     private static final String TITLE = Translator.getString("Menu.Help.About.Text");
-    private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("Menu.Help.About.Icon"));
+    private static final ImageIcon ICON = Utilities.getSVGIcon(Translator.getString("Menu.Help.About.Icon"));
 
     public ShowVersionInfoAction(Frame frame) {
         super(TITLE, ICON);

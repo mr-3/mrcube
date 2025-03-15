@@ -57,7 +57,7 @@ public class RDFSourceCodeViewer extends JDialog implements ActionListener {
     private static JTextArea sourceCodeTextArea;
     private static final int FRAME_HEIGHT = 500;
     private static final int FRAME_WIDTH = 600;
-    private static final ImageIcon SOURCE_CODE_ICON = Utilities.getImageIcon(Translator.getString("RDFSourceCodeViewer.Icon"));
+    private static final ImageIcon SOURCE_CODE_ICON = Utilities.getSVGIcon(Translator.getString("RDFSourceCodeViewer.Icon"));
 
     public RDFSourceCodeViewer(GraphManager gm) {
         super(gm.getRootFrame(), Translator.getString("RDFSourceCodeViewer.Title"), true);

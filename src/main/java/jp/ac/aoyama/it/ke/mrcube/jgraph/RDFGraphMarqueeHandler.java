@@ -561,7 +561,7 @@ public class RDFGraphMarqueeHandler extends BasicMarqueeHandler {
 
         public ShowAttrDialog() {
             super(Translator.getString("Menu.Window.AttrDialog.Text"), Utilities
-                    .getImageIcon(Translator.getString("AttributeDialog.Icon")));
+                    .getSVGIcon(Translator.getString("AttributeDialog.Icon")));
             setValues();
         }
 

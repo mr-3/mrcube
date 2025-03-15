@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: https://mr-3.github.io/
  *
- * Copyright (C) 2003-2024 Takeshi Morita. All rights reserved.
+ * Copyright (C) 2003-2025 Takeshi Morita. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -206,7 +206,7 @@ abstract class AbstractActionFile extends MR3AbstractAction {
     protected int confirmExitProject() {
         String title = MR3.getProjectPanel().getTitle();
         int messageType = JOptionPane.showConfirmDialog(MR3.getProjectPanel(), title + "\n" + Translator.getString("SaveChanges"),
-                "MR^3 - " + title, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, Utilities.getImageIcon("open.png"));
+                "MR^3 - " + title, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, Utilities.getSVGIcon("open.svg"));
         if (messageType == JOptionPane.YES_OPTION) {
             quitProject();
         }

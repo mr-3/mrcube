@@ -103,7 +103,7 @@ public class MR3 extends JFrame implements ChangeListener {
         MR3Constants.loadResourceBundle();
         initWeakReferences();
         mr3LogConsole = new MR3LogConsole(this, Translator.getString("LogConsole.Title"),
-                Utilities.getImageIcon("log.png").getImage());
+                Utilities.getSVGIcon("log.svg").getImage());
         gmanager = new GraphManager(userPrefs, this);
         mr3Reader = new MR3Reader(gmanager);
         mr3Writer = new MR3Writer(gmanager);
@@ -192,23 +192,26 @@ public class MR3 extends JFrame implements ChangeListener {
         saveFileAsAction = new SaveFileAction(this, SaveFileAction.SAVE_AS_PROJECT, SaveFileAction.SAVE_AS_PROJECT_ICON);
         saveInstanceGraphAsImageFileAction = new SaveGraphImageAction(gmanager, GraphType.Instance,
                 Translator.getString("Menu.File.SaveInstanceGraphAsImageFile.Text"),
-                Utilities.getImageIcon(Translator.getString("InstanceEditor.Icon")));
+                Utilities.getSVGIcon(Translator.getString("InstanceEditor.Icon")));
         saveClassGraphAsImageFileAction = new SaveGraphImageAction(gmanager, GraphType.Class,
                 Translator.getString("Menu.File.SaveClassGraphAsImageFile.Text"),
-                Utilities.getImageIcon(Translator.getString("ClassEditor.Icon")));
+                Utilities.getSVGIcon(Translator.getString("ClassEditor.Icon")));
         savePropertyGraphAsImageFileAction = new SaveGraphImageAction(gmanager, GraphType.Property,
                 Translator.getString("Menu.File.SavePropertyGraphAsImageFile.Text"),
-                Utilities.getImageIcon(Translator.getString("PropertyEditor.Icon")));
+                Utilities.getSVGIcon(Translator.getString("PropertyEditor.Icon")));
         showValidatorAction = new ShowValidator(this);
         arrangeWindowsCPIAction = new ArrangeWindows(this, Translator.getString("Menu.Window.ArrangeCPIWindows.Text"),
                 ArrangeWindowsType.CPI,
-                KeyStroke.getKeyStroke(KeyEvent.VK_1, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
+                KeyStroke.getKeyStroke(KeyEvent.VK_1, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
+                Utilities.getSVGIcon(Translator.getString("Menu.Window.ArrangeCPIWindows.Icon")));
         arrangeWindowsCIAction = new ArrangeWindows(this, Translator.getString("Menu.Window.ArrangeCIWindows.Text"),
                 ArrangeWindowsType.CI,
-                KeyStroke.getKeyStroke(KeyEvent.VK_2, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
+                KeyStroke.getKeyStroke(KeyEvent.VK_2, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
+                Utilities.getSVGIcon(Translator.getString("Menu.Window.ArrangeCIWindows.Icon")));
         arrangeWindowsPIAction = new ArrangeWindows(this, Translator.getString("Menu.Window.ArrangePIWindows.Text"),
                 ArrangeWindowsType.PI,
-                KeyStroke.getKeyStroke(KeyEvent.VK_3, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
+                KeyStroke.getKeyStroke(KeyEvent.VK_3, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
+                Utilities.getSVGIcon(Translator.getString("Menu.Window.ArrangePIWindows.Icon")));
         showAttrDialogAction = new ShowAttrDialog(this);
         showNSTableDialogAction = new ShowNSTableDialog(this);
         showRDFSourceCodeViewer = new ShowRDFSourceCodeViewer(this,
@@ -650,6 +653,8 @@ public class MR3 extends JFrame implements ChangeListener {
 
     public static void main(String[] arg) {
         System.setProperty("javax.accessibility.assistive_technologies", "");
+        System.setProperty("sun.java2d.uiScale.enabled", "true");
+        System.setProperty("sun.java2d.uiScale", "2.0");
         initialize(MR3.class);
         JWindow splashWindow = new SplashWindow(null, MR3Constants.SPLASH_LOGO);
         try {

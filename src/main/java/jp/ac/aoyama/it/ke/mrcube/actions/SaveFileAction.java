@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: https://mr-3.github.io/
  *
- * Copyright (C) 2003-2024 Takeshi Morita. All rights reserved.
+ * Copyright (C) 2003-2025 Takeshi Morita. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -44,8 +44,8 @@ public class SaveFileAction extends AbstractActionFile {
     public static final String SAVE_PROJECT = Translator.getString("Menu.File.Save.Text");
     public static final String SAVE_AS_PROJECT = Translator.getString("Menu.File.SaveAs.Text");
 
-    public static final ImageIcon SAVE_PROJECT_ICON = Utilities.getImageIcon(Translator.getString("Menu.File.Save.Icon"));
-    public static final ImageIcon SAVE_AS_PROJECT_ICON = Utilities.getImageIcon(Translator.getString("Menu.File.SaveAs.Icon"));
+    public static final ImageIcon SAVE_PROJECT_ICON = Utilities.getSVGIcon(Translator.getString("Menu.File.Save.Icon"));
+    public static final ImageIcon SAVE_AS_PROJECT_ICON = Utilities.getSVGIcon(Translator.getString("Menu.File.SaveAs.Icon"));
 
     public SaveFileAction(MR3 mr3, String name, ImageIcon icon) {
         super(mr3, name, icon);

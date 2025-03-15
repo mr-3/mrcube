@@ -14,7 +14,7 @@ import java.net.URISyntaxException;
 
 public class ShowManualAction extends MR3AbstractAction {
     private static final String TITLE = Translator.getString("Menu.Help.Manual.Text");
-    private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("Menu.Help.Manual.Icon"));
+    private static final ImageIcon ICON = Utilities.getSVGIcon(Translator.getString("Menu.Help.Manual.Icon"));
 
     public ShowManualAction(MR3 mr3) {
         super(mr3, TITLE, ICON);

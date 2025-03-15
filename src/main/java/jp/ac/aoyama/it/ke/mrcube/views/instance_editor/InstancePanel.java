@@ -127,7 +127,7 @@ public class InstancePanel extends JPanel implements ListSelectionListener {
         setLayout(new BorderLayout());
         JPanel titlePanel = new JPanel();
         titlePanel.setBackground(MR3Constants.TITLE_BACKGROUND_COLOR);
-        ImageIcon icon = Utilities.getImageIcon(Translator.getString("InstanceEditor.Icon"));
+        ImageIcon icon = Utilities.getSVGIcon(Translator.getString("InstanceEditor.Icon"));
         JLabel titleLabel = new JLabel(Translator.getString("AttributeDialog.InstanceAttribute.Text"), icon, SwingConstants.LEFT);
         titleLabel.setForeground(Color.white);
         titleLabel.setFont(new Font("SansSerif", Font.BOLD, MR3Constants.TITLE_FONT_SIZE));

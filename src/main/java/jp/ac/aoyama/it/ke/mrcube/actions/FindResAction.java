@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: https://mr-3.github.io/
  *
- * Copyright (C) 2003-2024 Takeshi Morita. All rights reserved.
+ * Copyright (C) 2003-2025 Takeshi Morita. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -40,7 +40,7 @@ public class FindResAction extends AbstractAction {
 
     private final GraphManager gmanager;
     private static final String TITLE = Translator.getString("Action.FindResource.Text");
-    private static final ImageIcon ICON = Utilities.getImageIcon(Translator.getString("FindResourceDialog.Icon"));
+    private static final ImageIcon ICON = Utilities.getSVGIcon(Translator.getString("FindResourceDialog.Icon"));
 
     public FindResAction(RDFGraph g, GraphManager gm) {
         super(TITLE, ICON);

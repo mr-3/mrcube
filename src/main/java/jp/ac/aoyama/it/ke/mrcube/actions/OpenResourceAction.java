@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: https://mr-3.github.io/
  *
- * Copyright (C) 2003-2024 Takeshi Morita. All rights reserved.
+ * Copyright (C) 2003-2025 Takeshi Morita. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -37,7 +37,7 @@ public class OpenResourceAction extends AbstractActionFile {
 
     private final MR3Reader mr3Reader;
     public static final String TITLE = Translator.getString("Menu.File.Open.Text");
-    public static final ImageIcon ICON = Utilities.getImageIcon("baseline_open_in_browser_black_18dp.png");
+    public static final ImageIcon ICON = Utilities.getSVGIcon("open_in_browser.svg");
 
     public OpenResourceAction(MR3 mr3) {
         super(mr3, TITLE, ICON);

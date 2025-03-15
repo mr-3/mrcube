@@ -73,7 +73,7 @@ public class ClassPanel extends OntologyPanel {
         setLayout(new BorderLayout());
         JPanel titlePanel = new JPanel();
         titlePanel.setBackground(MR3Constants.TITLE_BACKGROUND_COLOR);
-        ImageIcon icon = Utilities.getImageIcon(Translator.getString("ClassEditor.Icon"));
+        ImageIcon icon = Utilities.getSVGIcon(Translator.getString("ClassEditor.Icon"));
         JLabel titleLabel = new JLabel(Translator.getString("AttributeDialog.OntClassAttribute.Text"),
                 icon, SwingConstants.LEFT);
         titleLabel.setForeground(Color.white);

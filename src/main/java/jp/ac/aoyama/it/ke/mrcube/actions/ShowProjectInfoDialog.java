@@ -42,7 +42,7 @@ public class ShowProjectInfoDialog extends MR3AbstractAction {
     private static final String TITLE = Translator.getString("Menu.Tools.ProjectInfo.Text");
 
     public ShowProjectInfoDialog(MR3 mr3) {
-        super(mr3, TITLE, Utilities.getImageIcon("info.png"));
+        super(mr3, TITLE, Utilities.getSVGIcon("info.svg"));
         setValues();
     }
 

@@ -60,7 +60,7 @@ public class InsertInstanceDialog extends JDialog implements ItemListener {
 
     public InsertInstanceDialog(GraphManager gm) {
         super(gm.getRootFrame(), Translator.getString("InsertInstanceDialog.Title"),  true);
-        setIconImage(Utilities.getImageIcon("instance_node.png").getImage());
+        setIconImage(Utilities.getSVGIcon("instance_node.svg").getImage());
         gmanager = gm;
         confirmAction = new ConfirmAction();
         cancelAction = new CancelAction();

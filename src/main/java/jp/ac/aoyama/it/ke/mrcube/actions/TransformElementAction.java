@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: https://mr-3.github.io/
  *
- * Copyright (C) 2003-2024 Takeshi Morita. All rights reserved.
+ * Copyright (C) 2003-2025 Takeshi Morita. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -51,7 +51,7 @@ public class TransformElementAction extends AbstractAction {
     private final GraphType fromGraphType;
     private final GraphType toGraphType;
     private final GraphManager gmanager;
-    private static final ImageIcon ICON = Utilities.getImageIcon("transform.png");
+    private static final ImageIcon ICON = Utilities.getSVGIcon("transform.svg");
 
     // private RDFSModelMap rdfsInfoMap = RDFSModelMap.getInstance();
 

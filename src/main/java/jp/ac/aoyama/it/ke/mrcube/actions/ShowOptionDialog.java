@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: https://mr-3.github.io/
  *
- * Copyright (C) 2003-2024 Takeshi Morita. All rights reserved.
+ * Copyright (C) 2003-2025 Takeshi Morita. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -39,7 +39,7 @@ import java.awt.event.KeyEvent;
 public class ShowOptionDialog extends MR3AbstractAction {
 
     public ShowOptionDialog(MR3 mr3) {
-        super(mr3, Translator.getString("Menu.Tools.Options.Text"), Utilities.getImageIcon("settings.png"));
+        super(mr3, Translator.getString("Menu.Tools.Options.Text"), Utilities.getSVGIcon("settings.svg"));
         putValue(SHORT_DESCRIPTION, getName());
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O,
                 Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | InputEvent.SHIFT_DOWN_MASK));

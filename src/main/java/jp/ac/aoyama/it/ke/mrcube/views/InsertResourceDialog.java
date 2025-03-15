@@ -57,9 +57,9 @@ public class InsertResourceDialog extends JDialog {
     public InsertResourceDialog(GraphManager gm, RDFGraph graph) {
         super(gm.getRootFrame(), true);
         if (gm.isClassGraph(graph)) {
-            setIconImage(Utilities.getImageIcon("class_node.png").getImage());
+            setIconImage(Utilities.getSVGIcon("class_node.svg").getImage());
         } else if (gm.isPropertyGraph(graph)) {
-            setIconImage(Utilities.getImageIcon("property_node.png").getImage());
+            setIconImage(Utilities.getSVGIcon("property_node.svg").getImage());
         }
         gmanager = gm;
         confirmAction = new ConfirmAction();

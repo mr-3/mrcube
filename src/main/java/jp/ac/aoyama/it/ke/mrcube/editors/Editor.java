@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: https://mr-3.github.io/
  *
- * Copyright (C) 2003-2024 Takeshi Morita. All rights reserved.
+ * Copyright (C) 2003-2025 Takeshi Morita. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -75,10 +75,10 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
 
     Font graphFont;
 
-    public static final ImageIcon INSTANCE_NODE_ICON = Utilities.getImageIcon("instance_node.png");
-    public static final ImageIcon CLASS_NODE_ICON = Utilities.getImageIcon("class_node.png");
-    public static final ImageIcon PROPERTY_NODE_ICON = Utilities.getImageIcon("property_node.png");
-    public static final ImageIcon LITERAL_NODE_ICON = Utilities.getImageIcon("literal_node.png");
+    public static final ImageIcon INSTANCE_NODE_ICON = Utilities.getSVGIcon("instance_node.svg");
+    public static final ImageIcon CLASS_NODE_ICON = Utilities.getSVGIcon("class_node.svg");
+    public static final ImageIcon PROPERTY_NODE_ICON = Utilities.getSVGIcon("property_node.svg");
+    public static final ImageIcon LITERAL_NODE_ICON = Utilities.getSVGIcon("literal_node.svg");
 
     public static final Color DEFAUlT_BACKGROUND_COLOR = Color.white;
     public static Color backgroundColor = DEFAUlT_BACKGROUND_COLOR;
@@ -194,7 +194,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
 
     class OpenSelectedResourceAction extends AbstractAction {
         public OpenSelectedResourceAction() {
-            super(OpenResourceAction.TITLE, Utilities.getImageIcon("baseline_open_in_browser_black_18dp.png"));
+            super(OpenResourceAction.TITLE, Utilities.getSVGIcon("open_in_browser.svg"));
         }
 
         @Override
@@ -316,7 +316,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
 
     class UndoAction extends AbstractAction {
         UndoAction() {
-            super(Translator.getString("Action.Undo.Text"), Utilities.getImageIcon(Translator
+            super(Translator.getString("Action.Undo.Text"), Utilities.getSVGIcon(Translator
                     .getString("Action.Undo.Icon")));
         }
 
@@ -343,8 +343,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
 
     class RedoAction extends AbstractAction {
         RedoAction() {
-            super(Translator.getString("Action.Redo.Text"), Utilities.getImageIcon(Translator
-                    .getString("Action.Redo.Icon")));
+            super(Translator.getString("Action.Redo.Text"), Utilities.getSVGIcon(Translator.getString("Action.Redo.Icon")));
         }
 
         // Redo the last Change to the Model or the View

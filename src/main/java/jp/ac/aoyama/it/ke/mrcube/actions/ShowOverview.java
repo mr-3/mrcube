@@ -40,9 +40,9 @@ public class ShowOverview extends MR3AbstractAction {
     public static final String CLASS_EDITOR_OVERVIEW = Translator.getString("Menu.Window.ClassEditorOverview.Text");
     public static final String PROPERTY_EDITOR_OVERVIEW = Translator.getString("Menu.Window.PropertyEditorOverview.Text");
 
-    public static final ImageIcon INSTANCE_EDITOR_OVERVIEW_ICON = Utilities.getImageIcon(Translator.getString("InstanceEditorOverview.Icon"));
-    public static final ImageIcon CLASS_EDITOR_OVERVIEW_ICON = Utilities.getImageIcon(Translator.getString("ClassEditorOverview.Icon"));
-    public static final ImageIcon PROPERTY_EDITOR_OVERVIEW_ICON = Utilities.getImageIcon(Translator.getString("PropertyEditorOverview.Icon"));
+    public static final ImageIcon INSTANCE_EDITOR_OVERVIEW_ICON = Utilities.getSVGIcon(Translator.getString("InstanceEditorOverview.Icon"));
+    public static final ImageIcon CLASS_EDITOR_OVERVIEW_ICON = Utilities.getSVGIcon(Translator.getString("ClassEditorOverview.Icon"));
+    public static final ImageIcon PROPERTY_EDITOR_OVERVIEW_ICON = Utilities.getSVGIcon(Translator.getString("PropertyEditorOverview.Icon"));
 
     public ShowOverview(MR3 mr3, String name, ImageIcon icon) {
         super(mr3, name, icon);

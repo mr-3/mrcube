@@ -80,7 +80,7 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
 
     public NameSpaceTableDialog(GraphManager gm) {
         super(gm.getRootFrame(), Translator.getString("NamespaceTable.Title"), false);
-        setIconImage(Utilities.getImageIcon(Translator.getString("NamespaceTable.Icon")).getImage());
+        setIconImage(Utilities.getSVGIcon(Translator.getString("NamespaceTable.Icon")).getImage());
         gmanager = gm;
         prefixNSMap = new HashMap<>();
         initTable();

@@ -59,9 +59,9 @@ public class SelectEditorAction extends MR3AbstractAction {
         CLASS_EDITOR = Translator.getString("Menu.Window.ClassEditor.Text");
         PROPERTY_EDITOR = Translator.getString("Menu.Window.PropertyEditor.Text");
 
-        INSTANCE_EDITOR_ICON = Utilities.getImageIcon(Translator.getString("InstanceEditor.Icon"));
-        CLASS_EDITOR_ICON = Utilities.getImageIcon(Translator.getString("ClassEditor.Icon"));
-        PROPERTY_EDITOR_ICON = Utilities.getImageIcon(Translator.getString("PropertyEditor.Icon"));
+        INSTANCE_EDITOR_ICON = Utilities.getSVGIcon(Translator.getString("InstanceEditor.Icon"));
+        CLASS_EDITOR_ICON = Utilities.getSVGIcon(Translator.getString("ClassEditor.Icon"));
+        PROPERTY_EDITOR_ICON = Utilities.getSVGIcon(Translator.getString("PropertyEditor.Icon"));
     }
 
     private void setValues() {

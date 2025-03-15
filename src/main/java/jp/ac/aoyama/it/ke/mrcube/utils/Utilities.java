@@ -23,6 +23,7 @@
 
 package jp.ac.aoyama.it.ke.mrcube.utils;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import org.apache.jena.datatypes.RDFDatatype;
 import org.apache.jena.rdf.model.*;
 import jp.ac.aoyama.it.ke.mrcube.MR3;
@@ -103,6 +104,10 @@ public class Utilities {
 
     public static ImageIcon getImageIcon(String image) {
         return new ImageIcon(Utilities.class.getClassLoader().getResource("images/" + image));
+    }
+
+    public static ImageIcon getSVGIcon(String image) {
+        return new FlatSVGIcon(Utilities.class.getClassLoader().getResource("images/" + image));
     }
 
     public static JComponent createTitledPanel(JComponent component, String title) {

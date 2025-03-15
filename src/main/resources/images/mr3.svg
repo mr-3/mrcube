@@ -2,7 +2,7 @@
 
 <svg xmlns="http://www.w3.org/2000/svg"
      xmlns:xlink="http://www.w3.org/1999/xlink"
-     xml:lang="ja" width="512" height="512" viewBox="-100 -100 200 200">
+     xml:lang="ja" width="128px" height="128px" viewBox="-100 -100 200 200">
 
     <defs>
         <linearGradient id="blueGrad" x1="0" y1="0" x2="1.5" y2="1.5">
