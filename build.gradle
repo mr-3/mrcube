@@ -13,7 +13,7 @@ java {
 }
 
 group 'jp.ac.aoyama.it.ke.mrcube'
-version = '24.5.1'
+version = '25.3.1'
 
 application {
     mainClass.set('jp.ac.aoyama.it.ke.mrcube.MR3')
@@ -103,14 +103,14 @@ tasks.runtime.doLast {
 }
 
 dependencies {
-    implementation 'com.formdev:flatlaf:3.4.1'
+    implementation 'com.formdev:flatlaf:3.5.4'
     implementation 'jgraph:jgraph:5.13.0.0'
-    implementation 'org.apache.jena:jena-core:5.0.0'
-    implementation 'org.apache.jena:jena-arq:5.0.0'
-    implementation 'org.slf4j:slf4j-simple:2.0.0'
-    implementation 'org.apache.xmlgraphics:batik-svg-dom:1.17'
-    implementation 'org.apache.xmlgraphics:batik-svggen:1.17'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
+    implementation 'org.apache.jena:jena-core:5.3.0'
+    implementation 'org.apache.jena:jena-arq:5.3.0'
+    implementation 'org.slf4j:slf4j-simple:2.0.17'
+    implementation 'org.apache.xmlgraphics:batik-svg-dom:1.18'
+    implementation 'org.apache.xmlgraphics:batik-svggen:1.18'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.12.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.12.0'
 }
 
