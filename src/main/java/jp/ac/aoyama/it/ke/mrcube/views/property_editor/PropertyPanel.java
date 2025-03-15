@@ -40,6 +40,7 @@ import jp.ac.aoyama.it.ke.mrcube.views.SelectRDFSResourceDialog;
 import jp.ac.aoyama.it.ke.mrcube.views.common.ResourceListCellRenderer;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
@@ -93,6 +94,7 @@ public class PropertyPanel extends OntologyPanel {
         titleLabel.setForeground(Color.white);
         titleLabel.setFont(new Font("SansSerif", Font.BOLD, MR3Constants.TITLE_FONT_SIZE));
         titleLabel.setPreferredSize(new Dimension(250, 30));
+        titleLabel.setBorder(new EmptyBorder(0, 5, 0, 0));
         titlePanel.setLayout(new BorderLayout());
         titlePanel.add(titleLabel, BorderLayout.WEST);
 

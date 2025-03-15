@@ -101,7 +101,8 @@ public class InsertInstanceDialog extends JDialog implements ItemListener {
 
         contentPane.add(panel);
         int DIALOG_WIDTH = 400;
-        int DIALOG_HEIGHT = 200;
+        int DIALOG_HEIGHT = 220;
+        pack();
         setSize(new Dimension(DIALOG_WIDTH, DIALOG_HEIGHT));
         setMinimumSize(new Dimension(DIALOG_WIDTH, DIALOG_HEIGHT));
         setResizable(true);

@@ -23,7 +23,9 @@
 
 package jp.ac.aoyama.it.ke.mrcube;
 
+import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLightLaf;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import jp.ac.aoyama.it.ke.mrcube.actions.*;
 import jp.ac.aoyama.it.ke.mrcube.editors.ClassEditor;
 import jp.ac.aoyama.it.ke.mrcube.editors.Editor;
@@ -635,7 +637,12 @@ public class MR3 extends JFrame implements ChangeListener {
     }
 
     public static void initialize(Class cls) {
-        FlatLightLaf.setup();
+        System.setProperty("javax.accessibility.assistive_technologies", "");
+        if (System.getProperty("os.name").toLowerCase().startsWith("mac")) {
+            FlatMacLightLaf.setup();
+        } else {
+            FlatLightLaf.setup();
+        }
         JenaSystem.init();
         userPrefs = Preferences.userNodeForPackage(cls);
         Translator.loadResourceBundle(userPrefs);
@@ -652,7 +659,6 @@ public class MR3 extends JFrame implements ChangeListener {
     }
 
     public static void main(String[] arg) {
-        System.setProperty("javax.accessibility.assistive_technologies", "");
         initialize(MR3.class);
         JWindow splashWindow = new SplashWindow(null, MR3Constants.SPLASH_LOGO);
         try {

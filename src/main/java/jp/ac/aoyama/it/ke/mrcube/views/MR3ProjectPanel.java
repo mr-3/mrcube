@@ -57,7 +57,7 @@ public class MR3ProjectPanel extends JPanel {
     private final JInternalFrame classEditorFrame;
     private final JInternalFrame propertyEditorFrame;
 
-    private static final int HEADER_HEIGHT = 100;
+    private static final int MARGIN = 5;
 
     public MR3ProjectPanel(GraphManager gmanager) {
         this.gmanager = gmanager;
@@ -131,8 +131,8 @@ public class MR3ProjectPanel extends JPanel {
     }
 
     public void arrangeWindowsCPI() {
-        int rootWindowWidth = getRootPane().getWidth();
-        int rootWindowHeight = getRootPane().getHeight() - HEADER_HEIGHT;
+        int desktopPaneWidth = desktopPane.getWidth();
+        int desktopPaneHeight = desktopPane.getHeight();
         try {
             classEditorFrame.setIcon(false);
             propertyEditorFrame.setIcon(false);
@@ -140,43 +140,43 @@ public class MR3ProjectPanel extends JPanel {
         } catch (PropertyVetoException e) {
             e.printStackTrace();
         }
-        classEditorFrame.setSize(rootWindowWidth / 2, rootWindowHeight / 2);
+        classEditorFrame.setSize(MARGIN + desktopPaneWidth / 2, MARGIN + desktopPaneHeight / 2);
         classEditorFrame.setLocation(new Point(0, 0));
-        propertyEditorFrame.setSize(rootWindowWidth / 2, rootWindowHeight / 2);
-        propertyEditorFrame.setLocation(new Point(rootWindowWidth / 2, 0));
-        instanceEditorFrame.setSize(rootWindowWidth, rootWindowHeight / 2);
-        instanceEditorFrame.setLocation(new Point(0, rootWindowHeight / 2));
+        propertyEditorFrame.setSize(MARGIN + desktopPaneWidth / 2, MARGIN + desktopPaneHeight / 2);
+        propertyEditorFrame.setLocation(new Point(desktopPaneWidth / 2, 0));
+        instanceEditorFrame.setSize(MARGIN + desktopPaneWidth, MARGIN + desktopPaneHeight / 2);
+        instanceEditorFrame.setLocation(new Point(0, desktopPaneHeight / 2));
     }
 
     public void arrangeWindowsCI() {
-        int rootWindowWidth = getRootPane().getWidth();
-        int rootWindowHeight = getRootPane().getHeight() - HEADER_HEIGHT;
+        int desktopPaneWidth = desktopPane.getWidth();
+        int desktopPaneHeight = desktopPane.getHeight();
         try {
             classEditorFrame.setIcon(false);
             instanceEditorFrame.setIcon(false);
         } catch (PropertyVetoException e) {
             e.printStackTrace();
         }
-        classEditorFrame.setSize(rootWindowWidth, rootWindowHeight / 2);
+        classEditorFrame.setSize(desktopPaneWidth, MARGIN + desktopPaneHeight / 2);
         classEditorFrame.setLocation(new Point(0, 0));
-        instanceEditorFrame.setSize(rootWindowWidth, rootWindowHeight / 2);
-        instanceEditorFrame.setLocation(new Point(0, rootWindowHeight / 2));
+        instanceEditorFrame.setSize(desktopPaneWidth, MARGIN + desktopPaneHeight / 2);
+        instanceEditorFrame.setLocation(new Point(0, desktopPaneHeight / 2));
         propertyEditorFrame.toBack();
     }
 
     public void arrangeWindowsPI() {
-        int rootWindowWidth = getRootPane().getWidth();
-        int rootWindowHeight = getRootPane().getHeight() - HEADER_HEIGHT;
+        int desktopPaneWidth = desktopPane.getWidth();
+        int desktopPaneHeight = desktopPane.getHeight();
         try {
             propertyEditorFrame.setIcon(false);
             instanceEditorFrame.setIcon(false);
         } catch (PropertyVetoException e) {
             e.printStackTrace();
         }
-        propertyEditorFrame.setSize(rootWindowWidth, rootWindowHeight / 2);
+        propertyEditorFrame.setSize(desktopPaneWidth, MARGIN + desktopPaneHeight / 2);
         propertyEditorFrame.setLocation(new Point(0, 0));
-        instanceEditorFrame.setSize(rootWindowWidth, rootWindowHeight / 2);
-        instanceEditorFrame.setLocation(new Point(0, rootWindowHeight / 2));
+        instanceEditorFrame.setSize(desktopPaneWidth, MARGIN + desktopPaneHeight / 2);
+        instanceEditorFrame.setLocation(new Point(0, desktopPaneHeight / 2));
         classEditorFrame.toBack();
     }
 
