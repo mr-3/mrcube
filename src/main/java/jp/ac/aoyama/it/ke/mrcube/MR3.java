@@ -653,8 +653,6 @@ public class MR3 extends JFrame implements ChangeListener {
 
     public static void main(String[] arg) {
         System.setProperty("javax.accessibility.assistive_technologies", "");
-        System.setProperty("sun.java2d.uiScale.enabled", "true");
-        System.setProperty("sun.java2d.uiScale", "2.0");
         initialize(MR3.class);
         JWindow splashWindow = new SplashWindow(null, MR3Constants.SPLASH_LOGO);
         try {
