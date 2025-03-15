@@ -86,9 +86,9 @@ public class InstancePropertyPanel extends JPanel implements ActionListener, Lis
         idField = new JTextField();
         idField.addActionListener(this);
         var idFieldP = Utilities.createTitledPanel(idField, "ID");
-        editRDFSPropertyButton = new JButton("RDFS" + Translator.getString("Property") + " " + Translator.getString("Edit"));
+        editRDFSPropertyButton = new JButton("RDFS" + Translator.getString("Property"));
         editRDFSPropertyButton.addActionListener(this);
-        var editRDFSPropertyButtonP = Utilities.createTitledPanel(editRDFSPropertyButton, " ");
+        var editRDFSPropertyButtonP = Utilities.createTitledPanel(editRDFSPropertyButton, Translator.getString("Edit"));
 
         JPanel uriPanel = new JPanel();
         uriPanel.setLayout(new GridLayout(1, 3, 5, 5));
