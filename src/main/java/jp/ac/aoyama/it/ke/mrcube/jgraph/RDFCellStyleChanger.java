@@ -27,7 +27,6 @@ package jp.ac.aoyama.it.ke.mrcube.jgraph;
  * @author Takeshi Morita
  */
 public interface RDFCellStyleChanger {
-    int FONT_SIZE = 14;
     float LINE_WIDTH = 1;
 
     void changeSelectedCellStyle(RDFGraph graph);

@@ -34,6 +34,7 @@ import jp.ac.aoyama.it.ke.mrcube.models.MR3Constants.HistoryType;
 import jp.ac.aoyama.it.ke.mrcube.models.MR3Constants.URIType;
 import jp.ac.aoyama.it.ke.mrcube.views.HistoryManager;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -137,7 +138,8 @@ public class MR3CellMaker {
             GraphConstants.setForeground(map, Color.white);
             GraphConstants.setBorderColor(map, cellColor);
             GraphConstants.setBackground(map, cellColor);
-            GraphConstants.setFont(map, new Font("SansSerif", Font.PLAIN, RDFCellStyleChanger.FONT_SIZE));
+            Font defaultFont = UIManager.getFont("Label.font");
+            GraphConstants.setFont(map, defaultFont);
             GraphConstants.setOpaque(map, true);
         }
 

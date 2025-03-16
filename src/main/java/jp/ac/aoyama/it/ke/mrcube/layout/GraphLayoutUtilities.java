@@ -60,7 +60,7 @@ public class GraphLayoutUtilities {
     public static final String JGRAPH_TREE_LAYOUT = "JGraph Tree Layout";
 
     public static final int VERTICAL_SPACE = 50;
-    public static final int HORIZONTAL_SPACE = 80;
+    public static final int HORIZONTAL_SPACE = 150;
     public static int RDF_VERTICAL_SPACE = VERTICAL_SPACE;
     public static int RDF_HORIZONTAL_SPACE = HORIZONTAL_SPACE;
     public static int CLASS_VERTICAL_SPACE = VERTICAL_SPACE;

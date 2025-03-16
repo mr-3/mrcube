@@ -35,7 +35,6 @@ import java.awt.event.MouseEvent;
  */
 public class SplashWindow extends JWindow {
 
-	private static final int FONT_SIZE = 14;
 	private static final String TOOL_NAME = "Project Name: MR<sup>3</sup> <br>";
 	private static final String VERSION = "   Version: 25.3.1 <br>";
 	private static final String MR3_URL = " Project Website:   https://mr-3.github.io/<br>";
@@ -46,7 +45,8 @@ public class SplashWindow extends JWindow {
 	public SplashWindow(Frame root, ImageIcon logo) {
 		super(root);
 		JLabel logoLabel = new JLabel("", logo, SwingConstants.LEFT);
-		logoLabel.setFont(logoLabel.getFont().deriveFont(Font.PLAIN, FONT_SIZE));
+		Font defaultFont = UIManager.getFont("Label.font");
+		logoLabel.setFont(defaultFont);
 
 		JEditorPane editor = new JEditorPane("text/html", "");
 		editor.setEditable(false);

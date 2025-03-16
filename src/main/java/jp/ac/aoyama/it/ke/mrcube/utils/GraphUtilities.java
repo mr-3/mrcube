@@ -37,6 +37,7 @@ import jp.ac.aoyama.it.ke.mrcube.models.NamespaceModel;
 import jp.ac.aoyama.it.ke.mrcube.models.InstanceModel;
 import jp.ac.aoyama.it.ke.mrcube.models.RDFSModel;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.*;
@@ -96,7 +97,8 @@ public class GraphUtilities {
                         GraphConstants.setBorderColor(map, borderColor);
                     }
                     GraphConstants.setBackground(map, bgColor);
-                    GraphConstants.setFont(map, new Font("SansSerif", Font.PLAIN, RDFCellStyleChanger.FONT_SIZE));
+                    Font defaultFont = UIManager.getFont("Label.font");
+                    GraphConstants.setFont(map, defaultFont);
                     GraphConstants.setOpaque(map, true);
                 }
             }
