@@ -72,7 +72,7 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
     private JButton confirmButton;
 
     private static final int WINDOW_WIDTH = 600;
-    private static final int WINDOW_HEIGHT = 780;
+    private static final int WINDOW_HEIGHT = 600;
 
     public static JComponent topLevelComponent;
 
