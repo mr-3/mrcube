@@ -138,8 +138,7 @@ public class MR3CellMaker {
             GraphConstants.setForeground(map, Color.white);
             GraphConstants.setBorderColor(map, cellColor);
             GraphConstants.setBackground(map, cellColor);
-            Font defaultFont = UIManager.getFont("Label.font");
-            GraphConstants.setFont(map, defaultFont);
+            GraphConstants.setFont(map, gmanager.getScaledFont());
             GraphConstants.setOpaque(map, true);
         }
 

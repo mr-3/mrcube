@@ -80,6 +80,10 @@ public class RDFGraph extends JGraph {
         SwingUtilities.replaceUIActionMap(this, createActionMap());
     }
 
+    public GraphManager getGraphManager() {
+        return gmanager;
+    }
+
     public SelectAllNodesAction getSelectAllNodesAction() {
         return selectAllNodesAction;
     }
@@ -468,7 +472,7 @@ public class RDFGraph extends JGraph {
         return cutAction;
     }
 
-public CopyAction getCopyAction() {
+    public CopyAction getCopyAction() {
         return copyAction;
     }
 

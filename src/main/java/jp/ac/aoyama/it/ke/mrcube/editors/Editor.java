@@ -99,7 +99,7 @@ public abstract class Editor extends JPanel implements GraphSelectionListener, M
     }
 
     void initEditor(RDFGraph g, GraphManager gm) {
-        Font defaultFont = UIManager.getFont("Label.font");
+        Font defaultFont = gm.getScaledFont();
         graphFont = defaultFont;
         graph = g;
         lastSelectionCells = new Object[0];

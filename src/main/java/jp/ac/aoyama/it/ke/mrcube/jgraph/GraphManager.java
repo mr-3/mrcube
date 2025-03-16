@@ -104,6 +104,14 @@ public class GraphManager {
                 + " " + OWL.DatatypeProperty.toString();
     }
 
+    public Font getScaledFont() {
+        Font defaultFont = UIManager.getFont("Label.font");
+        int baseFontSize = defaultFont.getSize();
+        int adjustedFontSize = (int) (baseFontSize * 1.2);
+        Font scaledFont = new Font(defaultFont.getFontName(), Font.PLAIN, adjustedFontSize);
+        return scaledFont;
+    }
+
     public void closeAllDialogs() {
         attributeDialog.setVisible(false);
         findResourceDialog.setVisible(false);

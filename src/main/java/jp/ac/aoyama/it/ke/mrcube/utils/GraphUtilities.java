@@ -97,8 +97,7 @@ public class GraphUtilities {
                         GraphConstants.setBorderColor(map, borderColor);
                     }
                     GraphConstants.setBackground(map, bgColor);
-                    Font defaultFont = UIManager.getFont("Label.font");
-                    GraphConstants.setFont(map, defaultFont);
+                    GraphConstants.setFont(map, graph.getGraphManager().getScaledFont());
                     GraphConstants.setOpaque(map, true);
                 }
             }
@@ -205,7 +204,7 @@ public class GraphUtilities {
             return new Dimension(MR3CellMaker.CELL_WIDTH, MR3CellMaker.CELL_HEIGHT);
         }
         if (defaultFont == null) {
-            defaultFont = gmanager.getInstanceGraph().getFont();
+            defaultFont = gmanager.getScaledFont();
         }
         StringTokenizer tokenizer = new StringTokenizer(value, "\n");
         int width = MR3CellMaker.DEFAULT_CELL_WIDTH / 3;
