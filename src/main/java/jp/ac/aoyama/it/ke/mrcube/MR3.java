@@ -639,6 +639,7 @@ public class MR3 extends JFrame implements ChangeListener {
     public static void initialize(Class cls) {
         System.setProperty("javax.accessibility.assistive_technologies", "");
         if (System.getProperty("os.name").toLowerCase().startsWith("mac")) {
+            System.setProperty("apple.laf.useScreenMenuBar", "true");
             FlatMacLightLaf.setup();
         } else {
             FlatLightLaf.setup();
