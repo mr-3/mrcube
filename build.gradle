@@ -82,7 +82,7 @@ runtime {
             installerOptions = ['--vendor', 'Takeshi Morita']
         }
 
-        imageName = "mrcube-${version}"
+        imageName = "MRCube"
         skipInstaller = false
         installerName = "mrcube"
     }
