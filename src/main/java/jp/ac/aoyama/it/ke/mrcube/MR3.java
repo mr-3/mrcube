@@ -23,7 +23,6 @@
 
 package jp.ac.aoyama.it.ke.mrcube;
 
-import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import jp.ac.aoyama.it.ke.mrcube.actions.*;
