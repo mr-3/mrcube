@@ -41,6 +41,8 @@
   }, {
     "pattern":"\\Qetc/location-mapping.ttl\\E"
   }, {
+    "pattern":"\\Qetc/rdfs-fb-tgc-noresource.rules\\E"
+  }, {
     "pattern":"\\Qimages/attribute_dialog.svg\\E"
   }, {
     "pattern":"\\Qimages/ci.svg\\E"
@@ -125,7 +127,7 @@
   }, {
     "pattern":"java.base:\\Qjava/util/currency.data\\E"
   }, {
-    "pattern":"java.base:\\Qjdk/internal/icu/impl/data/icudt67b/ubidi.icu\\E"
+    "pattern":"java.base:\\Qjdk/internal/icu/impl/data/icudt72b/ubidi.icu\\E"
   }, {
     "pattern":"java.datatransfer:\\Qsun/datatransfer/resources/flavormap.properties\\E"
   }, {

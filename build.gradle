@@ -3,7 +3,7 @@ import org.gradle.internal.os.OperatingSystem
 plugins {
     id 'java'
     id 'application'
-    id "com.github.johnrengelman.shadow" version "8.1.1"
+    id "com.gradleup.shadow" version "8.3.3"
     id "org.beryx.runtime" version "2.0.1"
     id 'org.graalvm.buildtools.native' version '0.11.1'
 }
@@ -31,7 +31,7 @@ repositories {
 }
 
 wrapper {
-    gradleVersion = '7.3'
+    gradleVersion = '8.6'
 }
 
 jar {
@@ -56,7 +56,7 @@ test {
     useJUnitPlatform()
 }
 
-shadowJar {
+tasks.named('shadowJar', com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar) {
     mergeServiceFiles()
     manifest {
         attributes 'Main-Class': 'jp.ac.aoyama.it.ke.mrcube.MR3'
@@ -101,6 +101,19 @@ tasks.runtime.doLast {
         from('./LICENSE')
         into(layout.buildDirectory.file("mrcube-${version}"))
     }
+}
+
+task prepareNativePackage(type: Copy) {
+
+    from(layout.buildDirectory.dir("/native/nativeCompile")) {
+        include "*.exe"
+        include "*.dll"
+    }
+    from('./README.md')
+    from('./README.ja.md')
+    from('./LICENSE')
+
+    into layout.buildDirectory.dir("/native-package-input")
 }
 
 graalvmNative {

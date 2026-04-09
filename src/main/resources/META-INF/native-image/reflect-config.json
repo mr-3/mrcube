@@ -381,6 +381,48 @@
   "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
 },
 {
+  "name":"com.github.benmanes.caffeine.cache.BLCHeader$DrainStatusRef",
+  "fields":[{"name":"drainStatus"}]
+},
+{
+  "name":"com.github.benmanes.caffeine.cache.BaseMpscLinkedArrayQueueColdProducerFields",
+  "fields":[{"name":"producerLimit"}]
+},
+{
+  "name":"com.github.benmanes.caffeine.cache.BaseMpscLinkedArrayQueueConsumerFields",
+  "fields":[{"name":"consumerIndex"}]
+},
+{
+  "name":"com.github.benmanes.caffeine.cache.BaseMpscLinkedArrayQueueProducerFields",
+  "fields":[{"name":"producerIndex"}]
+},
+{
+  "name":"com.github.benmanes.caffeine.cache.BoundedLocalCache",
+  "fields":[{"name":"refreshes"}]
+},
+{
+  "name":"com.github.benmanes.caffeine.cache.PS",
+  "fields":[{"name":"key"}, {"name":"value"}]
+},
+{
+  "name":"com.github.benmanes.caffeine.cache.PSMS",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.github.benmanes.caffeine.cache.SSMS",
+  "fields":[{"name":"FACTORY"}, {"name":"maximum"}, {"name":"weightedSize"}]
+},
+{
+  "name":"com.github.benmanes.caffeine.cache.StripedBuffer",
+  "fields":[{"name":"tableBusy"}]
+},
+{
+  "name":"com.github.weisj.jsvg.SVGDocument"
+},
+{
+  "name":"com.github.weisj.jsvg.renderer.RenderContext"
+},
+{
   "name":"com.sun.crypto.provider.AESCipher$General",
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
@@ -469,6 +511,10 @@
   "name":"java.util.List"
 },
 {
+  "name":"java.util.concurrent.ForkJoinTask",
+  "fields":[{"name":"aux"}, {"name":"status"}]
+},
+{
   "name":"java.util.concurrent.atomic.AtomicBoolean",
   "fields":[{"name":"value"}]
 },
@@ -501,6 +547,10 @@
   "name":"javax.swing.filechooser.WindowsFileSystemView"
 },
 {
+  "name":"javax.swing.plaf.basic.BasicButtonListener",
+  "methods":[{"name":"loadActionMap","parameterTypes":["javax.swing.plaf.basic.LazyActionMap"] }]
+},
+{
   "name":"javax.swing.plaf.basic.BasicGraphicsUtils",
   "methods":[{"name":"drawStringUnderlineCharAt","parameterTypes":["javax.swing.JComponent","java.awt.Graphics2D","java.lang.String","int","float","float"] }]
 },
@@ -531,6 +581,9 @@
 {
   "name":"javax.swing.text.html.HTMLEditorKit",
   "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"jdk.internal.misc.Unsafe"
 },
 {
   "name":"jp.ac.aoyama.it.ke.mrcube.MR3",
@@ -605,6 +658,14 @@
   "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
 },
 {
+  "name":"jp.ac.aoyama.it.ke.mrcube.views.OntologyPanel",
+  "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
+},
+{
+  "name":"jp.ac.aoyama.it.ke.mrcube.views.OntologyPanel$BasePanel",
+  "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
+},
+{
   "name":"jp.ac.aoyama.it.ke.mrcube.views.OptionDialog",
   "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
 },
@@ -633,6 +694,10 @@
   "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
 },
 {
+  "name":"jp.ac.aoyama.it.ke.mrcube.views.ProjectInfoDialog",
+  "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
+},
+{
   "name":"jp.ac.aoyama.it.ke.mrcube.views.RDFSourceCodeViewer",
   "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
 },
@@ -654,6 +719,22 @@
 },
 {
   "name":"jp.ac.aoyama.it.ke.mrcube.views.StatusBarPanel",
+  "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
+},
+{
+  "name":"jp.ac.aoyama.it.ke.mrcube.views.ValidatorDialog",
+  "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
+},
+{
+  "name":"jp.ac.aoyama.it.ke.mrcube.views.class_editor.ClassPanel",
+  "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
+},
+{
+  "name":"jp.ac.aoyama.it.ke.mrcube.views.common.CommentPanel",
+  "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
+},
+{
+  "name":"jp.ac.aoyama.it.ke.mrcube.views.common.LabelPanel",
   "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
 },
 {
@@ -717,10 +798,6 @@
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"sun.awt.Win32FontManager",
-  "methods":[{"name":"<init>","parameterTypes":[] }]
-},
-{
   "name":"sun.awt.shell.Win32ShellFolderManager2",
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
@@ -750,10 +827,6 @@
 },
 {
   "name":"sun.security.provider.DSA$SHA256withDSA",
-  "methods":[{"name":"<init>","parameterTypes":[] }]
-},
-{
-  "name":"sun.security.provider.JavaKeyStore$JKS",
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
@@ -826,14 +899,6 @@
 },
 {
   "name":"sun.security.x509.CertificatePoliciesExtension",
-  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
-},
-{
-  "name":"sun.security.x509.ExtendedKeyUsageExtension",
-  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
-},
-{
-  "name":"sun.security.x509.IssuerAlternativeNameExtension",
   "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
 },
 {
