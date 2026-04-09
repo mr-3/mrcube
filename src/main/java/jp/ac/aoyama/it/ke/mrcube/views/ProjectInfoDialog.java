@@ -26,7 +26,7 @@ package jp.ac.aoyama.it.ke.mrcube.views;
 import org.apache.jena.rdf.model.Literal;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Resource;
-import org.apache.jena.util.IteratorCollection;
+import org.apache.jena.atlas.iterator.Iter;
 import jp.ac.aoyama.it.ke.mrcube.MR3;
 import jp.ac.aoyama.it.ke.mrcube.io.MR3Writer;
 import jp.ac.aoyama.it.ke.mrcube.jgraph.GraphManager;
@@ -189,8 +189,8 @@ public class ProjectInfoDialog extends JDialog {
     }
 
     private int calcResourceCnt(Model model) {
-        Set subjectSet = IteratorCollection.iteratorToSet(model.listSubjects());
-        Set objectSet = IteratorCollection.iteratorToSet(model.listObjects());
+        Set subjectSet = Iter.toSet(model.listSubjects());
+        Set objectSet = Iter.toSet(model.listObjects());
         Set resourceSet = new HashSet();
         resourceSet.addAll(subjectSet);
         resourceSet.addAll(objectSet);
@@ -205,7 +205,7 @@ public class ProjectInfoDialog extends JDialog {
     }
 
     private int calcLiteralCnt(Model model) {
-        Set objectSet = IteratorCollection.iteratorToSet(model.listObjects());
+        Set objectSet = Iter.toSet(model.listObjects());
 
         int literalCnt = 0;
         for (Object o : objectSet) {
@@ -236,7 +236,7 @@ public class ProjectInfoDialog extends JDialog {
     }
 
     private int calcStatementCnt(Model model) {
-        return IteratorCollection.iteratorToSet(model.listStatements()).size();
+        return Iter.toSet(model.listStatements()).size();
     }
 
     private int calcAllStatementCnt() {

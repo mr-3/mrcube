@@ -3,17 +3,18 @@ import org.gradle.internal.os.OperatingSystem
 plugins {
     id 'java'
     id 'application'
-    id "com.github.johnrengelman.shadow" version "7.0.0"
-    id "org.beryx.runtime" version "1.13.1"
+    id "com.github.johnrengelman.shadow" version "8.1.1"
+    id "org.beryx.runtime" version "2.0.1"
+    id 'org.graalvm.buildtools.native' version '0.11.1'
 }
 
 java {
-    sourceCompatibility = '17'
-    targetCompatibility = '17'
+    sourceCompatibility = '21'
+    targetCompatibility = '21'
 }
 
 group 'jp.ac.aoyama.it.ke.mrcube'
-version = '25.3.1'
+version = '26.4.1'
 
 application {
     mainClass.set('jp.ac.aoyama.it.ke.mrcube.MR3')
@@ -70,12 +71,12 @@ runtime {
 
     jpackage {
         if (OperatingSystem.current().isWindows()) {
-            jpackageHome = 'C:\\Program Files\\Amazon Corretto\\jdk-21.0.6_7'
+            jpackageHome = 'C:\\Program Files\\BellSoft\\LibericaJDK-21'
             installerType = 'msi'
             imageOptions = ['--verbose', '--icon', './src/main/resources/images/mr3.ico']
             installerOptions = ['--vendor', 'Takeshi Morita', '--win-shortcut']
         } else if (OperatingSystem.current().isMacOsX()) {
-            jpackageHome = '/Library/Java/JavaVirtualMachines/amazon-corretto-21.jdk/Contents/Home'
+            jpackageHome = '/Library/Java/JavaVirtualMachines/liberica-jdk-21.jdk/Contents/Home'
             installerType = 'dmg'
             imageOptions = ['--verbose', '--icon', './src/main/resources/images/mr3.icns']
             installerOptions = ['--vendor', 'Takeshi Morita']
@@ -102,16 +103,50 @@ tasks.runtime.doLast {
     }
 }
 
+graalvmNative {
+
+    binaries.all {
+        resources.autodetect()
+    }
+
+    metadataRepository {
+        enabled = true
+    }
+
+    binaries.main {
+        mainClass = 'jp.ac.aoyama.it.ke.mrcube.MR3'
+        buildArgs.add('--no-fallback')
+        buildArgs.add('-H:+AddAllCharsets')
+        buildArgs.add('-Djava.awt.headless=false')
+    }
+}
+
+task runWithAgent(type: JavaExec) {
+    group = "application"
+    mainClass = application.mainClass
+    classpath = sourceSets.main.runtimeClasspath
+
+    def outputDir = file("src/main/resources/META-INF/native-image")
+
+    jvmArgs = [
+            "-agentlib:native-image-agent=config-output-dir=${outputDir}"
+    ]
+
+    doFirst {
+        if (!outputDir.exists()) outputDir.mkdirs()
+    }
+}
+
 dependencies {
-    implementation 'com.formdev:flatlaf:3.5.4'
-    implementation 'com.formdev:flatlaf-extras:3.5.4'
+    implementation 'com.formdev:flatlaf:3.7.1'
+    implementation 'com.formdev:flatlaf-extras:3.7.1'
     implementation 'jgraph:jgraph:5.13.0.0'
-    implementation 'org.apache.jena:jena-core:5.3.0'
-    implementation 'org.apache.jena:jena-arq:5.3.0'
+    implementation 'org.apache.jena:jena-core:6.0.0'
+    implementation 'org.apache.jena:jena-arq:6.0.0'
     implementation 'org.slf4j:slf4j-simple:2.0.17'
-    implementation 'org.apache.xmlgraphics:batik-svg-dom:1.18'
-    implementation 'org.apache.xmlgraphics:batik-svggen:1.18'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.12.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.12.0'
+    implementation 'org.apache.xmlgraphics:batik-svg-dom:1.19'
+    implementation 'org.apache.xmlgraphics:batik-svggen:1.19'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.14.3'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.14.3'
 }
 

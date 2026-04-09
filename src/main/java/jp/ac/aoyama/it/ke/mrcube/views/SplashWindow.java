@@ -36,9 +36,9 @@ import java.awt.event.MouseEvent;
 public class SplashWindow extends JWindow {
 
 	private static final String TOOL_NAME = "Project Name: MR<sup>3</sup> <br>";
-	private static final String VERSION = "   Version: 25.3.1 <br>";
+	private static final String VERSION = "   Version: 26.4.1 <br>";
 	private static final String MR3_URL = " Project Website:   https://mr-3.github.io/<br>";
-	private static final String COPY_RIGHT = "   Copyright (C) 2003-2025 Takeshi Morita.<br>";
+	private static final String COPY_RIGHT = "   Copyright (C) 2003-2026 Takeshi Morita.<br>";
 	private static final String LICENSE = "License: GPL<br>";
 	private static final Color HELP_BACK_COLOR = Color.WHITE;
 
