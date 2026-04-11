@@ -641,7 +641,6 @@ public class MR3 extends JFrame implements ChangeListener {
             System.setProperty("apple.laf.useScreenMenuBar", "true");
             FlatMacLightLaf.setup();
         } else {
-            System.setProperty("sun.java2d.uiScale", "1.0");
             FlatLightLaf.setup();
         }
         JenaSystem.init();

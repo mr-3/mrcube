@@ -14,7 +14,7 @@ java {
 }
 
 group 'jp.ac.aoyama.it.ke.mrcube'
-version = '26.4.1'
+version = '26.4.2'
 
 application {
     mainClass.set('jp.ac.aoyama.it.ke.mrcube.MR3')
