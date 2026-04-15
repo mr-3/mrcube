@@ -59,11 +59,12 @@ public class SelectInstanceTypeDialog extends JDialog implements ActionListener 
 
     private JComponent getButtonPanel() {
         confirmButton = new JButton(MR3Constants.OK);
-        confirmButton.setMnemonic('o');
         confirmButton.addActionListener(this);
         JButton cancelButton = new JButton(MR3Constants.CANCEL);
-        cancelButton.setMnemonic('c');
         cancelButton.addActionListener(this);
+        confirmButton.setMnemonic('o');
+        cancelButton.setMnemonic('c');
+
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(1, 2, 5, 5));
         buttonPanel.add(confirmButton);

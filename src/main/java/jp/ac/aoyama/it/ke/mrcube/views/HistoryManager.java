@@ -192,11 +192,13 @@ public class HistoryManager extends JDialog implements ActionListener {
         JScrollPane messageTextAreaScroll = new JScrollPane(messageTextArea);
 
         openHistoryButton = new JButton(Translator.getString("HistoryManager.Open"));
-        openHistoryButton.setMnemonic('a');
         openHistoryButton.addActionListener(this);
         cancelButton = new JButton(MR3Constants.CANCEL);
-        cancelButton.setMnemonic('c');
         cancelButton.addActionListener(this);
+        openHistoryButton.setMnemonic('a');
+        cancelButton.setMnemonic('c');
+
+
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(1, 2, 5, 5));
         buttonPanel.add(openHistoryButton);

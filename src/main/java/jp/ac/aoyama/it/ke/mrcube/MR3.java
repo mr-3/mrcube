@@ -366,8 +366,9 @@ public class MR3 extends JFrame implements ChangeListener {
     }
 
     private JMenu getFileMenu() {
-        JMenu menu = new JMenu(Translator.getString("Menu.File.Text") + "(F)");
+        JMenu menu = new JMenu(Translator.getString("Menu.File.Text"));
         menu.setMnemonic('f');
+
         menu.add(newProjectAction);
         menu.add(openFileAction);
         menu.addSeparator();
@@ -477,8 +478,9 @@ public class MR3 extends JFrame implements ChangeListener {
     }
 
     private JMenu getViewMenu() {
-        JMenu menu = new JMenu(Translator.getString("Menu.View.Text") + "(V)");
+        JMenu menu = new JMenu(Translator.getString("Menu.View.Text"));
         menu.setMnemonic('v');
+
         ChangeCellViewAction changeCellViewAction = new ChangeCellViewAction();
         uriView = new JCheckBoxMenuItem(Translator.getString("Menu.View.URI.Text"));
         uriView.setSelected(true);
@@ -522,8 +524,9 @@ public class MR3 extends JFrame implements ChangeListener {
     }
 
     private JMenu getWindowMenu() {
-        JMenu menu = new JMenu(Translator.getString("Menu.Window.Text") + "(W)");
+        JMenu menu = new JMenu(Translator.getString("Menu.Window.Text"));
         menu.setMnemonic('w');
+
         menu.add(new ShowOverview(this, ShowOverview.INSTANCE_EDITOR_OVERVIEW, ShowOverview.INSTANCE_EDITOR_OVERVIEW_ICON));
         menu.add(new ShowOverview(this, ShowOverview.CLASS_EDITOR_OVERVIEW, ShowOverview.CLASS_EDITOR_OVERVIEW_ICON));
         menu.add(new ShowOverview(this, ShowOverview.PROPERTY_EDITOR_OVERVIEW, ShowOverview.PROPERTY_EDITOR_OVERVIEW_ICON));
@@ -539,8 +542,9 @@ public class MR3 extends JFrame implements ChangeListener {
     }
 
     private JMenu getToolsMenu() {
-        JMenu menu = new JMenu(Translator.getString("Menu.Tools.Text") + "(T)");
+        JMenu menu = new JMenu(Translator.getString("Menu.Tools.Text"));
         menu.setMnemonic('t');
+
         menu.add(showRDFSourceCodeViewer);
         menu.add(findResAction);
         menu.add(showSPARQLQueryDialogAction);
@@ -555,8 +559,9 @@ public class MR3 extends JFrame implements ChangeListener {
     }
 
     private JMenu getHelpMenu() {
-        JMenu menu = new JMenu(Translator.getString("Menu.Help.Text") + "(H)");
+        JMenu menu = new JMenu(Translator.getString("Menu.Help.Text"));
         menu.setMnemonic('h');
+
         menu.add(showVersionInfoAction);
         menu.add(showManualAction);
         return menu;

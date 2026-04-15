@@ -59,7 +59,7 @@ public class InsertInstanceDialog extends JDialog implements ItemListener {
     private static final int FIELD_HEIGHT = 30;
 
     public InsertInstanceDialog(GraphManager gm) {
-        super(gm.getRootFrame(), Translator.getString("InsertInstanceDialog.Title"),  true);
+        super(gm.getRootFrame(), Translator.getString("InsertInstanceDialog.Title"), true);
         setIconImage(Utilities.getSVGIcon("instance_node.svg").getImage());
         gmanager = gm;
         confirmAction = new ConfirmAction();
@@ -120,9 +120,10 @@ public class InsertInstanceDialog extends JDialog implements ItemListener {
 
     private JComponent getButtonPanel() {
         confirmButton = new JButton(confirmAction);
-        confirmButton.setMnemonic('o');
         cancelButton = new JButton(cancelAction);
+        confirmButton.setMnemonic('o');
         cancelButton.setMnemonic('c');
+
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(1, 2, 5, 5));
         buttonPanel.add(confirmButton);

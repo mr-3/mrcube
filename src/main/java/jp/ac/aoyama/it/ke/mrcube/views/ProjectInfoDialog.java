@@ -158,9 +158,10 @@ public class ProjectInfoDialog extends JDialog {
 
     private JComponent getButtonPanel() {
         JButton reloadButton = new JButton(new ReloadAction());
-        reloadButton.setMnemonic('o');
         JButton cancelButton = new JButton(new CancelAction());
+        reloadButton.setMnemonic('o');
         cancelButton.setMnemonic('c');
+
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(1, 2, 5, 5));
         buttonPanel.add(reloadButton);

@@ -96,9 +96,10 @@ public class InsertLiteralDialog extends JDialog implements ActionListener {
         mainPanel.add(valueScroll, BorderLayout.CENTER);
 
         JButton confirmButton = new JButton(confirmAction);
-        confirmButton.setMnemonic('o');
         JButton cancelButton = new JButton(cancelAction);
+        confirmButton.setMnemonic('o');
         cancelButton.setMnemonic('c');
+
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(1, 2, 5, 5));
         buttonPanel.add(confirmButton);

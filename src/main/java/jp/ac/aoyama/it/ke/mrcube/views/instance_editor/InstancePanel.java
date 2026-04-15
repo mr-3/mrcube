@@ -111,14 +111,15 @@ public class InstancePanel extends JPanel implements ListSelectionListener {
         menuList.setSelectedIndex(0);
 
         applyButton = new JButton(MR3Constants.APPLY);
-        applyButton.setMnemonic('a');
         applyButton.addActionListener(decideAction);
         resetButton = new JButton(MR3Constants.RESET);
-        resetButton.setMnemonic('s');
         resetButton.addActionListener(decideAction);
         cancelButton = new JButton(MR3Constants.CANCEL);
-        cancelButton.setMnemonic('c');
         cancelButton.addActionListener(decideAction);
+        applyButton.setMnemonic('a');
+        resetButton.setMnemonic('s');
+        cancelButton.setMnemonic('c');
+
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(1, 3, 5, 5));
         buttonPanel.add(applyButton);

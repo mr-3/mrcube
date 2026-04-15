@@ -256,18 +256,19 @@ public class NameSpaceTableDialog extends JDialog implements ActionListener, Tab
     }
 
     private JComponent getButtonPanel() {
-        addNSButton = new JButton(MR3Constants.ADD + "(A)");
-        addNSButton.setMnemonic('a');
+        addNSButton = new JButton(MR3Constants.ADD);
         addNSButton.addActionListener(this);
-        editNSButton = new JButton(MR3Constants.EDIT + "(E)");
-        editNSButton.setMnemonic('e');
+        editNSButton = new JButton(MR3Constants.EDIT);
         editNSButton.addActionListener(this);
-        removeNSButton = new JButton(MR3Constants.REMOVE + "(R)");
-        removeNSButton.setMnemonic('r');
+        removeNSButton = new JButton(MR3Constants.REMOVE);
         removeNSButton.addActionListener(this);
         cancelButton = new JButton(MR3Constants.CANCEL);
-        cancelButton.setMnemonic('c');
         cancelButton.addActionListener(this);
+        addNSButton.setMnemonic('a');
+        editNSButton.setMnemonic('e');
+        removeNSButton.setMnemonic('r');
+        cancelButton.setMnemonic('c');
+
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(1, 4, 5, 5));
         buttonPanel.add(addNSButton);

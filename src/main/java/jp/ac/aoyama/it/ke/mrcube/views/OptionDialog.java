@@ -137,14 +137,14 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
     private JComponent getButtonGroupPanel() {
         DecideAction decideAction = new DecideAction();
         applyButton = new JButton(MR3Constants.APPLY);
-        applyButton.setMnemonic('a');
         applyButton.addActionListener(decideAction);
         confirmButton = new JButton(MR3Constants.OK);
-        confirmButton.setMnemonic('o');
         confirmButton.addActionListener(decideAction);
         JButton cancelButton = new JButton(MR3Constants.CANCEL);
-        cancelButton.setMnemonic('c');
         cancelButton.addActionListener(decideAction);
+        applyButton.setMnemonic('a');
+        confirmButton.setMnemonic('o');
+        cancelButton.setMnemonic('c');
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(1, 3, 5, 5));
         buttonPanel.add(applyButton);
@@ -362,10 +362,9 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         private void initWorkDirectoryField() {
             workDirectoryField = new JTextField(15);
             workDirectoryField.setEditable(false);
-            browseWorkDirectoryButton = new JButton(Translator.getString("OptionDialog.Directory.Browse")
-                    + "(W)");
-            browseWorkDirectoryButton.setMnemonic('w');
+            browseWorkDirectoryButton = new JButton(Translator.getString("OptionDialog.Directory.Browse"));
             browseWorkDirectoryButton.addActionListener(new BrowseDirectory(workDirectoryField));
+            browseWorkDirectoryButton.setMnemonic('w');
         }
 
         private JPanel getWorkDirectoryPanel() {

@@ -115,11 +115,12 @@ public class InstancePropertyPanel extends JPanel implements ActionListener, Lis
         mainPanel.add(getSelectPropertyPanel());
 
         applyButton = new JButton(MR3Constants.APPLY);
-        applyButton.setMnemonic('a');
         applyButton.addActionListener(this);
         cancelButton = new JButton(MR3Constants.CANCEL);
-        cancelButton.setMnemonic('c');
         cancelButton.addActionListener(this);
+        applyButton.setMnemonic('a');
+        cancelButton.setMnemonic('c');
+
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(1, 2, 5, 5));
         buttonPanel.add(applyButton);

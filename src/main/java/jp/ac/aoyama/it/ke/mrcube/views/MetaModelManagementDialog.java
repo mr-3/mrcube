@@ -74,11 +74,11 @@ public class MetaModelManagementDialog extends JDialog implements ActionListener
 
 	private void initButton() {
 		confirmButton = new JButton(MR3Constants.OK);
-		confirmButton.setMnemonic('o');
 		confirmButton.addActionListener(this);
 		cancelButton = new JButton(MR3Constants.CANCEL);
-		cancelButton.setMnemonic('c');
 		cancelButton.addActionListener(this);
+		confirmButton.setMnemonic('o');
+		cancelButton.setMnemonic('c');
 	}
 
 	public CreateRDFSType getCreateRDFSType() {

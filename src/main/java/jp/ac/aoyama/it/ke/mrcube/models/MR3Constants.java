@@ -54,13 +54,13 @@ public class MR3Constants {
     public static final ImageIcon SPLASH_LOGO = Utilities.getSVGIcon(Translator.getString("SplashLogo"));
 
     public static void loadResourceBundle() {
-        APPLY = Translator.getString("Apply") + "(A)";
-        OK = Translator.getString("OK") + "(O)";
-        CANCEL = Translator.getString("Cancel") + "(C)";
+        APPLY = Translator.getString("Apply");
+        OK = Translator.getString("OK");
+        CANCEL = Translator.getString("Cancel");
         PREFIX = Translator.getString("Prefix");
         NAMESPACE = Translator.getString("Namespace");
         RELOAD = Translator.getString("Reload");
-        RESET = Translator.getString("Reset") + "(S)";
+        RESET = Translator.getString("Reset");
         EXEC = Translator.getString("Exec");
         LANGUAGE_TAG = Translator.getString("LanguageTag");
         LABEL = Translator.getString("Label");
