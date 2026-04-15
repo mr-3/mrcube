@@ -431,11 +431,6 @@ public class MR3OverviewPanel extends JPanel implements ComponentListener, Graph
 
         void update(Graphics g) {
             Graphics2D g2 = (Graphics2D) g;
-//            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-//            g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-//            g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
-//            g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
-
             Rectangle viewportR = viewport.getViewRect();
             Dimension viewD = viewport.getView().getSize();
             combinedScale = graphWindowToPannerScale / zoomScale;

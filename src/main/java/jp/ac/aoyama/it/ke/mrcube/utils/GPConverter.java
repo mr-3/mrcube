@@ -122,10 +122,6 @@ public class GPConverter {
             Dimension d = bounds.getBounds().getSize();
             BufferedImage img = new BufferedImage(d.width + 10, d.height + 10, BufferedImage.TYPE_INT_RGB);
             Graphics2D graphics = img.createGraphics();
-//            graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-//            graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-//            graphics.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
-//            graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
             graphics.setColor(graph.getBackground());
             graphics.fillRect(0, 0, img.getWidth(), img.getHeight());
             graphics.translate(-bounds.getBounds().getX() + 5, -bounds.getBounds().getY() + 5);
