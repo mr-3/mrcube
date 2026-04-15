@@ -24,6 +24,8 @@
 package jp.ac.aoyama.it.ke.mrcube.models;
 
 import org.apache.jena.rdf.model.*;
+import org.apache.jena.riot.Lang;
+import org.apache.jena.riot.RDFDataMgr;
 import org.jgraph.graph.GraphCell;
 import jp.ac.aoyama.it.ke.mrcube.jgraph.GraphManager;
 import jp.ac.aoyama.it.ke.mrcube.utils.GraphUtilities;
@@ -157,7 +159,8 @@ public abstract class RDFSModel extends ResourceModel implements Serializable {
 
     String getModelString() {
         StringWriter writer = new StringWriter();
-        getModel().write(writer);
+        RDFDataMgr.write(writer, getModel(), Lang.NTRIPLES);
+//        getModel().write(writer);
         return writer.toString();
     }
 

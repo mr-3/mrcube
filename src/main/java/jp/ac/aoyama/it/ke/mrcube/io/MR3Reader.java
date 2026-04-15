@@ -26,7 +26,7 @@ package jp.ac.aoyama.it.ke.mrcube.io;
 import jp.ac.aoyama.it.ke.mrcube.views.HistoryManager;
 import jp.ac.aoyama.it.ke.mrcube.views.NameSpaceTableDialog;
 import jp.ac.aoyama.it.ke.mrcube.views.ReplaceRDFSDialog;
-import org.apache.jena.ontology.OntModel;
+import org.apache.jena.ontapi.model.OntModel;
 import org.apache.jena.rdf.model.*;
 import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphConstants;

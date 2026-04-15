@@ -32,7 +32,7 @@ import jp.ac.aoyama.it.ke.mrcube.models.*;
 import jp.ac.aoyama.it.ke.mrcube.utils.GraphUtilities;
 import jp.ac.aoyama.it.ke.mrcube.utils.MR3CellMaker;
 import jp.ac.aoyama.it.ke.mrcube.views.MR3TreePanel;
-import org.apache.jena.ontology.OntModel;
+import org.apache.jena.ontapi.model.OntModel;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.vocabulary.RDFS;

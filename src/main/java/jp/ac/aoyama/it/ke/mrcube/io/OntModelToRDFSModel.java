@@ -23,10 +23,9 @@
 
 package jp.ac.aoyama.it.ke.mrcube.io;
 
-import org.apache.jena.ontology.OntClass;
-import org.apache.jena.ontology.OntModel;
-import org.apache.jena.ontology.OntProperty;
-import org.apache.jena.ontology.OntResource;
+import org.apache.jena.ontapi.model.OntClass;
+import org.apache.jena.ontapi.model.OntModel;
+import org.apache.jena.ontapi.model.OntProperty;
 import org.apache.jena.rdf.model.*;
 import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.RDF;
@@ -53,67 +52,63 @@ class OntModelToRDFSModel {
         return rdfsModel;
     }
 
-    private static void addType(OntResource ontRes, Resource type, Model rdfsModel) {
-        Statement stmt = rdfsModel.createStatement(ontRes, RDF.type, type);
-        rdfsModel.add(stmt);
-    }
-
-    private static void addComments(OntResource ontRes, Model rdfsModel) {
-        for (Iterator i = ontRes.listComments(null); i.hasNext();) {
-            Literal literal = (Literal) i.next();
-            Statement stmt = rdfsModel.createStatement(ontRes, RDFS.comment, literal);
+    private static void addType(RDFNode ontRes, Resource type, Model rdfsModel) {
+        if (ontRes.isResource()) {
+            Statement stmt = rdfsModel.createStatement(ontRes.asResource(), RDF.type, type);
             rdfsModel.add(stmt);
         }
     }
 
-    private static void addLabels(OntResource ontRes, Model rdfsModel) {
-        for (Iterator i = ontRes.listLabels(null); i.hasNext();) {
-            Literal literal = (Literal) i.next();
-            Statement stmt = rdfsModel.createStatement(ontRes, RDFS.label, literal);
-            rdfsModel.add(stmt);
-        }
+    private static void addComments(RDFNode ontRes, Model rdfsModel) {
+        if (!ontRes.isResource()) return;
+        Resource res = ontRes.asResource();
+        res.listProperties(RDFS.comment).forEachRemaining(stmt -> {
+            rdfsModel.add(res, RDFS.comment, stmt.getObject());
+        });
+    }
+
+    private static void addLabels(RDFNode ontRes, Model rdfsModel) {
+        if (!ontRes.isResource()) return;
+        Resource res = ontRes.asResource();
+        res.listProperties(RDFS.label).forEachRemaining(stmt -> {
+            rdfsModel.add(res, RDFS.label, stmt.getObject());
+        });
     }
 
     private static void addDomains(OntProperty ontProp, Model rdfsModel) {
-        for (Iterator i = ontProp.listDomain(); i.hasNext();) {
-            OntResource res = (OntResource) i.next();
-            Statement stmt = rdfsModel.createStatement(ontProp, RDFS.domain, res);
-            rdfsModel.add(stmt);
-        }
+        ontProp.domains().forEach(domainRes -> {
+            rdfsModel.add(ontProp, RDFS.domain, domainRes);
+        });
     }
 
     private static void addRanges(OntProperty ontProp, Model rdfsModel) {
-        for (Iterator i = ontProp.listRange(); i.hasNext();) {
-            OntResource res = (OntResource) i.next();
-            Statement stmt = rdfsModel.createStatement(ontProp, RDFS.range, res);
-            rdfsModel.add(stmt);
-        }
+        ontProp.ranges().forEach(rangeRes -> {
+            rdfsModel.add(ontProp, RDFS.range, rangeRes);
+        });
     }
 
-    private static void addSubClassOf(OntResource ontRes, OntResource ontSupRes, Model rdfsModel) {
-        Statement stmt = rdfsModel.createStatement(ontRes, RDFS.subClassOf, ontSupRes);
+    private static void addSubClassOf(OntClass ontClass, OntClass.Named ontSupClass, Model rdfsModel) {
+        Statement stmt = rdfsModel.createStatement(ontClass, RDFS.subClassOf, ontSupClass);
         rdfsModel.add(stmt);
-        addType(ontRes, OWL.Class, rdfsModel);
+        addType(ontClass, OWL.Class, rdfsModel);
     }
 
-    private static void addSubPropertyOf(OntResource ontRes, OntResource ontSupRes, Model rdfsModel) {
-        Statement stmt = rdfsModel.createStatement(ontRes, RDFS.subPropertyOf, ontSupRes);
+    private static void addSubPropertyOf(OntProperty ontProp, OntProperty ontSupProp, Model rdfsModel) {
+        Statement stmt = rdfsModel.createStatement(ontProp, RDFS.subPropertyOf, ontSupProp);
         rdfsModel.add(stmt);
-        addType(ontRes, OWL.ObjectProperty, rdfsModel);
+        addType(ontProp, OWL.ObjectProperty, rdfsModel);
     }
 
     private static void addClassModel(OntModel ontModel, Model rdfsModel) {
-        for (Iterator i = ontModel.listNamedClasses(); i.hasNext();) {
-            OntClass ontClass = (OntClass) i.next();
+        ontModel.ontObjects(OntClass.Named.class).forEach(ontClass -> {
             addType(ontClass, OWL.Class, rdfsModel);
             addLabels(ontClass, rdfsModel);
             addComments(ontClass, rdfsModel);
 
-            for (Iterator j = ontClass.listSubClasses(true); j.hasNext();) {
-                OntClass subOntClass = (OntClass) j.next();
+            ontClass.subClasses(true).forEach(subOntClass -> {
                 addSubClassOf(subOntClass, ontClass, rdfsModel);
-            }
-        }
+            });
+        });
     }
 
     private static void addPropertyModel(OntProperty ontProp, Model rdfsModel) {
@@ -121,31 +116,36 @@ class OntModelToRDFSModel {
         addComments(ontProp, rdfsModel);
         addDomains(ontProp, rdfsModel);
         addRanges(ontProp, rdfsModel);
-        for (Iterator i = ontProp.listSubProperties(true); i.hasNext();) {
-            OntProperty subOntProp = (OntProperty) i.next();
-            if (!subOntProp.equals(ontProp)) {
-                addSubPropertyOf(subOntProp, ontProp, rdfsModel);
-            } else {
-                // System.out.println("Property: " + ontProp);
-                // System.out.println("SubProperty: " + subOntProp);
-            }
-        }
+
+        ontProp.subProperties(true)
+                .filter(sub -> !sub.equals(ontProp)) // 自分自身を除外
+                .forEach(subOntProp -> {
+                    addSubPropertyOf(subOntProp, ontProp, rdfsModel);
+                });
+
+//        for (Iterator i = ontProp.listSubProperties(true); i.hasNext();) {
+//            OntProperty subOntProp = (OntProperty) i.next();
+//            if (!subOntProp.equals(ontProp)) {
+//                addSubPropertyOf(subOntProp, ontProp, rdfsModel);
+//            } else {
+//                // System.out.println("Property: " + ontProp);
+//                // System.out.println("SubProperty: " + subOntProp);
+//            }
+//        }
     }
 
     private static void addObjectPropertyModel(OntModel ontModel, Model rdfsModel) {
-        for (Iterator i = ontModel.listObjectProperties(); i.hasNext();) {
-            OntProperty ontProp = (OntProperty) i.next();
+        ontModel.objectProperties().forEach(ontProp -> {
             addType(ontProp, OWL.ObjectProperty, rdfsModel);
             addPropertyModel(ontProp, rdfsModel);
-        }
+        });
     }
 
     private static void addDatatypePropertyModel(OntModel ontModel, Model rdfsModel) {
-        for (Iterator i = ontModel.listDatatypeProperties(); i.hasNext();) {
-            OntProperty ontProp = (OntProperty) i.next();
+        ontModel.dataProperties().forEach(ontProp -> {
             addType(ontProp, OWL.DatatypeProperty, rdfsModel);
             addPropertyModel(ontProp, rdfsModel);
-        }
+        });
     }
 
 }
