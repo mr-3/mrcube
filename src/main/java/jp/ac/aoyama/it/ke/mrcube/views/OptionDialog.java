@@ -900,7 +900,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
 
         private final JButton setDefaultColorsButton;
 
-        private final JCheckBox isAntialiasBox;
         private final JCheckBox isBlackAndWhiteBox;
 
         private final ResourceColorPanel instanceNodeColorPanel;
@@ -939,7 +938,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
                     null, null, null);
 
             isBlackAndWhiteBox = new JCheckBox(Translator.getString("PreferenceDialog.RenderingTab.Option.BlackAndWhite"), true);
-            isAntialiasBox = new JCheckBox(Translator.getString("PreferenceDialog.RenderingTab.Option.Antialias"), false);
 
             JPanel colorPanel = new JPanel();
             colorPanel.setLayout(new GridLayout(3, 2, 0, 0));
@@ -952,7 +950,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             JPanel optionPanel = new JPanel();
             optionPanel.setBorder(BorderFactory.createTitledBorder(Translator.getString("PreferenceDialog.RenderingTab.Option")));
             optionPanel.add(isBlackAndWhiteBox);
-            optionPanel.add(isAntialiasBox);
             JPanel panel = new JPanel();
             panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
             panel.add(colorPanel);
@@ -1031,9 +1028,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             GraphUtilities.isBlackAndWhite = isBlackAndWhiteBox.isSelected();
             GraphUtilities.changeAllCellColor(gmanager);
             GraphUtilities.resetEditorBackgroudColor(gmanager);
-
-            userPrefs.putBoolean(PrefConstants.Antialias, isAntialiasBox.isSelected());
-            gmanager.setAntialias();
         }
 
         void resetConfig() {
@@ -1140,7 +1134,6 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             );
 
             isBlackAndWhiteBox.setSelected(userPrefs.getBoolean(PrefConstants.BlackAndWhite, false));
-            isAntialiasBox.setSelected(userPrefs.getBoolean(PrefConstants.Antialias, true));
         }
 
         @Override

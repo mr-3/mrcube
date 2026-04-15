@@ -106,9 +106,9 @@ public class GraphManager {
 
     public Font getScaledFont() {
         Font defaultFont = UIManager.getFont("Label.font");
-        int baseFontSize = defaultFont.getSize();
-        int adjustedFontSize = (int) (baseFontSize * 1.2);
-        Font scaledFont = new Font(defaultFont.getFontName(), Font.PLAIN, adjustedFontSize);
+        float adjustedFontSize = defaultFont.getSize2D() * 1.2f;
+        Font scaledFont = defaultFont.deriveFont(adjustedFontSize);
+//        System.out.println("Family: " + scaledFont.getFamily());
         return scaledFont;
     }
 
@@ -397,15 +397,6 @@ public class GraphManager {
             propClassListStr += propClass.toString() + " ";
         }
         userPrefs.put(PrefConstants.PropClassList, propClassListStr);
-    }
-
-    public void setAntialias() {
-        boolean isAntialias = userPrefs.getBoolean(PrefConstants.Antialias, true);
-        if (getInstanceGraph() != null) {
-            getInstanceGraph().setAntiAliased(isAntialias);
-            getClassGraph().setAntiAliased(isAntialias);
-            getPropertyGraph().setAntiAliased(isAntialias);
-        }
     }
 
     public String getBaseURI() {
