@@ -138,7 +138,6 @@ public class JGraphEllipseView extends VertexView {
             Graphics2D g2 = (Graphics2D) g;
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-            g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
             g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
             g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 
@@ -148,8 +147,7 @@ public class JGraphEllipseView extends VertexView {
                 g.setColor(super.getBackground());
                 if (gradientColor != null && !preview) {
                     setOpaque(false);
-                    g2.setPaint(new GradientPaint(0, 0, getBackground(), getWidth(), getHeight(),
-                            gradientColor, true));
+                    g2.setPaint(new GradientPaint(0, 0, getBackground(), getWidth(), getHeight(), gradientColor, true));
                 }
                 g.fillOval(b - 1, b - 1, d.width - b, d.height - b);
             }
