@@ -107,7 +107,8 @@ public class GraphManager {
     public Font getScaledFont() {
         Font defaultFont = UIManager.getFont("Label.font");
         float adjustedFontSize = defaultFont.getSize2D() * 1.2f;
-        Font scaledFont = defaultFont.deriveFont(adjustedFontSize);
+//        Font scaledFont = defaultFont.deriveFont(adjustedFontSize);
+        Font scaledFont = new Font("Meiryo", Font.PLAIN, (int)adjustedFontSize);
 //        System.out.println("Family: " + scaledFont.getFamily());
         return scaledFont;
     }
