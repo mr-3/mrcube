@@ -130,6 +130,8 @@ graalvmNative {
         buildArgs.add('-Dsun.java2d.uiScale.enabled=true')
         buildArgs.add('-H:NativeLinkerOption=/SUBSYSTEM:WINDOWS')
         buildArgs.add('-H:NativeLinkerOption=/ENTRY:mainCRTStartup')
+        buildArgs.add("-H:NativeLinkerOption=/MANIFEST:EMBED")
+        buildArgs.add("-H:NativeLinkerOption=/MANIFESTINPUT:${project.projectDir}/app.manifest")
 
         metadataRepository {
             enabled = true
