@@ -532,10 +532,6 @@
   "methods":[{"name":"getUI","parameterTypes":[] }]
 },
 {
-  "name":"javax.swing.JTextField",
-  "methods":[{"name":"processInputMethodEvent","parameterTypes":["java.awt.event.InputMethodEvent"] }]
-},
-{
   "name":"javax.swing.PopupFactory",
   "methods":[{"name":"getPopup","parameterTypes":["java.awt.Component","java.awt.Component","int","int","boolean"] }]
 },
@@ -618,6 +614,10 @@
   "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
 },
 {
+  "name":"jp.ac.aoyama.it.ke.mrcube.jgraph.MR3OverviewPanel",
+  "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
+},
+{
   "name":"jp.ac.aoyama.it.ke.mrcube.jgraph.RDFGraph",
   "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
 },
@@ -694,6 +694,10 @@
   "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
 },
 {
+  "name":"jp.ac.aoyama.it.ke.mrcube.views.OverviewDialog",
+  "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
+},
+{
   "name":"jp.ac.aoyama.it.ke.mrcube.views.ProjectInfoDialog",
   "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
 },
@@ -714,6 +718,14 @@
   "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
 },
 {
+  "name":"jp.ac.aoyama.it.ke.mrcube.views.SelectRDFSResourceDialog",
+  "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
+},
+{
+  "name":"jp.ac.aoyama.it.ke.mrcube.views.SelectRDFSResourcePanel",
+  "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
+},
+{
   "name":"jp.ac.aoyama.it.ke.mrcube.views.SplashWindow",
   "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
 },
@@ -726,11 +738,19 @@
   "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
 },
 {
+  "name":"jp.ac.aoyama.it.ke.mrcube.views.VersionInfoDialog",
+  "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
+},
+{
   "name":"jp.ac.aoyama.it.ke.mrcube.views.class_editor.ClassPanel",
   "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
 },
 {
   "name":"jp.ac.aoyama.it.ke.mrcube.views.common.CommentPanel",
+  "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
+},
+{
+  "name":"jp.ac.aoyama.it.ke.mrcube.views.common.EditCommentDialog",
   "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
 },
 {
@@ -750,7 +770,47 @@
   "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
 },
 {
+  "name":"jp.ac.aoyama.it.ke.mrcube.views.instance_editor.InstancePanel",
+  "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
+},
+{
+  "name":"jp.ac.aoyama.it.ke.mrcube.views.instance_editor.InstancePanel$TypePanel",
+  "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
+},
+{
+  "name":"jp.ac.aoyama.it.ke.mrcube.views.instance_editor.InstancePanel$URIPanel",
+  "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
+},
+{
+  "name":"jp.ac.aoyama.it.ke.mrcube.views.instance_editor.InstancePropertyPanel",
+  "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
+},
+{
+  "name":"jp.ac.aoyama.it.ke.mrcube.views.instance_editor.LiteralPanel",
+  "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
+},
+{
+  "name":"jp.ac.aoyama.it.ke.mrcube.views.instance_editor.SelectClassPanel",
+  "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
+},
+{
+  "name":"jp.ac.aoyama.it.ke.mrcube.views.instance_editor.SelectInstanceTypeDialog",
+  "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
+},
+{
+  "name":"jp.ac.aoyama.it.ke.mrcube.views.instance_editor.SelectInstanceTypePanel",
+  "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
+},
+{
   "name":"jp.ac.aoyama.it.ke.mrcube.views.option_dialog.ResourceColorPanel",
+  "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
+},
+{
+  "name":"jp.ac.aoyama.it.ke.mrcube.views.property_editor.PropertyPanel",
+  "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
+},
+{
+  "name":"jp.ac.aoyama.it.ke.mrcube.views.property_editor.PropertyPanel$RegionPanel",
   "methods":[{"name":"coalesceEvents","parameterTypes":["java.awt.AWTEvent","java.awt.AWTEvent"] }]
 },
 {

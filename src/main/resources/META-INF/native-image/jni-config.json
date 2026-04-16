@@ -333,10 +333,6 @@
   "methods":[{"name":"nativeUpdateCursor","parameterTypes":["java.awt.Component"] }]
 },
 {
-  "name":"sun.awt.windows.WInputMethod",
-  "methods":[{"name":"inquireCandidatePosition","parameterTypes":[] }, {"name":"sendInputMethodEvent","parameterTypes":["int","long","java.lang.String","int[]","java.lang.String[]","int[]","byte[]","int","int","int"] }]
-},
-{
   "name":"sun.awt.windows.WObjectPeer",
   "fields":[{"name":"createError"}, {"name":"destroyed"}, {"name":"pData"}, {"name":"target"}],
   "methods":[{"name":"getPeerForTarget","parameterTypes":["java.lang.Object"] }]
@@ -373,11 +369,6 @@
 {
   "name":"sun.font.FreetypeFontScaler",
   "methods":[{"name":"invalidateScaler","parameterTypes":[] }]
-},
-{
-  "name":"sun.font.GlyphLayout$GVData",
-  "fields":[{"name":"_count"}, {"name":"_flags"}, {"name":"_glyphs"}, {"name":"_indices"}, {"name":"_positions"}],
-  "methods":[{"name":"grow","parameterTypes":[] }]
 },
 {
   "name":"sun.font.GlyphList",

@@ -111,8 +111,6 @@
   }, {
     "pattern":"\\Qimages/settings.svg\\E"
   }, {
-    "pattern":"\\Qimages/transform.svg\\E"
-  }, {
     "pattern":"\\Qimages/undo.svg\\E"
   }, {
     "pattern":"\\Qimages/up_to_down.svg\\E"
@@ -125,9 +123,11 @@
   }, {
     "pattern":"\\Qsimplelogger.properties\\E"
   }, {
+    "pattern":"\\Qversion_info.html\\E"
+  }, {
     "pattern":"java.base:\\Qjava/util/currency.data\\E"
   }, {
-    "pattern":"java.base:\\Qjdk/internal/icu/impl/data/icudt72b/ubidi.icu\\E"
+    "pattern":"java.base:\\Qsun/net/www/content-types.properties\\E"
   }, {
     "pattern":"java.datatransfer:\\Qsun/datatransfer/resources/flavormap.properties\\E"
   }, {
