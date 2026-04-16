@@ -103,7 +103,7 @@ tasks.runtime.doLast {
     }
 }
 
-task prepareNativePackage(type: Copy) {
+tasks.register('prepareNativePackage', Copy) {
 
     from(layout.buildDirectory.dir("/native/nativeCompile")) {
         include "*.exe"
@@ -134,7 +134,7 @@ graalvmNative {
     }
 }
 
-task runWithAgent(type: JavaExec) {
+tasks.register('runWithAgent', JavaExec) {
     group = "application"
     mainClass = application.mainClass
     classpath = sourceSets.main.runtimeClasspath
