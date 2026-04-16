@@ -2,7 +2,7 @@
  * Project Name: MR^3 (Meta-Model Management based on RDFs Revision Reflection)
  * Project Website: https://mr-3.github.io/
  *
- * Copyright (C) 2003-2025 Takeshi Morita. All rights reserved.
+ * Copyright (C) 2003-2026 Takeshi Morita. All rights reserved.
  *
  * This file is part of MR^3.
  *
@@ -456,7 +456,7 @@ public class MR3 extends JFrame implements ChangeListener {
         String workDirPath = userPrefs.get(PrefConstants.WorkDirectory, System.getProperty("user.dir"));
         HistoryManager.initLogger(workDirPath + File.separator + HistoryManager.DEFAULT_LOG_FILE_NAME);
 
-        setTitle("MR^3");
+        setTitle("MR\u00B3");
         setVisible(true);
     }
 
@@ -642,6 +642,7 @@ public class MR3 extends JFrame implements ChangeListener {
 
     public static void initialize(Class cls) {
         System.setProperty("javax.accessibility.assistive_technologies", "");
+        System.setProperty("flatlaf.useJetBrainsCustomWindowDecorations", "true");
         if (System.getProperty("os.name").toLowerCase().startsWith("mac")) {
             System.setProperty("apple.laf.useScreenMenuBar", "true");
             FlatMacLightLaf.setup();
@@ -680,9 +681,9 @@ public class MR3 extends JFrame implements ChangeListener {
 
     public void stateChanged(ChangeEvent e) {
         if (mr3ProjectPanel != null) {
-            setTitle("MR^3: " + mr3ProjectPanel.getTitle());
+            setTitle("MR\u00B3: " + mr3ProjectPanel.getTitle());
         } else {
-            setTitle("MR^3");
+            setTitle("MR\u00B3");
         }
     }
 }

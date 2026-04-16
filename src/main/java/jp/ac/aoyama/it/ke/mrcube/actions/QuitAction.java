@@ -50,7 +50,7 @@ public class QuitAction extends AbstractActionFile {
 
     public void quitMR3() {
         mr3.getGraphManager().closeAllDialogs();
-        int messageType = JOptionPane.showConfirmDialog(mr3, Translator.getString("SaveChanges"), "MR^3 - "
+        int messageType = JOptionPane.showConfirmDialog(mr3, Translator.getString("SaveChanges"), "MR\u00B3 - "
                         + Translator.getString("Menu.File.Quit.Text"), JOptionPane.YES_NO_CANCEL_OPTION,
                 JOptionPane.INFORMATION_MESSAGE, Utilities.getSVGIcon("exit.svg"));
         if (messageType == JOptionPane.YES_OPTION) {

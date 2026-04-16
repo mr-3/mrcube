@@ -55,7 +55,7 @@ public class OpenResourceAction extends AbstractActionFile {
             if (resourcePath.endsWith("mr3")) {
                 Model model = RDFDataMgr.loadModel(resourcePath, Lang.TURTLE);
                 mr3.getMR3Reader().replaceProjectModel(model);
-                mr3.setTitle("MR^3: " + MR3.getProjectPanel().getTitle());
+                mr3.setTitle("MR\u00B3: " + MR3.getProjectPanel().getTitle());
             } else {
                 Model model = RDFDataMgr.loadModel(resourcePath);
                 mr3Reader.mergeRDFandRDFSModel(model);
