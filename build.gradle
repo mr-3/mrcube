@@ -122,15 +122,16 @@ graalvmNative {
         resources.autodetect()
     }
 
-    metadataRepository {
-        enabled = true
-    }
-
     binaries.main {
         mainClass = 'jp.ac.aoyama.it.ke.mrcube.MR3'
         buildArgs.add('--no-fallback')
         buildArgs.add('-H:+AddAllCharsets')
         buildArgs.add('-Djava.awt.headless=false')
+        buildArgs.add('-Dsun.java2d.uiScale.enabled=true')
+
+        metadataRepository {
+            enabled = true
+        }
     }
 }
 
