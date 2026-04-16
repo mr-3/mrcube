@@ -128,9 +128,16 @@ graalvmNative {
         buildArgs.add('-H:+AddAllCharsets')
         buildArgs.add('-Djava.awt.headless=false')
         buildArgs.add('-Dsun.java2d.uiScale.enabled=true')
+        buildArgs.add('-H:NativeLinkerOption=/SUBSYSTEM:WINDOWS')
+        buildArgs.add('-H:NativeLinkerOption=/ENTRY:mainCRTStartup')
 
         metadataRepository {
             enabled = true
+        }
+
+        agent {
+            enabled = true
+            options.add("config-merge-dir=src/main/resources/META-INF/native-image")
         }
     }
 }
