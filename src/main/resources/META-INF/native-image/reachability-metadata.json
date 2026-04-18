@@ -7,6 +7,62 @@
       "type": "char[]"
     },
     {
+      "type": "com.apple.eawt._AppEventHandler",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "handleNativeNotification",
+          "parameterTypes": [
+            "int"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.apple.eawt._AppMenuBarHandler",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "initMenuStates",
+          "parameterTypes": [
+            "boolean",
+            "boolean",
+            "boolean",
+            "boolean"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.apple.laf.AquaLookAndFeel",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.apple.laf.AquaMenuBarUI",
+      "methods": [
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.apple.laf.AquaMnemonicHandler$AltProcessor",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
       "type": "com.formdev.flatlaf.icons.FlatAscendingSortIcon",
       "methods": [
         {
@@ -253,7 +309,16 @@
       "type": "com.formdev.flatlaf.resources.Bundle"
     },
     {
-      "type": "com.formdev.flatlaf.ui.FlatArrowButton"
+      "type": "com.formdev.flatlaf.ui.FlatArrowButton",
+      "methods": [
+        {
+          "name": "coalesceEvents",
+          "parameterTypes": [
+            "java.awt.AWTEvent",
+            "java.awt.AWTEvent"
+          ]
+        }
+      ]
     },
     {
       "type": "com.formdev.flatlaf.ui.FlatButtonBorder",
@@ -309,10 +374,28 @@
       ]
     },
     {
-      "type": "com.formdev.flatlaf.ui.FlatComboBoxUI$FlatComboBoxButton"
+      "type": "com.formdev.flatlaf.ui.FlatComboBoxUI$FlatComboBoxButton",
+      "methods": [
+        {
+          "name": "coalesceEvents",
+          "parameterTypes": [
+            "java.awt.AWTEvent",
+            "java.awt.AWTEvent"
+          ]
+        }
+      ]
     },
     {
-      "type": "com.formdev.flatlaf.ui.FlatComboBoxUI$FlatComboPopup"
+      "type": "com.formdev.flatlaf.ui.FlatComboBoxUI$FlatComboPopup",
+      "methods": [
+        {
+          "name": "coalesceEvents",
+          "parameterTypes": [
+            "java.awt.AWTEvent",
+            "java.awt.AWTEvent"
+          ]
+        }
+      ]
     },
     {
       "type": "com.formdev.flatlaf.ui.FlatDesktopIconUI",
@@ -368,7 +451,16 @@
       ]
     },
     {
-      "type": "com.formdev.flatlaf.ui.FlatFileChooserUI$FlatShortcutsPanel"
+      "type": "com.formdev.flatlaf.ui.FlatFileChooserUI$FlatShortcutsPanel",
+      "methods": [
+        {
+          "name": "coalesceEvents",
+          "parameterTypes": [
+            "java.awt.AWTEvent",
+            "java.awt.AWTEvent"
+          ]
+        }
+      ]
     },
     {
       "type": "com.formdev.flatlaf.ui.FlatFormattedTextFieldUI",
@@ -382,10 +474,28 @@
       ]
     },
     {
-      "type": "com.formdev.flatlaf.ui.FlatInternalFrameTitlePane"
+      "type": "com.formdev.flatlaf.ui.FlatInternalFrameTitlePane",
+      "methods": [
+        {
+          "name": "coalesceEvents",
+          "parameterTypes": [
+            "java.awt.AWTEvent",
+            "java.awt.AWTEvent"
+          ]
+        }
+      ]
     },
     {
-      "type": "com.formdev.flatlaf.ui.FlatInternalFrameTitlePane$1"
+      "type": "com.formdev.flatlaf.ui.FlatInternalFrameTitlePane$1",
+      "methods": [
+        {
+          "name": "coalesceEvents",
+          "parameterTypes": [
+            "java.awt.AWTEvent",
+            "java.awt.AWTEvent"
+          ]
+        }
+      ]
     },
     {
       "type": "com.formdev.flatlaf.ui.FlatInternalFrameUI",
@@ -614,7 +724,16 @@
       ]
     },
     {
-      "type": "com.formdev.flatlaf.ui.FlatScrollBarUI$FlatScrollBarButton"
+      "type": "com.formdev.flatlaf.ui.FlatScrollBarUI$FlatScrollBarButton",
+      "methods": [
+        {
+          "name": "coalesceEvents",
+          "parameterTypes": [
+            "java.awt.AWTEvent",
+            "java.awt.AWTEvent"
+          ]
+        }
+      ]
     },
     {
       "type": "com.formdev.flatlaf.ui.FlatScrollPaneBorder",
@@ -691,7 +810,16 @@
       ]
     },
     {
-      "type": "com.formdev.flatlaf.ui.FlatTableHeaderUI$FlatTableHeaderCellRendererPane"
+      "type": "com.formdev.flatlaf.ui.FlatTableHeaderUI$FlatTableHeaderCellRendererPane",
+      "methods": [
+        {
+          "name": "coalesceEvents",
+          "parameterTypes": [
+            "java.awt.AWTEvent",
+            "java.awt.AWTEvent"
+          ]
+        }
+      ]
     },
     {
       "type": "com.formdev.flatlaf.ui.FlatTableUI",
@@ -705,7 +833,16 @@
       ]
     },
     {
-      "type": "com.formdev.flatlaf.ui.FlatTableUI$FlatBooleanRenderer"
+      "type": "com.formdev.flatlaf.ui.FlatTableUI$FlatBooleanRenderer",
+      "methods": [
+        {
+          "name": "coalesceEvents",
+          "parameterTypes": [
+            "java.awt.AWTEvent",
+            "java.awt.AWTEvent"
+          ]
+        }
+      ]
     },
     {
       "type": "com.formdev.flatlaf.ui.FlatTextAreaUI",
@@ -823,7 +960,16 @@
       ]
     },
     {
-      "type": "com.formdev.flatlaf.ui.FlatWindowResizer$DragBorderComponent"
+      "type": "com.formdev.flatlaf.ui.FlatWindowResizer$DragBorderComponent",
+      "methods": [
+        {
+          "name": "coalesceEvents",
+          "parameterTypes": [
+            "java.awt.AWTEvent",
+            "java.awt.AWTEvent"
+          ]
+        }
+      ]
     },
     {
       "type": "com.formdev.flatlaf.ui.FlatWindowsNativeWindowBorder$WndProc",
@@ -1208,6 +1354,21 @@
       ]
     },
     {
+      "type": "java.awt.DisplayMode",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "int",
+            "int",
+            "int",
+            "int"
+          ]
+        }
+      ]
+    },
+    {
       "type": "java.awt.Font",
       "jniAccessible": true,
       "fields": [
@@ -1344,6 +1505,11 @@
     {
       "type": "java.awt.Toolkit",
       "jniAccessible": true,
+      "fields": [
+        {
+          "name": "eventListener"
+        }
+      ],
       "methods": [
         {
           "name": "getDefaultToolkit",
@@ -1430,6 +1596,9 @@
           "name": "VK_ADD"
         },
         {
+          "name": "VK_B"
+        },
+        {
           "name": "VK_BACK_SLASH"
         },
         {
@@ -1448,10 +1617,16 @@
           "name": "VK_CUT"
         },
         {
+          "name": "VK_D"
+        },
+        {
           "name": "VK_DELETE"
         },
         {
           "name": "VK_DOWN"
+        },
+        {
+          "name": "VK_E"
         },
         {
           "name": "VK_END"
@@ -1461,6 +1636,9 @@
         },
         {
           "name": "VK_ESCAPE"
+        },
+        {
+          "name": "VK_F"
         },
         {
           "name": "VK_F1"
@@ -1517,7 +1695,13 @@
           "name": "VK_LEFT"
         },
         {
+          "name": "VK_N"
+        },
+        {
           "name": "VK_O"
+        },
+        {
+          "name": "VK_P"
         },
         {
           "name": "VK_PAGE_DOWN"
@@ -1551,6 +1735,9 @@
         },
         {
           "name": "VK_V"
+        },
+        {
+          "name": "VK_W"
         },
         {
           "name": "VK_X"
@@ -1706,6 +1893,19 @@
       ]
     },
     {
+      "type": "java.awt.geom.Point2D$Double",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "double",
+            "double"
+          ]
+        }
+      ]
+    },
+    {
       "type": "java.awt.geom.Point2D$Float",
       "jniAccessible": true,
       "fields": [
@@ -1722,6 +1922,21 @@
           "parameterTypes": [
             "float",
             "float"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "java.awt.geom.Rectangle2D$Double",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "double",
+            "double",
+            "double",
+            "double"
           ]
         }
       ]
@@ -2004,6 +2219,18 @@
           ]
         },
         {
+          "name": "lastIndexOf",
+          "parameterTypes": [
+            "int"
+          ]
+        },
+        {
+          "name": "substring",
+          "parameterTypes": [
+            "int"
+          ]
+        },
+        {
           "name": "toLowerCase",
           "parameterTypes": [
             "java.util.Locale"
@@ -2021,6 +2248,19 @@
         {
           "name": "getProperty",
           "parameterTypes": [
+            "java.lang.String"
+          ]
+        },
+        {
+          "name": "load",
+          "parameterTypes": [
+            "java.lang.String"
+          ]
+        },
+        {
+          "name": "setProperty",
+          "parameterTypes": [
+            "java.lang.String",
             "java.lang.String"
           ]
         }
@@ -2057,12 +2297,22 @@
       "methods": [
         {
           "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "<init>",
           "parameterTypes": [
             "int"
           ]
         },
         {
           "name": "add",
+          "parameterTypes": [
+            "java.lang.Object"
+          ]
+        },
+        {
+          "name": "contains",
           "parameterTypes": [
             "java.lang.Object"
           ]
@@ -2096,6 +2346,14 @@
       "jniAccessible": true,
       "methods": [
         {
+          "name": "<init>",
+          "parameterTypes": [
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String"
+          ]
+        },
+        {
           "name": "forLanguageTag",
           "parameterTypes": [
             "java.lang.String"
@@ -2105,6 +2363,33 @@
     },
     {
       "type": "java.util.Locale[]"
+    },
+    {
+      "type": "java.util.concurrent.ForkJoinTask",
+      "fields": [
+        {
+          "name": "aux"
+        },
+        {
+          "name": "status"
+        }
+      ]
+    },
+    {
+      "type": "java.util.concurrent.atomic.AtomicBoolean",
+      "fields": [
+        {
+          "name": "value"
+        }
+      ]
+    },
+    {
+      "type": "java.util.concurrent.atomic.AtomicReference",
+      "fields": [
+        {
+          "name": "value"
+        }
+      ]
     },
     {
       "type": "javax.swing.JComponent",
@@ -2138,6 +2423,17 @@
       ]
     },
     {
+      "type": "javax.swing.UIManager",
+      "methods": [
+        {
+          "name": "createLookAndFeel",
+          "parameterTypes": [
+            "java.lang.String"
+          ]
+        }
+      ]
+    },
+    {
       "type": "javax.swing.filechooser.FileSystemView",
       "methods": [
         {
@@ -2153,6 +2449,9 @@
           ]
         }
       ]
+    },
+    {
+      "type": "javax.swing.filechooser.UnixFileSystemView"
     },
     {
       "type": "javax.swing.filechooser.WindowsFileSystemView"
@@ -2249,9 +2548,19 @@
       ]
     },
     {
+      "type": "jdk.internal.misc.Unsafe"
+    },
+    {
       "type": "jp.ac.aoyama.it.ke.mrcube.MR3",
       "jniAccessible": true,
       "methods": [
+        {
+          "name": "coalesceEvents",
+          "parameterTypes": [
+            "java.awt.AWTEvent",
+            "java.awt.AWTEvent"
+          ]
+        },
         {
           "name": "main",
           "parameterTypes": [
@@ -2261,16 +2570,52 @@
       ]
     },
     {
-      "type": "jp.ac.aoyama.it.ke.mrcube.editors.ClassEditor"
+      "type": "jp.ac.aoyama.it.ke.mrcube.editors.ClassEditor",
+      "methods": [
+        {
+          "name": "coalesceEvents",
+          "parameterTypes": [
+            "java.awt.AWTEvent",
+            "java.awt.AWTEvent"
+          ]
+        }
+      ]
     },
     {
-      "type": "jp.ac.aoyama.it.ke.mrcube.editors.Editor"
+      "type": "jp.ac.aoyama.it.ke.mrcube.editors.Editor",
+      "methods": [
+        {
+          "name": "coalesceEvents",
+          "parameterTypes": [
+            "java.awt.AWTEvent",
+            "java.awt.AWTEvent"
+          ]
+        }
+      ]
     },
     {
-      "type": "jp.ac.aoyama.it.ke.mrcube.editors.InstanceEditor"
+      "type": "jp.ac.aoyama.it.ke.mrcube.editors.InstanceEditor",
+      "methods": [
+        {
+          "name": "coalesceEvents",
+          "parameterTypes": [
+            "java.awt.AWTEvent",
+            "java.awt.AWTEvent"
+          ]
+        }
+      ]
     },
     {
-      "type": "jp.ac.aoyama.it.ke.mrcube.editors.PropertyEditor"
+      "type": "jp.ac.aoyama.it.ke.mrcube.editors.PropertyEditor",
+      "methods": [
+        {
+          "name": "coalesceEvents",
+          "parameterTypes": [
+            "java.awt.AWTEvent",
+            "java.awt.AWTEvent"
+          ]
+        }
+      ]
     },
     {
       "type": "jp.ac.aoyama.it.ke.mrcube.jgraph.JGraphEllipseView$JGraphEllipseRenderer"
@@ -2279,34 +2624,115 @@
       "type": "jp.ac.aoyama.it.ke.mrcube.jgraph.MR3OverviewPanel"
     },
     {
-      "type": "jp.ac.aoyama.it.ke.mrcube.jgraph.RDFGraph"
+      "type": "jp.ac.aoyama.it.ke.mrcube.jgraph.RDFGraph",
+      "methods": [
+        {
+          "name": "coalesceEvents",
+          "parameterTypes": [
+            "java.awt.AWTEvent",
+            "java.awt.AWTEvent"
+          ]
+        }
+      ]
     },
     {
-      "type": "jp.ac.aoyama.it.ke.mrcube.models.SPARQLQueryResultTableCellRenderer"
+      "type": "jp.ac.aoyama.it.ke.mrcube.models.SPARQLQueryResultTableCellRenderer",
+      "methods": [
+        {
+          "name": "coalesceEvents",
+          "parameterTypes": [
+            "java.awt.AWTEvent",
+            "java.awt.AWTEvent"
+          ]
+        }
+      ]
     },
     {
-      "type": "jp.ac.aoyama.it.ke.mrcube.views.AttributeDialog"
+      "type": "jp.ac.aoyama.it.ke.mrcube.views.AttributeDialog",
+      "methods": [
+        {
+          "name": "coalesceEvents",
+          "parameterTypes": [
+            "java.awt.AWTEvent",
+            "java.awt.AWTEvent"
+          ]
+        }
+      ]
     },
     {
-      "type": "jp.ac.aoyama.it.ke.mrcube.views.FindResourceDialog"
+      "type": "jp.ac.aoyama.it.ke.mrcube.views.FindResourceDialog",
+      "methods": [
+        {
+          "name": "coalesceEvents",
+          "parameterTypes": [
+            "java.awt.AWTEvent",
+            "java.awt.AWTEvent"
+          ]
+        }
+      ]
     },
     {
-      "type": "jp.ac.aoyama.it.ke.mrcube.views.HistoryManager"
+      "type": "jp.ac.aoyama.it.ke.mrcube.views.HistoryManager",
+      "methods": [
+        {
+          "name": "coalesceEvents",
+          "parameterTypes": [
+            "java.awt.AWTEvent",
+            "java.awt.AWTEvent"
+          ]
+        }
+      ]
     },
     {
       "type": "jp.ac.aoyama.it.ke.mrcube.views.InsertResourceDialog"
     },
     {
-      "type": "jp.ac.aoyama.it.ke.mrcube.views.InternalPopupMenu"
+      "type": "jp.ac.aoyama.it.ke.mrcube.views.InternalPopupMenu",
+      "methods": [
+        {
+          "name": "coalesceEvents",
+          "parameterTypes": [
+            "java.awt.AWTEvent",
+            "java.awt.AWTEvent"
+          ]
+        }
+      ]
     },
     {
-      "type": "jp.ac.aoyama.it.ke.mrcube.views.MR3LogConsole"
+      "type": "jp.ac.aoyama.it.ke.mrcube.views.MR3LogConsole",
+      "methods": [
+        {
+          "name": "coalesceEvents",
+          "parameterTypes": [
+            "java.awt.AWTEvent",
+            "java.awt.AWTEvent"
+          ]
+        }
+      ]
     },
     {
-      "type": "jp.ac.aoyama.it.ke.mrcube.views.MR3ProjectPanel"
+      "type": "jp.ac.aoyama.it.ke.mrcube.views.MR3ProjectPanel",
+      "methods": [
+        {
+          "name": "coalesceEvents",
+          "parameterTypes": [
+            "java.awt.AWTEvent",
+            "java.awt.AWTEvent"
+          ]
+        }
+      ]
     },
     {
-      "type": "jp.ac.aoyama.it.ke.mrcube.views.NameSpaceTableDialog"
+      "type": "jp.ac.aoyama.it.ke.mrcube.views.NameSpaceTableDialog",
+      "methods": [
+        {
+          "name": "coalesceEvents",
+          "parameterTypes": [
+            "java.awt.AWTEvent",
+            "java.awt.AWTEvent"
+          ]
+        }
+      ]
     },
     {
       "type": "jp.ac.aoyama.it.ke.mrcube.views.OntologyPanel"
@@ -2342,13 +2768,40 @@
       "type": "jp.ac.aoyama.it.ke.mrcube.views.RDFSourceCodeViewer"
     },
     {
-      "type": "jp.ac.aoyama.it.ke.mrcube.views.ReferenceListPanel"
+      "type": "jp.ac.aoyama.it.ke.mrcube.views.ReferenceListPanel",
+      "methods": [
+        {
+          "name": "coalesceEvents",
+          "parameterTypes": [
+            "java.awt.AWTEvent",
+            "java.awt.AWTEvent"
+          ]
+        }
+      ]
     },
     {
-      "type": "jp.ac.aoyama.it.ke.mrcube.views.RemoveDialog"
+      "type": "jp.ac.aoyama.it.ke.mrcube.views.RemoveDialog",
+      "methods": [
+        {
+          "name": "coalesceEvents",
+          "parameterTypes": [
+            "java.awt.AWTEvent",
+            "java.awt.AWTEvent"
+          ]
+        }
+      ]
     },
     {
-      "type": "jp.ac.aoyama.it.ke.mrcube.views.SPARQLQueryDialog"
+      "type": "jp.ac.aoyama.it.ke.mrcube.views.SPARQLQueryDialog",
+      "methods": [
+        {
+          "name": "coalesceEvents",
+          "parameterTypes": [
+            "java.awt.AWTEvent",
+            "java.awt.AWTEvent"
+          ]
+        }
+      ]
     },
     {
       "type": "jp.ac.aoyama.it.ke.mrcube.views.SelectRDFSResourceDialog"
@@ -2357,10 +2810,28 @@
       "type": "jp.ac.aoyama.it.ke.mrcube.views.SelectRDFSResourcePanel"
     },
     {
-      "type": "jp.ac.aoyama.it.ke.mrcube.views.SplashWindow"
+      "type": "jp.ac.aoyama.it.ke.mrcube.views.SplashWindow",
+      "methods": [
+        {
+          "name": "coalesceEvents",
+          "parameterTypes": [
+            "java.awt.AWTEvent",
+            "java.awt.AWTEvent"
+          ]
+        }
+      ]
     },
     {
-      "type": "jp.ac.aoyama.it.ke.mrcube.views.StatusBarPanel"
+      "type": "jp.ac.aoyama.it.ke.mrcube.views.StatusBarPanel",
+      "methods": [
+        {
+          "name": "coalesceEvents",
+          "parameterTypes": [
+            "java.awt.AWTEvent",
+            "java.awt.AWTEvent"
+          ]
+        }
+      ]
     },
     {
       "type": "jp.ac.aoyama.it.ke.mrcube.views.VersionInfoDialog"
@@ -2378,7 +2849,16 @@
       "type": "jp.ac.aoyama.it.ke.mrcube.views.common.LabelPanel"
     },
     {
-      "type": "jp.ac.aoyama.it.ke.mrcube.views.common.ResourceListCellRenderer"
+      "type": "jp.ac.aoyama.it.ke.mrcube.views.common.ResourceListCellRenderer",
+      "methods": [
+        {
+          "name": "coalesceEvents",
+          "parameterTypes": [
+            "java.awt.AWTEvent",
+            "java.awt.AWTEvent"
+          ]
+        }
+      ]
     },
     {
       "type": "jp.ac.aoyama.it.ke.mrcube.views.instance_editor.InsertInstanceDialog"
@@ -2426,7 +2906,16 @@
       ]
     },
     {
-      "type": "org.jgraph.JGraph"
+      "type": "org.jgraph.JGraph",
+      "methods": [
+        {
+          "name": "coalesceEvents",
+          "parameterTypes": [
+            "java.awt.AWTEvent",
+            "java.awt.AWTEvent"
+          ]
+        }
+      ]
     },
     {
       "type": "org.jgraph.event.GraphLayoutCacheListener"
@@ -2438,10 +2927,28 @@
       "type": "org.jgraph.event.GraphSelectionListener"
     },
     {
-      "type": "org.jgraph.graph.DefaultGraphCellEditor$DefaultTextField"
+      "type": "org.jgraph.graph.DefaultGraphCellEditor$DefaultTextField",
+      "methods": [
+        {
+          "name": "coalesceEvents",
+          "parameterTypes": [
+            "java.awt.AWTEvent",
+            "java.awt.AWTEvent"
+          ]
+        }
+      ]
     },
     {
-      "type": "org.jgraph.graph.DefaultGraphCellEditor$EditorContainer"
+      "type": "org.jgraph.graph.DefaultGraphCellEditor$EditorContainer",
+      "methods": [
+        {
+          "name": "coalesceEvents",
+          "parameterTypes": [
+            "java.awt.AWTEvent",
+            "java.awt.AWTEvent"
+          ]
+        }
+      ]
     },
     {
       "type": "org.jgraph.graph.EdgeRenderer"
@@ -2685,6 +3192,15 @@
     },
     {
       "type": "sun.awt.shell.ShellFolderColumnInfo[]"
+    },
+    {
+      "type": "sun.awt.shell.ShellFolderManager",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
     },
     {
       "type": "sun.awt.shell.Win32ShellFolder2",
@@ -3028,6 +3544,19 @@
       ]
     },
     {
+      "type": "sun.font.CFontManager",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "registerFont",
+          "parameterTypes": [
+            "java.lang.String",
+            "java.lang.String"
+          ]
+        }
+      ]
+    },
+    {
       "type": "sun.font.CharToGlyphMapper",
       "jniAccessible": true,
       "methods": [
@@ -3050,8 +3579,21 @@
           ]
         },
         {
+          "name": "charToGlyph",
+          "parameterTypes": [
+            "int"
+          ]
+        },
+        {
           "name": "charToGlyphRaw",
           "parameterTypes": [
+            "int"
+          ]
+        },
+        {
+          "name": "charToVariationGlyph",
+          "parameterTypes": [
+            "int",
             "int"
           ]
         },
@@ -3607,7 +4149,8 @@
       ]
     },
     {
-      "type": "sun.java2d.loops.GraphicsPrimitive[]"
+      "type": "sun.java2d.loops.GraphicsPrimitive[]",
+      "jniAccessible": true
     },
     {
       "type": "sun.java2d.loops.MaskBlit",
@@ -3651,6 +4194,69 @@
             "sun.java2d.loops.CompositeType",
             "sun.java2d.loops.SurfaceType"
           ]
+        }
+      ]
+    },
+    {
+      "type": "sun.java2d.loops.SetDrawLineANY",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "sun.java2d.loops.SetDrawPathANY",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "sun.java2d.loops.SetDrawPolygonsANY",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "sun.java2d.loops.SetDrawRectANY",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "sun.java2d.loops.SetFillPathANY",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "sun.java2d.loops.SetFillRectANY",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "sun.java2d.loops.SetFillSpansANY",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
         }
       ]
     },
@@ -3790,6 +4396,45 @@
       ]
     },
     {
+      "type": "sun.java2d.metal.MTLLayer",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "drawInMTLContext",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "sun.java2d.metal.MTLSurfaceData",
+      "jniAccessible": true,
+      "fields": [
+        {
+          "name": "nativeHeight"
+        },
+        {
+          "name": "nativeWidth"
+        }
+      ],
+      "methods": [
+        {
+          "name": "dispose",
+          "parameterTypes": [
+            "long",
+            "sun.java2d.metal.MTLGraphicsConfig"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "sun.java2d.metal.MTLSurfaceData$MTLLayerSurfaceData",
+      "jniAccessible": true
+    },
+    {
+      "type": "sun.java2d.metal.MTLSurfaceData$MTLOffScreenSurfaceData",
+      "jniAccessible": true
+    },
+    {
       "type": "sun.java2d.pipe.Region",
       "jniAccessible": true,
       "fields": [
@@ -3867,6 +4512,131 @@
         {
           "name": "getApplicationClass",
           "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "sun.lwawt.LWWindowPeer",
+      "jniAccessible": true,
+      "fields": [
+        {
+          "name": "platformWindow"
+        }
+      ]
+    },
+    {
+      "type": "sun.lwawt.macosx.CFRetainedResource",
+      "jniAccessible": true,
+      "fields": [
+        {
+          "name": "ptr"
+        }
+      ]
+    },
+    {
+      "type": "sun.lwawt.macosx.CPlatformView",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "deliverKeyEvent",
+          "parameterTypes": [
+            "sun.lwawt.macosx.NSEvent"
+          ]
+        },
+        {
+          "name": "deliverMouseEvent",
+          "parameterTypes": [
+            "sun.lwawt.macosx.NSEvent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "sun.lwawt.macosx.CPlatformWindow",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "deliverMoveResizeEvent",
+          "parameterTypes": [
+            "int",
+            "int",
+            "int",
+            "int",
+            "boolean"
+          ]
+        },
+        {
+          "name": "deliverNCMouseDown",
+          "parameterTypes": []
+        },
+        {
+          "name": "deliverWindowClosingEvent",
+          "parameterTypes": []
+        },
+        {
+          "name": "deliverWindowFocusEvent",
+          "parameterTypes": [
+            "boolean",
+            "sun.lwawt.macosx.CPlatformWindow"
+          ]
+        },
+        {
+          "name": "isBlocked",
+          "parameterTypes": []
+        },
+        {
+          "name": "isSimpleWindowOwnedByEmbeddedFrame",
+          "parameterTypes": []
+        },
+        {
+          "name": "isVisible",
+          "parameterTypes": []
+        },
+        {
+          "name": "windowDidBecomeMain",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "sun.lwawt.macosx.LWCToolkit",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "installToolkitThreadInJava",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "sun.lwawt.macosx.NSEvent",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "int",
+            "int",
+            "int",
+            "int",
+            "int",
+            "int",
+            "int",
+            "int",
+            "double",
+            "double",
+            "int"
+          ]
+        },
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "int",
+            "int",
+            "short",
+            "java.lang.String",
+            "java.lang.String"
+          ]
         }
       ]
     },
@@ -4189,267 +4959,6 @@
       "type": "sun.util.resources.cldr.CurrencyNames"
     }
   ],
-  "resources": [
-    {
-      "glob": "META-INF/services/com.formdev.flatlaf.FlatDefaultsAddon"
-    },
-    {
-      "glob": "META-INF/services/jakarta.json.spi.JsonProvider"
-    },
-    {
-      "glob": "META-INF/services/java.awt.im.spi.InputMethodDescriptor"
-    },
-    {
-      "glob": "META-INF/services/java.net.spi.URLStreamHandlerProvider"
-    },
-    {
-      "glob": "META-INF/services/java.nio.channels.spi.SelectorProvider"
-    },
-    {
-      "glob": "META-INF/services/java.time.zone.ZoneRulesProvider"
-    },
-    {
-      "glob": "META-INF/services/java.util.prefs.PreferencesFactory"
-    },
-    {
-      "glob": "META-INF/services/javax.xml.parsers.DocumentBuilderFactory"
-    },
-    {
-      "glob": "META-INF/services/javax.xml.parsers.SAXParserFactory"
-    },
-    {
-      "glob": "META-INF/services/javax.xml.stream.XMLInputFactory"
-    },
-    {
-      "glob": "META-INF/services/org.apache.jena.sys.JenaSubsystemLifecycle"
-    },
-    {
-      "glob": "META-INF/services/org.slf4j.spi.SLF4JServiceProvider"
-    },
-    {
-      "glob": "MR3_ja.properties"
-    },
-    {
-      "glob": "com/formdev/flatlaf/FlatLaf.properties"
-    },
-    {
-      "glob": "com/formdev/flatlaf/FlatLightLaf.properties"
-    },
-    {
-      "glob": "com/formdev/flatlaf/icons/JavaCup16.png"
-    },
-    {
-      "glob": "com/formdev/flatlaf/natives/flatlaf-windows-x86_64.dll"
-    },
-    {
-      "glob": "com/formdev/flatlaf/resources/Bundle.properties"
-    },
-    {
-      "glob": "com/formdev/flatlaf/resources/Bundle_ja.properties"
-    },
-    {
-      "glob": "com/formdev/flatlaf/resources/Bundle_ja_JP.properties"
-    },
-    {
-      "glob": "etc/location-mapping.rdf"
-    },
-    {
-      "glob": "etc/location-mapping.ttl"
-    },
-    {
-      "glob": "images/attribute_dialog.svg"
-    },
-    {
-      "glob": "images/ci.svg"
-    },
-    {
-      "glob": "images/class_editor.svg"
-    },
-    {
-      "glob": "images/class_node.svg"
-    },
-    {
-      "glob": "images/code.svg"
-    },
-    {
-      "glob": "images/copy.svg"
-    },
-    {
-      "glob": "images/cpi.svg"
-    },
-    {
-      "glob": "images/cut.svg"
-    },
-    {
-      "glob": "images/delete.svg"
-    },
-    {
-      "glob": "images/description.svg"
-    },
-    {
-      "glob": "images/exit.svg"
-    },
-    {
-      "glob": "images/help.svg"
-    },
-    {
-      "glob": "images/history.svg"
-    },
-    {
-      "glob": "images/info.svg"
-    },
-    {
-      "glob": "images/instance_editor.svg"
-    },
-    {
-      "glob": "images/instance_node.svg"
-    },
-    {
-      "glob": "images/left_to_right.svg"
-    },
-    {
-      "glob": "images/literal_node.svg"
-    },
-    {
-      "glob": "images/log.svg"
-    },
-    {
-      "glob": "images/mr3.svg"
-    },
-    {
-      "glob": "images/namespace_table.svg"
-    },
-    {
-      "glob": "images/new.svg"
-    },
-    {
-      "glob": "images/open.svg"
-    },
-    {
-      "glob": "images/open_in_browser.svg"
-    },
-    {
-      "glob": "images/paste.svg"
-    },
-    {
-      "glob": "images/pi.svg"
-    },
-    {
-      "glob": "images/property_editor.svg"
-    },
-    {
-      "glob": "images/property_node.svg"
-    },
-    {
-      "glob": "images/redo.svg"
-    },
-    {
-      "glob": "images/save.svg"
-    },
-    {
-      "glob": "images/save_as.svg"
-    },
-    {
-      "glob": "images/save_image.svg"
-    },
-    {
-      "glob": "images/search.svg"
-    },
-    {
-      "glob": "images/settings.svg"
-    },
-    {
-      "glob": "images/transform.svg"
-    },
-    {
-      "glob": "images/undo.svg"
-    },
-    {
-      "glob": "images/up_to_down.svg"
-    },
-    {
-      "glob": "images/verified.svg"
-    },
-    {
-      "glob": "location-mapping.rdf"
-    },
-    {
-      "glob": "location-mapping.ttl"
-    },
-    {
-      "glob": "simplelogger.properties"
-    },
-    {
-      "glob": "version_info.html"
-    },
-    {
-      "module": "java.base",
-      "glob": "java/util/currency.data"
-    },
-    {
-      "module": "java.base",
-      "glob": "jdk/internal/icu/impl/data/icudt76b/ubidi.icu"
-    },
-    {
-      "module": "java.base",
-      "glob": "sun/net/www/content-types.properties"
-    },
-    {
-      "module": "java.base",
-      "glob": "sun/text/resources/LineBreakIteratorData"
-    },
-    {
-      "module": "java.datatransfer",
-      "glob": "sun/datatransfer/resources/flavormap.properties"
-    },
-    {
-      "module": "java.desktop",
-      "glob": "com/formdev/flatlaf/resources/Bundle.properties"
-    },
-    {
-      "module": "java.desktop",
-      "glob": "com/sun/swing/internal/plaf/basic/resources/basic_ja_JP.properties"
-    },
-    {
-      "module": "java.desktop",
-      "glob": "com/sun/swing/internal/plaf/metal/resources/metal_ja_JP.properties"
-    },
-    {
-      "module": "java.desktop",
-      "glob": "javax/swing/plaf/basic/icons/JavaCup16.png"
-    },
-    {
-      "module": "java.desktop",
-      "glob": "javax/swing/text/html/default.css"
-    },
-    {
-      "module": "java.desktop",
-      "glob": "javax/swing/text/html/parser/html32.bdtd"
-    },
-    {
-      "module": "java.desktop",
-      "glob": "sun/awt/resources/awt_ja_JP.properties"
-    },
-    {
-      "module": "java.logging",
-      "glob": "sun/util/logging/resources/logging_ja_JP.properties"
-    },
-    {
-      "bundle": "com.formdev.flatlaf.resources.Bundle"
-    },
-    {
-      "bundle": "com.sun.swing.internal.plaf.basic.resources.basic"
-    },
-    {
-      "bundle": "com.sun.swing.internal.plaf.metal.resources.metal"
-    },
-    {
-      "bundle": "sun.awt.resources.awt"
-    },
-    {
-      "bundle": "sun.util.logging.resources.logging"
-    }
-  ],
   "foreign": {
     "directUpcalls": [
       {
@@ -4531,6 +5040,15 @@
         ]
       }
     ],
+    "upcalls": [
+      {
+        "returnType": "jint",
+        "parameterTypes": [
+          "jint",
+          "void*"
+        ]
+      }
+    ],
     "downcalls": [
       {
         "returnType": "void",
@@ -4577,15 +5095,6 @@
       {
         "returnType": "void",
         "parameterTypes": [
-          "void*"
-        ]
-      }
-    ],
-    "upcalls": [
-      {
-        "returnType": "jint",
-        "parameterTypes": [
-          "jint",
           "void*"
         ]
       }

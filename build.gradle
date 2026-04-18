@@ -140,10 +140,12 @@ graalvmNative {
         buildArgs.add('--no-fallback')
         buildArgs.add('-H:+AddAllCharsets')
         buildArgs.add('-Djava.awt.headless=false')
-        buildArgs.add('-H:NativeLinkerOption=/SUBSYSTEM:WINDOWS')
-        buildArgs.add('-H:NativeLinkerOption=/ENTRY:mainCRTStartup')
-        buildArgs.add("-H:NativeLinkerOption=/MANIFEST:EMBED")
-        buildArgs.add("-H:NativeLinkerOption=/MANIFESTINPUT:${project.projectDir}/app.manifest")
+        if (OperatingSystem.current().isWindows()) {
+            buildArgs.add('-H:NativeLinkerOption=/SUBSYSTEM:WINDOWS')
+            buildArgs.add('-H:NativeLinkerOption=/ENTRY:mainCRTStartup')
+            buildArgs.add("-H:NativeLinkerOption=/MANIFEST:EMBED")
+            buildArgs.add("-H:NativeLinkerOption=/MANIFESTINPUT:${project.projectDir}/app.manifest")
+        }
     }
 }
 
