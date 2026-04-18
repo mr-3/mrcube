@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+         xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+         xmlns:uap10="http://schemas.microsoft.com/appx/manifest/uap/windows10/10"
+         xmlns:desktop7="http://schemas.microsoft.com/appx/manifest/desktop/windows10/7"
+         xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+         IgnorableNamespaces="uap uap10 desktop7 rescap">
+    <!--Package created by MSIX Packaging Tool version: 1.2024.405.0-->
+    <Identity Name="TakeshiMorita.MRCube" Publisher="CN=15770BB8-6A5A-4029-A662-126602DF71C9" Version="26.4.3.0"
+              ProcessorArchitecture="x64"/>
+    <Properties>
+        <DisplayName>MRCube</DisplayName>
+        <PublisherDisplayName>Takeshi Morita</PublisherDisplayName>
+        <Description>Meta-Model Management based on RDFs Revision Reflection</Description>
+        <Logo>Assets\StoreLogo.png</Logo>
+        <uap10:PackageIntegrity>
+            <uap10:Content Enforcement="on"/>
+        </uap10:PackageIntegrity>
+    </Properties>
+    <Resources>
+        <Resource Language="en-us"/>
+    </Resources>
+    <Dependencies>
+        <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.17763.0" MaxVersionTested="10.0.22000.1"/>
+        <PackageDependency Name="Microsoft.WindowsAppRuntime.1.4" MinVersion="4000.1010.1349.0"
+                           Publisher="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US"/>
+    </Dependencies>
+    <Capabilities>
+        <rescap:Capability Name="runFullTrust"/>
+    </Capabilities>
+    <Applications>
+        <Application Id="MRCUBE" Executable="MRCube.exe" EntryPoint="Windows.FullTrustApplication">
+            <uap:VisualElements BackgroundColor="transparent" DisplayName="MRCube"
+                                Square150x150Logo="Assets\MRCUBE-Square150x150Logo.png"
+                                Square44x44Logo="Assets\MRCUBE-Square44x44Logo.png" Description="MRCube">
+                <uap:DefaultTile Square71x71Logo="Assets\MRCUBE-Square71x71Logo.png"/>
+            </uap:VisualElements>
+            <Extensions>
+                <desktop7:Extension Category="windows.shortcut">
+                    <desktop7:Shortcut File="[{Desktop}]\MRCube.lnk" Icon="[{Package}]\MRCube.exe"/>
+                </desktop7:Extension>
+            </Extensions>
+        </Application>
+    </Applications>
+</Package>

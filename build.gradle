@@ -1,11 +1,11 @@
 import org.gradle.internal.os.OperatingSystem
 
 plugins {
-    id 'java'
-    id 'application'
+    id "java"
+    id "application"
     id "com.gradleup.shadow" version "9.4.1"
     id "org.beryx.runtime" version "2.0.1"
-    id 'org.graalvm.buildtools.native' version '1.0.0'
+    id "org.graalvm.buildtools.native" version "1.0.0"
 }
 
 java {
@@ -73,6 +73,7 @@ runtime {
         if (OperatingSystem.current().isWindows()) {
             jpackageHome = 'C:\\Program Files\\BellSoft\\LibericaJDK-25'
             installerType = 'msi'
+            installerName = 'MRCube'
             imageOptions = ['--verbose', '--icon', './src/main/resources/images/mr3.ico']
             installerOptions = ['--vendor', 'Takeshi Morita', '--win-shortcut']
         } else if (OperatingSystem.current().isMacOsX()) {
@@ -103,8 +104,8 @@ tasks.runtime.doLast {
     }
 }
 
-tasks.register('prepareNativePackage', Copy) {
-
+tasks.register('prepareNativeMsixFiles', Copy) {
+    dependsOn 'nativeCompile'
     from(layout.buildDirectory.dir("/native/nativeCompile")) {
         include "*.exe"
         include "*.dll"
@@ -112,8 +113,66 @@ tasks.register('prepareNativePackage', Copy) {
     from('./README.md')
     from('./README.ja.md')
     from('./LICENSE')
+    from('./src/main/resources/package/windows/AppxManifest.xml')
+    from('./src/main/resources/package/windows/Assets') {
+        into 'Assets'
+    }
 
-    into layout.buildDirectory.dir("/native-package-input")
+    into layout.buildDirectory.dir("/MRCube-Native-Package")
+}
+
+tasks.register('prepareJavaMsixFiles', Copy) {
+    dependsOn 'jpackage'
+    from(layout.buildDirectory.dir("/jpackage/MRCube")) {
+        include "*.exe"
+    }
+    from(layout.buildDirectory.dir("/jpackage/MRCube/app")) {
+        into "app"
+    }
+    from(layout.buildDirectory.dir("/jpackage/MRCube/runtime")) {
+        into "runtime"
+    }
+    from('./README.md')
+    from('./README.ja.md')
+    from('./LICENSE')
+    from('./src/main/resources/package/windows/AppxManifest.xml')
+    from('./src/main/resources/package/windows/Assets') {
+        into 'Assets'
+    }
+
+    into layout.buildDirectory.dir("/MRCube-Java-Package")
+}
+
+tasks.register('packNativeMsix', Exec) {
+    dependsOn 'prepareNativeMsixFiles'
+    group = 'build'
+    def makeAppxPath = "C:/Program Files (x86)/Windows Kits/10/bin/10.0.22621.0/x64/makeappx.exe"
+    def inputDir = layout.buildDirectory.dir("/MRCube-Native-Package").get().asFile
+    def outputDir = layout.buildDirectory.dir("distribution").get().asFile
+    def outputMsix = layout.buildDirectory.file("/distribution/MRCube-native-${version}.msix").get().asFile
+
+    doFirst {
+        if (!outputDir.exists()) {
+            outputDir.mkdirs()
+        }
+    }
+    commandLine makeAppxPath, 'pack', '/d', inputDir.absolutePath, '/p', outputMsix.absolutePath, '/o'
+}
+
+tasks.register('packJavaMsix', Exec) {
+    dependsOn 'prepareJavaMsixFiles'
+    group = 'build'
+    def makeAppxPath = "C:/Program Files (x86)/Windows Kits/10/bin/10.0.22621.0/x64/makeappx.exe"
+    def inputDir = layout.buildDirectory.dir("/MRCube-Java-Package").get().asFile
+    def outputDir = layout.buildDirectory.dir("distribution").get().asFile
+    def outputMsix = layout.buildDirectory.file("/distribution/MRCube-${version}.msix").get().asFile
+
+    doFirst {
+        if (!outputDir.exists()) {
+            outputDir.mkdirs()
+        }
+    }
+    commandLine makeAppxPath, 'pack', '/d', inputDir.absolutePath, '/p', outputMsix.absolutePath, '/o'
 }
 
 graalvmNative {
@@ -136,6 +195,7 @@ graalvmNative {
     }
 
     binaries.main {
+        imageName = "MRCube"
         mainClass = 'jp.ac.aoyama.it.ke.mrcube.MR3'
         buildArgs.add('--no-fallback')
         buildArgs.add('-H:+AddAllCharsets')
