@@ -3,9 +3,9 @@ import org.gradle.internal.os.OperatingSystem
 plugins {
     id 'java'
     id 'application'
-    id "com.gradleup.shadow" version "8.3.3"
+    id "com.gradleup.shadow" version "9.4.1"
     id "org.beryx.runtime" version "2.0.1"
-    id 'org.graalvm.buildtools.native' version '0.11.1'
+    id 'org.graalvm.buildtools.native' version '1.0.0'
 }
 
 java {
@@ -13,7 +13,7 @@ java {
     targetCompatibility = '21'
 }
 
-group 'jp.ac.aoyama.it.ke.mrcube'
+group = 'jp.ac.aoyama.it.ke.mrcube'
 version = '26.4.3'
 
 application {
@@ -31,7 +31,7 @@ repositories {
 }
 
 wrapper {
-    gradleVersion = '8.14.4'
+    gradleVersion = '9.4.1'
 }
 
 jar {
@@ -71,12 +71,12 @@ runtime {
 
     jpackage {
         if (OperatingSystem.current().isWindows()) {
-            jpackageHome = 'C:\\Program Files\\BellSoft\\LibericaJDK-21'
+            jpackageHome = 'C:\\Program Files\\BellSoft\\LibericaJDK-25'
             installerType = 'msi'
             imageOptions = ['--verbose', '--icon', './src/main/resources/images/mr3.ico']
             installerOptions = ['--vendor', 'Takeshi Morita', '--win-shortcut']
         } else if (OperatingSystem.current().isMacOsX()) {
-            jpackageHome = '/Library/Java/JavaVirtualMachines/liberica-jdk-21.jdk/Contents/Home'
+            jpackageHome = '/Library/Java/JavaVirtualMachines/liberica-jdk-25.jdk/Contents/Home'
             installerType = 'dmg'
             imageOptions = ['--verbose', '--icon', './src/main/resources/images/mr3.icns']
             installerOptions = ['--vendor', 'Takeshi Morita']
@@ -122,41 +122,28 @@ graalvmNative {
         resources.autodetect()
     }
 
+    agent {
+        enabled = true
+        modes {
+            standard {
+            }
+        }
+        metadataCopy {
+            inputTaskNames.add("run")
+            outputDirectories.add("src/main/resources/META-INF/native-image")
+            mergeWithExisting = true
+        }
+    }
+
     binaries.main {
         mainClass = 'jp.ac.aoyama.it.ke.mrcube.MR3'
         buildArgs.add('--no-fallback')
         buildArgs.add('-H:+AddAllCharsets')
         buildArgs.add('-Djava.awt.headless=false')
-        buildArgs.add('-Dsun.java2d.uiScale.enabled=true')
         buildArgs.add('-H:NativeLinkerOption=/SUBSYSTEM:WINDOWS')
         buildArgs.add('-H:NativeLinkerOption=/ENTRY:mainCRTStartup')
         buildArgs.add("-H:NativeLinkerOption=/MANIFEST:EMBED")
         buildArgs.add("-H:NativeLinkerOption=/MANIFESTINPUT:${project.projectDir}/app.manifest")
-
-        metadataRepository {
-            enabled = true
-        }
-
-        agent {
-            enabled = true
-            options.add("config-merge-dir=src/main/resources/META-INF/native-image")
-        }
-    }
-}
-
-tasks.register('runWithAgent', JavaExec) {
-    group = "application"
-    mainClass = application.mainClass
-    classpath = sourceSets.main.runtimeClasspath
-
-    def outputDir = file("src/main/resources/META-INF/native-image")
-
-    jvmArgs = [
-            "-agentlib:native-image-agent=config-output-dir=${outputDir}"
-    ]
-
-    doFirst {
-        if (!outputDir.exists()) outputDir.mkdirs()
     }
 }
 
