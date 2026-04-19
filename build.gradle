@@ -70,6 +70,7 @@ runtime {
     imageZip = layout.buildDirectory.file("mrcube-${version}.zip")
 
     jpackage {
+        jvmArgs = ["-XX:+UseCompactObjectHeaders"]
         if (OperatingSystem.current().isWindows()) {
             jpackageHome = 'C:\\Program Files\\BellSoft\\LibericaJDK-25'
             installerType = 'msi'
@@ -200,6 +201,7 @@ graalvmNative {
         buildArgs.add('--no-fallback')
         buildArgs.add('-H:+AddAllCharsets')
         buildArgs.add('-Djava.awt.headless=false')
+        buildArgs.add('-J-XX:+UseCompactObjectHeaders')
         if (OperatingSystem.current().isWindows()) {
             buildArgs.add('-H:NativeLinkerOption=/SUBSYSTEM:WINDOWS')
             buildArgs.add('-H:NativeLinkerOption=/ENTRY:mainCRTStartup')
