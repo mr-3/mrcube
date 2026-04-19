@@ -1226,6 +1226,7 @@
     },
     {
       "type": "java.awt.Color",
+      "serializable": true,
       "jniAccessible": true,
       "methods": [
         {
@@ -1370,6 +1371,7 @@
     },
     {
       "type": "java.awt.Font",
+      "serializable": true,
       "jniAccessible": true,
       "fields": [
         {
@@ -1928,6 +1930,7 @@
     },
     {
       "type": "java.awt.geom.Rectangle2D$Double",
+      "serializable": true,
       "jniAccessible": true,
       "methods": [
         {
@@ -2188,6 +2191,7 @@
     },
     {
       "type": "java.lang.Boolean",
+      "serializable": true,
       "jniAccessible": true,
       "methods": [
         {
@@ -2199,7 +2203,12 @@
       ]
     },
     {
+      "type": "java.lang.Double",
+      "serializable": true
+    },
+    {
       "type": "java.lang.Enum",
+      "serializable": true,
       "jniAccessible": true,
       "methods": [
         {
@@ -2209,7 +2218,20 @@
       ]
     },
     {
+      "type": "java.lang.Float",
+      "serializable": true
+    },
+    {
+      "type": "java.lang.Number",
+      "serializable": true
+    },
+    {
+      "type": "java.lang.Object[]",
+      "serializable": true
+    },
+    {
       "type": "java.lang.String",
+      "serializable": true,
       "jniAccessible": true,
       "methods": [
         {
@@ -2286,6 +2308,12 @@
       "type": "java.nio.CharBuffer"
     },
     {
+      "type": "java.rmi.MarshalledObject"
+    },
+    {
+      "type": "java.rmi.Remote"
+    },
+    {
       "type": "java.security.AlgorithmParametersSpi"
     },
     {
@@ -2293,6 +2321,7 @@
     },
     {
       "type": "java.util.ArrayList",
+      "serializable": true,
       "jniAccessible": true,
       "methods": [
         {
@@ -2339,6 +2368,14 @@
       ]
     },
     {
+      "type": "java.util.HashSet",
+      "serializable": true
+    },
+    {
+      "type": "java.util.Hashtable",
+      "serializable": true
+    },
+    {
       "type": "java.util.List"
     },
     {
@@ -2363,6 +2400,10 @@
     },
     {
       "type": "java.util.Locale[]"
+    },
+    {
+      "type": "java.util.Vector",
+      "serializable": true
     },
     {
       "type": "java.util.concurrent.ForkJoinTask",
@@ -2457,6 +2498,10 @@
       "type": "javax.swing.filechooser.WindowsFileSystemView"
     },
     {
+      "type": "javax.swing.plaf.FontUIResource",
+      "serializable": true
+    },
+    {
       "type": "javax.swing.plaf.basic.BasicGraphicsUtils",
       "methods": [
         {
@@ -2548,6 +2593,10 @@
       ]
     },
     {
+      "type": "javax.swing.tree.DefaultMutableTreeNode",
+      "serializable": true
+    },
+    {
       "type": "jdk.internal.misc.Unsafe"
     },
     {
@@ -2618,10 +2667,22 @@
       ]
     },
     {
+      "type": "jp.ac.aoyama.it.ke.mrcube.jgraph.InstanceCell",
+      "serializable": true
+    },
+    {
       "type": "jp.ac.aoyama.it.ke.mrcube.jgraph.JGraphEllipseView$JGraphEllipseRenderer"
     },
     {
       "type": "jp.ac.aoyama.it.ke.mrcube.jgraph.MR3OverviewPanel"
+    },
+    {
+      "type": "jp.ac.aoyama.it.ke.mrcube.jgraph.OntClassCell",
+      "serializable": true
+    },
+    {
+      "type": "jp.ac.aoyama.it.ke.mrcube.jgraph.OntPropertyCell",
+      "serializable": true
     },
     {
       "type": "jp.ac.aoyama.it.ke.mrcube.jgraph.RDFGraph",
@@ -2634,6 +2695,30 @@
           ]
         }
       ]
+    },
+    {
+      "type": "jp.ac.aoyama.it.ke.mrcube.jgraph.TypeViewCell",
+      "serializable": true
+    },
+    {
+      "type": "jp.ac.aoyama.it.ke.mrcube.models.ClassModel",
+      "serializable": true
+    },
+    {
+      "type": "jp.ac.aoyama.it.ke.mrcube.models.InstanceModel",
+      "serializable": true
+    },
+    {
+      "type": "jp.ac.aoyama.it.ke.mrcube.models.MR3Constants$URIType",
+      "serializable": true
+    },
+    {
+      "type": "jp.ac.aoyama.it.ke.mrcube.models.PropertyModel",
+      "serializable": true
+    },
+    {
+      "type": "jp.ac.aoyama.it.ke.mrcube.models.RDFSModel",
+      "serializable": true
     },
     {
       "type": "jp.ac.aoyama.it.ke.mrcube.models.SPARQLQueryResultTableCellRenderer",
@@ -2834,6 +2919,9 @@
       ]
     },
     {
+      "type": "jp.ac.aoyama.it.ke.mrcube.views.ValidatorDialog"
+    },
+    {
       "type": "jp.ac.aoyama.it.ke.mrcube.views.VersionInfoDialog"
     },
     {
@@ -2927,6 +3015,22 @@
       "type": "org.jgraph.event.GraphSelectionListener"
     },
     {
+      "type": "org.jgraph.graph.AttributeMap",
+      "serializable": true
+    },
+    {
+      "type": "org.jgraph.graph.AttributeMap$SerializableRectangle2D",
+      "serializable": true
+    },
+    {
+      "type": "org.jgraph.graph.ConnectionSet",
+      "serializable": true
+    },
+    {
+      "type": "org.jgraph.graph.DefaultGraphCell",
+      "serializable": true
+    },
+    {
       "type": "org.jgraph.graph.DefaultGraphCellEditor$DefaultTextField",
       "methods": [
         {
@@ -2951,13 +3055,33 @@
       ]
     },
     {
+      "type": "org.jgraph.graph.DefaultPort",
+      "serializable": true
+    },
+    {
       "type": "org.jgraph.graph.EdgeRenderer"
+    },
+    {
+      "type": "org.jgraph.graph.GraphTransferable",
+      "serializable": true
+    },
+    {
+      "type": "org.jgraph.graph.ParentMap",
+      "serializable": true
+    },
+    {
+      "type": "org.jgraph.graph.ParentMap$Entry",
+      "serializable": true
     },
     {
       "type": "org.jgraph.graph.PortRenderer"
     },
     {
       "type": "org.jgraph.graph.VertexRenderer"
+    },
+    {
+      "type": "org.jgraph.plaf.basic.BasicGraphTransferable",
+      "serializable": true
     },
     {
       "type": "org.slf4j.simple.SimpleServiceProvider"
@@ -4960,6 +5084,56 @@
     }
   ],
   "foreign": {
+    "downcalls": [
+      {
+        "returnType": "void",
+        "parameterTypes": [
+          "jfloat",
+          "void*",
+          "void*",
+          "void*",
+          "jint",
+          "jint",
+          "jint",
+          "jint",
+          "jint",
+          "jfloat",
+          "jfloat",
+          "jint",
+          "jint",
+          "void*",
+          "void*"
+        ]
+      },
+      {
+        "returnType": "void*",
+        "parameterTypes": [
+          "jlong"
+        ]
+      },
+      {
+        "returnType": "void*",
+        "parameterTypes": [
+          "void*",
+          "void*",
+          "void*",
+          "void*",
+          "void*"
+        ]
+      },
+      {
+        "returnType": "void*",
+        "parameterTypes": [
+          "void*"
+        ]
+      },
+      {
+        "returnType": "void",
+        "parameterTypes": [
+          "void*"
+        ]
+      }
+    ],
     "directUpcalls": [
       {
         "class": "sun.font.HBShaper",
@@ -5045,56 +5219,6 @@
         "returnType": "jint",
         "parameterTypes": [
           "jint",
-          "void*"
-        ]
-      }
-    ],
-    "downcalls": [
-      {
-        "returnType": "void",
-        "parameterTypes": [
-          "jfloat",
-          "void*",
-          "void*",
-          "void*",
-          "jint",
-          "jint",
-          "jint",
-          "jint",
-          "jint",
-          "jfloat",
-          "jfloat",
-          "jint",
-          "jint",
-          "void*",
-          "void*"
-        ]
-      },
-      {
-        "returnType": "void*",
-        "parameterTypes": [
-          "jlong"
-        ]
-      },
-      {
-        "returnType": "void*",
-        "parameterTypes": [
-          "void*",
-          "void*",
-          "void*",
-          "void*",
-          "void*"
-        ]
-      },
-      {
-        "returnType": "void*",
-        "parameterTypes": [
-          "void*"
-        ]
-      },
-      {
-        "returnType": "void",
-        "parameterTypes": [
           "void*"
         ]
       }
