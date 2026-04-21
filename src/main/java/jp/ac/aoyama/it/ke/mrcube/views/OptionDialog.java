@@ -433,16 +433,16 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
         private final JTextField metaClassField;
 
         private final JTextField defaultClassClassField;
-        private final JList classClassList;
-        private final DefaultListModel classClassListModel;
+        private final JList<String> classClassList;
+        private final DefaultListModel<String> classClassListModel;
         private JButton setDefaultClassClassButton;
         private JButton classClassEditButton;
         private JButton classClassAddButton;
         private JButton classClassRemoveButton;
 
         private final JTextField defaultPropertyClassField;
-        private final JList propClassList;
-        private final DefaultListModel propClassListModel;
+        private final JList<String> propClassList;
+        private final DefaultListModel<String> propClassListModel;
         private JButton setDefaultPropertyClassButton;
         private JButton propClassEditButton;
         private JButton propClassAddButton;
@@ -459,8 +459,8 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             defaultClassClassField.setEditable(false);
             JComponent defaultClassClassFieldP = Utilities.createTitledPanel(defaultClassClassField,
                     Translator.getString("OptionDialog.MetaClass.DefaultClassClass"));
-            classClassListModel = new DefaultListModel();
-            classClassList = new JList(classClassListModel);
+            classClassListModel = new DefaultListModel<>();
+            classClassList = new JList<>(classClassListModel);
             classClassList.addListSelectionListener(this);
             JScrollPane classClassListScroll = new JScrollPane(classClassList);
             Utilities.initComponent(classClassListScroll,
@@ -471,8 +471,8 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
             defaultPropertyClassField.setEditable(false);
             JComponent defaultPropertyClassFieldP = Utilities.createTitledPanel(defaultPropertyClassField,
                     Translator.getString("OptionDialog.MetaClass.DefaultPropertyClass"));
-            propClassListModel = new DefaultListModel();
-            propClassList = new JList(propClassListModel);
+            propClassListModel = new DefaultListModel<>();
+            propClassList = new JList<>(propClassListModel);
             propClassList.addListSelectionListener(this);
             JScrollPane propClassListScroll = new JScrollPane(propClassList);
             Utilities.initComponent(propClassListScroll,
@@ -621,8 +621,8 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
                 if (classClassList.isSelectionEmpty()) {
                     return;
                 }
-                List removeList = Collections.singletonList(classClassList.getSelectedValuesList());
-                for (Object item : removeList) {
+                List<String> removeList = classClassList.getSelectedValuesList();
+                for (String item : removeList) {
                     if (!isDefaultClass(item)) {
                         if (item.equals(defaultClassClassField.getText())) {
                             setDefaultClassClass(RDFS.Class.getURI());
@@ -686,8 +686,8 @@ public class OptionDialog extends JDialog implements ListSelectionListener {
                 if (propClassList.isSelectionEmpty()) {
                     return;
                 }
-                List removeList = Collections.singletonList(propClassList.getSelectedValuesList());
-                for (Object item : removeList) {
+                List<String> removeList = propClassList.getSelectedValuesList();
+                for (String item : removeList) {
                     if (!isDefaultProperty(item)) {
                         if (item.equals(defaultPropertyClassField.getText())) {
                             setDefaultPropertyClass(RDF.Property.getURI());

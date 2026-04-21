@@ -1821,6 +1821,31 @@
       "type": "java.awt.event.MouseMotionListener[]"
     },
     {
+      "type": "java.awt.event.MouseWheelEvent",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "java.awt.Component",
+            "int",
+            "long",
+            "int",
+            "int",
+            "int",
+            "int",
+            "int",
+            "int",
+            "boolean",
+            "int",
+            "int",
+            "int",
+            "double"
+          ]
+        }
+      ]
+    },
+    {
       "type": "java.awt.geom.AffineTransform",
       "jniAccessible": true,
       "fields": [
@@ -2502,6 +2527,17 @@
       "serializable": true
     },
     {
+      "type": "javax.swing.plaf.basic.BasicButtonListener",
+      "methods": [
+        {
+          "name": "loadActionMap",
+          "parameterTypes": [
+            "javax.swing.plaf.basic.LazyActionMap"
+          ]
+        }
+      ]
+    },
+    {
       "type": "javax.swing.plaf.basic.BasicGraphicsUtils",
       "methods": [
         {
@@ -2848,6 +2884,9 @@
     },
     {
       "type": "jp.ac.aoyama.it.ke.mrcube.views.OverviewDialog"
+    },
+    {
+      "type": "jp.ac.aoyama.it.ke.mrcube.views.ProjectInfoDialog"
     },
     {
       "type": "jp.ac.aoyama.it.ke.mrcube.views.RDFSourceCodeViewer"
@@ -5084,52 +5123,11 @@
     }
   ],
   "foreign": {
-    "downcalls": [
+    "upcalls": [
       {
-        "returnType": "void",
+        "returnType": "jint",
         "parameterTypes": [
-          "jfloat",
-          "void*",
-          "void*",
-          "void*",
           "jint",
-          "jint",
-          "jint",
-          "jint",
-          "jint",
-          "jfloat",
-          "jfloat",
-          "jint",
-          "jint",
-          "void*",
-          "void*"
-        ]
-      },
-      {
-        "returnType": "void*",
-        "parameterTypes": [
-          "jlong"
-        ]
-      },
-      {
-        "returnType": "void*",
-        "parameterTypes": [
-          "void*",
-          "void*",
-          "void*",
-          "void*",
-          "void*"
-        ]
-      },
-      {
-        "returnType": "void*",
-        "parameterTypes": [
-          "void*"
-        ]
-      },
-      {
-        "returnType": "void",
-        "parameterTypes": [
           "void*"
         ]
       }
@@ -5214,11 +5212,52 @@
         ]
       }
     ],
-    "upcalls": [
+    "downcalls": [
       {
-        "returnType": "jint",
+        "returnType": "void",
         "parameterTypes": [
+          "jfloat",
+          "void*",
+          "void*",
+          "void*",
           "jint",
+          "jint",
+          "jint",
+          "jint",
+          "jint",
+          "jfloat",
+          "jfloat",
+          "jint",
+          "jint",
+          "void*",
+          "void*"
+        ]
+      },
+      {
+        "returnType": "void*",
+        "parameterTypes": [
+          "jlong"
+        ]
+      },
+      {
+        "returnType": "void*",
+        "parameterTypes": [
+          "void*",
+          "void*",
+          "void*",
+          "void*",
+          "void*"
+        ]
+      },
+      {
+        "returnType": "void*",
+        "parameterTypes": [
+          "void*"
+        ]
+      },
+      {
+        "returnType": "void",
+        "parameterTypes": [
           "void*"
         ]
       }
