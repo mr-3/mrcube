@@ -78,6 +78,7 @@ public class RDFGraph extends JGraph {
         pasteAction = new PasteAction(this, gmanager);
         selectAllNodesAction = new SelectAllNodesAction(gmanager, type);
         SwingUtilities.replaceUIActionMap(this, createActionMap());
+        setDoubleBuffered(false);
     }
 
     public GraphManager getGraphManager() {
