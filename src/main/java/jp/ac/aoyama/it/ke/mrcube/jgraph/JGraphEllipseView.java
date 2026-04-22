@@ -29,6 +29,7 @@
  */
 package jp.ac.aoyama.it.ke.mrcube.jgraph;
 
+import jp.ac.aoyama.it.ke.mrcube.utils.GraphUtilities;
 import org.jgraph.graph.CellViewRenderer;
 import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.VertexRenderer;
@@ -144,12 +145,12 @@ public class JGraphEllipseView extends VertexView {
             Dimension d = getSize();
             boolean tmp = selected;
             if (super.isOpaque()) {
-                g.setColor(super.getBackground());
+                g2.setColor(super.getBackground());
                 if (gradientColor != null && !preview) {
                     setOpaque(false);
                     g2.setPaint(new GradientPaint(0, 0, getBackground(), getWidth(), getHeight(), gradientColor, true));
                 }
-                g.fillOval(b - 1, b - 1, d.width - b, d.height - b);
+                g2.fillOval(b - 1, b - 1, d.width - b, d.height - b);
             }
             try {
                 setBorder(null);
@@ -160,14 +161,15 @@ public class JGraphEllipseView extends VertexView {
                 selected = tmp;
             }
             if (bordercolor != null) {
-                g.setColor(bordercolor);
+                g2.setColor(bordercolor);
                 g2.setStroke(new BasicStroke(b));
-                g.drawOval(b - 1, b - 1, d.width - b, d.height - b);
+                java.awt.geom.Ellipse2D ellipse = new java.awt.geom.Ellipse2D.Double(b / 2.0, b / 2.0, d.width - b, d.height - b);
+                g2.draw(ellipse);
             }
             if (selected) {
                 g2.setStroke(GraphConstants.SELECTION_STROKE);
-                // g.setColor(graph.getHighlightColor());
-                g.drawOval(b - 1, b - 1, d.width - b, d.height - b);
+                java.awt.geom.Ellipse2D ellipse = new java.awt.geom.Ellipse2D.Double(b / 2.0, b / 2.0, d.width - b, d.height - b);
+                g2.draw(ellipse);
             }
         }
     }
