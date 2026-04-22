@@ -641,6 +641,7 @@ public class MR3 extends JFrame implements ChangeListener {
     }
 
     public static void initialize(Class cls) {
+        JenaSystem.init();
         System.setProperty("javax.accessibility.assistive_technologies", "");
         System.setProperty("flatlaf.useJetBrainsCustomWindowDecorations", "true");
         if (System.getProperty("os.name").toLowerCase().startsWith("mac")) {
@@ -649,7 +650,6 @@ public class MR3 extends JFrame implements ChangeListener {
         } else {
             FlatLightLaf.setup();
         }
-        JenaSystem.init();
         userPrefs = Preferences.userNodeForPackage(cls);
         Translator.loadResourceBundle(userPrefs);
         UIManager.put("TitledBorder.border", new LineBorder(new Color(200, 200, 200), 1));

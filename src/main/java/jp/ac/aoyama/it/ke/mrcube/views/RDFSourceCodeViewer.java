@@ -23,22 +23,22 @@
 
 package jp.ac.aoyama.it.ke.mrcube.views;
 
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.rdf.model.RDFWriterI;
 import jp.ac.aoyama.it.ke.mrcube.io.MR3Writer;
 import jp.ac.aoyama.it.ke.mrcube.jgraph.GraphManager;
 import jp.ac.aoyama.it.ke.mrcube.models.NamespaceModel;
 import jp.ac.aoyama.it.ke.mrcube.utils.GraphUtilities;
 import jp.ac.aoyama.it.ke.mrcube.utils.Translator;
 import jp.ac.aoyama.it.ke.mrcube.utils.Utilities;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.riot.RDFDataMgr;
+import org.apache.jena.riot.RDFFormat;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.StringWriter;
-import java.io.Writer;
 import java.util.Set;
 
 /**
@@ -99,15 +99,11 @@ public class RDFSourceCodeViewer extends JDialog implements ActionListener {
         setVisible(false);
     }
 
-    private void writeModel(Model model, Writer writer) {
-        String convertType = getConvertType();
-        RDFWriterI rdfWriter = model.getWriter(convertType);
+    private void writeModel(Model model, StringWriter writer) {
+        RDFFormat rdfFormat = getRDFFormat();
         setNsPrefix(model);
-        if (convertType.equals("RDF/XML") || convertType.equals("RDF/XML-ABBREV")) {
-            rdfWriter.setProperty("showXmlDeclaration", Boolean.TRUE);
-        }
         try {
-            rdfWriter.write(model, writer, gmanager.getBaseURI());
+            RDFDataMgr.write(writer, model, rdfFormat);
         } catch (Exception e) {
             e.printStackTrace();
             Utilities.showErrorMessageDialog("Export Error");
@@ -115,22 +111,22 @@ public class RDFSourceCodeViewer extends JDialog implements ActionListener {
     }
 
     private String getModelString(Model model) {
-        Writer writer = new StringWriter();
+        StringWriter writer = new StringWriter();
         writeModel(model, writer);
         return writer.toString();
     }
 
-    private String getConvertType() {
+    private RDFFormat getRDFFormat() {
         if (xmlRadioButton.isSelected()) {
-            return "RDF/XML";
+            return RDFFormat.RDFXML_ABBREV;
         } else if (nTripleRadioButton.isSelected()) {
-            return "N-TRIPLE";
+            return RDFFormat.NTRIPLES;
         } else if (turtleRadioButton.isSelected()) {
-            return "TURTLE";
+            return RDFFormat.TURTLE;
         } else if (jsonldRadioButton.isSelected()) {
-            return "JSONLD";
+            return RDFFormat.JSONLD;
         }
-        return "RDF/XML";
+        return RDFFormat.RDFXML;
     }
 
     private Model getModel() {
