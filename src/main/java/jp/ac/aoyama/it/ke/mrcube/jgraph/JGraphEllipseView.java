@@ -29,13 +29,13 @@
  */
 package jp.ac.aoyama.it.ke.mrcube.jgraph;
 
-import jp.ac.aoyama.it.ke.mrcube.utils.GraphUtilities;
 import org.jgraph.graph.CellViewRenderer;
 import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.VertexRenderer;
 import org.jgraph.graph.VertexView;
 
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
@@ -150,7 +150,8 @@ public class JGraphEllipseView extends VertexView {
                     setOpaque(false);
                     g2.setPaint(new GradientPaint(0, 0, getBackground(), getWidth(), getHeight(), gradientColor, true));
                 }
-                g2.fillOval(b - 1, b - 1, d.width - b, d.height - b);
+                Ellipse2D ellipse = new Ellipse2D.Double(b - 1, b - 1, d.width - b, d.height - b);
+                g2.fill(ellipse);
             }
             try {
                 setBorder(null);
@@ -163,12 +164,12 @@ public class JGraphEllipseView extends VertexView {
             if (bordercolor != null) {
                 g2.setColor(bordercolor);
                 g2.setStroke(new BasicStroke(b));
-                java.awt.geom.Ellipse2D ellipse = new java.awt.geom.Ellipse2D.Double(b / 2.0, b / 2.0, d.width - b, d.height - b);
+                Ellipse2D ellipse = new Ellipse2D.Double(b / 2.0, b / 2.0, d.width - b, d.height - b);
                 g2.draw(ellipse);
             }
             if (selected) {
                 g2.setStroke(GraphConstants.SELECTION_STROKE);
-                java.awt.geom.Ellipse2D ellipse = new java.awt.geom.Ellipse2D.Double(b / 2.0, b / 2.0, d.width - b, d.height - b);
+                Ellipse2D ellipse = new Ellipse2D.Double(b / 2.0, b / 2.0, d.width - b, d.height - b);
                 g2.draw(ellipse);
             }
         }
