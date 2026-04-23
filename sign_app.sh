@@ -22,7 +22,7 @@ echo "Using entitlements: $ENTITLEMENTS"
 # 既存の署名を削除
 codesign --remove-signature MRCube.app/
 
-JAR_PATH="MRCube.app/Contents/app/mrcube-26.4.2-all.jar"
+JAR_PATH="MRCube.app/Contents/app/mrcube-26.4.3-all.jar"
 DYLIBS=(
     "com/formdev/flatlaf/natives/libflatlaf-macos-x86_64.dylib"
     "com/formdev/flatlaf/natives/libflatlaf-macos-arm64.dylib"
@@ -62,7 +62,7 @@ for target in "${TARGETS[@]}"; do
     codesign --entitlements "$ENTITLEMENTS" -f --options=runtime --timestamp -s "$SIGNER" $target
 done
 
-VERSION=${1:-"26.4.2"}
+VERSION=${1:-"26.4.3"}
 APP_NAME="MRCube.app"
 DMG_NAME="mrcube-${VERSION}.dmg"
 
